@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>stan</groupId>
         <artifactId>zhangli</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>zhangli-eureka-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>zhangli-eureka-service</name>
-    <description>提供Eureka服务进行服务治理</description>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
-    </properties>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>zhangli-eureka-service</artifactId>
+    <name>zhangli-eureka-service</name>
 
     <dependencies>
         <dependency>
@@ -29,5 +23,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+    <build>
+        <finalName>zhangli-eureka-service</finalName>
+    </build>
 </project>

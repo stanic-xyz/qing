@@ -6,14 +6,9 @@
     <parent>
         <groupId>stan</groupId>
         <artifactId>zhangli</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
-    </properties>
     <artifactId>zhangli-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>zhangli-service</name>
     <dependencies>
         <!--配置Eureka服务-->
@@ -49,10 +44,14 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>zhangli-service</finalName>
+    </build>
 </project>
