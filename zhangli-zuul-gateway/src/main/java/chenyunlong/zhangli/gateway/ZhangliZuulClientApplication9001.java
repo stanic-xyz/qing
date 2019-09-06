@@ -16,8 +16,8 @@ public class ZhangliZuulClientApplication9001 {
         SpringApplication.run(ZhangliZuulClientApplication9001.class, args);
     }
 
-    @Bean
-    TokenFilter getZuulFilter() {
-        return new TokenFilter();
-    }
+//    @Bean
+//    TokenFilter getZuulFilter() {
+//        return new TokenFilter();
+//    }
 }
