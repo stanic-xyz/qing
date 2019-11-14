@@ -14,6 +14,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         log.debug("afterCompletion！");
+        log.debug("this is content filename");
         super.afterCompletion(request, response, handler, ex);
     }
 
