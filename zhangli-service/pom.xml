@@ -11,6 +11,11 @@
     <artifactId>zhangli-service</artifactId>
     <name>zhangli-service</name>
     <dependencies>
+        <dependency>
+            <groupId>me.zhyd.oauth</groupId>
+            <artifactId>JustAuth</artifactId>
+            <version>1.6.0-beta</version>
+        </dependency>
         <!--配置Eureka服务-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
