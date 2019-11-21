@@ -1,8 +1,13 @@
 package chenyunlong.zhangli.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.discovery.converters.Auto;
 import me.zhyd.oauth.model.AuthResponse;
-import me.zhyd.oauth.request.AuthRequest;
+import me.zhyd.oauth.model.AuthUser;
+import me.zhyd.oauth.request.AuthGithubRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -11,7 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthController {
 
     @Autowired
-    private AuthRequest authRequest;
+    private AuthGithubRequest authRequest;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @PostMapping("auth")
     public String login(
@@ -25,7 +35,6 @@ public class AuthController {
 
     @GetMapping("login")
     public ModelAndView login() {
-
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("redirect:" + authRequest.authorize());
@@ -33,8 +42,21 @@ public class AuthController {
     }
 
     @GetMapping("access_token")
-    public String accessToken(@RequestParam String code) {
+    public String accessToken(@RequestParam String code) throws JsonProcessingException {
+
         AuthResponse authResponse = authRequest.login(code);
-        return authResponse.toString() + '\n' + authResponse.getCode();
+        AuthUser user = (AuthUser) authResponse.getData();
+
+
+        redisTemplate.opsForValue().set(user.getToken().getAccessToken(), user);
+
+        return objectMapper.writeValueAsString(user);
+    }
+
+    @GetMapping("getUserInfo")
+    public String getUserInfo(@RequestParam String accessToken) throws JsonProcessingException {
+        String user = redisTemplate.opsForValue().get(accessToken).toString();
+
+        return user;
     }
 }
