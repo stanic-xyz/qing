@@ -16,6 +16,5 @@ public class HelloController {
     @GetMapping("hello")
     public String hello(@RequestParam String name) {
         return "this is hello world!" + test;
-
     }
 }

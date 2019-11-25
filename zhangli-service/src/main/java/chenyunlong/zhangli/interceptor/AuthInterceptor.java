@@ -1,5 +1,7 @@
 package chenyunlong.zhangli.interceptor;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -15,6 +17,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         log.debug("afterCompletion！");
         log.debug("this is content filename");
+
         super.afterCompletion(request, response, handler, ex);
     }
 
@@ -32,7 +35,16 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String jwtToken = request.getHeader("authorization");
 
+        if (jwtToken != null) {
+            Claims claims = Jwts.parser().setSigningKey("sang@123").parseClaimsJws(jwtToken.replace("Bearer", ""))
+                    .getBody();
+
+            request.getSession().setAttribute("userInfo", claims);
+            log.info("这里通过了验证了！");
+
+        }
         log.debug("你的请求已经经过过滤！");
         return true;
     }

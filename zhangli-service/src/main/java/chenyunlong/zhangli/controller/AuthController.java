@@ -3,6 +3,9 @@ package chenyunlong.zhangli.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.discovery.converters.Auto;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthGithubRequest;
@@ -11,6 +14,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+
+@Slf4j
 @RestController
 @RequestMapping("authrize")
 public class AuthController {
@@ -48,15 +55,25 @@ public class AuthController {
         AuthUser user = (AuthUser) authResponse.getData();
 
 
-        redisTemplate.opsForValue().set(user.getToken().getAccessToken(), user);
-
-        return objectMapper.writeValueAsString(user);
+        String jwt = Jwts.builder()
+                .claim("authorities", "权限内容")//配置用户角色
+                .setSubject(objectMapper.writeValueAsString(user))
+                .setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .signWith(SignatureAlgorithm.HS512, "sang@123")
+                .compact();
+        redisTemplate.opsForValue().set(jwt, user);
+        return jwt;
     }
 
     @GetMapping("getUserInfo")
-    public String getUserInfo(@RequestParam String accessToken) throws JsonProcessingException {
-        String user = redisTemplate.opsForValue().get(accessToken).toString();
+    public String getUserInfo(HttpSession session) throws JsonProcessingException {
 
-        return user;
+
+        Object userInfo = session.getAttribute("userInfo");
+        if (userInfo != null) {
+            log.debug(userInfo.toString());
+        }
+
+        return objectMapper.writeValueAsString(userInfo);
     }
 }

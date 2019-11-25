@@ -26,7 +26,7 @@ public class TokenFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        //TODO 在这里判断是否需要进行过滤
+        /* TODO 在这里判断是否需要进行过滤 */
         return true;
     }
 
@@ -37,16 +37,21 @@ public class TokenFilter extends ZuulFilter {
 
         log.info("--->>> TokenFilter {},{}", request.getMethod(), request.getRequestURL().toString());
 
+        //
         //TODO 设置身份验证方式
-        String token = request.getParameter("token");// 获取请求的参数
+        //获取请求的参数
+        //
+        String token = request.getParameter("token");
 
+        //对请求进行路由
         if (StringUtils.isNotBlank(token)) {
-            ctx.setSendZuulResponse(true); //对请求进行路由
+            ctx.setSendZuulResponse(true);
             ctx.setResponseStatusCode(200);
             ctx.set("isSuccess", true);
             return null;
         } else {
-            ctx.setSendZuulResponse(false); //不对其进行路由
+            //不对其进行路由
+            ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(400);
             ctx.setResponseBody("token is empty");
             ctx.set("isSuccess", false);
