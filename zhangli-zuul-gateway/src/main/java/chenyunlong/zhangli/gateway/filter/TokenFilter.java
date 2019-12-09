@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.Charset;
+import java.util.Base64;
 
 @Slf4j
 public class TokenFilter extends ZuulFilter {
@@ -41,7 +43,14 @@ public class TokenFilter extends ZuulFilter {
         //TODO 设置身份验证方式
         //获取请求的参数
         //
-        String token = request.getParameter("token");
+        String token = request.getHeader("Authorization");
+        // 认证的原始信息
+        String auth = "studyjava:hello";
+        // 进行一个加密的处理
+        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(Charset.forName("US-ASCII")));
+        // 在进行授权的头信息内容配置的时候加密的信息一定要与“Basic”之间有一个空格
+        String authHeader = "Basic " + new String(encodedAuth);
+        ctx.addZuulRequestHeader("Authorization", authHeader);
 
         //对请求进行路由
         if (StringUtils.isNotBlank(token)) {
@@ -57,5 +66,7 @@ public class TokenFilter extends ZuulFilter {
             ctx.set("isSuccess", false);
             return null;
         }
+
+
     }
 }

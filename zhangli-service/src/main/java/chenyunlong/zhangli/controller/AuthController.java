@@ -34,9 +34,7 @@ public class AuthController {
     public String login(
             @RequestBody String code
     ) {
-
         authRequest.login(code);
-
         return "登陆状态";
     }
 
@@ -72,6 +70,9 @@ public class AuthController {
         Object userInfo = session.getAttribute("userInfo");
         if (userInfo != null) {
             log.debug(userInfo.toString());
+        } else {
+            userInfo = "Staninc";
+            log.debug("没有用户信息！");
         }
 
         return objectMapper.writeValueAsString(userInfo);
