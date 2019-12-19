@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="275a8425-6d70-4339-aa19-99ddbcb732aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/remote/MyFeignFallBack.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-config-git/src/main/resources/bootstrap.properties" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-config-git/src/main/resources/bootstrap.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-eureka-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-eureka-service/src/main/resources/bootstrap.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-feign-client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-feign-client/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/ZhangliFeignClientApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/ZhangliFeignClientApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/controller/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/controller/HelloController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/remote/RemoteHello.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/remote/RemoteHello.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-zuul-gateway/src/main/java/chenyunlong/zhangli/gateway/ZhangliZuulClientApplication9001.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-zuul-gateway/src/main/java/chenyunlong/zhangli/gateway/ZhangliZuulClientApplication9001.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-zuul-gateway/src/main/java/chenyunlong/zhangli/gateway/filter/TokenFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-zuul-gateway/src/main/java/chenyunlong/zhangli/gateway/filter/TokenFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zhangli-zuul-gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-zuul-gateway/src/main/resources/application.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/zhangli-service/target/" />
@@ -74,7 +63,7 @@
         <entry file="file://$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/ZhangliFeignClientApplication.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="247">
-              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
             </state>
           </provider>
         </entry>
@@ -82,8 +71,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/remote/RemoteHello.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="12" column="39" lean-forward="true" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+            <state relative-caret-position="133">
+              <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -103,8 +92,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/AuthController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="72" column="16" selection-start-line="72" selection-start-column="16" selection-end-line="72" selection-end-column="16" />
+            <state relative-caret-position="152">
+              <caret line="23" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
         </entry>
@@ -113,7 +102,7 @@
         <entry file="file://$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/remote/MyFeignFallBack.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="76">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -232,164 +221,14 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
               <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-config-git" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-config-git" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-config-git" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-config-git" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-config-git" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-feign-client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-feign-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-feign-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-feign-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-feign-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-feign-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-feign-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="remote" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-feign-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -406,7 +245,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1575905049373" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1576770085638" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="Arquillian JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
     <property name="database.console.LAST_STATE" value="false" />
@@ -417,7 +256,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="com.alibabacloud.intellij.config.AccountConfigurable" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
     <property name="settings.editor.splitter.proportion" value="0.24950299" />
   </component>
   <component name="RecentsManager">
@@ -598,7 +437,9 @@
       <workItem from="1574692920957" duration="926000" />
       <workItem from="1574779618100" duration="14922000" />
       <workItem from="1575812640065" duration="6803000" />
-      <workItem from="1575903651420" duration="1367000" />
+      <workItem from="1575903651420" duration="1744000" />
+      <workItem from="1576330844433" duration="1346000" />
+      <workItem from="1576333766521" duration="14000" />
     </task>
     <task id="LOCAL-00001" summary="日常更新">
       <created>1567178579104</created>
@@ -635,7 +476,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574677498051</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="添加了configserver&#10;添加了Feign支持&#10;添加了Zuul支持">
+      <created>1575905102397</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1575905102397</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -647,7 +495,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118680000" />
+    <option name="totallyTimeSpent" value="120417000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -660,10 +508,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7665289" visible="true" weight="0.21173333" />
-      <window_info id="Structure" order="1" sideWeight="0.23347108" side_tool="true" visible="true" weight="0.21173333" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7632509" visible="true" weight="0.216" />
+      <window_info id="Structure" order="1" sideWeight="0.23674911" side_tool="true" visible="true" weight="0.216" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Capture Tool" order="4" />
@@ -680,13 +527,13 @@
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49924356" weight="0.3295082" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.329718" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.27982646" />
-      <window_info anchor="bottom" id="Docker" order="9" sideWeight="0.5290667" weight="0.35357916" />
+      <window_info anchor="bottom" id="Docker" order="9" sideWeight="0.5290667" visible="true" weight="0.38611713" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.47093335" side_tool="true" weight="0.3470716" />
       <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49866667" weight="0.36225596" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.329718" />
       <window_info anchor="bottom" id="Database Changes" order="13" weight="0.329718" />
-      <window_info anchor="bottom" id="Version Control" order="14" weight="0.22451194" />
-      <window_info active="true" anchor="bottom" id="Run Dashboard" order="15" sideWeight="0.6016" visible="true" weight="0.47505423" />
+      <window_info anchor="bottom" id="Version Control" order="14" weight="0.42407808" />
+      <window_info anchor="bottom" id="Run Dashboard" order="15" sideWeight="0.6016" weight="0.47505423" />
       <window_info anchor="bottom" id="Alibaba Cloud View" order="16" sideWeight="0.5557333" weight="0.31453362" />
       <window_info anchor="bottom" id="Database Console" order="17" weight="0.329718" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -713,7 +560,8 @@
     <MESSAGE value="日常更新" />
     <MESSAGE value="保存Idea的默认配置" />
     <MESSAGE value="添加了JustAuth支持，进行了一个简单地登陆请求" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加了JustAuth支持，进行了一个简单地登陆请求" />
+    <MESSAGE value="添加了configserver&#10;添加了Feign支持&#10;添加了Zuul支持" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加了configserver&#10;添加了Feign支持&#10;添加了Zuul支持" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1084,27 +932,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/ZhangliFeignClientApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/remote/MyFeignFallBack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/zhangli-config-git/src/main/resources/bootstrap.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
@@ -1124,13 +951,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-zuul-gateway/src/main/resources/bootstrap.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="29" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/zhangli-zuul-gateway/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
@@ -1145,20 +965,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-zuul-gateway/src/main/resources/bootstrap.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="29" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/ZhangliFeignClientApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/remote/RemoteHello.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" column="39" lean-forward="true" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+        <state relative-caret-position="133">
+          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/remote/MyFeignFallBack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/AuthController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="72" column="16" selection-start-line="72" selection-start-column="16" selection-end-line="72" selection-end-column="16" />
+        <state relative-caret-position="152">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
