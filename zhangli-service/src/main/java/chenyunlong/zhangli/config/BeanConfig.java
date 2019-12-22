@@ -15,12 +15,6 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfig {
 
     @Bean
-    @ConfigurationProperties(prefix = "zhangli")
-    public FileConfigurationProperties getFileConfigurationProperties() {
-        return new FileConfigurationProperties();
-    }
-
-    @Bean
     public ObjectMapper getObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
 

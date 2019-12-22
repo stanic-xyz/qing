@@ -9,5 +9,4 @@ public class FileConfigurationProperties {
 
     private String imageServerUrl;
     private String baseUploadDir;
-
 }
