@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // 统一配置
 let GLOABLE_REQUEST = axios.create({
-  baseURL: 'http://127.0.0.1:5432/',
+  baseURL: 'http://localhost:8080/',
   responseType: 'json',
   validateStatus (status) {
     // 200 外的状态码都认定为失败

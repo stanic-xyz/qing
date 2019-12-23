@@ -1,13 +1,10 @@
 <template>
   <div>
-这里是默认登陆页面内
-{{name}}
-<Button @click="test">这是button</Button>
+    <el-button type="success">这是按钮</el-button>
   </div>
 </template>
 
 <script>
-import { Button } from 'vant'
 import request from '@/utils/request.js'
 
 export default {
@@ -16,20 +13,16 @@ export default {
       name: 'thisi name'
     }
   },
-  components: {
-    Button
-  },
+  components: {},
   methods: {
     test: function () {
       console.log('this is test File')
       console.log(request)
-      request.get('/test', {'test': 'test1'})
+      request.get('/test', { test: 'test1' })
     }
-
   }
 }
 </script>
 
 <style>
-
 </style>

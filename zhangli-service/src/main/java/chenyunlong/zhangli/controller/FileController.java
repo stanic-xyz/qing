@@ -1,7 +1,6 @@
 package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.annotation.Log;
-import chenyunlong.zhangli.config.FileConfigurationProperties;
 import chenyunlong.zhangli.entities.UploadFile;
 import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.FileUploadService;

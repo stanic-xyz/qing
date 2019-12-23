@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="275a8425-6d70-4339-aa19-99ddbcb732aa" name="Default Changelist" comment="">
+    <list default="true" id="275a8425-6d70-4339-aa19-99ddbcb732aa" name="Default Changelist" comment="添加了configserver&#10;添加了Feign支持&#10;添加了Zuul支持">
+      <change afterPath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/DateUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/EncryptUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/zhangli-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/zhangli/.babelrc" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/zhangli/.babelrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/zhangli/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/zhangli/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/zhangli/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/zhangli/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/zhangli/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/zhangli/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/zhangli/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/zhangli/src/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/zhangli/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/zhangli/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/zhangli/src/utils/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/zhangli/src/utils/request.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/zhangli/src/views/login/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/zhangli/src/views/login/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/aspect/LogAspect.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/aspect/LogAspect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/common/DeferredResultResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/DeferredResultResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/AsynController.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/AsynController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/FileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/service/DeferredResultService.java" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/service/DeferredResultService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhangli-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-service/src/main/resources/applicatn.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zhangli-service/src/main/resources/bootstrap.properties" beforeDir="false" afterPath="$PROJECT_DIR$/zhangli-service/src/main/resources/bootstrap.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/zhangli-service/target/" />
@@ -44,19 +61,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/application.properties">
+        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/application.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/config/SwaggerConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-57">
-              <caret line="12" column="57" selection-start-line="12" selection-start-column="57" selection-end-line="12" selection-end-column="57" />
+            <state relative-caret-position="500">
+              <caret line="41" column="29" lean-forward="true" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -64,8 +72,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/aspect/LogAspect.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="24" column="60" selection-start-line="24" selection-start-column="60" selection-end-line="24" selection-end-column="60" />
+            <state relative-caret-position="240">
+              <caret line="36" column="74" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="74" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -74,22 +82,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/annotation/Log.java">
+        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/properties/ZhangliProperties.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="9" column="21" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="21" />
+            <state relative-caret-position="304">
+              <caret line="16" column="45" lean-forward="true" selection-start-line="16" selection-start-column="45" selection-end-line="16" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/FileController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="33" selection-start-line="33" selection-end-line="33" />
             </state>
           </provider>
         </entry>
@@ -103,35 +102,56 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/validator/CronValidator.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/IPUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/config/FileConfigurationProperties.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="190">
-              <caret line="10" column="3" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/annotation/IsCron.java">
+        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/DeferredResultResponse.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="304">
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/HttpContextUtil.java">
+        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/interceptor/AuthInterceptor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="13" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="-247">
+              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/interceptor/JwtFilter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="304">
+              <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/FileController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-95">
+              <caret line="60" column="51" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -160,14 +180,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/zhangli-service/src/test/java/chenyunlong/zhangli/controller/FileControllerTest.java" />
-        <option value="$PROJECT_DIR$/zhangli-service/src/test/java/chenyunlong/zhangli/utils/BaseResponseTest.java" />
-        <option value="$PROJECT_DIR$/zhangli-eureka-service/pom.xml" />
-        <option value="$PROJECT_DIR$/zhangli-config-git/pom.xml" />
-        <option value="$PROJECT_DIR$/zhangli-feign-client/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/zhangli-config-git/src/main/java/chenyunlong/zhangli/ZhangliConfigServer.java" />
-        <option value="$PROJECT_DIR$/zhangli-service/src/main/resources/bootstrap.properties" />
-        <option value="$PROJECT_DIR$/zhangli-zuul-gateway/src/main/resources/bootstrap.properties" />
         <option value="$PROJECT_DIR$/zhangli-zuul-gateway/src/main/java/chenyunlong/zhangli/gateway/HealthIndicator.java" />
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/AsynController.java" />
         <option value="$PROJECT_DIR$/zhangli-feign-client/src/main/resources/bootstrap.properties" />
@@ -186,7 +198,6 @@
         <option value="$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/ZhangliFeignClientApplication.java" />
         <option value="$PROJECT_DIR$/zhangli-feign-client/src/main/java/chenyunlong/zhangli/remote/MyFeignFallBack.java" />
         <option value="$PROJECT_DIR$/zhangli-eureka-service/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/zhangli-eureka-service/src/main/resources/bootstrap.properties" />
         <option value="$PROJECT_DIR$/zhangli-config-git/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/zhangli-config-git/src/main/resources/bootstrap.properties" />
         <option value="$PROJECT_DIR$/zhangli-zuul-gateway/src/main/java/chenyunlong/zhangli/gateway/ZhangliZuulClientApplication9001.java" />
@@ -200,10 +211,8 @@
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/config/FileConfigurationProperties.java" />
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/config/SwaggerConfig.java" />
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/properties/ZhangliProperties.java" />
-        <option value="$PROJECT_DIR$/zhangli-service/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/HttpContextUtil.java" />
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/IPUtil.java" />
-        <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/aspect/LogAspect.java" />
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/FileController.java" />
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/MD5Util.java" />
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/SpringContextUtil.java" />
@@ -211,6 +220,17 @@
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/annotation/IsCron.java" />
         <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/validator/CronValidator.java" />
         <option value="$PROJECT_DIR$/zhangli-service/pom.xml" />
+        <option value="$PROJECT_DIR$/zhangli-eureka-service/src/main/resources/bootstrap.properties" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/resources/bootstrap.properties" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/resources/application.ymal" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/resources/applicatn.properties" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/aspect/LogAspect.java" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/converter/TimeConverter.java" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/DateUtil.java" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/EncryptUtil.java" />
+        <option value="$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/DeferredResultResponse.java" />
       </list>
     </option>
   </component>
@@ -229,7 +249,12 @@
   </component>
   <component name="MavenProjectNavigator">
     <treeState>
-      <expand />
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="zhangli-service" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+      </expand>
       <select />
     </treeState>
   </component>
@@ -262,7 +287,47 @@
             <path>
               <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
               <item name="zhangli" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
+              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
+              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
+              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
+              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zhangli" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
+              <item name="zhangli-service" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="zhangli" type="462c0819:PsiDirectoryNode" />
+              <item name="interceptor" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -280,7 +345,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577007823031" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577022932325" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="Arquillian JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
     <property name="database.console.LAST_STATE" value="false" />
@@ -299,19 +364,14 @@
       <recent name="chenyunlong.zhangli.utils" />
       <recent name="chenyunlong.zhangli.controller" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="chenyunlong.zhangli.properties" />
-      <recent name="chenyunlong.zhangli.remote" />
-      <recent name="chenyunlong.zhangli.entities" />
-      <recent name="chenyunlong.zhangli.config" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="chenyunlong.zhangli.annotation" />
-      <recent name="chenyunlong.zhangli.validator" />
-      <recent name="chenyunlong.zhangli.utils" />
-    </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\gitee\java\zhangli\zhangli-service\src\main\resources" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="chenyunlong.zhangli" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="H:\IdeaProjects\zhangli\zhangli-zuul-gateway\src\main\resources" />
@@ -319,6 +379,18 @@
       <recent name="H:\IdeaProjects\zhangli\zhangli-feign-client\src\main\resources" />
       <recent name="H:\IdeaProjects\zhangli\zhangli-eureka-service\src\main\resources" />
       <recent name="H:\IdeaProjects\zhangli\zhangli-config-git\src\main\resources" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="chenyunlong.zhangli.utils" />
+      <recent name="chenyunlong.zhangli.converter" />
+      <recent name="chenyunlong.zhangli.annotation" />
+      <recent name="chenyunlong.zhangli.validator" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="chenyunlong.zhangli.properties" />
+      <recent name="chenyunlong.zhangli.remote" />
+      <recent name="chenyunlong.zhangli.entities" />
+      <recent name="chenyunlong.zhangli.config" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -486,6 +558,8 @@
       <workItem from="1576770799969" duration="7000" />
       <workItem from="1576772884098" duration="1992000" />
       <workItem from="1576941761714" duration="9830000" />
+      <workItem from="1577011949024" duration="1538000" />
+      <workItem from="1577017770928" duration="4965000" />
     </task>
     <task id="LOCAL-00001" summary="日常更新">
       <created>1567178579104</created>
@@ -555,7 +629,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="132956000" />
+    <option name="totallyTimeSpent" value="139459000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -567,15 +641,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.66114455" visible="true" weight="0.16106667" />
-      <window_info id="Structure" order="1" sideWeight="0.33885542" side_tool="true" visible="true" weight="0.16106667" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.78668684" visible="true" weight="0.16533333" />
+      <window_info id="Structure" order="1" sideWeight="0.21331316" side_tool="true" visible="true" weight="0.16533333" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="UI Designer" order="5" />
-      <window_info id="Favorites" order="6" sideWeight="0.3444056" side_tool="true" weight="0.18026666" />
+      <window_info id="Favorites" order="6" sideWeight="0.34204274" side_tool="true" weight="0.16373333" />
       <window_info id="Web" order="7" sideWeight="0.3444056" side_tool="true" weight="0.18026666" />
       <window_info id="Alibaba Cloud Explorer" order="8" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -586,20 +660,20 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49924356" weight="0.3295082" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.329718" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.27982646" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.2635575" />
       <window_info anchor="bottom" id="Docker" order="9" sideWeight="0.5290667" weight="0.30585682" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.47093335" side_tool="true" weight="0.3470716" />
       <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49866667" weight="0.36225596" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.329718" />
       <window_info anchor="bottom" id="Database Changes" order="13" weight="0.329718" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.35249457" />
-      <window_info anchor="bottom" id="Run Dashboard" order="15" sideWeight="0.6016" weight="0.36008677" />
+      <window_info anchor="bottom" id="Run Dashboard" order="15" sideWeight="0.6016" visible="true" weight="0.28308025" />
       <window_info anchor="bottom" id="Alibaba Cloud View" order="16" sideWeight="0.5557333" weight="0.31453362" />
       <window_info anchor="bottom" id="Database Console" order="17" weight="0.329718" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.2496" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Maven" order="3" visible="true" weight="0.26773334" />
+      <window_info anchor="right" id="Maven" order="3" weight="0.19253333" />
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="right" id="Database" order="6" weight="0.12693334" />
@@ -718,108 +792,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/zhangli-zuul-gateway/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="19" selection-start-line="15" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-feign-client/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="18" column="21" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/github/openfeign/feign-core/10.2.3/feign-core-10.2.3.jar!/feign/ReflectiveFeign.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="339" selection-start-line="339" selection-end-line="339" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.1.9.RELEASE/spring-web-5.1.9.RELEASE.jar!/org/springframework/web/method/support/InvocableHandlerMethod.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="109" selection-start-line="109" selection-end-line="109" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/5.1.9.RELEASE/spring-webmvc-5.1.9.RELEASE.jar!/org/springframework/web/servlet/mvc/method/annotation/RequestMappingHandlerAdapter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="519" column="27" selection-start-line="519" selection-start-column="27" selection-end-line="519" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/5.1.9.RELEASE/spring-webmvc-5.1.9.RELEASE.jar!/org/springframework/web/servlet/DispatcherServlet.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="392" column="19" selection-start-line="392" selection-start-column="19" selection-end-line="392" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-actuator/2.1.7.RELEASE/spring-boot-actuator-2.1.7.RELEASE.jar!/org/springframework/boot/actuate/web/trace/servlet/HttpTraceFilter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="58" selection-start-line="58" selection-end-line="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.1.9.RELEASE/spring-web-5.1.9.RELEASE.jar!/org/springframework/web/filter/RequestContextFilter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="41" selection-start-line="41" selection-end-line="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/5.1.9.RELEASE/spring-web-5.1.9.RELEASE.jar!/org/springframework/web/filter/OncePerRequestFilter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="43" selection-start-line="43" selection-end-line="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/9.0.22/tomcat-embed-core-9.0.22.jar!/org/apache/catalina/core/ApplicationFilterChain.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="95" selection-start-line="95" selection-end-line="95" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/5.1.9.RELEASE/spring-webmvc-5.1.9.RELEASE.jar!/org/springframework/web/servlet/FrameworkServlet.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="503" selection-start-line="503" selection-end-line="503" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/cloud/spring-cloud-openfeign-core/2.1.2.RELEASE/spring-cloud-openfeign-core-2.1.2.RELEASE.jar!/org/springframework/cloud/openfeign/FeignClient.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="38" column="19" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/github/openfeign/feign-core/10.2.3/feign-core-10.2.3.jar!/feign/FeignException.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="76" selection-start-line="76" selection-end-line="76" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/zhangli-eureka-service/src/main/java/chenyunlong/zhangli/ZhangliEurekaServiceApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-eureka-service/src/main/resources/bootstrap.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="6" column="44" selection-start-line="6" selection-start-column="44" selection-end-line="6" selection-end-column="44" />
         </state>
       </provider>
     </entry>
@@ -926,13 +902,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/ZhangliApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/properties/ShiroProperties.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -940,31 +909,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/META-INF/additional-spring-configuration-metadata.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/properties/SwaggerProperties.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/META-INF/additional-spring-configuration-metadata.json" />
     <entry file="jar://$MAVEN_REPOSITORY$/io/springfox/springfox-core/2.5.0/springfox-core-2.5.0.jar!/springfox/documentation/service/ApiInfo.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="316">
           <caret line="21" column="84" selection-start-line="21" selection-start-column="73" selection-end-line="21" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/bootstrap.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="59" lean-forward="true" selection-start-line="2" selection-start-column="59" selection-end-line="2" selection-end-column="59" />
         </state>
       </provider>
     </entry>
@@ -975,64 +924,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/properties/ZhangliProperties.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/config/FileConfigurationProperties.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/config/SwaggerConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-57">
-          <caret line="12" column="57" selection-start-line="12" selection-start-column="57" selection-end-line="12" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/HttpContextUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/IPUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/aspect/LogAspect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="24" column="60" selection-start-line="24" selection-start-column="60" selection-end-line="24" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/MD5Util.java" />
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/TreeUtil.java" />
     <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/annotation/Log.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
+        <state relative-caret-position="114">
           <caret line="9" column="21" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1040,31 +936,170 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/MD5Util.java">
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/validator/CronValidator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/FileController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="33" selection-start-line="33" selection-end-line="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/TreeUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="25" column="46" lean-forward="true" selection-start-line="25" selection-start-column="46" selection-end-line="25" selection-end-column="46" />
+        <state relative-caret-position="76">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/annotation/IsCron.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
+        <state relative-caret-position="133">
           <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-actuator/2.1.7.RELEASE/spring-boot-starter-actuator-2.1.7.RELEASE.pom">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-eureka-service/src/main/resources/bootstrap.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="45" selection-start-line="14" selection-start-column="45" selection-end-line="14" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/util/LinkedHashSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="152" column="11" selection-start-line="152" selection-start-column="11" selection-end-line="152" selection-end-column="11" />
+          <folding>
+            <element signature="e#6162#6163#0" expanded="true" />
+            <element signature="e#6199#6200#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-actuator-autoconfigure/2.1.7.RELEASE/spring-boot-actuator-autoconfigure-2.1.7.RELEASE.jar!/org/springframework/boot/actuate/autoconfigure/endpoint/web/WebEndpointProperties.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#1810#1811#0" expanded="true" />
+            <element signature="e#1856#1857#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="49" column="55" selection-start-line="49" selection-start-column="55" selection-end-line="49" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/bootstrap.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/io/springfox/springfox-spi/2.5.0/springfox-spi-2.5.0.jar!/springfox/documentation/spi/service/contexts/ApiSelector.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="16" column="44" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
+          <folding>
+            <element signature="e#1152#1153#0" expanded="true" />
+            <element signature="e#1202#1203#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/io/springfox/springfox-spring-web/2.5.0/springfox-spring-web-2.5.0.jar!/springfox/documentation/spring/web/plugins/ApiSelectorBuilder.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="20" column="25" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/config/SwaggerConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="53" lean-forward="true" selection-start-line="11" selection-start-column="53" selection-end-line="11" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/properties/SwaggerProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/applicatn.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="73" lean-forward="true" selection-start-line="7" selection-start-column="73" selection-end-line="7" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/ZhangliApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/properties/ZhangliProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="16" column="45" lean-forward="true" selection-start-line="16" selection-start-column="45" selection-end-line="16" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="41" column="29" lean-forward="true" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/controller/FileController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-95">
+          <caret line="60" column="51" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/converter/TimeConverter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="3" column="45" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/EncryptUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/DateUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="10" column="8" lean-forward="true" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/aspect/LogAspect.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="36" column="74" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="74" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1078,20 +1113,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/pom.xml">
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/IPUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="16" column="41" lean-forward="true" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
+        <state relative-caret-position="76">
+          <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/validator/CronValidator.java">
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/utils/HttpContextUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="15" column="86" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/config/FileConfigurationProperties.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
-          <caret line="10" column="3" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/DeferredResultResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/interceptor/AuthInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-247">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zhangli-service/src/main/java/chenyunlong/zhangli/interceptor/JwtFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
         </state>
       </provider>
     </entry>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import HomePage from '@/views/HomePage'
 import LoginView from '@/views/login/login'
 import db from '@/utils/localstorage'
 
@@ -20,7 +20,7 @@ let constRouter = [
   {
     path: '/',
     name: '首页',
-    component: HelloWorld
+    component: HomePage
   }
 ]
 let router = new Router({

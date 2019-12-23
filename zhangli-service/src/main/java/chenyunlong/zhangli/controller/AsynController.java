@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.controller;
 
 
-import chenyunlong.zhangli.common.DeferredResultResponse;
+import chenyunlong.zhangli.DeferredResultResponse;
 import chenyunlong.zhangli.service.DeferredResultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

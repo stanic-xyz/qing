@@ -3,7 +3,6 @@ package chenyunlong.zhangli.aspect;
 import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.utils.HttpContextUtil;
 import chenyunlong.zhangli.utils.IPUtil;
-import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -42,7 +41,7 @@ public class LogAspect {
         long time = System.currentTimeMillis() - beginTime;
         if (zhangliProperties.isOpenAopLog()) {
             // 保存日志
-            log.debug(time + "");
+            log.debug(ip + "" + time + "!");
         }
         return result;
     }
