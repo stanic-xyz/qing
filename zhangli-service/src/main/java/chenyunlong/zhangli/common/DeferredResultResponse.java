@@ -1,4 +1,4 @@
-package chenyunlong.zhangli;
+package chenyunlong.zhangli.common;
 
 import lombok.Data;
 import lombok.Getter;

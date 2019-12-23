@@ -1,28 +1,6 @@
 <template>
-  <div>
-    <el-button type="success">这是按钮</el-button>
-  </div>
+<div>这里是登陆页面</div>
 </template>
-
 <script>
-import request from '@/utils/request.js'
-
-export default {
-  data () {
-    return {
-      name: 'thisi name'
-    }
-  },
-  components: {},
-  methods: {
-    test: function () {
-      console.log('this is test File')
-      console.log(request)
-      request.get('/test', { test: 'test1' })
-    }
-  }
-}
+export default {}
 </script>
-
-<style>
-</style>
