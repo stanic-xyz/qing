@@ -1,7 +1,8 @@
-package chenyunlong.zhangli.interceptor;
+package chenyunlong.zhangli.anthentication;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -11,16 +12,26 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+@Component
 public class JwtFilter extends GenericFilterBean {
+
+    private static final String TOKEN = "Authorization";
+
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        String jwtToken = req.getHeader("authorization");
+        String jwtToken = req.getHeader(TOKEN);
         System.out.println(jwtToken);
-        Claims claims = Jwts.parser().setSigningKey("sang@123").parseClaimsJws(jwtToken.replace("Bearer", ""))
-                .getBody();
-        String username = claims.getSubject();//获取当前登录用户名
-
+        if (jwtToken != null) {
+            try {
+                Claims claims = Jwts.parser().setSigningKey("sang@123").parseClaimsJws(jwtToken.replace("Bearer", ""))
+                        .getBody();
+                String username = claims.getSubject();//获取当前登录用户名
+            }catch (Exception exp){
+                System.out.println("token无效！");
+            }
+        }
         filterChain.doFilter(req, servletResponse);
     }
 }
