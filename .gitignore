@@ -1,3 +1,4 @@
-*.class
-target
+target/
 .idea/
+/out/
+.idea/workspace.xml
