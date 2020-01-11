@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.interceptor;
+package chenyunlong.zhangli.anthentication;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

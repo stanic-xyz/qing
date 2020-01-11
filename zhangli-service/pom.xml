@@ -16,6 +16,11 @@
             <artifactId>JustAuth</artifactId>
             <version>1.6.0-beta</version>
         </dependency>
+        <!--监控-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <!--配置Eureka服务-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -52,6 +57,11 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.3.2</version>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>

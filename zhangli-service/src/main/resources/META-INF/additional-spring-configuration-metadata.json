@@ -1,9 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "zhangli.baseUploadDir",
-      "type": "java.lang.String",
-      "description": "Description for zhangli.baseUploadDir."
-    }
-  ]
-}

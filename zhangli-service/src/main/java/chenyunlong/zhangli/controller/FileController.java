@@ -1,7 +1,8 @@
 package chenyunlong.zhangli.controller;
 
-import chenyunlong.zhangli.config.FileConfigurationProperties;
+import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.UploadFile;
+import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.FileUploadService;
 import chenyunlong.zhangli.utils.BaseResponse;
 import io.swagger.annotations.Api;
@@ -27,12 +28,12 @@ import java.util.UUID;
 @RequestMapping("file")
 public class FileController {
 
-    private final FileConfigurationProperties fileConfigurationProperties;
-    private final FileUploadService fileUploadService;
+    private ZhangliProperties zhangliProperties;
+    private FileUploadService fileUploadService;
 
     @Autowired
-    public FileController(FileConfigurationProperties fileConfigurationProperties, FileUploadService fileUploadService) {
-        this.fileConfigurationProperties = fileConfigurationProperties;
+    public FileController(ZhangliProperties zhangliProperties, FileUploadService fileUploadService) {
+        this.zhangliProperties = zhangliProperties;
         this.fileUploadService = fileUploadService;
     }
 
@@ -43,6 +44,7 @@ public class FileController {
      * @return
      * @throws IOException
      */
+    @Log
     @ApiOperation(value = "上传文件", notes = "上传文件")
     @PostMapping("upload")
     public BaseResponse uploadFile(@RequestParam MultipartFile multipartFile) throws IOException {
@@ -58,7 +60,7 @@ public class FileController {
             String randomUUID = UUID.randomUUID().toString();
             String fileName = filePath + randomUUID + originalFilename.substring(originalFilename.lastIndexOf('.'), originalFilename.length());
 
-            String baseUploadDir = fileConfigurationProperties.getBaseUploadDir();
+            String baseUploadDir = zhangliProperties.getFile().getBaseUploadDir();
 
             File file = new File(baseUploadDir + filePath);
             if (!file.exists()) {
@@ -80,7 +82,7 @@ public class FileController {
 
 
             uploadFile.setFileName(multipartFile.getOriginalFilename());
-            uploadFile.setUrl(fileConfigurationProperties.getImageServerUrl() + fileName);
+            uploadFile.setUrl(zhangliProperties.getFile().getImageServerUrl() + fileName);
             uploadFile.setFileSize(multipartFile.getSize());
             uploadFile.setMimeType(multipartFile.getContentType());
 
