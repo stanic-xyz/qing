@@ -29,7 +29,7 @@ pipeline {
         }
         stage('FinalTest'){
             steps{
-                sh 'echo "this is test"'
+                sh 'echo "FinalTest"'
             }
         }
     }
