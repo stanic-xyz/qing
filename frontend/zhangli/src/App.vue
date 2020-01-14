@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import request from './utils/request'
 export default {
   name: 'App',
   data () {
@@ -41,8 +42,12 @@ export default {
       activeIndex2: '1'
     }
   },
+  created: {
+
+  },
   methods: {
     handleSelect (key, keyPath) {
+      request.get('authrize/login', {token: 'this is home'})
       console.log(key, keyPath)
     }
   }
