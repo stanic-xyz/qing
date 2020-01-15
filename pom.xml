@@ -77,15 +77,14 @@
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-          <id>maven-net-cn</id>
-          <name>Maven China Mirror</name>
-          <url>http://maven.net.cn/content/groups/public/</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>    
+            <id>aliyun-plugin</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 
