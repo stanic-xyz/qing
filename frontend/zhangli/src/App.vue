@@ -42,12 +42,11 @@ export default {
       activeIndex2: '1'
     }
   },
-  created: {
-
-  },
+  created: {},
   methods: {
     handleSelect (key, keyPath) {
-      request.get('authrize/login', {token: 'this is home'})
+      // request.get('authrize/login', {token: 'this is home'})
+      console.log(request)
       console.log(key, keyPath)
     }
   }
