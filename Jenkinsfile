@@ -5,13 +5,23 @@ pipeline {
             args '-v /root/.m2:/root/.m2' 
         }
     }
+    environment {
+        ENTERPRISE = "stanics"
+        PROJECT = "zhangli"
+        ARTIFACT = "zhangli"
+        CODE_DEPOT = "zhangli"
+        TAG_NAME = "0.0.1"
+
+        ARTIFACT_BASE = "${ENTERPRISE}-docker.pkg.coding.net"
+        ARTIFACT_IMAGE="${ARTIFACT_BASE}/${PROJECT}/${ARTIFACT}/${CODE_DEPOT}"
+    }
     stages {
-        stage('Build') { 
+        stage('编译') { 
             steps {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
-        // stage('Test') { 
+        // stage('测试') { 
         //     steps {
         //         sh 'mvn test' 
         //     }
@@ -21,16 +31,19 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Deliver') {
+        stage('打包镜像,并推送到制品库') {
             steps {
-                sh 'chmod +x ./jenkins/scripts/deliver.sh'
-                sh './jenkins/scripts/deliver.sh'
-            }
+                sh "docker build -t ${ARTIFACT_IMAGE}:${TAG_NAME} ."
+                sh "docker push ${ARTIFACT_IMAGE}:${TAG_NAME}"
+                sh "docker tag ${ARTIFACT_IMAGE}:${TAG_NAME} ${ARTIFACT_IMAGE}:latest"
+                sh "docker push ${ARTIFACT_IMAGE}:latest"
+              }
         }
-        stage('FinalTest'){
-            steps{
-                sh 'echo "FinalTest"'
-            }
-        }
+        // stage('推送到制品库') {
+        //     steps {
+        //         sh 'chmod +x ./jenkins/scripts/deliver.sh'
+        //         sh './jenkins/scripts/deliver.sh'
+        //     }
+        // }
     }
 }
