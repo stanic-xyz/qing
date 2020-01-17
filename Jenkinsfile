@@ -12,8 +12,8 @@ pipeline {
         CODE_DEPOT = "zhangli"
         TAG_NAME = "0.0.1"
 
-        ARTIFACT_BASE = "${ENTERPRISE}-docker.pkg.coding.net"
-        ARTIFACT_IMAGE="${ARTIFACT_BASE}/${PROJECT}/${ARTIFACT}/${CODE_DEPOT}"
+        ARTIFACT_BASE = "${ENTERPRISE}"
+        ARTIFACT_IMAGE="${ARTIFACT_BASE}/${PROJECT}"
     }
     stages {
         stage('编译') { 
@@ -33,10 +33,10 @@ pipeline {
         // }
         stage('打包镜像,并推送到制品库') {
             steps {
-                sh "docker build -t ${ARTIFACT_IMAGE}:${TAG_NAME} ."
-                sh "docker push ${ARTIFACT_IMAGE}:${TAG_NAME}"
-                sh "docker tag ${ARTIFACT_IMAGE}:${TAG_NAME} ${ARTIFACT_IMAGE}:latest"
-                sh "docker push ${ARTIFACT_IMAGE}:latest"
+                sh "echo docker build -t ${ARTIFACT_IMAGE}:${TAG_NAME} ."
+                sh "echo docker push ${ARTIFACT_IMAGE}:${TAG_NAME}"
+                sh "echo docker tag ${ARTIFACT_IMAGE}:${TAG_NAME} ${ARTIFACT_IMAGE}:latest"
+                sh "echo docker push ${ARTIFACT_IMAGE}:latest"
               }
         }
         // stage('推送到制品库') {
