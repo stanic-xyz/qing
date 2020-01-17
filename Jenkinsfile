@@ -9,7 +9,7 @@ pipeline {
         stage('打包镜像,并推送到制品库') {
             steps {
                 sh "chmod +x ./deliver.sh"
-                sh "./delever.sh ."
+                sh "./deliver.sh ."
               }
         }
     }
