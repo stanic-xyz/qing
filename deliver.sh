@@ -1,6 +1,6 @@
 echo "开始构建了"
 
-docker login
+docker login --username=stanics hub.docker.com -p 4745701816Long
 docker build -t stanics/zhangli:0.1 .
 docker push stanics/zhangli:0.1
 docker tag stanics/zhangli:0.1 stanics/zhangli:0.1:latest
