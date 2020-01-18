@@ -9,6 +9,8 @@ let GLOABLE_REQUEST = axios.create({
     return status === 200
   }
 })
+
+
 const request = {
 
   get (url, params) {
@@ -25,6 +27,21 @@ const request = {
       }
     }
     return GLOABLE_REQUEST.get(`${url}${_params}`)
+  },
+  post(url,params){
+
+    let _params
+    console.log(params)
+    if (Object.is(params,undefined)){
+      _params=''
+    } else {
+      for (let key in params) {
+        if (params.hasOwnProperty(key)&&params[key]!=null){
+        }
+      }
+    }
+
+    return GLOABLE_REQUEST.post(url,params)
   }
 }
 export default request
