@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.service;
 
+import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.entities.UserInfo;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @email 1529949535@qq.com
  */
 public interface UserService {
-    List<UserInfo> findAll();
+    List<User> findAll();
 
-    UserInfo addUserInfo(UserInfo userInfo);
+    UserInfo findUserByUserId(String userId);
 }

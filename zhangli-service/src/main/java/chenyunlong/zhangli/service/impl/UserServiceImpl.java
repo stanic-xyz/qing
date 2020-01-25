@@ -1,12 +1,15 @@
 package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.dao.UserDAO;
+import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.entities.UserInfo;
 import chenyunlong.zhangli.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author zhuzhe
@@ -23,15 +26,20 @@ public class UserServiceImpl implements UserService {
         this.userDAO = userDAO;
     }
 
+
     @Override
-    public List<UserInfo> findAll() {
-        // 这里我们就可以直接使用 findAll 方法
-        return userDAO.findAll();
+    public UserInfo findUserByUserId(String userId) {
+
+        UserInfo userInfo = new UserInfo();
+
+        Example<UserInfo> example = Example.of(userInfo);
+        Optional<UserInfo> userInfo1 = userDAO.findOne(example);
+        return userInfo1.orElse(null);
     }
 
     @Override
-    public UserInfo addUserInfo(UserInfo userInfo) {
-        return userDAO.save(userInfo);
+    public int insertUserInfo(UserInfo userInfo) {
+        return 0;
     }
 
 }
