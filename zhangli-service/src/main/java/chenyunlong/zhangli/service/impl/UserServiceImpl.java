@@ -2,7 +2,6 @@ package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.dao.UserDAO;
 import chenyunlong.zhangli.entities.User;
-import chenyunlong.zhangli.entities.UserInfo;
 import chenyunlong.zhangli.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -12,14 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author zhuzhe
+ * @author stan
  * @date 2018/6/3 23:38
- * @email 1529949535@qq.com
  */
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserDAO userDAO;
+    private UserDAO userDAO;
 
     @Autowired
     public UserServiceImpl(UserDAO userDAO) {
@@ -42,4 +40,16 @@ public class UserServiceImpl implements UserService {
         return 0;
     }
 
+
+    @Override
+    public User login(User user) {
+        if (user == null) {
+            return null;
+        }
+
+        Example<User> example = Example.of(user);
+
+        Optional<User> loginUser = userDAO.findOne(example);
+        return loginUser.orElse(null);
+    }
 }

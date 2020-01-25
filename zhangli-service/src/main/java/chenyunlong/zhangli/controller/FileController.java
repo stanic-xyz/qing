@@ -58,6 +58,7 @@ public class FileController {
             String filePath = LocalDate.now().toString();
 
             String randomUUID = UUID.randomUUID().toString();
+            assert originalFilename != null;
             String fileName = filePath + randomUUID + originalFilename.substring(originalFilename.lastIndexOf('.'), originalFilename.length());
 
             String baseUploadDir = zhangliProperties.getFile().getBaseUploadDir();
@@ -66,8 +67,6 @@ public class FileController {
             if (!file.exists()) {
                 boolean mkdirs = file.mkdirs();
             }
-
-            assert originalFilename != null;
             File file1 = new File(file, fileName);
             InputStream fileInputStream = multipartFile.getInputStream();
             FileOutputStream fileOutputStream = new FileOutputStream(file1);

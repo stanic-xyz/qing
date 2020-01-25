@@ -1,6 +1,8 @@
 package chenyunlong.zhangli.entities;
 
+import com.sun.tracing.dtrace.ArgsAttributes;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -20,4 +23,9 @@ public class User {
     private String phone;
     @Column(length = 30)
     private String openId;
+
+    public User(String userName, String password) {
+        this.username = userName;
+        this.password = password;
+    }
 }

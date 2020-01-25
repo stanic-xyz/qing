@@ -26,7 +26,7 @@ public class WechatContentController {
     }
 
 
-    @ApiOperation(value = "获取威信列表", notes = "获取威信列表")
+    @ApiOperation(value = "获取微信列表", notes = "获取微信列表")
     @GetMapping("list")
     public List<WechatContent> list() {
         return wechatContentService.getAllWechatContents();

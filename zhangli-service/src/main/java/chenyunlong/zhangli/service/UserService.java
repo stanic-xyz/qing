@@ -1,17 +1,35 @@
 package chenyunlong.zhangli.service;
 
 import chenyunlong.zhangli.entities.User;
-import chenyunlong.zhangli.entities.UserInfo;
 
 import java.util.List;
 
 /**
- * @author zhuzhe
+ * @author stan
  * @date 2018/6/3 23:38
  * @email 1529949535@qq.com
  */
 public interface UserService {
-    List<User> findAll();
+
 
     UserInfo findUserByUserId(String userId);
+
+
+    List<User> findAll();
+
+    /**
+     * 添加用户信息，注册
+     *
+     * @param userInfo 用户信息
+     * @return
+     */
+    User register(User userInfo);
+
+    /**
+     * 登陆
+     *
+     * @param user
+     * @return
+     */
+    User login(User user);
 }

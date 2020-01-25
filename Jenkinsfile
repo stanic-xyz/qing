@@ -1,21 +1,16 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine' 
-            args '-v /root/.m2:/root/.m2' 
-        }
-    }
+    agent any
     stages {
-        stage('Build') { 
+        // stage('编译') { 
+        //     steps {
+        //         sh "mvn -B -DskipTests clean package"
+        //     }
+        // }
+        stage('打包镜像,并推送到制品库') {
             steps {
-                sh 'mvn -B -DskipTests clean package' 
-            }
-        }
-        
-        stage('FinalTest'){
-            steps{
-                sh 'echo "this is test"'
-            }
+                sh "chmod +x ./deliver.sh"
+                sh "./deliver.sh ."
+              }
         }
     }
 }

@@ -1,9 +1,16 @@
 package chenyunlong.zhangli.controller;
 
+import chenyunlong.zhangli.annotation.Log;
+import chenyunlong.zhangli.entities.User;
+import chenyunlong.zhangli.entities.UserInfo;
+import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.discovery.converters.Auto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.netty.util.internal.StringUtil;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
@@ -25,9 +32,10 @@ public class AuthController {
     private AuthGithubRequest authRequest;
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("auth")
     public String login(
@@ -37,6 +45,35 @@ public class AuthController {
         return "登陆状态";
     }
 
+    /**
+     * 表单登陆接口
+     *
+     * @param userName 用户名
+     * @param password 密码
+     * @return
+     */
+    @Log("通过表单登陆")
+    @ApiOperation("通过表单登陆")
+    @PostMapping("formLogin")
+    public String formLofin(@RequestParam String userName, @RequestParam String password) {
+
+        if (StringUtil.isNullOrEmpty(userName)) {
+            return "username required";
+        }
+        if (StringUtil.isNullOrEmpty(password)) {
+            return "password required";
+        }
+        User user = new User(userName, password);
+
+        User userInfo = userService.login(user);
+        return String.valueOf(userInfo);
+    }
+
+    /**
+     * 跳转到登陆表单
+     *
+     * @return
+     */
     @GetMapping("login")
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
