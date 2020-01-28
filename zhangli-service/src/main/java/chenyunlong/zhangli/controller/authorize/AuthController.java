@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.controller;
+package chenyunlong.zhangli.controller.authorize;
 
 import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.User;

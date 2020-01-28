@@ -28,7 +28,7 @@ spring:
     url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
   redis:
     database: 0
@@ -37,6 +37,13 @@ spring:
   servlet:
     multipart:
       max-file-size: 4MB
+      max-request-size: 10MB
+  mail:
+    host: smtp.qq.com
+    username: 1576302867@qq.com
+    password: lqisqghnzqaqidbh
+
+
 zhangli:
   file:
     baseUploadDir: G:/upload/

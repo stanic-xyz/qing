@@ -26,18 +26,23 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserInfo findUserByUserId(String userId) {
+    public User findUserByUserId(String userId) {
 
-        UserInfo userInfo = new UserInfo();
+        User userInfo = new User();
 
-        Example<UserInfo> example = Example.of(userInfo);
-        Optional<UserInfo> userInfo1 = userDAO.findOne(example);
+        Example<User> example = Example.of(userInfo);
+        Optional<User> userInfo1 = userDAO.findOne(example);
         return userInfo1.orElse(null);
     }
 
     @Override
-    public int insertUserInfo(UserInfo userInfo) {
-        return 0;
+    public List<User> findAll() {
+        return userDAO.findAll();
+    }
+
+    @Override
+    public User register(User userInfo) {
+        return userDAO.save(userInfo);
     }
 
 

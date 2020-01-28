@@ -9,7 +9,7 @@ public interface SchoolService {
 
     int addSchoolInfo(SchoolInfo schoolInfo);
 
-    int deleteSchoolInfo(Long schoolId);
+    void deleteSchoolInfo(Long schoolId);
 
     int modifySchoolInfo(SchoolInfo schoolInfo);
 

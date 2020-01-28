@@ -50,7 +50,7 @@ public class AsynController {
      * @param desired 意图
      * @return 返回x响应结果
      */
-    @ApiOperation(value = "异步消费者",notes = "这一步是用来结束前面的一部操作额")
+    @ApiOperation(value = "异步消费者", notes = "这一步是用来结束前面的一部操作额")
     @GetMapping(value = "/result")
     public String settingResult(@RequestParam(value = "desired", required = false, defaultValue = "成功") String desired) {
         DeferredResultResponse deferredResultResponse = new DeferredResultResponse();

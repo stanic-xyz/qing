@@ -1,19 +1,18 @@
 package chenyunlong.zhangli.entities;
 
-import com.sun.tracing.dtrace.ArgsAttributes;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @NoArgsConstructor
-public class User {
+public class User implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userID;
     @Column(length = 10, name = "username")
     private String username;
