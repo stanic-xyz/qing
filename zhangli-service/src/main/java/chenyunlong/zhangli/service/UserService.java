@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserService {
 
 
-    User findUserByUserId(String userId);
+    User findUserByUserId(Long userId);
 
 
     List<User> findAll();

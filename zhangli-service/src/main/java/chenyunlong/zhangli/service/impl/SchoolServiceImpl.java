@@ -6,6 +6,7 @@ import chenyunlong.zhangli.service.SchoolService;
 import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -32,23 +33,22 @@ public class SchoolServiceImpl implements SchoolService {
     public void deleteSchoolInfo(Long schoolId) {
         Optional<SchoolInfo> schoolInfo = schoolInfoReposutory.findById(schoolId);
         if (schoolInfo.isPresent()) {
-            schoolInfoReposutory.deleteById(schoolId);
+            schoolInfoReposutory.delete(schoolInfo.get());
         }
     }
 
     @Override
     public int modifySchoolInfo(SchoolInfo schoolInfo) {
-
         Optional<SchoolInfo> oldSchoolInfo = schoolInfoReposutory.findById(schoolInfo.getSchoolId());
         if (oldSchoolInfo.isPresent()) {
             //说明了之前的存在
             SchoolInfo schoolInfo1 = oldSchoolInfo.get();
-            schoolInfo1.setSchoolCode(StringUtils.isEmpty(schoolInfo.getSchoolCode()) ? schoolInfo.getSchoolCode() : schoolInfo1.getSchoolCode());
+            schoolInfo1.setSchoolCode(schoolInfo.getSchoolCode());
+            schoolInfo1.setSchoolName(schoolInfo.getSchoolName());
             schoolInfoReposutory.save(schoolInfo1);
             return 0;
         } else {
             return 1;
-
         }
 
     }

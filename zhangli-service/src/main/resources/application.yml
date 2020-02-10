@@ -1,4 +1,4 @@
-debug: false
+debug: true
 eureka:
   client:
     register-with-eureka: true
@@ -30,6 +30,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
   redis:
     database: 0
     host: localhost
@@ -42,7 +47,6 @@ spring:
     host: smtp.qq.com
     username: 1576302867@qq.com
     password: lqisqghnzqaqidbh
-
 
 zhangli:
   file:
@@ -59,3 +63,8 @@ zhangli:
     title: Stan's Application for Zhangli
     url: http://www.chenyunlong.cn
     version: 2.0
+#微信订阅号
+mp:
+  wx:
+    appId: wx09bf7e704a150a9c
+    secret: 9fdb9fa846356d32247a9aa68d758791

@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 public class MyException extends Exception {
 
     private String msg;
-    private Long code;
+    private int code;
 
-    public MyException(String msg, Long code) {
+    public MyException(String msg, int code) {
         super(msg);
         this.msg = msg;
         this.code = code;

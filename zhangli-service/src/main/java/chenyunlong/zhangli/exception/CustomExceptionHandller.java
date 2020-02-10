@@ -14,8 +14,8 @@ public class CustomExceptionHandller {
 
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public Map errorHandler(Exception ex) {
-        Map map = new HashMap();
+    public Map<String, Object> errorHandler(Exception ex) {
+        Map<String, Object> map = new HashMap<>();
         map.put("code", 400);
         //判断异常的类型,返回不一样的返回值
         if (ex instanceof MissingServletRequestParameterException) {

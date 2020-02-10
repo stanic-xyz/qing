@@ -31,7 +31,7 @@ public class JiaxiaoController {
         return "翔安驾校！";
     }
 
-    @ApiOperation("添加学校继续你想")
+    @ApiOperation("添加学校信息")
     @PostMapping("add")
     public String addSchoolInfo(@RequestBody SchoolInfo schoolInfo) {
         schoolService.addSchoolInfo(schoolInfo);
@@ -58,11 +58,10 @@ public class JiaxiaoController {
         return schoolService.getAllSchoolInfo();
     }
 
-    @Email(receiver = "1576302867", content = "", object = "这是邮件内容！")
+    @Email(receiver = "1576302867@qq.com", content = "消息内容", object = "邮件主题")
     @GetMapping("testExp")
     @JsonFieldFilter
     public BaseResponse testException(@RequestParam String code) {
         return ResultUtil.success(code);
     }
-
 }

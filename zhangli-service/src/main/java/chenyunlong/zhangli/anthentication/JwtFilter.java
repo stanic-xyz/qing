@@ -23,7 +23,7 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         String jwtToken = req.getHeader(TOKEN);
-        log.debug(TOKEN + ":" + jwtToken);
+//        log.debug(TOKEN + ":" + jwtToken);
         if (jwtToken != null) {
             try {
                 Claims claims = Jwts.parser().setSigningKey("sang@123").parseClaimsJws(jwtToken.replace("Bearer", ""))

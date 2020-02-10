@@ -40,7 +40,7 @@ public class WechatContentController {
         wechatContent.setContent(content);
         wechatContent.setHeadImgUrl("http://www.stanic.xyz/pic/496.jpg");
         wechatContent.setMessageType(MessageType.SIMPLE_MESSAGE);
-        wechatContent.setUserId(0);
+        wechatContent.setUserId(Long.valueOf(0));
 
         List<WechatImages> wechatImagesList = new LinkedList<>();
         WechatImages wechatImage = new WechatImages();

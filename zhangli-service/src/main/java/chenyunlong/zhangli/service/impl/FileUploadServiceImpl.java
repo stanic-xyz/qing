@@ -16,6 +16,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         this.fileRepository = fileRepository;
     }
 
+    @Override
     public UploadFile saveFile(UploadFile uploadFile) {
         return fileRepository.save(uploadFile);
     }

@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.controller.jiaxiao;
+package chenyunlong.zhangli.controller.mq;
 
 import chenyunlong.zhangli.mq.ConnectionUtil;
 import com.rabbitmq.client.Channel;

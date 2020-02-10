@@ -1,17 +1,17 @@
 package chenyunlong.zhangli.entities;
 
-import chenyunlong.zhangli.entities.common.BaseEntitiy;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
-public class UploadFile extends BaseEntitiy {
+public class UploadFile implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long fileID;
+    private Long fileID;
     @Column
     private String fileName;
     @Column
@@ -19,5 +19,5 @@ public class UploadFile extends BaseEntitiy {
     @Column
     private String url;
     @Column
-    private long fileSize;
+    private Long fileSize;
 }

@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.dao.UserDAO;
+import chenyunlong.zhangli.dao.UserRepository;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +17,12 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserDAO userDAO;
-
     @Autowired
-    public UserServiceImpl(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
-
+    private UserRepository userDAO;
 
     @Override
-    public User findUserByUserId(String userId) {
-
-        User userInfo = new User();
-
-        Example<User> example = Example.of(userInfo);
-        Optional<User> userInfo1 = userDAO.findOne(example);
-        return userInfo1.orElse(null);
+    public User findUserByUserId(Long userId) {
+        return userDAO.findById(userId).orElse(null);
     }
 
     @Override

@@ -13,8 +13,8 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userID;
-    @Column(length = 10, name = "username")
+    private Long userID;
+    @Column(length = 10, name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
@@ -22,6 +22,7 @@ public class User implements Serializable {
     private String phone;
     @Column(length = 30)
     private String openId;
+    private String email;
 
     public User(String userName, String password) {
         this.username = userName;
