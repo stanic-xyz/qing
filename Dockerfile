@@ -4,5 +4,4 @@ VOLUME ["/home"]
 ADD . /home
 WORKDIR /home
 EXPOSE 8761
-RUN ["ls ."]
 ENTRYPOINT ["java","-version"]
