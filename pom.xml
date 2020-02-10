@@ -120,7 +120,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
+                    <!--<repository>${docker.registry.name.prefix}/${project.artifactId}</repository>-->
                     <tag>${project.version}</tag>
                     <username>1576302867</username>
                     <password>4745701816Long</password>
