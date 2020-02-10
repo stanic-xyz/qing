@@ -17,7 +17,6 @@ pipeline {
              }
              post {
                  always {
-                     #junit 'target/surefire-reports/*.xml'
                      sh echo "生成错误报告"
                  }
              }
