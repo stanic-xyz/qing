@@ -4,4 +4,4 @@ VOLUME ["/home"]
 ADD ./target/zhangli-eureka-service.jar /home
 WORKDIR /home
 EXPOSE 8761
-ENTRYPOINT ["java","-version"]
+ENTRYPOINT ["java","-jar","/home/zhangli-eureka-service.jar"]

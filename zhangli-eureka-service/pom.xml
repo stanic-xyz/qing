@@ -48,13 +48,15 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!--<repository>${docker.registry.name.prefix}/${project.artifactId}</repository>-->
-                    <tag>${project.version}</tag>
+                    <repository>${project.groupId}/${project.artifactId}</repository>
+                    <tag>latest</tag>
                     <username>1576302867</username>
                     <password>4745701816Long</password>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
+                    <!--跳过父模块的打包-->
+                    <!--<skip>true</skip>-->
                 </configuration>
             </plugin>
         </plugins>
