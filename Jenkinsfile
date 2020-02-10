@@ -13,8 +13,7 @@ pipeline {
         }
          stage('Deliver') {
               steps {
-                  sh 'chmox +x ./deliver.sh'
-                  sh './deliver.sh'
+                  sh 'echo deliver.sh'
               }
           }
     }
