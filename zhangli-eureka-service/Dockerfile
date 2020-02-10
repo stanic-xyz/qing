@@ -1,4 +1,4 @@
-FROM java:8 AS zhangli
+FROM java:8 AS zhangli-eureka
 MAINTAINER Stan<1576302867@qq.com>
 VOLUME ["/home"]
 ADD ./target/zhangli-eureka-service.jar /home
