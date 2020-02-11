@@ -26,7 +26,6 @@
     <build>
         <finalName>zhangli-eureka-service</finalName>
         <plugins>
-
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
@@ -53,10 +52,10 @@
                     <username>stanics</username>
                     <password>4745701816long</password>
                     <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        <JAR_FILE>./target/${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                     <!--跳过父模块的打包-->
-                    <!--<skip>true</skip>-->
+                    <skip>false</skip>
                 </configuration>
             </plugin>
         </plugins>

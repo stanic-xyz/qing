@@ -11,5 +11,21 @@ pipeline {
                  sh "mvn -B -DskipTests clean package"
              }
         }
+        stage('测试'){
+            steps{
+                sh "mvn test"
+            }
+        }
+        stage('构建'){
+            steps{
+                sh "mvn dockerfile:build"
+            }
+        }
+        stage('分发'){
+            steps{
+                sh "echo 现在进行分发"
+            }
+        }
+
     }
 }
