@@ -1,6 +1,6 @@
 FROM java:8 AS zhangli-eureka
 MAINTAINER Stan<1576302867@qq.com>
-VOLUME ["/home"]
+COPY ./target/zhangli-eureka-service.jar /home/zhangli-eureka-service.jar
 WORKDIR /home
 EXPOSE 8761
-ENTRYPOINT ["java","-jar","./zhangli-eureka-service.jar"]
+ENTRYPOINT ["java","-jar","/home/zhangli-eureka-service.jar"]
