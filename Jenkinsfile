@@ -23,7 +23,7 @@ pipeline {
         }
         stage('分发'){
             steps{
-                sh "echo 现在进行分发"
+                sh "mvn dockerfile:push"
             }
         }
 
