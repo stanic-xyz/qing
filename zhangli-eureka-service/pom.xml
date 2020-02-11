@@ -46,7 +46,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${project.groupId}/${project.artifactId}</repository>
+                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
                     <tag>latest</tag>
                     <username>stanics</username>
                     <password>4745701816long</password>
