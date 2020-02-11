@@ -1,8 +1,8 @@
-FROM java:8 AS zhangli-eureka
+FROM java:8-jre AS zhangli-eureka
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"
-ARG JAR_FILE
-COPY ${JAR_FILE} /home/zhangli-eureka-service.jar
-WORKDIR /home
 EXPOSE 8761
-ENTRYPOINT ["java","-jar","/home/zhangli-eureka-service.jar"]
+ENTRYPOINT ["/usr/bin/java","-jar","/home/zhangli-eureka-service.jar"]
+WORKDIR /home
+ARG JAR_FILE
+ADD target/${JAR_FILE} /home/zhangli-eureka-service.jar
