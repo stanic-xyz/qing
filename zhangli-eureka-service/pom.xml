@@ -50,8 +50,8 @@
                 <configuration>
                     <repository>${project.groupId}/${project.artifactId}</repository>
                     <tag>latest</tag>
-                    <username>1576302867</username>
-                    <password>4745701816Long</password>
+                    <username>stanics</username>
+                    <password>4745701816long</password>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
