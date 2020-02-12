@@ -12,7 +12,7 @@ services:
   config-server:
     networks:
       - dev
-    image: zhangli-config-service
+    image: stanics/zhangli-config-git
     container_name: config-service
     ports:
       - 8000:8000
