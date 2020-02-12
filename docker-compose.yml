@@ -1,17 +1,33 @@
 version: '2'
 services:
   eureka-service:
+    networks:
+      - dev
     container_name: eureka-service
     image: stanics/zhangli-eureka-service
     ports:
       - 8761:8761
+    environment:
+      TZ: Asia/Shanghai
+  config-server:
+    networks:
+      - dev
+    image: zhangli-config-service
+    container_name: config-service
+    ports:
+      - 8000:8000
+    environment:
+      TZ: Asia/Shanghai
   mysql:
-    network_mode: "bridge"
+    networks:
+      - dev
     environment:
       MYSQL_ROOT_PASSWORD: "PWD_MYSQL"
       MYSQL_USER: 'stan'
       MYSQL_PASS: 'PWD_MSSQL_STAN'
+      TZ: Asia/Shanghai
     image: "mysql:latest"
+    container_name: mysql
     restart: always
     volumes:
       - "./hme/mysql/db:/var/lib/mysql"
@@ -19,3 +35,7 @@ services:
       - "./hme/mysql/init:/docker-entrypoint-initdb.d/"
     ports:
       - "3306:3306"
+
+networks:
+  dev:
+    driver: bridge

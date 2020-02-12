@@ -39,7 +39,15 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>${dockerfile.maven.version}</version>
                 <configuration>
-                    <skip>true</skip>
+                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
+                    <tag>latest</tag>
+                    <username>stanics</username>
+                    <password>4745701816long</password>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                    <!--跳过父模块的打包-->
+                    <skip>false</skip>
                 </configuration>
             </plugin>
         </plugins>
