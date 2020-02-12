@@ -2,7 +2,7 @@ FROM java:8-jre AS zhangli-zuul-gateway
 USER root
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"
-EXPOSE 8761
+EXPOSE 9000
 WORKDIR /home
 ARG JAR_FILE
 ADD target/${JAR_FILE} /home/zhangli-zuul-gateway-service.jar
