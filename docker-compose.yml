@@ -1,10 +1,7 @@
 version: 2
 services:
-  redis:
-    image: redis
   eureka-service:
+    container_name: eureka-service
     image: stanics/zhangli-eureka-service
     ports:
       - 8761:8761
-    volumes:
-      - /home/eureka-home:/home
