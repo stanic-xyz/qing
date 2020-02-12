@@ -12,7 +12,7 @@ services:
       MYSQL_USER: 'stan'
       MYSQL_PASS: 'PWD_MSSQL_STAN'
     image: "mysql:latest"
-    restart: no
+    restart: always
     volumes:
       - "./hme/mysql/db:/var/lib/mysql"
       - "./hme/mysql/conf/my.cnf:/etc/my.cnf"
