@@ -109,4 +109,11 @@
             </plugin>
         </plugins>
     </build>
+    <developers>
+        <developer>
+            <id>stan</id>
+            <email>1576302867@qq.com</email>
+            <name>StanChen</name>
+        </developer>
+    </developers>
 </project>

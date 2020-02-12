@@ -1,4 +1,5 @@
 FROM java:8-jre AS zhangli-eureka
+USER root
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"
 EXPOSE 8761
