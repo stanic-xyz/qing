@@ -1,4 +1,4 @@
-version: 2
+version: "2"
 services:
   eureka-service:
     container_name: eureka-service
