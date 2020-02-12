@@ -9,6 +9,23 @@ services:
       - 8761:8761
     environment:
       TZ: Asia/Shanghai
+  zuul-gateway:
+    networks:
+      - dev
+    image: stanics/zhangli-zuul-gateway
+    container_name: zuul-gateway-service
+    ports:
+      - 9000:9000
+    environment:
+      TZ: Asia/Shanghai
+  feign-client:
+    networks:
+      - dev
+    image: stanics/zhangli-feign-client
+    ports:
+      - 9001:9001
+    environment:
+      TZ: Asia/Shanghai
   config-server:
     networks:
       - dev
