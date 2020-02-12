@@ -21,11 +21,5 @@ pipeline {
                 sh "mvn dockerfile:build"
             }
         }
-        stage('分发'){
-            steps{
-                sh "mvn dockerfile:push"
-            }
-        }
-
     }
 }
