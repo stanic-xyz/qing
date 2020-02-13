@@ -9,6 +9,16 @@ services:
       - 8761:8761
     environment:
       TZ: Asia/Shanghai
+  zhangli-service:
+    networks:
+      - dev
+    image: stanics/zhangli-service
+    ports:
+      - 8080:8080
+    environment:
+      TZ: Asia/shanghai
+  #    links:
+  #      - mysql
   zuul-gateway:
     networks:
       - dev
@@ -35,23 +45,23 @@ services:
       - 8000:8000
     environment:
       TZ: Asia/Shanghai
-  mysql:
-    networks:
-      - dev
-    environment:
-      MYSQL_ROOT_PASSWORD: "PWD_MYSQL"
-      MYSQL_USER: 'stan'
-      MYSQL_PASS: 'PWD_MSSQL_STAN'
-      TZ: Asia/Shanghai
-    image: "mysql:latest"
-    container_name: mysql
-    restart: always
-    volumes:
-      - "./hme/mysql/db:/var/lib/mysql"
-      - "./hme/mysql/conf/my.cnf:/etc/my.cnf"
-      - "./hme/mysql/init:/docker-entrypoint-initdb.d/"
-    ports:
-      - "3306:3306"
+#  mysql:
+#    networks:
+#      - dev
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "PWD_MYSQL"
+#      MYSQL_USER: 'stan'
+#      MYSQL_PASS: 'PWD_MSSQL_STAN'
+#      TZ: Asia/Shanghai
+#    image: "mysql:latest"
+#    container_name: mysql
+#    restart: always
+#    volumes:
+#      - "./hme/mysql/db:/var/lib/mysql"
+#      - "./hme/mysql/conf/my.cnf:/etc/my.cnf"
+#      - "./hme/mysql/init:/docker-entrypoint-initdb.d/"
+#    ports:
+#      - "3306:3306"
 
 networks:
   dev:

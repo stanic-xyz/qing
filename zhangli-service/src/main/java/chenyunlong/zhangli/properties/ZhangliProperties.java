@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Configuration
 @ConfigurationProperties(prefix = "zhangli")
 public class ZhangliProperties {
-
     private boolean openAopLog = true;
     private FileConfigurationProperties file;
     private ShiroProperties shiro;

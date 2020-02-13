@@ -1,11 +1,12 @@
-debug: true
 eureka:
+  instance:
+    hostname: localhost
+    instance-id: zhangli-service
+    prefer-ip-address: true
   client:
     register-with-eureka: true
     service-url:
-      default-zone: http://localhost:8761/eureka/
-  instance:
-    hostname: localhost
+      defaultZone: http://eureka.chenyunlong.cn/eureka/
 logging:
   level:
     chenyunlong: debug
@@ -14,7 +15,6 @@ management:
     web:
       exposure:
         include: ["health","httptrace", "metrics"]
-
 server:
   port: 8080
 spring:

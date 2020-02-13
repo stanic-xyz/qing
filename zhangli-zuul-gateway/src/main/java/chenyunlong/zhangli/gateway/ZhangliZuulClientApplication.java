@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 @EnableZuulProxy
 @EnableDiscoveryClient
 @SpringBootApplication
-public class ZhangliZuulClientApplication9001 {
+public class ZhangliZuulClientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ZhangliZuulClientApplication9001.class, args);
+        SpringApplication.run(ZhangliZuulClientApplication.class, args);
     }
 
     @Bean
