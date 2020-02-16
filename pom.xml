@@ -34,6 +34,8 @@
         <module>zhangli-feign-client</module>
         <module>zhangli-zuul-gateway</module>
         <module>zhangli-config-git</module>
+        <module>zhangli-autoconfigration</module>
+        <module>zhangli-cloud-admin-server</module>
     </modules>
     <dependencies>
         <!--所有项目都依赖与Lombok工具-->
@@ -42,7 +44,6 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -55,6 +56,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

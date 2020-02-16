@@ -1,2 +1,2 @@
 #config client
-test=default
+test: default

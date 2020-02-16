@@ -1,3 +1,5 @@
+server:
+  port: 8769
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10
@@ -7,7 +9,7 @@ eureka:
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
-      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL:http://eureka.chenyunlong.cn}/eureka/
 
 management:
   endpoints:
@@ -17,3 +19,4 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+debug: true

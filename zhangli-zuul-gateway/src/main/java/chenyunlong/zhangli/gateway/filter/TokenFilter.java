@@ -66,7 +66,5 @@ public class TokenFilter extends ZuulFilter {
             ctx.set("isSuccess", false);
             return null;
         }
-
-
     }
 }
