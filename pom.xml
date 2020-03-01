@@ -35,7 +35,6 @@
         <module>zhangli-zuul-gateway</module>
         <module>zhangli-config-git</module>
         <module>zhangli-autoconfigration</module>
-        <module>zhangli-cloud-admin-server</module>
     </modules>
     <dependencies>
         <!--所有项目都依赖与Lombok工具-->

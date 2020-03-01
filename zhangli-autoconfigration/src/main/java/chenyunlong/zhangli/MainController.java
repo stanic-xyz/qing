@@ -17,12 +17,6 @@ public class MainController {
 
     public static void main(String[] args) {
         SpringApplication.run(MainController.class, args);
-    }
 
-    @Bean("zhangliConfig2")
-    ZhangliConfig getZhangliConfig() {
-        log.info("Configuration.zhangli");
-        log.info(zhangliConfig.toString());
-        return new ZhangliConfig();
     }
 }
