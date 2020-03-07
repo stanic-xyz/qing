@@ -49,7 +49,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com
-    password: lqisqghnzqaqidbh
+    password: waiiypukhmxoibeh
 
 zhangli:
   file:
@@ -59,7 +59,7 @@ zhangli:
   swagger:
     author: Stan
     basePackage: chenyunlong.zhangli
-    description: Zhanngli's Rear Gargen  API Document.
+    description: Zhangli's Rear Gargen  API Document.
     email: 1576302867@qq.com
     license: Apache 2.0
     licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -71,3 +71,7 @@ mp:
   wx:
     appId: wx09bf7e704a150a9c
     secret: 9fdb9fa846356d32247a9aa68d758791
+redisson:
+  address: redis://localhost:6379
+  password:
+  master-name: mymaster

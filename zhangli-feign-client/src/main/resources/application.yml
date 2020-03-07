@@ -1,2 +1,4 @@
+server:
+  port: 9001
 #config client
 test: default
