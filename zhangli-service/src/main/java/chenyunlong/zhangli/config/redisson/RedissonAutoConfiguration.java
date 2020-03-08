@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.redisson;
+package chenyunlong.zhangli.config.redisson;
 
 import org.apache.commons.lang.StringUtils;
 import org.redisson.Redisson;

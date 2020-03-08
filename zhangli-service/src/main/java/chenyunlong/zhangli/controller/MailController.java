@@ -3,8 +3,10 @@ package chenyunlong.zhangli.controller;
 import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.service.EmailService;
 import chenyunlong.zhangli.utils.BaseResponse;
-import cn.hutool.core.io.resource.InputStreamResource;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,12 +16,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RequestMapping("mail")
 @RestController
 public class MailController {
 
+
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private RedissonClient redissonClient;
+
 
     /**
      * 发送普通邮件
@@ -30,10 +37,15 @@ public class MailController {
      */
     @GetMapping("sendEmail")
     public BaseResponse sendEmail(@RequestParam String message, @RequestParam String receiver) {
-
-        emailService.sendEmail("1576302867@qq.com", "这是主题", "text");
+        RLock lock = redissonClient.getLock("testLock");
+        if (!lock.isLocked()) {
+            lock.lock();
+            emailService.sendEmail("1576302867@qq.com", "这是主题", "text");
+            lock.unlock();
+        }
         return ResultUtil.success("ok");
     }
+
 
     /**
      * 发送模板邮件
@@ -44,7 +56,8 @@ public class MailController {
      * @return
      */
     @GetMapping("sendTemplateEmail")
-    public BaseResponse sendTemplateEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String text) {
+    public BaseResponse sendTemplateEmail(@RequestParam String to, @RequestParam String
+            subject, @RequestParam String text) {
 
         Map<String, String> map = new HashMap<>();
         map.put("from", "Stanic");

@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.redisson;
+package chenyunlong.zhangli.config.redisson;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
