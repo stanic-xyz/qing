@@ -37,6 +37,11 @@
         <module>zhangli-autoconfigration</module>
     </modules>
     <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.2.0</version>
+        </dependency>
         <!--所有项目都依赖与Lombok工具-->
         <dependency>
             <groupId>org.projectlombok</groupId>

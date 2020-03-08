@@ -1,2 +1,4 @@
 zhangli:
   enable: true
+server:
+  port: 8888
