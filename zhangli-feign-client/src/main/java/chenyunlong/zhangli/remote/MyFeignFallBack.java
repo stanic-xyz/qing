@@ -1,4 +1,11 @@
 package chenyunlong.zhangli.remote;
 
-public class MyFeignFallBack {
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyFeignFallBack implements RemoteHello {
+    @Override
+    public String getUserList(String name) {
+        return "失败了";
+    }
 }

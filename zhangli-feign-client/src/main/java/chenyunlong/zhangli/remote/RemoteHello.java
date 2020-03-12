@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(value = "zhangli-service", fallback = MyFeignFallBack.class)
+@FeignClient(value = "zhangli-service-provider", fallback = MyFeignFallBack.class)
 public interface RemoteHello {
 
     @GetMapping("authrize/getUserInfo")

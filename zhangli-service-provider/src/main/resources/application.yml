@@ -1,0 +1,77 @@
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: zhangli-service-provider
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+logging:
+  level:
+    chenyunlong: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+server:
+  port: 8080
+spring:
+  application:
+    name: zhangli-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      password: root
+      username: root
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+  servlet:
+    multipart:
+      max-file-size: 4MB
+      max-request-size: 10MB
+  mail:
+    host: smtp.qq.com
+    username: 1576302867@qq.com
+    password: waiiypukhmxoibeh
+
+zhangli:
+  file:
+    baseUploadDir: G:/upload/
+    image-server-url: http://www.stanic.xyz/pic/
+  openAopLog: true # 是否异步记录用户操作日志
+  swagger:
+    author: Stan
+    basePackage: chenyunlong.zhangli
+    description: Zhangli's Rear Gargen  API Document.
+    email: 1576302867@qq.com
+    license: Apache 2.0
+    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
+    title: Stan's Application for Zhangli
+    url: http://www.chenyunlong.cn
+    version: 2.0
+#微信订阅号
+mp:
+  wx:
+    appId: wx09bf7e704a150a9c
+    secret: 9fdb9fa846356d32247a9aa68d758791
+redisson:
+  address: redis://localhost:6379
+  password:
+  master-name: mymaster
