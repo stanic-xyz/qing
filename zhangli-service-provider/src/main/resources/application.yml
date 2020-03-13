@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 eureka:
   instance:
     hostname: localhost
@@ -17,12 +20,11 @@ management:
         include: "*"
   endpoint:
     health:
-      show-details: ALWAYS
-server:
-  port: 8080
+      show-details: never
+
 spring:
   application:
-    name: zhangli-service
+    name: zhangli-service-provider
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -31,7 +33,7 @@ spring:
     url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:

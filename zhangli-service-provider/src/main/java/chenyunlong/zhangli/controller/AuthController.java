@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.controller.authorize;
+package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.User;
@@ -100,17 +100,8 @@ public class AuthController {
     }
 
     @GetMapping("getUserInfo")
-    public String getUserInfo(HttpSession session) throws JsonProcessingException {
+    public String getUserInfo(@RequestParam String username) {
 
-
-        Object userInfo = session.getAttribute("userInfo");
-        if (userInfo != null) {
-            log.debug(userInfo.toString());
-        } else {
-            userInfo = "Staninc";
-            log.debug("没有用户信息！");
-        }
-
-        return objectMapper.writeValueAsString(userInfo);
+        return "test-from 8080";
     }
 }

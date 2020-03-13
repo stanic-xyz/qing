@@ -11,5 +11,5 @@ import java.util.List;
 public interface RemoteHello {
 
     @GetMapping("authrize/getUserInfo")
-    String getUserList(@RequestParam String name);
+    String getUserInfo(@RequestParam String username);
 }
