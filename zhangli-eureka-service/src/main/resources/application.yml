@@ -1,7 +1,20 @@
 server:
   port: 8761
-
-
+spring:
+  application:
+    name: zhangli-eureka-service
+eureka:
+  server:
+    enable-self-preservation: false
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 2
+    hostname: localhost
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
 management:
   endpoints:
     web:

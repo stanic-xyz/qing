@@ -1,27 +1,5 @@
 server:
   port: 8080
-
-eureka:
-  instance:
-    hostname: localhost
-    instance-id: zhangli-service-provider
-    prefer-ip-address: true
-  client:
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-logging:
-  level:
-    chenyunlong: debug
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: never
-
 spring:
   application:
     name: zhangli-service-provider
@@ -52,6 +30,28 @@ spring:
     host: smtp.qq.com
     username: 1576302867@qq.com
     password: waiiypukhmxoibeh
+
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+logging:
+  level:
+    chenyunlong: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: never
 
 zhangli:
   file:

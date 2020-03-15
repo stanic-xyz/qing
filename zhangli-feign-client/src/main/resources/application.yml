@@ -1,8 +1,18 @@
 server:
   port: 9001
-#config client
-test: default
-
+spring:
+  application:
+    name: zhangli-feign-client
+eureka:
+  instance:
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    hostname: localhost
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+ribbon:
+  eureka:
+    enabled: true
 feign:
   client:
     config:
@@ -12,6 +22,14 @@ feign:
         loggerLevel: basic
   hystrix:
     enabled: true
-ribbon:
-  eureka:
-    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["*"]
+  endpoint:
+    health:
+      show-details: always
+
+test: default

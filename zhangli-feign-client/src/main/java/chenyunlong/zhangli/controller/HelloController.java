@@ -22,9 +22,7 @@ public class HelloController {
     public String hello(@RequestParam String name) {
 
         String value = remoteHello.getUserInfo(name);
-        if (value != null) {
-            return value.toString();
-        }
-        return "this is hello world!" + test;
+
+        return "this is hello world!" + test + ":" + value;
     }
 }
