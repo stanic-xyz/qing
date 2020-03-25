@@ -18,6 +18,7 @@ pipeline {
         }
         stage('打包镜像'){
             steps{
+                sh "mvn clean package"
                 sh "mvn dockerfile:build"
             }
         }
