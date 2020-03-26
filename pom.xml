@@ -29,6 +29,7 @@
         <docker.registry.name.prefix>stanics</docker.registry.name.prefix>
     </properties>
     <modules>
+        <module>zhangli-core</module>
         <module>zhangli-service-provider</module>
         <module>zhangli-eureka-service</module>
         <module>zhangli-feign-client</module>
