@@ -112,7 +112,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>zhangli-service</finalName>
+        <finalName>zhangli-service-provicer</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -136,7 +136,7 @@
                     <username>stanics</username>
                     <password>4745701816long</password>
                     <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                     <!--跳过父模块的打包-->
                     <skip>false</skip>
