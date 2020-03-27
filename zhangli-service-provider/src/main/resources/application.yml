@@ -1,23 +1,22 @@
 server:
-  port: 8080
+  port: 8888
 spring:
   application:
     name: zhangli-service-provider
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      password: root
       username: root
-    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
+      password: MysqlPwdROOT1996
+    url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-
   redis:
     database: 0
     host: localhost
@@ -29,13 +28,13 @@ spring:
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com
-    password: waiiypukhmxoibeh
+    password: cscysqlzodzfjehj
 
 eureka:
   instance:
     hostname: localhost
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-    prefer-ip-address: true
+    prefer-ip-address: false
   client:
     register-with-eureka: true
     fetch-registry: true
@@ -55,7 +54,7 @@ management:
 
 zhangli:
   file:
-    baseUploadDir: G:/upload/
+    baseUploadDir: /upload/
     image-server-url: http://www.stanic.xyz/pic/
   openAopLog: true # 是否异步记录用户操作日志
   swagger:

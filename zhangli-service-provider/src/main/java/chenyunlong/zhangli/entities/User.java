@@ -1,31 +1,91 @@
 package chenyunlong.zhangli.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
-@Entity
-@NoArgsConstructor
 public class User implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userID;
-    @Column(length = 10, name = "username", unique = true)
     private String username;
-    @Column(name = "password")
     private String password;
-    @Column
     private String phone;
-    @Column(length = 30)
     private String openId;
     private String email;
+
+    public User() {
+    }
 
     public User(String userName, String password) {
         this.username = userName;
         this.password = password;
+    }
+
+    public User(Long userID, String username, String password, String phone, String openId, String email) {
+        this.userID = userID;
+        this.username = username;
+        this.password = password;
+        this.phone = phone;
+        this.openId = openId;
+        this.email = email;
+    }
+
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userID=" + userID +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", openId='" + openId + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

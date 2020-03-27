@@ -1,50 +1,42 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.dao.UserRepository;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-/**
- * @author stan
- * @date 2018/6/3 23:38
- */
 @Service
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private UserRepository userDAO;
-
     @Override
     public User findUserByUserId(Long userId) {
-        return userDAO.findById(userId).orElse(null);
+        return null;
     }
 
     @Override
     public List<User> findAll() {
-        return userDAO.findAll();
+        return null;
     }
 
+    /**
+     * 添加用户信息，注册
+     *
+     * @param userInfo 用户信息
+     * @return
+     */
     @Override
     public User register(User userInfo) {
-        return userDAO.save(userInfo);
+        return null;
     }
 
-
+    /**
+     * 登陆
+     *
+     * @param user
+     * @return
+     */
     @Override
     public User login(User user) {
-        if (user == null) {
-            return null;
-        }
-
-        Example<User> example = Example.of(user);
-
-        Optional<User> loginUser = userDAO.findOne(example);
-        return loginUser.orElse(null);
+        return null;
     }
 }

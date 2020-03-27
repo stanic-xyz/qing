@@ -1,25 +1,84 @@
 package chenyunlong.zhangli.entities;
 
-import lombok.Data;
 
-import javax.persistence.*;
-
-/**
- * @author zhuzhe
- * @date 2018/6/3 23:27
- * @email 1529949535@qq.com
- */
-@Data
-@Entity  // 该注解声明一个实体类，与数据库中的表对应
 public class UserInfo {
 
-    @Id   // 表明id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)   //  自动生成
     private Long id;
     private String name;
     private byte gender;
     private String ImgName;
     private String ImgUrl;
-    @OneToOne
     private User user;
+
+    public UserInfo() {
+    }
+
+    public UserInfo(Long id, String name, byte gender, String imgName, String imgUrl, User user) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        ImgName = imgName;
+        ImgUrl = imgUrl;
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public byte getGender() {
+        return gender;
+    }
+
+    public void setGender(byte gender) {
+        this.gender = gender;
+    }
+
+    public String getImgName() {
+        return ImgName;
+    }
+
+    public void setImgName(String imgName) {
+        ImgName = imgName;
+    }
+
+    public String getImgUrl() {
+        return ImgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        ImgUrl = imgUrl;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender=" + gender +
+                ", ImgName='" + ImgName + '\'' +
+                ", ImgUrl='" + ImgUrl + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }

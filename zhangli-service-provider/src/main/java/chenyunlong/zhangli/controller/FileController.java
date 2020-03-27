@@ -84,8 +84,8 @@ public class FileController {
             uploadFile.setUrl(zhangliProperties.getFile().getImageServerUrl() + fileName);
             uploadFile.setFileSize(multipartFile.getSize());
             uploadFile.setMimeType(multipartFile.getContentType());
-
-            return BaseResponse.success(fileUploadService.saveFile(uploadFile));
+            fileUploadService.saveFile(uploadFile);
+            return BaseResponse.success("上传成功");
         } else {
             return BaseResponse.faild("没有上传图片啊");
         }
