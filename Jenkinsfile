@@ -8,12 +8,17 @@ pipeline {
     stages {
          stage('编译') { 
              steps {
-                 sh "mvn -B -DskipTests clean package"
+                 sh "mvn package -Dmaven.test.skip=true"
              }
         }
         stage('测试'){
             steps{
                 sh "mvn test"
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
             }
         }
         stage('打包镜像'){
