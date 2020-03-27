@@ -1,8 +1,6 @@
 package chenyunlong.zhangli.common.core.exception;
 
-import lombok.Getter;
 
-@Getter
 public class BaseException extends RuntimeException {
     /**
      * 异常对应的错误类型
@@ -28,5 +26,16 @@ public class BaseException extends RuntimeException {
     public BaseException(ErrorType errorType, String message, Throwable cause) {
         super(message, cause);
         this.errorType = errorType;
+    }
+
+    public ErrorType getErrorType() {
+        return errorType;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseException{" +
+                "errorType=" + errorType +
+                '}';
     }
 }
