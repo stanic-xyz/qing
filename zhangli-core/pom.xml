@@ -11,4 +11,6 @@
 
     <artifactId>zhangli-core</artifactId>
 
+    <packaging>pom</packaging>
+
 </project>
