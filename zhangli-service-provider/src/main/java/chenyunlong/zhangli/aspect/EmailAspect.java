@@ -6,22 +6,23 @@ import chenyunlong.zhangli.service.EmailService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-@Slf4j
 @Aspect
 @Component
 public class EmailAspect {
 
+    private Logger log = LoggerFactory.getLogger(EmailAspect.class);
     @Autowired
     private ZhangliProperties zhangliProperties;
 
@@ -53,13 +54,17 @@ public class EmailAspect {
         return object;
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
     private class EmailThread extends Thread {
         private String receiver;
         private String object;
         private String content;
+
+        public EmailThread(String receiver, String object, String content) {
+
+            this.receiver = receiver;
+            this.object = object;
+            this.content = content;
+        }
 
         @Override
         public void run() {

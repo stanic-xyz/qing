@@ -3,15 +3,17 @@ package chenyunlong.zhangli.gateway.filter;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.Base64;
 
-@Slf4j
 public class TokenFilter extends ZuulFilter {
+    private Logger log = LoggerFactory.getLogger(TokenFilter.class);
+
     @Override
     public String filterType() {
         return "pre";

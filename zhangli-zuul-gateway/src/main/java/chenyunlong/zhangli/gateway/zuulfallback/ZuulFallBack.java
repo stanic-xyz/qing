@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.gateway.zuulfallback;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,9 +13,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-@Slf4j
 @Component
 public class ZuulFallBack implements FallbackProvider {
+
+    private Logger log = LoggerFactory.getLogger(ZuulFallBack.class);
+
     @Override
     public String getRoute() {
         return "*";
