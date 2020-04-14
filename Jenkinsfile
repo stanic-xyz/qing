@@ -20,11 +20,11 @@ pipeline {
             steps{
                 sh "mvn test"
             }
-            //post {
-            //    always {
-            //        junit 'target/surefire-reports/*.xml'
-            //    }
-            //}
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
         }
         stage('打包镜像'){
             steps{
