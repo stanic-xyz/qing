@@ -6,11 +6,16 @@ pipeline {
             }
         }
     stages {
-         stage('编译') { 
+         stage('编译') {
              steps {
-                 sh "mvn package -Dmaven.test.skip=true"
+                 sh "mvn  -DskipTests=true compile"
              }
         }
+        stage('打包') {
+             steps {
+                sh "mvn  -DskipTests=true package"
+                     }
+                }
         stage('测试'){
             steps{
                 sh "mvn test"
@@ -23,7 +28,7 @@ pipeline {
         }
         stage('打包镜像'){
             steps{
-                sh "echo 现在需要打包镜像了"
+                sh "echo skiped!"
             }
         }
     }
