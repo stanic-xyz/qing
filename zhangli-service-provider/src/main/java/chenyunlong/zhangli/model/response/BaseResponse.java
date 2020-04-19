@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.utils;
+package chenyunlong.zhangli.model.response;
 
 import java.io.Serializable;
 

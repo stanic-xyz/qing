@@ -1,14 +1,14 @@
 package chenyunlong.zhangli.config;
 
-public class FileConfigurationProperties {
+public class FileProperties {
 
     private String imageServerUrl;
     private String baseUploadDir;
 
-    public FileConfigurationProperties() {
+    public FileProperties() {
     }
 
-    public FileConfigurationProperties(String imageServerUrl, String baseUploadDir) {
+    public FileProperties(String imageServerUrl, String baseUploadDir) {
         this.imageServerUrl = imageServerUrl;
         this.baseUploadDir = baseUploadDir;
     }

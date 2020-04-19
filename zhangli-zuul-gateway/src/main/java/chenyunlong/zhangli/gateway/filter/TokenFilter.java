@@ -2,13 +2,12 @@ package chenyunlong.zhangli.gateway.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.netflix.zuul.exception.ZuulException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class TokenFilter extends ZuulFilter {
@@ -38,7 +37,7 @@ public class TokenFilter extends ZuulFilter {
     }
 
     @Override
-    public Object run() throws ZuulException {
+    public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
 
@@ -52,7 +51,7 @@ public class TokenFilter extends ZuulFilter {
         // 认证的原始信息
         String auth = "studyjava:hello";
         // 进行一个加密的处理
-        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(Charset.forName("US-ASCII")));
+        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.US_ASCII));
         // 在进行授权的头信息内容配置的时候加密的信息一定要与“Basic”之间有一个空格
         String authHeader = "Basic " + new String(encodedAuth);
         ctx.addZuulRequestHeader("Authorization", authHeader);

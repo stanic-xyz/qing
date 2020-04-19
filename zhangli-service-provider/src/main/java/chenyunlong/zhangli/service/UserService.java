@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.service;
 
+import chenyunlong.zhangli.entities.Permission;
 import chenyunlong.zhangli.entities.User;
 
 import java.util.List;
@@ -32,4 +33,8 @@ public interface UserService {
      * @return
      */
     User login(User user);
+
+    User findUserByUsername(String s);
+
+    List<Permission> getPermissionByUsername(String username);
 }

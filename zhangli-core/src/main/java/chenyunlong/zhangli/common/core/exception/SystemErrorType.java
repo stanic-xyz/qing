@@ -1,8 +1,6 @@
 package chenyunlong.zhangli.common.core.exception;
 
-import lombok.Getter;
 
-@Getter
 public enum SystemErrorType implements ErrorType {
 
     SYSTEM_ERROR("-1", "系统异常"),
@@ -16,7 +14,7 @@ public enum SystemErrorType implements ErrorType {
     INVALID_TOKEN("020001", "无效token"),
     UPLOAD_FILE_SIZE_LIMIT("020010", "上传文件大小超过限制"),
 
-    DUPLICATE_PRIMARY_KEY("030000","唯一键冲突");
+    DUPLICATE_PRIMARY_KEY("030000", "唯一键冲突");
 
     /**
      * 错误类型码
@@ -30,5 +28,15 @@ public enum SystemErrorType implements ErrorType {
     SystemErrorType(String code, String mesg) {
         this.code = code;
         this.mesg = mesg;
+    }
+
+    @Override
+    public String getCode() {
+        return code;
+    }
+
+    @Override
+    public String getMesg() {
+        return mesg;
     }
 }

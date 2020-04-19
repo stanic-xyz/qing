@@ -10,4 +10,7 @@ public interface UserMapper {
 
     @Select("SELECT * FROM user WHERE userid = #{userId}")
     User findByState(@Param("userId") String userId);
+
+    @Select("select * from user where username = #{username}")
+    User findByUsername(CharSequence username);
 }

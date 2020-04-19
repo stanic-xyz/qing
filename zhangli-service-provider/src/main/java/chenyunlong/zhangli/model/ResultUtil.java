@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model;
 
 
-import chenyunlong.zhangli.utils.BaseResponse;
+import chenyunlong.zhangli.model.response.BaseResponse;
 
 public class ResultUtil {
     public static BaseResponse success(Object data) {

@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.aspect;
 
 import chenyunlong.zhangli.annotation.JsonFieldFilter;
-import chenyunlong.zhangli.utils.BaseResponse;
+import chenyunlong.zhangli.model.response.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;

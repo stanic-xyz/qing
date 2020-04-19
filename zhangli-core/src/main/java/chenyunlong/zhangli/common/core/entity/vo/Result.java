@@ -5,13 +5,11 @@ import chenyunlong.zhangli.common.core.exception.ErrorType;
 import chenyunlong.zhangli.common.core.exception.SystemErrorType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
 
 //@ApiModel(description = "rest请求的返回模型，所有rest正常都返回该类的对象")
-@Getter
 public class Result<T> {
 
     public static final String SUCCESSFUL_CODE = "000000";

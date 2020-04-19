@@ -67,6 +67,10 @@ zhangli:
     title: Stan's Application for Zhangli
     url: http://www.chenyunlong.cn
     version: 2.0
+  security:
+    authticationPrefix: authentication_
+
+
 #微信订阅号
 mp:
   wx:

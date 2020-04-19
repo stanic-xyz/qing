@@ -2,53 +2,50 @@ package chenyunlong.zhangli.anthentication;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-@Slf4j
-public class AuthInterceptor extends HandlerInterceptorAdapter {
+public class AuthInterceptor extends OncePerRequestFilter {
+    private final Logger logger = LoggerFactory.getLogger(AuthInterceptor.class);
     private static final String TOKEN = "Authorization";
     private final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
 
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        log.debug("afterCompletion！");
-        log.debug("this is content filename");
-
-        super.afterCompletion(request, response, handler, ex);
-    }
 
     @Override
-    public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.debug("afterConcurrentHandlingStarted");
-        super.afterConcurrentHandlingStarted(request, response, handler);
-    }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.debug("postHandle");
-        super.postHandle(request, response, handler, modelAndView);
-    }
+        String jwtToken = getToken(request);
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String jwtToken = request.getHeader(TOKEN);
-
-        if (jwtToken != null) {
-            Claims claims = Jwts.parser().setSigningKey("sang@123").parseClaimsJws(jwtToken.replace("Bearer", ""))
-                    .getBody();
-
-            request.getSession().setAttribute("userInfo", claims);
-            log.info("这里通过了验证了！");
-
+        if (!StringUtils.isBlank(jwtToken)) {
+            try {
+                Claims claims = Jwts.parser().setSigningKey("sang@123").parseClaimsJws(jwtToken.replace("Bearer", ""))
+                        .getBody();
+                String username = claims.getSubject();//获取当前登录用户名
+            } catch (Exception exp) {
+                System.out.println("token无效！");
+            }
         }
-        log.debug("你的请求已经经过过滤！");
-        return true;
+        filterChain.doFilter(request, response);
+    }
+
+    private String getToken(HttpServletRequest request) {
+        String token = request.getHeader(TOKEN);
+
+        if (!StringUtils.isBlank(token))
+            return token;
+        token = request.getParameter(TOKEN);
+        if (!StringUtils.isBlank(token))
+            return token;
+        if (!StringUtils.isBlank(token))
+            return token;
+        return null;
     }
 }

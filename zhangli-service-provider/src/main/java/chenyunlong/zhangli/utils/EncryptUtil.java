@@ -8,7 +8,7 @@ import java.security.Security;
 public class EncryptUtil {
 
     //设置默认密匙
-    private static String strDefaultKey = "defaultKey";
+    private static final String strDefaultKey = "defaultKey";
     //加密
     private Cipher encryptCipher = null;
     //解密

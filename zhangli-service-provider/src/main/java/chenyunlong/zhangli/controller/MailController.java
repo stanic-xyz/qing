@@ -2,9 +2,8 @@ package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.service.EmailService;
-import chenyunlong.zhangli.utils.BaseResponse;
+import chenyunlong.zhangli.model.response.BaseResponse;
 import freemarker.template.TemplateException;
-import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;

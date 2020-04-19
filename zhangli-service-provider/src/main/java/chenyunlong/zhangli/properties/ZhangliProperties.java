@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.properties;
 
-import chenyunlong.zhangli.config.FileConfigurationProperties;
+import chenyunlong.zhangli.config.FileProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -10,17 +10,17 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "zhangli")
 public class ZhangliProperties {
     private boolean openAopLog = true;
-    private FileConfigurationProperties file;
-    private ShiroProperties shiro;
-    private SwaggerProperties swagger = new SwaggerProperties();
+    private FileProperties file;
+    private SecurityProperties security;
+    private SwaggerProperties swagger;
 
     public ZhangliProperties() {
     }
 
-    public ZhangliProperties(boolean openAopLog, FileConfigurationProperties file, ShiroProperties shiro, SwaggerProperties swagger) {
+    public ZhangliProperties(boolean openAopLog, FileProperties file, SecurityProperties security, SwaggerProperties swagger, String authticationPrefix) {
         this.openAopLog = openAopLog;
         this.file = file;
-        this.shiro = shiro;
+        this.security = security;
         this.swagger = swagger;
     }
 
@@ -32,20 +32,20 @@ public class ZhangliProperties {
         this.openAopLog = openAopLog;
     }
 
-    public FileConfigurationProperties getFile() {
+    public FileProperties getFile() {
         return file;
     }
 
-    public void setFile(FileConfigurationProperties file) {
+    public void setFile(FileProperties file) {
         this.file = file;
     }
 
-    public ShiroProperties getShiro() {
-        return shiro;
+    public SecurityProperties getSecurity() {
+        return security;
     }
 
-    public void setShiro(ShiroProperties shiro) {
-        this.shiro = shiro;
+    public void setSecurity(SecurityProperties security) {
+        this.security = security;
     }
 
     public SwaggerProperties getSwagger() {
@@ -54,16 +54,6 @@ public class ZhangliProperties {
 
     public void setSwagger(SwaggerProperties swagger) {
         this.swagger = swagger;
-    }
-
-    @Override
-    public String toString() {
-        return "ZhangliProperties{" +
-                "openAopLog=" + openAopLog +
-                ", file=" + file +
-                ", shiro=" + shiro +
-                ", swagger=" + swagger +
-                '}';
     }
 }
 
