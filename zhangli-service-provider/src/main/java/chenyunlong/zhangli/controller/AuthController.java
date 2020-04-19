@@ -2,40 +2,37 @@ package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.User;
-import chenyunlong.zhangli.entities.UserInfo;
 import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.discovery.converters.Auto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.netty.util.internal.StringUtil;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthGithubRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 
-@Slf4j
 @RestController
 @RequestMapping("authrize")
 public class AuthController {
 
-    @Autowired
-    private AuthGithubRequest authRequest;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-    @Autowired
-    private UserService userService;
+    private final AuthGithubRequest authRequest;
+    private final ObjectMapper objectMapper;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final UserService userService;
+
+    public AuthController(AuthGithubRequest authRequest, ObjectMapper objectMapper, RedisTemplate<String, Object> redisTemplate, UserService userService) {
+        this.authRequest = authRequest;
+        this.objectMapper = objectMapper;
+        this.redisTemplate = redisTemplate;
+        this.userService = userService;
+    }
 
     @PostMapping("auth")
     public String login(

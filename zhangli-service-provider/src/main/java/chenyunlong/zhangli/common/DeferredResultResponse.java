@@ -1,9 +1,5 @@
 package chenyunlong.zhangli.common;
 
-import lombok.Data;
-import lombok.Getter;
-
-@Data
 public class DeferredResultResponse {
     private Integer code;
     private String msg;
@@ -13,11 +9,35 @@ public class DeferredResultResponse {
         FAILED("失败"),
         SUCCESS("成功");
 
-        @Getter
         private String desc;
 
         Msg(String desc) {
             this.desc = desc;
         }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
     }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
 }

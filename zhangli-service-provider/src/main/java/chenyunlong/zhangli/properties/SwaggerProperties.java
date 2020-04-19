@@ -1,8 +1,5 @@
 package chenyunlong.zhangli.properties;
 
-import lombok.Data;
-
-@Data
 public class SwaggerProperties {
     private String basePackage;
     private String title;
@@ -13,6 +10,21 @@ public class SwaggerProperties {
     private String email;
     private String license;
     private String licenseUrl;
+
+    public SwaggerProperties() {
+    }
+
+    public SwaggerProperties(String basePackage, String title, String description, String version, String author, String url, String email, String license, String licenseUrl) {
+        this.basePackage = basePackage;
+        this.title = title;
+        this.description = description;
+        this.version = version;
+        this.author = author;
+        this.url = url;
+        this.email = email;
+        this.license = license;
+        this.licenseUrl = licenseUrl;
+    }
 
     public String getBasePackage() {
         return basePackage;
@@ -84,5 +96,20 @@ public class SwaggerProperties {
 
     public void setLicenseUrl(String licenseUrl) {
         this.licenseUrl = licenseUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "SwaggerProperties{" +
+                "basePackage='" + basePackage + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", version='" + version + '\'' +
+                ", author='" + author + '\'' +
+                ", url='" + url + '\'' +
+                ", email='" + email + '\'' +
+                ", license='" + license + '\'' +
+                ", licenseUrl='" + licenseUrl + '\'' +
+                '}';
     }
 }

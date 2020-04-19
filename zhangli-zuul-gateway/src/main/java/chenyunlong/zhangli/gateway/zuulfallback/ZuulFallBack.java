@@ -16,7 +16,7 @@ import java.io.InputStream;
 @Component
 public class ZuulFallBack implements FallbackProvider {
 
-    private Logger log = LoggerFactory.getLogger(ZuulFallBack.class);
+    private final Logger log = LoggerFactory.getLogger(ZuulFallBack.class);
 
     @Override
     public String getRoute() {

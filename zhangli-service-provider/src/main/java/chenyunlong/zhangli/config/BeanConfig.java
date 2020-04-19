@@ -25,11 +25,10 @@ public class BeanConfig {
     @Bean
     public AuthGithubRequest getAuthRequest() {
 
-        AuthGithubRequest authRequest = new AuthGithubRequest(AuthConfig.builder()
+        return new AuthGithubRequest(AuthConfig.builder()
                 .clientId("c9391500bdf102edd70c")
                 .clientSecret("c2a9c47006fbc8d16b7e8186b10c89c6cc02ab7f")
                 .redirectUri("http://localhost:8080/authrize/access_token")
                 .build());
-        return authRequest;
     }
 }

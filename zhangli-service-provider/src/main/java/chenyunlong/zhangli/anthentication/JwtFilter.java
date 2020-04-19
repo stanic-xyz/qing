@@ -2,7 +2,6 @@ package chenyunlong.zhangli.anthentication;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -13,7 +12,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@Slf4j
 @Component
 public class JwtFilter extends GenericFilterBean {
 

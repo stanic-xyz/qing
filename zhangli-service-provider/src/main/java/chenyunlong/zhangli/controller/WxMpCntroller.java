@@ -14,21 +14,24 @@ import com.riversoft.weixin.common.oauth2.OpenUser;
 import com.riversoft.weixin.mp.base.AppSetting;
 import com.riversoft.weixin.mp.message.MpXmlMessages;
 import com.riversoft.weixin.mp.oauth2.MpOAuth2s;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-@Slf4j
 @RestController
 @RequestMapping("wxmp")
 public class WxMpCntroller {
 
+    private Logger log = LoggerFactory.getLogger(WxMpCntroller.class);
 
-    @Autowired
-    private DuplicatedMessageChecker duplicatedMessageChecker;
+    private final DuplicatedMessageChecker duplicatedMessageChecker;
+
+    public WxMpCntroller(DuplicatedMessageChecker duplicatedMessageChecker) {
+        this.duplicatedMessageChecker = duplicatedMessageChecker;
+    }
 
     @GetMapping("oauth/mp")
     public void mp(@RequestParam(value = "code") String code, @RequestParam(value = "state", required = false) String state) {

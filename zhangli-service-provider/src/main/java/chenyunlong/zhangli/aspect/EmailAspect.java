@@ -3,9 +3,6 @@ package chenyunlong.zhangli.aspect;
 import chenyunlong.zhangli.annotation.Email;
 import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.EmailService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,7 +10,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -22,12 +18,15 @@ import java.lang.reflect.Method;
 @Component
 public class EmailAspect {
 
-    private Logger log = LoggerFactory.getLogger(EmailAspect.class);
-    @Autowired
-    private ZhangliProperties zhangliProperties;
+    private final Logger log = LoggerFactory.getLogger(EmailAspect.class);
+    private final ZhangliProperties zhangliProperties;
 
-    @Autowired
-    private EmailService emailService;
+    private final EmailService emailService;
+
+    public EmailAspect(ZhangliProperties zhangliProperties, EmailService emailService) {
+        this.zhangliProperties = zhangliProperties;
+        this.emailService = emailService;
+    }
 
 
     @Pointcut("@annotation(chenyunlong.zhangli.annotation.Email)")
@@ -45,32 +44,29 @@ public class EmailAspect {
 
         Object[] args = point.getArgs();
         log.debug("发送邮件的位置：" + annotation.receiver());
-        if (annotation != null) {
-            //TODO 创建一个邮件发送线程！
-            EmailThread emailThread = new EmailThread(annotation.receiver(), annotation.object(), annotation.content());
-            emailThread.start();
-        }
-        Object object = point.proceed(args);
-        return object;
+        //TODO 创建一个邮件发送线程！
+        EmailThread emailThread = new EmailThread(annotation.receiver(), annotation.object(), annotation.content());
+        emailThread.start();
+        return point.proceed(args);
     }
 
     private class EmailThread extends Thread {
-        private String receiver;
-        private String object;
-        private String content;
+        private final String receiver;
+        private final String subject;
+        private final String content;
 
-        public EmailThread(String receiver, String object, String content) {
+        public EmailThread(String receiver, String subject, String content) {
 
             this.receiver = receiver;
-            this.object = object;
+            this.subject = subject;
             this.content = content;
         }
 
         @Override
         public void run() {
             super.run();
-            emailService.sendEmail("1576302867@qq.com", "这是主题", "text");
-            log.debug("发送一条邮件给指定账户");
+            emailService.sendEmail(receiver, subject, content);
+            log.debug("发送一条邮件给指定账户" + zhangliProperties.getFile().getBaseUploadDir());
         }
     }
 }

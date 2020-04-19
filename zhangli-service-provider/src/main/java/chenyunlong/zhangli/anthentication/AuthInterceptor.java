@@ -3,6 +3,8 @@ package chenyunlong.zhangli.anthentication;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -11,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 public class AuthInterceptor extends HandlerInterceptorAdapter {
-
+    private static final String TOKEN = "Authorization";
+    private final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
@@ -35,7 +38,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String jwtToken = request.getHeader("authorization");
+        String jwtToken = request.getHeader(TOKEN);
 
         if (jwtToken != null) {
             Claims claims = Jwts.parser().setSigningKey("sang@123").parseClaimsJws(jwtToken.replace("Bearer", ""))

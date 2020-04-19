@@ -5,7 +5,8 @@ import chenyunlong.zhangli.common.DeferredResultResponse;
 import chenyunlong.zhangli.service.DeferredResultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
-@Api(description = "异步请求")
+@Api("异步请求")
 @RestController
 @RequestMapping("asyn")
-@Slf4j
 public class AsynController {
 
+    private final Logger log = LoggerFactory.getLogger(AsynController.class);
     private final DeferredResultService deferredResultService;
 
     /**

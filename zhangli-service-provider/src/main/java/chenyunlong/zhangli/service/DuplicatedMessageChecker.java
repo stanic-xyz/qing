@@ -1,15 +1,15 @@
 package chenyunlong.zhangli.service;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Slf4j
 @Service
 public class DuplicatedMessageChecker {
-
+    private final Logger log = LoggerFactory.getLogger(DuplicatedMessageChecker.class);
     //构建一个队列
     private final static Map<String, Long> messages = new ConcurrentHashMap<String, Long>();
 

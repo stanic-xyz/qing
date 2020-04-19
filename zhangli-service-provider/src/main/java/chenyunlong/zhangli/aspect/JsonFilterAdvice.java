@@ -2,30 +2,30 @@ package chenyunlong.zhangli.aspect;
 
 import chenyunlong.zhangli.annotation.JsonFieldFilter;
 import chenyunlong.zhangli.utils.BaseResponse;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 /**
  * 通过实现ResponseBodyAdvice接口来完成对响应结果的过滤
  * author
  */
-@Slf4j
 @ControllerAdvice
 public class JsonFilterAdvice implements ResponseBodyAdvice<BaseResponse> {
+
+    private final Logger log = LoggerFactory.getLogger(JsonFilterAdvice.class);
+
     /**
      * 判断是否进行过滤
      *

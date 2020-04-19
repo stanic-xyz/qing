@@ -35,6 +35,7 @@
         <module>zhangli-feign-client</module>
         <module>zhangli-zuul-gateway</module>
         <module>zhangli-config-git</module>
+        <module>monitor-admin</module>
     </modules>
     <dependencies>
         <dependency>
@@ -42,7 +43,6 @@
             <artifactId>hutool-all</artifactId>
             <version>5.2.0</version>
         </dependency>
-        <!--所有项目都依赖与Lombok工具-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -56,11 +56,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

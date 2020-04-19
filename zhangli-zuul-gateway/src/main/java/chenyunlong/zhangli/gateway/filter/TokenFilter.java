@@ -12,7 +12,10 @@ import java.nio.charset.Charset;
 import java.util.Base64;
 
 public class TokenFilter extends ZuulFilter {
-    private Logger log = LoggerFactory.getLogger(TokenFilter.class);
+
+    private static final String TOKEN = "Authorization";
+
+    private final Logger log = LoggerFactory.getLogger(TokenFilter.class);
 
     @Override
     public String filterType() {
@@ -45,7 +48,7 @@ public class TokenFilter extends ZuulFilter {
         //TODO 设置身份验证方式
         //获取请求的参数
         //
-        String token = request.getHeader("Authorization");
+        String token = getAuthorization(request);
         // 认证的原始信息
         String auth = "studyjava:hello";
         // 进行一个加密的处理
@@ -69,4 +72,20 @@ public class TokenFilter extends ZuulFilter {
             return null;
         }
     }
+
+    private String getAuthorization(HttpServletRequest request) {
+
+        String authorization = request.getHeader(TOKEN);
+
+        if (StringUtils.isBlank(authorization)) {
+            authorization = request.getParameter(TOKEN);
+        }
+
+        if (StringUtils.isBlank(authorization)) {
+            request.getAttribute(TOKEN);
+        }
+
+        return authorization;
+    }
+
 }
