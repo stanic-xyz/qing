@@ -2,6 +2,9 @@ package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.User;
+import chenyunlong.zhangli.exception.LoginErrorException;
+import chenyunlong.zhangli.model.ResultUtil;
+import chenyunlong.zhangli.model.response.BaseResponse;
 import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,18 +55,19 @@ public class AuthController {
     @Log("通过表单登陆")
     @ApiOperation("通过表单登陆")
     @PostMapping("formLogin")
-    public String formLofin(@RequestParam String userName, @RequestParam String password) {
+    public BaseResponse formLofin(@RequestParam String userName, @RequestParam String password) throws LoginErrorException {
 
         if (StringUtil.isNullOrEmpty(userName)) {
-            return "username required";
+            throw new LoginErrorException("用户名不能为空");
         }
         if (StringUtil.isNullOrEmpty(password)) {
-            return "password required";
+            throw new LoginErrorException("密码不能为空");
         }
         User user = new User(userName, password);
 
         User userInfo = userService.login(user);
-        return String.valueOf(userInfo);
+
+        return ResultUtil.success(userInfo);
     }
 
     /**

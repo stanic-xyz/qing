@@ -5,10 +5,10 @@ spring:
     name: zhangli-eureka-service
 eureka:
   server:
-    enable-self-preservation: false
+    enable-self-preservation: true
   client:
     fetch-registry: false
-    register-with-eureka: false
+    register-with-eureka: true
     service-url:
       defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
   instance:

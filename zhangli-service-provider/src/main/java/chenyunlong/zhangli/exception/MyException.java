@@ -1,11 +1,5 @@
 package chenyunlong.zhangli.exception;
 
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-@EqualsAndHashCode(callSuper = true)
 public class MyException extends Exception {
 
     private String msg;

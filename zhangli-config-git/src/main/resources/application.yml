@@ -10,7 +10,7 @@ eureka:
     hostname: localhost
     metadata-map:
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
-    prefer-ip-address: false
+    prefer-ip-address: true
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
   client:
     registryFetchIntervalSeconds: 5

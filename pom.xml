@@ -35,7 +35,6 @@
         <module>zhangli-feign-client</module>
         <module>zhangli-zuul-gateway</module>
         <module>zhangli-config-git</module>
-        <module>monitor-admin</module>
     </modules>
     <dependencies>
         <dependency>

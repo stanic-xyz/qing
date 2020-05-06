@@ -2,8 +2,12 @@ package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.entities.Permission;
 import chenyunlong.zhangli.entities.User;
+import chenyunlong.zhangli.mapper.PermissionMapper;
 import chenyunlong.zhangli.mapper.UserMapper;
 import chenyunlong.zhangli.service.UserService;
+import com.netflix.discovery.converters.Auto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +16,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
+    @Autowired
+    private PermissionMapper permissionMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public UserServiceImpl(UserMapper userMapper) {
@@ -35,6 +44,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(User user) {
+
+        User userInfo = userMapper.findByUsername(user.getUsername());
+
+        if (passwordEncoder.matches(user.getPassword(), userInfo.getPassword())) {
+            return userInfo;
+        }
         return null;
     }
 
@@ -45,9 +60,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Permission> getPermissionByUsername(String username) {
-        //TODO 还需要进行实现
-        return new ArrayList<>();
+        return permissionMapper.getPermissionByUsername(username);
     }
-
-
 }

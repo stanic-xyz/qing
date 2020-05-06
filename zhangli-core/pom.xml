@@ -13,4 +13,7 @@
 
     <packaging>pom</packaging>
 
+    <dependencies>
+
+    </dependencies>
 </project>

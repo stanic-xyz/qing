@@ -1,0 +1,3 @@
+mybatis:
+  mapperLocations: classpath*:mapper*/*.xml
+  default-statement-timeout: 30
