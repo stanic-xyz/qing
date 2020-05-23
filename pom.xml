@@ -30,11 +30,12 @@
     </properties>
     <modules>
         <module>zhangli-core</module>
-        <module>zhangli-service-provider</module>
         <module>zhangli-eureka-service</module>
         <module>zhangli-feign-client</module>
         <module>zhangli-zuul-gateway</module>
         <module>zhangli-config-git</module>
+        <module>zhangli-service-provider</module>
+        <module>zhangli-service-provider-reactive</module>
     </modules>
     <dependencies>
         <dependency>
