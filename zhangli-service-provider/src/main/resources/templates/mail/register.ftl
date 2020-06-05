@@ -16,7 +16,7 @@
 <a style="background-color: blue;color: white;font-size: large;border: none;border-radius: 20px;padding: 20px"
    href="http://wxapi.chenyunlong.cn/wxmp/wx/mp">这是一个链接地址</a>
 
-<p>Your DockerHub ID is:<span style="font-weight: boldt">stanics</span></p>
+<p>Your DockerHub ID is:<span style="font-weight: bold">stanics</span></p>
 
 <p>感谢你的关注</p>
 <div class="tail" style="text-align: center;align-self: center;align-items: center">

@@ -32,18 +32,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable();
-//        http.authorizeRequests()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .formLogin()
-//                .successHandler(authenticationSuccessHandler)
-//                .failureHandler(authenticationFailureHandler)
-//                .and()
-//                .logout()
-//                .permitAll();
+        http.authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
+                .and()
+                .logout()
+                .permitAll();
 
-//        http.addFilterBefore(new AuthInterceptor(zhangliProperties, redisTemplate), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new AuthInterceptor(zhangliProperties, redisTemplate), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**

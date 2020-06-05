@@ -9,10 +9,12 @@ import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -20,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +33,7 @@ public class AuthInterceptor extends OncePerRequestFilter {
 
     private final ZhangliProperties zhangliProperties;
     private RedisTemplate redisTemplate;
+
 
     public AuthInterceptor(ZhangliProperties zhangliProperties, RedisTemplate redisTemplate) {
         this.zhangliProperties = zhangliProperties;
@@ -48,14 +52,7 @@ public class AuthInterceptor extends OncePerRequestFilter {
                 Claims claims = Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey()).parseClaimsJws(jwtToken.replace("Bearer ", ""))
                         .getBody();
                 String key = zhangliProperties.getSecurity().getAuthticationPrefix() + claims.getId();
-
-                try {
-                    Authentication access_token = (Authentication) redisTemplate.opsForValue().get(key);
-                    log.debug(String.valueOf(access_token));
-                    SecurityContextHolder.getContext().setAuthentication(access_token);
-                } catch (Exception exp) {
-                    exp.printStackTrace();
-                }
+                String subject = claims.getSubject();
 
             } catch (JwtException exp) {
                 ObjectMapper objectMapper = new ObjectMapper();
