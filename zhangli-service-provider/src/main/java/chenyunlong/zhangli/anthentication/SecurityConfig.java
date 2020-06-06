@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -33,8 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
         http.authorizeRequests()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/authrize/**", "/actuator/**", "/file/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs").permitAll()
+                .antMatchers("/login", "/css/**", "/image/*").permitAll()
+                .antMatchers("/static/**", "/favicon.ico").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .successHandler(authenticationSuccessHandler)
@@ -43,13 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
 
-        http.addFilterBefore(new AuthInterceptor(zhangliProperties, redisTemplate), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(new AuthInterceptor(zhangliProperties, redisTemplate), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
-     * 密码生成策略.
+     * 密码生成策略
      *
-     * @return
+     * @return BCryptPasswordEncoder
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
