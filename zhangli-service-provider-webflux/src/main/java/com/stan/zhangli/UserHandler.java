@@ -1,5 +1,6 @@
 package com.stan.zhangli;
 
+import com.stan.zhangli.entities.User;
 import com.stan.zhangli.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

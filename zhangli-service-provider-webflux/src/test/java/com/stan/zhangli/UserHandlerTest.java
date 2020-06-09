@@ -1,5 +1,6 @@
 package com.stan.zhangli;
 
+import com.stan.zhangli.entities.User;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.FluxExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @RunWith(SpringRunner.class)

@@ -1,4 +1,4 @@
-package com.stan.zhangli;
+package com.stan.zhangli.entities;
 
 public class User {
     public User() {

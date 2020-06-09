@@ -1,5 +1,6 @@
 package com.stan.zhangli;
 
+import com.stan.zhangli.entities.User;
 import com.stan.zhangli.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

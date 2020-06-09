@@ -1,6 +1,6 @@
 package com.stan.zhangli.repository;
 
-import com.stan.zhangli.User;
+import com.stan.zhangli.entities.User;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
