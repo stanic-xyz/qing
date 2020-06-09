@@ -42,7 +42,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         //仅仅校验密码
         if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
             logger.debug("Authentication failed: password does not match stored value");
-
             throw new BadCredentialsException("Bad credentials");
         }
 

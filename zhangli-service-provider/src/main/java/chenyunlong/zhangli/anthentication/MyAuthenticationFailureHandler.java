@@ -1,9 +1,13 @@
 package chenyunlong.zhangli.anthentication;
 
+import chenyunlong.zhangli.model.ResultUtil;
+import chenyunlong.zhangli.model.response.ApiResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -20,12 +24,25 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+
+        ApiResult result = null;
+        if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
+            result = ResultUtil.fail(exception.getMessage());
+        } else if (exception instanceof LockedException) {
+            result = ResultUtil.fail("账户被锁定，请联系管理员!");
+        } else if (exception instanceof CredentialsExpiredException) {
+            result = ResultUtil.fail("证书过期，请联系管理员!");
+        } else if (exception instanceof AccountExpiredException) {
+            result = ResultUtil.fail("账户过期，请联系管理员!");
+        } else if (exception instanceof DisabledException) {
+            result = ResultUtil.fail("账户被禁用，请联系管理员!");
+        } else {
+            logger.error("登录失败：", exception);
+            result = ResultUtil.fail("登录失败!");
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", "0");
-        map.put("msg", "登录失败了");
-        map.put("data", exception.getCause());
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(map));
+        response.getWriter().write(objectMapper.writeValueAsString(result));
     }
 }

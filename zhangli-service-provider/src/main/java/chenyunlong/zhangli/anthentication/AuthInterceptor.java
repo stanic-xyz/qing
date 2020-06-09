@@ -11,10 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -26,7 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AuthInterceptor extends OncePerRequestFilter {
+public class AuthInterceptor extends AbstractAuthenticationProcessingFilter {
     private final Logger logger = LoggerFactory.getLogger(AuthInterceptor.class);
     private static final String TOKEN = "Authorization";
     private final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
@@ -36,11 +41,11 @@ public class AuthInterceptor extends OncePerRequestFilter {
 
 
     public AuthInterceptor(ZhangliProperties zhangliProperties, RedisTemplate redisTemplate) {
+        super(new AntPathRequestMatcher("/login", "POST"));
         this.zhangliProperties = zhangliProperties;
         this.redisTemplate = redisTemplate;
     }
 
-    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String jwtToken = getToken(request);
@@ -82,6 +87,14 @@ public class AuthInterceptor extends OncePerRequestFilter {
             return token;
         if (!StringUtils.isBlank(token))
             return token;
+        return null;
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
+
+        UsernamePasswordAuthenticationToken authRequest;
+
         return null;
     }
 }

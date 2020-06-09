@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.aspect;
 
 import chenyunlong.zhangli.annotation.JsonFieldFilter;
-import chenyunlong.zhangli.model.response.BaseResponse;
+import chenyunlong.zhangli.model.response.ApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -22,7 +22,7 @@ import java.util.List;
  * author
  */
 @ControllerAdvice
-public class JsonFilterAdvice implements ResponseBodyAdvice<BaseResponse> {
+public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
 
     private final Logger log = LoggerFactory.getLogger(JsonFilterAdvice.class);
 
@@ -42,7 +42,7 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<BaseResponse> {
     /**
      * 对最后的响应结果进行修改
      *
-     * @param baseResponse
+     * @param apiResult
      * @param methodParameter
      * @param mediaType
      * @param convertClass
@@ -52,8 +52,8 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<BaseResponse> {
      */
 
     @Override
-    public BaseResponse beforeBodyWrite(BaseResponse baseResponse, MethodParameter methodParameter, MediaType mediaType,
-                                        Class<? extends HttpMessageConverter<?>> convertClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+    public ApiResult beforeBodyWrite(ApiResult apiResult, MethodParameter methodParameter, MediaType mediaType,
+                                     Class<? extends HttpMessageConverter<?>> convertClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
 
         //获取方法的相关注解
         JsonFieldFilter annotation = methodParameter.getMethodAnnotation(JsonFieldFilter.class);
@@ -73,6 +73,6 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<BaseResponse> {
         }).start();
 
         //TODO 这里暂时不需要进行处理
-        return baseResponse;
+        return apiResult;
     }
 }

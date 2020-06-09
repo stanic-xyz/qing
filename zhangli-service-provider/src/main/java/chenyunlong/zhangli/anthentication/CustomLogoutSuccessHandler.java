@@ -1,8 +1,7 @@
 package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.model.ResultUtil;
-import chenyunlong.zhangli.model.response.BaseResponse;
-import cn.hutool.json.JSON;
+import chenyunlong.zhangli.model.response.ApiResult;
 import cn.hutool.json.JSONUtil;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -21,7 +20,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        BaseResponse success = ResultUtil.success("退出成功");
+        ApiResult success = ResultUtil.success("退出成功");
 
 
         response.setStatus(HttpServletResponse.SC_OK);

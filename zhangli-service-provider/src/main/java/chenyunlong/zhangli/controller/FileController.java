@@ -4,7 +4,7 @@ import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.UploadFile;
 import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.FileUploadService;
-import chenyunlong.zhangli.model.response.BaseResponse;
+import chenyunlong.zhangli.model.response.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class FileController {
     @Log
     @ApiOperation(value = "上传文件", notes = "上传文件")
     @PostMapping("upload")
-    public BaseResponse uploadFile(@RequestParam MultipartFile multipartFile) throws IOException {
+    public ApiResult uploadFile(@RequestParam MultipartFile multipartFile) throws IOException {
 
         if (!multipartFile.isEmpty()) {
 
@@ -83,9 +83,9 @@ public class FileController {
             uploadFile.setFileSize(multipartFile.getSize());
             uploadFile.setMimeType(multipartFile.getContentType());
             fileUploadService.saveFile(uploadFile);
-            return BaseResponse.success("上传成功");
+            return ApiResult.success("上传成功");
         } else {
-            return BaseResponse.faild("没有上传图片啊");
+            return ApiResult.faild("没有上传图片啊");
         }
     }
 }

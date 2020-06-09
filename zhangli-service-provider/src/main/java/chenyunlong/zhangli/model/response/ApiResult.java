@@ -2,13 +2,13 @@ package chenyunlong.zhangli.model.response;
 
 import java.io.Serializable;
 
-public class BaseResponse implements Serializable {
+public class ApiResult implements Serializable {
 
     private int code;
     private String Msg;
     private Object data;
 
-    public BaseResponse(int code, String msg, Object data) {
+    public ApiResult(int code, String msg, Object data) {
         this.code = code;
         Msg = msg;
         this.data = data;
@@ -38,11 +38,11 @@ public class BaseResponse implements Serializable {
         this.data = data;
     }
 
-    public static BaseResponse success(Object data) {
-        return new BaseResponse(200, "success", data);
+    public static ApiResult success(Object data) {
+        return new ApiResult(200, "success", data);
     }
 
-    public static BaseResponse faild(String msg) {
-        return new BaseResponse(400, msg, null);
+    public static ApiResult faild(String msg) {
+        return new ApiResult(400, msg, null);
     }
 }

@@ -3,7 +3,7 @@ package chenyunlong.zhangli.controller;
 import chenyunlong.zhangli.entities.Activity;
 import chenyunlong.zhangli.entities.request.ActivityQueryInfo;
 import chenyunlong.zhangli.model.ResultUtil;
-import chenyunlong.zhangli.model.response.BaseResponse;
+import chenyunlong.zhangli.model.response.ApiResult;
 import chenyunlong.zhangli.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ public class ActivityController {
      * @return
      */
     @GetMapping("list")
-    public BaseResponse listActivity(@Valid ActivityQueryInfo queryInfo) {
+    public ApiResult listActivity(@Valid ActivityQueryInfo queryInfo) {
 
         return ResultUtil.success(new ArrayList<Activity>());
     }

@@ -2,7 +2,7 @@ package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.service.EmailService;
-import chenyunlong.zhangli.model.response.BaseResponse;
+import chenyunlong.zhangli.model.response.ApiResult;
 import freemarker.template.TemplateException;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -34,7 +34,7 @@ public class MailController {
      * @return
      */
     @GetMapping("sendEmail")
-    public BaseResponse sendEmail(@RequestParam String message, @RequestParam String receiver) {
+    public ApiResult sendEmail(@RequestParam String message, @RequestParam String receiver) {
         RLock lock = redissonClient.getLock("testLock");
         if (!lock.isLocked()) {
             lock.lock();
@@ -54,7 +54,7 @@ public class MailController {
      * @return
      */
     @GetMapping("sendTemplateEmail")
-    public BaseResponse sendTemplateEmail(@RequestParam String to, @RequestParam String
+    public ApiResult sendTemplateEmail(@RequestParam String to, @RequestParam String
             subject, @RequestParam String text) {
 
         Map<String, String> map = new HashMap<>();
@@ -76,8 +76,8 @@ public class MailController {
      * @return
      */
     @PostMapping("sendAttacheMentEmail")
-    public BaseResponse sendAttachmentEmail(@RequestParam String to, @RequestParam String subject,
-                                            @RequestParam String text, @RequestParam MultipartFile file) throws IOException {
+    public ApiResult sendAttachmentEmail(@RequestParam String to, @RequestParam String subject,
+                                         @RequestParam String text, @RequestParam MultipartFile file) throws IOException {
 
         try {
             emailService.sendAttachmentEmail(to, subject, text, file);
