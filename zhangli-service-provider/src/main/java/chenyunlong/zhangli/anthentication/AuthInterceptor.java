@@ -46,37 +46,6 @@ public class AuthInterceptor extends AbstractAuthenticationProcessingFilter {
         this.redisTemplate = redisTemplate;
     }
 
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        String jwtToken = getToken(request);
-        logger.info(jwtToken, request.getRequestURL());
-
-        if (!StringUtils.isBlank(jwtToken)) {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                Claims claims = Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey()).parseClaimsJws(jwtToken.replace("Bearer ", ""))
-                        .getBody();
-                String key = zhangliProperties.getSecurity().getAuthticationPrefix() + claims.getId();
-                String subject = claims.getSubject();
-
-            } catch (JwtException exp) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                Map<String, Object> map = new HashMap<>();
-                map.put("code", "-1");
-                map.put("msg", exp.getMessage());
-                map.put("data", null);
-                response.setContentType("application/json;charset=UTF-8");
-                response.getWriter().write(objectMapper.writeValueAsString(map));
-                return;
-            } catch (Exception exp) {
-                System.out.println(exp.getMessage());
-                exp.printStackTrace();
-                return;
-            }
-        }
-        filterChain.doFilter(request, response);
-    }
-
     private String getToken(HttpServletRequest request) {
         String token = request.getHeader(TOKEN);
 
@@ -95,6 +64,33 @@ public class AuthInterceptor extends AbstractAuthenticationProcessingFilter {
 
         UsernamePasswordAuthenticationToken authRequest;
 
+
+        String jwtToken = getToken(httpServletRequest);
+        logger.info(jwtToken, httpServletRequest.getRequestURL());
+
+        if (!StringUtils.isBlank(jwtToken)) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                Claims claims = Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey()).parseClaimsJws(jwtToken.replace("Bearer ", ""))
+                        .getBody();
+                String key = zhangliProperties.getSecurity().getAuthticationPrefix() + claims.getId();
+                String subject = claims.getSubject();
+
+            } catch (JwtException exp) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                Map<String, Object> map = new HashMap<>();
+                map.put("code", "-1");
+                map.put("msg", exp.getMessage());
+                map.put("data", null);
+                httpServletResponse.setContentType("application/json;charset=UTF-8");
+                httpServletResponse.getWriter().write(objectMapper.writeValueAsString(map));
+            } catch (Exception exp) {
+                System.out.println(exp.getMessage());
+                exp.printStackTrace();
+            }
+        }
+
+        log.debug("在这里debug");
         return null;
     }
 }

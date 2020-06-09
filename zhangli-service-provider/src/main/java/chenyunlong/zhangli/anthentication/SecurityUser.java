@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.anthentication;
 
+import chenyunlong.zhangli.entities.Permission;
 import chenyunlong.zhangli.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,24 +8,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class SecurityUser implements UserDetails {
 
     private transient User currentUser;
+    private transient Collection<GrantedAuthority> permissionList;
 
-    public SecurityUser(User user) {
+    public SecurityUser(User user, Collection<GrantedAuthority> authorities) {
         if (user != null) {
             currentUser = user;
+            this.permissionList = authorities;
         }
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //TODO 这里还需要进行权限验证
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
-        authorities.add(authority);
-        return authorities;
+        return permissionList;
     }
 
     @Override
