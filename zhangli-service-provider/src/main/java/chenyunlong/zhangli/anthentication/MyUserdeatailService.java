@@ -14,9 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-@Component
 public class MyUserdeatailService implements UserDetailsService {
 
     private final UserService userService;
@@ -27,8 +25,8 @@ public class MyUserdeatailService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userService.findUserByUsername(s);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userService.findUserByUsername(username);
         if (user == null)
             throw new UsernameNotFoundException("用户名未找到！");
 

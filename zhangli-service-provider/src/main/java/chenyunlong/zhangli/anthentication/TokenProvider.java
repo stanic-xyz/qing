@@ -18,14 +18,13 @@ public class TokenProvider {
     }
 
     public String getUserNameFromToken(String authToken) {
-        logger.debug("通过jwt获取用户信息:secretKey:" + zhangliProperties.getSecurity().getSecretKey());
         try {
             Claims claims = JwtUtil.parseJWT(authToken, zhangliProperties.getSecurity().getSecretKey());
             return claims.getSubject();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "stan";
+        return null;
     }
 
     public boolean validateToken(String authToken, UserDetails details) {
