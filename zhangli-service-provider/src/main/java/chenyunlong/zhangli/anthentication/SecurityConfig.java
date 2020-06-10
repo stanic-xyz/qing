@@ -1,31 +1,39 @@
 package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.properties.ZhangliProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
-    @Autowired
-    private ZhangliProperties zhangliProperties;
-    @Autowired
-    private RedisTemplate redisTemplate;
+    private final MyAccessDeniedHandler myAccessDeniedHandler;
+    private final ZhangliProperties zhangliProperties;
+    private final RedisTemplate redisTemplate;
+    private TokenProvider tokenProvider;
 
-    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFeilureHandler) {
+    @Qualifier("myUserdeatailService")
+    private UserDetailsService userDetailsService;
+
+    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFeilureHandler, RedisTemplate redisTemplate, ZhangliProperties zhangliProperties, MyAccessDeniedHandler myAccessDeniedHandler) {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFeilureHandler;
+        this.redisTemplate = redisTemplate;
+        this.zhangliProperties = zhangliProperties;
+        this.tokenProvider = new TokenProvider(zhangliProperties);
+        this.myAccessDeniedHandler = myAccessDeniedHandler;
     }
 
     @Override
@@ -33,6 +41,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        禁用CSRF 开启跨域
         http.csrf().disable();
         http.cors();
+
+//        开起无状态
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.authorizeRequests()
                 .antMatchers("/authrize/**", "/actuator/**", "/file/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs").permitAll()
                 .antMatchers("/login", "/css/**", "/image/*").permitAll()
@@ -43,9 +56,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
                 .and()
+                .exceptionHandling()
+                .accessDeniedHandler(myAccessDeniedHandler)
+                .and()
                 .logout().permitAll();
 
-        http.addFilterBefore(new AuthInterceptor(zhangliProperties, redisTemplate), UsernamePasswordAuthenticationFilter.class);
+        http.apply(securityConfigurerAdapter(userDetailsService));
+//        http.addFilterBefore(new MyAuthenticationProcessingFilter(zhangliProperties, redisTemplate), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
@@ -56,5 +73,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
+    public MyAuthTokenConfigurer securityConfigurerAdapter(@Qualifier("myUserdeatailService") UserDetailsService userDetailsService) {
+        return new MyAuthTokenConfigurer(userDetailsService, tokenProvider);
     }
 }

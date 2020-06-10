@@ -42,20 +42,19 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        //缺少这一句，登录不成功
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        保存登陆信息到redis缓存
-//        redisTemplate.opsForValue().set(zhangliProperties.getSecurity().getAuthticationPrefix() + authentication.getPrincipal().toString(), authentication);
+
+        SecurityUser user = null;
+
         ObjectMapper objectMapper = new ObjectMapper();
-        SecurityUser user = (SecurityUser) authentication.getPrincipal();
+        String username = (String) authentication.getPrincipal();
         //添加一个jwt Token
         JwtBuilder builder = Jwts.builder();
 //        设置主体信息
-        builder.setSubject(objectMapper.writeValueAsString(user));
-//        设置过期时间
-        builder.setExpiration(new Date(System.currentTimeMillis() + zhangliProperties.getSecurity().getJwtTimeOut()));
-        builder.setId(authentication.getPrincipal().toString());
-        String token = builder.signWith(SignatureAlgorithm.HS512, zhangliProperties.getSecurity().getSecretKey()).compact();
+        String token = builder.setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + zhangliProperties.getSecurity().getJwtTimeOut()))//        设置过期时间
+                .setId(authentication.getPrincipal().toString())
+                .signWith(SignatureAlgorithm.HS512, zhangliProperties.getSecurity().getSecretKey())
+                .compact();
         ApiResult success = ResultUtil.success(token);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(success));

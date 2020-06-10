@@ -32,14 +32,14 @@ public class MyUserdeatailService implements UserDetailsService {
         if (user == null)
             throw new UsernameNotFoundException("用户名未找到！");
 
-        List<Permission> permissionList = userService.getPermissionByUsername(user.getUsername());
+//        List<Permission> permissionList = userService.getPermissionByUsername(user.getUsername());
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        for (Permission permission : permissionList) {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
-            grantedAuthorities.add(grantedAuthority);
-        }
+//        for (Permission permission : permissionList) {
+//            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
+//            grantedAuthorities.add(grantedAuthority);
+//        }
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
         grantedAuthorities.add(authority);
 
