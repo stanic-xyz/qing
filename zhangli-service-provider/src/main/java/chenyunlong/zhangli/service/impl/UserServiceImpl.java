@@ -7,6 +7,7 @@ import chenyunlong.zhangli.mapper.UserMapper;
 import chenyunlong.zhangli.service.UserService;
 import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PermissionMapper permissionMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    ;
 
 
     public UserServiceImpl(UserMapper userMapper) {

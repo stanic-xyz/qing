@@ -1,9 +1,6 @@
 package chenyunlong.zhangli.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import java.util.Date;
 
@@ -24,7 +21,7 @@ public class JwtUtil {
         return builder.compact();
     }
 
-    public static Claims parseJWT(String authToken, String jwtSecretKey) {
+    public static Claims parseJWT(String authToken, String jwtSecretKey) throws JwtException {
         return Jwts.parser()
                 .setSigningKey(jwtSecretKey)
                 .parseClaimsJws(authToken)

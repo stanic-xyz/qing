@@ -1,11 +1,13 @@
 spring:
-    application:
-        name: zhangli-service-provider
-    datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        hikari:
-            username: root
-#            password: MysqlPwdROOT1996
-            password: root
-#        url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
-        url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
+  application:
+    name: zhangli-service-provider
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      username: root
+      #            password: MysqlPwdROOT1996
+      password: root
+    #        url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
+server:
+  port: 8088

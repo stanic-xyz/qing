@@ -2,9 +2,6 @@ package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.UserService;
-import com.netflix.discovery.converters.Auto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,18 +23,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final ZhangliProperties zhangliProperties;
     private final RedisTemplate redisTemplate;
     private TokenProvider tokenProvider;
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    private UserDetailsService userDetailsService;
 
-    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFeilureHandler, RedisTemplate redisTemplate, ZhangliProperties zhangliProperties, MyAccessDeniedHandler myAccessDeniedHandler) {
+    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFeilureHandler, RedisTemplate redisTemplate, ZhangliProperties zhangliProperties, MyAccessDeniedHandler myAccessDeniedHandler, UserService userService) {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFeilureHandler;
         this.redisTemplate = redisTemplate;
         this.zhangliProperties = zhangliProperties;
         this.tokenProvider = new TokenProvider(zhangliProperties);
         this.myAccessDeniedHandler = myAccessDeniedHandler;
+        this.userService = userService;
     }
 
     @Override
@@ -47,19 +43,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
 
 //        开起无状态
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
                 .antMatchers("/authrize/**", "/actuator/**", "/file/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs").permitAll()
                 .antMatchers("/login", "/css/**", "/image/*").permitAll()
                 .antMatchers("/static/**", "/favicon.ico").permitAll()
-                .anyRequest().authenticated();
-//                .and()
-//                .formLogin();
+                .anyRequest().authenticated()
+                .and()
+                .formLogin();
 //                .successHandler(authenticationSuccessHandler)
 //                .failureHandler(authenticationFailureHandler)
 
-        http.apply(securityConfigurerAdapter());
+//        http.apply(securityConfigurerAdapter());
     }
 
     /**
@@ -76,4 +72,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public MyAuthTokenConfigurer securityConfigurerAdapter() {
         return new MyAuthTokenConfigurer(new MyUserdeatailService(userService), tokenProvider, myAccessDeniedHandler);
     }
+
+    @Bean
+    UserDetailsService getUserDetailsService() {
+        return new MyUserdeatailService(userService);
+    }
+
 }

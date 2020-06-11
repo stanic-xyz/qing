@@ -1,10 +1,7 @@
 package chenyunlong.zhangli.anthentication;
 
-import chenyunlong.zhangli.entities.Permission;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.service.UserService;
-import com.google.inject.internal.cglib.proxy.$UndeclaredThrowableException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
