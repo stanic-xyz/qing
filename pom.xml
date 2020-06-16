@@ -27,6 +27,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dockerfile.maven.version>1.4.4</dockerfile.maven.version>
         <docker.registry.name.prefix>stanics</docker.registry.name.prefix>
+        <sentinel.version>1.7.2</sentinel.version>
     </properties>
     <modules>
         <module>zhangli-core</module>

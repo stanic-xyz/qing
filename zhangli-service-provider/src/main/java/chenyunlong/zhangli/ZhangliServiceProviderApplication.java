@@ -8,13 +8,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @EnableEurekaClient
 @SpringBootApplication
-public class ZhangliServiceProviderApplication extends SpringBootServletInitializer {
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(ZhangliServiceProviderApplication.class);
-    }
-
+public class ZhangliServiceProviderApplication {
     public static void main(String[] args) {
         SpringApplication.run(ZhangliServiceProviderApplication.class, args);
     }

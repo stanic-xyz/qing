@@ -25,8 +25,7 @@ public class HelloController {
     public String hello(@RequestParam String name) {
 
         String value = remoteHello.getUserInfo(name);
-
-        logger.info("来自远程的请求");
+        logger.debug("来自远程的请求");
         return "this is hello world!" + test + ":" + value;
     }
 }

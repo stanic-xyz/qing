@@ -1,5 +1,11 @@
 package chenyunlong.zhangli.gateway.filter;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.apache.commons.lang.StringUtils;
@@ -8,7 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 public class TokenFilter extends ZuulFilter {
 
@@ -56,13 +64,16 @@ public class TokenFilter extends ZuulFilter {
         String authHeader = "Basic " + new String(encodedAuth);
         ctx.addZuulRequestHeader("Authorization", authHeader);
 
-        //对请求进行路由
-        if (StringUtils.isNotBlank(token)) {
+        try (Entry entry = SphU.entry("HelloWorld")) {
+            // Your business logic here.
+            System.out.println("hello world");
             ctx.setSendZuulResponse(true);
             ctx.setResponseStatusCode(200);
             ctx.set("isSuccess", true);
             return null;
-        } else {
+        } catch (BlockException e) {
+            // Handle rejected request.
+            e.printStackTrace();
             //不对其进行路由
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(400);
@@ -86,5 +97,4 @@ public class TokenFilter extends ZuulFilter {
 
         return authorization;
     }
-
 }

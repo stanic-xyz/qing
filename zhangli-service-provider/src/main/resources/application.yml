@@ -1,7 +1,5 @@
 server:
-#  port: 8080
-  servlet:
-    context-path: zhangli-service-provicer
+  port: 8001
 spring:
   application:
     name: zhangli-service-provider
