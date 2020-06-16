@@ -2,6 +2,7 @@ package chenyunlong.zhangli.anthentication;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -11,7 +12,7 @@ public class MyAuthTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecu
 
     private TokenProvider tokenProvider;  // 我们之前自定义的 token功能类
     private UserDetailsService detailsService;// 也是我实现的UserDetailsService
-    private AccessDeniedHandler myAccessDeniedHandler;
+    private AccessDeniedHandler myAccessDeniedHandler;//当用户不具有权限的时候
 
     public MyAuthTokenConfigurer(UserDetailsService detailsService, TokenProvider tokenProvider, AccessDeniedHandler myAccessDeniedHandler) {
         this.detailsService = detailsService;
@@ -22,7 +23,7 @@ public class MyAuthTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecu
     @Override
     public void configure(HttpSecurity http) throws Exception {
         MyTokenFilter customFilter = new MyTokenFilter(detailsService, tokenProvider);
+
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
-        http.exceptionHandling().accessDeniedHandler(myAccessDeniedHandler);
     }
 }

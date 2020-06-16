@@ -28,6 +28,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
+        MyAuthentication myAuthentication = (MyAuthentication) authentication;
+
         if (authentication.getCredentials() == null) {
             logger.debug("Authentication failed: no credentials provided");
 
@@ -50,6 +52,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(aClass);
+        return MyAuthentication.class.isAssignableFrom(aClass);
     }
 }

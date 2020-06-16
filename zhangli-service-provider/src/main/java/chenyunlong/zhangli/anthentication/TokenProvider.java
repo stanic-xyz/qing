@@ -22,7 +22,7 @@ public class TokenProvider {
             Claims claims = JwtUtil.parseJWT(authToken, zhangliProperties.getSecurity().getSecretKey());
             return claims.getSubject();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return null;
     }

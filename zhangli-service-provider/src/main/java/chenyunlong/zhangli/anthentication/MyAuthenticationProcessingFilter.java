@@ -21,38 +21,24 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
     private static final String TOKEN = "Authorization";
 
     private final ZhangliProperties zhangliProperties;
-    private RedisTemplate redisTemplate;
 
 
-    public MyAuthenticationProcessingFilter(ZhangliProperties zhangliProperties, RedisTemplate redisTemplate) {
+    public MyAuthenticationProcessingFilter(ZhangliProperties zhangliProperties) {
         super(new AntPathRequestMatcher("/login", "POST"));
         this.zhangliProperties = zhangliProperties;
-        this.redisTemplate = redisTemplate;
     }
 
-    private String getToken(HttpServletRequest request) {
-        String token = request.getHeader(TOKEN);
-
-        if (!StringUtils.isBlank(token))
-            return token;
-        token = request.getParameter(TOKEN);
-        if (!StringUtils.isBlank(token))
-            return token;
-        if (!StringUtils.isBlank(token))
-            return token;
-        return null;
-    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
 
         UsernamePasswordAuthenticationToken authRequest;
+        authRequest = new UsernamePasswordAuthenticationToken("", "", null);
 
-
-//        authRequest = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
-
-
+        logger.debug(zhangliProperties.getSecurity().getJwtTimeOut().toString());
         logger.debug("在这里debug");
-        return null;
+        return this.getAuthenticationManager().authenticate(authRequest);
     }
+
+
 }

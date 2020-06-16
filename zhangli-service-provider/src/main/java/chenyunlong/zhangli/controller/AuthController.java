@@ -37,14 +37,6 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("auth")
-    public String login(
-            @RequestBody String code
-    ) {
-        authRequest.login(code);
-        return "登陆状态";
-    }
-
     /**
      * 表单登陆接口
      *
@@ -88,7 +80,6 @@ public class AuthController {
 
         AuthResponse authResponse = authRequest.login(code);
         AuthUser user = (AuthUser) authResponse.getData();
-
 
         String jwt = Jwts.builder()
                 .claim("authorities", "权限内容")//配置用户角色
