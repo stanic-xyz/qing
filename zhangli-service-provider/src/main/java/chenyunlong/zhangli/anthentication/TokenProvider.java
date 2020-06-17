@@ -1,11 +1,15 @@
 package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.entities.User;
+import chenyunlong.zhangli.entities.UserInfo;
 import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.utils.JwtUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,17 +26,35 @@ public class TokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
     private final ZhangliProperties zhangliProperties;
+    private final ObjectMapper objectMapper;
 
-    public TokenProvider(ZhangliProperties zhangliProperties) {
+    public TokenProvider(ZhangliProperties zhangliProperties, ObjectMapper objectMapper) {
         this.zhangliProperties = zhangliProperties;
+        this.objectMapper = objectMapper;
     }
 
 
+    /**
+     * 通过token获取用户信息
+     *
+     * @param authToken
+     * @return
+     */
     public String getUserNameFromToken(String authToken) {
         try {
             Claims claims = JwtUtil.parseJWT(authToken, zhangliProperties.getSecurity().getSecretKey());
-            return claims.getSubject();
-        } catch (Exception e) {
+            User userInfo = objectMapper.readValue(claims.getSubject(), User.class);
+            return userInfo.getUsername();
+        } catch (SecurityException | MalformedJwtException e) {
+            logger.info("Invalid JWT signature.");
+        } catch (ExpiredJwtException e) {
+            logger.info("Expired JWT token.");
+        } catch (UnsupportedJwtException e) {
+            logger.info("Unsupported JWT token.");
+        } catch (IllegalArgumentException e) {
+            logger.info("JWT token compact of handler are invalid.");
+        } catch (JsonProcessingException e) {
+            logger.info("parse Jsonobject failed.");
         }
         return null;
     }
@@ -60,7 +82,7 @@ public class TokenProvider {
 
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(zhangliProperties.getSecurity().getJwtTimeOut().toString())
+                .setSigningKey(zhangliProperties.getSecurity().getSecretKey())
                 .parseClaimsJws(token)
                 .getBody();
 
