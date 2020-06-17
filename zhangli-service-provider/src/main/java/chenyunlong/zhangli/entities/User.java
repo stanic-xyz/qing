@@ -1,7 +1,10 @@
 package chenyunlong.zhangli.entities;
 
 
+import org.springframework.security.core.GrantedAuthority;
+
 import java.io.Serializable;
+import java.util.Collection;
 
 public class User implements Serializable {
 
@@ -27,6 +30,10 @@ public class User implements Serializable {
         this.phone = phone;
         this.openId = openId;
         this.email = email;
+    }
+
+    public User(String subject, String s, Collection<? extends GrantedAuthority> authorities) {
+        this.username = subject;
     }
 
     public Long getUserID() {

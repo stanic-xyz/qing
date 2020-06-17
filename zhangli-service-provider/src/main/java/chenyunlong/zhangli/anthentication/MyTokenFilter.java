@@ -42,12 +42,15 @@ public class MyTokenFilter extends GenericFilterBean {
                 if (!StringUtils.isEmpty(username)) {
                     // 这里仍然是调用我们自定义的UserDetailsService，查库，检查用户名是否存在，
                     // 如果是伪造的token,可能DB中就找不到username这个人了，抛出异常，认证失败
-                    UserDetails details = this.detailsService.loadUserByUsername(username);
-                    if (this.tokenProvider.validateToken(authToken, details)) {
+                    if (this.tokenProvider.validateToken(authToken)) {
                         log.debug(" validateToken ok...");
-                        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());
-                        // 这里还是上面见过的，存放认证信息，如果没有走这一步，下面的doFilter就会提示登录了
-                        SecurityContextHolder.getContext().setAuthentication(token);
+
+                        UserDetails details = this.detailsService.loadUserByUsername(username);
+                        if (details != null) {
+                            // 这里还是上面见过的，存放认证信息，如果没有走这一步，下面的doFilter就会提示登录了
+                            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());
+                            SecurityContextHolder.getContext().setAuthentication(token);
+                        }
                     }
                 }
             }

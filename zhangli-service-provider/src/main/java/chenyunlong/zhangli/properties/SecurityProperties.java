@@ -6,8 +6,11 @@ public class SecurityProperties {
 
     //token默认有效时间 1天
     private Long jwtTimeOut = 10086400L;
-    private String authticationPrefix = "authentication_";
+    private String authticationPrefix = "auth";
     private String secretKey = "Stanic";
+
+    private long tokenValidityInMilliseconds = 24 * 60 * 1000;
+    private long tokenValidityInMillisecondsForRememberMe = 30 * 24 * 60 * 1000;
 
     public SecurityProperties() {
     }
@@ -17,6 +20,10 @@ public class SecurityProperties {
         this.jwtTimeOut = jwtTimeOut;
     }
 
+
+    protected boolean canEqual(final Object other) {
+        return other instanceof SecurityProperties;
+    }
 
     public String getAnonUrl() {
         return this.anonUrl;
@@ -34,6 +41,14 @@ public class SecurityProperties {
         return this.secretKey;
     }
 
+    public long getTokenValidityInMilliseconds() {
+        return this.tokenValidityInMilliseconds;
+    }
+
+    public long getTokenValidityInMillisecondsForRememberMe() {
+        return this.tokenValidityInMillisecondsForRememberMe;
+    }
+
     public void setAnonUrl(String anonUrl) {
         this.anonUrl = anonUrl;
     }
@@ -48,6 +63,14 @@ public class SecurityProperties {
 
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
+    }
+
+    public void setTokenValidityInMilliseconds(long tokenValidityInMilliseconds) {
+        this.tokenValidityInMilliseconds = tokenValidityInMilliseconds;
+    }
+
+    public void setTokenValidityInMillisecondsForRememberMe(long tokenValidityInMillisecondsForRememberMe) {
+        this.tokenValidityInMillisecondsForRememberMe = tokenValidityInMillisecondsForRememberMe;
     }
 
     public boolean equals(final Object o) {
@@ -69,11 +92,10 @@ public class SecurityProperties {
         final Object this$secretKey = this.getSecretKey();
         final Object other$secretKey = other.getSecretKey();
         if (this$secretKey == null ? other$secretKey != null : !this$secretKey.equals(other$secretKey)) return false;
+        if (this.getTokenValidityInMilliseconds() != other.getTokenValidityInMilliseconds()) return false;
+        if (this.getTokenValidityInMillisecondsForRememberMe() != other.getTokenValidityInMillisecondsForRememberMe())
+            return false;
         return true;
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof SecurityProperties;
     }
 
     public int hashCode() {
@@ -87,10 +109,14 @@ public class SecurityProperties {
         result = result * PRIME + ($authticationPrefix == null ? 43 : $authticationPrefix.hashCode());
         final Object $secretKey = this.getSecretKey();
         result = result * PRIME + ($secretKey == null ? 43 : $secretKey.hashCode());
+        final long $tokenValidityInMilliseconds = this.getTokenValidityInMilliseconds();
+        result = result * PRIME + (int) ($tokenValidityInMilliseconds >>> 32 ^ $tokenValidityInMilliseconds);
+        final long $tokenValidityInMillisecondsForRememberMe = this.getTokenValidityInMillisecondsForRememberMe();
+        result = result * PRIME + (int) ($tokenValidityInMillisecondsForRememberMe >>> 32 ^ $tokenValidityInMillisecondsForRememberMe);
         return result;
     }
 
     public String toString() {
-        return "SecurityProperties(anonUrl=" + this.getAnonUrl() + ", jwtTimeOut=" + this.getJwtTimeOut() + ", authticationPrefix=" + this.getAuthticationPrefix() + ", secretKey=" + this.getSecretKey() + ")";
+        return "SecurityProperties(anonUrl=" + this.getAnonUrl() + ", jwtTimeOut=" + this.getJwtTimeOut() + ", authticationPrefix=" + this.getAuthticationPrefix() + ", secretKey=" + this.getSecretKey() + ", tokenValidityInMilliseconds=" + this.getTokenValidityInMilliseconds() + ", tokenValidityInMillisecondsForRememberMe=" + this.getTokenValidityInMillisecondsForRememberMe() + ")";
     }
 }

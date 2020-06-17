@@ -5,6 +5,7 @@ import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.exception.LoginErrorException;
 import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.response.ApiResult;
+import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,12 +30,14 @@ public class AuthController {
     private final ObjectMapper objectMapper;
     private final RedisTemplate<String, Object> redisTemplate;
     private final UserService userService;
+    private final ZhangliProperties zhangliProperties;
 
-    public AuthController(AuthGithubRequest authRequest, ObjectMapper objectMapper, RedisTemplate<String, Object> redisTemplate, UserService userService) {
+    public AuthController(AuthGithubRequest authRequest, ObjectMapper objectMapper, RedisTemplate<String, Object> redisTemplate, UserService userService, ZhangliProperties zhangliProperties) {
         this.authRequest = authRequest;
         this.objectMapper = objectMapper;
         this.redisTemplate = redisTemplate;
         this.userService = userService;
+        this.zhangliProperties = zhangliProperties;
     }
 
     /**
@@ -85,7 +88,8 @@ public class AuthController {
                 .claim("authorities", "权限内容")//配置用户角色
                 .setSubject(objectMapper.writeValueAsString(user))
                 .setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                .signWith(SignatureAlgorithm.HS512, "sang@123")
+
+                .signWith(SignatureAlgorithm.HS256, zhangliProperties.getSecurity().getSecretKey())
                 .compact();
         redisTemplate.opsForValue().set(jwt, user);
         return jwt;
