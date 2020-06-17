@@ -10,7 +10,7 @@
     </parent>
     <artifactId>zhangli-service-provider</artifactId>
     <name>zhangli-service-provider</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>me.zhyd.oauth</groupId>

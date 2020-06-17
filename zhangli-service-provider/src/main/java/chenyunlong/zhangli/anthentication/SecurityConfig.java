@@ -22,7 +22,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
-    private final MyAccessDeniedHandler myAccessDeniedHandler;
     private final ZhangliProperties zhangliProperties;
     private final RedisTemplate redisTemplate;
     @Autowired
@@ -34,12 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private SecurityProblemSupport problemSupport;
 
 
-    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFeilureHandler, RedisTemplate redisTemplate, ZhangliProperties zhangliProperties, MyAccessDeniedHandler myAccessDeniedHandler, UserService userService) {
+    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFeilureHandler, RedisTemplate redisTemplate, ZhangliProperties zhangliProperties, UserService userService) {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFeilureHandler;
         this.redisTemplate = redisTemplate;
         this.zhangliProperties = zhangliProperties;
-        this.myAccessDeniedHandler = myAccessDeniedHandler;
         this.userService = userService;
     }
 
