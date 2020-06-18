@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.annotation.Log;
+import chenyunlong.zhangli.anthentication.TokenProvider;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.exception.LoginErrorException;
 import chenyunlong.zhangli.model.ResultUtil;
@@ -16,11 +17,18 @@ import io.swagger.annotations.ApiOperation;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthGithubRequest;
+import org.apache.kafka.common.protocol.types.Field;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("authrize")
@@ -31,13 +39,15 @@ public class AuthController {
     private final RedisTemplate<String, Object> redisTemplate;
     private final UserService userService;
     private final ZhangliProperties zhangliProperties;
+    private final TokenProvider tokenProvider;
 
-    public AuthController(AuthGithubRequest authRequest, ObjectMapper objectMapper, RedisTemplate<String, Object> redisTemplate, UserService userService, ZhangliProperties zhangliProperties) {
+    public AuthController(AuthGithubRequest authRequest, ObjectMapper objectMapper, RedisTemplate<String, Object> redisTemplate, UserService userService, ZhangliProperties zhangliProperties, TokenProvider tokenProvider) {
         this.authRequest = authRequest;
         this.objectMapper = objectMapper;
         this.redisTemplate = redisTemplate;
         this.userService = userService;
         this.zhangliProperties = zhangliProperties;
+        this.tokenProvider = tokenProvider;
     }
 
     /**
@@ -62,7 +72,10 @@ public class AuthController {
 
         User userInfo = userService.login(user);
 
-        return ResultUtil.success(userInfo);
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        return ResultUtil.success(tokenProvider.createToken(new UsernamePasswordAuthenticationToken(userInfo.getUsername(), userInfo.getPassword(), authorities), false));
     }
 
     /**
@@ -84,15 +97,7 @@ public class AuthController {
         AuthResponse authResponse = authRequest.login(code);
         AuthUser user = (AuthUser) authResponse.getData();
 
-        String jwt = Jwts.builder()
-                .claim("authorities", "权限内容")//配置用户角色
-                .setSubject(objectMapper.writeValueAsString(user))
-                .setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-
-                .signWith(SignatureAlgorithm.HS256, zhangliProperties.getSecurity().getSecretKey())
-                .compact();
-        redisTemplate.opsForValue().set(jwt, user);
-        return jwt;
+        return tokenProvider.createToken(new UsernamePasswordAuthenticationToken("stan", "stan", null), false);
     }
 
     @GetMapping("getUserInfo")
