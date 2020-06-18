@@ -1,6 +1,11 @@
 server:
   port: 8001
 spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
   application:
     name: zhangli-service-provider
   datasource:

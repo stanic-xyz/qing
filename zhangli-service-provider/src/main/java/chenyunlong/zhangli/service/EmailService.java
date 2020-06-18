@@ -61,12 +61,9 @@ public class EmailService {
         helper.setText(html, true);//重点，默认为false，显示原始html代码，无效果
 
         mailSender.send(mimeMessage);
-
     }
 
     public void sendAttachmentEmail(String to, String subject, String text, MultipartFile file) throws MessagingException {
-        Map<String, String> attachmentMap = new HashMap<>();
-        attachmentMap.put("附件", "file.txt的绝对路径");
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         //是否发送的邮件是富文本（附件，图片，html等）
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -76,7 +73,7 @@ public class EmailService {
 
         messageHelper.setSubject(subject);
         messageHelper.setText(text, true);//重点，默认为false，显示原始html代码，无效果
-        File tempFile = new File("C:\\Users\\Administrator\\Pictures\\风景动漫壁纸\\003.jpg");
+        File tempFile = new File("I:\\壁纸\\Q版贞德.png");
         if (tempFile.exists()) {
             messageHelper.addAttachment(Objects.requireNonNull(tempFile.getName()), tempFile);
             messageHelper.addAttachment(Objects.requireNonNull(file.getOriginalFilename()), file);
