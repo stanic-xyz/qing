@@ -38,6 +38,7 @@
         <module>zhangli-service-provider</module>
         <module>zhangli-service-provider-webflux</module>
         <module>zhangli-admin-server</module>
+        <module>zhangli-service-natcross</module>
     </modules>
     <dependencies>
         <dependency>
