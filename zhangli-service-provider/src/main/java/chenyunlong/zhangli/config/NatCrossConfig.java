@@ -16,7 +16,7 @@ public class NatCrossConfig {
     @PostConstruct
     public void start() throws Exception {
 
-        clientServiceThread.start();
+//        clientServiceThread.start();
 
     }
 }

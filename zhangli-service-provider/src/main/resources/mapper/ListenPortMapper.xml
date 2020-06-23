@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="chenyunlong.zhangli.natcross.mapper.ListenPortMapper">
+    <insert id="count" parameterType="chenyunlong.zhangli.natcross.entity.ListenPort">
+        INSERT INTO `zhangli`.`t_sign_record` (`user_id`,`date_month`,`mask`,`continue_sign_month`) VALUES(#{userId},
+        #{dateMonth}, #{mask}, #{continueSignMonth})
+    </insert>
+
+    <select id="list" resultMap="BaseResult">
+        SELECT
+        `listen_port`,
+        `port_describe`,
+        `dest_ip`,
+        `dest_port`,
+        `on_start`,
+        `port_type`,
+        `cert_path`,
+        `cert_password`,
+        `gmt_create`,
+        `gmt_modify`
+        FROM
+        `zhangli`.`t_listen_port`
+    </select>
+</mapper>

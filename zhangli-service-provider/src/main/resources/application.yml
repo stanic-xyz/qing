@@ -1,8 +1,19 @@
 server:
   port: 8001
+  ssl:
+    enabled: ${SERVER_SSL_ENABLED:false}
+    protocol: ${SERVER_SSL_PROTOCOL:TLS}
+    key-store-type: ${SERVER_SSL_KEY_STORE_TYPE:PKCS12}
+    key-store: ${SERVER_SSL_KEY_STORE_PATH:}
+    key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
 spring:
   application:
     name: zhangli-service-provider
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -40,13 +51,23 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+
 ribbon:
   eureka:
     enabled: true
 
 logging:
+  config: ${LOG_CONFIG_PATH:}
+  logdir: ${LOG_DIR:/logs/person}
+  console-level: debug
+  file-level: trace
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
   level:
+    root: info
+    person.pluto: ${LOG_LEVEL:trace}
     chenyunlong: debug
+
 management:
   endpoints:
     web:
@@ -84,3 +105,21 @@ redisson:
   address: redis://localhost:6379
   password:
   master-name: mymaster
+common:
+  constants:
+    ## 服务端的签名key，散列算法，约等于对称密钥，客户端使用签名方式获取接口状态
+    SERVER_SIGN_KEY: ${SERVER_SIGN_KEY:serverSignKey}
+    SIGN_MAX_DIFF_MILLIS: 10000
+natcross:
+  ## 交互密钥和签名key
+  aes-key: ${NATCROSS_AES_KEY:0PMudFSqJ9WsQrTC60sva9sJAV4PF5iOBjKZW17NeF4=}
+  token-key: ${NATCROSS_TOKEN_KEY:tokenKey}
+  cert:
+    ## 证书存放的基础路径
+    base-path: ${CERT_BASE_PATH:}
+    ## 默认证书文件名，采用相对路径的方式，只支持pkcs12格式证书
+    default-cert-name: ${DEFAULT_CERT_NAME:}
+    ## 默认证书密码
+    default-cert-password: ${DEFAULT_CERT_PASSWORD:}
+  client:
+    listen-port: ${NATCROSS_CLIENT_SERVICE_PORT:10010}
