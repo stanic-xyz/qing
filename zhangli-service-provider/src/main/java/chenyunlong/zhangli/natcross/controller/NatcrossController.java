@@ -1,15 +1,15 @@
-package chenyunlong.zhangli.natcross.controller;
+package natcross.controller;
 
 import chenyunlong.zhangli.model.model.ResultModel;
 import chenyunlong.zhangli.model.model.enumeration.ResultEnum;
 import com.alibaba.fastjson.JSONObject;
-import chenyunlong.zhangli.natcross.entity.ListenPort;
-import chenyunlong.zhangli.natcross.enumeration.PortTypeEnum;
-import chenyunlong.zhangli.natcross.server.FileServer;
-import chenyunlong.zhangli.natcross.server.NatcrossServer;
-import chenyunlong.zhangli.natcross.service.IListenPortService;
-import chenyunlong.zhangli.natcross.service.QueryWrapper;
-import chenyunlong.zhangli.natcross.tools.ValidatorUtils;
+import natcross.entity.ListenPort;
+import natcross.enumeration.PortTypeEnum;
+import natcross.server.FileServer;
+import natcross.server.NatcrossServer;
+import natcross.service.IListenPortService;
+import natcross.service.QueryWrapper;
+import natcross.tools.ValidatorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,17 +25,20 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @RestController
-@RequestMapping("/chenyunlong/zhangli/natcross")
+@RequestMapping("/natcross")
 public class NatcrossController {
 
-    @Autowired
-    private IListenPortService listenPortService;
+    private final IListenPortService listenPortService;
 
-    @Autowired
-    private NatcrossServer natcrossServer;
+    private final NatcrossServer natcrossServer;
 
-    @Autowired
-    private FileServer fileServer;
+    private final FileServer fileServer;
+
+    public NatcrossController(IListenPortService listenPortService, NatcrossServer natcrossServer, FileServer fileServer) {
+        this.listenPortService = listenPortService;
+        this.natcrossServer = natcrossServer;
+        this.fileServer = fileServer;
+    }
 
     /**
      * 获取可用的端口类型
@@ -225,7 +228,6 @@ public class NatcrossController {
     public ResultModel getAllListenServer() {
 
         QueryWrapper<ListenPort> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.lambda().orderByAsc(ListenPort::getListenPort);
         List<ListenPort> listenPortList = listenPortService.list(queryWrapper);
 
         Set<Integer> listenPortExist = new TreeSet<>();

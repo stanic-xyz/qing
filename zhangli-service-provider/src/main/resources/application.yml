@@ -7,6 +7,11 @@ server:
     key-store: ${SERVER_SSL_KEY_STORE_PATH:}
     key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
 spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
   application:
     name: zhangli-service-provider
   devtools:

@@ -1,7 +1,7 @@
-package chenyunlong.zhangli.natcross.bean;
+package natcross.bean;
 
-import chenyunlong.zhangli.natcross.model.CertModel;
-import chenyunlong.zhangli.natcross.model.SecretModel;
+import natcross.model.CertModel;
+import natcross.model.SecretModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -20,21 +20,21 @@ public class NatcrossSpring {
 
     @Bean("secret")
     @Primary
-    @ConfigurationProperties(prefix = "chenyunlong.zhangli.natcross")
+    @ConfigurationProperties(prefix = "natcross")
     public SecretModel getSecret() {
         return new SecretModel();
     }
 
     @Bean("cert")
     @Primary
-    @ConfigurationProperties(prefix = "chenyunlong.zhangli.natcross.cert")
+    @ConfigurationProperties(prefix = "natcross.cert")
     public CertModel getCert() {
         return new CertModel();
     }
 
     @Bean("clientServiceConfig")
     @Primary
-    @ConfigurationProperties(prefix = "chenyunlong.zhangli.natcross.client")
+    @ConfigurationProperties(prefix = "natcross.client")
     public IClientServiceConfig<InteractiveModel, InteractiveModel> getClientServiceConfig(
             @Qualifier("secret") SecretModel secret) {
 
