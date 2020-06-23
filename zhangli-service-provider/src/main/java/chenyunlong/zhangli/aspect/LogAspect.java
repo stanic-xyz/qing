@@ -46,7 +46,7 @@ public class LogAspect {
         long time = System.currentTimeMillis() - beginTime;
         if (zhangliProperties.isOpenAopLog()) {
             // 保存日志
-            log.debug(ip + "" + time + "!");
+            log.debug("IP:" + ip + "，处理时间：" + time + "!");
         }
         return result;
     }

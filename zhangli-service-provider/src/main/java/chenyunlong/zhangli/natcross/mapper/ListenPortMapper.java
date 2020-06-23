@@ -2,6 +2,9 @@ package chenyunlong.zhangli.natcross.mapper;
 
 import chenyunlong.zhangli.natcross.entity.ListenPort;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ListenPortMapper {
 
     int count();
+
+    List<ListenPort> list();
 }

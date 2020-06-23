@@ -5,11 +5,27 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="chenyunlong.zhangli.natcross.mapper.ListenPortMapper">
-    <insert id="count" parameterType="chenyunlong.zhangli.natcross.entity.ListenPort">
-        INSERT INTO `zhangli`.`t_sign_record` (`user_id`,`date_month`,`mask`,`continue_sign_month`) VALUES(#{userId},
-        #{dateMonth}, #{mask}, #{continueSignMonth})
-    </insert>
-
+    <!--   映射关系 -->
+    <resultMap id="BaseResult" type="chenyunlong.zhangli.natcross.entity.ListenPort">
+        <result column="listen_port" property="listenPort"/>
+        <result column="port_describe" property=""/>
+        <result column="dest_ip" property="destIp"/>
+        <result column="dest_port" property="destPort"/>
+        <result column="on_start" property="onStart"/>
+        <result column="port_type" property="portType"/>
+        <result column="cert_path" property="certPath"/>
+        <result column="cert_password" property="certPassword"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modify" property="gmtModify"/>
+    </resultMap>
+    <!--   统计所有的监听端口信息 -->
+    <select id="count" parameterType="chenyunlong.zhangli.natcross.entity.ListenPort">
+        select
+        count(*)
+        FROM
+        `zhangli`.`t_listen_port`
+    </select>
+    <!--查询所有的监听端口信息-->
     <select id="list" resultMap="BaseResult">
         SELECT
         `listen_port`,

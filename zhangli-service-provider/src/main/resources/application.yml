@@ -14,11 +14,6 @@ spring:
       enabled: true
   application:
     name: zhangli-service-provider
-  devtools:
-    livereload:
-      enabled: true
-    restart:
-      enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -115,9 +110,10 @@ common:
     ## 服务端的签名key，散列算法，约等于对称密钥，客户端使用签名方式获取接口状态
     SERVER_SIGN_KEY: ${SERVER_SIGN_KEY:serverSignKey}
     SIGN_MAX_DIFF_MILLIS: 10000
+
 natcross:
   ## 交互密钥和签名key
-  aes-key: ${NATCROSS_AES_KEY:0PMudFSqJ9WsQrTC60sva9sJAV4PF5iOBjKZW17NeF4=}
+  aes-key: ${NATCROSS_AES_KEY:8AUWlb+IWD+Fhbs0xnXCCg==}
   token-key: ${NATCROSS_TOKEN_KEY:tokenKey}
   cert:
     ## 证书存放的基础路径

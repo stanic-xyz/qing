@@ -5,11 +5,11 @@ import chenyunlong.zhangli.natcross.mapper.ListenPortMapper;
 import chenyunlong.zhangli.natcross.service.IListenPortService;
 import chenyunlong.zhangli.natcross.service.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
-@Resource
+@Service
 public class IListenPortServiceImpl implements IListenPortService {
 
     @Autowired
@@ -32,7 +32,7 @@ public class IListenPortServiceImpl implements IListenPortService {
 
     @Override
     public List<ListenPort> list(QueryWrapper<ListenPort> queryWrapper) {
-        return null;
+        return listenPortMapper.list();
     }
 
     @Override

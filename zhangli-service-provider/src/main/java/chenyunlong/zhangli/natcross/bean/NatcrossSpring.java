@@ -1,7 +1,7 @@
-package natcross.bean;
+package chenyunlong.zhangli.natcross.bean;
 
-import natcross.model.CertModel;
-import natcross.model.SecretModel;
+import chenyunlong.zhangli.natcross.model.CertModel;
+import chenyunlong.zhangli.natcross.model.SecretModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
