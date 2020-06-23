@@ -12,11 +12,11 @@ public class MyAuthentication extends AbstractAuthenticationToken {
 
     @Override
     public Object getCredentials() {
-        return getCredentials();
+        return null;
     }
 
     @Override
     public Object getPrincipal() {
-        return getCredentials();
+        return null;
     }
 }

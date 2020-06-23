@@ -12,6 +12,13 @@
     <name>zhangli-service-provider</name>
     <packaging>jar</packaging>
     <dependencies>
+        <!-- TOOLS ... -->
+        <dependency>
+            <groupId>person.pluto</groupId>
+            <artifactId>natcross2</artifactId>
+            <version>2.0</version>
+        </dependency>
+
         <dependency>
             <groupId>me.zhyd.oauth</groupId>
             <artifactId>JustAuth</artifactId>

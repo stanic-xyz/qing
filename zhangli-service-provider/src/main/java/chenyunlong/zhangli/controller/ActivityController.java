@@ -1,21 +1,16 @@
 package chenyunlong.zhangli.controller;
 
-import chenyunlong.zhangli.entities.Activity;
 import chenyunlong.zhangli.entities.request.ActivityQueryInfo;
 import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.response.ApiResult;
 import chenyunlong.zhangli.service.ActivityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sun.plugin.liveconnect.SecurityContextHelper;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("activity")
