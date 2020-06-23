@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/css/**", "/image/*").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
+                .antMatchers("/natcross/**").permitAll()
                 .anyRequest().authenticated();
 
         http.apply(securityConfigurerAdapter());
