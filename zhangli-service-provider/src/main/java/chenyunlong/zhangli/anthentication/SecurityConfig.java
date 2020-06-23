@@ -15,13 +15,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
+    private final MyAccessDeniedHandler myAccessDeniedHandler;
     private final ZhangliProperties zhangliProperties;
     private final RedisTemplate redisTemplate;
     @Autowired
@@ -33,11 +33,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private SecurityProblemSupport problemSupport;
 
 
-    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFeilureHandler, RedisTemplate redisTemplate, ZhangliProperties zhangliProperties, UserService userService) {
+    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFeilureHandler, RedisTemplate redisTemplate, ZhangliProperties zhangliProperties, MyAccessDeniedHandler myAccessDeniedHandler, UserService userService) {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFeilureHandler;
         this.redisTemplate = redisTemplate;
         this.zhangliProperties = zhangliProperties;
+        this.myAccessDeniedHandler = myAccessDeniedHandler;
         this.userService = userService;
     }
 
