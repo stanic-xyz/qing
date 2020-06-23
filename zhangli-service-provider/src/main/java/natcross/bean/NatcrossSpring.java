@@ -1,12 +1,12 @@
 package natcross.bean;
 
+import natcross.model.CertModel;
+import natcross.model.SecretModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import person.pluto.natcross.model.CertModel;
-import person.pluto.natcross.model.SecretModel;
 import person.pluto.natcross2.model.InteractiveModel;
 import person.pluto.natcross2.serverside.client.ClientServiceThread;
 import person.pluto.natcross2.serverside.client.config.IClientServiceConfig;

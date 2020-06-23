@@ -28,14 +28,17 @@ import java.util.TreeSet;
 @RequestMapping("/natcross")
 public class NatcrossController {
 
-    @Autowired
-    private IListenPortService listenPortService;
+    private final IListenPortService listenPortService;
 
-    @Autowired
-    private NatcrossServer natcrossServer;
+    private final NatcrossServer natcrossServer;
 
-    @Autowired
-    private FileServer fileServer;
+    private final FileServer fileServer;
+
+    public NatcrossController(IListenPortService listenPortService, NatcrossServer natcrossServer, FileServer fileServer) {
+        this.listenPortService = listenPortService;
+        this.natcrossServer = natcrossServer;
+        this.fileServer = fileServer;
+    }
 
     /**
      * 获取可用的端口类型
@@ -70,7 +73,7 @@ public class NatcrossController {
 
         // 检查以前是否有设定保存
         QueryWrapper<ListenPort> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(ListenPort::getListenPort, listenPort.getListenPort());
+//        queryWrapper.lambda().eq(ListenPort::getListenPort, listenPort.getListenPort());
         int count = listenPortService.count(queryWrapper);
         if (count > 0) {
             return ResultEnum.LISTEN_PORT_HAS.toResultModel();
@@ -128,7 +131,7 @@ public class NatcrossController {
 
         // 检查以前是否有设定保存
         QueryWrapper<ListenPort> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(ListenPort::getListenPort, listenPort.getListenPort());
+//        queryWrapper.lambda().eq(ListenPort::getListenPort, listenPort.getListenPort());
         int count = listenPortService.count(queryWrapper);
         if (count < 1) {
             return ResultEnum.LISTEN_PORT_NO_HAS.toResultModel();
@@ -225,7 +228,6 @@ public class NatcrossController {
     public ResultModel getAllListenServer() {
 
         QueryWrapper<ListenPort> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().orderByAsc(ListenPort::getListenPort);
         List<ListenPort> listenPortList = listenPortService.list(queryWrapper);
 
         Set<Integer> listenPortExist = new TreeSet<>();
