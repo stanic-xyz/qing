@@ -8,15 +8,11 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class NatCrossConfig {
 
-    private final ClientServiceThread clientServiceThread;
-
-    public NatCrossConfig(ClientServiceThread clientServiceThread) {
-        this.clientServiceThread = clientServiceThread;
-    }
+    private ClientServiceThread clientServiceThread;
 
 
     @PostConstruct
     public void start() throws Exception {
-        clientServiceThread.start();
+//        clientServiceThread.start();
     }
 }
