@@ -39,7 +39,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com
-    password: cscysqlzodzfjehj
+    password: xoqywcevpshnbabf
 
 eureka:
   instance:
@@ -73,6 +73,7 @@ management:
     web:
       exposure:
         include: "*"
+        exclude: "health"
   endpoint:
     health:
       show-details: never

@@ -2,7 +2,6 @@ package chenyunlong.zhangli.service;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,7 +15,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
