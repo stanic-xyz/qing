@@ -9,7 +9,7 @@ public class NatcrossViewController {
 
     @RequestMapping("/natcrossList")
     public String natcrossList() {
-        return "chenyunlong/zhangli/natcross/natcrossList";
+        return "natcross/natcrossList";
     }
 
 }
