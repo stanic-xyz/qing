@@ -30,11 +30,11 @@
         <sentinel.version>1.7.2</sentinel.version>
     </properties>
     <modules>
-        <module>zhangli-core</module>
         <module>zhangli-eureka-service</module>
         <module>zhangli-feign-client</module>
         <module>zhangli-zuul-gateway</module>
         <module>zhangli-config-git</module>
+        <module>zhangli-service-api</module>
         <module>zhangli-service-provider</module>
         <module>zhangli-service-provider-webflux</module>
         <module>zhangli-admin-server</module>
