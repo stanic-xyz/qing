@@ -73,6 +73,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/natcross/**").permitAll()
+                .antMatchers("/management/health").permitAll()
+                .antMatchers("/management/info").permitAll()
+                .antMatchers("/management/**").permitAll()
                 .anyRequest().authenticated();
 
         http.apply(securityConfigurerAdapter());
