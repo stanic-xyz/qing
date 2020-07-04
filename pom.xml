@@ -36,6 +36,7 @@
         <module>zhangli-config-git</module>
         <module>zhangli-service-api</module>
         <module>zhangli-service-provider</module>
+        <module>zhangli-service-natcross-provider</module>
         <module>zhangli-service-provider-webflux</module>
         <module>zhangli-admin-server</module>
     </modules>

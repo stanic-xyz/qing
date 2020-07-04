@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.model.model.enumeration;
+package stan.zhangli.natcross.common.model.model.enumeration;
 
 import chenyunlong.zhangli.model.model.ResultModel;
 import org.apache.commons.lang.StringUtils;

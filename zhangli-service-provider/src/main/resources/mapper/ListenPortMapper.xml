@@ -4,9 +4,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="chenyunlong.zhangli.natcross.mapper.ListenPortMapper">
+<mapper namespace="ListenPortMapper">
     <!--   映射关系 -->
-    <resultMap id="BaseResult" type="chenyunlong.zhangli.natcross.entity.ListenPort">
+    <resultMap id="BaseResult" type="ListenPort">
         <result column="listen_port" property="listenPort"/>
         <result column="port_describe" property=""/>
         <result column="dest_ip" property="destIp"/>
@@ -19,7 +19,7 @@
         <result column="gmt_modify" property="gmtModify"/>
     </resultMap>
     <!--   统计所有的监听端口信息 -->
-    <select id="count" parameterType="chenyunlong.zhangli.natcross.entity.ListenPort">
+    <select id="count" parameterType="ListenPort">
         select
         count(*)
         FROM
