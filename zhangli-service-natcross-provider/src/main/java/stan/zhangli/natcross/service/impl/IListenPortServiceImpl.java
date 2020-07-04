@@ -3,7 +3,6 @@ package stan.zhangli.natcross.service.impl;
 import stan.zhangli.natcross.entity.ListenPort;
 import stan.zhangli.natcross.mapper.ListenPortMapper;
 import stan.zhangli.natcross.service.IListenPortService;
-import stan.zhangli.natcross.service.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,32 +11,36 @@ import java.util.List;
 @Service
 public class IListenPortServiceImpl implements IListenPortService {
 
-    @Autowired
-    private ListenPortMapper listenPortMapper;
+    private final ListenPortMapper listenPortMapper;
+
+    public IListenPortServiceImpl(ListenPortMapper listenPortMapper) {
+        this.listenPortMapper = listenPortMapper;
+    }
 
     @Override
-    public int count(QueryWrapper<ListenPort> queryWrapper) {
+    public int count() {
         return listenPortMapper.count();
     }
 
     @Override
     public boolean save(ListenPort listenPort) {
-        return false;
+        Boolean result = listenPortMapper.save(listenPort);
+        return result;
     }
 
     @Override
     public void removeById(Integer listenPort) {
-
+        listenPortMapper.removeById(listenPort);
     }
 
     @Override
-    public List<ListenPort> list(QueryWrapper<ListenPort> queryWrapper) {
+    public List<ListenPort> list() {
         return listenPortMapper.list();
     }
 
     @Override
-    public ListenPort getById(Integer listenPort) {
-        return null;
+    public ListenPort getByListenPort(Integer listenPort) {
+        return listenPortMapper.getById(listenPort);
     }
 
     @Override

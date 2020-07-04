@@ -15,15 +15,15 @@ import java.util.List;
 public interface IListenPortService {
 
 
-    int count(QueryWrapper<ListenPort> queryWrapper);
+    int count();
 
     boolean save(ListenPort listenPort);
 
     void removeById(Integer listenPort);
 
-    List<ListenPort> list(QueryWrapper<ListenPort> queryWrapper);
+    List<ListenPort> list();
 
-    ListenPort getById(Integer listenPort);
+    ListenPort getByListenPort(Integer listenPort);
 
     boolean updateById(ListenPort listenPort);
 }

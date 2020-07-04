@@ -19,4 +19,10 @@ public interface ListenPortMapper {
     int count();
 
     List<ListenPort> list();
+
+    Boolean save(ListenPort listenPort);
+
+    ListenPort getById(Integer listenPort);
+
+    void removeById(Integer listenPort);
 }

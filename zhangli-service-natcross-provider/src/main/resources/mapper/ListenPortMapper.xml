@@ -8,7 +8,7 @@
     <!--   映射关系 -->
     <resultMap id="BaseResult" type="stan.zhangli.natcross.entity.ListenPort">
         <result column="listen_port" property="listenPort"/>
-        <result column="port_describe" property=""/>
+        <result column="port_describe" property="portDescribe"/>
         <result column="dest_ip" property="destIp"/>
         <result column="dest_port" property="destPort"/>
         <result column="on_start" property="onStart"/>
@@ -19,7 +19,7 @@
         <result column="gmt_modify" property="gmtModify"/>
     </resultMap>
     <!--   统计所有的监听端口信息 -->
-    <select id="count">
+    <select id="count" resultType="int">
         select
         count(*)
         FROM
@@ -41,4 +41,54 @@
         FROM
         `zhangli`.`t_listen_port`
     </select>
+
+    <insert id="save" parameterType="stan.zhangli.natcross.entity.ListenPort">
+        INSERT INTO `zhangli`.`t_listen_port` (
+          `listen_port`,
+          `port_describe`,
+          `dest_ip`,
+          `dest_port`,
+          `on_start`,
+          `port_type`,
+          `cert_path`,
+          `cert_password`,
+          `gmt_create`,
+          `gmt_modify`
+        )
+        VALUES
+          (
+            #{listenPort},
+            #{portDescribe},
+            #{destIp},
+            #{destPort},
+            #{onStart},
+            #{portType},
+            #{certPath},
+            #{certPassword},
+            #{gmtCreate},
+            #{gmtModify}
+          );
+
+    </insert>
+
+    <select id="getById" parameterType="int" resultMap="BaseResult">
+        SELECT
+          `listen_port`,
+          `port_describe`,
+          `dest_ip`,
+          `dest_port`,
+          `on_start`,
+          `port_type`,
+          `cert_path`,
+          `cert_password`,
+          `gmt_create`,
+          `gmt_modify`
+        FROM
+          `zhangli`.`t_listen_port`
+        WHERE `listen_port`=#{listenPort}
+    </select>
+
+    <delete id="removeById" parameterType="int">
+        DELETE FROM t_listen_port WHERE listen_port =#{listenPort}
+    </delete>
 </mapper>

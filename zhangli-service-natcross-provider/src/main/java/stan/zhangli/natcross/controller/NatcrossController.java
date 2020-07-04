@@ -1,5 +1,6 @@
 package stan.zhangli.natcross.controller;
 
+import org.springframework.web.bind.annotation.*;
 import stan.zhangli.natcross.common.model.model.ResultModel;
 import stan.zhangli.natcross.common.model.model.enumeration.ResultEnum;
 import stan.zhangli.natcross.entity.ListenPort;
@@ -8,12 +9,8 @@ import stan.zhangli.natcross.server.FileServer;
 import stan.zhangli.natcross.tools.ValidatorUtils;
 import stan.zhangli.natcross.server.NatcrossServer;
 import stan.zhangli.natcross.service.IListenPortService;
-import stan.zhangli.natcross.service.QueryWrapper;
 import com.alibaba.fastjson.JSONObject;
 import io.micrometer.core.instrument.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import person.pluto.natcross2.serverside.listen.ListenServerControl;
 import person.pluto.natcross2.serverside.listen.ServerListenThread;
@@ -46,7 +43,7 @@ public class NatcrossController {
      * @author Pluto
      * @since 2020-01-10 13:57:07
      */
-    @RequestMapping("/usablePortTypes")
+    @RequestMapping(value = "/usablePortTypes", method = RequestMethod.GET)
     public ResultModel usablePortTypes() {
         PortTypeEnum[] values = PortTypeEnum.values();
         return ResultModel.ofSuccess(values);
@@ -55,26 +52,21 @@ public class NatcrossController {
     /**
      * 创建新的监听，并保存记录
      *
-     * @param listenPort
+     * @param certFile 证书文件
      * @return
      * @throws Exception
-     * @author Pluto
-     * @since 2019-07-22 14:20:35
      */
-    @RequestMapping("/createListenPort")
+    @RequestMapping(value = "/createListenPort", method = RequestMethod.POST)
     public ResultModel createListenPort(ListenPort listenPort,
                                         @RequestParam(name = "certFile", required = false) MultipartFile certFile) throws Exception {
 
-        if (listenPort == null || listenPort.getListenPort() == null || listenPort.getDestIp() == null
-                || !ValidatorUtils.isIPv4Address(listenPort.getDestIp()) || listenPort.getDestPort() == null) {
-            return ResultEnum.PARAM_FAIL.toResultModel();
-        }
-
+//        if (listenPort == null || listenPort.getListenPort() == null || listenPort.getDestIp() == null
+//                || !ValidatorUtils.isIPv4Address(listenPort.getDestIp()) || listenPort.getDestPort() == null) {
+//            return ResultEnum.PARAM_FAIL.toResultModel();
+//        }
         // 检查以前是否有设定保存
-        QueryWrapper<ListenPort> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.lambda().eq(ListenPort::getListenPort, listenPort.getListenPort());
-        int count = listenPortService.count(queryWrapper);
-        if (count > 0) {
+        ListenPort service = listenPortService.getByListenPort(listenPort.getListenPort());
+        if (service != null) {
             return ResultEnum.LISTEN_PORT_HAS.toResultModel();
         }
 
@@ -119,7 +111,7 @@ public class NatcrossController {
      * @author Pluto
      * @since 2019-07-22 14:20:35
      */
-    @RequestMapping("/updateListenPort")
+    @RequestMapping(value = "/updateListenPort", method = RequestMethod.POST)
     public ResultModel updateListenPort(ListenPort listenPort,
                                         @RequestParam(name = "certFile", required = false) MultipartFile certFile) throws Exception {
 
@@ -129,9 +121,8 @@ public class NatcrossController {
         }
 
         // 检查以前是否有设定保存
-        QueryWrapper<ListenPort> queryWrapper = new QueryWrapper<>();
 //        queryWrapper.lambda().eq(ListenPort::getListenPort, listenPort.getListenPort());
-        int count = listenPortService.count(queryWrapper);
+        int count = listenPortService.count();
         if (count < 1) {
             return ResultEnum.LISTEN_PORT_NO_HAS.toResultModel();
         }
@@ -170,10 +161,10 @@ public class NatcrossController {
      * @author Pluto
      * @since 2019-07-19 16:29:18
      */
-    @RequestMapping("createNewListen")
+    @RequestMapping(value = "createNewListen", method = RequestMethod.POST)
     public ResultModel createNewListen(Integer listenPort) {
 
-        ListenPort model = listenPortService.getById(listenPort);
+        ListenPort model = listenPortService.getByListenPort(listenPort);
         boolean createNewListen = false;
         if (model == null) {
             createNewListen = natcrossServer.createNewListen(listenPort);
@@ -188,14 +179,14 @@ public class NatcrossController {
     }
 
     /**
-     * 停止某个端口
+     * 停止某个端口的监听
      *
      * @param listenPort
      * @return
      * @author Pluto
      * @since 2019-07-22 15:16:26
      */
-    @RequestMapping("stopListen")
+    @RequestMapping(value = "stopListen", method = RequestMethod.POST)
     public ResultModel stopListen(Integer listenPort) {
         natcrossServer.removeListen(listenPort);
         return ResultEnum.SUCCESS.toResultModel();
@@ -209,7 +200,7 @@ public class NatcrossController {
      * @author Pluto
      * @since 2019-07-19 16:29:26
      */
-    @RequestMapping("removeListen")
+    @RequestMapping(value = "removeListen", method = RequestMethod.DELETE)
     public ResultModel removeListen(Integer listenPort) {
         natcrossServer.removeListen(listenPort);
         listenPortService.removeById(listenPort);
@@ -223,11 +214,10 @@ public class NatcrossController {
      * @author Pluto
      * @since 2019-07-19 16:29:33
      */
-    @RequestMapping("getAllListenServer")
+    @RequestMapping(value = "getAllListenServer", method = RequestMethod.GET)
     public ResultModel getAllListenServer() {
 
-        QueryWrapper<ListenPort> queryWrapper = new QueryWrapper<>();
-        List<ListenPort> listenPortList = listenPortService.list(queryWrapper);
+        List<ListenPort> listenPortList = listenPortService.list();
 
         Set<Integer> listenPortExist = new TreeSet<>();
 
@@ -264,7 +254,7 @@ public class NatcrossController {
      * @author Pluto
      * @since 2020-01-10 10:14:09
      */
-    @RequestMapping("/projectSign/getAllListenServer")
+    @RequestMapping(value = "/projectSign/getAllListenServer", method = RequestMethod.GET)
     public ResultModel getAllListenServerProjectSign() {
         return this.getAllListenServer();
     }

@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.api;
+package chenyunlong.zhangli.service.api;
 
 public interface IHelloService {
 

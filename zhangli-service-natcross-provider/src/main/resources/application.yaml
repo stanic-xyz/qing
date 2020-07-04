@@ -14,6 +14,10 @@ spring:
       username: root
       password: MysqlPwdROOT1996
     url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 mybatis:
   mapperLocations: classpath*:mapper*/*.xml
   configuration:

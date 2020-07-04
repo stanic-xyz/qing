@@ -1,7 +1,5 @@
 package stan.zhangli.natcross.entity;
 
-import stan.zhangli.natcross.enumeration.ListenStatusEnum;
-import stan.zhangli.natcross.enumeration.PortTypeEnum;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import person.pluto.natcross2.api.socketpart.AbsSocketPart;
 import person.pluto.natcross2.serverside.listen.ServerListenThread;
+import stan.zhangli.natcross.enumeration.ListenStatusEnum;
+import stan.zhangli.natcross.enumeration.PortTypeEnum;
 
 import java.io.Serializable;
 import java.net.Socket;
@@ -99,17 +99,6 @@ public class ListenPort implements Serializable {
     }
 
     /**
-     * 端口类型
-     *
-     * @return
-     * @author Pluto
-     * @since 2020-01-10 13:50:41
-     */
-    public Integer getPortType() {
-        return this.getPortTypeEnum().getCode();
-    }
-
-    /**
      * 证书配置状态
      *
      * @return
@@ -177,6 +166,7 @@ public class ListenPort implements Serializable {
         return json;
     }
 
+
     public Integer getListenPort() {
         return this.listenPort;
     }
@@ -195,6 +185,10 @@ public class ListenPort implements Serializable {
 
     public Boolean getOnStart() {
         return this.onStart;
+    }
+
+    public Integer getPortType() {
+        return this.portType;
     }
 
     public String getCertPath() {
@@ -217,139 +211,51 @@ public class ListenPort implements Serializable {
         return this.serverListenThread;
     }
 
-    public ListenPort setListenPort(Integer listenPort) {
+    public void setListenPort(Integer listenPort) {
         this.listenPort = listenPort;
-        return this;
     }
 
-    public ListenPort setPortDescribe(String portDescribe) {
+    public void setPortDescribe(String portDescribe) {
         this.portDescribe = portDescribe;
-        return this;
     }
 
-    public ListenPort setDestIp(String destIp) {
+    public void setDestIp(String destIp) {
         this.destIp = destIp;
-        return this;
     }
 
-    public ListenPort setDestPort(Integer destPort) {
+    public void setDestPort(Integer destPort) {
         this.destPort = destPort;
-        return this;
     }
 
-    public ListenPort setOnStart(Boolean onStart) {
+    public void setOnStart(Boolean onStart) {
         this.onStart = onStart;
-        return this;
     }
 
-    public ListenPort setPortType(Integer portType) {
+    public void setPortType(Integer portType) {
         this.portType = portType;
-        return this;
     }
 
-    public ListenPort setCertPath(String certPath) {
+    public void setCertPath(String certPath) {
         this.certPath = certPath;
-        return this;
     }
 
-    public ListenPort setCertPassword(String certPassword) {
+    public void setCertPassword(String certPassword) {
         this.certPassword = certPassword;
-        return this;
     }
 
-    public ListenPort setGmtCreate(LocalDateTime gmtCreate) {
+    public void setGmtCreate(LocalDateTime gmtCreate) {
         this.gmtCreate = gmtCreate;
-        return this;
     }
 
-    public ListenPort setGmtModify(LocalDateTime gmtModify) {
+    public void setGmtModify(LocalDateTime gmtModify) {
         this.gmtModify = gmtModify;
-        return this;
     }
 
-    public ListenPort setServerListenThread(ServerListenThread serverListenThread) {
+    public void setServerListenThread(ServerListenThread serverListenThread) {
         this.serverListenThread = serverListenThread;
-        return this;
     }
 
     public String toString() {
-        return "ListenPort(listenPort=" + this.getListenPort() + ", portDescribe=" + this.getPortDescribe() + ", destIp=" + this.getDestIp() + ", destPort=" + this.getDestPort() + ", onStart=" + this.getOnStart() + ", portType=" + this.getPortType() + ", certPath=" + this.getCertPath() + ", certPassword=" + this.getCertPassword() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModify=" + this.getGmtModify() + ", serverListenThread=" + this.getServerListenThread() + ")";
-    }
-
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof ListenPort)) return false;
-        final ListenPort other = (ListenPort) o;
-        if (!other.canEqual((Object) this)) return false;
-        final Object this$listenPort = this.getListenPort();
-        final Object other$listenPort = other.getListenPort();
-        if (this$listenPort == null ? other$listenPort != null : !this$listenPort.equals(other$listenPort))
-            return false;
-        final Object this$portDescribe = this.getPortDescribe();
-        final Object other$portDescribe = other.getPortDescribe();
-        if (this$portDescribe == null ? other$portDescribe != null : !this$portDescribe.equals(other$portDescribe))
-            return false;
-        final Object this$destIp = this.getDestIp();
-        final Object other$destIp = other.getDestIp();
-        if (this$destIp == null ? other$destIp != null : !this$destIp.equals(other$destIp)) return false;
-        final Object this$destPort = this.getDestPort();
-        final Object other$destPort = other.getDestPort();
-        if (this$destPort == null ? other$destPort != null : !this$destPort.equals(other$destPort)) return false;
-        final Object this$onStart = this.getOnStart();
-        final Object other$onStart = other.getOnStart();
-        if (this$onStart == null ? other$onStart != null : !this$onStart.equals(other$onStart)) return false;
-        final Object this$portType = this.getPortType();
-        final Object other$portType = other.getPortType();
-        if (this$portType == null ? other$portType != null : !this$portType.equals(other$portType)) return false;
-        final Object this$certPath = this.getCertPath();
-        final Object other$certPath = other.getCertPath();
-        if (this$certPath == null ? other$certPath != null : !this$certPath.equals(other$certPath)) return false;
-        final Object this$certPassword = this.getCertPassword();
-        final Object other$certPassword = other.getCertPassword();
-        if (this$certPassword == null ? other$certPassword != null : !this$certPassword.equals(other$certPassword))
-            return false;
-        final Object this$gmtCreate = this.getGmtCreate();
-        final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
-        final Object this$gmtModify = this.getGmtModify();
-        final Object other$gmtModify = other.getGmtModify();
-        if (this$gmtModify == null ? other$gmtModify != null : !this$gmtModify.equals(other$gmtModify)) return false;
-        final Object this$serverListenThread = this.getServerListenThread();
-        final Object other$serverListenThread = other.getServerListenThread();
-        if (this$serverListenThread == null ? other$serverListenThread != null : !this$serverListenThread.equals(other$serverListenThread))
-            return false;
-        return true;
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof ListenPort;
-    }
-
-    public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $listenPort = this.getListenPort();
-        result = result * PRIME + ($listenPort == null ? 43 : $listenPort.hashCode());
-        final Object $portDescribe = this.getPortDescribe();
-        result = result * PRIME + ($portDescribe == null ? 43 : $portDescribe.hashCode());
-        final Object $destIp = this.getDestIp();
-        result = result * PRIME + ($destIp == null ? 43 : $destIp.hashCode());
-        final Object $destPort = this.getDestPort();
-        result = result * PRIME + ($destPort == null ? 43 : $destPort.hashCode());
-        final Object $onStart = this.getOnStart();
-        result = result * PRIME + ($onStart == null ? 43 : $onStart.hashCode());
-        final Object $portType = this.getPortType();
-        result = result * PRIME + ($portType == null ? 43 : $portType.hashCode());
-        final Object $certPath = this.getCertPath();
-        result = result * PRIME + ($certPath == null ? 43 : $certPath.hashCode());
-        final Object $certPassword = this.getCertPassword();
-        result = result * PRIME + ($certPassword == null ? 43 : $certPassword.hashCode());
-        final Object $gmtCreate = this.getGmtCreate();
-        result = result * PRIME + ($gmtCreate == null ? 43 : $gmtCreate.hashCode());
-        final Object $gmtModify = this.getGmtModify();
-        result = result * PRIME + ($gmtModify == null ? 43 : $gmtModify.hashCode());
-        final Object $serverListenThread = this.getServerListenThread();
-        result = result * PRIME + ($serverListenThread == null ? 43 : $serverListenThread.hashCode());
-        return result;
+        return "ListenPort(listenPort=" + this.listenPort + ", portDescribe=" + this.portDescribe + ", destIp=" + this.destIp + ", destPort=" + this.destPort + ", onStart=" + this.onStart + ", portType=" + this.portType + ", certPath=" + this.certPath + ", certPassword=" + this.certPassword + ", gmtCreate=" + this.gmtCreate + ", gmtModify=" + this.gmtModify + ", serverListenThread=" + this.serverListenThread + ")";
     }
 }

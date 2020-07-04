@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService {
     private PermissionMapper permissionMapper;
 
     private static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    ;
 
 
     public UserServiceImpl(UserMapper userMapper) {
