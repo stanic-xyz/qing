@@ -1,10 +1,10 @@
 package stan.zhangli.natcross.tools;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +25,6 @@ import java.util.*;
  * @author wangmin1994@qq.com
  * @since 2019-05-20 18:04:43
  */
-@Slf4j
 public class SignTools {
 
     public static final DateTimeFormatter DATETIMEMILLIS = new DateTimeFormatterBuilder()
@@ -34,6 +33,7 @@ public class SignTools {
     public static final String FIELD_NONCE_STR = "nonce_str";
     public static final String FIELD_TIMESTAMP = "timestamp";
     public static final String FIELD_CONTENT_MD5 = "contentMd5";
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(SignTools.class);
 
     /**
      * 针对单文件封装的快速调用

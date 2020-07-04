@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.service.remote;
 
-import chenyunlong.zhangli.api.IHelloService;
 
+import chenyunlong.zhangli.api.IHelloService;
 
 /**
  * 远程服务实现

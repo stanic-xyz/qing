@@ -1,8 +1,7 @@
 package stan.zhangli.natcross.mapper;
 
-import stan.zhangli.natcross.entity.ListenPort;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import stan.zhangli.natcross.entity.ListenPort;
 
 import java.util.List;
 

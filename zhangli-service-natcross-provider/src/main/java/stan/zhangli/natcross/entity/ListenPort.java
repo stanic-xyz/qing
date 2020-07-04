@@ -4,7 +4,6 @@ import stan.zhangli.natcross.enumeration.ListenStatusEnum;
 import stan.zhangli.natcross.enumeration.PortTypeEnum;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,6 @@ import java.util.Map.Entry;
  * @author Pluto
  * @since 2019-07-22 13:55:39
  */
-@Accessors(chain = true)
 public class ListenPort implements Serializable {
 
     private static final long serialVersionUID = 1L;

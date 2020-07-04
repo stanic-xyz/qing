@@ -1,7 +1,7 @@
 package stan.zhangli.natcross.tools;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringEscapeUtils;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -17,8 +17,9 @@ import java.util.Set;
  * @author wangmin1994@qq.com
  * @since 2019-06-27 15:10:22
  */
-@Slf4j
 public class EscapeTools {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(EscapeTools.class);
+
     /**
      * 过滤所有字段
      *

@@ -40,7 +40,6 @@ public class TokenFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        /* TODO 在这里判断是否需要进行过滤 */
         return true;
     }
 
@@ -52,7 +51,6 @@ public class TokenFilter extends ZuulFilter {
         log.info("--->>> TokenFilter {},{}", request.getMethod(), request.getRequestURL().toString());
 
         //
-        //TODO 设置身份验证方式
         //获取请求的参数
         //
         String token = getAuthorization(request);

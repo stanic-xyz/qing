@@ -44,7 +44,7 @@ public class EmailAspect {
 
         Object[] args = point.getArgs();
         log.debug("发送邮件的位置：" + annotation.receiver());
-        //TODO 创建一个邮件发送线程！
+        //创建一个邮件发送线程！
         EmailThread emailThread = new EmailThread(annotation.receiver(), annotation.object(), annotation.content());
         emailThread.start();
         return point.proceed(args);

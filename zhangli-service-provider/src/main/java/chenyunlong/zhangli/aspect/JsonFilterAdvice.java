@@ -50,7 +50,6 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
      * @param serverHttpResponse
      * @return
      */
-
     @Override
     public ApiResult beforeBodyWrite(ApiResult apiResult, MethodParameter methodParameter, MediaType mediaType,
                                      Class<? extends HttpMessageConverter<?>> convertClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
@@ -59,6 +58,7 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
         JsonFieldFilter annotation = methodParameter.getMethodAnnotation(JsonFieldFilter.class);
 
         //获取需要进行过滤的字段或者其他东西！
+        assert annotation != null;
         List<String> possibleFilters = Arrays.asList(annotation.filters());
 
 //        直接修改返回值中的结果
@@ -72,7 +72,7 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
             log.debug("测试其他任务");
         }).start();
 
-        //TODO 这里暂时不需要进行处理
+        // 这里暂时不需要进行处理
         return apiResult;
     }
 }

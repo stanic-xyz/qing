@@ -1,7 +1,7 @@
 package stan.zhangli.natcross.controller;
 
-import chenyunlong.zhangli.model.model.ResultModel;
-import chenyunlong.zhangli.model.model.enumeration.ResultEnum;
+import stan.zhangli.natcross.common.model.model.ResultModel;
+import stan.zhangli.natcross.common.model.model.enumeration.ResultEnum;
 import stan.zhangli.natcross.entity.ListenPort;
 import stan.zhangli.natcross.enumeration.PortTypeEnum;
 import stan.zhangli.natcross.server.FileServer;

@@ -55,6 +55,8 @@ public class TokenProvider {
             logger.info("JWT token compact of handler are invalid.");
         } catch (JsonProcessingException e) {
             logger.info("parse Jsonobject failed.");
+        } catch (Exception e) {
+            logger.error("解析jwt token 错误", e);
         }
         return null;
     }
