@@ -3,7 +3,6 @@ package stan.zhangli.natcross.service.impl;
 import stan.zhangli.natcross.entity.ListenPort;
 import stan.zhangli.natcross.mapper.ListenPortMapper;
 import stan.zhangli.natcross.service.IListenPortService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class IListenPortServiceImpl implements IListenPortService {
 
     @Override
     public ListenPort getByListenPort(Integer listenPort) {
-        return listenPortMapper.getById(listenPort);
+        return listenPortMapper.getByListenPort(listenPort);
     }
 
     @Override

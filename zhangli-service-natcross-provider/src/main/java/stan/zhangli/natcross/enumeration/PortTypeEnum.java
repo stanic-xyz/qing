@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public enum PortTypeEnum {
 
     //
-    NORMAL(0, "普通"),
+    NORMAL(0, "http"),
     //
     HTTPS(10, "HTTPs"),
     //

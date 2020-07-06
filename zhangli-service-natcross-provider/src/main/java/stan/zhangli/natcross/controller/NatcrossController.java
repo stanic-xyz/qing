@@ -60,10 +60,10 @@ public class NatcrossController {
     public ResultModel createListenPort(ListenPort listenPort,
                                         @RequestParam(name = "certFile", required = false) MultipartFile certFile) throws Exception {
 
-//        if (listenPort == null || listenPort.getListenPort() == null || listenPort.getDestIp() == null
-//                || !ValidatorUtils.isIPv4Address(listenPort.getDestIp()) || listenPort.getDestPort() == null) {
-//            return ResultEnum.PARAM_FAIL.toResultModel();
-//        }
+        if (listenPort == null || listenPort.getListenPort() == null || listenPort.getDestIp() == null
+                || !ValidatorUtils.isIPv4Address(listenPort.getDestIp()) || listenPort.getDestPort() == null) {
+            return ResultEnum.PARAM_FAIL.toResultModel();
+        }
         // 检查以前是否有设定保存
         ListenPort service = listenPortService.getByListenPort(listenPort.getListenPort());
         if (service != null) {
@@ -246,17 +246,4 @@ public class NatcrossController {
 
         return ResultEnum.SUCCESS.toResultModel().setData(jsonObject);
     }
-
-    /**
-     * 通过签名的方式进行获取全部接口信息
-     *
-     * @return
-     * @author Pluto
-     * @since 2020-01-10 10:14:09
-     */
-    @RequestMapping(value = "/projectSign/getAllListenServer", method = RequestMethod.GET)
-    public ResultModel getAllListenServerProjectSign() {
-        return this.getAllListenServer();
-    }
-
 }

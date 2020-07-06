@@ -22,7 +22,7 @@ public interface ListenPortMapper {
 
     Boolean save(ListenPort listenPort);
 
-    ListenPort getById(Integer listenPort);
+    ListenPort getByListenPort(Integer listenPort);
 
     void removeById(Integer listenPort);
 }

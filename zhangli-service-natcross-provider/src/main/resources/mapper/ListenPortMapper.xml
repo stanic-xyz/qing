@@ -71,7 +71,7 @@
 
     </insert>
 
-    <select id="getById" parameterType="int" resultMap="BaseResult">
+    <select id="getByListenPort" parameterType="int" resultMap="BaseResult">
         SELECT
           `listen_port`,
           `port_describe`,

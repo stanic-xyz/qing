@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     /**
      * 用来处理bean validation异常
      *
-     * @param ex
+     * @param ex 试题校验错误异常
      * @return
      */
     @ExceptionHandler(ConstraintViolationException.class)
@@ -46,6 +46,12 @@ public class GlobalExceptionHandler {
         return ResultUtil.fail("参数校验错误");
     }
 
+    /**
+     * 处理法法错误
+     *
+     * @param ex 参数错误异常
+     * @return
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ApiResult resolveMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
