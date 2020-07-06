@@ -23,7 +23,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>zhangli-eureka-service</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>com.spotify</groupId>

@@ -32,7 +32,7 @@
     </dependencies>
 
     <build>
-        <finalName>zhangli-config-git</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>com.spotify</groupId>

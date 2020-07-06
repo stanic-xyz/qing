@@ -129,7 +129,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>zhangli-service-provicer</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>

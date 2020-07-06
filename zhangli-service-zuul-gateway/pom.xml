@@ -56,7 +56,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>zhangli-zuul-gateway</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>com.spotify</groupId>

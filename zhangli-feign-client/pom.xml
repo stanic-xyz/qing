@@ -33,7 +33,7 @@
     </dependencies>
 
     <build>
-        <finalName>zhangli-feign-client</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>com.spotify</groupId>
