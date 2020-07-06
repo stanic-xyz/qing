@@ -5,13 +5,11 @@ import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.mapper.PermissionMapper;
 import chenyunlong.zhangli.mapper.UserMapper;
 import chenyunlong.zhangli.service.UserService;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
