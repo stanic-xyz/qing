@@ -37,6 +37,7 @@
         <module>zhangli-service-api</module>
         <module>zhangli-service-cloud-gateway</module>
         <module>zhangli-service-provider</module>
+        <module>natcross2</module>
         <module>zhangli-service-natcross-provider</module>
         <module>zhangli-service-provider-webflux</module>
         <module>zhangli-admin-server</module>

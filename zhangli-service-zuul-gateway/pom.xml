@@ -8,8 +8,8 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>zhangli-zuul-gateway</artifactId>
-    <name>zhangli-zuul-gateway</name>
+    <artifactId>zhangli-service-zuul-gateway</artifactId>
+    <name>zhangli-service-zuul-gateway</name>
     <description>Zuul网关组件</description>
 
     <dependencies>

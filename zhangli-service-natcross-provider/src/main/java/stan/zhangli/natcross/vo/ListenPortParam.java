@@ -1,9 +1,9 @@
 package stan.zhangli.natcross.vo;
 
-import javax.validation.constraints.NotEmpty;
+//import javax.validation.constraints.NotEmpty;
 
 public class ListenPortParam {
-    @NotEmpty
+//    @NotEmpty
     private Integer listenPort;
     private String portDescribe;
     private String destIp;
