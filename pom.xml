@@ -40,6 +40,7 @@
         <module>zhangli-service-natcross-provider</module>
         <module>zhangli-service-provider-webflux</module>
         <module>zhangli-admin-server</module>
+        <module>natcross2</module>
     </modules>
     <dependencies>
         <dependency>
