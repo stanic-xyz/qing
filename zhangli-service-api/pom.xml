@@ -13,7 +13,7 @@
     <artifactId>zhangli-service-api</artifactId>
 
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <dependencies>
 
