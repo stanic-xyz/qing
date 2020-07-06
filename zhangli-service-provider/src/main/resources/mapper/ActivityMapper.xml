@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="chenyunlong.zhangli.mapper.ActivityMapper">
+
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.Activity">
+        <id column="activity_id" property="activityId"/>
+        <result column="activity_name" property="activityName"/>
+    </resultMap>
+    <insert id="Add" parameterType="chenyunlong.zhangli.entities.Activity">
+        INSERT INTO `zhangli`.`t_sign_record` (`user_id`,`date_month`,`mask`,`continue_sign_month`) VALUES(#{userId},
+        #{dateMonth}, #{mask}, #{continueSignMonth})
+    </insert>
+
+    <select id="getActivityById" parameterType="long">
+        select activity_id,activity_name from activity where activity_id=#{activityId}
+    </select>
+</mapper>

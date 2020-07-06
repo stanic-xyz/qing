@@ -1,9 +1,13 @@
 package chenyunlong.zhangli.config;
 
+import chenyunlong.zhangli.anthentication.TokenProvider;
 import chenyunlong.zhangli.properties.SwaggerProperties;
 import chenyunlong.zhangli.properties.ZhangliProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,29 +19,37 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
     private final ZhangliProperties zhangliProperties;
+    private final TokenProvider tokenProvider;
 
-    public SwaggerConfig(ZhangliProperties zhangliProperties) {
+    public SwaggerConfig(ZhangliProperties zhangliProperties, TokenProvider tokenProvider) {
         this.zhangliProperties = zhangliProperties;
+        this.tokenProvider = tokenProvider;
     }
 
     @Bean
     public Docket swaggerApi() {
         SwaggerProperties swagger = zhangliProperties.getSwagger();
 
+
+        Collection<SimpleGrantedAuthority> authorities = new LinkedList<>();
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        //生成一个临时的token
+        Authentication authenticationToken = new UsernamePasswordAuthenticationToken("stan", "", authorities);
+        String token = tokenProvider.createToken(authenticationToken, false);
         //添加一个参数
         ParameterBuilder ticketPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<Parameter>();
         ticketPar.name("Authorization").description("用户token")
                 .modelRef(new ModelRef("string")).parameterType("header")
-                .defaultValue("Bearer ")
+                .defaultValue("Bearer " + token)
                 .required(false).build(); //header中的ticket参数非必填，传空也可以
         pars.add(ticketPar.build());    //根据每个方法名也知道当前方法在设置什么参数
 

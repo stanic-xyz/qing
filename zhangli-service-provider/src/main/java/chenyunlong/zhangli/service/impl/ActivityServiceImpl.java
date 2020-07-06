@@ -16,6 +16,11 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<Activity> queryActivities() {
-        return null;
+        return activityMapper.getActivityList();
+    }
+
+    @Override
+    public Activity getActivityById(Long activityId) {
+        return activityMapper.getActivityById(activityId);
     }
 }
