@@ -5,7 +5,6 @@ pipeline {
       args '-v /root/.m2:/root/.m2'
       reuseNode true
     }
-
   }
   stages {
     stage('编译') {
