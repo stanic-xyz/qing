@@ -7,9 +7,9 @@
 		<artifactId>zhangli</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>zhangli-service-provider-reactive</artifactId>
+	<artifactId>zhangli-service-provider-webflux</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>zhangli-service-provider-reactive</name>
+	<name>zhangli-service-provider-webflux</name>
 	<description>Reactive Web Demo project for Spring Boot</description>
 
 	<properties>
@@ -44,6 +44,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>${name}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
