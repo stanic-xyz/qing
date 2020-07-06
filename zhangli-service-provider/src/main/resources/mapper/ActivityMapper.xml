@@ -10,10 +10,9 @@
         <id column="activity_id" property="activityId"/>
         <result column="activity_name" property="activityName"/>
     </resultMap>
-    <insert id="Add" parameterType="chenyunlong.zhangli.entities.Activity">
-        INSERT INTO `zhangli`.`t_sign_record` (`user_id`,`date_month`,`mask`,`continue_sign_month`) VALUES(#{userId},
-        #{dateMonth}, #{mask}, #{continueSignMonth})
-    </insert>
+    <select id="getActivityList" resultMap="BaseResultMap">
+        select activity_id,activity_name from activity where activity_id
+    </select>
 
     <select id="getActivityById" parameterType="long">
         select activity_id,activity_name from activity where activity_id=#{activityId}

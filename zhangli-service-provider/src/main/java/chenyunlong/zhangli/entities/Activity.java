@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Activity implements Serializable {
 
     private Long activityId;
-    private String activityNmme;
+    private String activityName;
 
 
     public Long getActivityId() {
@@ -16,11 +16,11 @@ public class Activity implements Serializable {
         this.activityId = activityId;
     }
 
-    public String getActivityNmme() {
-        return activityNmme;
+    public String getActivityName() {
+        return activityName;
     }
 
-    public void setActivityNmme(String activityNmme) {
-        this.activityNmme = activityNmme;
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
     }
 }
