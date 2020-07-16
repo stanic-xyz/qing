@@ -3,7 +3,6 @@ package chenyunlong.zhangli.aspect;
 import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.utils.HttpContextUtil;
 import chenyunlong.zhangli.utils.IPUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.model.model;
 
-import lombok.Data;
 
 /**
  * <p>
@@ -10,7 +9,6 @@ import lombok.Data;
  * @author wangmin1994@qq.com
  * @since 2019-03-28 10:46:06
  */
-@Data
 public class ReturnModel {
     private boolean success;
     private Object data;

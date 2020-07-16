@@ -14,9 +14,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.netty.util.internal.StringUtil;
 import io.swagger.annotations.ApiOperation;
+import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthGithubRequest;
+import me.zhyd.oauth.request.AuthRequest;
+import me.zhyd.oauth.utils.AuthStateUtils;
 import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,8 +29,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.management.monitor.StringMonitor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -60,7 +68,7 @@ public class AuthController {
     @Log("通过表单登陆")
     @ApiOperation("通过表单登陆")
     @PostMapping("formLogin")
-    public ApiResult formLofin(@RequestParam String userName, @RequestParam String password) throws LoginErrorException {
+    public ApiResult formLofin(@RequestParam String userName, @RequestParam String password) throws LoginErrorException, JsonProcessingException {
 
         if (StringUtil.isNullOrEmpty(userName)) {
             throw new LoginErrorException("用户名不能为空");
@@ -84,25 +92,23 @@ public class AuthController {
      * @return
      */
     @GetMapping("login")
-    public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.setViewName("redirect:" + authRequest.authorize());
-        return modelAndView;
+    public void login(HttpServletResponse response) throws IOException {
+        String authorizeUrl = authRequest.authorize(AuthStateUtils.createState());
+        response.sendRedirect(authorizeUrl);
     }
 
-    @GetMapping("access_token")
-    public String accessToken(@RequestParam String code) throws JsonProcessingException {
+    @GetMapping("callback")
+    public String accessToken(AuthCallback callback) throws JsonProcessingException {
+        AuthResponse authResponse = authRequest.login(callback);
 
-        AuthResponse authResponse = authRequest.login(code);
-        AuthUser user = (AuthUser) authResponse.getData();
 
-        return tokenProvider.createToken(new UsernamePasswordAuthenticationToken("stan", "stan", null), false);
-    }
-
-    @GetMapping("getUserInfo")
-    public String getUserInfo(@RequestParam String username) {
-
-        return "test-from 8080";
+        if (authResponse.ok()) {
+            AuthUser user = (AuthUser) authResponse.getData();
+            List<GrantedAuthority> authorities = new LinkedList<>();
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            return tokenProvider.createToken(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getToken(), authorities), false);
+        } else {
+            return null;
+        }
     }
 }

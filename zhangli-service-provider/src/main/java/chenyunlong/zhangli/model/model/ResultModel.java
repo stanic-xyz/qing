@@ -2,7 +2,6 @@ package chenyunlong.zhangli.model.model;
 
 import chenyunlong.zhangli.model.model.enumeration.ResultEnum;
 import com.alibaba.fastjson.JSON;
-import lombok.experimental.Accessors;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
@@ -15,7 +14,6 @@ import java.lang.reflect.Field;
  * @author wangmin1994@qq.com
  * @since 2019-03-28 10:45:41
  */
-@Accessors(chain = true)
 public class ResultModel {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ResultModel.class);
@@ -64,11 +62,11 @@ public class ResultModel {
     /**
      * 反射方式修改值
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-05-10 14:04:48
      * @param fieldStr
      * @param object
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-05-10 14:04:48
      */
     public ResultModel set(String fieldStr, Object object) {
         Field field = null;

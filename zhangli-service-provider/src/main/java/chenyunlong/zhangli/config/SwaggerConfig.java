@@ -3,6 +3,7 @@ package chenyunlong.zhangli.config;
 import chenyunlong.zhangli.anthentication.TokenProvider;
 import chenyunlong.zhangli.properties.SwaggerProperties;
 import chenyunlong.zhangli.properties.ZhangliProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,13 +38,17 @@ public class SwaggerConfig {
     public Docket swaggerApi() {
         SwaggerProperties swagger = zhangliProperties.getSwagger();
 
-
         Collection<SimpleGrantedAuthority> authorities = new LinkedList<>();
 
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         //生成一个临时的token
         Authentication authenticationToken = new UsernamePasswordAuthenticationToken("stan", "", authorities);
-        String token = tokenProvider.createToken(authenticationToken, false);
+        String token = null;
+        try {
+            token = tokenProvider.createToken(authenticationToken, false);
+        } catch (JsonProcessingException e) {
+
+        }
         //添加一个参数
         ParameterBuilder ticketPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<Parameter>();

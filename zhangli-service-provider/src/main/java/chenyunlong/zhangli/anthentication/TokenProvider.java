@@ -61,7 +61,7 @@ public class TokenProvider {
         return null;
     }
 
-    public String createToken(Authentication authentication, boolean rememberMe) {
+    public String createToken(Authentication authentication, boolean rememberMe) throws JsonProcessingException {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -75,14 +75,14 @@ public class TokenProvider {
         }
 
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(new ObjectMapper().writeValueAsString(authentication))
                 .claim(zhangliProperties.getSecurity().getAuthticationPrefix(), authorities)
                 .signWith(SignatureAlgorithm.HS512, zhangliProperties.getSecurity().getSecretKey())
                 .setExpiration(validity)
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(String token) throws JsonProcessingException {
         Claims claims = Jwts.parser()
                 .setSigningKey(zhangliProperties.getSecurity().getSecretKey())
                 .parseClaimsJws(token)
@@ -93,9 +93,9 @@ public class TokenProvider {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        User principal = new User(claims.getSubject(), "", authorities);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new ObjectMapper().readValue(claims.getSubject(), UsernamePasswordAuthenticationToken.class);
 
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(claims.getSubject(), token, authorities);
     }
 
     public boolean validateToken(String authToken) {

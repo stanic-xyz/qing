@@ -4,15 +4,15 @@ import java.io.Serializable;
 
 public class Activity implements Serializable {
 
-    private Long activityId;
+    private String activityId;
+
     private String activityName;
 
-
-    public Long getActivityId() {
+    public String getActivityId() {
         return activityId;
     }
 
-    public void setActivityId(Long activityId) {
+    public void setActivityId(String activityId) {
         this.activityId = activityId;
     }
 

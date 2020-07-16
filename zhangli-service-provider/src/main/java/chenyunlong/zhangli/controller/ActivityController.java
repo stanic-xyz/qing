@@ -1,11 +1,13 @@
 package chenyunlong.zhangli.controller;
 
+import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.entities.request.ActivityQueryInfo;
 import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.response.ApiResult;
 import chenyunlong.zhangli.service.ActivityService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,12 +31,8 @@ public class ActivityController {
      */
     @GetMapping("list")
     public ApiResult listActivity(@Valid ActivityQueryInfo queryInfo) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.printf(authentication.getName());
         return ResultUtil.success(activityService.queryActivities());
-    }
-
-
-    @GetMapping("{activityId}")
-    public ApiResult getActivity(@PathVariable("activityId") Long activityId) {
-        return ResultUtil.success(activityService.getActivityById(activityId));
     }
 }
