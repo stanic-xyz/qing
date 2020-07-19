@@ -1,8 +1,6 @@
 server:
   port: 8001
 spring:
-  profiles:
-    active: dev
   devtools:
     livereload:
       enabled: true
@@ -14,8 +12,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       username: root
-      password: MysqlPwdROOT1996
-    url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
+      password: root
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
   jpa:
     hibernate:
       ddl-auto: update
@@ -47,7 +45,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: ${EUREKA_SERVICE_URL:http://121.36.163.95:8761}/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
 
 ribbon:
   eureka:

@@ -2,6 +2,9 @@ package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.entities.Permission;
 import chenyunlong.zhangli.entities.User;
+import chenyunlong.zhangli.exception.ErrorCode;
+import chenyunlong.zhangli.exception.ErrorType;
+import chenyunlong.zhangli.exception.MyException;
 import chenyunlong.zhangli.mapper.PermissionMapper;
 import chenyunlong.zhangli.mapper.UserMapper;
 import chenyunlong.zhangli.service.UserService;
@@ -15,14 +18,14 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
-    @Autowired
-    private PermissionMapper permissionMapper;
+    private final PermissionMapper permissionMapper;
 
     private static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-    public UserServiceImpl(UserMapper userMapper) {
+    public UserServiceImpl(UserMapper userMapper, PermissionMapper permissionMapper) {
         this.userMapper = userMapper;
+        this.permissionMapper = permissionMapper;
     }
 
     @Override
@@ -45,6 +48,8 @@ public class UserServiceImpl implements UserService {
 
         User userInfo = userMapper.findByUsername(user.getUsername());
 
+        if (userInfo == null)
+            return null;
         if (passwordEncoder.matches(user.getPassword(), userInfo.getPassword())) {
             return userInfo;
         }
@@ -59,5 +64,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Permission> getPermissionByUsername(String username) {
         return permissionMapper.getPermissionByUsername(username);
+    }
+
+    @Override
+    public void addUserInfo(User user) throws MyException {
+
+        User userInfo = userMapper.findByUsername(user.getUsername());
+
+        if (userInfo != null) {
+            throw new MyException("用户已存在", ErrorCode.USER_ALREADY_EXISTS);
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userMapper.addUser(user);
     }
 }

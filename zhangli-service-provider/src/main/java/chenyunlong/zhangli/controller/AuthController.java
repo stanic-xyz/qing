@@ -4,6 +4,7 @@ import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.anthentication.TokenProvider;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.exception.LoginErrorException;
+import chenyunlong.zhangli.exception.MyException;
 import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.response.ApiResult;
 import chenyunlong.zhangli.properties.ZhangliProperties;
@@ -26,6 +27,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,16 +45,12 @@ import java.util.List;
 public class AuthController {
 
     private final AuthGithubRequest authRequest;
-    private final ObjectMapper objectMapper;
-    private final RedisTemplate<String, Object> redisTemplate;
     private final UserService userService;
     private final ZhangliProperties zhangliProperties;
     private final TokenProvider tokenProvider;
 
-    public AuthController(AuthGithubRequest authRequest, ObjectMapper objectMapper, RedisTemplate<String, Object> redisTemplate, UserService userService, ZhangliProperties zhangliProperties, TokenProvider tokenProvider) {
+    public AuthController(AuthGithubRequest authRequest, UserService userService, ZhangliProperties zhangliProperties, TokenProvider tokenProvider) {
         this.authRequest = authRequest;
-        this.objectMapper = objectMapper;
-        this.redisTemplate = redisTemplate;
         this.userService = userService;
         this.zhangliProperties = zhangliProperties;
         this.tokenProvider = tokenProvider;
@@ -80,10 +78,30 @@ public class AuthController {
 
         User userInfo = userService.login(user);
 
+        if (userInfo == null)
+            return ResultUtil.fail("用户或者账号密码错误！");
+
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
         return ResultUtil.success(tokenProvider.createToken(new UsernamePasswordAuthenticationToken(userInfo.getUsername(), userInfo.getPassword(), authorities), false));
+    }
+
+    /**
+     * 添加用户信息
+     *
+     * @param userName 用户名
+     * @param password 密码，原始密码，不需要经过加密
+     * @return
+     * @throws MyException
+     */
+    public ApiResult register(@RequestParam String userName, @RequestParam String password) throws MyException {
+        try {
+            userService.addUserInfo(new User(userName, password));
+            return ResultUtil.success();
+        } catch (MyException exp) {
+            return ResultUtil.fail(exp.getMessage());
+        }
     }
 
     /**
@@ -101,14 +119,13 @@ public class AuthController {
     public String accessToken(AuthCallback callback) throws JsonProcessingException {
         AuthResponse authResponse = authRequest.login(callback);
 
-
         if (authResponse.ok()) {
             AuthUser user = (AuthUser) authResponse.getData();
             List<GrantedAuthority> authorities = new LinkedList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             return tokenProvider.createToken(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getToken(), authorities), false);
         } else {
-            return null;
+            return "认证错误";
         }
     }
 }

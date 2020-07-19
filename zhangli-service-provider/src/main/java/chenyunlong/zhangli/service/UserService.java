@@ -2,6 +2,7 @@ package chenyunlong.zhangli.service;
 
 import chenyunlong.zhangli.entities.Permission;
 import chenyunlong.zhangli.entities.User;
+import chenyunlong.zhangli.exception.MyException;
 
 import java.util.List;
 
@@ -37,4 +38,6 @@ public interface UserService {
     User findUserByUsername(String s);
 
     List<Permission> getPermissionByUsername(String username);
+
+    void addUserInfo(User user) throws MyException;
 }

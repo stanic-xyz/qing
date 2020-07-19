@@ -1,7 +1,6 @@
 package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.entities.User;
-import chenyunlong.zhangli.entities.UserInfo;
 import chenyunlong.zhangli.properties.ZhangliProperties;
 import chenyunlong.zhangli.utils.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,14 +35,13 @@ public class TokenProvider {
     /**
      * 通过token获取用户信息
      *
-     * @param authToken
+     * @param jwtToken
      * @return
      */
-    public String getUserNameFromToken(String authToken) {
+    public User getUserNameFromToken(String jwtToken) {
         try {
-            Claims claims = JwtUtil.parseJWT(authToken, zhangliProperties.getSecurity().getSecretKey());
-            User userInfo = objectMapper.readValue(claims.getSubject(), User.class);
-            return userInfo.getUsername();
+            Claims claims = JwtUtil.parseJWT(jwtToken, zhangliProperties.getSecurity().getSecretKey());
+            return objectMapper.readValue(claims.getSubject(), User.class);
         } catch (SecurityException | MalformedJwtException e) {
             logger.info("Invalid JWT signature.");
         } catch (ExpiredJwtException e) {
@@ -61,7 +58,16 @@ public class TokenProvider {
         return null;
     }
 
+    /**
+     * 酱token生成jwt生成token信息
+     *
+     * @param authentication token
+     * @param rememberMe     是否记住我，认证信息时间设置为一个月
+     * @return
+     * @throws JsonProcessingException 解析json信息错误
+     */
     public String createToken(Authentication authentication, boolean rememberMe) throws JsonProcessingException {
+        String username = (String) authentication.getPrincipal();
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -75,32 +81,42 @@ public class TokenProvider {
         }
 
         return Jwts.builder()
-                .setSubject(new ObjectMapper().writeValueAsString(authentication))
+                .setSubject(username)
                 .claim(zhangliProperties.getSecurity().getAuthticationPrefix(), authorities)
                 .signWith(SignatureAlgorithm.HS512, zhangliProperties.getSecurity().getSecretKey())
                 .setExpiration(validity)
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) throws JsonProcessingException {
+    /**
+     * 通过jwt获取token信息
+     *
+     * @param jwt jwt认证信息
+     * @return
+     * @throws JsonProcessingException
+     */
+    public Authentication getAuthentication(String jwt) throws JsonProcessingException {
         Claims claims = Jwts.parser()
                 .setSigningKey(zhangliProperties.getSecurity().getSecretKey())
-                .parseClaimsJws(token)
+                .parseClaimsJws(jwt)
                 .getBody();
 
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(zhangliProperties.getSecurity().getAuthticationPrefix()).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
-
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new ObjectMapper().readValue(claims.getSubject(), UsernamePasswordAuthenticationToken.class);
-
-        return new UsernamePasswordAuthenticationToken(claims.getSubject(), token, authorities);
+        return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
     }
 
-    public boolean validateToken(String authToken) {
+    /**
+     * 验证认证信息是否有效
+     *
+     * @param jwtToken jwtToken
+     * @return
+     */
+    public boolean validateToken(String jwtToken) {
         try {
-            Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey()).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey()).parseClaimsJws(jwtToken);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             logger.info("Invalid JWT signature.");

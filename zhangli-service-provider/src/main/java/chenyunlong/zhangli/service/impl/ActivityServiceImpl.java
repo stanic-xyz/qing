@@ -13,9 +13,11 @@ import java.util.List;
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
-    @Autowired
-    private ActivityMapper activityMapper;
+    private final ActivityMapper activityMapper;
 
+    public ActivityServiceImpl(ActivityMapper activityMapper) {
+        this.activityMapper = activityMapper;
+    }
 
 
     @Override
@@ -25,6 +27,11 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Activity getActivityById(Long activityId) {
-        return null;
+        return activityMapper.getActivityById(activityId);
+    }
+
+    @Override
+    public void addActivity(Activity activity) {
+        activityMapper.insert(activity);
     }
 }

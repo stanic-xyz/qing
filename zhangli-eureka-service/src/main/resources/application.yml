@@ -13,8 +13,10 @@ eureka:
       defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
   instance:
     lease-renewal-interval-in-seconds: 30
-    hostname: localhost
+    hostname: eureka.chenyunlong.cn
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
 management:
   endpoints:
     web:

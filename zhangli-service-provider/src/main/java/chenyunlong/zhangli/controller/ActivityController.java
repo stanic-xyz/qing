@@ -1,15 +1,12 @@
 package chenyunlong.zhangli.controller;
 
-import chenyunlong.zhangli.entities.User;
+import chenyunlong.zhangli.entities.Activity;
 import chenyunlong.zhangli.entities.request.ActivityQueryInfo;
 import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.response.ApiResult;
 import chenyunlong.zhangli.service.ActivityService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -30,9 +27,31 @@ public class ActivityController {
      * @return
      */
     @GetMapping("list")
-    public ApiResult listActivity(@Valid ActivityQueryInfo queryInfo) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.printf(authentication.getName());
+    public ApiResult listActivity(@Valid ActivityQueryInfo queryInfo, Pageable pageable) {
         return ResultUtil.success(activityService.queryActivities());
+    }
+
+    /**
+     * 添加动态信息
+     *
+     * @param activity 动态信息
+     * @return
+     */
+    @PostMapping
+    public ApiResult addActivity(@RequestBody Activity activity) {
+        activityService.addActivity(activity);
+        return ResultUtil.success();
+    }
+
+
+    /**
+     * 获取动态的具体信息
+     *
+     * @param activityId 动态ID
+     * @return
+     */
+    @GetMapping("activity/{activityId}")
+    public ApiResult getActivityDetail(@PathVariable(name = "activityId") Long activityId) {
+        return ResultUtil.success(activityService.getActivityById(activityId));
     }
 }

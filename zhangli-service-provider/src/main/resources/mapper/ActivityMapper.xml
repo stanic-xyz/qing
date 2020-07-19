@@ -15,4 +15,13 @@
     <select id="getActivityList" resultMap="BaseResultMap">
         SELECT activity_id,activity_name FROM activity
     </select>
+
+
+    <select id="getActivityById" resultMap="BaseResultMap" parameterType="long">
+        select activity_id,activity_name from activity where activity_id=#{activityId}
+    </select>
+
+    <insert id="insert" parameterType="chenyunlong.zhangli.entities.Activity">
+        insert into activity(activity_name)values(#{activityName})
+    </insert>
 </mapper>

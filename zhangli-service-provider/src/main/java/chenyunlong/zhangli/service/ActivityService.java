@@ -16,4 +16,7 @@ public interface ActivityService {
     public List<Activity> queryActivities();
 
     Activity getActivityById(Long activityId);
+
+    void addActivity(Activity activity);
+
 }
