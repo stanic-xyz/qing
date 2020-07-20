@@ -10,18 +10,27 @@
     <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.Activity">
         <id column="activity_id" property="activityId"/>
         <result column="activity_name" property="activityName"/>
+<!--        <association property="attachement" javaType="chenyunlong.zhangli.entities.Attachement">-->
+<!--            <id property="attachementId" column="attachement_id" jdbcType="Long"/>-->
+<!--            <result property="attachementName" column="attachement_name"/>-->
+<!--            <result property="attachementUrl" column="attachement_url"/>-->
+<!--        </association>-->
     </resultMap>
 
     <select id="getActivityList" resultMap="BaseResultMap">
-        SELECT activity_id,activity_name FROM activity
+        SELECT activity_id, activity_name
+        FROM activity
     </select>
 
 
     <select id="getActivityById" resultMap="BaseResultMap" parameterType="long">
-        select activity_id,activity_name from activity where activity_id=#{activityId}
+        select activity_id, activity_name
+        from activity
+        where activity_id = #{activityId}
     </select>
 
     <insert id="insert" parameterType="chenyunlong.zhangli.entities.Activity">
-        insert into activity(activity_name)values(#{activityName})
+        insert into activity(activity_name)
+        values (#{activityName})
     </insert>
 </mapper>

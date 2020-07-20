@@ -1,8 +1,6 @@
 server:
   port: 8001
 spring:
-  profiles:
-    active: dev
   devtools:
     livereload:
       enabled: true
@@ -41,29 +39,29 @@ eureka:
   instance:
     hostname: localhost
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-    ip-address=: 127.0.0.1
+#    ip-address=: 127.0.0.1
     prefer-ip-address: true
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: ${EUREKA_SERVICE_URL:http://121.36.163.95:8761}/eureka/
+      defaultZone: http://121.36.163.95:8761/eureka/
 
 ribbon:
   eureka:
     enabled: true
 
-logging:
-  config: ${LOG_CONFIG_PATH:}
-  logdir: ${LOG_DIR:/logs/person}
-  console-level: debug
-  file-level: trace
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
-  level:
-    root: info
-    person.pluto: ${LOG_LEVEL:trace}
-    chenyunlong: debug
+#logging:
+#  config: ${LOG_CONFIG_PATH:}
+#  logdir: ${LOG_DIR:/logs/person}
+#  console-level: debug
+#  file-level: trace
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
+#  level:
+#    root: info
+#    person.pluto: ${LOG_LEVEL:trace}
+#    chenyunlong: debug
 
 management:
   endpoints:
