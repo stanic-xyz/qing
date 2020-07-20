@@ -1,0 +1,21 @@
+server:
+  port: 9527
+eureka:
+  instance:
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    hostname: localhost
+    prefer-ip-address: false
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+ribbon:
+  eureka:
+    enabled: true
+zuul:
+  ignored-services: '*'
+  routes:
+    zhangli-feign-client: /userservice/**
+
+

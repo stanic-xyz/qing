@@ -1,10 +1,6 @@
 server:
   port: 7894
 spring:
-  application:
-    name: zhangli-service-provider
-  profiles:
-    active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:

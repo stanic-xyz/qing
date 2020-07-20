@@ -1,21 +1,17 @@
 server:
   port: 8001
 spring:
-  profiles:
-    active: dev
   devtools:
     livereload:
       enabled: true
     restart:
       enabled: true
-  application:
-    name: zhangli-service-provider
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       username: root
-      password: MysqlPwdROOT1996
-    url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
+      password: root
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
   jpa:
     hibernate:
       ddl-auto: update
@@ -41,39 +37,30 @@ eureka:
   instance:
     hostname: localhost
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-    #    ip-address=: 127.0.0.1
-    prefer-ip-address: true
+#    ip-address=: 127.0.0.1
+    prefer-ip-address: false
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-
 ribbon:
   eureka:
     enabled: true
 
-#logging:
-#  config: ${LOG_CONFIG_PATH:}
-#  logdir: ${LOG_DIR:/logs/person}
-#  console-level: debug
-#  file-level: trace
+logging:
+  config: ${LOG_CONFIG_PATH:}
+  logdir: ${LOG_DIR:/logs/person}
+  console-level: debug
+  file-level: trace
 #  pattern:
 #    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
-#  level:
-#    root: info
-#    person.pluto: ${LOG_LEVEL:trace}
-#    chenyunlong: debug
+  level:
+    root: info
+    person.pluto: ${LOG_LEVEL:trace}
+    chenyunlong: debug
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
 
 zhangli:
   file:

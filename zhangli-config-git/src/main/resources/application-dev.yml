@@ -1,8 +1,5 @@
 server:
   port: 8888
-spring:
-  application:
-    name: zhangli-config-git
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10
@@ -10,19 +7,10 @@ eureka:
     hostname: localhost
     metadata-map:
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
-    ip-address: 121.36.163.95
     prefer-ip-address: true
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
   client:
     registryFetchIntervalSeconds: 5
     register-with-eureka: true
     serviceUrl:
-      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: ALWAYS
+      defaultZone: http://localhost:8761/eureka/

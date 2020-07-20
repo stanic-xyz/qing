@@ -4,13 +4,12 @@ eureka:
   server:
     enable-self-preservation: true
   client:
-    fetch-registry: false
-    register-with-eureka: false
+    fetch-registry: true
+    register-with-eureka: true
     service-url:
-      defaultZone: ${EUREKA_SERVICE_URL:http://121.36.163.95:8761}/eureka/
+      defaultZone: http://121.36.163.95:8761/eureka/
   instance:
     lease-renewal-interval-in-seconds: 30
-    hostname: eureka.chenyunlong.cn
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
     ip-address: 121.36.163.95
     prefer-ip-address: true

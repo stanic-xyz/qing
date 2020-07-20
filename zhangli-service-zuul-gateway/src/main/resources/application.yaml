@@ -1,8 +1,8 @@
 server:
-  port: 9001
+  port: 9527
 spring:
   application:
-    name: zhangli-feign-client
+    name: zhangli-zuul-client
   profiles:
     active: dev
 eureka:
@@ -17,15 +17,10 @@ eureka:
 ribbon:
   eureka:
     enabled: true
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-  hystrix:
-    enabled: true
+zuul:
+  ignored-services: '*'
+  routes:
+    zhangli-feign-client: /userservice/**
 
 management:
   endpoints:
@@ -35,5 +30,3 @@ management:
   endpoint:
     health:
       show-details: always
-
-test: default

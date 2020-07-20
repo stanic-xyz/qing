@@ -7,23 +7,15 @@ spring:
     active: dev
 eureka:
   instance:
-    hostname: localhost
+    hostname: admin.chenyuunlong.cn
     leaseRenewalIntervalInSeconds: 10
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
     health-check-url-path: /actuator/health
-    prefer-ip-address: true
     metadata-map:
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
+    prefer-ip-address: false
+
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
       defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: ALWAYS

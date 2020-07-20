@@ -1,15 +1,11 @@
 server:
   port: 8001
 spring:
-  profiles:
-    active: dev
   devtools:
     livereload:
-      enabled: true
+      enabled: false
     restart:
-      enabled: true
-  application:
-    name: zhangli-service-provider
+      enabled: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -18,12 +14,12 @@ spring:
     url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: none
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
-        show_sql: true
+        format_sql: false
+        show_sql: false
   redis:
     database: 0
     host: localhost
@@ -47,8 +43,12 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka.chenyunlong.cn/eureka/
 
+mybatis:
+  mapperLocations: classpath*:mapper*/*.xml
+  configuration:
+    default-statement-timeout: 30
 
 ribbon:
   eureka:
@@ -66,14 +66,6 @@ ribbon:
 #    person.pluto: ${LOG_LEVEL:trace}
 #    chenyunlong: debug
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
 
 zhangli:
   file:
