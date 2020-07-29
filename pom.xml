@@ -121,12 +121,23 @@
                     <fork>true</fork><!-- 如果没有该配置，热部署的devtools不生效 -->
                 </configuration>
             </plugin>
-            <!--让所有的模块依赖我们的组件-->
+            <!--docker 打包-->
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>${dockerfile.maven.version}</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>tag</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
+                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
                     <buildArgs>
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
