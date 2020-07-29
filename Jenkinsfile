@@ -4,7 +4,9 @@ pipeline {
       image 'maven:3-alpine'
       args '-v /root/.m2:/root/.m2'
       reuseNode true
+      registryUrl ''
     }
+
   }
   stages {
     stage('编译') {
@@ -17,21 +19,9 @@ pipeline {
         sh 'mvn  -DskipTests=true package'
       }
     }
-    stage('测试') {
-      post {
-        always {
-          junit 'target/surefire-reports/*.xml'
-
-        }
-
-      }
+    stage('推送') {
       steps {
-        sh 'mvn test'
-      }
-    }
-    stage('打包镜像') {
-      steps {
-        sh 'echo skiped!'
+        sh 'echo hello CODING'
       }
     }
   }
