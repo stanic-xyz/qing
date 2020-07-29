@@ -11,17 +11,12 @@ pipeline {
   stages {
     stage('编译') {
       steps {
-        sh 'mvn  -DskipTests=true compile'
+        sh 'mvn compile -DskipTests=true -Ddockerfile.skip'
       }
     }
     stage('打包') {
       steps {
         sh 'mvn  -DskipTests=true package'
-      }
-    }
-    stage('打包镜像') {
-      steps {
-        sh 'mvn dockerfile:build'
       }
     }
   }
