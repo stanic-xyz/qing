@@ -6,7 +6,6 @@
         <groupId>stan</groupId>
         <artifactId>zhangli</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <artifactId>zhangli-service-natcross-provider</artifactId>
     <name>zhangli-service-natcross-provider</name>
