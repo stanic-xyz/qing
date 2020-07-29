@@ -19,9 +19,9 @@ pipeline {
         sh 'mvn  -DskipTests=true package'
       }
     }
-    stage('推送') {
+    stage('打包镜像') {
       steps {
-        sh 'echo hello CODING'
+        sh 'mvn dockerfile:build'
       }
     }
   }
