@@ -30,6 +30,7 @@
         <sentinel.version>1.7.2</sentinel.version>
     </properties>
     <modules>
+        <module>natcross2</module>
         <module>zhangli-eureka-service</module>
         <module>zhangli-feign-client</module>
         <module>zhangli-service-zuul-gateway</module>
@@ -37,7 +38,6 @@
         <module>zhangli-service-api</module>
         <module>zhangli-service-cloud-gateway</module>
         <module>zhangli-service-provider</module>
-        <module>natcross2</module>
         <module>zhangli-service-natcross-provider</module>
         <module>zhangli-service-provider-webflux</module>
         <module>zhangli-admin-server</module>
@@ -127,6 +127,9 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>${dockerfile.maven.version}</version>
                 <configuration>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
                     <skip>true</skip>
                 </configuration>
             </plugin>
