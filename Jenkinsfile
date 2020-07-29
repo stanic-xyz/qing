@@ -22,12 +22,7 @@ pipeline {
       }
       stage('编译') {
         steps {
-          sh 'mvn compile -DskipTests=true -Ddockerfile.skip'
-        }
-      }
-      stage('打包') {
-        steps {
-          sh 'mvn  -DskipTests=true package'
+          sh 'mvn compile -DskipTests=true'
         }
       }
     }
