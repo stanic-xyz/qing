@@ -25,5 +25,10 @@ pipeline {
           sh 'mvn compile -DskipTests=true'
         }
       }
+      stage('部署') {
+        steps {
+          sh 'mvn package -DskipTests=true'
+        }
+      }
     }
   }
