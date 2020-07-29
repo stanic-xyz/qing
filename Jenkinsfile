@@ -27,7 +27,7 @@ pipeline {
       }
       stage('部署') {
         steps {
-          sh 'mvn package -DskipTests=true'
+          sh 'mvn package -DskipTests=true -Ddockerfile.skip'
         }
       }
     }
