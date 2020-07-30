@@ -142,7 +142,7 @@
                 </dependencies>
                 <configuration>
                     <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
-                    <tag>latest</tag>
+                    <tag>${project.version}</tag>
                     <username>stanics</username>
                     <password>4745701816long</password>
                     <buildArgs>

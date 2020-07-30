@@ -75,6 +75,10 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>${dockerfile.maven.version}</version>
                 <configuration>
+                    <repository>stanics/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <username>stanics</username>
+                    <password>4745701816long</password>
                     <skip>true</skip>
                 </configuration>
             </plugin>
