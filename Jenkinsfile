@@ -1,8 +1,5 @@
 pipeline {
-  agent {
-    image 'maven:3-alpine'
-    args '-v /root/.m2:/root/.m2'
-  }
+  agent any
   stages {
     stage('检出代码') {
       steps {
@@ -22,7 +19,7 @@ pipeline {
       }
       stage('部署') {
         steps {
-          sh 'mvn package -DskipTests=true -Ddockerfile.skip=true'
+          sh 'mvn package -DskipTests=true -Ddockerfile.skip'
         }
       }
       stage('构建Docker镜像') {
