@@ -22,5 +22,20 @@ pipeline {
           sh 'mvn package -DskipTests=true -Ddockerfile.skip'
         }
       }
+      stage('构建Docker镜像') {
+        steps {
+          sh 'mvn com.spotify:dockerfile-maven-plugin:1.4.4:build'
+        }
+      }
+      stage('打标签') {
+        steps {
+          sh 'mvn com.spotify:dockerfile-maven-plugin:1.4.4:tag'
+        }
+      }
+      stage('推送到镜像库') {
+        steps {
+          sh 'mvn com.spotify:dockerfile-maven-plugin:1.4.4:push'
+        }
+      }
     }
   }
