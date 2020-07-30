@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.properties;
+package chenyunlong.zhangli.config.properties;
 
 public class SwaggerProperties {
     private String basePackage;
@@ -10,6 +10,7 @@ public class SwaggerProperties {
     private String email;
     private String license;
     private String licenseUrl;
+    private boolean docDisabled;
 
     public SwaggerProperties() {
     }
@@ -96,6 +97,14 @@ public class SwaggerProperties {
 
     public void setLicenseUrl(String licenseUrl) {
         this.licenseUrl = licenseUrl;
+    }
+
+    public boolean isDocDisabled() {
+        return docDisabled;
+    }
+
+    public void setDocDisabled(boolean docDisabled) {
+        this.docDisabled = docDisabled;
     }
 
     @Override

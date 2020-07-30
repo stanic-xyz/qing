@@ -2,7 +2,7 @@ package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.UploadFile;
-import chenyunlong.zhangli.properties.ZhangliProperties;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.FileUploadService;
 import chenyunlong.zhangli.model.response.ApiResult;
 import io.swagger.annotations.Api;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

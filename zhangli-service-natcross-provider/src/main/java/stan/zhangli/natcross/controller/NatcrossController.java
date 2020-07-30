@@ -112,7 +112,7 @@ public class NatcrossController {
      * @since 2019-07-22 14:20:35
      */
     @RequestMapping(value = "/updateListenPort", method = RequestMethod.POST)
-    public ResultModel updateListenPort(ListenPort listenPort,
+    public ResultModel updateListenPort(@RequestBody ListenPort listenPort,
                                         @RequestParam(name = "certFile", required = false) MultipartFile certFile) throws Exception {
 
         if (listenPort == null || listenPort.getListenPort() == null

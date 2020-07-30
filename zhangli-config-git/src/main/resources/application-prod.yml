@@ -9,8 +9,10 @@ eureka:
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
 #    prefer-ip-address: true
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    prefer-ip-address: true
+    ip-address: 121.36.163.95
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
-      defaultZone: http://eureka.chenyunlong.cn/eureka/
+      defaultZone: http://121.36.163.95:8761/eureka/
     register-with-eureka: true

@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.config;
 
 import chenyunlong.zhangli.anthentication.TokenProvider;
-import chenyunlong.zhangli.properties.SwaggerProperties;
-import chenyunlong.zhangli.properties.ZhangliProperties;
+import chenyunlong.zhangli.config.properties.SwaggerProperties;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

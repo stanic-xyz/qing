@@ -1,12 +1,13 @@
 server:
   port: 9528
+
 spring:
   application:
     name: spring-cloud-api-gateway
-  cloud:
-    gateway:
-      routes:
-        -id: url-proxy-1
-          uri: https://blog.csdn.net
-          predicates:
-            -Path=/csdn
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: after_route
+#          uri: ${service-url.user-service}
+#          predicates:
+#            - After=2019-09-24T16:30:00+08:00[Asia/Shanghai]

@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.entities.User;
-import chenyunlong.zhangli.properties.ZhangliProperties;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.utils.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.anthentication;
 
-import chenyunlong.zhangli.properties.ZhangliProperties;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.properties;
+package chenyunlong.zhangli.config.properties;
 
 public class SecurityProperties {
 

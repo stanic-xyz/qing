@@ -1,4 +1,4 @@
-package stan.zhangli.natcross.bean;
+package stan.zhangli.natcross.config;
 
 import stan.zhangli.natcross.model.CertModel;
 import stan.zhangli.natcross.model.SecretModel;

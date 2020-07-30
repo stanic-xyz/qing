@@ -1,5 +1,12 @@
-package chenyunlong.zhangli.config;
+package chenyunlong.zhangli.config.properties;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+
+@Component
+@Configuration
+@ConfigurationProperties(prefix = "zhangli.file")
 public class FileProperties {
 
     private String imageServerUrl;

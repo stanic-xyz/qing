@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.config;
+package chenyunlong.zhangli.config.properties;
 
 import org.springframework.context.annotation.Configuration;
 

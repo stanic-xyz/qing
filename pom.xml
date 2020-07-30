@@ -138,9 +138,6 @@
                 </executions>
                 <configuration>
                     <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
                     <skip>true</skip>
                 </configuration>
             </plugin>

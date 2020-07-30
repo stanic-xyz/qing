@@ -2,13 +2,13 @@ package chenyunlong.zhangli.model.response;
 
 import java.io.Serializable;
 
-public class ApiResult<T> implements Serializable {
+public class ApiResult implements Serializable {
 
     private int code;
     private String Msg;
-    private T data;
+    private Object data;
 
-    public ApiResult(int code, String msg, T data) {
+    public ApiResult(int code, String msg, Object data) {
         this.code = code;
         Msg = msg;
         this.data = data;
@@ -34,7 +34,7 @@ public class ApiResult<T> implements Serializable {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

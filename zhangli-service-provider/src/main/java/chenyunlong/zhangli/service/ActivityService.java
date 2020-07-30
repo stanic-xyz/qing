@@ -2,6 +2,7 @@ package chenyunlong.zhangli.service;
 
 
 import chenyunlong.zhangli.entities.Activity;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface ActivityService {
      *
      * @return
      */
-    public List<Activity> queryActivities();
+    public List<Activity> queryActivitiesByPage(String keyWorld);
 
     Activity getActivityById(Long activityId);
 

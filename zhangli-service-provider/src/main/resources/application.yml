@@ -2,7 +2,7 @@ server:
   port: 8001
 spring:
   profiles:
-    active: dev
+    active: prod
   devtools:
     livereload:
       enabled: true
@@ -41,13 +41,9 @@ eureka:
   instance:
     hostname: localhost
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-    #    ip-address=: 127.0.0.1
-    prefer-ip-address: true
   client:
     register-with-eureka: true
     fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
 
 
 ribbon:
