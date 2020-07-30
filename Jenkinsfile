@@ -17,9 +17,14 @@ pipeline {
           sh 'mvn compile -DskipTests=true'
         }
       }
-      stage('部署') {
+      stage('打包') {
         steps {
           sh 'mvn package -DskipTests=true -Ddockerfile.skip'
+        }
+      }
+      stage('收集构建物') {
+        steps {
+          archiveArtifacts(artifacts: '**/target/*.jar', allowEmptyArchive: true, fingerprint: true, onlyIfSuccessful: true)
         }
       }
       stage('构建Docker镜像') {
@@ -30,11 +35,6 @@ pipeline {
       stage('打标签') {
         steps {
           sh 'mvn com.spotify:dockerfile-maven-plugin:1.4.4:tag'
-        }
-      }
-      stage('推送到镜像库') {
-        steps {
-          sh 'mvn com.spotify:dockerfile-maven-plugin:1.4.4:push'
         }
       }
     }
