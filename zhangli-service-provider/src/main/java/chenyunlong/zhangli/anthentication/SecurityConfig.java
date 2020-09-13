@@ -5,6 +5,7 @@ import chenyunlong.zhangli.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+/**
+ * @author Stan
+ */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -24,22 +28,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final MyAccessDeniedHandler myAccessDeniedHandler;
     private final ZhangliProperties zhangliProperties;
     private final RedisTemplate redisTemplate;
-    @Autowired
-    private TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
     private final UserService userService;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private SecurityProblemSupport problemSupport;
+    private final UserDetailsService userDetailsService;
+    private final SecurityProblemSupport problemSupport;
 
 
-    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler, AuthenticationFailureHandler authenticationFeilureHandler, RedisTemplate redisTemplate, ZhangliProperties zhangliProperties, MyAccessDeniedHandler myAccessDeniedHandler, UserService userService) {
+    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler,
+                          AuthenticationFailureHandler authenticationFeilureHandler,
+                          RedisTemplate redisTemplate,
+                          ZhangliProperties zhangliProperties,
+                          MyAccessDeniedHandler myAccessDeniedHandler,
+                          UserService userService,
+                          TokenProvider tokenProvider,
+                          UserDetailsService userDetailsService,
+                          SecurityProblemSupport problemSupport) {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFeilureHandler;
         this.redisTemplate = redisTemplate;
         this.zhangliProperties = zhangliProperties;
         this.myAccessDeniedHandler = myAccessDeniedHandler;
         this.userService = userService;
+        this.tokenProvider = tokenProvider;
+        this.userDetailsService = userDetailsService;
+        this.problemSupport = problemSupport;
     }
 
     @Override
@@ -59,15 +71,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf()
                 .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(problemSupport)
-                .accessDeniedHandler(problemSupport)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .exceptionHandling()
+//                .authenticationEntryPoint(problemSupport)
+//                .accessDeniedHandler(problemSupport)
+//                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/authrize/**", "/actuator/**", "/file/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs").permitAll()
-                .antMatchers("/easyui/**").permitAll()
+                .antMatchers("/easyui/**", "detail/**").permitAll()
                 .antMatchers("/js/**", "/css/**", "/img/*").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/static/**").permitAll()
@@ -76,21 +88,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/management/health").permitAll()
                 .antMatchers("/management/info").permitAll()
                 .antMatchers("/management/**").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
 
-        http.apply(securityConfigurerAdapter());
+//        http.apply(securityConfigurerAdapter());
     }
-
-    /**
-     * 密码生成策略
-     *
-     * @return BCryptPasswordEncoder
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 
     public MyAuthTokenConfigurer securityConfigurerAdapter() {
         return new MyAuthTokenConfigurer(new MyUserdeatailService(userService), tokenProvider);

@@ -3,7 +3,6 @@ package chenyunlong.zhangli.config;
 import chenyunlong.zhangli.anthentication.TokenProvider;
 import chenyunlong.zhangli.config.properties.SwaggerProperties;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,8 +19,16 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
+/**
+ * Swagger配置信息
+ *
+ * @author Stan
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -43,20 +50,17 @@ public class SwaggerConfig {
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         //生成一个临时的token
         Authentication authenticationToken = new UsernamePasswordAuthenticationToken("stan", "", authorities);
-        String token = null;
-        try {
-            token = tokenProvider.createToken(authenticationToken, false);
-        } catch (JsonProcessingException e) {
-
-        }
+        String token = tokenProvider.createToken(authenticationToken, false);
         //添加一个参数
         ParameterBuilder ticketPar = new ParameterBuilder();
-        List<Parameter> pars = new ArrayList<Parameter>();
+        List<Parameter> pars = new ArrayList<>();
+        //header中的ticket参数非必填，传空也可以
         ticketPar.name("Authorization").description("用户token")
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .defaultValue("Bearer " + token)
-                .required(false).build(); //header中的ticket参数非必填，传空也可以
-        pars.add(ticketPar.build());    //根据每个方法名也知道当前方法在设置什么参数
+                .required(false).build();
+        //根据每个方法名也知道当前方法在设置什么参数
+        pars.add(ticketPar.build());
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
@@ -69,7 +73,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo(SwaggerProperties swagger) {
         Contact contact = new Contact(swagger.getAuthor(), swagger.getUrl(), swagger.getEmail());
-        ApiInfo apiInfo = new ApiInfo(
+        return new ApiInfo(
                 swagger.getTitle(),
                 swagger.getDescription(),
                 swagger.getVersion(),
@@ -77,6 +81,5 @@ public class SwaggerConfig {
                 contact,
                 swagger.getLicense(),
                 swagger.getLicenseUrl());
-        return apiInfo;
     }
 }

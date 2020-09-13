@@ -1,7 +1,5 @@
 package chenyunlong.zhangli.anthentication;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +15,6 @@ import java.io.IOException;
 
 public class MyTokenFilter extends GenericFilterBean {
 
-    private final Logger log = LoggerFactory.getLogger(MyTokenFilter.class);
     private final static String AUTHORIZATION_HEADER = "Authorization";
     private final TokenProvider tokenProvider;
 

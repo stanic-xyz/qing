@@ -11,21 +11,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * @author Stan
+ */
 @Component
 public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private final Logger logger = LoggerFactory.getLogger(MyAuthenticationFailureHandler.class);
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
 
-        ApiResult result = null;
+        ApiResult result;
         if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
             result = ResultUtil.fail(exception.getMessage());
         } else if (exception instanceof LockedException) {

@@ -24,7 +24,10 @@ import java.util.Date;
 @Component
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private static final Logger log = LoggerFactory.getLogger(MyAuthenticationSuccessHandler.class);
-    public static final String RETURN_TYPE = "html"; // 登录成功时，用来判断是返回json数据还是跳转html页面
+    /**
+     * 登录成功时，用来判断是返回json数据还是跳转html页面
+     */
+    public static final String RETURN_TYPE = "html";
 
 
     private final RedisTemplate redisTemplate;

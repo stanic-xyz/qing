@@ -6,10 +6,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * @author Stan
+ */
 public class MyAuthTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-
-    private TokenProvider tokenProvider;  // 我们之前自定义的 token功能类
-    private UserDetailsService detailsService;// 也是我实现的UserDetailsService
+    /**
+     * 我们之前自定义的 token功能类
+     */
+    private final TokenProvider tokenProvider;
+    /**
+     * 也是我实现的UserDetailsService
+     */
+    private final UserDetailsService detailsService;
 
     public MyAuthTokenConfigurer(UserDetailsService detailsService, TokenProvider tokenProvider) {
         this.detailsService = detailsService;
@@ -17,7 +25,7 @@ public class MyAuthTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecu
     }
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
         MyTokenFilter customFilter = new MyTokenFilter(detailsService, tokenProvider);
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
     }

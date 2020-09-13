@@ -4,10 +4,13 @@ server:
 spring:
   application:
     name: spring-cloud-api-gateway
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: after_route
-#          uri: ${service-url.user-service}
-#          predicates:
-#            - After=2019-09-24T16:30:00+08:00[Asia/Shanghai]
+  cloud:
+    gateway:
+      routes:
+        - id: after_route
+          uri: http://localhost:8001
+          filters:
+            - StripPrefix=1
+          predicates:
+            - After=2019-09-24T16:30:00+08:00[Asia/Shanghai]
+            - Path=/api/**

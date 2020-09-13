@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Stan
+ */
 @RestController
 @RequestMapping("authrize")
 public class AuthController {

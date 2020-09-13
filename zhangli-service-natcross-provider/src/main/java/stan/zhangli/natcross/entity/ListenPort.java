@@ -143,16 +143,14 @@ public class ListenPort implements Serializable {
                 model.put("recvSocket", recvSocket == null ? "null"
                         : recvSocket.getLocalPort() + " <- " + recvSocket.getRemoteSocketAddress());
                 model.put("recvSocketValid",
-                        recvSocket == null ? false
-                                : recvSocket.isBound() && recvSocket.isConnected() && !recvSocket.isClosed()
+                        recvSocket != null && recvSocket.isBound() && recvSocket.isConnected() && !recvSocket.isClosed()
                                 && !recvSocket.isInputShutdown() && !recvSocket.isOutputShutdown());
 
                 Socket sendSocket = value.getSendSocket();
                 model.put("sendSocket", sendSocket == null ? "null"
                         : sendSocket.getLocalPort() + " -> " + sendSocket.getRemoteSocketAddress());
                 model.put("sendSocketValid",
-                        recvSocket == null ? false
-                                : sendSocket.isBound() && sendSocket.isConnected() && !sendSocket.isClosed()
+                        recvSocket != null && sendSocket.isBound() && sendSocket.isConnected() && !sendSocket.isClosed()
                                 && !sendSocket.isInputShutdown() && !sendSocket.isOutputShutdown());
 
                 socketPartJson.put(entry.getKey(), model);

@@ -19,6 +19,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+/**
+ * @author Stan
+ */
 @Component
 public class TokenProvider {
 
@@ -35,8 +38,8 @@ public class TokenProvider {
     /**
      * 通过token获取用户信息
      *
-     * @param jwtToken
-     * @return
+     * @param jwtToken token 信息
+     * @return 用户信息
      */
     public User getUserNameFromToken(String jwtToken) {
         try {
@@ -51,7 +54,7 @@ public class TokenProvider {
         } catch (IllegalArgumentException e) {
             logger.info("JWT token compact of handler are invalid.");
         } catch (JsonProcessingException e) {
-            logger.info("parse Jsonobject failed.");
+            logger.info("parse jsonobject failed.");
         } catch (Exception e) {
             logger.error("解析jwt token 错误", e);
         }
@@ -63,10 +66,9 @@ public class TokenProvider {
      *
      * @param authentication token
      * @param rememberMe     是否记住我，认证信息时间设置为一个月
-     * @return
-     * @throws JsonProcessingException 解析json信息错误
+     * @return jwtToken信息
      */
-    public String createToken(Authentication authentication, boolean rememberMe) throws JsonProcessingException {
+    public String createToken(Authentication authentication, boolean rememberMe) {
         String username = (String) authentication.getPrincipal();
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -92,10 +94,9 @@ public class TokenProvider {
      * 通过jwt获取token信息
      *
      * @param jwt jwt认证信息
-     * @return
-     * @throws JsonProcessingException
+     * @return Authentication
      */
-    public Authentication getAuthentication(String jwt) throws JsonProcessingException {
+    public Authentication getAuthentication(String jwt) {
         Claims claims = Jwts.parser()
                 .setSigningKey(zhangliProperties.getSecurity().getSecretKey())
                 .parseClaimsJws(jwt)
@@ -112,7 +113,7 @@ public class TokenProvider {
      * 验证认证信息是否有效
      *
      * @param jwtToken jwtToken
-     * @return
+     * @return json是否合法
      */
     public boolean validateToken(String jwtToken) {
         try {

@@ -9,11 +9,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
+/**
+ * @author Stan
+ */
 public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
     private final Logger logger = LoggerFactory.getLogger(MyAuthenticationProcessingFilter.class);
     private static final String TOKEN = "Authorization";
@@ -28,7 +29,7 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException {
 
         UsernamePasswordAuthenticationToken authRequest;
         authRequest = new UsernamePasswordAuthenticationToken("", "", null);

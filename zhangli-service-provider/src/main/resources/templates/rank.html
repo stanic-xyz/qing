@@ -1,0 +1,282 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<!-- saved from url=(0038)https://www.agefans.tv/detail/20160083 -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>全部动画排行榜 - AGE动漫</title>
+
+    <meta name="keywords" content="动漫排行,AGE动漫">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/common.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/rank.css}">
+    <script type="text/javascript" th:src="@{/js/hm.js}"></script>
+    <script type="text/javascript" th:src="@{/js/history.js}"></script>
+</head>
+
+<body>
+<div id="root">
+    <div id="top">
+        <div id="logo">
+            <a href="https://www.agefans.tv/" title="AGE动漫">AGE动漫</a></div>
+        <div class="loginout">
+            <span class="svg_title svg_title_user"></span>
+            <a class="loginout_btn2" href="https://www.agefans.tv/accounts/profile/">stanic</a>
+
+            <script>
+                __html_set_username();
+            </script>
+
+        </div>
+    </div>
+    <header id="nav">
+        <a class="nav_button" href="/">首页</a>
+        <a class="nav_button " href="/movie/catalog">目录</a>
+        <a class="nav_button " href="/movie/recommend">每日推荐</a>
+        <a class="nav_button " href="/movie/update">最近更新</a>
+        <a class="nav_button nav_button_current" href="/movie/rank">排行榜</a>
+        <form id="top_search_from" class="search_form" action="/movie/search" method="get"
+              onsubmit="return on_top_search_form();">
+            <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
+                   autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
+            <input class="search_submit" type="submit" value="">
+            <input type="hidden" name="page" value="1"></form>
+
+        <script type="text/javascript">function on_top_search_form() {
+            var value = document.getElementById("top_search_input").value;
+            if (value == null || value == "") {
+                alert("请输入搜索关键字");
+                return false;
+            }
+        }
+
+        var top_search_input = document.getElementById("top_search_input");
+
+        function onfocus() {
+            top_search_input.classList.add("search_input_ex");
+        }
+
+        function onfocusout() {
+            top_search_input.classList.remove("search_input_ex");
+        }
+
+        if (top_search_input.addEventListener) {
+            top_search_input.addEventListener('focus', onfocus);
+            top_search_input.addEventListener('focusout', onfocusout);
+        } else {
+            top_search_input.onfocus = onfocus;
+            top_search_input.onfocusout = onfocusout;
+        }</script>
+    </header>
+    <div id="container">
+        <div class="spaceblock1"></div>
+        <div class="div_left baseblock">
+            <div class="blockcontent">
+                <div class="baseblock2">
+                    <div class="blocktitle" style="">排行分类</div>
+                    <div class="blockcontent" style="padding: 0px;">
+                        <div class="baseblock">
+                            <div class="blocktitlexx" style="">
+                                <a class="rank_tag rank_tag_current " href="https://www.agefans.tv/rank?tag=all">所有动画播放排行</a>
+                            </div>
+                            <div class="blocktitlexx" style="">
+                                <a id="tagyears" href="javascript:;" onclick="oncatsw(this);">
+                                    <span class="openorclose">-</span>
+                                    <span class="rank_tag">分类动画播放排行</span></a>
+                            </div>
+                            <ul id="cats" class="blockcontent" style="padding-left: 44px;">
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2020">2020</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2019">2019</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2018">2018</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2017">2017</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2016">2016</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2015">2015</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2014">2014</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2013">2013</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2012">2012</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2011">2011</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2010">2010</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2009">2009</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2008">2008</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2007">2007</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2006">2006</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2005">2005</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2004">2004</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2003">2003</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2002">2002</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2001">2001</a>
+                                </li>
+
+                                <li class="rankyear asciifont"><a class="rank_tag_value "
+                                                                  href="https://www.agefans.tv/rank?tag=catyear&amp;value=2000">2000以前</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="div_right baseblock">
+            <div class="blockcontent">
+                <div class="baseblock2">
+                    <div class="blocktitle">全部动画排行榜</div>
+                </div>
+                <div class="baseblock">
+                    <div class="blockcontent div_right_r_3">
+                        <ul class="div_right_r">
+                            <li class="rank_text" th:each="anime,iterStat :${animeList}" th:if="${iterStat.index<=24}">
+                                <span class="rank_text_idx asciifont"
+                                      th:class="${iterStat.index>9?'rank_text_idx asciifont':'rank_text_idx rank_text_idx_top asciifont'}"
+                                      th:text="${iterStat.index+1}">1</span>
+                                <a th:href="${'https://www.agefans.tv/detail/'+anime.id}">
+                                    <span class="rank_text_name" th:text="${anime.name}"></span></a>
+                                <span class="rank_value asciifont" th:text="${anime.playHeat}">0</span>
+                            </li>
+                        </ul>
+                        <ul class="div_right_r" th:if="${animeList.size()>25}">
+                            <li class="rank_text" th:each="anime,iterStat :${animeList}"
+                                th:if="${iterStat.index>24&&iterStat.index<50}">
+                                <span class="rank_text_idx asciifont"
+                                      th:class="${iterStat.index>9?'rank_text_idx asciifont':'rank_text_idx rank_text_idx_top asciifont'}"
+                                      th:text="${iterStat.index+1}">1</span>
+                                <a th:href="${'https://www.agefans.tv/detail/'+anime.id}">
+                                    <span class="rank_text_name" th:text="${anime.name}"></span></a>
+                                <span class="rank_value asciifont" th:text="${anime.playHeat}">0</span>
+                            </li>
+                        </ul>
+                        <ul class="div_right_r" th:if="${animeList.size()>50}">
+                            <li class="rank_text" th:each="anime,iterStat :${animeList}"
+                                th:if="${iterStat.index>=50}">
+                                <span class="rank_text_idx asciifont"
+                                      th:class="${'rank_text_idx asciifont'}"
+                                      th:text="${iterStat.index+1}">1</span>
+                                <a th:href="${'https://www.agefans.tv/detail/'+anime.id}">
+                                    <span class="rank_text_name" th:text="${anime.name}"></span></a>
+                                <span class="rank_value asciifont" th:text="${anime.playHeat}">0</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <ul style="text-align: center; line-height: 36px;">
+
+            <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">首页</a></li>
+
+            <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
+
+            <li><a class="pbutton  asciifont" href="/movie/rank?page=2}">2</a>
+            </li>
+
+            <li><a class="pbutton  asciifont" href="/movie/rank?page=3">3</a>
+            </li>
+
+            <li><a class="pbutton  asciifont" href="/movie/rank?tag=catyear&amp;value=&amp;page=3">3</a>
+            </li>
+
+            <li><a class="pbutton  asciifont" href="/movie/rank?tag=catyear&amp;value=&amp;page=4">4</a>
+            </li>
+
+            <li><a class="pbutton  asciifont" href="/movie/rank?tag=catyear&amp;value=&amp;page=5">5</a>
+            </li>
+
+            <li><a class="pbutton  asciifont" href="/movie/rank?tag=catyear&amp;value=&amp;page=6">6</a>
+            </li>
+
+            <li><a class="pbutton  asciifont"
+                   href="https://www.agefans.tv/rank?tag=catyear&amp;value=&amp;page=2">下一页</a></li>
+
+            <li><a class="pbutton  asciifont"
+                   href="https://www.agefans.tv/rank?tag=catyear&amp;value=&amp;page=34">尾页</a></li>
+        </ul>
+        <div class="spaceblock1"></div>
+    </div>
+    <footer id="footer">
+        <div id="footer_container"></div>
+    </footer>
+    <script type="text/javascript">function oncatsw(obj) {
+        var cats = document.getElementById('cats');
+        cats.isopen = !cats.isopen;
+        if (cats.isopen) {
+            cats.hidden = null;
+            obj.querySelector('.openorclose').innerText = '-';
+        } else {
+            cats.hidden = 'hidden';
+            obj.querySelector('.openorclose').innerText = '+';
+        }
+    }
+
+    oncatsw(document.getElementById('tagyears'));</script>
+</div>
+<script>var _hmt = _hmt || [];
+(function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();</script>
+
+
+</body>
+</html>

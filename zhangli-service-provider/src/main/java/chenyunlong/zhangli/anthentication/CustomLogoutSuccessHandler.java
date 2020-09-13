@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * 退出成功处理器
+ * @author Stan
  */
 @Component
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {

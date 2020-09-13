@@ -39,7 +39,6 @@ public class SecurityProblemSupport implements AuthenticationEntryPoint, AccessD
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-
 //        返回json形式的错误信息
         response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

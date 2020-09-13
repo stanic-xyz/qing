@@ -1,0 +1,673 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<!-- saved from url=(0038)https://www.agefans.tv/detail/20160083 -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>为美好的世界献上祝福！ BDRIP 720P/1080P 百度网盘 - AGE动漫</title>
+
+    <meta name="keywords" content="为美好的世界献上祝福！,动漫下载">
+    <meta name="description" content="为美好的世界献上祝福！在线观看 为美好的世界献上祝福！下载">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/common.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/detail.css}">
+    <!-- overload -->
+    <style type="text/css">.anime_icon1 {
+        margin-right: 24px;
+    }
+
+    .anime_icon1 {
+        width: 148px;
+    }
+
+    .anime_icon1 .anime_icon1_img {
+        width: 148px;
+        height: 205px;
+    }</style>
+
+    <script type="text/javascript" th:src="@{/js/hm.js}"></script>
+    <script type="text/javascript" th:src="@{/js/detail.js}"></script>
+    <script type="text/javascript" th:src="@{/js/utils.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.foucs.js}"></script>
+    <script type="text/javascript" th:src="@{/js/history.js}"></script>
+    <script type="text/javascript" th:src="@{/js/age_playpre.js}"></script>
+</head>
+
+<body>
+<div id="root">
+    <div id="top">
+        <div id="logo">
+            <a href="https://www.agefans.tv/" title="AGE动漫">AGE动漫</a></div>
+        <div class="loginout">
+            <span class="svg_title svg_title_user"></span>
+            <a class="loginout_btn2" href="https://www.agefans.tv/accounts/profile/">登陆</a>
+
+            <script>
+                __html_set_username();
+            </script>
+
+        </div>
+    </div>
+    <header id="nav">
+        <a class="nav_button " href="/">首页</a>
+        <a class="nav_button " href="/movie/catalog">目录</a>
+        <a class="nav_button " href="/movie/recommend">每日推荐</a>
+        <a class="nav_button " href="/movie/update">最近更新</a>
+        <a class="nav_button " href="/movie/rank">排行榜</a>
+        <a class="nav_button nav_button_current">详情</a>
+        <form id="top_search_from" class="search_form" action="/movie/search" method="get"
+              onsubmit="return on_top_search_form();">
+            <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
+                   autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
+            <input class="search_submit" type="submit" value="">
+            <input type="hidden" name="page" value="1"></form>
+
+        <script type="text/javascript">function on_top_search_form() {
+            var value = document.getElementById("top_search_input").value;
+            if (value == null || value == "") {
+                alert("请输入搜索关键字");
+                return false;
+            }
+        }
+
+        var top_search_input = document.getElementById("top_search_input");
+
+        function onfocus() {
+            top_search_input.classList.add("search_input_ex");
+        }
+
+        function onfocusout() {
+            top_search_input.classList.remove("search_input_ex");
+        }
+
+        if (top_search_input.addEventListener) {
+            top_search_input.addEventListener('focus', onfocus);
+            top_search_input.addEventListener('focusout', onfocusout);
+        } else {
+            top_search_input.onfocus = onfocus;
+            top_search_input.onfocusout = onfocusout;
+        }</script>
+    </header>
+    <div id="container">
+
+        <div id="new_tip1"
+             style="color: #E00;padding: 8px;margin: 0 9px;margin-top: 10px;margin-bottom:-14px;font-size: 14px;border: 1px solid #C00;">
+            AGE动漫网 备用地址：www.agefans.net 欢迎大家分享给身边朋友！为确保正常观看，请使用谷歌浏览器。
+        </div>
+
+        <div class="spaceblock1"></div>
+        <div class="div_left">
+            <div class="baseblock">
+                <div class="blockcontent">
+                    <img referrerpolicy="no-referrer" class="poster" width="256px" height="356px"
+                         th:src="${animeInfo.getCoverUrl()}"
+                         alt="为美好的世界献上祝福！"></div>
+            </div>
+            <div class="baseblock">
+                <div class="blockcontent">
+
+                    <div class="baseblock2">
+                        <div class="blocktitle detail_title1">基本信息：</div>
+                        <ul class="blockcontent">
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">地区：</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.getDistrict()}">日本</span>
+                                <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
+                            </li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">动画种类：</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.getType()}">TV</span></li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">原版名称：</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.getName()}">この素晴らしい世界に祝福を！</span>
+                            </li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">其它名称：</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.getOrignalName()}">暂无</span></li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">原作：</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.getAuthor()}">暂无</span></li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">制作公司：</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.getCompany()}">Studio DEEN</span>
+                            </li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">首播时间：</span>
+                                <span class="detail_imform_value"
+                                      th:text="${animeInfo.getPremiereDate()}">2016-01-13</span></li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">播放状态：</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.getPlayStatus()}">暂无</span></li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">剧情类型：</span>
+                                <span class="detail_imform_value"
+                                      th:text="${animeInfo.getPlotType()}">搞笑 奇幻 冒险 后宫</span></li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">标签：</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.getTags()}">搞笑 奇幻 冒险 后宫 治愈 魔法 轻小说 欢乐向</span>
+                            </li>
+                            <li class="detail_imform_kv">
+                                <span class="detail_imform_tag">官方网站：</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.getOfficialWebsite()}">http://konosuba.com/</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="baseblock">
+                <div class="blockcontent">
+                    <div class="baseblock2">
+                        <div class="blocktitle detail_title1">相关动画：</div>
+                        <ul class="blockcontent">
+
+                            <li class="relates_series">
+                                <a href="https://www.agefans.tv/detail/20170004">为美好的世界献上祝福！ 第二季</a>
+                            </li>
+
+                            <li class="relates_series">
+                                <a href="https://www.agefans.tv/detail/20160084">为美好的世界献上祝福！OAD</a>
+                            </li>
+
+                            <li class="relates_series">
+                                <a href="https://www.agefans.tv/detail/20180187">为美好的世界献上祝福！红传说</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="div_right">
+            <div class="baseblock">
+                <div class="blockcontent">
+                    <h4 class="detail_imform_name" th:text="${animeInfo.getName()}">--</h4></div>
+            </div>
+            <div class="blockline1" style="margin: 8px;"></div>
+            <div class="baseblock">
+                <div class="blockcontent">
+                    <div class="detail_imform_desc_pre">
+                        <p th:text="${animeInfo.getInstruction()}">暂无</p>
+                    </div>
+                </div>
+            </div>
+            <div class="blockline1" style="margin: 8px;"></div>
+
+            <div id="playlist-div" class="baseblock">
+                <div class="blocktitle">在线播放：</div>
+                <ul class="menu0" id="menu0">
+                    <li onclick="setTab(0,0)" class="" style="display: none;">播放列表1</li>
+                    <li onclick="setTab(0,1)" class="" style="display: none;">播放列表2</li>
+                    <li onclick="setTab(0,2)" class="on">播放列表3</li>
+                    <li onclick="setTab(0,3)" class="">播放列表4</li>
+                </ul>
+                <div class="main0" id="main0">
+
+                    <div class="movurl" style="display:none">
+                        <ul></ul>
+                    </div>
+
+                    <div class="movurl" style="display: none;">
+                        <ul></ul>
+                    </div>
+
+                    <div class="movurl" style="display: block;">
+                        <ul>
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_1" target="_self"
+                                   title="第01话 [GB][BDRIP][720P][x264_AAC]">第01话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_2" target="_self"
+                                   title="第02话 [GB][BDRIP][720P][x264_AAC]">第02话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_3" target="_self"
+                                   title="第03话 [GB][BDRIP][720P][x264_AAC]">第03话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_4" target="_self"
+                                   title="第04话 [GB][BDRIP][720P][x264_AAC]">第04话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_5" target="_self"
+                                   title="第05话 [GB][BDRIP][720P][x264_AAC]">第05话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_6" target="_self"
+                                   title="第06话 [GB][BDRIP][720P][x264_AAC]">第06话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_7" target="_self"
+                                   title="第07话 [GB][BDRIP][720P][x264_AAC]">第07话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_8" target="_self"
+                                   title="第08话 [GB][BDRIP][720P][x264_AAC]">第08话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_9" target="_self"
+                                   title="第09话 [GB][BDRIP][720P][x264_AAC]">第09话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_10" target="_self"
+                                   title="第10话 [GB][BDRIP][720P][x264_AAC]">第10话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=3_11" target="_self"
+                                   title="第11话 OVA)][GB][BDRIP][720P][x264_AAC]">第11话</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="movurl" style="display:none">
+                        <ul>
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_1" target="_self"
+                                   title="第01话 [GB][BDRIP][720P][x264_AAC]">第01话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_2" target="_self"
+                                   title="第02话 [GB][BDRIP][720P][x264_AAC]">第02话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_3" target="_self"
+                                   title="第03话 [GB][BDRIP][720P][x264_AAC]">第03话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_4" target="_self"
+                                   title="第04话 [GB][BDRIP][720P][x264_AAC]">第04话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_5" target="_self"
+                                   title="第05话 [GB][BDRIP][720P][x264_AAC]">第05话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_6" target="_self"
+                                   title="第06话 [GB][BDRIP][720P][x264_AAC]">第06话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_7" target="_self"
+                                   title="第07话 [GB][BDRIP][720P][x264_AAC]">第07话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_8" target="_self"
+                                   title="第08话 [GB][BDRIP][720P][x264_AAC]">第08话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_9" target="_self"
+                                   title="第09话 [GB][BDRIP][720P][x264_AAC]">第09话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_10" target="_self"
+                                   title="第10话 [GB][BDRIP][720P][x264_AAC]">第10话</a>
+                            </li>
+
+                            <li>
+                                <a href="https://www.agefans.tv/play/20160083?playid=4_11" target="_self"
+                                   title="第11话 OVA)][GB][BDRIP][720P][x264_AAC]">第11话</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+
+                <script id="DEF_PLAYINDEX">2</script>
+
+                <script>
+                    __set_playtab_on_index(0);
+                </script>
+            </div>
+
+            <div class="blockline1" style="margin: 8px;"></div>
+            <div id="wangpan-div" class="baseblock">
+                <div class="blocktitle">网盘资源：</div>
+                <div class="blockcontent">
+              
+		<span class="res_links">
+			<a class="res_links_a" href="https://www.agefans.tv/link/20160083/0" target="_blank">[TV 01-10+OVA 720P]</a>
+			<span class="res_links_pswd_tag">(提取码:</span>
+			<span class="res_links_pswd">fe5e)</span></span>
+                    <br>
+
+                </div>
+            </div>
+
+
+            <div class="blockline1" style="margin: 8px;"></div>
+            <div class="baseblock">
+                <div class="blocktitle">反馈：</div>
+
+
+                <div class="report_div">
+                    <form id="report_form" action="https://www.agefans.tv/report" method="GET">
+                        <div>
+                            <input id="report_aid" type="hidden" name="animeid" value="20160083">
+                            <label>
+                                <input type="checkbox" name="link_invalid" value="1">链接失效</label>
+                            <label>
+                                <input type="checkbox" name="bad_quality" value="1">资源质量差</label>
+                            <label>
+                                <input type="checkbox" name="some_missing" value="1">集数缺失</label>
+                            <label>
+                                <input type="checkbox" name="other" value="1">其他</label>
+                            <input name="other_text" placeholder="请告诉AGE详细情况~~" wrap="SOFT" spellcheck="0"
+                                   autocapitalize="off" autocomplete="off" autocorrect="off">
+                            <input class="nbutton" type="submit" value="提交"></div>
+                    </form>
+                    <script>
+                        const AID = __get_detail_play_page_AID();
+
+                        $('#report_aid').attr('value', AID);
+
+                        /////////////////
+                        $('#report_form').on('submit',
+                            function () {
+                                registPost();
+                                event.preventDefault(); //阻止form表单默认提交
+                            });
+
+                        ///////////////////
+                        function registPost() {
+                            $.ajax({
+                                type: "get",
+                                url: "/report?" + $('#report_form').serialize(),
+                            }).success(function (message) {
+                                alert(message);
+                            }).fail(function (err) {
+                                alert('未知错误');
+                            });
+                        }</script>
+                </div>
+
+
+            </div>
+
+            <!-- adv1 -->
+            <script th:src="@{/js/age.js}"></script>
+            <div style="text-align:center;padding:10px;">
+                <a rel="nofollow"
+                   href="https://vip.huijujiavip.com:8443/?f=www.agefans.tv"
+                   target="_blank">
+                    <img referrerpolicy="no-referrer"
+                         src="/img/U1630dd91322c4774815709c5760fffffH.gif"
+                         style="max-width:100%;"></a></div>
+
+
+            <div class="blockline1" style="margin: 8px;"></div>
+            <div class="baseblock">
+                <div class="blockcontent">
+                    <!-- switch -->
+                    <div style="padding-left: 8px;">
+                        <button class="switchbtn" id="btnrecommend" onclick="onbtnrecommend(this)">相关推荐</button>
+                        <button class="switchbtn switchbtn_current" id="btncomment" onclick="onbtncomment(this)">留言板
+                        </button>
+                    </div>
+                    <div id="recommend_block" class="switchblock" hidden="">
+                        <ul class="ul_li_a4">
+
+                            <li class="anime_icon1">
+                                <a href="https://www.agefans.tv/detail/20160111">
+                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                         src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"
+                                         data-src="//sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"></a>
+                                <a href="https://www.agefans.tv/detail/20160111">
+                                    <div class="anime_icon1_name">伤物语</div>
+                                </a>
+                            </li>
+
+                            <li class="anime_icon1">
+                                <a href="https://www.agefans.tv/detail/20160144">
+                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                         src="https://sc02.alicdn.com/kf/H6a603e2add694ff0b50dece25094df5fy.jpg"
+                                         data-src="//sc02.alicdn.com/kf/H6a603e2add694ff0b50dece25094df5fy.jpg"></a>
+                                <a href="https://www.agefans.tv/detail/20160144">
+                                    <div class="anime_icon1_name">任性HighSpec</div>
+                                </a>
+                            </li>
+
+                            <li class="anime_icon1">
+                                <a href="https://www.agefans.tv/detail/20140104">
+                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                         src="https://sc02.alicdn.com/kf/H62beed20bbc04a8b89924fc0cd97834aW.jpg"
+                                         data-src="//sc02.alicdn.com/kf/H62beed20bbc04a8b89924fc0cd97834aW.jpg"></a>
+                                <a href="https://www.agefans.tv/detail/20140104">
+                                    <div class="anime_icon1_name">星刻的龙骑士</div>
+                                </a>
+                            </li>
+
+                            <li class="anime_icon1">
+                                <a href="https://www.agefans.tv/detail/20150073">
+                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                         src="https://sc02.alicdn.com/kf/Hd1d5946ae75446c4b77a47dc284d52a4X.jpg"
+                                         data-src="//sc02.alicdn.com/kf/Hd1d5946ae75446c4b77a47dc284d52a4X.jpg"></a>
+                                <a href="https://www.agefans.tv/detail/20150073">
+                                    <div class="anime_icon1_name">新妹魔王的契约者</div>
+                                </a>
+                            </li>
+
+                            <li class="anime_icon1">
+                                <a href="https://www.agefans.tv/detail/20180205">
+                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                         src="https://sc02.alicdn.com/kf/H413fac31013947698d23d216ef21a184O.jpg"
+                                         data-src="//sc02.alicdn.com/kf/H413fac31013947698d23d216ef21a184O.jpg"></a>
+                                <a href="https://www.agefans.tv/detail/20180205">
+                                    <div class="anime_icon1_name">Anima Yell</div>
+                                </a>
+                            </li>
+
+                            <li class="anime_icon1">
+                                <a href="https://www.agefans.tv/detail/20200168">
+                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                         src="https://sc02.alicdn.com/kf/H938a52db40094ef59233cdc1c8911decg.jpg"
+                                         data-src="//sc02.alicdn.com/kf/H938a52db40094ef59233cdc1c8911decg.jpg"></a>
+                                <a href="https://www.agefans.tv/detail/20200168">
+                                    <div class="anime_icon1_name">七原罪 第四季(愤怒的审判)</div>
+                                </a>
+                            </li>
+
+                            <li class="anime_icon1">
+                                <a href="https://www.agefans.tv/detail/20000021">
+                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                         src="https://sc02.alicdn.com/kf/H73c64cf0b71c41eeb7d48ccf247c2635Q.jpg"
+                                         data-src="//sc02.alicdn.com/kf/H73c64cf0b71c41eeb7d48ccf247c2635Q.jpg"></a>
+                                <a href="https://www.agefans.tv/detail/20000021">
+                                    <div class="anime_icon1_name">天空之城</div>
+                                </a>
+                            </li>
+
+                            <li class="anime_icon1">
+                                <a href="https://www.agefans.tv/detail/20060015">
+                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                         src="https://sc02.alicdn.com/kf/H8263762bc67b4461b081b436c0f52b131.jpg"
+                                         data-src="//sc02.alicdn.com/kf/H8263762bc67b4461b081b436c0f52b131.jpg"></a>
+                                <a href="https://www.agefans.tv/detail/20060015">
+                                    <div class="anime_icon1_name">海贼王剧场版 机关城的机械巨兵</div>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div id="comments_block" class="switchblock">
+
+                        <form id="comment_form" action="javascript:void(0)" method="GET">
+                            <div>
+                                <input id="comment_id" type="hidden" name="cid" value="20160083">
+                                <textarea id="comment_content" wrap="SOFT" spellcheck="false" autocapitalize="off"
+                                          autocomplete="off" autocorrect="off" placeholder="说点什么吧"
+                                          name="comment_content" tid="20180132"
+                                          csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm"></textarea>
+                                <label class="comment_imform_tag">昵称：</label>
+                                <input readonly="true" id="comment_user" class="" name="comment_user" wrap="SOFT"
+                                       spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
+                                       placeholder="名字" value="游客">
+                                <input class="nbutton" type="submit" name="">
+                            </div>
+                            <script>
+                                __set_on_sendcomment();
+                            </script>
+                        </form>
+
+
+                        <script>
+                            __html_set_username();
+                        </script>
+
+                        <!-- 评论列表 -->
+                        <ul id="comment_list" style="margin-top: 16px;">
+                            <li class="comment">
+                                <hr class="hrspace2">
+                                <div class="commentcell_user">XiangGangGOU</div>
+                                <div class="commentcell_content">
+                                    <div>动画质量说真的很不错</div>
+                                    <div class="commentcell_time asciifont">2020-09-07 16:41:46</div>
+                                </div>
+                            </li>
+                            <li class="comment">
+                                <hr class="hrspace2">
+                                <div class="commentcell_user">游客11302320116061</div>
+                                <div class="commentcell_content">
+                                    <div>网盘挂了……</div>
+                                    <div class="commentcell_time asciifont">2020-09-07 13:35:19</div>
+                                </div>
+                            </li>
+                            <li class="comment">
+                                <hr class="hrspace2">
+                                <div class="commentcell_user">游客111019086052</div>
+                                <div class="commentcell_content">
+                                    <div>沙雕番，……</div>
+                                    <div class="commentcell_time asciifont">2020-09-07 09:22:53</div>
+                                </div>
+                            </li>
+                            <li class="comment">
+                                <hr class="hrspace2">
+                                <div class="commentcell_user">游客171011101360190</div>
+                                <div class="commentcell_content">
+                                    <div>第一集还不错</div>
+                                    <div class="commentcell_time asciifont">2020-09-06 16:40:27</div>
+                                </div>
+                            </li>
+                            <li class="comment">
+                                <hr class="hrspace2">
+                                <div class="commentcell_user">shenshi450</div>
+                                <div class="commentcell_content">
+                                    <div>盒子妈 这名字如何</div>
+                                    <div class="commentcell_time asciifont">2020-09-05 11:42:52</div>
+                                </div>
+                            </li>
+                            <li class="comment">
+                                <hr class="hrspace2">
+                                <div class="commentcell_user">游客11701350900194</div>
+                                <div class="commentcell_content">
+                                    <div>盒子妈 这名字
+                                        如何
+                                    </div>
+                                    <div class="commentcell_time asciifont">2020-09-05 11:42:17</div>
+                                </div>
+                            </li>
+                            <li class="comment">
+                                <hr class="hrspace2">
+                                <div class="commentcell_user">游客1140970380228</div>
+                                <div class="commentcell_content">
+                                    <div>op好好听
+                                    </div>
+                                    <div class="commentcell_time asciifont">2020-08-31 22:28:28</div>
+                                </div>
+                            </li>
+                            <hr class="hrspace2">
+                            <div id="current_comment_page" page=""></div>
+                        </ul>
+
+
+                        <!-- 评论翻页 -->
+                        <div class="spaceblock1"></div>
+                        <ul class="comment_page">
+                            <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">首页</a></li>
+
+                            <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">1</a></li>
+
+                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                   onclick="__age_show_comments_page(1)">2</a></li>
+
+                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                   onclick="__age_show_comments_page(2)">3</a></li>
+
+                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                   onclick="__age_show_comments_page(3)">4</a></li>
+
+                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                   onclick="__age_show_comments_page(4)">5</a></li>
+
+                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                   onclick="__age_show_comments_page(5)">6</a></li>
+
+                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                   onclick="__age_show_comments_page(1)">下一页</a></li>
+
+                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                   onclick="__age_show_comments_page(54)">尾页</a></li>
+                        </ul>
+
+                        <!-- write comments -->
+                        <script>
+                            __age_show_comments_page(0);
+                        </script>
+
+
+                    </div>
+
+                    <!-- switch logic -->
+                    <script type="text/javascript">var hash = window.location.hash;
+                    if (hash === '#btncomment') {
+                        onbtncomment();
+                    } else if (hash === '#btnrecommend') {
+                        onbtnrecommend();
+                    } else {
+                        if (Math.random() > 0.5) {
+                            onbtnrecommend();
+                        } else {
+                            onbtncomment();
+                        }
+                    }</script>
+                </div>
+            </div>
+        </div>
+        <!-- end div_right --></div>
+    <!-- end content -->
+    <footer id="footer">
+        <div id="footer_container"></div>
+    </footer>
+
+</div>
+
+<script>var _hmt = _hmt || [];
+(function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</body>
+</html>

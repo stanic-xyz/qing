@@ -15,6 +15,9 @@ import person.pluto.natcross2.serverside.client.config.SimpleClientServiceConfig
 
 import java.io.IOException;
 
+/**
+ * @author Stan
+ */
 @Configuration
 public class NatcrossSpring {
 

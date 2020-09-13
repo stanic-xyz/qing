@@ -10,8 +10,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       username: root
-      password: root
-    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
+      password: MysqlPwdROOT1996
+    url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
   jpa:
     hibernate:
       ddl-auto: update
@@ -37,7 +37,7 @@ eureka:
   instance:
     hostname: localhost
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-#    ip-address=: 127.0.0.1
+    #    ip-address=: 127.0.0.1
     prefer-ip-address: false
   client:
     register-with-eureka: true
@@ -54,8 +54,8 @@ logging:
   logdir: ${LOG_DIR:/logs/person}
   console-level: debug
   file-level: trace
-#  pattern:
-#    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
+  #  pattern:
+  #    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
   level:
     root: info
     person.pluto: ${LOG_LEVEL:trace}

@@ -23,17 +23,13 @@ public class MyUserdeatailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findUserByUsername(username);
-        if (user == null)
+        if (user == null) {
             throw new UsernameNotFoundException("用户名未找到！");
+        }
 
-//        List<Permission> permissionList = userService.getPermissionByUsername(user.getUsername());
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-//        for (Permission permission : permissionList) {
-//            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
-//            grantedAuthorities.add(grantedAuthority);
-//        }
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
         grantedAuthorities.add(authority);
 
