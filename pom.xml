@@ -30,7 +30,6 @@
         <sentinel.version>1.7.2</sentinel.version>
     </properties>
     <modules>
-        <module>natcross2</module>
         <module>zhangli-eureka-service</module>
         <module>zhangli-feign-client</module>
         <module>zhangli-service-zuul-gateway</module>
