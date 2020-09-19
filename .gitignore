@@ -54,3 +54,6 @@ build/
 
 ### VS Code ###
 .vscode/
+!/.gradle/
+.gradle/6.5/vcsMetadata-1/
+zhangli-service-provider/src/main/resources/META-INF/

@@ -156,8 +156,6 @@
                     <buildArgs>
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
-                    <!--跳过父模块的打包-->
-                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

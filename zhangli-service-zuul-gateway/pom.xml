@@ -69,8 +69,6 @@
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
-                    <!--跳过父模块的打包-->
-                    <skip>false</skip>
                 </configuration>
             </plugin>
         </plugins>

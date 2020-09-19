@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.stan.zhangli.entities.request.LoginInfoReqPacket;
 import com.stan.zhangli.entities.request.PacketReq;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ import static com.stan.zhangli.handler.command.ReqCommand.LOGIN_REQUEST_CODE;
  * @date: 2020/7/7
  * @description
  */
+@Service
 public class PackageCodeC {
 
     private final Map<Integer, Class<?>> packetTypeMap;

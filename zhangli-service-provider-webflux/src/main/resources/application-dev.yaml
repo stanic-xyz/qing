@@ -9,3 +9,13 @@ spring:
     url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
 echoserver:
   port: 5959
+
+
+#配置目标服务的地址
+wherewego:
+  rpc:
+    address: 127.0.0.1:8088
+    application: wqRpc
+    protocol:
+      port: 8088
+      name: wqRpc

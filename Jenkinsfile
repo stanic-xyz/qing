@@ -19,7 +19,7 @@ pipeline {
       }
       stage('打包') {
         steps {
-          sh 'mvn package -DskipTests=true -Ddockerfile.skip'
+          sh 'mvn package -Ddockerfile.skip=true -DskipTests=true'
         }
       }
       stage('收集构建物') {

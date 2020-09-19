@@ -4,7 +4,7 @@ spring:
   application:
     name: zhangli-config-git
   profiles:
-    active: dev
+    active: prod
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10
