@@ -2,18 +2,13 @@ package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -61,20 +56,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        禁用CSRF 开启跨域
+        //禁用CSRF 开启跨域
         http.csrf().disable();
         http.cors();
 
-//        开起无状态
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http
                 .csrf()
                 .disable()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(problemSupport)
-//                .accessDeniedHandler(problemSupport)
-//                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(problemSupport)
+                .accessDeniedHandler(problemSupport)
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .authorizeRequests()
@@ -88,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/management/health").permitAll()
                 .antMatchers("/management/info").permitAll()
                 .antMatchers("/management/**").permitAll()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
 
 //        http.apply(securityConfigurerAdapter());
     }

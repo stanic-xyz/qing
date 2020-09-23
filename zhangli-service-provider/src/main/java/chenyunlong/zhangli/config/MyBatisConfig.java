@@ -2,7 +2,6 @@ package chenyunlong.zhangli.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -13,18 +12,17 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 import java.util.logging.Logger;
 
+/**
+ * @author stan
+ */
 @Configuration
 @ConfigurationProperties(prefix = "mybatis")
-@PropertySource("application-mybatis.yml")
+@PropertySource("classpath:application-mybatis.yml")
 public class MyBatisConfig {
 
     private static final Logger logger = Logger.getLogger(String.valueOf(MyBatisConfig.class));
 
-//    @Autowired
-//    private Environment env;
-
-    @Autowired
-    private DataSource druidDataSource;
+    private final DataSource druidDataSource;
 
 
     @Value("${mapperLocations}")
@@ -33,6 +31,10 @@ public class MyBatisConfig {
     @Value("${default-statement-timeout}")
     private int dst;
 
+    public MyBatisConfig(DataSource druidDataSource) {
+        this.druidDataSource = druidDataSource;
+    }
+
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
@@ -40,8 +42,10 @@ public class MyBatisConfig {
         logger.info("sqlSessionFactory:--->mybatis.mapperLocation:" + mapperLocations);
 
         sqlSessionFactoryBean.setDataSource(druidDataSource);
-        org.apache.ibatis.session.Configuration cfg = new org.apache.ibatis.session.Configuration();//configuration
-        cfg.setDefaultStatementTimeout(dst);//设置相关参数，我这里就只用了一个
+        //configuration
+        org.apache.ibatis.session.Configuration cfg = new org.apache.ibatis.session.Configuration();
+        //设置相关参数，我这里就只用了一个
+        cfg.setDefaultStatementTimeout(dst);
         logger.info("sqlSessionFactoryBean:-->" + sqlSessionFactoryBean.getObject());
         logger.info("default-statement-timeout:" + dst);
         sqlSessionFactoryBean.setConfiguration(cfg);

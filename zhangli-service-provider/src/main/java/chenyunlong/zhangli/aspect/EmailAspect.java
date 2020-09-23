@@ -2,7 +2,6 @@ package chenyunlong.zhangli.aspect;
 
 import chenyunlong.zhangli.annotation.Email;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import chenyunlong.zhangli.service.EmailService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,6 +13,12 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
+/**
+ * 异步发送邮件
+ *
+ * @author stan
+ * @date 2020/09/23
+ */
 @Aspect
 @Component
 public class EmailAspect {
@@ -21,11 +26,9 @@ public class EmailAspect {
     private final Logger log = LoggerFactory.getLogger(EmailAspect.class);
     private final ZhangliProperties zhangliProperties;
 
-    private final EmailService emailService;
 
-    public EmailAspect(ZhangliProperties zhangliProperties, EmailService emailService) {
+    public EmailAspect(ZhangliProperties zhangliProperties) {
         this.zhangliProperties = zhangliProperties;
-        this.emailService = emailService;
     }
 
 
@@ -35,7 +38,7 @@ public class EmailAspect {
     }
 
     @Around("pointcut()")
-    public Object Around(ProceedingJoinPoint point) throws Throwable {
+    public Object around(ProceedingJoinPoint point) throws Throwable {
 
         //获取方法签名
         Method method = ((MethodSignature) point.getSignature()).getMethod();
@@ -65,7 +68,7 @@ public class EmailAspect {
         @Override
         public void run() {
             super.run();
-            emailService.sendEmail(receiver, subject, content);
+            log.info(receiver, subject, content);
             log.debug("发送一条邮件给指定账户" + zhangliProperties.getFile().getBaseUploadDir());
         }
     }

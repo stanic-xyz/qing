@@ -37,13 +37,11 @@ eureka:
   instance:
     hostname: localhost
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-    #    ip-address=: 127.0.0.1
-    prefer-ip-address: false
   client:
-    register-with-eureka: true
+    register-with-eureka: false
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://121.36.163.95:8761/eureka/
 
 ribbon:
   eureka:
@@ -64,7 +62,7 @@ logging:
 
 zhangli:
   file:
-    baseUploadDir: /upload/
+    baseUploadDir: upload/
     image-server-url: http://www.stanic.xyz/pic/
   openAopLog: true # 是否异步记录用户操作日志
   swagger:

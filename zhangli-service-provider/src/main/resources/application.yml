@@ -11,34 +11,6 @@ spring:
       username: root
       password: MysqlPwdROOT1996
     url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
-  redis:
-    database: 0
-    host: localhost
-    port: 6379
-  servlet:
-    multipart:
-      max-file-size: 4MB
-      max-request-size: 10MB
-  mail:
-    host: smtp.qq.com
-    username: 1576302867@qq.com
-    password: xoqywcevpshnbabf
-
-eureka:
-  instance:
-    hostname: localhost
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-  client:
-    register-with-eureka: true
-    fetch-registry: true
 
 
 ribbon:
@@ -68,7 +40,7 @@ management:
 
 zhangli:
   file:
-    baseUploadDir: /upload/
+    baseUploadDir: upload/
     image-server-url: http://www.stanic.xyz/pic/
   openAopLog: true # 是否异步记录用户操作日志
   swagger:

@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author stan
+ */
 @Configuration
 public class MpConfig {
 
@@ -15,6 +18,6 @@ public class MpConfig {
 
     @Bean
     public AppSetting getAppSetting() {
-        return new AppSetting("wx09bf7e704a150a9c", "9fdb9fa846356d32247a9aa68d758791");
+        return new AppSetting(appId, secret);
     }
 }

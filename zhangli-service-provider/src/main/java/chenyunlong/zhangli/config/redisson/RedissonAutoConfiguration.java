@@ -11,6 +11,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author stan
+ */
 @Configuration
 @ConditionalOnClass(Config.class)
 @EnableConfigurationProperties(RedissonProperties.class)
@@ -24,8 +27,6 @@ public class RedissonAutoConfiguration {
 
     /**
      * 单机模式自动装配
-     *
-     * @return
      */
     @Bean
     @ConditionalOnProperty(name = "redisson.address")

@@ -1,9 +1,14 @@
 package chenyunlong.zhangli.config.properties;
 
+import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author stan
+ */
+@Data
 @Component
 @Configuration
 @ConfigurationProperties(prefix = "zhangli")
@@ -12,6 +17,7 @@ public class ZhangliProperties {
     private FileProperties file;
     private SecurityProperties security;
     private SwaggerProperties swagger;
+    private String authticationPrefix;
 
     public ZhangliProperties() {
     }
@@ -21,38 +27,8 @@ public class ZhangliProperties {
         this.file = file;
         this.security = security;
         this.swagger = swagger;
+        this.authticationPrefix = authticationPrefix;
     }
 
-    public boolean isOpenAopLog() {
-        return openAopLog;
-    }
-
-    public void setOpenAopLog(boolean openAopLog) {
-        this.openAopLog = openAopLog;
-    }
-
-    public FileProperties getFile() {
-        return file;
-    }
-
-    public void setFile(FileProperties file) {
-        this.file = file;
-    }
-
-    public SecurityProperties getSecurity() {
-        return security;
-    }
-
-    public void setSecurity(SecurityProperties security) {
-        this.security = security;
-    }
-
-    public SwaggerProperties getSwagger() {
-        return swagger;
-    }
-
-    public void setSwagger(SwaggerProperties swagger) {
-        this.swagger = swagger;
-    }
 }
 
