@@ -1,7 +1,5 @@
 pipeline {
-  agent {
-    docker any
-  }
+  agent any
   stages {
     stage('打包') {
       steps {
