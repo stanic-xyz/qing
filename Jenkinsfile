@@ -1,5 +1,5 @@
 pipeline {
-  node {
+  agent {
           label 'my-defined-label'
           customWorkspace '.'
       }
