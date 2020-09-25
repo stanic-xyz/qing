@@ -1,10 +1,6 @@
 pipeline {
   agent {
-    docker {
-      image 'maven'
-      args '-v ~/.m2:/root/.m2'
-    }
-
+    docker any
   }
   stages {
     stage('打包') {
