@@ -3,15 +3,8 @@ pipeline {
   stages {
     stage('打包') {
       steps {
-        bat 'package.cmd'
+        bat 'mvn clean package -Ddockerfile.skip=true -DskipTests=true'
       }
     }
-
-    stage('收集构建物') {
-      steps {
-        archiveArtifacts(artifacts: '**/target/*.jar', allowEmptyArchive: true, defaultExcludes: true, onlyIfSuccessful: true, fingerprint: true)
-      }
-    }
-
   }
 }
