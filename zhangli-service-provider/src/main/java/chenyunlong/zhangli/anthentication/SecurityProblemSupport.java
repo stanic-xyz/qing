@@ -20,21 +20,16 @@ import java.nio.charset.StandardCharsets;
 public class SecurityProblemSupport implements AuthenticationEntryPoint, AccessDeniedHandler {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException authException) throws IOException, ServletException {
-//        if (isAjaxRequest(httpServletRequest)) {
-        //设置response状态码，返回错误信息等
         ApiResult success = ResultUtil.success("权限不足！");
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         httpServletResponse.getWriter().write(JSONUtil.toJsonPrettyStr(success));
-//        } else {
-//            httpServletResponse.sendRedirect("/login");
-//        }
     }
 
     public static boolean isAjaxRequest(HttpServletRequest request) {
         String ajaxFlag = request.getHeader("X-Requested-With");
-        return ajaxFlag != null && "XMLHttpRequest".equals(ajaxFlag);
+        return "XMLHttpRequest".equals(ajaxFlag);
     }
 
     @Override

@@ -1,7 +1,8 @@
 package chenyunlong.zhangli.common.core.exception;
 
 /**
- * Created by zhoutaoo on 2018/6/2.
+ * @author zhoutaoo
+ * @date 2018/6/2
  */
 public class ServiceException extends BaseException {
 

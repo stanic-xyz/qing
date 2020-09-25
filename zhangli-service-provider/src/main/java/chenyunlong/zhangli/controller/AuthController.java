@@ -2,15 +2,14 @@ package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.anthentication.TokenProvider;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.exception.LoginErrorException;
 import chenyunlong.zhangli.exception.MyException;
 import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.response.ApiResult;
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.netty.util.internal.StringUtil;
 import io.swagger.annotations.ApiOperation;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
@@ -20,6 +19,7 @@ import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -59,18 +59,19 @@ public class AuthController {
     @PostMapping("formLogin")
     public ApiResult formLofin(@RequestParam String userName, @RequestParam String password) throws LoginErrorException, JsonProcessingException {
 
-        if (StringUtil.isNullOrEmpty(userName)) {
+        if (StringUtils.isEmpty(userName)) {
             throw new LoginErrorException("用户名不能为空");
         }
-        if (StringUtil.isNullOrEmpty(password)) {
+        if (StringUtils.isEmpty(password)) {
             throw new LoginErrorException("密码不能为空");
         }
         User user = new User(userName, password);
 
         User userInfo = userService.login(user);
 
-        if (userInfo == null)
+        if (userInfo == null) {
             return ResultUtil.fail("用户或者账号密码错误！");
+        }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));

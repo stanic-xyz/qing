@@ -2,7 +2,7 @@ server:
   port: 8001
 spring:
   profiles:
-    active: prod
+    active: dev
   application:
     name: zhangli-service-provider
   datasource:
@@ -11,23 +11,14 @@ spring:
       username: root
       password: MysqlPwdROOT1996
     url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
-
+mybatis:
+  mapper-locations: classpath:mapper*/*.xml
+  configuration:
+    default-statement-timeout: 30
 
 ribbon:
   eureka:
     enabled: true
-
-#logging:
-#  config: ${LOG_CONFIG_PATH:}
-#  logdir: ${LOG_DIR:/logs/person}
-#  console-level: debug
-#  file-level: trace
-#  pattern:
-#    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
-#  level:
-#    root: info
-#    person.pluto: ${LOG_LEVEL:trace}
-#    chenyunlong: debug
 
 management:
   endpoints:
@@ -55,7 +46,6 @@ zhangli:
     version: 2.0
   security:
     authticationPrefix: authentication_
-
 
 #微信订阅号
 mp:

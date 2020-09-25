@@ -22,7 +22,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationFailureHandler authenticationFailureHandler;
     private final MyAccessDeniedHandler myAccessDeniedHandler;
     private final ZhangliProperties zhangliProperties;
-    private final RedisTemplate redisTemplate;
     private final TokenProvider tokenProvider;
     private final UserService userService;
     private final UserDetailsService userDetailsService;
@@ -31,7 +30,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler,
                           AuthenticationFailureHandler authenticationFeilureHandler,
-                          RedisTemplate redisTemplate,
                           ZhangliProperties zhangliProperties,
                           MyAccessDeniedHandler myAccessDeniedHandler,
                           UserService userService,
@@ -40,7 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                           SecurityProblemSupport problemSupport) {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFeilureHandler;
-        this.redisTemplate = redisTemplate;
         this.zhangliProperties = zhangliProperties;
         this.myAccessDeniedHandler = myAccessDeniedHandler;
         this.userService = userService;
@@ -82,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/management/health").permitAll()
                 .antMatchers("/management/info").permitAll()
                 .antMatchers("/management/**").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
 
 //        http.apply(securityConfigurerAdapter());
     }

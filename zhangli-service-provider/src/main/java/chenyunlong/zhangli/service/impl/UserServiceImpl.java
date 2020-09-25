@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author stan
+ * @date 2020-09-25
+ */
 @Service
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
