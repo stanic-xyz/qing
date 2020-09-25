@@ -36,7 +36,7 @@ public class MyBatisConfig {
     }
 
     @Bean
-    public SqlSessionFactory sqlSessionFactory() throws Exception {
+    public SqlSessionFactoryBean sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(mapperLocations));
         logger.info("sqlSessionFactory:--->mybatis.mapperLocation:" + mapperLocations);
@@ -49,6 +49,6 @@ public class MyBatisConfig {
         logger.info("sqlSessionFactoryBean:-->" + sqlSessionFactoryBean.getObject());
         logger.info("default-statement-timeout:" + dst);
         sqlSessionFactoryBean.setConfiguration(cfg);
-        return sqlSessionFactoryBean.getObject();
+        return sqlSessionFactoryBean;
     }
 }
