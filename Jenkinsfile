@@ -1,5 +1,8 @@
 pipeline {
-  agent none
+  node {
+          label 'my-defined-label'
+          customWorkspace '.'
+      }
   stages {
     stage('打包') {
       steps {
@@ -12,6 +15,5 @@ pipeline {
         archiveArtifacts(artifacts: '**/target/*.jar', allowEmptyArchive: true, fingerprint: true, onlyIfSuccessful: true)
       }
     }
-
   }
 }
