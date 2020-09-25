@@ -1,8 +1,5 @@
 pipeline {
-  agent {
-          label 'my-defined-label'
-          customWorkspace '.'
-      }
+  agent any
   stages {
     stage('打包') {
       steps {
