@@ -54,11 +54,4 @@ build/
 
 ### VS Code ###
 .vscode/
-!/.gradle/
-.gradle/6.5/vcsMetadata-1/
 /oa-log/
-zhangli-service-provider/src/main/resources/META-INF/
-zhangli-service-provider/src/test/java/chenyunlong/zhangli/mq/
-zhangli-service-provider/src/test/java/chenyunlong/zhangli/utils/
-!/.gradle/
-!/oa-log/

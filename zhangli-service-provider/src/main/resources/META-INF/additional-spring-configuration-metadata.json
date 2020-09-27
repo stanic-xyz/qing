@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "zhangli.swagger.author",
+      "type": "java.lang.String",
+      "description": "Description for zhangli.swagger.author."
+    }
+  ]
+}
