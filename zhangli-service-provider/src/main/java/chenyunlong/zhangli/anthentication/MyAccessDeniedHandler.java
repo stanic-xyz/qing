@@ -19,7 +19,8 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
 //        返回json形式的错误信息
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().println("{\"code\":403,\"message\":\"小弟弟，你没有权限访问呀！需要通过前端进行认证哦！\",\"data\":\"\"}");
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.getWriter().println("{\"code\":403,\"message\":\"小弟弟，你没有对应的权限权限哦！\",\"data\":\"\"}");
         response.getWriter().flush();
     }
 }

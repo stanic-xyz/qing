@@ -16,28 +16,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @author Stan
+ * @date 2020-09-27
+ */
 @Component
-public class SecurityProblemSupport implements AuthenticationEntryPoint, AccessDeniedHandler {
+public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException authException) throws IOException, ServletException {
-        ApiResult success = ResultUtil.success("权限不足！");
+        ApiResult success = ResultUtil.fail("没有登录");
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-        httpServletResponse.getWriter().write(JSONUtil.toJsonPrettyStr(success));
+        httpServletResponse.getWriter().write(JSONUtil.toJsonStr(success));
     }
 
     public static boolean isAjaxRequest(HttpServletRequest request) {
         String ajaxFlag = request.getHeader("X-Requested-With");
         return "XMLHttpRequest".equals(ajaxFlag);
-    }
-
-    @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-//        返回json形式的错误信息
-        response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().println("{\"code\":403,\"message\":\"小弟弟，你没有权限访问呀！需要通过前端进行认证哦！\",\"data\":\"\"}");
-        response.getWriter().flush();
     }
 }

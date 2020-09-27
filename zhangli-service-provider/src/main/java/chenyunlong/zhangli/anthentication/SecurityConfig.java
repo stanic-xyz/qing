@@ -3,7 +3,6 @@ package chenyunlong.zhangli.anthentication;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.UserService;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author Stan
@@ -25,7 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final UserService userService;
     private final UserDetailsService userDetailsService;
-    private final SecurityProblemSupport problemSupport;
+    private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+    private final UserDetailsService detailsService;
 
 
     public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler,
@@ -35,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                           UserService userService,
                           TokenProvider tokenProvider,
                           UserDetailsService userDetailsService,
-                          SecurityProblemSupport problemSupport) {
+                          MyAuthenticationEntryPoint myAuthenticationEntryPoint, UserDetailsService detailsService) {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFeilureHandler;
         this.zhangliProperties = zhangliProperties;
@@ -43,7 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userService = userService;
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
-        this.problemSupport = problemSupport;
+        this.myAuthenticationEntryPoint = myAuthenticationEntryPoint;
+        this.detailsService = detailsService;
     }
 
     @Override
@@ -53,38 +55,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         //禁用CSRF 开启跨域
-        http.csrf().disable();
-        http.cors();
-
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         http
+                .cors()
+                .and()
                 .csrf()
                 .disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(problemSupport)
-                .accessDeniedHandler(problemSupport)
+                .authenticationEntryPoint(myAuthenticationEntryPoint)
+                .accessDeniedHandler(myAccessDeniedHandler)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/authrize/**", "/actuator/**", "/file/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs").permitAll()
+                .antMatchers("/actuator/**", "/authrize/**", "/file/**", "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**").permitAll()
                 .antMatchers("/easyui/**", "detail/**").permitAll()
                 .antMatchers("/js/**", "/css/**", "/img/*").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/natcross/**").permitAll()
-                .antMatchers("/management/health").permitAll()
-                .antMatchers("/management/info").permitAll()
                 .antMatchers("/management/**").permitAll()
-                .anyRequest().permitAll();
-
-//        http.apply(securityConfigurerAdapter());
-    }
-
-    public MyAuthTokenConfigurer securityConfigurerAdapter() {
-        return new MyAuthTokenConfigurer(new MyUserdeatailService(userService), tokenProvider);
+                .anyRequest().permitAll()
+                .and()
+                .addFilterBefore(new MyTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 }

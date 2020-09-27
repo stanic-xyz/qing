@@ -3,35 +3,45 @@ package chenyunlong.zhangli.service;
 import chenyunlong.zhangli.entities.Permission;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.exception.MyException;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * @author stan
- * @date 2018/6/3 23:38
- * @email 1529949535@qq.com
+ * @date 2018/6/3
  */
+@Mapper
+@Component
 public interface UserService {
 
 
+    /**
+     * 通过用户查询用户
+     *
+     * @param userId 用户ID
+     * @return 用户信息
+     */
     User findUserByUserId(Long userId);
 
 
+    /**
+     * 查询用户信息
+     */
     List<User> findAll();
 
     /**
      * 添加用户信息，注册
      *
      * @param userInfo 用户信息
-     * @return
      */
     User register(User userInfo);
 
     /**
      * 登陆
      *
-     * @param user
-     * @return
+     * @param user 用户登录信息
      */
     User login(User user);
 
