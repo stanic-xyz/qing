@@ -24,7 +24,7 @@ node_modules/
 
 
 HELP.md
-target/
+/target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
@@ -56,4 +56,9 @@ build/
 .vscode/
 !/.gradle/
 .gradle/6.5/vcsMetadata-1/
+/oa-log/
 zhangli-service-provider/src/main/resources/META-INF/
+zhangli-service-provider/src/test/java/chenyunlong/zhangli/mq/
+zhangli-service-provider/src/test/java/chenyunlong/zhangli/utils/
+!/.gradle/
+!/oa-log/
