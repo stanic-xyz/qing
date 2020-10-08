@@ -14,5 +14,15 @@ pipeline {
         }
       }
     }
+    stage('收集构建物') {
+          steps {
+            archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
+          }
+        }
+    stage('构建成功通知') {
+          steps {
+            echo 'Build successfully !'
+          }
+        }
   }
 }
