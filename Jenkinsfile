@@ -15,7 +15,8 @@ pipeline {
         }
         stage('收集构建物') {
             steps {
-                archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
+                echo '收集构建物'
+                //archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
             }
         }
         stage('构建成功通知') {
