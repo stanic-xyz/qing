@@ -6,6 +6,8 @@ pipeline {
                 script {
                     if (isUnix() == true) {
                         echo '这里linux系统'
+                        sh 'chmod +x package.sh'
+                        sh 'package.sh'
                     } else {
                         echo '这是windows系统'
                         bat 'mvn clean package -Ddockerfile.skip=true -DskipTests=true'
