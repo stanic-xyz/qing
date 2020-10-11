@@ -1,28 +1,28 @@
 pipeline {
-  agent any
-  stages {
-    stage('打包') {
-      steps {
-        script {
-          if(isUnix() == true) {
-            echo '这里linux系统'
-            mvn clean package -Ddockerfile.skip=true -DskipTests=true
-          }else {
-            echo '这是windows系统'
-            bat 'mvn clean package -Ddockerfile.skip=true -DskipTests=true'
-          }
+    agent any
+    stages {
+        stage('打包') {
+            steps {
+                script {
+                    if (isUnix() == true) {
+                        echo '这里linux系统'
+                        sh "mvn clean package -Ddockerfile.skip=true -DskipTests=true"
+                    } else {
+                        echo '这是windows系统'
+                        bat 'mvn clean package -Ddockerfile.skip=true -DskipTests=true'
+                    }
+                }
+            }
         }
-      }
     }
     stage('收集构建物') {
-          steps {
+        steps {
             archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
-          }
         }
+    }
     stage('构建成功通知') {
-          steps {
+        steps {
             echo 'Build successfully !'
-          }
         }
-  }
+    }
 }
