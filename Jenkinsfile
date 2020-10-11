@@ -1,13 +1,17 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3-alpine'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
     stages {
         stage('打包') {
             steps {
                 script {
                     if (isUnix() == true) {
                         echo '这里linux系统'
-                        sh 'chmod +x package.sh'
-                        sh 'package.sh'
+                        sh 'mvn clean package -Ddockerfile.skip=true -DskipTests=true'
                     } else {
                         echo '这是windows系统'
                         bat 'mvn clean package -Ddockerfile.skip=true -DskipTests=true'
