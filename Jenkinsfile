@@ -22,7 +22,7 @@ pipeline {
         stage('收集构建物') {
             steps {
                 echo '收集构建物'
-                //archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
+                archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
             }
         }
         stage('构建成功通知') {
