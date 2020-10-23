@@ -7,7 +7,15 @@ pipeline {
         }
     }
     stages {
-        stage('阶段-1 打包') {
+        stage('阶段-1 拉取代码') {
+            steps {
+                checkout([
+                        $class           : 'GitSCM',
+                        branches         : [[name: env.GIT_BUILD_REF]],
+                        userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
+            }
+        }
+        stage('打包') {
             steps {
                 script {
                     if (isUnix() == true) {
@@ -20,7 +28,7 @@ pipeline {
                 }
             }
         }
-        stage('阶段-2 单元测试') {
+        stage('单元测试') {
             steps {
                 sh "mvn -pl '!zhangli-service-natcross-provider' test"
             }
@@ -31,7 +39,7 @@ pipeline {
                 }
             }
         }
-        stage('阶段-3 收集构建物') {
+        stage('收集构建物') {
             steps {
                 echo '收集构建物'
                 archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
