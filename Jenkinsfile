@@ -30,9 +30,19 @@ pipeline {
               bat "mvn -pl '!zhangli-service-natcross-provider' clean package -DskipTests=true"
             }
           }
-
         }
       }
+    stage('单元测试') {
+      steps {
+        sh "mvn -pl '!zhangli-service-natcross-provider' test"
+      }
+      post {
+        always {
+          // 收集测试报告
+          junit 'target/surefire-reports/*.xml'
+        }
+      }
+    }
       stage('收集构建物') {
         steps {
           echo '收集构建物'

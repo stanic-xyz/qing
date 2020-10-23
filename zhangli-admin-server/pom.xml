@@ -68,16 +68,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!--docker 打包-->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <configuration>
-                    <username>${docker.registry.name.prefix}</username>
-                    <password>${docker.registry.password}</password>
-                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
