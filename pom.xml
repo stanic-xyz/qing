@@ -27,6 +27,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dockerfile.maven.version>1.4.4</dockerfile.maven.version>
         <docker.registry.name.prefix>stanics</docker.registry.name.prefix>
+        <docker.registry.password>4745701816Long</docker.registry.password>
         <sentinel.version>1.7.2</sentinel.version>
     </properties>
     <modules>
@@ -118,26 +119,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork><!-- 如果没有该配置，热部署的devtools不生效 -->
-                </configuration>
-            </plugin>
-            <!--docker 打包-->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>${dockerfile.maven.version}</version>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>tag</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
-                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
