@@ -91,7 +91,7 @@ public class MovieController {
     @GetMapping("play/{movieId}")
     public ModelAndView play(
             @PathVariable(value = "movieId", required = false) String movieId,
-            @RequestParam(value = "playid", required = false) Integer playid
+            @RequestParam(value = "playid", required = false) String playid
     ) {
         return new ModelAndView("play");
     }
