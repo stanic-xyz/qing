@@ -37,5 +37,11 @@ pipeline {
                 archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
             }
         }
+        stage('阶段-3 构建制品库') {
+            steps {
+                sh "cd zhangli-eureka-service"
+                sh "mvn dockerfile:build"
+            }
+        }
     }
 }
