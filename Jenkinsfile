@@ -32,6 +32,12 @@ pipeline {
             steps {
                 sh "mvn -pl '!zhangli-service-natcross-provider' test"
             }
+            post {
+                always {
+                    // 收集测试报告
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
         }
         stage('收集构建物') {
             steps {

@@ -39,11 +39,6 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.redisson</groupId>-->
-        <!--            <artifactId>redisson</artifactId>-->
-        <!--            <version>3.11.1</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>cn.com.riversoft</groupId>
             <artifactId>weixin-mp</artifactId>
@@ -53,11 +48,6 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -77,20 +67,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.cloud</groupId>-->
-        <!--            <artifactId>spring-cloud-starter-stream-rabbit</artifactId>-->
-        <!--        </dependency>-->
-        <!--mail-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-mail</artifactId>-->
-        <!--        </dependency>-->
-        <!--freemaker-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
@@ -136,33 +112,5 @@
     </dependencies>
     <build>
         <finalName>${project.name}</finalName>
-        <!--        <plugins>-->
-        <!--            <plugin>-->
-        <!--                <artifactId>maven-surefire-plugin</artifactId>-->
-        <!--                <configuration>-->
-        <!--                    <skip>false</skip>-->
-        <!--                </configuration>-->
-        <!--            </plugin>-->
-        <!--            <plugin>-->
-        <!--                <groupId>com.spotify</groupId>-->
-        <!--                <artifactId>dockerfile-maven-plugin</artifactId>-->
-        <!--                <dependencies>-->
-        <!--                    <dependency>-->
-        <!--                        <groupId>javax.activation</groupId>-->
-        <!--                        <artifactId>activation</artifactId>-->
-        <!--                        <version>1.1</version>-->
-        <!--                    </dependency>-->
-        <!--                </dependencies>-->
-        <!--                <configuration>-->
-        <!--                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>-->
-        <!--                    <tag>${project.version}</tag>-->
-        <!--                    <username>stanics</username>-->
-        <!--                    <password>4745701816long</password>-->
-        <!--                    <buildArgs>-->
-        <!--                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>-->
-        <!--                    </buildArgs>-->
-        <!--                </configuration>-->
-        <!--            </plugin>-->
-        <!--        </plugins>-->
     </build>
 </project>
