@@ -136,33 +136,33 @@
     </dependencies>
     <build>
         <finalName>${project.name}</finalName>
-        <plugins>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skip>false</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.activation</groupId>
-                        <artifactId>activation</artifactId>
-                        <version>1.1</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <username>stanics</username>
-                    <password>4745701816long</password>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                </configuration>
-            </plugin>
-        </plugins>
+        <!--        <plugins>-->
+        <!--            <plugin>-->
+        <!--                <artifactId>maven-surefire-plugin</artifactId>-->
+        <!--                <configuration>-->
+        <!--                    <skip>false</skip>-->
+        <!--                </configuration>-->
+        <!--            </plugin>-->
+        <!--            <plugin>-->
+        <!--                <groupId>com.spotify</groupId>-->
+        <!--                <artifactId>dockerfile-maven-plugin</artifactId>-->
+        <!--                <dependencies>-->
+        <!--                    <dependency>-->
+        <!--                        <groupId>javax.activation</groupId>-->
+        <!--                        <artifactId>activation</artifactId>-->
+        <!--                        <version>1.1</version>-->
+        <!--                    </dependency>-->
+        <!--                </dependencies>-->
+        <!--                <configuration>-->
+        <!--                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>-->
+        <!--                    <tag>${project.version}</tag>-->
+        <!--                    <username>stanics</username>-->
+        <!--                    <password>4745701816long</password>-->
+        <!--                    <buildArgs>-->
+        <!--                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>-->
+        <!--                    </buildArgs>-->
+        <!--                </configuration>-->
+        <!--            </plugin>-->
+        <!--        </plugins>-->
     </build>
 </project>
