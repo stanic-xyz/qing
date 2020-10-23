@@ -24,10 +24,10 @@ pipeline {
           script {
             if (isUnix() == true) {
               echo '这里linux系统'
-              sh 'mvn clean package -DskipTests=true'
+              sh "mvn -pl '!zhangli-service-natcross-provider' clean package -DskipTests=true"
             } else {
               echo '这是windows系统'
-              bat 'mvn clean package -DskipTests=true'
+              bat "mvn -pl '!zhangli-service-natcross-provider' clean package -DskipTests=true"
             }
           }
 
