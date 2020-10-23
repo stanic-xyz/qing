@@ -5,7 +5,6 @@ pipeline {
       args '-v /root/.m2:/root/.m2'
       reuseNode true
     }
-
   }
   stages {
     stage('阶段-1 拉取代码') {
@@ -39,7 +38,7 @@ pipeline {
       post {
         always {
           // 收集测试报告
-          junit 'target/surefire-reports/*.xml'
+          junit '*/target/surefire-reports/*.xml'
         }
       }
     }
@@ -47,11 +46,6 @@ pipeline {
         steps {
           echo '收集构建物'
           archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
-        }
-      }
-      stage('构建成功通知') {
-        steps {
-          echo 'Build successfully !'
         }
       }
     }
