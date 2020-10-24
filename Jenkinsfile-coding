@@ -15,7 +15,7 @@ pipeline {
                         userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
             }
         }
-        stage('打包') {
+        stage('阶段-2 打包') {
             steps {
                 script {
                     if (isUnix() == true) {
@@ -26,7 +26,7 @@ pipeline {
                 }
             }
         }
-        stage('单元测试') {
+        stage('阶段-3 单元测试') {
             post {
                 always {
                     junit "**/target/surefire-reports/*.xml"
@@ -36,19 +36,9 @@ pipeline {
                 sh "mvn -pl '!zhangli-service-natcross-provider' test"
             }
         }
-        stage('收集构建物') {
+        stage('阶段-4 收集构建物') {
             steps {
                 archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
-            }
-        }
-        stage('阶段-3 构建zhangli-eureka-service服务的docker镜像') {
-            steps {
-                sh "mvn -pl zhangli-eureka-service -DskipTests=true dockerfile:build dockerfile:tag dockerfile:push"
-            }
-        }
-        stage('阶段-3 构建zhangli-service-provider服务的docker镜像') {
-            steps {
-                sh "mvn -pl zhangli-service-provider -DskipTests=true dockerfile:build dockerfile:tag dockerfile:push"
             }
         }
     }

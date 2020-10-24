@@ -11,5 +11,4 @@ public class ZhangliEurekaServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(ZhangliEurekaServiceApplication.class, args);
     }
-
 }
