@@ -5,7 +5,7 @@
     <parent>
         <artifactId>zhangli</artifactId>
         <groupId>stan</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -34,5 +34,28 @@
 
     <build>
         <finalName>${project.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile.maven.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
+                        <version>1.1</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <repository>${docker.registry.username}/${project.artifactId}</repository>
+                    <tag>${docker.registry.tag}</tag>
+                    <username>${docker.registry.username}</username>
+                    <password>${docker.registry.password}</password>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

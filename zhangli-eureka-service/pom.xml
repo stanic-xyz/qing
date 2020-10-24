@@ -4,7 +4,7 @@
     <parent>
         <groupId>stan</groupId>
         <artifactId>zhangli</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0.RELEASE</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -38,7 +38,7 @@
                 </dependencies>
                 <configuration>
                     <repository>${docker.registry.username}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
+                    <tag>${docker.registry.tag}</tag>
                     <username>${docker.registry.username}</username>
                     <password>${docker.registry.password}</password>
                     <buildArgs>

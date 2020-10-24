@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <groupId>stan</groupId>
     <artifactId>zhangli</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0.RELEASE</version>
     <description>留住张丽的朋友圈</description>
 
     <properties>
@@ -28,6 +28,7 @@
         <dockerfile.maven.version>1.4.4</dockerfile.maven.version>
         <docker.registry.username>stanics</docker.registry.username>
         <docker.registry.password>4745701816long</docker.registry.password>
+        <docker.registry.tag>${project.version}}</docker.registry.tag>
         <sentinel.version>1.7.2</sentinel.version>
     </properties>
     <modules>
@@ -86,6 +87,7 @@
         <repository>
             <id>spring</id>
             <url>https://maven.aliyun.com/repository/spring</url>
+            <name>阿里云公共镜像</name>
             <releases>
                 <enabled>true</enabled>
             </releases>
