@@ -1,4 +1,4 @@
-FROM java:8-jre AS zhangli-service
+FROM java:8-jre AS zhangli-service-provider
 USER root
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"

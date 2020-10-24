@@ -5,7 +5,7 @@
     <parent>
         <groupId>stan</groupId>
         <artifactId>zhangli</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0.RELEASE</version>
     </parent>
     <artifactId>zhangli-service-natcross-provider</artifactId>
     <name>zhangli-service-natcross-provider</name>

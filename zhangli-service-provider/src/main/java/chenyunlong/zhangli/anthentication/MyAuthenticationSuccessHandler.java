@@ -47,9 +47,10 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         String username = (String) authentication.getPrincipal();
         //添加一个jwt Token
         JwtBuilder builder = Jwts.builder();
-//        设置主体信息
+        //设置主体信息
         String token = builder.setSubject(username)
-                .setExpiration(new Date(System.currentTimeMillis() + zhangliProperties.getSecurity().getJwtTimeOut()))//        设置过期时间
+                //设置过期时间
+                .setExpiration(new Date(System.currentTimeMillis() + zhangliProperties.getSecurity().getJwtTimeOut()))
                 .setId(authentication.getPrincipal().toString())
                 .signWith(SignatureAlgorithm.HS512, zhangliProperties.getSecurity().getSecretKey())
                 .compact();

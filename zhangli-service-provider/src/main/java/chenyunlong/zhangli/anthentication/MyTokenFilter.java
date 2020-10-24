@@ -19,7 +19,7 @@ public class MyTokenFilter extends GenericFilterBean {
     private final TokenProvider tokenProvider;
 
 
-    public MyTokenFilter(UserDetailsService detailsService, TokenProvider tokenProvider) {
+    public MyTokenFilter(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 

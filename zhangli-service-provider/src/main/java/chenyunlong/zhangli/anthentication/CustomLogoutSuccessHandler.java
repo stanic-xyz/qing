@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * 退出成功处理器
+ *
  * @author Stan
  */
 @Component
@@ -24,7 +25,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         ApiResult success = ResultUtil.success("退出成功");
-
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

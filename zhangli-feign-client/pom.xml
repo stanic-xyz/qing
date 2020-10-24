@@ -5,7 +5,7 @@
     <parent>
         <artifactId>zhangli</artifactId>
         <groupId>stan</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -38,6 +38,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile.maven.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>javax.activation</groupId>
@@ -46,14 +47,13 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <username>stanics</username>
-                    <password>4745701816long</password>
+                    <repository>${docker.registry.username}/${project.artifactId}</repository>
+                    <tag>${docker.registry.tag}</tag>
+                    <username>${docker.registry.username}</username>
+                    <password>${docker.registry.password}</password>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
-                    <!--跳过父模块的打包-->
                 </configuration>
             </plugin>
         </plugins>

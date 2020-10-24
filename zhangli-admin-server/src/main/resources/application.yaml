@@ -3,8 +3,6 @@ server:
 spring:
   application:
     name: zhangli-admin-server
-  profiles:
-    active: dev
 eureka:
   instance:
     hostname: localhost
@@ -16,8 +14,8 @@ eureka:
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
   client:
     registryFetchIntervalSeconds: 5
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+    service-url:
+      default-zone: http://121.36.163.95:8761/eureka/
 
 management:
   endpoints:

@@ -4,7 +4,7 @@
     <parent>
         <groupId>stan</groupId>
         <artifactId>zhangli</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0.RELEASE</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -37,15 +37,13 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <repository>${docker.registry.name.prefix}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <username>stanics</username>
-                    <password>4745701816long</password>
+                    <repository>${docker.registry.username}/${project.artifactId}</repository>
+                    <tag>${docker.registry.tag}</tag>
+                    <username>${docker.registry.username}</username>
+                    <password>${docker.registry.password}</password>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
-                    <!--跳过父模块的打包-->
-                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

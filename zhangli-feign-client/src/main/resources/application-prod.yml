@@ -8,4 +8,4 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://eureka.chenyunlong.cn/eureka
+      defaultZone: http://121.36.163.95:8761/eureka

@@ -5,11 +5,10 @@
     <parent>
         <groupId>stan</groupId>
         <artifactId>zhangli</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0.RELEASE</version>
     </parent>
     <groupId>com.stan</groupId>
     <artifactId>zhangli-admin-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>zhangli-admin-server</name>
     <description>Demo project for Spring Boot</description>
 
@@ -65,15 +64,24 @@
         <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>${dockerfile.maven.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
+                        <version>1.1</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
-                    <skip>true</skip>
+                    <repository>${docker.registry.username}/${project.artifactId}</repository>
+                    <tag>${docker.registry.tag}</tag>
+                    <username>${docker.registry.username}</username>
+                    <password>${docker.registry.password}</password>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>
