@@ -1,16 +1,16 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
+            image "maven:3-alpine"
+            args "-v /root/.m2:/root/.m2"
             reuseNode true
         }
     }
     stages {
-        stage('阶段-1 拉取代码') {
+        stage("阶段-1 拉取代码") {
             steps {
                 checkout([
-                        $class           : 'GitSCM',
+                        $class           : "GitSCM",
                         branches         : [[name: env.GIT_BUILD_REF]],
                         userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
             }
@@ -19,10 +19,8 @@ pipeline {
             steps {
                 script {
                     if (isUnix() == true) {
-                        echo '这里linux系统'
                         sh "mvn -pl '!zhangli-service-natcross-provider' clean package -DskipTests=true"
                     } else {
-                        echo '这是windows系统'
                         bat "mvn -pl '!zhangli-service-natcross-provider' clean package -DskipTests=true"
                     }
                 }
@@ -31,11 +29,11 @@ pipeline {
         stage('单元测试') {
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    junit "**/target/surefire-reports/*.xml"
                 }
             }
             steps {
-                sh 'mvn -pl \'!zhangli-service-natcross-provider\' test'
+                sh "mvn -pl '!zhangli-service-natcross-provider' test"
             }
         }
         stage('收集构建物') {
@@ -45,12 +43,12 @@ pipeline {
         }
         stage('阶段-3 构建zhangli-eureka-service服务的docker镜像') {
             steps {
-                sh "mvn -pl zhangli-eureka-service -DskipTests=true dockerfile:tag dockerfile:push"
+                sh "mvn -pl zhangli-eureka-service -DskipTests=true dockerfile:build dockerfile:tag dockerfile:push"
             }
         }
-        stage('阶段-3 构建zhangli-eureka-service服务的docker镜像') {
+        stage('阶段-3 构建zhangli-service-provider服务的docker镜像') {
             steps {
-                sh "mvn -pl zhangli-eureka-service -DskipTests=true dockerfile:tag dockerfile:push"
+                sh "mvn -pl zhangli-service-provider -DskipTests=true dockerfile:build dockerfile:tag dockerfile:push"
             }
         }
     }

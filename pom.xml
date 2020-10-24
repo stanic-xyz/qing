@@ -29,7 +29,7 @@
         <dockerfile.maven.version>1.4.4</dockerfile.maven.version>
         <docker.registry.username>stanics</docker.registry.username>
         <docker.registry.password>4745701816long</docker.registry.password>
-        <docker.registry.tag>${project.version}}</docker.registry.tag>
+        <docker.registry.tag>${project.version}</docker.registry.tag>
         <sentinel.version>1.7.2</sentinel.version>
     </properties>
     <modules>
