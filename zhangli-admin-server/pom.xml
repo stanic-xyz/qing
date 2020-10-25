@@ -10,6 +10,7 @@
     <groupId>com.stan</groupId>
     <artifactId>zhangli-admin-server</artifactId>
     <name>zhangli-admin-server</name>
+    <version>${project.version}</version>
     <description>Demo project for Spring Boot</description>
 
     <properties>

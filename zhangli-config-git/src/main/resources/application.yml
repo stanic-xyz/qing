@@ -3,26 +3,5 @@ server:
 spring:
   application:
     name: zhangli-config-git
-eureka:
-  instance:
-    leaseRenewalIntervalInSeconds: 10
-    health-check-url-path: /actuator/health
-    hostname: localhost
-    metadata-map:
-      startup: ${random.int}    #needed to trigger info and endpoint update after restart
-    prefer-ip-address: true
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-    ip-address: 127.0.0.1
-  client:
-    registryFetchIntervalSeconds: 5
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
-    register-with-eureka: true
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
+  profiles:
+    active: prod

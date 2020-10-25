@@ -6,10 +6,14 @@ eureka:
   client:
     fetch-registry: false
     register-with-eureka: false
+    service-url:
+      defaultZone: http://121.36.163.95:8761/eureka/
   instance:
     lease-renewal-interval-in-seconds: 30
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
     prefer-ip-address: true
+    hostname: localhost
+    ip-address: 127.0.0.1
 management:
   endpoints:
     web:
