@@ -1,5 +1,3 @@
-server:
-  port: 8001
 spring:
   devtools:
     livereload:
@@ -31,8 +29,10 @@ spring:
 
 eureka:
   instance:
-    hostname: localhost
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@${project.version}}@
+    hostname: localhost
+    prefer-ip-address: true
+    ip-address: 121.36.163.95
   client:
     register-with-eureka: false
     fetch-registry: true

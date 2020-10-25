@@ -1,63 +1,7 @@
 server:
   port: 8001
 spring:
-  profiles:
-    active: dev
   application:
     name: zhangli-service-provider
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      username: root
-      password: MysqlPwdROOT1996
-    url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
-mybatis:
-  mapper-locations: classpath:mapper*/*.xml
-  configuration:
-    default-statement-timeout: 30
-
-ribbon:
-  eureka:
-    enabled: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-
-zhangli:
-  file:
-    baseUploadDir: upload/
-    image-server-url: http://www.stanic.xyz/pic/
-  openAopLog: true # 是否异步记录用户操作日志
-  swagger:
-    author: Stan
-    basePackage: chenyunlong.zhangli
-    description: Zhangli's Rear Gargen  API Document.
-    email: 1576302867@qq.com
-    license: Apache 2.0
-    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
-    title: Stan's Application for Zhangli
-    url: http://www.chenyunlong.cn
-    version: 2.0
-  security:
-    authticationPrefix: authentication_
-
-#微信订阅号
-mp:
-  wx:
-    appId: wx09bf7e704a150a9c
-    secret: 9fdb9fa846356d32247a9aa68d758791
-redisson:
-  address: redis://localhost:6379
-  password:
-  master-name: mymaster
-common:
-  constants:
-    ## 服务端的签名key，散列算法，约等于对称密钥，客户端使用签名方式获取接口状态
-    SERVER_SIGN_KEY: ${SERVER_SIGN_KEY:serverSignKey}
-    SIGN_MAX_DIFF_MILLIS: 10000
+  profiles:
+    active: dev
