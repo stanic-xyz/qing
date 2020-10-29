@@ -4,4 +4,4 @@ spring:
   application:
     name: zhangli-admin-server
   profiles:
-    active: prod
+    active: dev

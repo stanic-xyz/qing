@@ -37,10 +37,10 @@ pipeline {
                 archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
             }
         }
-        stage('阶段-3 推送zhangli-eureka-service到dockerhub') {
-            steps {
-                sh "mvn -pl zhangli-eureka-service -DskipTests=true clean package dockerfile:build dockerfile:tag dockerfile:push"
-            }
-        }
+//        stage('阶段-3 推送zhangli-eureka-service到dockerhub') {
+//            steps {
+//                sh "mvn -pl zhangli-eureka-service -DskipTests=true clean package dockerfile:build dockerfile:tag dockerfile:push"
+//            }
+//        }
     }
 }
