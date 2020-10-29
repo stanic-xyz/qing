@@ -13,6 +13,7 @@ public class SecurityProperties {
      * token有效时间  默认1天
      */
     private Long jwtTimeOut = 10086400L;
+
     private String authticationPrefix = "auth";
     private String secretKey = "Stanic";
 

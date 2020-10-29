@@ -1,0 +1,23 @@
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    ip-address: 127.0.0.1
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    registryFetchIntervalSeconds: 30
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://121.36.163.95:8761/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

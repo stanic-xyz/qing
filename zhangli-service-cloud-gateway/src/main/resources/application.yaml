@@ -1,6 +1,5 @@
 server:
   port: 9528
-
 spring:
   application:
     name: spring-cloud-api-gateway

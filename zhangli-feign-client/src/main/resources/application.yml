@@ -5,15 +5,6 @@ spring:
     name: zhangli-feign-client
   profiles:
     active: dev
-eureka:
-  instance:
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-    hostname: localhost
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    serviceUrl:
-      defaultZone: http://121.36.163.95:8761/eureka
 ribbon:
   eureka:
     enabled: true
