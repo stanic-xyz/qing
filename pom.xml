@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.0.RELEASE</version>
-        <relativePath/>
+<!--        <relativePath/>-->
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -41,7 +41,6 @@
         <module>zhangli-service-cloud-gateway</module>
         <module>zhangli-service-provider</module>
         <module>zhangli-service-natcross-provider</module>
-        <module>zhangli-service-provider-webflux</module>
         <module>zhangli-admin-server</module>
     </modules>
     <dependencies>

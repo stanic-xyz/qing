@@ -5,3 +5,15 @@ spring:
     name: zhangli-service-provider
   profiles:
     active: dev
+
+eureka:
+  instance:
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    hostname: localhost
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

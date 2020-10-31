@@ -5,3 +5,12 @@ spring:
     name: zhangli-eureka-service
   profiles:
     active: dev
+eureka:
+  server:
+    enable-self-preservation: true
+  client:
+    fetch-registry: false
+    register-with-eureka: true
+  instance:
+    lease-renewal-interval-in-seconds: 30
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@

@@ -12,7 +12,7 @@ eureka:
     registryFetchIntervalSeconds: 30
     register-with-eureka: true
     service-url:
-      defaultZone: http://121.36.163.95:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
 management:
   endpoints:
     web:

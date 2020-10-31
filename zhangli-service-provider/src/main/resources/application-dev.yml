@@ -1,3 +1,4 @@
+debug: true
 spring:
   devtools:
     livereload:
@@ -26,18 +27,6 @@ spring:
     host: smtp.qq.com
     username: 1576302867@qq.com
     password: xoqywcevpshnbabf
-
-eureka:
-  instance:
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@${project.version}}@
-    hostname: localhost
-    prefer-ip-address: true
-    ip-address: 121.36.163.95
-  client:
-    register-with-eureka: false
-    fetch-registry: true
-    service-url:
-      defaultZone: http://121.36.163.95:8761/eureka/
 
 ribbon:
   eureka:
