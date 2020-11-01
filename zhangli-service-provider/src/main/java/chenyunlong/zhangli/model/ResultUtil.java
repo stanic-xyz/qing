@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model;
 
 
-import chenyunlong.zhangli.model.response.ApiResult;
+import chenyunlong.zhangli.model.vo.ApiResult;
 
 public class ResultUtil {
 

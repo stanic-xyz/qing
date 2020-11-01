@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.model.ResultUtil;
-import chenyunlong.zhangli.model.response.ApiResult;
+import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtBuilder;

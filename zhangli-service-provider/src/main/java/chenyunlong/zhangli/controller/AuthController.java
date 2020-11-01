@@ -7,7 +7,7 @@ import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.exception.LoginErrorException;
 import chenyunlong.zhangli.exception.MyException;
 import chenyunlong.zhangli.model.ResultUtil;
-import chenyunlong.zhangli.model.response.ApiResult;
+import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;

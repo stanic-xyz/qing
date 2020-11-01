@@ -2,7 +2,7 @@ package chenyunlong.zhangli.controller;
 
 import chenyunlong.zhangli.entities.Activity;
 import chenyunlong.zhangli.model.ResultUtil;
-import chenyunlong.zhangli.model.response.ApiResult;
+import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.ActivityService;
 import chenyunlong.zhangli.service.AttachementService;
 import io.swagger.annotations.ApiOperation;

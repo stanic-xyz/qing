@@ -1,41 +1,31 @@
-package chenyunlong.zhangli.model.response;
+package chenyunlong.zhangli.model.vo;
+
+import lombok.*;
 
 import java.io.Serializable;
 
+/**
+ * @author Stan
+ */
+@Data
 public class ApiResult implements Serializable {
 
     private int code;
-    private String Msg;
+    private String msg;
     private Object data;
 
     public ApiResult(int code, String msg, Object data) {
         this.code = code;
-        Msg = msg;
+        this.msg = msg;
         this.data = data;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
     }
 
     public String getMsg() {
-        return Msg;
+        return msg;
     }
 
     public void setMsg(String msg) {
-        Msg = msg;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
+        this.msg = msg;
     }
 
     public static ApiResult success(Object data) {
@@ -45,4 +35,9 @@ public class ApiResult implements Serializable {
     public static ApiResult faild(String msg) {
         return new ApiResult(400, msg, null);
     }
+
+    protected boolean canEqual(final Object other) {
+        return other instanceof ApiResult;
+    }
+
 }

@@ -67,9 +67,35 @@
         where id = #{movieId}
     </select>
 
-    <select id="count" resultType="Integer">
+    <select id="count" resultType="long">
         select count(*)
         FROM anime_info;
+    </select>
+    <select id="selectAnimationW" resultMap="BaseResultMap">
+        SELECT `id`,
+               `name`,
+               `district`,
+               `cover_url`,
+               `type`,
+               `instruction`,
+               `other_name`,
+               `author`,
+               `company`,
+               `premiere_date`,
+               `play_status`,
+               `plot_type`,
+               `tags`,
+               `official_website`,
+               `play_heat`,
+               `orignal_name`
+        FROM anime_info
+        where name like concat('%', #{animeName}, '%')
+        limit #{offset},#{pageSize}
+    </select>
+    <select id="countByName" resultType="java.lang.Long">
+        select COUNT(name)
+        from anime_info
+        where name like concat('%', #{name}, '%')
     </select>
 
     <insert id="insertPatch">

@@ -2,7 +2,8 @@ package chenyunlong.zhangli.service;
 
 
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
-import chenyunlong.zhangli.model.response.anime.AnimeInfoRankModel;
+import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
+import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -17,5 +18,29 @@ public interface AnimeInfoService {
 
     void add(List<AnimeInfo> animeInfos);
 
-    AnimeInfo getMovieDetail(String movieId);
+    /**
+     * 获取动漫详情
+     *
+     * @param movieId 动漫ID
+     * @return 动漫详情
+     */
+    AnimeInfoVo getMovieDetail(String movieId);
+
+    /**
+     * 查询动画信息
+     *
+     * @param query    查询参数（名称
+     * @param page     当前页
+     * @param pageSize 分页大小
+     * @return 满足条件的动画信息
+     */
+    List<AnimeInfo> query(String query, Integer page, Integer pageSize);
+
+    /**
+     * 获取播放页数据
+     *
+     * @param animeId 动漫ID
+     * @return 动漫播放页视图
+     */
+    AnimeInfoVo getPlayDetail(String animeId);
 }

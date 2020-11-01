@@ -101,7 +101,7 @@
             <div class="baseblock">
                 <div class="blockcontent">
                     <img referrerpolicy="no-referrer" class="poster" width="256px" height="356px"
-                         th:src="${animeInfo.getCoverUrl()}"
+                         th:src="${animeInfoVo.coverUrl}"
                          alt="为美好的世界献上祝福！"></div>
             </div>
             <div class="baseblock">
@@ -112,44 +112,44 @@
                         <ul class="blockcontent">
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">地区：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.getDistrict()}">日本</span>
+                                <span class="detail_imform_value" th:text="${animeInfoVo.getDistrict()}">日本</span>
                                 <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">动画种类：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.getType()}">TV</span></li>
+                                <span class="detail_imform_value" th:text="${animeInfoVo.getType()}">TV</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">原版名称：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.getName()}">この素晴らしい世界に祝福を！</span>
+                                <span class="detail_imform_value" th:text="${animeInfoVo.getName()}">この素晴らしい世界に祝福を！</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">其它名称：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.getOrignalName()}">暂无</span></li>
+                                <span class="detail_imform_value" th:text="${animeInfoVo.getOrignalName()}">暂无</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">原作：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.getAuthor()}">暂无</span></li>
+                                <span class="detail_imform_value" th:text="${animeInfoVo.getAuthor()}">暂无</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">制作公司：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.getCompany()}">Studio DEEN</span>
+                                <span class="detail_imform_value" th:text="${animeInfoVo.getCompany()}">Studio DEEN</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">首播时间：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfo.getPremiereDate()}">2016-01-13</span></li>
+                                      th:text="${animeInfoVo.getPremiereDate()}">2016-01-13</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">播放状态：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.getPlayStatus()}">暂无</span></li>
+                                <span class="detail_imform_value" th:text="${animeInfoVo.getPlayStatus()}">暂无</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">剧情类型：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfo.getPlotType()}">搞笑 奇幻 冒险 后宫</span></li>
+                                      th:text="${animeInfoVo.getPlotType()}">搞笑 奇幻 冒险 后宫</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">标签：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.getTags()}">搞笑 奇幻 冒险 后宫 治愈 魔法 轻小说 欢乐向</span>
+                                <span class="detail_imform_value" th:text="${animeInfoVo.getTags()}">搞笑 奇幻 冒险 后宫 治愈 魔法 轻小说 欢乐向</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">官方网站：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.getOfficialWebsite()}">http://konosuba.com/</span>
+                                <span class="detail_imform_value" th:text="${animeInfoVo.getOfficialWebsite()}">http://konosuba.com/</span>
                             </li>
                         </ul>
                     </div>
@@ -182,13 +182,13 @@
         <div class="div_right">
             <div class="baseblock">
                 <div class="blockcontent">
-                    <h4 class="detail_imform_name" th:text="${animeInfo.getName()}">--</h4></div>
+                    <h4 class="detail_imform_name" th:text="${animeInfoVo.getName()}">--</h4></div>
             </div>
             <div class="blockline1" style="margin: 8px;"></div>
             <div class="baseblock">
                 <div class="blockcontent">
                     <div class="detail_imform_desc_pre">
-                        <p th:text="${animeInfo.getInstruction()}">暂无</p>
+                        <p th:text="${animeInfoVo.getInstruction()}">暂无</p>
                     </div>
                 </div>
             </div>

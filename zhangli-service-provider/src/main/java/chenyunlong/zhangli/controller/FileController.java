@@ -4,7 +4,7 @@ import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.UploadFile;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.service.FileUploadService;
-import chenyunlong.zhangli.model.response.ApiResult;
+import chenyunlong.zhangli.model.vo.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
