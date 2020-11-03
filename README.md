@@ -8,7 +8,6 @@ V部落是一个多用户博客管理平台，采用Weex+SpringBoot开发。
 
 **以下是关于项目的运行**
 
-
 ```
 该项目是我关于SpringCloud的一次实践
 通过该项目我希望能够对SpringCloud更加了解的同时
@@ -41,6 +40,10 @@ V部落是一个多用户博客管理平台，采用Weex+SpringBoot开发。
 #### 使用说明
 
 1. 目前该项目书私有项目，不打算公开出来
+2. 配置中心设置
+    需要添加两条TXT记录：
+    [] txt.zhangli.chenyunlong.cn
+    [] txt.defaultZone.chenyunlong.cn
 
 #### 参与贡献
 

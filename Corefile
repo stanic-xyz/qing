@@ -1,0 +1,33 @@
+.:53 {
+    # 配置轮询
+    loadbalance
+    # 最后所有的都转发到系统配置的上游dns服务器去解析
+    forward . 8.8.8.8 8.8.4.4
+    # 缓存时间
+    cache 10
+    # 自动加载配置文件的间隔时间
+    reload 10s
+    # 输出日志
+    log
+    # 输出错误
+    errors
+
+    # 使用auto插件配置 chenyunlong.cn ，只会对 chenyunlong.cn 这个域的请求应答。
+    auto chenyunlong.cn {
+        # test.com 的zones位置，会自动读取 zones下的文件，文件命名方式为 db.test.com ,虽然会读取其他的文件，但只会对auto指令后的域名做应答。
+        directory /etc/coredns/zones
+        # 每10s 重新加载 zones 的文件内容。
+        reload 10s
+    }
+
+    # hosts插件，不支持泛域名解析。
+    hosts {
+        121.36.163.95 eureka.chenyunlong.cn
+        # ttl
+        ttl 60
+        # 重载hosts配置
+        reload 10s
+        # 继续执行
+        fallthrough
+    }
+}
