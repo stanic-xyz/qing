@@ -6,6 +6,7 @@
         <groupId>stan</groupId>
         <artifactId>zhangli</artifactId>
         <version>1.0.0.RELEASE</version>
+        <relativePath/>
     </parent>
     <groupId>com.stan</groupId>
     <artifactId>zhangli-admin-server</artifactId>
