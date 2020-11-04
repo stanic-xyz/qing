@@ -1,12 +1,11 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)/movie/detail/20160083 -->
 <html
         xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>NULL &amp; PETA PV 720P -在线观看&amp;动漫下载 - AGE动漫</title>
+    <title th:text="${playInfoModel?.animeInfo?.name+'-在线测试'}"></title>
 
-    <meta name="keywords" content="NULL &amp; PETA,在线动漫,动漫下载">
+    <meta name="keywords" th:content="${playInfoModel?.animeInfo?.name+'-在线测试'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link type="text/css" rel="stylesheet" th:href="@{/css/common.css}">
     <link type="text/css" rel="stylesheet" th:href="@{/css/play.css}">
@@ -23,7 +22,6 @@
     <script type="text/javascript" th:src="@{/js/s_dett_pf.js}"></script>
     <script type="text/javascript" th:src="@{/js/ckplayer.js}"></script>
     <!--    <script type="text/javascript" th:src="@{/js/s_dett.js}"></script>-->
-
 </head>
 
 
@@ -90,7 +88,10 @@
         <div class="baseblock">
             <div class="blocktitle">
                 <h4 id="detailname">
-                    <a th:href="${'/movie/detail/'+playInfoModel.animeInfo.id}">NULL &amp; PETA</a></h4>
+                    <a th:href="${'/movie/detail/'+playInfoModel?.animeInfo?.id}"
+                       th:text="${playInfoModel?.animeInfo?.name}">
+                    </a>
+                </h4>
             </div>
             <div class="line"></div>
             <div class="blockcontent">
@@ -98,10 +99,11 @@
                     <tbody>
                     <tr>
                         <td>
-                            <a th:href="${'/movie/detail/'+playInfoModel.animeInfo.id}">
+                            <a th:href="${'/movie/detail/'+playInfoModel?.animeInfo?.id}">
                                 <img referrerpolicy="no-referrer" id="play_poster_img" width="187" height="260"
-                                     th:src="${playInfoModel.animeInfo.coverUrl}"
-                                     th:alt="${playInfoModel.animeInfo.name}"></a>
+                                     th:src="${playInfoModel?.animeInfo?.coverUrl}"
+                                     th:alt="${playInfoModel?.animeInfo?.name}" alt="番剧剧照">
+                            </a>
                         </td>
                         <td>
                             <ul id="play_imform">
@@ -109,52 +111,52 @@
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">地区：</span>
                                     <span class="play_imform_val"
-                                          th:text="${playInfoModel.animeInfo.district}">日本</span></li>
+                                          th:text="${playInfoModel?.animeInfo?.district}">日本</span></li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">动画种类：</span>
-                                    <span class="play_imform_val" th:text="${playInfoModel.animeInfo.type}">暂无</span>
+                                    <span class="play_imform_val" th:text="${playInfoModel?.animeInfo?.type}">暂无</span>
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">原作：</span>
-                                    <span class="play_imform_val" th:text="${playInfoModel.animeInfo.author}">暂无</span>
+                                    <span class="play_imform_val" th:text="${playInfoModel?.animeInfo?.author}">暂无</span>
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">原版名称：</span>
                                     <span class="play_imform_val"
-                                          th:text="${playInfoModel.animeInfo.orignalName}">ぬるぺた</span>
+                                          th:text="${playInfoModel?.animeInfo?.orignalName}">ぬるぺた</span>
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">其它名称：</span>
-                                    <span class="play_imform_val" th:text="${playInfoModel.animeInfo.otherName}">Nullpeta / 娜露和贝塔</span>
+                                    <span class="play_imform_val" th:text="${playInfoModel?.animeInfo?.otherName}">Nullpeta / 娜露和贝塔</span>
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">制作公司：</span>
                                     <span class="play_imform_val"
-                                          th:text="${playInfoModel.animeInfo.company}">SHIN-EI动画</span></li>
+                                          th:text="${playInfoModel?.animeInfo?.company}">SHIN-EI动画</span></li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">首播时间：</span>
                                     <span class="play_imform_val"
-                                          th:text="${playInfoModel.animeInfo.premiereDate}">2019-10-04</span></li>
+                                          th:text="${playInfoModel?.animeInfo?.premiereDate}">2019-10-04</span></li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">播放状态：</span>
                                     <span class="play_imform_val"
-                                          th:text="${playInfoModel.animeInfo.playStatus}">完结</span>
+                                          th:text="${playInfoModel?.animeInfo?.playStatus}">完结</span>
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">剧情类型：</span>
                                     <span class="play_imform_val"
-                                          th:text="${playInfoModel.animeInfo.tags}">搞笑 奇幻 百合 治愈</span></li>
+                                          th:text="${playInfoModel?.animeInfo?.tags}">搞笑 奇幻 百合 治愈</span></li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">更新时间：</span>
-                                    <span class="play_imform_val" th:text="${playInfoModel.animeInfo.premiereDate}">2020-02-02 18:33:43</span>
+                                    <span class="play_imform_val" th:text="${playInfoModel?.animeInfo?.premiereDate}">2020-02-02 18:33:43</span>
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">官方网站：</span>
-                                    <span class="play_imform_val" th:text="${playInfoModel.animeInfo.officialWebsite}">https://nullpeta.com</span>
+                                    <span class="play_imform_val" th:text="${playInfoModel?.animeInfo?.officialWebsite}">https://nullpeta.com</span>
                                 </li>
                                 <li class="play_imform_kv" style="display: none;">
                                     <span class="play_imform_tag"></span>
-                                    <span class="play_imform_val" th:text="${playInfoModel.animeInfo.name}">NULL &amp; PETA</span>
+                                    <span class="play_imform_val" th:text="${playInfoModel?.animeInfo?.name}">NULL &amp; PETA</span>
                                 </li>
                             </ul>
                         </td>
@@ -399,8 +401,7 @@
                 <div class="line"></div>
                 <div class="blockcontent">
                     <div class="play_desc">
-                        <p>《NULL &amp; PETA》是由小仓宏文负责动画导演的动画作品，2019年10月播出。<br>天才少女Null的姐姐Peta在事故中死亡。<br>但是没问题！靠着仅有的知识和对姐姐的爱，Null成功制作了机器人版的姐姐"Peta"！<br>不过呢，作为机器人复活的姐姐和生前稍微有些不同？！<br>围绕妹妹和机器人姐姐的姊妹嬉戏打闹的喜剧展开了：“姐姐，你插头掉了！”
-                        </p>
+                        <p th:text="${playInfoModel?.animeInfo?.instruction}"></p>
                     </div>
                 </div>
             </div>
@@ -430,14 +431,12 @@
 
                         $('#report_aid').attr('value', AID);
 
-                        /////////////////
                         $('#report_form').on('submit',
                             function () {
                                 registPost();
                                 event.preventDefault(); //阻止form表单默认提交
                             });
 
-                        ///////////////////
                         function registPost() {
                             $.ajax({
                                 type: "get",
@@ -447,7 +446,8 @@
                             }).fail(function (err) {
                                 alert('未知错误');
                             });
-                        }</script>
+                        }
+                    </script>
                 </div>
 
 

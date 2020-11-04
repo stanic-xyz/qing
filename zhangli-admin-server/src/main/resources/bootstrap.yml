@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: zhangli-config-git
+  profiles:
+    active: dev

@@ -6,7 +6,8 @@
 
 <mapper namespace="chenyunlong.zhangli.mapper.SignMapper">
     <insert id="Add" parameterType="chenyunlong.zhangli.entities.Sign">
-        INSERT INTO `zhangli`.`t_sign_record` (`user_id`,`date_month`,`mask`,`continue_sign_month`) VALUES(#{userId},
-        #{dateMonth}, #{mask}, #{continueSignMonth})
+        INSERT INTO `zhangli`.`t_sign_record` (`user_id`, `date_month`, `mask`, `continue_sign_month`)
+        VALUES (#{userId},
+                #{dateMonth}, #{mask}, #{continueSignMonth})
     </insert>
 </mapper>

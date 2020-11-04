@@ -5,8 +5,10 @@ import chenyunlong.zhangli.entities.Sign;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
 
 @Mapper
+@Component
 public interface SignMapper {
 
     @Select("SELECT COUNT(*) FROM t_sign_record WHERE user_id=#{userId}")

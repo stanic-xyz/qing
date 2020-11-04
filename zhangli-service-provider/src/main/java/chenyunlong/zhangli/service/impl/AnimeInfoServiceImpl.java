@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.entities.anime.AnimeEpisode;
 import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
@@ -13,14 +12,12 @@ import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
@@ -80,6 +77,11 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     }
 
     @Override
+    public long getTotalCount(String query) {
+        return animeInfoMapper.countByNameLike(query);
+    }
+
+    @Override
     public List<AnimeInfo> query(String name, Integer page, Integer pageSize) {
 
         if (page <= 0) {
@@ -88,7 +90,6 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
         if (pageSize < 1) {
             pageSize = 15;
         }
-        long count = animeInfoMapper.countByName(name);
 
         return animeInfoMapper.selectAnimationW(name, (page - 1) * pageSize, pageSize);
     }
@@ -101,9 +102,12 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
      */
     @Override
     public AnimeInfoVo getPlayDetail(String animeId) {
-
         AnimeInfo animeInfo = animeInfoMapper.selectAnimationDetail(animeId);
-
+        if (animeInfo != null) {
+            AnimeEpisodeEntityExample example = new AnimeEpisodeEntityExample();
+            example.createCriteria().andAnimeIdEqualTo(animeInfo.getId());
+            animeEpisodeMapper.selectByExample(example);
+        }
         return new ObjectMapper().convertValue(animeInfo, AnimeInfoVo.class);
     }
 

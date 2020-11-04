@@ -27,6 +27,14 @@ public interface AnimeInfoService {
     AnimeInfoVo getMovieDetail(String movieId);
 
     /**
+     * 获取查询总数
+     *
+     * @param query 查询条件
+     * @return 总数
+     */
+    long getTotalCount(String query);
+
+    /**
      * 查询动画信息
      *
      * @param query    查询参数（名称
@@ -43,4 +51,5 @@ public interface AnimeInfoService {
      * @return 动漫播放页视图
      */
     AnimeInfoVo getPlayDetail(String animeId);
+
 }

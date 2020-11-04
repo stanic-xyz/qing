@@ -62,5 +62,5 @@ public interface AnimeInfoMapper {
      * @param name 动漫名称
      * @return 满足条件的动漫信息
      */
-    long countByName(String name);
+    long countByNameLike(String name);
 }

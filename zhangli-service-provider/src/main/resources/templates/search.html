@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>"ok"搜索结果 - AGE动漫</title>
+    <title th:text="${query+'搜索结果 - AGE动漫'}"></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link type="text/css" rel="stylesheet" th:href="@{/css/common.css}">
@@ -38,13 +38,14 @@
         <form id="top_search_from" class="search_form" action="/movie/search" method="get"
               onsubmit="return on_top_search_form();">
             <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
-                   autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="ok">
+                   autocapitalize="on" autocomplete="on" autocorrect="on" placeholder="输入关键字"
+                   th:value="${query}">
             <input class="search_submit" type="submit" value="">
             <input type="hidden" name="page" value="1"></form>
 
         <script type="text/javascript">function on_top_search_form() {
             var value = document.getElementById("top_search_input").value;
-            if (value == null || value == "") {
+            if (value == null || value === "") {
                 alert("请输入搜索关键字");
                 return false;
             }
@@ -72,22 +73,29 @@
         <div class="spaceblock"></div>
         <div class="baseblock">
             <div class="blockcontent">
-                <span id="result_count">25纪录</span>
+                <span id="result_count" th:text="${totalCount+'纪录'}">25纪录</span>
                 <div style="text-align: center; line-height: 36px;">
+                    <ul>
+                        <li>
+                            <a class="pbutton pbutton_current asciifont"
+                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'/movie/search?query='+query+'&page=1'}">首页</a>
+                        </li>
 
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">首页</a></li>
+                        <li>
+                            <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
 
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
+                        <li>
+                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page=2'}">2</a>
+                        </li>
 
-                    <li><a class="pbutton  asciifont" href="/movie/search?query=ok&amp;page=2">2</a>
-                    </li>
+                        <li th:if="${currentIndex != totalPage}">
+                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page=2'}">下一页</a>
+                        </li>
 
-                    <li><a class="pbutton  asciifont" href="/movie/search?query=ok&amp;page=2">下一页</a>
-                    </li>
-
-                    <li><a class="pbutton  asciifont" href="/movie/search?query=ok&amp;page=2">尾页</a>
-                    </li>
-
+                        <li th:if="${currentIndex != totalPage}">
+                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page='+totalPage}">尾页</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -95,50 +103,52 @@
             <div class="blockcontent1">
                 <div class="cell blockdiff2" th:each="anime,iterStat : ${animeInfos}"
                      th:class="${iterStat.index%2==0?'cell blockdiff':'cell blockdiff2'}">
-                    <a th:href="${'/movie/detail/'+anime.id}" class="cell_poster">
+                    <a th:href="${'/movie/detail/'+anime?.id}" class="cell_poster">
                         <img referrerpolicy="no-referrer" width="150px" height="208px"
-                             th:src="${anime.coverUrl}" th:alt="${anime.name}">
-                        <span class="newname" th:text="${anime.playStatus}">特报2</span></a>
+                             th:src="${anime?.coverUrl}" th:alt="${anime?.name}">
+                        <span class="newname" th:text="${anime?.playStatus}">特报2</span></a>
                     <div class="cell_imform">
                         <div>
-                            <a th:href="${'/movie/detail/'+anime.id}" class="cell_imform_name" th:text="${anime.name}">暂无</a>
+                            <a th:href="${'/movie/detail/'+anime?.id}" class="cell_imform_name"
+                               th:text="${anime?.name}">暂无</a>
                         </div>
                         <div class="cell_imform_kvs">
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">动画种类：</span>
-                                <span class="cell_imform_value" th:text="${anime.type}">暂无</span></div>
+                                <span class="cell_imform_value" th:text="${anime?.type}">暂无</span></div>
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">原版名称：</span>
-                                <span class="cell_imform_value" th:text="${anime.orignalName}">暂无</span></div>
+                                <span class="cell_imform_value" th:text="${anime?.orignalName}">暂无</span></div>
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">其他名称：</span>
-                                <span class="cell_imform_value" th:text="${anime.otherName}">Tokyo 7th Sisters</span>
+                                <span class="cell_imform_value" th:text="${anime?.otherName}">Tokyo 7th Sisters</span>
                             </div>
                             <br>
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">首播时间：</span>
-                                <span class="cell_imform_value" th:text="${anime.premiereDate}">2020-07</span></div>
+                                <span class="cell_imform_value" th:text="${anime?.premiereDate}">2020-07</span></div>
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">播放状态：</span>
-                                <span class="cell_imform_value" th:text="${anime.playStatus}">未播放</span></div>
+                                <span class="cell_imform_value" th:text="${anime?.playStatus}">未播放</span></div>
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">原作：</span>
-                                <span class="cell_imform_value" th:text="${anime.author}">暂无</span></div>
+                                <span class="cell_imform_value" th:text="${anime?.author}">暂无</span></div>
                             <br>
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">剧情类型：</span>
-                                <span class="cell_imform_value" th:text="${anime.tags}">暂无</span></div>
+                                <span class="cell_imform_value" th:text="${anime?.tags}">暂无</span></div>
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">制作公司：</span>
-                                <span class="cell_imform_value" th:text="${anime.company}">暂无</span></div>
+                                <span class="cell_imform_value" th:text="${anime?.company}">暂无</span></div>
                             <div class="cell_imform_kv cell_imform_kv_desc">
                                 <span class="cell_imform_tag">简介：</span>
-                                <div class="cell_imform_desc" th:text="${anime.instruction}">暂无</div>
+                                <div class="cell_imform_desc" th:text="${anime?.instruction}">暂无</div>
                             </div>
                         </div>
                         <div class="cell_imform_btns">
-                            <a class="nbutton2 cell_res_button" th:href="${'/movie/detail/'+anime.id}">资源详情</a>
-                            <a class="nbutton2 cell_res_button" th:href="${'/movie/play/'+anime.id}">在线播放</a>
+                            <a class="nbutton2 cell_res_button" th:href="${'/movie/detail/'+anime?.id}">资源详情</a>
+                            <a class="nbutton2 cell_res_button"
+                               th:href="${'/movie/play/'+anime?.id+'?playid=1_1'}">在线播放</a>
                         </div>
                     </div>
                 </div>
@@ -146,22 +156,29 @@
         </div>
         <div class="baseblock">
             <div class="blockcontent">
-                <span id="result_count">25纪录</span>
+                <span id="result_count" th:text="${totalCount+'纪录'}"></span>
                 <div style="text-align: center; line-height: 36px;">
+                    <ul>
+                        <li>
+                            <a class="pbutton pbutton_current asciifont"
+                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'/movie/search?query='+query+'&page=1'}">首页</a>
+                        </li>
 
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">首页</a></li>
+                        <li>
+                            <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
 
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
+                        <li>
+                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page=2'}">2</a>
+                        </li>
 
-                    <li><a class="pbutton  asciifont" href="/movie/search?query=ok&amp;page=2">2</a>
-                    </li>
+                        <li th:if="${currentIndex != totalPage}">
+                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page=2'}">下一页</a>
+                        </li>
 
-                    <li><a class="pbutton  asciifont" href="/movie/search?query=ok&amp;page=2">下一页</a>
-                    </li>
-
-                    <li><a class="pbutton  asciifont" href="/movie/search?query=ok&amp;page=2">尾页</a>
-                    </li>
-
+                        <li th:if="${currentIndex != totalPage}">
+                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page='+totalPage}">尾页</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -170,10 +187,10 @@
         <div id="footer_container"></div>
     </footer>
 </div>
-<script>var top_search_input = document.getElementById("top_search_input");
-top_search_input.value = "";
-top_search_input.value = "ok";
-top_search_input.focus();</script>
+<script>
+    var top_search_input = document.getElementById("top_search_input");
+    top_search_input.value = "";
+    top_search_input.focus();</script>
 <script>var _hmt = _hmt || [];
 (function () {
     var hm = document.createElement("script");

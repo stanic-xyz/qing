@@ -92,7 +92,7 @@
         where name like concat('%', #{animeName}, '%')
         limit #{offset},#{pageSize}
     </select>
-    <select id="countByName" resultType="java.lang.Long">
+    <select id="countByNameLike" resultType="java.lang.Long">
         select COUNT(name)
         from anime_info
         where name like concat('%', #{name}, '%')

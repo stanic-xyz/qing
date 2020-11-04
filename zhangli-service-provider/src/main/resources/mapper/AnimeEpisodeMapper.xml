@@ -1,308 +1,314 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="chenyunlong.zhangli.mapper.AnimeEpisodeMapper">
-  <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="anime_id" jdbcType="BIGINT" property="animeId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="uploadder_name" jdbcType="VARCHAR" property="uploadderName" />
-    <result column="uploader_id" jdbcType="BIGINT" property="uploaderId" />
-    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
-    <result column="url1" jdbcType="VARCHAR" property="url1" />
-    <result column="url3" jdbcType="VARCHAR" property="url3" />
-    <result column="url2" jdbcType="VARCHAR" property="url2" />
-    <result column="order_no" jdbcType="INTEGER" property="orderNo" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="anime_id" jdbcType="BIGINT" property="animeId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="uploadder_name" jdbcType="VARCHAR" property="uploadderName"/>
+        <result column="uploader_id" jdbcType="BIGINT" property="uploaderId"/>
+        <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime"/>
+        <result column="url1" jdbcType="VARCHAR" property="url1"/>
+        <result column="url3" jdbcType="VARCHAR" property="url3"/>
+        <result column="url2" jdbcType="VARCHAR" property="url2"/>
+        <result column="order_no" jdbcType="INTEGER" property="orderNo"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    id, anime_id, `name`, `status`, uploadder_name, uploader_id, upload_time, url1, url3, 
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, anime_id, `name`, `status`, uploadder_name, uploader_id, upload_time, url1, url3,
     url2, order_no
-  </sql>
-  <select id="selectByExample" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from anime_episode
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from anime_episode
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from anime_episode
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <delete id="deleteByExample" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample">
-    delete from anime_episode
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity" useGeneratedKeys="true">
-    insert into anime_episode (anime_id, `name`, `status`, 
-      uploadder_name, uploader_id, upload_time, 
-      url1, url3, url2, order_no
-      )
-    values (#{animeId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{uploadderName,jdbcType=VARCHAR}, #{uploaderId,jdbcType=BIGINT}, #{uploadTime,jdbcType=TIMESTAMP}, 
-      #{url1,jdbcType=VARCHAR}, #{url3,jdbcType=VARCHAR}, #{url2,jdbcType=VARCHAR}, #{orderNo,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity" useGeneratedKeys="true">
-    insert into anime_episode
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="animeId != null">
-        anime_id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="uploadderName != null">
-        uploadder_name,
-      </if>
-      <if test="uploaderId != null">
-        uploader_id,
-      </if>
-      <if test="uploadTime != null">
-        upload_time,
-      </if>
-      <if test="url1 != null">
-        url1,
-      </if>
-      <if test="url3 != null">
-        url3,
-      </if>
-      <if test="url2 != null">
-        url2,
-      </if>
-      <if test="orderNo != null">
-        order_no,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="animeId != null">
-        #{animeId,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="uploadderName != null">
-        #{uploadderName,jdbcType=VARCHAR},
-      </if>
-      <if test="uploaderId != null">
-        #{uploaderId,jdbcType=BIGINT},
-      </if>
-      <if test="uploadTime != null">
-        #{uploadTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="url1 != null">
-        #{url1,jdbcType=VARCHAR},
-      </if>
-      <if test="url3 != null">
-        #{url3,jdbcType=VARCHAR},
-      </if>
-      <if test="url2 != null">
-        #{url2,jdbcType=VARCHAR},
-      </if>
-      <if test="orderNo != null">
-        #{orderNo,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample" resultType="java.lang.Long">
-    select count(*) from anime_episode
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update anime_episode
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=BIGINT},
-      </if>
-      <if test="record.animeId != null">
+    </sql>
+    <select id="selectByExample" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from anime_episode
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from anime_episode
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from anime_episode
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample">
+        delete from anime_episode
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity" useGeneratedKeys="true">
+        insert into anime_episode (anime_id, `name`, `status`,
+                                   uploadder_name, uploader_id, upload_time,
+                                   url1, url3, url2, order_no)
+        values (#{animeId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+                #{uploadderName,jdbcType=VARCHAR}, #{uploaderId,jdbcType=BIGINT}, #{uploadTime,jdbcType=TIMESTAMP},
+                #{url1,jdbcType=VARCHAR}, #{url3,jdbcType=VARCHAR}, #{url2,jdbcType=VARCHAR},
+                #{orderNo,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity" useGeneratedKeys="true">
+        insert into anime_episode
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="animeId != null">
+                anime_id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="uploadderName != null">
+                uploadder_name,
+            </if>
+            <if test="uploaderId != null">
+                uploader_id,
+            </if>
+            <if test="uploadTime != null">
+                upload_time,
+            </if>
+            <if test="url1 != null">
+                url1,
+            </if>
+            <if test="url3 != null">
+                url3,
+            </if>
+            <if test="url2 != null">
+                url2,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="animeId != null">
+                #{animeId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="uploadderName != null">
+                #{uploadderName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploaderId != null">
+                #{uploaderId,jdbcType=BIGINT},
+            </if>
+            <if test="uploadTime != null">
+                #{uploadTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="url1 != null">
+                #{url1,jdbcType=VARCHAR},
+            </if>
+            <if test="url3 != null">
+                #{url3,jdbcType=VARCHAR},
+            </if>
+            <if test="url2 != null">
+                #{url2,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample"
+            resultType="java.lang.Long">
+        select count(*) from anime_episode
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update anime_episode
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.animeId != null">
+                anime_id = #{record.animeId,jdbcType=BIGINT},
+            </if>
+            <if test="record.name != null">
+                `name` = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                `status` = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.uploadderName != null">
+                uploadder_name = #{record.uploadderName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.uploaderId != null">
+                uploader_id = #{record.uploaderId,jdbcType=BIGINT},
+            </if>
+            <if test="record.uploadTime != null">
+                upload_time = #{record.uploadTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.url1 != null">
+                url1 = #{record.url1,jdbcType=VARCHAR},
+            </if>
+            <if test="record.url3 != null">
+                url3 = #{record.url3,jdbcType=VARCHAR},
+            </if>
+            <if test="record.url2 != null">
+                url2 = #{record.url2,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orderNo != null">
+                order_no = #{record.orderNo,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="example != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update anime_episode
+        set id = #{record.id,jdbcType=BIGINT},
         anime_id = #{record.animeId,jdbcType=BIGINT},
-      </if>
-      <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null">
         `status` = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.uploadderName != null">
         uploadder_name = #{record.uploadderName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.uploaderId != null">
         uploader_id = #{record.uploaderId,jdbcType=BIGINT},
-      </if>
-      <if test="record.uploadTime != null">
         upload_time = #{record.uploadTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.url1 != null">
         url1 = #{record.url1,jdbcType=VARCHAR},
-      </if>
-      <if test="record.url3 != null">
         url3 = #{record.url3,jdbcType=VARCHAR},
-      </if>
-      <if test="record.url2 != null">
         url2 = #{record.url2,jdbcType=VARCHAR},
-      </if>
-      <if test="record.orderNo != null">
-        order_no = #{record.orderNo,jdbcType=INTEGER},
-      </if>
-    </set>
-    <if test="example != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update anime_episode
-    set id = #{record.id,jdbcType=BIGINT},
-      anime_id = #{record.animeId,jdbcType=BIGINT},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      `status` = #{record.status,jdbcType=INTEGER},
-      uploadder_name = #{record.uploadderName,jdbcType=VARCHAR},
-      uploader_id = #{record.uploaderId,jdbcType=BIGINT},
-      upload_time = #{record.uploadTime,jdbcType=TIMESTAMP},
-      url1 = #{record.url1,jdbcType=VARCHAR},
-      url3 = #{record.url3,jdbcType=VARCHAR},
-      url2 = #{record.url2,jdbcType=VARCHAR},
-      order_no = #{record.orderNo,jdbcType=INTEGER}
-    <if test="example != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity">
-    update anime_episode
-    <set>
-      <if test="animeId != null">
-        anime_id = #{animeId,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="uploadderName != null">
-        uploadder_name = #{uploadderName,jdbcType=VARCHAR},
-      </if>
-      <if test="uploaderId != null">
-        uploader_id = #{uploaderId,jdbcType=BIGINT},
-      </if>
-      <if test="uploadTime != null">
-        upload_time = #{uploadTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="url1 != null">
-        url1 = #{url1,jdbcType=VARCHAR},
-      </if>
-      <if test="url3 != null">
-        url3 = #{url3,jdbcType=VARCHAR},
-      </if>
-      <if test="url2 != null">
-        url2 = #{url2,jdbcType=VARCHAR},
-      </if>
-      <if test="orderNo != null">
-        order_no = #{orderNo,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity">
-    update anime_episode
-    set anime_id = #{animeId,jdbcType=BIGINT},
-      `name` = #{name,jdbcType=VARCHAR},
-      `status` = #{status,jdbcType=INTEGER},
-      uploadder_name = #{uploadderName,jdbcType=VARCHAR},
-      uploader_id = #{uploaderId,jdbcType=BIGINT},
-      upload_time = #{uploadTime,jdbcType=TIMESTAMP},
-      url1 = #{url1,jdbcType=VARCHAR},
-      url3 = #{url3,jdbcType=VARCHAR},
-      url2 = #{url2,jdbcType=VARCHAR},
-      order_no = #{orderNo,jdbcType=INTEGER}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        order_no = #{record.orderNo,jdbcType=INTEGER}
+        <if test="example != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity">
+        update anime_episode
+        <set>
+            <if test="animeId != null">
+                anime_id = #{animeId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="uploadderName != null">
+                uploadder_name = #{uploadderName,jdbcType=VARCHAR},
+            </if>
+            <if test="uploaderId != null">
+                uploader_id = #{uploaderId,jdbcType=BIGINT},
+            </if>
+            <if test="uploadTime != null">
+                upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="url1 != null">
+                url1 = #{url1,jdbcType=VARCHAR},
+            </if>
+            <if test="url3 != null">
+                url3 = #{url3,jdbcType=VARCHAR},
+            </if>
+            <if test="url2 != null">
+                url2 = #{url2,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity">
+        update anime_episode
+        set anime_id       = #{animeId,jdbcType=BIGINT},
+            `name`         = #{name,jdbcType=VARCHAR},
+            `status`       = #{status,jdbcType=INTEGER},
+            uploadder_name = #{uploadderName,jdbcType=VARCHAR},
+            uploader_id    = #{uploaderId,jdbcType=BIGINT},
+            upload_time    = #{uploadTime,jdbcType=TIMESTAMP},
+            url1           = #{url1,jdbcType=VARCHAR},
+            url3           = #{url3,jdbcType=VARCHAR},
+            url2           = #{url2,jdbcType=VARCHAR},
+            order_no       = #{orderNo,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

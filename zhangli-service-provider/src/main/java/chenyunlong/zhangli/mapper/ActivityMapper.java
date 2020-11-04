@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public interface ActivityMapper {
 
-    public List<Activity> getActivityList();
+    List<Activity> getActivityList();
 
     Activity getActivityById(Long activityId);
 
