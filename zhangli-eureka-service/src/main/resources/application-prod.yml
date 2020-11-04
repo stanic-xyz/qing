@@ -1,9 +1,0 @@
-eureka:
-  client:
-    service-url:
-      defaultZone: http://121.36.163.95:8761/eureka/
-  instance:
-    lease-renewal-interval-in-seconds: 30
-    hostname: eureka.chenyunlong.cn
-    ip-address: 121.36.163.95
-    prefer-ip-address: true

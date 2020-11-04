@@ -3,14 +3,18 @@ server:
 spring:
   application:
     name: zhangli-eureka-service
-  profiles:
-    active: dev
+  cloud:
+    inetutils:
+      ignored-interfaces[0]: eth0
 eureka:
   server:
-    enable-self-preservation: true
+    enable-self-preservation: false
   client:
     fetch-registry: false
-    register-with-eureka: true
+    register-with-eureka: false
   instance:
     lease-renewal-interval-in-seconds: 30
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    hostname: eureka.chenyunlong.cn
+    prefer-ip-address: true
+    ip-address: 121.36.163.95
