@@ -7,7 +7,6 @@
         <groupId>stan</groupId>
         <artifactId>zhangli</artifactId>
         <version>1.0.0.RELEASE</version>
-        <relativePath/>
     </parent>
     <artifactId>zhangli-service-provider</artifactId>
     <name>zhangli-service-provider</name>
