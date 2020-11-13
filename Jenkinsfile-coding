@@ -28,7 +28,7 @@ pipeline {
         }
         stage('阶段-3 单元测试') {
             post {
-                always {
+                su {
                     junit "**/target/surefire-reports/*.xml"
                 }
             }

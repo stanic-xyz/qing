@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8090
 eureka:
   instance:
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@

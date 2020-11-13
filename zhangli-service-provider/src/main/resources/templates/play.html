@@ -118,7 +118,8 @@
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">原作：</span>
-                                    <span class="play_imform_val" th:text="${playInfoModel?.animeInfo?.author}">暂无</span>
+                                    <span class="play_imform_val"
+                                          th:text="${playInfoModel?.animeInfo?.author}">暂无</span>
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">原版名称：</span>
@@ -152,7 +153,8 @@
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">官方网站：</span>
-                                    <span class="play_imform_val" th:text="${playInfoModel?.animeInfo?.officialWebsite}">https://nullpeta.com</span>
+                                    <span class="play_imform_val"
+                                          th:text="${playInfoModel?.animeInfo?.officialWebsite}">https://nullpeta.com</span>
                                 </li>
                                 <li class="play_imform_kv" style="display: none;">
                                     <span class="play_imform_tag"></span>
@@ -361,7 +363,7 @@
                                 var videoObject = {
                                     container: '#ageframediv', //“#”代表容器的ID，“.”或“”代表容器的class
                                     variable: 'player', //播放函数名称，该属性必需设置，值等于下面的new ckplayer()的对象
-                                    video: 'http://localhost/%E7%B4%AB%E7%BD%97%E5%85%B0-10.mp4'//视频地址
+                                    video: 'https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/%E9%AD%94%E5%A5%B3%E4%B9%8B%E6%97%85%20%E5%89%8D%E5%AF%BCPV%20720P%20-%E5%9C%A8%E7%BA%BF%E8%A7%82%E7%9C%8B%26%E5%8A%A8%E6%BC%AB%E4%B8%8B%E8%BD%BD%20-%20AGE%E5%8A%A8%E6%BC%AB-ckplayer_11f378871c303f420396e04b7d21ab217a6e4e81.mp4?q-sign-algorithm=sha1&q-ak=AKIDhj9FvcRu3c4eksW1-RjxxKfbnq2FsC56JJyVm-gJo-I1JNeep_di6SoC_gxMf2Da&q-sign-time=1604628598;1604635798&q-key-time=1604628598;1604635798&q-header-list=&q-url-param-list=&q-signature=13ee397909ef311a4a77c76df8505c65eca2cd3f&x-cos-security-token=3JjFD6QPli1lsue5pwVLmkFEfptuXD4a1f5c89a96c2dda438ee5cf5236a53204mGy5mUMjqfd7y2zaGXOpTyX2XJefpfhpbjIxPxl-HPRk3_PjUJG0g2O3f-etRCttz9vH2j_maUZ0bciHWvxpFMRPaxCb-2tj3r-OPDW1DZm85fxAK9QOsH6QlcnQba6BGEF5JbmdT4fjiBXWMAia7J_apvTcYQ8pNJ0mjLVRxfVp_kIMDSzsXXvYdL9L9NrBekhvjVray9WNptt-bzU3BrU6wK1OiD2RzYMc-N6uFMycgVfCo7LWB5FnW-2usJxibuMa4iuiStRlJHsOMDMsDHhlrLCxCITgiC1CyNWLBhM3tdUU2Mreo8bFkKVZ5_Kz6kFSS6ZPHwyKVy95r6kTlOSty_dcnlRUN6OJpftEOsy76NqKnkUHaxJkQYQruS8S43CR1CoVvKz-U_gZNBIcR5738M3ZiIMVQfvOraRJpB-AGzOPNQhrLvbgeZ3ZI678B52Y_14B-faFZyUoKISjxYY3vuG-NDci3SyTxeh3BdSDzL_1ilg91gbWVtcStOjXPWGOm65e0j20ErDt1mDzvE0cwMsHA6KOrQLmv5xrtX30RKFUhYozSsskHELELYWBTI4xgfb9u5G_MZrfZVO27kcK52KOBH6UH7bPG9WlEUOQX9_cHl2CVMKMZR-0PfNl68XvPF7yFi8qHTlzj46QE2G-CXXqNLDhOa0rIyNMd3rWZaXHzx0DXQ2hWS8qINfB4o2jIk3XSntz1HkgFa8GSFp4hK8skFJ_XVldSx1dEHaJflMWacZG37S8oLQbOnwRpILaJEPx8HWaYWtCyDTuSuajVXI6keTaDuI8-MY9abdkrTNlFi1Z005kbtWti1PmLiUEss5rk5at56vUK-C9aVmD6DtDe7czDQopOTlCnfDIQwPvyrl8fq9A8HXbdWXtvKgqsyzqzT7AyAAUQNl4GOL5hQu_wRKtZ5QTpXL9dNQFqfXUubRL-tfD55PAbZTsO7YHU2RWa83A5v0ZsDUMMjkiRyacMBOrt5vxLrrq6GM6wtkOqmeL40sEUJynIE8f9pxyz29QjdOHC9kPBmydwsAinTp0JWh5WyOSxpfzXOpb9m6HAOfCsedRymggq_fd3js1w5PGd5NaSswUX2p18jz0pZx4hoNh163BGkn0gwJla3c3ymKHjrYbGIFd_qpy4NHX2A9Ba3qzrKggtT_lTuXJGfhWs-pBjuVQZJQ0TutYb8TGzVN9X6curWObxNMDiNVoY_JTuqTbp20eGDBDhRe3CjMvsjyxN0GiqFllODfgItH2sv0xeEXIwqpc0UjsKh7qhQpmc8U2Pe6gQiC3rTwD59bfjSVQj5l1I-W--m3AqCs9F1t07BK4hOIKT9nwl1e1VIXJllmlivPvMhl6YDOMQAL0xCgEhdPzv1uKKHCuVA8OZRqMJKCB-MXOnTpYLEM3tSaa7TBT4BnnbRapBXb2iGBN4dZZ2SQu1u4FkTy19DjlNb3nOHOIRs088r2sfbK8FAyBDfyNH4VNML4D9ZFixcmCKwgStGtXqylA7aUZaXsXNr1vax1lLerePs5XioKvmZOSGfT_F3R3jfFP30JYFWHFkYbDMvTHZ2CX8vBzxrzMFV9yCW_bXMWB6uuCcGE-HWje8-434gNHWCmSgWL_DwrRPPDYEYnpxhpUa9OoaCYAHuYsdc1lZrkh4JoPwk1hozvJOcFplmXS6pnMoHGeOQDeFcpfAjbGvR3uBD2WALJdFjj9ySE0aPwAK3Biq4leX60soNBzldmXkDamDqox4xAzkfQHdngzET_clOZ1L4nbk-muYjrp2TaatA_iJD6RmEKi0I4LFdQM-P6zM8hbkzw-qCA_irTz4VypEZZVGJIxvkIWPqW5jX3UUjdac3MUVb9itH9icmuYMQiT6osF6Sj_Zu93nt6IepubnaiYWGuqCBMySsBOCViNDx5_25StzVDyHBtseKb5nl5nhCQdsphaEHKwm0_i6jWNzJL7iUQ0Wqj7UoHGzzBSW4JzbRVpFhqCN0NC38cZG5HWeYIANB-ENvsaP2qdTcP9GfoEmYkiOaNZiVgguLQFfRwfGkLK5kei6z33xod4znjSWf7aH4dVwYO4OOKjUzf3k9lzT6XqoCpHq5sw8pbremSQ'//视频地址
                                 };
                                 var player = new ckplayer(videoObject);//初始化播放器
                             </script>

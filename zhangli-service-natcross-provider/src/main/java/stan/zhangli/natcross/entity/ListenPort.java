@@ -253,6 +253,7 @@ public class ListenPort implements Serializable {
         this.serverListenThread = serverListenThread;
     }
 
+    @Override
     public String toString() {
         return "ListenPort(listenPort=" + this.listenPort + ", portDescribe=" + this.portDescribe + ", destIp=" + this.destIp + ", destPort=" + this.destPort + ", onStart=" + this.onStart + ", portType=" + this.portType + ", certPath=" + this.certPath + ", certPassword=" + this.certPassword + ", gmtCreate=" + this.gmtCreate + ", gmtModify=" + this.gmtModify + ", serverListenThread=" + this.serverListenThread + ")";
     }

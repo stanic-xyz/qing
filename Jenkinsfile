@@ -12,17 +12,17 @@ pipeline {
                 script {
                     if (isUnix() == true) {
                         echo '这里linux系统'
-                        sh "mvn -pl '!zhangli-service-natcross-provider' clean package -DskipTests=true"
+                        sh "mvn clean package -DskipTests=true"
                     } else {
                         echo '这是windows系统'
-                        bat "mvn -pl '!zhangli-service-natcross-provider' clean package -DskipTests=true"
+                        bat "mvn clean package -DskipTests=true"
                     }
                 }
             }
         }
         stage('阶段-2 单元测试') {
             steps {
-                sh "mvn -pl '!zhangli-service-natcross-provider' test"
+                sh "mvn test"
             }
             post {
                 always {
