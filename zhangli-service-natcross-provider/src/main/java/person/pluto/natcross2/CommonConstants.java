@@ -23,7 +23,7 @@ public final class CommonConstants {
      * 映射对
      */
     public static ListenDest[] listenDestArray = new ListenDest[]{
-            ListenDest.of(8081, "192.168.129.75", 10102)
+            ListenDest.of(8880, "127.0.0.1", 10102)
     };
 
     /**

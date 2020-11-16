@@ -13,6 +13,7 @@ import java.io.File;
  * @since 2020-01-10 11:45:28
  */
 @Data
+@EqualsAndHashCode
 public class CertModel {
 
     /**
@@ -28,19 +29,12 @@ public class CertModel {
      */
     private String defaultCertPassword;
 
-    public CertModel() {
-    }
-
     public String formatCertPath(String certName) {
         return this.basePath + File.separator + certName;
     }
 
     public String formatDefaultCertPath() {
         return this.formatCertPath(this.defaultCertName);
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof CertModel;
     }
 
 }

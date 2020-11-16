@@ -1,8 +1,13 @@
 package chenyunlong.zhangli.model.request;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+/**
+ * @author Stan
+ */
 @Data
+@EqualsAndHashCode
 public class ImportAnimeModel {
     private Long url;
     private String name;

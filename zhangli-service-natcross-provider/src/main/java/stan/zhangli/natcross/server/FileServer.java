@@ -32,7 +32,7 @@ public class FileServer {
      * @author Pluto
      * @since 2020-01-10 13:24:51
      */
-    public String saveCertFile(MultipartFile certFile, ListenPort listenPort) throws Exception {
+    public String saveCertFile(MultipartFile certFile, Integer listenPort) throws Exception {
         String listenCertFilename = SystemFormat.getListenCertFilename(certFile.getOriginalFilename(), listenPort);
         String formatCertPath = certModel.formatCertPath(listenCertFilename);
         certFile.transferTo(new File(formatCertPath));

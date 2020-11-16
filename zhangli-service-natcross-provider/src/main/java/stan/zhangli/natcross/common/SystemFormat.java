@@ -24,9 +24,11 @@ public final class SystemFormat {
      * @author Pluto
      * @since 2020-01-10 13:21:16
      */
-    public static String getListenCertFilename(String originName, ListenPort listenPort) {
-        return String.format("P%05d.%s.%s", listenPort.getListenPort(),
-                DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now()), originName);
+    public static String getListenCertFilename(String originName, Integer listenPort) {
+        return String.format("P%05d.%s.%s",
+                listenPort,
+                DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now()),
+                originName);
     }
 
 }

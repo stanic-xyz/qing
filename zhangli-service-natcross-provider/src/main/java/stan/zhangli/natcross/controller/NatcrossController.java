@@ -1,6 +1,7 @@
 package stan.zhangli.natcross.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,7 @@ import stan.zhangli.natcross.common.model.model.ResultModel;
 import stan.zhangli.natcross.common.model.model.enumeration.ResultEnum;
 import stan.zhangli.natcross.entity.ListenPort;
 import stan.zhangli.natcross.enumeration.PortTypeEnum;
+import stan.zhangli.natcross.model.request.ListenPortParam;
 import stan.zhangli.natcross.server.FileServer;
 import stan.zhangli.natcross.server.NatcrossServer;
 import stan.zhangli.natcross.service.IListenPortService;
@@ -59,29 +61,22 @@ public class NatcrossController {
      * @return 响应结果
      */
     @PostMapping(value = "/createListenPort")
-    public ResultModel createListenPort(@RequestBody ListenPort listenPort) {
+    public ResultModel createListenPort(@RequestBody ListenPortParam listenPortParam) {
 
-        if (listenPort == null || listenPort.getListenPort() == null || listenPort.getDestIp() == null
-                || !ValidatorUtils.isIPv4Address(listenPort.getDestIp()) || listenPort.getDestPort() == null) {
+        if (listenPortParam == null || listenPortParam.getListenPort() == null || listenPortParam.getDestIp() == null
+                || !ValidatorUtils.isIPv4Address(listenPortParam.getDestIp()) || listenPortParam.getDestPort() == null) {
             return ResultEnum.PARAM_FAIL.toResultModel();
         }
         // 检查以前是否有设定保存
-        ListenPort service = listenPortService.getByListenPort(listenPort.getListenPort());
+        ListenPort service = listenPortService.getByListenPort(listenPortParam.getListenPort());
         if (service != null) {
             return ResultEnum.LISTEN_PORT_HAS.toResultModel();
         }
 
-//        if (certFile != null && certFile.getSize() > 0L) {
-//            if (StringUtils.isBlank(listenPort.getCertPassword())) {
-//                return ResultEnum.PARAM_FAIL.toResultModel().setRetMsg("需要设置证书密码");
-//            }
-//            String saveCertFile = fileServer.saveCertFile(certFile, listenPort);
-//            listenPort.setCertPath(saveCertFile);
-//        } else {
+        ListenPort listenPort = new ObjectMapper().convertValue(listenPortParam, ListenPort.class);
+
         listenPort.setCertPath(null);
         listenPort.setCertPassword(null);
-//        }
-
         listenPort.setGmtCreate(null);
         listenPort.setGmtModify(null);
 
@@ -113,30 +108,18 @@ public class NatcrossController {
      * @since 2019-07-22 14:20:35
      */
     @RequestMapping(value = "/updateListenPort", method = RequestMethod.POST)
-    public ResultModel updateListenPort(@RequestBody ListenPort listenPort,
-                                        @RequestParam(name = "certFile", required = false) MultipartFile certFile) throws Exception {
+    public ResultModel updateListenPort(@RequestBody ListenPortParam listenPortParam) throws Exception {
 
-        if (listenPort == null || listenPort.getListenPort() == null
-                || (listenPort.getDestIp() != null && !ValidatorUtils.isIPv4Address(listenPort.getDestIp()))) {
+        if (listenPortParam == null || listenPortParam.getListenPort() == null
+                || (listenPortParam.getDestIp() != null && !ValidatorUtils.isIPv4Address(listenPortParam.getDestIp()))) {
             return ResultEnum.PARAM_FAIL.toResultModel();
         }
+
+        ListenPort listenPort = new ObjectMapper().convertValue(listenPortParam, ListenPort.class);
 
         int count = listenPortService.count();
         if (count < 1) {
             return ResultEnum.LISTEN_PORT_NO_HAS.toResultModel();
-        }
-
-        if (certFile != null && certFile.getSize() > 0L) {
-            if (StringUtils.isBlank(listenPort.getCertPassword())) {
-                ResultModel resultModel = ResultEnum.PARAM_FAIL.toResultModel();
-                resultModel.setRetMsg("需要设置证书密码");
-                return resultModel;
-            }
-            String saveCertFile = fileServer.saveCertFile(certFile, listenPort);
-            listenPort.setCertPath(saveCertFile);
-        } else {
-            listenPort.setCertPath(null);
-            listenPort.setCertPassword(null);
         }
 
         listenPort.setGmtCreate(null);
@@ -154,6 +137,26 @@ public class NatcrossController {
         return ResultEnum.SUCCESS.toResultModel();
     }
 
+    @PostMapping("uploadCertFile")
+    public ResultModel uploadCertFile(@RequestParam MultipartFile certFile) {
+
+        if (certFile != null && certFile.getSize() > 0L) {
+            ResultModel resultModel = ResultEnum.SUCCESS.toResultModel();
+            String saveCertFile = null;
+            try {
+                saveCertFile = fileServer.saveCertFile(certFile, 10086);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            resultModel.setData(saveCertFile);
+            return resultModel;
+        } else {
+            ResultModel resultModel = ResultEnum.PARAM_FAIL.toResultModel();
+            resultModel.setRetMsg("证书不能为空");
+            return resultModel;
+        }
+    }
+
     /**
      * 创建新的监听
      *
@@ -163,7 +166,7 @@ public class NatcrossController {
      * @since 2019-07-19 16:29:18
      */
     @RequestMapping(value = "createNewListen", method = RequestMethod.POST)
-    public ResultModel createNewListen(Integer listenPort) {
+    public ResultModel createNewListen(@RequestBody Integer listenPort) {
 
         ListenPort model = listenPortService.getByListenPort(listenPort);
         boolean createNewListen = false;
