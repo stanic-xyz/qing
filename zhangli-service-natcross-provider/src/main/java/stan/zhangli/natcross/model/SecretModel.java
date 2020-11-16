@@ -2,6 +2,8 @@ package stan.zhangli.natcross.model;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
+
 /**
  * <p>
  * 加密模型，全局使用统一的
@@ -27,10 +29,10 @@ public class SecretModel {
 
     /**
      * 判断是否启用加密模式
-     * 
+     *
+     * @return 返回是否启用加密模式
      * @author Pluto
      * @since 2020-01-10 09:57:55
-     * @return
      */
     public boolean isValid() {
         return StringUtils.isNoneBlank(this.getAeskey(), this.getTokenKey());
@@ -52,34 +54,44 @@ public class SecretModel {
         this.tokenKey = tokenKey;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof SecretModel)) return false;
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SecretModel)) {
+            return false;
+        }
         final SecretModel other = (SecretModel) o;
-        if (!other.canEqual((Object) this)) return false;
-        final Object this$aeskey = this.aeskey;
-        final Object other$aeskey = other.aeskey;
-        if (this$aeskey == null ? other$aeskey != null : !this$aeskey.equals(other$aeskey)) return false;
-        final Object this$tokenKey = this.tokenKey;
-        final Object other$tokenKey = other.tokenKey;
-        if (this$tokenKey == null ? other$tokenKey != null : !this$tokenKey.equals(other$tokenKey)) return false;
-        return true;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        final Object thisAeskey = this.aeskey;
+        final Object otherAeskey = other.aeskey;
+        if (!Objects.equals(thisAeskey, otherAeskey)) {
+            return false;
+        }
+        final Object thisTokenKey = this.tokenKey;
+        final Object otherTokenKey = other.tokenKey;
+        return Objects.equals(thisTokenKey, otherTokenKey);
     }
 
     protected boolean canEqual(final Object other) {
         return other instanceof SecretModel;
     }
 
+    @Override
     public int hashCode() {
-        final int PRIME = 59;
+        final int prime = 59;
         int result = 1;
-        final Object $aeskey = this.aeskey;
-        result = result * PRIME + ($aeskey == null ? 43 : $aeskey.hashCode());
-        final Object $tokenKey = this.tokenKey;
-        result = result * PRIME + ($tokenKey == null ? 43 : $tokenKey.hashCode());
+        final Object aeskey = this.aeskey;
+        result = result * prime + (aeskey == null ? 43 : aeskey.hashCode());
+        final Object tokenKey = this.tokenKey;
+        result = result * prime + (tokenKey == null ? 43 : tokenKey.hashCode());
         return result;
     }
 
+    @Override
     public String toString() {
         return "SecretModel(aeskey=" + this.aeskey + ", tokenKey=" + this.tokenKey + ")";
     }

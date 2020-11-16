@@ -1,7 +1,5 @@
 package stan.zhangli.natcross.config;
 
-import stan.zhangli.natcross.model.CertModel;
-import stan.zhangli.natcross.model.SecretModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +10,8 @@ import person.pluto.natcross2.serverside.client.ClientServiceThread;
 import person.pluto.natcross2.serverside.client.config.IClientServiceConfig;
 import person.pluto.natcross2.serverside.client.config.SecretSimpleClientServiceConfig;
 import person.pluto.natcross2.serverside.client.config.SimpleClientServiceConfig;
+import stan.zhangli.natcross.model.CertModel;
+import stan.zhangli.natcross.model.SecretModel;
 
 import java.io.IOException;
 
@@ -55,8 +55,7 @@ public class NatcrossSpring {
     @Bean("clientServiceThread")
     @Primary
     public ClientServiceThread getClientServiceThread(
-            @Qualifier("clientServiceConfig") IClientServiceConfig<InteractiveModel, InteractiveModel> config)
-            throws IOException {
+            @Qualifier("clientServiceConfig") IClientServiceConfig<InteractiveModel, InteractiveModel> config) {
         return new ClientServiceThread(config);
     }
 

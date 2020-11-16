@@ -20,10 +20,10 @@ public enum PortTypeEnum {
     //
     ;
 
-    private Integer code;
-    private String comment;
+    private final Integer code;
+    private final String comment;
 
-    private PortTypeEnum(int code, String comment) {
+    PortTypeEnum(int code, String comment) {
         this.code = code;
         this.comment = comment;
     }

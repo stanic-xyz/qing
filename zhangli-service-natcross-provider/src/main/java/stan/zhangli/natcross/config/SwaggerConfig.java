@@ -28,12 +28,15 @@ public class SwaggerConfig {
 
         //添加一个参数
         ParameterBuilder ticketPar = new ParameterBuilder();
-        List<Parameter> pars = new ArrayList<Parameter>();
+        List<Parameter> pars = new ArrayList<>();
         ticketPar.name("Authorization").description("用户token")
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .defaultValue("Bearer ")
-                .required(false).build(); //header中的ticket参数非必填，传空也可以
-        pars.add(ticketPar.build());    //根据每个方法名也知道当前方法在设置什么参数
+                .required(false)
+                //header中的ticket参数非必填，传空也可以
+                .build();
+        //根据每个方法名也知道当前方法在设置什么参数
+        pars.add(ticketPar.build());
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()

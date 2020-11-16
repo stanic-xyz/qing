@@ -42,7 +42,7 @@ public class NatcrossController {
     /**
      * 获取可用的端口类型
      *
-     * @return
+     * @return 响应信息
      * @author Pluto
      * @since 2020-01-10 13:57:07
      */
@@ -55,12 +55,11 @@ public class NatcrossController {
     /**
      * 创建新的监听，并保存记录
      *
-     * @param certFile 证书文件
-     * @return
-     * @throws Exception
+     * @param listenPort 监听端口信息
+     * @return 响应结果
      */
     @PostMapping(value = "/createListenPort")
-    public ResultModel createListenPort(@RequestBody ListenPort listenPort) throws Exception {
+    public ResultModel createListenPort(@RequestBody ListenPort listenPort) {
 
         if (listenPort == null || listenPort.getListenPort() == null || listenPort.getDestIp() == null
                 || !ValidatorUtils.isIPv4Address(listenPort.getDestIp()) || listenPort.getDestPort() == null) {
@@ -122,8 +121,6 @@ public class NatcrossController {
             return ResultEnum.PARAM_FAIL.toResultModel();
         }
 
-        // 检查以前是否有设定保存
-//        queryWrapper.lambda().eq(ListenPort::getListenPort, listenPort.getListenPort());
         int count = listenPortService.count();
         if (count < 1) {
             return ResultEnum.LISTEN_PORT_NO_HAS.toResultModel();
@@ -131,7 +128,9 @@ public class NatcrossController {
 
         if (certFile != null && certFile.getSize() > 0L) {
             if (StringUtils.isBlank(listenPort.getCertPassword())) {
-                return ResultEnum.PARAM_FAIL.toResultModel().setRetMsg("需要设置证书密码");
+                ResultModel resultModel = ResultEnum.PARAM_FAIL.toResultModel();
+                resultModel.setRetMsg("需要设置证书密码");
+                return resultModel;
             }
             String saveCertFile = fileServer.saveCertFile(certFile, listenPort);
             listenPort.setCertPath(saveCertFile);
@@ -189,8 +188,8 @@ public class NatcrossController {
      * @since 2019-07-22 15:16:26
      */
     @RequestMapping(value = "stopListen", method = RequestMethod.POST)
-    public ResultModel stopListen(Integer listenPort) {
-        natcrossServer.removeListen(listenPort);
+    public ResultModel stopListen(@RequestBody Integer listenPort) {
+        boolean removeListen = natcrossServer.removeListen(listenPort);
         return ResultEnum.SUCCESS.toResultModel();
     }
 
@@ -203,7 +202,7 @@ public class NatcrossController {
      * @since 2019-07-19 16:29:26
      */
     @RequestMapping(value = "removeListen", method = RequestMethod.DELETE)
-    public ResultModel removeListen(Integer listenPort) {
+    public ResultModel removeListen(@RequestBody Integer listenPort) {
         natcrossServer.removeListen(listenPort);
         listenPortService.removeById(listenPort);
         return ResultEnum.SUCCESS.toResultModel();
@@ -246,6 +245,8 @@ public class NatcrossController {
         jsonObject.put("listenPortList", listenPortList);
         jsonObject.put("independentList", independentList);
 
-        return ResultEnum.SUCCESS.toResultModel().setData(jsonObject);
+        ResultModel resultModel = ResultEnum.SUCCESS.toResultModel();
+        resultModel.setData(jsonObject);
+        return resultModel;
     }
 }

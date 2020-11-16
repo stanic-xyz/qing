@@ -22,10 +22,10 @@ public enum ListenStatusEnum {
     //
     ;
 
-    private Integer code;
-    private String comment;
+    private final Integer code;
+    private final String comment;
 
-    private ListenStatusEnum(int code, String comment) {
+    ListenStatusEnum(int code, String comment) {
         this.code = code;
         this.comment = comment;
     }

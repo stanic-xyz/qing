@@ -1,9 +1,9 @@
 package stan.zhangli.natcross.service.impl;
 
+import org.springframework.stereotype.Service;
 import stan.zhangli.natcross.entity.ListenPort;
 import stan.zhangli.natcross.mapper.ListenPortMapper;
 import stan.zhangli.natcross.service.IListenPortService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -23,8 +23,7 @@ public class IListenPortServiceImpl implements IListenPortService {
 
     @Override
     public boolean save(ListenPort listenPort) {
-        Boolean result = listenPortMapper.save(listenPort);
-        return result;
+        return listenPortMapper.save(listenPort);
     }
 
     @Override
