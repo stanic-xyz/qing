@@ -2,11 +2,9 @@ package stan.zhangli.natcross.entity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import person.pluto.natcross2.api.socketpart.AbsSocketPart;
 import person.pluto.natcross2.serverside.listen.ServerListenThread;
 import stan.zhangli.natcross.enumeration.ListenStatusEnum;
@@ -31,35 +29,25 @@ import java.util.Map.Entry;
 public class ListenPort implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     private Integer listenPort;
-
 
     private String portDescribe;
 
-
     private String destIp;
-
 
     private Integer destPort;
 
-
     private Boolean onStart;
-
 
     private Integer portType;
 
     @JsonIgnore
-
     private String certPath;
 
     @JsonIgnore
-
     private String certPassword;
 
-
     private LocalDateTime gmtCreate;
-
 
     private LocalDateTime gmtModify;
 
@@ -67,7 +55,6 @@ public class ListenPort implements Serializable {
      * 监听状态
      */
     @JsonIgnore
-
     private ServerListenThread serverListenThread;
 
     public ListenPort() {

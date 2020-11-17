@@ -31,6 +31,7 @@
         <docker.registry.password>4745701816long</docker.registry.password>
         <docker.registry.tag>${project.version}</docker.registry.tag>
         <sentinel.version>1.7.2</sentinel.version>
+        <swagger.version>2.9.2</swagger.version>
     </properties>
     <modules>
         <module>zhangli-eureka-service</module>
@@ -86,6 +87,23 @@
                 <version>1.18.8</version>
                 <scope>provided</scope>
                 <optional>true</optional>
+            </dependency>
+            <!-- swagger -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <!-- swagger-ui -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.1.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

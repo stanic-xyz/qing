@@ -1,23 +1,30 @@
 package stan.zhangli.natcross.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import person.pluto.natcross2.CommonConstants;
 import person.pluto.natcross2.model.InteractiveModel;
 import person.pluto.natcross2.serverside.client.ClientServiceThread;
 import person.pluto.natcross2.serverside.client.config.IClientServiceConfig;
 import person.pluto.natcross2.serverside.client.config.SecretSimpleClientServiceConfig;
 import person.pluto.natcross2.serverside.client.config.SimpleClientServiceConfig;
+import person.pluto.natcross2.serverside.listen.ListenServerControl;
+import person.pluto.natcross2.serverside.listen.config.AllSecretSimpleListenServerConfig;
 import stan.zhangli.natcross.model.CertModel;
 import stan.zhangli.natcross.model.SecretModel;
 
 import java.io.IOException;
 
+import static person.pluto.natcross2.ServerApp.createServerSocket;
+
 /**
  * @author Stan
  */
+@Slf4j
 @Configuration
 public class NatcrossSpring {
 
@@ -49,14 +56,23 @@ public class NatcrossSpring {
         } else {
             return new SimpleClientServiceConfig();
         }
-
     }
 
     @Bean("clientServiceThread")
     @Primary
     public ClientServiceThread getClientServiceThread(
             @Qualifier("clientServiceConfig") IClientServiceConfig<InteractiveModel, InteractiveModel> config) {
-        return new ClientServiceThread(config);
+
+        ClientServiceThread serviceThread = new ClientServiceThread(config);
+        try {
+            //启动服务控制端口件监听
+            serviceThread.start();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            log.error("启动服务监听端口失败:", exception);
+        }
+
+        return serviceThread;
     }
 
 }

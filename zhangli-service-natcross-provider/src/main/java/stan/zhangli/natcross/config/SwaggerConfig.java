@@ -8,6 +8,7 @@ import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
+import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -51,10 +52,11 @@ public class SwaggerConfig {
         return new ApiInfo(
                 "NatCross Service",
                 "我自己搭建的内网穿透服务",
-                "V0.0.1",
-                null,
+                "V1.0.0",
+                "urn:tos",
                 contact,
-                "",
-                "");
+                "Apache 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0",
+                new ArrayList<>());
     }
 }

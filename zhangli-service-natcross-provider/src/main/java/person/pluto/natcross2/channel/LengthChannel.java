@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class LengthChannel extends SocketChannel<byte[], byte[]> {
@@ -14,8 +15,8 @@ public class LengthChannel extends SocketChannel<byte[], byte[]> {
     private InputStream inputStream;
     private OutputStream outputStream;
 
-    private ReentrantLock writeLock = new ReentrantLock();
-    private ReentrantLock readLock = new ReentrantLock();
+    private final ReentrantLock writeLock = new ReentrantLock();
+    private final ReentrantLock readLock = new ReentrantLock();
 
     public LengthChannel() {
     }
@@ -31,11 +32,11 @@ public class LengthChannel extends SocketChannel<byte[], byte[]> {
             InputStream is = getInputSteam();
 
             byte[] len = new byte[4];
-            is.read(len);
+            int read = is.read(len);
             int length = Tools.bytes2int(len);
 
             byte[] b = new byte[length];
-            is.read(b, 0, length);
+            int readData = is.read(b, 0, length);
             return b;
         } finally {
             readLock.unlock();

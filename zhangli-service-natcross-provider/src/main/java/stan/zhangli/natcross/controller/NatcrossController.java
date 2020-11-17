@@ -2,7 +2,6 @@ package stan.zhangli.natcross.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import person.pluto.natcross2.serverside.listen.ListenServerControl;
@@ -57,7 +56,7 @@ public class NatcrossController {
     /**
      * 创建新的监听，并保存记录
      *
-     * @param listenPort 监听端口信息
+     * @param listenPortParam 监听端口信息
      * @return 响应结果
      */
     @PostMapping(value = "/createListenPort")
@@ -86,7 +85,7 @@ public class NatcrossController {
         }
 
         // 如果指定不自启动，则直接返回，不启动端口
-        if (listenPort.getOnStart() == null && !listenPort.getOnStart()) {
+        if (!listenPort.getOnStart()) {
             return ResultEnum.SUCCESS.toResultModel();
         }
 
@@ -101,14 +100,12 @@ public class NatcrossController {
     /**
      * 更新监听记录
      *
-     * @param listenPort
-     * @return
-     * @throws Exception
+     * @param listenPortParam 更新记录
      * @author Pluto
      * @since 2019-07-22 14:20:35
      */
     @RequestMapping(value = "/updateListenPort", method = RequestMethod.POST)
-    public ResultModel updateListenPort(@RequestBody ListenPortParam listenPortParam) throws Exception {
+    public ResultModel updateListenPort(@RequestBody ListenPortParam listenPortParam) {
 
         if (listenPortParam == null || listenPortParam.getListenPort() == null
                 || (listenPortParam.getDestIp() != null && !ValidatorUtils.isIPv4Address(listenPortParam.getDestIp()))) {
@@ -160,16 +157,15 @@ public class NatcrossController {
     /**
      * 创建新的监听
      *
-     * @param listenPort
-     * @return
+     * @param listenPort 监听端口
      * @author Pluto
      * @since 2019-07-19 16:29:18
      */
     @RequestMapping(value = "createNewListen", method = RequestMethod.POST)
-    public ResultModel createNewListen(@RequestBody Integer listenPort) {
+    public ResultModel createNewListen(@RequestParam Integer listenPort) {
 
         ListenPort model = listenPortService.getByListenPort(listenPort);
-        boolean createNewListen = false;
+        boolean createNewListen;
         if (model == null) {
             createNewListen = natcrossServer.createNewListen(listenPort);
         } else {
@@ -185,27 +181,25 @@ public class NatcrossController {
     /**
      * 停止某个端口的监听
      *
-     * @param listenPort
-     * @return
+     * @param listenPort 监听端口
      * @author Pluto
      * @since 2019-07-22 15:16:26
      */
     @RequestMapping(value = "stopListen", method = RequestMethod.POST)
-    public ResultModel stopListen(@RequestBody Integer listenPort) {
-        boolean removeListen = natcrossServer.removeListen(listenPort);
+    public ResultModel stopListen(@RequestParam Integer listenPort) {
+        natcrossServer.removeListen(listenPort);
         return ResultEnum.SUCCESS.toResultModel();
     }
 
     /**
      * 移除某个监听
      *
-     * @param listenPort
-     * @return
+     * @param listenPort 监听端口
      * @author Pluto
      * @since 2019-07-19 16:29:26
      */
     @RequestMapping(value = "removeListen", method = RequestMethod.DELETE)
-    public ResultModel removeListen(@RequestBody Integer listenPort) {
+    public ResultModel removeListen(@RequestParam Integer listenPort) {
         natcrossServer.removeListen(listenPort);
         listenPortService.removeById(listenPort);
         return ResultEnum.SUCCESS.toResultModel();
@@ -214,7 +208,6 @@ public class NatcrossController {
     /**
      * 获取全部监听信息
      *
-     * @return
      * @author Pluto
      * @since 2019-07-19 16:29:33
      */
