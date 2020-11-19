@@ -82,7 +82,6 @@ public class ReadAheadPassValueAdapter<R, W> implements IClientServiceAdapter {
                 return;
             }
         }
-
     }
 
     /**

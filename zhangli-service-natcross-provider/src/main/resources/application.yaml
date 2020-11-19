@@ -7,6 +7,8 @@ server:
     key-store: ${SERVER_SSL_KEY_STORE_PATH:}
     key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
 spring:
+  application:
+    name: zhangli-service-natcross-provider
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -17,6 +19,19 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+eureka:
+  instance:
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    hostname: natcross-provider
+    prefer-ip-address: true
+    ip-address: 121.36.163.95
+  client:
+    use-dns-for-fetching-service-urls: true
+    eureka-server-d-n-s-name: chenyunlong.cn
+    eureka-server-u-r-l-context: eureka
+    eureka-server-port: 8761
+    prefer-same-zone-eureka: true
+    region: zhangli
 mybatis:
   mapperLocations: classpath*:mapper*/*.xml
   configuration:
