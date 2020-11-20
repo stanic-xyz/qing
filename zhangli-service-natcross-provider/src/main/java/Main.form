@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Main">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="12" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="540" height="377"/>
+    </constraints>
+    <properties/>
+    <border type="etched" title="表常务"/>
+    <children>
+      <scrollpane id="673fd" binding="schoolPanel">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="f4345" class="javax.swing.JTextArea" binding="thisMessagesToShowTextArea" default-binding="true">
+            <constraints/>
+            <properties>
+              <background color="-65536"/>
+              <foreground color="-1"/>
+              <text value=""/>
+              <toolTipText value="the message to show!"/>
+              <wrapStyleWord value="true"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+      <component id="fae10" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="监听类型"/>
+        </properties>
+      </component>
+      <grid id="cbe91" binding="typeTadioGroup" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="10ebe" class="javax.swing.JRadioButton" binding="httpRadioButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="http"/>
+            </properties>
+          </component>
+          <hspacer id="b3568">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <component id="9570" class="javax.swing.JRadioButton" binding="httpsRadioButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="https"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <component id="7d4db" class="javax.swing.JButton" binding="button1" default-binding="true">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1850112"/>
+          <text value="Button"/>
+        </properties>
+      </component>
+      <component id="7aec2" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false">
+            <preferred-size width="369" height="17"/>
+          </grid>
+        </constraints>
+        <properties>
+          <labelFor value="2497d"/>
+          <text value="目标端口"/>
+        </properties>
+      </component>
+      <component id="2497d" class="javax.swing.JTextField" binding="port">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="369" height="24"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="8880"/>
+        </properties>
+      </component>
+      <component id="7f7a6" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="控制中心"/>
+        </properties>
+      </component>
+      <component id="41d83" class="javax.swing.JTextField" binding="controlCenter">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="http://"/>
+          <toolTipText value="服务端控制中心"/>
+        </properties>
+      </component>
+      <component id="2c113" class="javax.swing.JLabel" binding="destIp">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="目标IP"/>
+        </properties>
+      </component>
+      <component id="a3c8d" class="javax.swing.JTextField" binding="localhostTextField" default-binding="true">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="localhost"/>
+        </properties>
+      </component>
+      <component id="95852" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <labelFor value="69cb9"/>
+          <text value="目标端口"/>
+        </properties>
+      </component>
+      <component id="69cb9" class="javax.swing.JTextField" binding="destPort">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="8080"/>
+        </properties>
+      </component>
+      <component id="e6acc" class="javax.swing.JButton" binding="start">
+        <constraints>
+          <grid row="10" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="开始"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
