@@ -15,6 +15,10 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+/**
+ * @author Stan
+ */
+
 public class RSAEncrypt {
     /**
      * 字节数据转字符串专用集合
@@ -29,6 +33,8 @@ public class RSAEncrypt {
 
     /**
      * 随机生成密钥对
+     *
+     * @param filePath 文件路不能为空
      */
     public static void genKeyPair(String filePath) {
         // KeyPairGenerator类用于生成公钥和私钥对，基于RSA算法生成对象
@@ -39,6 +45,7 @@ public class RSAEncrypt {
             e.printStackTrace();
         }
         // 初始化密钥对生成器，密钥大小为96-1024位
+        assert keyPairGen != null;
         keyPairGen.initialize(1024, new SecureRandom());
         // 生成一个密钥对，保存在keyPair中
         KeyPair keyPair = keyPairGen.generateKeyPair();
@@ -80,7 +87,7 @@ public class RSAEncrypt {
         try {
             BufferedReader br = new BufferedReader(new FileReader(path
                     + PUBLIC_KEY));
-            String readLine = null;
+            String readLine;
             StringBuilder sb = new StringBuilder();
             while ((readLine = br.readLine()) != null) {
                 if (readLine.charAt(0) == '-') {
@@ -127,7 +134,7 @@ public class RSAEncrypt {
      *
      * @param path 私钥文件名
      * @return 是否成功
-     * @throws Exception
+     * @throws Exception 中文件中加载私钥异常
      */
     public static String loadPrivateKeyByFile(String path) throws Exception {
         try {
