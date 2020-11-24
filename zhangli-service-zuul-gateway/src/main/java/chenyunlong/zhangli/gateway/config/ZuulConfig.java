@@ -48,11 +48,14 @@ public class ZuulConfig {
      */
     private void initGatewayRules() {
         Set<GatewayFlowRule> rules = new HashSet<>();
-        rules.add(new GatewayFlowRule("zhangli-feign-client").setCount(3) // 限流阈值
-                .setIntervalSec(1) // 统计时间窗口，单位是秒，默认是 1 秒
+        // 统计时间窗口，单位是秒，默认是 1 秒
+        // 限流阈值
+        rules.add(new GatewayFlowRule("zhangli-feign-client").setCount(3)
+                .setIntervalSec(1)
         );
+        //设置超时类型规则
         rules.add(new GatewayFlowRule("zhangli-service-config")
-                .setGrade(RuleConstant.DEGRADE_GRADE_RT)//设置超时类型规则
+                .setGrade(RuleConstant.DEGRADE_GRADE_RT)
                 .setMaxQueueingTimeoutMs(500)
         );
         GatewayRuleManager.loadRules(rules);

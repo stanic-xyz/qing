@@ -3,20 +3,27 @@ package ui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
-public class MImagePanel extends JPanel {
+/**
+ * 创建一个UIPanel
+ *
+ * @author Stan
+ */
+public class ImagePanel extends JPanel {
 
     private static final long serialVersionUID = 3602544785116642939L;
     private final ImageIcon imageIcon;
 
-    public MImagePanel() {
+    public ImagePanel() {
 
         super();
         Image image = null;
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("images/intro_bg.png");
+        assert inputStream != null;
         try {
-            image = ImageIO.read(new File("G:\\学习\\github\\natcross2\\src\\main\\resources\\images\\intro_bg.png"));
+            image = ImageIO.read(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(0);
@@ -44,7 +51,7 @@ public class MImagePanel extends JPanel {
 
     public static void main(String[] args) {
         JFrame imageFrame = new JFrame("My Image JPanel Test!");
-        MImagePanel panel = new MImagePanel();
+        ImagePanel panel = new ImagePanel();
         imageFrame.setContentPane(panel);
         imageFrame.setBounds(200, 160, 640, 380);
         imageFrame.setVisible(true);

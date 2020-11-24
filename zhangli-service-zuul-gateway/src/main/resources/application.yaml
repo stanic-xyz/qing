@@ -3,17 +3,19 @@ server:
 spring:
   application:
     name: zhangli-zuul-client
-  profiles:
-    active: dev
 eureka:
   instance:
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-    hostname: localhost
+    hostname: provider1
+    prefer-ip-address: true
+    ip-address: 121.36.163.95
   client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+    use-dns-for-fetching-service-urls: true
+    eureka-server-d-n-s-name: chenyunlong.cn
+    eureka-server-u-r-l-context: eureka
+    eureka-server-port: 8761
+    prefer-same-zone-eureka: true
+    region: zhangli
 ribbon:
   eureka:
     enabled: true
@@ -21,12 +23,13 @@ zuul:
   ignored-services: '*'
   routes:
     zhangli-feign-client: /userservice/**
+    zhangli-service-provider: /anime/**
 
 management:
   endpoints:
     web:
       exposure:
-        include: ["*"]
+        include: [ "*" ]
   endpoint:
     health:
       show-details: always

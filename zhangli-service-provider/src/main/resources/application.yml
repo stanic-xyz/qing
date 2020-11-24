@@ -16,6 +16,11 @@ eureka:
 spring:
   application:
     name: zhangli-service-provider
+  messages:
+    encoding: UTF-8
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   devtools:
     livereload:
       enabled: false
@@ -35,6 +40,7 @@ spring:
       maximum-pool-size: 5
       minimum-idle: 10
       read-only: false
+      connection-test-query: select 1
   jpa:
     hibernate:
       ddl-auto: none

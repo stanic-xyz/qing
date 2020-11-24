@@ -3,9 +3,11 @@ package chenyunlong.zhangli.listener;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -17,6 +19,9 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
     private Logger log = LoggerFactory.getLogger((StartedListener.class));
 
     private final ZhangliProperties zhangliProperties;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     public StartedListener(ZhangliProperties zhangliProperties) {
         this.zhangliProperties = zhangliProperties;

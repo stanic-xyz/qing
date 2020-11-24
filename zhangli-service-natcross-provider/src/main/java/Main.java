@@ -1,6 +1,7 @@
 import person.pluto.natcross2.CommonConstants;
 import person.pluto.natcross2.clientside.ClientControlThread;
 import person.pluto.natcross2.clientside.config.SecretInteractiveClientConfig;
+import ui.ImagePanel;
 
 import javax.swing.*;
 
@@ -22,6 +23,7 @@ public class Main {
     private JLabel destIp;
     private JTextField destPort;
     private JButton start;
+    private JPanel imagePanel;
     private final JScrollBar verticalScrollBar;
     private ClientControlThread controlThread;
 
@@ -74,5 +76,9 @@ public class Main {
         frame.setContentPane(new Main().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
