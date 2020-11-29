@@ -10,7 +10,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -30,11 +29,9 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     public static final String RETURN_TYPE = "html";
 
 
-    private final RedisTemplate redisTemplate;
     private final ZhangliProperties zhangliProperties;
 
-    public MyAuthenticationSuccessHandler(RedisTemplate redisTemplate, SecurityProperties securityProperties, ZhangliProperties zhangliProperties) {
-        this.redisTemplate = redisTemplate;
+    public MyAuthenticationSuccessHandler(SecurityProperties securityProperties, ZhangliProperties zhangliProperties) {
         this.zhangliProperties = zhangliProperties;
     }
 
