@@ -15,6 +15,8 @@ eureka:
   instance:
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
     ip-address: 121.36.163.95
+    prefer-ip-address: true
+    hostname: localhost
   client:
     use-dns-for-fetching-service-urls: true
     eureka-server-d-n-s-name: chenyunlong.cn
