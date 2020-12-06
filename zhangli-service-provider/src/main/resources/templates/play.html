@@ -433,7 +433,7 @@
 
                         $('#report_aid').attr('value', AID);
 
-                        $('#report_form').on('submit',
+                        $(`#report_form`).on('submit',
                             function () {
                                 registPost();
                                 event.preventDefault(); //阻止form表单默认提交

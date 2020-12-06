@@ -1,7 +1,0 @@
-eureka:
-  instance:
-    hostname: 121.36.163.95
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://121.36.163.95:8761/eureka

@@ -3,15 +3,22 @@ server:
 spring:
   application:
     name: zhangli-feign-client
-  profiles:
-    active: dev
 ribbon:
   eureka:
     enabled: true
 eureka:
   instance:
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
+    hostname: feignclient
+    prefer-ip-address: true
+    ip-address: 121.36.163.95
   client:
+    use-dns-for-fetching-service-urls: true
+    eureka-server-d-n-s-name: chenyunlong.cn
+    eureka-server-u-r-l-context: eureka
+    eureka-server-port: 8761
+    prefer-same-zone-eureka: true
+    region: zhangli
     fetch-registry: true
     register-with-eureka: true
 feign:
