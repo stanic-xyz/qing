@@ -6,6 +6,9 @@ import chenyunlong.zhangli.service.SignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author Stan
+ */
 @Service
 public class SignServiceImpl implements SignService {
 
@@ -15,11 +18,11 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public int getSignStatus(Integer userId) {
-        return  signMapper.getSignState(userId);
+        return signMapper.getSignState(userId);
     }
 
     @Override
-    public void AddSign(Sign sign) {
-     signMapper.Add(sign)  ;
+    public void addSign(Sign sign) {
+        signMapper.add(sign);
     }
 }

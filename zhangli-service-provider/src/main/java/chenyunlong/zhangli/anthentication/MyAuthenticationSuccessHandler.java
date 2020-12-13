@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.anthentication;
 
-import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
+/**
+ * @author Stan
+ */
 @Component
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private static final Logger log = LoggerFactory.getLogger(MyAuthenticationSuccessHandler.class);
@@ -36,7 +38,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         SecurityUser user = null;
 
@@ -51,7 +53,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
                 .setId(authentication.getPrincipal().toString())
                 .signWith(SignatureAlgorithm.HS512, zhangliProperties.getSecurity().getSecretKey())
                 .compact();
-        ApiResult success = ResultUtil.success(token);
+        ApiResult success = ApiResult.success(token);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(success));
     }

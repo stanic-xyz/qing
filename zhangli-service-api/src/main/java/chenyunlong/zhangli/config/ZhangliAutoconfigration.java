@@ -7,11 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+/**
+ * @author Stan
+ */
 @Configuration
 @EnableConfigurationProperties
 public class ZhangliAutoconfigration {
 
-    private Logger logger = LoggerFactory.getLogger(ZhangliAutoconfigration.class);
+    private final Logger logger = LoggerFactory.getLogger(ZhangliAutoconfigration.class);
     private ConfigurableEnvironment env;
 
     @Bean

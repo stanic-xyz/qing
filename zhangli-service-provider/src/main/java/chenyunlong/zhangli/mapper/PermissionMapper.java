@@ -14,6 +14,8 @@ import java.util.List;
 @Component
 public interface PermissionMapper {
     /**
+     * 获取用户的权限信息
+     *
      * @param username 用户名称
      * @return 遍历
      */

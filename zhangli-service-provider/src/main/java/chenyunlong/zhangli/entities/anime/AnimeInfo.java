@@ -3,10 +3,9 @@ package chenyunlong.zhangli.entities.anime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.kafka.common.protocol.types.Field;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Stan
@@ -15,7 +14,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnimeInfo implements Serializable {
-
     private Long id;
     private String name;
     private String instruction;

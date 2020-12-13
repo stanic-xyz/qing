@@ -1,14 +1,21 @@
 package chenyunlong.zhangli.entities;
 
 
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ * 用户信息
+ *
+ * @author Stan
+ */
+@Data
 public class User implements Serializable {
 
-    private Long userID;
+    private Long userId;
     private String username;
     private String password;
     private String phone;
@@ -23,8 +30,8 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(Long userID, String username, String password, String phone, String openId, String email) {
-        this.userID = userID;
+    public User(Long userId, String username, String password, String phone, String openId, String email) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.phone = phone;
@@ -36,63 +43,4 @@ public class User implements Serializable {
         this.username = subject;
     }
 
-    public Long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userID=" + userID +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", openId='" + openId + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }

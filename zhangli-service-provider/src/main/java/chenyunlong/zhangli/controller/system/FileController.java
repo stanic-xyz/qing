@@ -1,13 +1,12 @@
-package chenyunlong.zhangli.controller;
+package chenyunlong.zhangli.controller.system;
 
 import chenyunlong.zhangli.annotation.Log;
-import chenyunlong.zhangli.entities.UploadFile;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import chenyunlong.zhangli.service.FileUploadService;
+import chenyunlong.zhangli.entities.UploadFile;
 import chenyunlong.zhangli.model.vo.ApiResult;
+import chenyunlong.zhangli.service.FileUploadService;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;
-import com.qcloud.cos.exception.CosServiceException;
 import com.qcloud.cos.model.Bucket;
 import com.qcloud.cos.model.COSObjectSummary;
 import com.qcloud.cos.model.ListObjectsRequest;
@@ -31,6 +30,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @author Stan
+ */
 @Api
 @Slf4j
 @RestController
@@ -52,13 +54,13 @@ public class FileController {
      * 上传单张图片
      *
      * @param multipartFile 文件
-     * @return
-     * @throws IOException
+     * @return 返回错误信息了
+     * @throws IOException io异常
      */
     @Log
     @ApiOperation(value = "上传文件", notes = "上传文件")
     @PostMapping("upload")
-    public ApiResult uploadFile(@RequestParam MultipartFile multipartFile) throws IOException {
+    public ApiResult<String> uploadFile(@RequestParam MultipartFile multipartFile) throws IOException {
 
         if (!multipartFile.isEmpty()) {
 
@@ -68,9 +70,9 @@ public class FileController {
 
             String filePath = LocalDate.now().toString();
 
-            String randomUUID = UUID.randomUUID().toString();
+            String randomuuid = UUID.randomUUID().toString();
             assert originalFilename != null;
-            String fileName = filePath + randomUUID + originalFilename.substring(originalFilename.lastIndexOf('.'), originalFilename.length());
+            String fileName = filePath + randomuuid + originalFilename.substring(originalFilename.lastIndexOf('.'));
 
             String baseUploadDir = zhangliProperties.getFile().getBaseUploadDir();
 
@@ -82,7 +84,7 @@ public class FileController {
             InputStream fileInputStream = multipartFile.getInputStream();
             FileOutputStream fileOutputStream = new FileOutputStream(file1);
             byte[] b = new byte[1024];
-            int len = 0;
+            int len;
             while (((len = fileInputStream.read(b)) != -1)) {
                 fileOutputStream.write(b, 0, len);
             }
@@ -96,7 +98,7 @@ public class FileController {
             uploadFile.setFileSize(multipartFile.getSize());
             uploadFile.setMimeType(multipartFile.getContentType());
             fileUploadService.saveFile(uploadFile);
-            return ApiResult.success("上传成功");
+            return ApiResult.success();
         } else {
             return ApiResult.faild("没有上传图片啊");
         }
@@ -105,7 +107,7 @@ public class FileController {
     @Log
     @ApiOperation(value = "上传文件到腾讯对象存储", notes = "上传文件到腾讯对象存储")
     @PostMapping("cos/upload")
-    public ApiResult cosUpload() {
+    public ApiResult<List<COSObjectSummary>> cosUpload() {
         List<COSObjectSummary> cosObjects = new LinkedList<>();
         List<Bucket> buckets = cosClient.listBuckets();
         for (Bucket bucket : buckets) {
@@ -118,15 +120,15 @@ public class FileController {
 
 
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
-// 设置bucket名称
+        // 设置bucket名称
         listObjectsRequest.setBucketName(buckets.get(0).getName());
-// prefix表示列出的object的key以prefix开始
-//            listObjectsRequest.setPrefix("images/");
-// deliter表示分隔符, 设置为/表示列出当前目录下的object, 设置为空表示列出所有的object
-//            listObjectsRequest.setDelimiter("/");
-// 设置最大遍历出多少个对象, 一次listobject最大支持1000
+        // prefix表示列出的object的key以prefix开始
+        listObjectsRequest.setPrefix("images/");
+        // deliter表示分隔符, 设置为/表示列出当前目录下的object, 设置为空表示列出所有的object
+        listObjectsRequest.setDelimiter("/");
+        // 设置最大遍历出多少个对象, 一次listobject最大支持1000
         listObjectsRequest.setMaxKeys(1000);
-        ObjectListing objectListing = null;
+        ObjectListing objectListing;
         do {
             try {
                 objectListing = cosClient.listObjects(listObjectsRequest);

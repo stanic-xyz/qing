@@ -1,6 +1,8 @@
 package chenyunlong.zhangli.model.vo;
 
-import lombok.*;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -8,13 +10,20 @@ import java.io.Serializable;
  * @author Stan
  */
 @Data
-public class ApiResult implements Serializable {
-
+@ApiModel(description = "返回数据值")
+public class ApiResult<T> implements Serializable {
+    @ApiModelProperty(value = "返回值编码；0表示成功，其他全部失败")
     private int code;
+    @ApiModelProperty(value = "异常提示信息")
     private String msg;
-    private Object data;
+    @ApiModelProperty(value = "具体返回值信息,如果为一般表示请求成功")
+    private T data;
 
-    public ApiResult(int code, String msg, Object data) {
+    public ApiResult() {
+
+    }
+
+    public ApiResult(int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -28,16 +37,15 @@ public class ApiResult implements Serializable {
         this.msg = msg;
     }
 
-    public static ApiResult success(Object data) {
-        return new ApiResult(200, "success", data);
+    public static <T> ApiResult<T> success() {
+        return new ApiResult<>(0, "success", null);
     }
 
-    public static ApiResult faild(String msg) {
-        return new ApiResult(400, msg, null);
+    public static <T> ApiResult<T> success(T data) {
+        return new ApiResult<T>(0, "success", data);
     }
 
-    protected boolean canEqual(final Object other) {
-        return other instanceof ApiResult;
+    public static <T> ApiResult<T> faild(String msg) {
+        return new ApiResult<>(1, msg, null);
     }
-
 }

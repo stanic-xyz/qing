@@ -12,6 +12,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+/**
+ * @author Stan
+ */
 @Service
 public class DeferredResultService {
     private final Logger log = LoggerFactory.getLogger(DeferredResultService.class);

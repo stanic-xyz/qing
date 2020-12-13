@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 public interface FileMapper {
 
     /**
+     * 插入文件
+     *
      * @param uploadFile 文件信息
      */
     @Insert("INSERT INTO `upload_file` (`fileid`, `file_name`, `file_size`, `mime_type`, `url`) VALUES (#{fileId}, #{fileName}, #{fileSize}, #{mimeType}, #{url})")

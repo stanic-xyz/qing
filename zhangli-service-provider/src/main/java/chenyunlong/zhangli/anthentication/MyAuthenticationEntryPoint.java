@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.anthentication;
 
-import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import cn.hutool.json.JSONUtil;
 import org.springframework.http.MediaType;
@@ -22,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException authException) throws IOException, ServletException {
-        ApiResult success = ResultUtil.fail("没有登录");
+        ApiResult success = ApiResult.faild("没有登录");
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());

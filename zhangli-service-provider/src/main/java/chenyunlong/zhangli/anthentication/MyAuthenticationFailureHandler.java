@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.anthentication;
 
-import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -27,18 +26,18 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
 
         ApiResult result;
         if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
-            result = ResultUtil.fail(exception.getMessage());
+            result = ApiResult.faild(exception.getMessage());
         } else if (exception instanceof LockedException) {
-            result = ResultUtil.fail("账户被锁定，请联系管理员!");
+            result = ApiResult.faild("账户被锁定，请联系管理员!");
         } else if (exception instanceof CredentialsExpiredException) {
-            result = ResultUtil.fail("证书过期，请联系管理员!");
+            result = ApiResult.faild("证书过期，请联系管理员!");
         } else if (exception instanceof AccountExpiredException) {
-            result = ResultUtil.fail("账户过期，请联系管理员!");
+            result = ApiResult.faild("账户过期，请联系管理员!");
         } else if (exception instanceof DisabledException) {
-            result = ResultUtil.fail("账户被禁用，请联系管理员!");
+            result = ApiResult.faild("账户被禁用，请联系管理员!");
         } else {
             logger.error("登录失败：", exception);
-            result = ResultUtil.fail("登录失败!");
+            result = ApiResult.faild("登录失败!");
         }
 
         ObjectMapper objectMapper = new ObjectMapper();

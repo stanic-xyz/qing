@@ -1,5 +1,6 @@
+
 server:
-  port: 9005
+  port: 10102
 spring:
   application:
     name: zhangli-feign-client
@@ -22,6 +23,10 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
 feign:
+  compression:
+    response:
+      enabled: true
+      useGzipDecoder: true
   client:
     config:
       default:
@@ -39,5 +44,5 @@ management:
   endpoint:
     health:
       show-details: always
-
+debug: true
 test: default

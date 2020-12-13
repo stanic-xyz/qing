@@ -40,7 +40,17 @@ public class MovieController {
     }
 
     @GetMapping("catalog")
-    public ModelAndView catalog(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page) {
+    public ModelAndView catalog(
+            @RequestParam(value = "district", required = false, defaultValue = "all") String district,
+            @RequestParam(value = "version", required = false, defaultValue = "all") String version,
+            @RequestParam(value = "index", required = false, defaultValue = "all") String index,
+            @RequestParam(value = "year", required = false, defaultValue = "all") String year,
+            @RequestParam(value = "season", required = false, defaultValue = "all") String season,
+            @RequestParam(value = "status", required = false, defaultValue = "all") String status,
+            @RequestParam(value = "resourceType", required = false, defaultValue = "all") String resourceType,
+            @RequestParam(value = "orderType", required = false, defaultValue = "times") String orderType,
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "24") Integer pageSize) {
         if (page < 1) {
             page = 1;
         }
@@ -110,7 +120,7 @@ public class MovieController {
 
     @GetMapping("play/{movieId}")
     public ModelAndView play(
-            @PathVariable(value = "movieId", required = true) String animeId,
+            @PathVariable(value = "movieId") String animeId,
             @RequestParam(value = "playid") String playid
     ) {
         String[] strings = playid.split("_");
@@ -121,7 +131,7 @@ public class MovieController {
             ep = Integer.parseInt(strings[1]);
         }
 
-        AnimeInfoVo animeInfoVo = animeInfoService.getPlayDetail(animeId);
+        AnimeInfoVo animeInfoVo = animeInfoService.getPlayDetail(animeId, type, ep);
         PlayInfoModel playInfoModel = new PlayInfoModel();
         playInfoModel.setAnimeInfo(animeInfoVo);
         ModelAndView modelAndView = new ModelAndView("play");

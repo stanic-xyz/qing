@@ -1,10 +1,12 @@
 package chenyunlong.zhangli.service.impl;
 
+import chenyunlong.zhangli.entities.AnimeType;
 import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.mapper.AnimeEpisodeMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
+import chenyunlong.zhangli.mapper.AnimeTypeMapper;
 import chenyunlong.zhangli.model.agefans.AgePlayInfoModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeEpisodeVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
@@ -33,14 +35,17 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     private final AnimeInfoMapper animeInfoMapper;
     private final RestTemplate restTemplate;
     private final AnimeEpisodeMapper animeEpisodeMapper;
+    private final AnimeTypeMapper animeTypeMapper;
 
 
     public AnimeInfoServiceImpl(AnimeInfoMapper animeInfoMapper,
                                 RestTemplate restTemplate,
-                                AnimeEpisodeMapper animeEpisodeMapper) {
+                                AnimeEpisodeMapper animeEpisodeMapper,
+                                AnimeTypeMapper animeTypeMapper) {
         this.animeInfoMapper = animeInfoMapper;
         this.restTemplate = restTemplate;
         this.animeEpisodeMapper = animeEpisodeMapper;
+        this.animeTypeMapper = animeTypeMapper;
     }
 
     @Override
@@ -51,27 +56,26 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     }
 
     @Override
-    public void add(List<AnimeInfo> animeInfos) {
-
-        animeInfos.forEach(animeInfo -> animeInfoMapper.insertPatch(animeInfos));
-
-        animeInfoMapper.insertPatch(animeInfos);
+    public void add(AnimeInfo animeInfo) {
+        animeInfoMapper.insert(animeInfo);
     }
 
+    /**
+     * @param movieId 动漫ID
+     */
     @Override
     public AnimeInfoVo getMovieDetail(String movieId) {
         AnimeInfo animeInfo = animeInfoMapper.selectAnimationDetail(movieId);
+        if (animeInfo == null) {
+            return null;
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         AnimeInfoVo animeInfoVo = objectMapper.convertValue(animeInfo, AnimeInfoVo.class);
-
         AnimeEpisodeEntityExample episodeEntityExample = new AnimeEpisodeEntityExample();
-
         episodeEntityExample.createCriteria().andAnimeIdEqualTo(animeInfo.getId());
         List<AnimeEpisodeEntity> episodes = animeEpisodeMapper.selectByExample(episodeEntityExample);
-
         List<AnimeEpisodeVo> episodeVos = new LinkedList<>();
         episodes.forEach(episode -> episodeVos.add(objectMapper.convertValue(episode, AnimeEpisodeVo.class)));
-
         animeInfoVo.setEpisodes(episodeVos);
         return animeInfoVo;
     }
@@ -97,11 +101,13 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     /**
      * 获取播放页数据
      *
-     * @param animeId 动漫ID
+     * @param animeId    动漫ID
+     * @param sourceType 播放分类
+     * @param epside     片段
      * @return 动漫播放页参数信息
      */
     @Override
-    public AnimeInfoVo getPlayDetail(String animeId) {
+    public AnimeInfoVo getPlayDetail(String animeId, int sourceType, int epside) {
         AnimeInfo animeInfo = animeInfoMapper.selectAnimationDetail(animeId);
         if (animeInfo != null) {
             AnimeEpisodeEntityExample example = new AnimeEpisodeEntityExample();
@@ -109,6 +115,27 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
             animeEpisodeMapper.selectByExample(example);
         }
         return new ObjectMapper().convertValue(animeInfo, AnimeInfoVo.class);
+    }
+
+    @Override
+    public void updateAnime(AnimeInfo animeInfo) {
+        animeInfoMapper.update(animeInfo);
+    }
+
+    @Override
+    public void deleteAnime(Long animeId) {
+        animeInfoMapper.deleteByAnimeId(animeId);
+    }
+
+    @Override
+    public List<AnimeType> getAllAnimeType() {
+        return animeTypeMapper.listTypes();
+    }
+
+    @Override
+    public AnimeType addAnimeType(AnimeType animeType) {
+        animeTypeMapper.addAnimeType(animeType);
+        return animeType;
     }
 
     private void getPlayDetail() {

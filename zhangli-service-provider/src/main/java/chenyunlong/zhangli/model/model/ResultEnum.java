@@ -1,6 +1,5 @@
-package chenyunlong.zhangli.model.model.enumeration;
+package chenyunlong.zhangli.model.model;
 
-import chenyunlong.zhangli.model.model.ResultModel;
 import org.apache.commons.lang.StringUtils;
 
 /**

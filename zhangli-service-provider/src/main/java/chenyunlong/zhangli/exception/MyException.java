@@ -1,5 +1,8 @@
 package chenyunlong.zhangli.exception;
 
+/**
+ * @author Stan
+ */
 public class MyException extends Exception {
 
     private String msg;

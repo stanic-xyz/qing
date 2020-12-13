@@ -1,6 +1,11 @@
 package chenyunlong.zhangli.common.core.exception;
 
 
+/**
+ * 系统异常基类
+ *
+ * @author Stan
+ */
 public class BaseException extends RuntimeException {
     /**
      * 异常对应的错误类型

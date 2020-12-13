@@ -34,9 +34,9 @@ public interface AnimeInfoMapper {
     /**
      * 添加动画
      *
-     * @param animeInfos 动画信息列表
+     * @param anime 动画信息
      */
-    void insertPatch(@Param("animeInfos") List<AnimeInfo> animeInfos);
+    void insert(@Param("anime") AnimeInfo anime);
 
     /**
      * 获取动漫详情
@@ -63,4 +63,18 @@ public interface AnimeInfoMapper {
      * @return 满足条件的动漫信息
      */
     long countByNameLike(String name);
+
+    /**
+     * 更新动漫信息
+     *
+     * @param animeInfo 动漫信息
+     */
+    void update(AnimeInfo animeInfo);
+
+    /**
+     * 根据ID删除动漫信息
+     *
+     * @param animeId 动漫ID
+     */
+    void deleteByAnimeId(Long animeId);
 }

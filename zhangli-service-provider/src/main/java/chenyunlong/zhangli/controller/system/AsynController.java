@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.controller;
+package chenyunlong.zhangli.controller.system;
 
 
 import chenyunlong.zhangli.common.DeferredResultResponse;
@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+/**
+ * @author Stan
+ */
 @Api("异步请求")
 @RestController
 @RequestMapping("asyn")

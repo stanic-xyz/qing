@@ -1,12 +1,10 @@
-package chenyunlong.zhangli.controller;
+package chenyunlong.zhangli.controller.system;
 
 import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.anthentication.TokenProvider;
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.exception.LoginErrorException;
 import chenyunlong.zhangli.exception.MyException;
-import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,13 +35,11 @@ public class AuthController {
 
     private final AuthGithubRequest authRequest;
     private final UserService userService;
-    private final ZhangliProperties zhangliProperties;
     private final TokenProvider tokenProvider;
 
-    public AuthController(AuthGithubRequest authRequest, UserService userService, ZhangliProperties zhangliProperties, TokenProvider tokenProvider) {
+    public AuthController(AuthGithubRequest authRequest, UserService userService, TokenProvider tokenProvider) {
         this.authRequest = authRequest;
         this.userService = userService;
-        this.zhangliProperties = zhangliProperties;
         this.tokenProvider = tokenProvider;
     }
 
@@ -52,12 +48,11 @@ public class AuthController {
      *
      * @param userName 用户名
      * @param password 密码
-     * @return
      */
     @Log("通过表单登陆")
     @ApiOperation("通过表单登陆")
     @PostMapping("formLogin")
-    public ApiResult formLofin(@RequestParam String userName, @RequestParam String password) throws LoginErrorException, JsonProcessingException {
+    public ApiResult<String> formLofin(@RequestParam String userName, @RequestParam String password) throws LoginErrorException {
 
         if (StringUtils.isEmpty(userName)) {
             throw new LoginErrorException("用户名不能为空");
@@ -70,13 +65,13 @@ public class AuthController {
         User userInfo = userService.login(user);
 
         if (userInfo == null) {
-            return ResultUtil.fail("用户或者账号密码错误！");
+            return ApiResult.faild("用户或者账号密码错误！");
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        return ResultUtil.success(tokenProvider.createToken(new UsernamePasswordAuthenticationToken(userInfo.getUsername(), userInfo.getPassword(), authorities), false));
+        return ApiResult.success(tokenProvider.createToken(new UsernamePasswordAuthenticationToken(userInfo.getUsername(), userInfo.getPassword(), authorities), false));
     }
 
     /**
@@ -84,22 +79,20 @@ public class AuthController {
      *
      * @param userName 用户名
      * @param password 密码，原始密码，不需要经过加密
-     * @return
-     * @throws MyException
+     * @return 认证信息
+     * @throws MyException 注册异常信息
      */
-    public ApiResult register(@RequestParam String userName, @RequestParam String password) throws MyException {
+    public ApiResult<Object> register(@RequestParam String userName, @RequestParam String password) throws MyException {
         try {
             userService.addUserInfo(new User(userName, password));
-            return ResultUtil.success();
+            return ApiResult.success();
         } catch (MyException exp) {
-            return ResultUtil.fail(exp.getMessage());
+            return ApiResult.faild(exp.getMessage());
         }
     }
 
     /**
      * 跳转到登陆表单
-     *
-     * @return
      */
     @GetMapping("login")
     public void login(HttpServletResponse response) throws IOException {
@@ -110,7 +103,6 @@ public class AuthController {
     @GetMapping("callback")
     public String accessToken(AuthCallback callback) throws JsonProcessingException {
         AuthResponse authResponse = authRequest.login(callback);
-
         if (authResponse.ok()) {
             AuthUser user = (AuthUser) authResponse.getData();
             List<GrantedAuthority> authorities = new LinkedList<>();

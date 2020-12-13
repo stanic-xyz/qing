@@ -1,14 +1,19 @@
-package chenyunlong.zhangli.controller;
+package chenyunlong.zhangli.controller.system;
 
+import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.Sign;
-import chenyunlong.zhangli.model.ResultUtil;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.SignService;
+import me.zhyd.oauth.model.AuthUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * @author Stan
+ */
 @RestController
 @RequestMapping("sign")
 public class SignController {
@@ -16,13 +21,15 @@ public class SignController {
     @Autowired
     private SignService signService;
 
+    @Log("获取签到状态")
     @GetMapping("get")
-    public ApiResult sign(Integer userId) {
-        return ResultUtil.success(signService.getSignStatus(userId));
+    public ApiResult<Integer> sign(Integer userId) {
+        return ApiResult.success(signService.getSignStatus(userId));
     }
 
+    @Log("钉一下")
     @PostMapping("ding")
-    public ApiResult dingyixia(@RequestParam("userId") Long userId) {
+    public ApiResult<Object> dingyixia(@RequestParam("userId") Long userId) {
 
         int signRecord = 0;
         Date date = new Date();
@@ -35,7 +42,7 @@ public class SignController {
         sign.setDateMonth(date);
         sign.setContinueSignMonth(5);
         sign.setMask(signRecord);
-        signService.AddSign(sign);
-        return ResultUtil.success(null);
+        signService.addSign(sign);
+        return ApiResult.success();
     }
 }

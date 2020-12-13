@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    private Logger logger = LoggerFactory.getLogger(HelloController.class);
+    private final Logger logger = LoggerFactory.getLogger(HelloController.class);
     private final RemoteHello remoteHello;
 
     @Value("${test}")
@@ -24,7 +24,7 @@ public class HelloController {
     @GetMapping("hello")
     public String hello(@RequestParam String name) {
 
-        String value = remoteHello.getUserInfo(name);
+        String value = remoteHello.getUserInfo();
         logger.debug("来自远程的请求");
         return "this is hello world!" + test + ":" + value;
     }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="chenyunlong.zhangli.mapper.AnimeTypeMapper">
+
+
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.AnimeType">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
+    <insert id="addAnimeType" keyProperty="id" useGeneratedKeys="true">
+        insert into anime_type(name, description) value (#{name}, #{description})
+    </insert>
+    <delete id="deleteAnimeType" parameterType="chenyunlong.zhangli.entities.AnimeType">
+        delete
+        from anime_type
+        where id = #{id}
+    </delete>
+
+    <select id="selectTypeById" parameterType="long" resultMap="BaseResultMap">
+        select id, name, description
+        from anime_type
+        where id = #{id}
+    </select>
+
+    <select id="listTypes" resultType="chenyunlong.zhangli.entities.AnimeType">
+        select id, name, description
+        from anime_type
+    </select>
+</mapper>

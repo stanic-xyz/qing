@@ -13,7 +13,7 @@ public final class CommonConstants {
     /**
      * 服务端地址，支持IP或域名，这个根据服务端放的网络位置进行设置
      */
-    public static final String SERVICE_IP = "127.0.0.1";
+    public static final String SERVICE_IP = "121.36.163.95";
     /**
      * 客户端服务的端口
      */
