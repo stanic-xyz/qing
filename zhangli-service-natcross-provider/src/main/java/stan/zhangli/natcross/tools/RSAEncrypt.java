@@ -1,7 +1,6 @@
 package stan.zhangli.natcross.tools;
 
 import org.apache.commons.codec.binary.Base64;
-import sun.misc.BASE64Decoder;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -18,6 +17,7 @@ import java.security.spec.X509EncodedKeySpec;
 /**
  * @author Stan
  */
+
 
 public class RSAEncrypt {
     /**
@@ -85,25 +85,34 @@ public class RSAEncrypt {
      */
     public static String loadPublicKeyByFile(String path) throws Exception {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(path
-                    + PUBLIC_KEY));
-            String readLine;
-            StringBuilder sb = new StringBuilder();
-            while ((readLine = br.readLine()) != null) {
-                if (readLine.charAt(0) == '-') {
-                    continue;
-                } else {
-                    sb.append(readLine);
-                    sb.append('\r');
-                }
-            }
-            br.close();
-            return sb.toString();
+            return getFileContent(path, PUBLIC_KEY);
         } catch (IOException e) {
             throw new Exception("公钥数据流读取错误");
         } catch (NullPointerException e) {
             throw new Exception("公钥输入流为空");
         }
+    }
+
+    /**
+     * 读取文件流信息
+     *
+     * @param path      文件路径
+     * @param publicKey 密钥
+     * @return 读取的内容
+     * @throws IOException io异常
+     */
+    private static String getFileContent(String path, String publicKey) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(path + publicKey));
+        String readLine;
+        StringBuilder sb = new StringBuilder();
+        while ((readLine = br.readLine()) != null) {
+            if (readLine.charAt(0) != '-') {
+                sb.append(readLine);
+                sb.append('\r');
+            }
+        }
+        br.close();
+        return sb.toString();
     }
 
     /**
@@ -115,8 +124,7 @@ public class RSAEncrypt {
     public static RSAPublicKey loadPublicKeyByStr(String publicKeyStr)
             throws Exception {
         try {
-            BASE64Decoder base64 = new BASE64Decoder();
-            byte[] buffer = base64.decodeBuffer(publicKeyStr);
+            byte[] buffer = Base64.decodeBase64(publicKeyStr);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
             return (RSAPublicKey) keyFactory.generatePublic(keySpec);
@@ -138,20 +146,7 @@ public class RSAEncrypt {
      */
     public static String loadPrivateKeyByFile(String path) throws Exception {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(path
-                    + PRIVATE_KEY));
-            String readLine = null;
-            StringBuilder sb = new StringBuilder();
-            while ((readLine = br.readLine()) != null) {
-                if (readLine.charAt(0) == '-') {
-                    continue;
-                } else {
-                    sb.append(readLine);
-                    sb.append('\r');
-                }
-            }
-            br.close();
-            return sb.toString();
+            return getFileContent(path, PRIVATE_KEY);
         } catch (IOException e) {
             throw new Exception("私钥数据读取错误");
         } catch (NullPointerException e) {
@@ -159,11 +154,17 @@ public class RSAEncrypt {
         }
     }
 
+    /**
+     * 加载私钥
+     *
+     * @param privateKeyStr 私钥字符串
+     * @return 私钥
+     * @throws Exception 异常信息
+     */
     public static RSAPrivateKey loadPrivateKeyByStr(String privateKeyStr)
             throws Exception {
         try {
-            BASE64Decoder base64Decoder = new BASE64Decoder();
-            byte[] buffer = base64Decoder.decodeBuffer(privateKeyStr);
+            byte[] buffer = Base64.decodeBase64(privateKeyStr);
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
@@ -181,7 +182,7 @@ public class RSAEncrypt {
      *
      * @param publicKey     公钥
      * @param plainTextData 明文数据
-     * @return
+     * @return 公钥加密结果
      * @throws Exception 加密过程中的异常信息
      */
     public static byte[] encrypt(RSAPublicKey publicKey, byte[] plainTextData)
@@ -189,14 +190,12 @@ public class RSAEncrypt {
         if (publicKey == null) {
             throw new Exception("加密公钥为空, 请设置");
         }
-        Cipher cipher = null;
+        Cipher cipher;
         try {
             // 使用默认RSA
             cipher = Cipher.getInstance("RSA");
-            // cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            byte[] output = cipher.doFinal(plainTextData);
-            return output;
+            return cipher.doFinal(plainTextData);
         } catch (NoSuchAlgorithmException e) {
             throw new Exception("无此加密算法");
         } catch (NoSuchPaddingException e) {
@@ -216,7 +215,7 @@ public class RSAEncrypt {
      *
      * @param privateKey    私钥
      * @param plainTextData 明文数据
-     * @return
+     * @return 加密结果
      * @throws Exception 加密过程中的异常信息
      */
     public static byte[] encrypt(RSAPrivateKey privateKey, byte[] plainTextData)
@@ -224,13 +223,12 @@ public class RSAEncrypt {
         if (privateKey == null) {
             throw new Exception("加密私钥为空, 请设置");
         }
-        Cipher cipher = null;
+        Cipher cipher;
         try {
             // 使用默认RSA
             cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-            byte[] output = cipher.doFinal(plainTextData);
-            return output;
+            return cipher.doFinal(plainTextData);
         } catch (NoSuchAlgorithmException e) {
             throw new Exception("无此加密算法");
         } catch (NoSuchPaddingException e) {
@@ -258,14 +256,12 @@ public class RSAEncrypt {
         if (privateKey == null) {
             throw new Exception("解密私钥为空, 请设置");
         }
-        Cipher cipher = null;
+        Cipher cipher;
         try {
             // 使用默认RSA
             cipher = Cipher.getInstance("RSA");
-            // cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] output = cipher.doFinal(cipherData);
-            return output;
+            return cipher.doFinal(cipherData);
         } catch (NoSuchAlgorithmException e) {
             throw new Exception("无此解密算法");
         } catch (NoSuchPaddingException e) {
@@ -293,14 +289,12 @@ public class RSAEncrypt {
         if (publicKey == null) {
             throw new Exception("解密公钥为空, 请设置");
         }
-        Cipher cipher = null;
+        Cipher cipher;
         try {
             // 使用默认RSA
             cipher = Cipher.getInstance("RSA");
-            // cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
-            byte[] output = cipher.doFinal(cipherData);
-            return output;
+            return cipher.doFinal(cipherData);
         } catch (NoSuchAlgorithmException e) {
             throw new Exception("无此解密算法");
         } catch (NoSuchPaddingException e) {
