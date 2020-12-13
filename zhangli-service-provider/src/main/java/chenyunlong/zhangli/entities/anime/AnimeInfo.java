@@ -15,6 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class AnimeInfo implements Serializable {
     private Long id;
+    @NotBlank
     private String name;
     private String instruction;
     private String district;
