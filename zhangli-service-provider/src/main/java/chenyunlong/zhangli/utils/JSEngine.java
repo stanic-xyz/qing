@@ -1,7 +1,6 @@
 package chenyunlong.zhangli.utils;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import org.apache.kafka.common.protocol.types.Field;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;

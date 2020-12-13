@@ -24,6 +24,15 @@
         <result column="play_heat" property="playHeat"/>
         <result column="orignal_name" property="orignalName"/>
     </resultMap>
+    <update id="update" parameterType="chenyunlong.zhangli.entities.anime.AnimeInfo">
+
+    </update>
+
+    <delete id="deleteByAnimeId" parameterType="long">
+        delete
+        from `anime_info`
+        where id = #{animeId}
+    </delete>
 
     <select id="listAnimes" resultMap="BaseResultMap">
         SELECT `id`,
@@ -98,27 +107,28 @@
         where name like concat('%', #{name}, '%')
     </select>
 
-    <insert id="insertPatch">
+    <insert id="insert">
         INSERT INTO `zhangli`.`anime_info`
         (`id`,
-        `name`,
-        `district`,
-        `cover_url`,
-        `type`,
-        `instruction`,
-        `other_name`,
-        `author`,
-        `company`,
-        `premiere_date`,
-        `play_status`,
-        `plot_type`,
-        `tags`,
-        `official_website`,
-        `play_heat`,
-        `orignal_name`)
-        values
-        <foreach collection="animeInfos" separator="," item="anime">
-            (#{anime.id},#{anime.name},#{anime.district},#{anime.coverUrl},#{anime.type},#{anime.instruction},#{anime.otherName},#{anime.author},#{anime.company},#{anime.premiereDate},#{anime.playStatus},#{anime.plotType},#{anime.tags},#{anime.officialWebsite},#{anime.playHeat},#{anime.orignalName})
-        </foreach>
+         `name`,
+         `district`,
+         `cover_url`,
+         `type`,
+         `instruction`,
+         `other_name`,
+         `author`,
+         `company`,
+         `premiere_date`,
+         `play_status`,
+         `plot_type`,
+         `tags`,
+         `official_website`,
+         `play_heat`,
+         `orignal_name`)
+        values (#{anime.id}, #{anime.name}, #{anime.district}, #{anime.coverUrl}, #{anime.type},
+                #{anime.instruction}, #{anime.otherName}, #{anime.author}, #{anime.company}, #{anime.premiereDate},
+                #{anime.playStatus}, #{anime.plotType}, #{anime.tags}, #{anime.officialWebsite}, #{anime.playHeat},
+                #{anime.orignalName})
+
     </insert>
 </mapper>

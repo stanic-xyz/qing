@@ -1,7 +1,7 @@
 package stan.zhangli.natcross.tools;
 
 import org.apache.commons.codec.binary.Base64;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -45,6 +45,6 @@ public class RSAEncryptTest {
         System.out.println("加密：" + cipher);
         System.out.println("解密：" + restr);
         System.out.println();
-        Assert.assertEquals(signKey, restr);
+        Assertions.assertEquals(signKey, restr);
     }
 }

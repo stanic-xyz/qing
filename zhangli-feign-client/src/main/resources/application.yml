@@ -22,6 +22,10 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
 feign:
+  compression:
+    response:
+      enabled: true
+      useGzipDecoder: true
   client:
     config:
       default:

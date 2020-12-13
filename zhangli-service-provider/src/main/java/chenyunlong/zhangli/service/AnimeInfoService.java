@@ -2,8 +2,8 @@ package chenyunlong.zhangli.service;
 
 
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
-import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
+import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface AnimeInfoService {
 
     AnimeInfoRankModel getRankPage(Pageable pageable);
 
-    void add(List<AnimeInfo> animeInfos);
+    void add(AnimeInfo animeInfos);
 
     /**
      * 获取动漫详情
@@ -52,4 +52,12 @@ public interface AnimeInfoService {
      */
     AnimeInfoVo getPlayDetail(String animeId);
 
+    void updateAnime(AnimeInfo animeModel);
+
+    /**
+     * 删除动漫信息
+     *
+     * @param animeId 动漫ID
+     */
+    void deleteAnime(Long animeId);
 }

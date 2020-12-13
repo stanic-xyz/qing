@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("activity")
 public class ActivityController {
 
-
     private final ActivityService activityService;
     @Autowired
     private AttachementService attachementService;

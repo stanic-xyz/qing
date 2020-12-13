@@ -51,29 +51,26 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     }
 
     @Override
-    public void add(List<AnimeInfo> animeInfos) {
-
-        animeInfos.forEach(animeInfo -> animeInfoMapper.insertPatch(animeInfos));
-
-        animeInfoMapper.insertPatch(animeInfos);
+    public void add(AnimeInfo animeInfos) {
+        animeInfoMapper.insert(animeInfos);
     }
 
     @Override
     public AnimeInfoVo getMovieDetail(String movieId) {
         AnimeInfo animeInfo = animeInfoMapper.selectAnimationDetail(movieId);
+        if (animeInfo == null) {
+            return null;
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         AnimeInfoVo animeInfoVo = objectMapper.convertValue(animeInfo, AnimeInfoVo.class);
-
         AnimeEpisodeEntityExample episodeEntityExample = new AnimeEpisodeEntityExample();
-
         episodeEntityExample.createCriteria().andAnimeIdEqualTo(animeInfo.getId());
         List<AnimeEpisodeEntity> episodes = animeEpisodeMapper.selectByExample(episodeEntityExample);
-
         List<AnimeEpisodeVo> episodeVos = new LinkedList<>();
         episodes.forEach(episode -> episodeVos.add(objectMapper.convertValue(episode, AnimeEpisodeVo.class)));
-
         animeInfoVo.setEpisodes(episodeVos);
         return animeInfoVo;
+
     }
 
     @Override
@@ -109,6 +106,16 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
             animeEpisodeMapper.selectByExample(example);
         }
         return new ObjectMapper().convertValue(animeInfo, AnimeInfoVo.class);
+    }
+
+    @Override
+    public void updateAnime(AnimeInfo animeInfo) {
+        animeInfoMapper.update(animeInfo);
+    }
+
+    @Override
+    public void deleteAnime(Long animeId) {
+        animeInfoMapper.deleteByAnimeId(animeId);
     }
 
     private void getPlayDetail() {

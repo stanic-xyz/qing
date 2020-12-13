@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.model.model;
 
-import chenyunlong.zhangli.model.model.enumeration.ResultEnum;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 
@@ -84,7 +83,6 @@ public class ResultModel {
             log.warn("ResultModel set field faild!", e);
             return this;
         }
-
         return this;
     }
 
@@ -120,36 +118,7 @@ public class ResultModel {
         return this;
     }
 
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof ResultModel)) return false;
-        final ResultModel other = (ResultModel) o;
-        if (!other.canEqual((Object) this)) return false;
-        final Object this$retCod = this.getRetCod();
-        final Object other$retCod = other.getRetCod();
-        if (this$retCod == null ? other$retCod != null : !this$retCod.equals(other$retCod)) return false;
-        final Object this$retMsg = this.getRetMsg();
-        final Object other$retMsg = other.getRetMsg();
-        if (this$retMsg == null ? other$retMsg != null : !this$retMsg.equals(other$retMsg)) return false;
-        final Object this$data = this.getData();
-        final Object other$data = other.getData();
-        if (this$data == null ? other$data != null : !this$data.equals(other$data)) return false;
-        return true;
-    }
-
     protected boolean canEqual(final Object other) {
         return other instanceof ResultModel;
-    }
-
-    public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $retCod = this.getRetCod();
-        result = result * PRIME + ($retCod == null ? 43 : $retCod.hashCode());
-        final Object $retMsg = this.getRetMsg();
-        result = result * PRIME + ($retMsg == null ? 43 : $retMsg.hashCode());
-        final Object $data = this.getData();
-        result = result * PRIME + ($data == null ? 43 : $data.hashCode());
-        return result;
     }
 }
