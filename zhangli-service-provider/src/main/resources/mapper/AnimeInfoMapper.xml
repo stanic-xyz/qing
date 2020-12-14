@@ -84,24 +84,31 @@
     </select>
     <select id="selectAnimationW" resultMap="BaseResultMap">
         SELECT `id`,
-               `name`,
-               `district`,
-               `cover_url`,
-               `type`,
-               `instruction`,
-               `other_name`,
-               `author`,
-               `company`,
-               `premiere_date`,
-               `play_status`,
-               `plot_type`,
-               `tags`,
-               `official_website`,
-               `play_heat`,
-               `orignal_name`
+        `name`,
+        `district`,
+        `cover_url`,
+        `type`,
+        `instruction`,
+        `other_name`,
+        `author`,
+        `company`,
+        `premiere_date`,
+        `play_status`,
+        `plot_type`,
+        `tags`,
+        `official_website`,
+        `play_heat`,
+        `orignal_name`
         FROM anime_info
-        where name like concat('%', #{animeName}, '%')
-           or other_name like concat('%', #{animeName}, '%')
+        <where>
+            <if test="anime.keyword!=null and anime.keyword!=''">
+                anime_info.name like concat('%', #{anime.keyword}, '%') or other_name like concat('%',
+                #{anime.keyword},'%')
+            </if>
+            <if test="anime.name!=null and anime.name!=''">
+                and name like concat('%', #{anime.name}, '%')
+            </if>
+        </where>
         limit #{offset},#{pageSize}
     </select>
     <select id="countByNameLike" resultType="java.lang.Long">

@@ -8,6 +8,7 @@ import chenyunlong.zhangli.mapper.AnimeEpisodeMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.mapper.AnimeTypeMapper;
 import chenyunlong.zhangli.model.agefans.AgePlayInfoModel;
+import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeEpisodeVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
@@ -86,7 +87,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     }
 
     @Override
-    public List<AnimeInfo> query(String name, Integer page, Integer pageSize) {
+    public List<AnimeInfo> query(Integer page, Integer pageSize, AnimeQuery animeInfo) {
 
         if (page <= 0) {
             page = 1;
@@ -95,7 +96,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
             pageSize = 15;
         }
 
-        return animeInfoMapper.selectAnimationW(name, (page - 1) * pageSize, pageSize);
+        return animeInfoMapper.selectAnimationW(animeInfo, (page - 1) * pageSize, pageSize);
     }
 
     /**

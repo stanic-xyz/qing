@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)/movie/detail/20160083 -->
+<!-- saved from url=(0038)../detail/20160083 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -31,13 +31,13 @@
         </div>
     </div>
     <header id="nav">
-        <a class="nav_button " href="/movie/">首页</a>
-        <a class="nav_button " href="/movie/catalog">目录</a>
-        <a class="nav_button " href="/movie/recommend">每日推荐</a>
-        <a class="nav_button " href="/movie/update">最近更新</a>
-        <a class="nav_button " href="/movie/rank">排行榜</a>
+        <a class="nav_button " href="../">首页</a>
+        <a class="nav_button " href="../catalog">目录</a>
+        <a class="nav_button " href="../recommend">每日推荐</a>
+        <a class="nav_button " href="../update">最近更新</a>
+        <a class="nav_button " href="../rank">排行榜</a>
         <a class="nav_button nav_button_current">搜索</a>
-        <form id="top_search_from" class="search_form" action="/movie/search" method="get"
+        <form id="top_search_from" class="search_form" action="../search" method="get"
               onsubmit="return on_top_search_form();">
             <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
                    autocapitalize="on" autocomplete="on" autocorrect="on" placeholder="输入关键字"
@@ -80,22 +80,22 @@
                     <ul>
                         <li>
                             <a class="pbutton pbutton_current asciifont"
-                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'/movie/search?query='+query+'&page=1'}">首页</a>
+                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'../search?query='+query+'&page=1'}">首页</a>
                         </li>
 
                         <li>
                             <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
 
                         <li>
-                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page=2'}">2</a>
+                            <a class="pbutton  asciifont" th:href="${'../search?query='+query+'&page=2'}">2</a>
                         </li>
 
                         <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page=2'}">下一页</a>
+                            <a class="pbutton  asciifont" th:href="${'../search?query='+query+'&page=2'}">下一页</a>
                         </li>
 
                         <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page='+totalPage}">尾页</a>
+                            <a class="pbutton  asciifont" th:href="${'../search?query='+query+'&page='+totalPage}">尾页</a>
                         </li>
                     </ul>
                 </div>
@@ -105,13 +105,13 @@
             <div class="blockcontent1">
                 <div class="cell blockdiff2" th:each="anime,iterStat : ${animeInfos}"
                      th:class="${iterStat.index%2==0?'cell blockdiff':'cell blockdiff2'}">
-                    <a th:href="${'/movie/detail/'+anime?.id}" class="cell_poster">
+                    <a th:href="${'../detail/'+anime?.id}" class="cell_poster">
                         <img referrerpolicy="no-referrer" width="150px" height="208px"
                              th:src="${anime?.coverUrl}" th:alt="${anime?.name}">
                         <span class="newname" th:text="${anime?.playStatus}">特报2</span></a>
                     <div class="cell_imform">
                         <div>
-                            <a th:href="${'/movie/detail/'+anime?.id}" class="cell_imform_name"
+                            <a th:href="${'../detail/'+anime?.id}" class="cell_imform_name"
                                th:text="${anime?.name}">暂无</a>
                         </div>
                         <div class="cell_imform_kvs">
@@ -148,9 +148,9 @@
                             </div>
                         </div>
                         <div class="cell_imform_btns">
-                            <a class="nbutton2 cell_res_button" th:href="${'/movie/detail/'+anime?.id}">资源详情</a>
+                            <a class="nbutton2 cell_res_button" th:href="${'../detail/'+anime?.id}">资源详情</a>
                             <a class="nbutton2 cell_res_button"
-                               th:href="${'/movie/play/'+anime?.id+'?playid=1_1'}">在线播放</a>
+                               th:href="${'../play/'+anime?.id+'?playid=1_1'}">在线播放</a>
                         </div>
                     </div>
                 </div>
@@ -163,22 +163,22 @@
                     <ul>
                         <li>
                             <a class="pbutton pbutton_current asciifont"
-                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'/movie/search?query='+query+'&page=1'}">首页</a>
+                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'../search?query='+query+'&page=1'}">首页</a>
                         </li>
 
                         <li>
                             <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
 
                         <li>
-                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page=2'}">2</a>
+                            <a class="pbutton  asciifont" th:href="${'../search?query='+query+'&page=2'}">2</a>
                         </li>
 
                         <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page=2'}">下一页</a>
+                            <a class="pbutton  asciifont" th:href="${'../search?query='+query+'&page=2'}">下一页</a>
                         </li>
 
                         <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont" th:href="${'/movie/search?query='+query+'&page='+totalPage}">尾页</a>
+                            <a class="pbutton  asciifont" th:href="${'../search?query='+query+'&page='+totalPage}">尾页</a>
                         </li>
                     </ul>
                 </div>

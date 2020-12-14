@@ -3,6 +3,7 @@ package chenyunlong.zhangli.controller.api;
 import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.entities.AnimeType;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.service.AnimeInfoService;
@@ -34,7 +35,7 @@ public class AnimeApiController {
     }
 
     @Log("获取视频详情")
-    @GetMapping("detail/{aid}")
+    @GetMapping("detail/{aid:\\d}")
     public ApiResult<AnimeInfoVo> movie(@PathVariable(value = "aid", required = false) String animeId) {
         return ApiResult.success(animeInfoService.getMovieDetail(animeId));
     }
@@ -50,8 +51,9 @@ public class AnimeApiController {
     @GetMapping("listAnime")
     public ApiResult<List<AnimeInfo>> listAnime(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                                 @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                                @RequestParam(value = "animeName", required = false, defaultValue = "") String animeName) {
-        return ApiResult.success(animeInfoService.query(animeName, page, pageSize));
+                                                @RequestParam(value = "animeName", required = false, defaultValue = "") String animeName,
+                                                AnimeQuery animeInfo) {
+        return ApiResult.success(animeInfoService.query(page, pageSize, animeInfo));
     }
 
     @Log("删除视频信息")

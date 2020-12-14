@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.param.AnimeQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
@@ -49,12 +50,12 @@ public interface AnimeInfoMapper {
     /**
      * 根据动画名称查询动画信息
      *
-     * @param animeName 动画名称
-     * @param offset    偏差值
-     * @param pageSize  分页大小
+     * @param animeQuery 动画名称
+     * @param offset     偏差值
+     * @param pageSize   分页大小
      * @return 返回
      */
-    List<AnimeInfo> selectAnimationW(String animeName, Integer offset, Integer pageSize);
+    List<AnimeInfo> selectAnimationW(@Param("anime") AnimeQuery animeQuery, Integer offset, Integer pageSize);
 
     /**
      * 根据名称查询动漫信息

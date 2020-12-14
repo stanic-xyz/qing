@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)/movie/detail/20160083 -->
+<!-- saved from url=(0038)detail/20160083 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -24,55 +24,54 @@
 <div id="root">
     <div id="top">
         <div id="logo">
-            <a href="/movie/" title="AGE动漫">AGE动漫</a></div>
+            <a href="" title="AGE动漫">AGE动漫</a></div>
         <div class="loginout">
             <span class="svg_title svg_title_user"></span>
-            <a class="loginout_btn2" href="/movie/profile">stanic</a>
-
+            <a class="loginout_btn2" href="profile">stanic</a>
             <script>
                 __html_set_username();
             </script>
-
         </div>
     </div>
     <header id="nav">
         <a class="nav_button  nav_button_current " href="/">首页</a>
-        <a class="nav_button " href="/movie/catalog">目录</a>
-        <a class="nav_button " href="/movie/recommend">每日推荐</a>
-        <a class="nav_button " href="/movie/update">最近更新</a>
-        <a class="nav_button " href="/movie/rank">排行榜</a>
-        <form id="top_search_from" class="search_form" action="/movie/search" method="get"
+        <a class="nav_button " href="catalog">目录</a>
+        <a class="nav_button " href="recommend">每日推荐</a>
+        <a class="nav_button " href="update">最近更新</a>
+        <a class="nav_button " href="rank">排行榜</a>
+        <form id="top_search_from" class="search_form" action="search" method="get"
               onsubmit="return on_top_search_form();">
             <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
                    autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
             <input class="search_submit" type="submit" value="">
             <input type="hidden" name="page" value="1"></form>
 
-        <script type="text/javascript">function on_top_search_form() {
-            var value = document.getElementById("top_search_input").value;
-            if (value == null || value == "") {
-                alert("请输入搜索关键字");
-                return false;
+        <script type="text/javascript">
+            function on_top_search_form() {
+                var value = document.getElementById("top_search_input").value;
+                if (value == null || value == "") {
+                    alert("请输入搜索关键字");
+                    return false;
+                }
             }
-        }
 
-        var top_search_input = document.getElementById("top_search_input");
+            var top_search_input = document.getElementById("top_search_input");
 
-        function onfocus() {
-            top_search_input.classList.add("search_input_ex");
-        }
+            function onfocus() {
+                top_search_input.classList.add("search_input_ex");
+            }
 
-        function onfocusout() {
-            top_search_input.classList.remove("search_input_ex");
-        }
+            function onfocusout() {
+                top_search_input.classList.remove("search_input_ex");
+            }
 
-        if (top_search_input.addEventListener) {
-            top_search_input.addEventListener('focus', onfocus);
-            top_search_input.addEventListener('focusout', onfocusout);
-        } else {
-            top_search_input.onfocus = onfocus;
-            top_search_input.onfocusout = onfocusout;
-        }</script>
+            if (top_search_input.addEventListener) {
+                top_search_input.addEventListener('focus', onfocus);
+                top_search_input.addEventListener('focusout', onfocusout);
+            } else {
+                top_search_input.onfocus = onfocus;
+                top_search_input.onfocusout = onfocusout;
+            }</script>
     </header>
     <div id="container">
 
@@ -111,126 +110,126 @@
 
                 <ul id="new_anime_page">
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200024">达尔文游戏</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200024">[TV 01-11]</a>
+                        <a class="one_new_anime_name" href="detail/20200024">达尔文游戏</a>
+                        <a class="one_new_anime_ji" href="detail/20200024">[TV 01-11]</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200025">织田肉桂信长</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200025">[TV 01-12]</a>
+                        <a class="one_new_anime_name" href="detail/20200025">织田肉桂信长</a>
+                        <a class="one_new_anime_ji" href="detail/20200025">[TV 01-12]</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20190199">歌舞伎町夏洛克</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20190199">第25话(完结)</a>
+                        <a class="one_new_anime_name" href="detail/20190199">歌舞伎町夏洛克</a>
+                        <a class="one_new_anime_ji" href="detail/20190199">第25话(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200040">请在T台上微笑</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200040">[WEB 01-12]</a>
+                        <a class="one_new_anime_name" href="detail/20200040">请在T台上微笑</a>
+                        <a class="one_new_anime_ji" href="detail/20200040">[WEB 01-12]</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20190202">入间同学入魔了</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20190202">第23话(完结)</a>
+                        <a class="one_new_anime_name" href="detail/20190202">入间同学入魔了</a>
+                        <a class="one_new_anime_ji" href="detail/20190202">第23话(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20190039">暗黑破坏神在身边</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20190039">第12话(完结)</a>
+                        <a class="one_new_anime_name" href="detail/20190039">暗黑破坏神在身边</a>
+                        <a class="one_new_anime_ji" href="detail/20190039">第12话(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200023">22/7</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200023">第12话(完结)</a>
+                        <a class="one_new_anime_name" href="detail/20200023">22/7</a>
+                        <a class="one_new_anime_ji" href="detail/20200023">第12话(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20190331">偶像活动 on Parade</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20190331">特别篇06</a>
+                        <a class="one_new_anime_name" href="detail/20190331">偶像活动 on Parade</a>
+                        <a class="one_new_anime_ji" href="detail/20190331">特别篇06</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200035">异种族风俗娘评鉴指南</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200035">[TV 01-12]</a>
+                        <a class="one_new_anime_name" href="detail/20200035">异种族风俗娘评鉴指南</a>
+                        <a class="one_new_anime_ji" href="detail/20200035">[TV 01-12]</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200113">奥特英雄传 赛罗与捷德</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200113">第23集(完结)</a>
+                        <a class="one_new_anime_name" href="detail/20200113">奥特英雄传 赛罗与捷德</a>
+                        <a class="one_new_anime_ji" href="detail/20200113">第23集(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20190398">镇魂街 第二季</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20190398">第5话</a>
+                        <a class="one_new_anime_name" href="detail/20190398">镇魂街 第二季</a>
+                        <a class="one_new_anime_ji" href="detail/20190398">第5话</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200055">排球少年 第四季</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200055">第13话(上半季完结)</a>
+                        <a class="one_new_anime_name" href="detail/20200055">排球少年 第四季</a>
+                        <a class="one_new_anime_ji" href="detail/20200055">第13话(上半季完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200196">ARGONAVIS from BanG
+                        <a class="one_new_anime_name" href="detail/20200196">ARGONAVIS from BanG
                             Dream!</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200196">第13话(完结)</a>
+                        <a class="one_new_anime_ji" href="detail/20200196">第13话(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200109">LISTENERS</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200109">第12话(完结)</a>
+                        <a class="one_new_anime_name" href="detail/20200109">LISTENERS</a>
+                        <a class="one_new_anime_ji" href="detail/20200109">第12话(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200135">听我的电波吧</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200135">第12话(完结)</a>
+                        <a class="one_new_anime_name" href="detail/20200135">听我的电波吧</a>
+                        <a class="one_new_anime_ji" href="detail/20200135">第12话(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200057">阿尔蒂</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200057">第12话(完结)</a>
+                        <a class="one_new_anime_name" href="detail/20200057">阿尔蒂</a>
+                        <a class="one_new_anime_ji" href="detail/20200057">第12话(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20190069">科学的超电磁炮T</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20190069">00:05 第23话</a>
+                        <a class="one_new_anime_name" href="detail/20190069">科学的超电磁炮T</a>
+                        <a class="one_new_anime_ji" href="detail/20190069">00:05 第23话</a>
                         <div class="one_anime_new">new!</div>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200143">食戟之灵 第五季</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200143">00:30 第11话</a>
+                        <a class="one_new_anime_name" href="detail/20200143">食戟之灵 第五季</a>
+                        <a class="one_new_anime_ji" href="detail/20200143">00:30 第11话</a>
                         <div class="one_anime_new">new!</div>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200022">弩级战队H×EROS</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200022">00:30 第10话</a>
+                        <a class="one_new_anime_name" href="detail/20200022">弩级战队H×EROS</a>
+                        <a class="one_new_anime_ji" href="detail/20200022">00:30 第10话</a>
                         <div class="one_anime_new">new!</div>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200078">炎炎消防队 二之章</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200078">01:10 第11话</a>
+                        <a class="one_new_anime_name" href="detail/20200078">炎炎消防队 二之章</a>
+                        <a class="one_new_anime_ji" href="detail/20200078">01:10 第11话</a>
                         <div class="one_anime_new">new!</div>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200074">文豪与炼金术师 ～审判的齿轮～</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200074">第13话(完结)</a>
+                        <a class="one_new_anime_name" href="detail/20200074">文豪与炼金术师 ～审判的齿轮～</a>
+                        <a class="one_new_anime_ji" href="detail/20200074">第13话(完结)</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200137">租借女友</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200137">02:00 第10话</a>
+                        <a class="one_new_anime_name" href="detail/20200137">租借女友</a>
+                        <a class="one_new_anime_ji" href="detail/20200137">02:00 第10话</a>
                         <div class="one_anime_new">new!</div>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200197">彼得·格里尔的贤者时间</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200197">02:05 第10话</a>
+                        <a class="one_new_anime_name" href="detail/20200197">彼得·格里尔的贤者时间</a>
+                        <a class="one_new_anime_ji" href="detail/20200197">02:05 第10话</a>
                         <div class="one_anime_new">new!</div>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20180105">智龙迷城 (2018)</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20180105">第120话</a>
+                        <a class="one_new_anime_name" href="detail/20180105">智龙迷城 (2018)</a>
+                        <a class="one_new_anime_ji" href="detail/20180105">第120话</a>
                         <div class="one_anime_new">new!</div>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20180062">斗罗大陆</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20180062">第121话</a>
+                        <a class="one_new_anime_name" href="detail/20180062">斗罗大陆</a>
+                        <a class="one_new_anime_ji" href="detail/20180062">第121话</a>
                         <div class="one_anime_new">new!</div>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200256">泽塔奥特曼</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200256">第13话</a>
+                        <a class="one_new_anime_name" href="detail/20200256">泽塔奥特曼</a>
+                        <a class="one_new_anime_ji" href="detail/20200256">第13话</a>
                         <div class="one_anime_new">new!</div>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20000005">名侦探柯南</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20000005">19:30 第1037集</a>
+                        <a class="one_new_anime_name" href="detail/20000005">名侦探柯南</a>
+                        <a class="one_new_anime_ji" href="detail/20000005">19:30 第1037集</a>
                     </li>
                     <li class="one_new_anime">
-                        <a class="one_new_anime_name" href="/movie/detail/20200229">宝石幻想光芒重现</a>
-                        <a class="one_new_anime_ji" href="/movie/detail/20200229">21:00 第10话</a>
+                        <a class="one_new_anime_name" href="detail/20200229">宝石幻想光芒重现</a>
+                        <a class="one_new_anime_ji" href="detail/20200229">21:00 第10话</a>
                     </li>
                 </ul>
 
@@ -1102,9 +1101,9 @@
                             var nodename = node.children[0];
                             var nodename1 = node.children[1];
                             nodename.text = data.name;
-                            nodename.setAttribute('href', '/movie/detail/' + data.id);
+                            nodename.setAttribute('href', 'detail/' + data.id);
                             nodename1.text = data.namefornew;
-                            nodename1.setAttribute('href', '/movie/detail/' + data.id);
+                            nodename1.setAttribute('href', 'detail/' + data.id);
                             var nodenew = node.children[2];
                             if (data.isnew && !nodenew) {
                                 var nodenew = document.createElement('div');
@@ -1134,121 +1133,121 @@
                 <ul id="anime_update">
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20180105" class="one_new_anime_name"
+                        <a href="detail/20180105" class="one_new_anime_name"
                            style="width: 220px;">智龙迷城 (2018)</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-12</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200256" class="one_new_anime_name"
+                        <a href="detail/20200256" class="one_new_anime_name"
                            style="width: 220px;">泽塔奥特曼</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-12</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20180062" class="one_new_anime_name"
+                        <a href="detail/20180062" class="one_new_anime_name"
                            style="width: 220px;">斗罗大陆</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-12</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200137" class="one_new_anime_name"
+                        <a href="detail/20200137" class="one_new_anime_name"
                            style="width: 220px;">租借女友</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-12</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200197" class="one_new_anime_name"
+                        <a href="detail/20200197" class="one_new_anime_name"
                            style="width: 220px;">彼得·格里尔的贤者时间</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-12</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200078" class="one_new_anime_name"
+                        <a href="detail/20200078" class="one_new_anime_name"
                            style="width: 220px;">炎炎消防队 二之章</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-12</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200022" class="one_new_anime_name"
+                        <a href="detail/20200022" class="one_new_anime_name"
                            style="width: 220px;">弩级战队H×EROS</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-12</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200143" class="one_new_anime_name"
+                        <a href="detail/20200143" class="one_new_anime_name"
                            style="width: 220px;">食戟之灵 第五季</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-12</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20190069" class="one_new_anime_name"
+                        <a href="detail/20190069" class="one_new_anime_name"
                            style="width: 220px;">科学的超电磁炮T</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-12</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200128" class="one_new_anime_name"
+                        <a href="detail/20200128" class="one_new_anime_name"
                            style="width: 220px;">天晴烂漫！</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-11</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200268" class="one_new_anime_name"
+                        <a href="detail/20200268" class="one_new_anime_name"
                            style="width: 220px;">超普通都市柏传说R</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-11</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200159" class="one_new_anime_name"
+                        <a href="detail/20200159" class="one_new_anime_name"
                            style="width: 220px;">宇崎酱想要玩耍！</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-11</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200276" class="one_new_anime_name"
+                        <a href="detail/20200276" class="one_new_anime_name"
                            style="width: 220px;">女武神的餐桌 第二季</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-11</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20190129" class="one_new_anime_name"
+                        <a href="detail/20190129" class="one_new_anime_name"
                            style="width: 220px;">我的青春恋爱物语果然有问题 第三季</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-11</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200308" class="one_new_anime_name"
+                        <a href="detail/20200308" class="one_new_anime_name"
                            style="width: 220px;">樱花革命 华丽绽放的少女们</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-11</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200124" class="one_new_anime_name"
+                        <a href="detail/20200124" class="one_new_anime_name"
                            style="width: 220px;">非枪人生 第二季</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-11</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200104" class="one_new_anime_name"
+                        <a href="detail/20200104" class="one_new_anime_name"
                            style="width: 220px;">富豪刑事 Balance:UNLIMITED</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-11</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200221" class="one_new_anime_name"
+                        <a href="detail/20200221" class="one_new_anime_name"
                            style="width: 220px;">BanG Dream! 少女乐团派对！☆PICO～大份～</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-10</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20190427" class="one_new_anime_name"
+                        <a href="detail/20190427" class="one_new_anime_name"
                            style="width: 220px;">为谁而炼金剧场版</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-10</span>
                     </li>
 
                     <li class="one_new_anime">
-                        <a href="/movie/detail/20200242" class="one_new_anime_name"
+                        <a href="detail/20200242" class="one_new_anime_name"
                            style="width: 220px;">DECA-DENCE</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;">2020-09-10</span>
                     </li>
@@ -1258,117 +1257,117 @@
         </div>
         <div class="div_left baseblock">
             <div class="blocktitle">
-                <a href="/movie/recommend">每日推荐</a></div>
+                <a href="recommend">每日推荐</a></div>
             <div class="blockcontent">
                 <ul class="ul_li_a5">
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20180155">
+                        <a href="detail/20180155">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Hb20cf81870be4527ac1c82dbcedfea0aL.jpg" alt="音乐少女"
                                  title="[TV 01-12]">
                             <span class="anime_icon1_name1">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20180155">
+                        <a class="anime_icon1_name_a" href="detail/20180155">
                             <div class="anime_icon1_name">音乐少女</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20170186">
+                        <a href="detail/20170186">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/H3f0b74c52af14186be19063d7fcb92c7f.jpg"
                                  alt="Fate/stay night Heaven&#39;s Feel I.presage flower" title="[全集]">
                             <span class="anime_icon1_name1">[全集]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20170186">
+                        <a class="anime_icon1_name_a" href="detail/20170186">
                             <div class="anime_icon1_name">Fate/stay night Heaven's Feel I.presage flower</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20130095">
+                        <a href="detail/20130095">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Hf03f65ba9c524ffc9c6ca4dea339c204x.jpg"
                                  alt="To LOVE Darkness OVA" title="[OAD 01-10]">
                             <span class="anime_icon1_name1">[OAD 01-10]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20130095">
+                        <a class="anime_icon1_name_a" href="detail/20130095">
                             <div class="anime_icon1_name">To LOVE Darkness OVA</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20180114">
+                        <a href="detail/20180114">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Hfbe3a2888bd942ceaa0f7eff4a6285f8A.jpg"
                                  alt="奴隶区 我与23人的奴隶" title="[TV 01-12]">
                             <span class="anime_icon1_name1">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20180114">
+                        <a class="anime_icon1_name_a" href="detail/20180114">
                             <div class="anime_icon1_name">奴隶区 我与23人的奴隶</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20160107">
+                        <a href="detail/20160107">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/H32fc679dc4394c11a6376c64f3967a46G.jpg" alt="少年女仆"
                                  title="[TV 01-12+OVA]">
                             <span class="anime_icon1_name1">[TV 01-12+OVA]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20160107">
+                        <a class="anime_icon1_name_a" href="detail/20160107">
                             <div class="anime_icon1_name">少年女仆</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20170043">
+                        <a href="detail/20170043">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/H6ed3eea8a5914d2b8358cecf7ed00597Q.jpg" alt="捏造陷阱-NTR-"
                                  title="[TV 01-12]">
                             <span class="anime_icon1_name1">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20170043">
+                        <a class="anime_icon1_name_a" href="detail/20170043">
                             <div class="anime_icon1_name">捏造陷阱-NTR-</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20160062">
+                        <a href="detail/20160062">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Hb8653f32df354907b006f5b4c86910f2O.jpg" alt="房东妹子青春期"
                                  title="[TV 01-12]">
                             <span class="anime_icon1_name1">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20160062">
+                        <a class="anime_icon1_name_a" href="detail/20160062">
                             <div class="anime_icon1_name">房东妹子青春期</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20190176">
+                        <a href="detail/20190176">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Ha92119a954d9477bb1a8b9b3f846009d6.jpg" alt="炎炎消防队"
                                  title="[TV 01-24]">
                             <span class="anime_icon1_name1">[TV 01-24]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20190176">
+                        <a class="anime_icon1_name_a" href="detail/20190176">
                             <div class="anime_icon1_name">炎炎消防队</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20190392">
+                        <a href="detail/20190392">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/H25db294735e0451c897da402122134389.jpg"
                                  alt="若能与你共乘海浪之上"
                                  title="[全集]">
                             <span class="anime_icon1_name1">[全集]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20190392">
+                        <a class="anime_icon1_name_a" href="detail/20190392">
                             <div class="anime_icon1_name">若能与你共乘海浪之上</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20150080">
+                        <a href="detail/20150080">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Hdd9ff1df203445bbb2b38cacca75ab60L.jpg" alt="长门有希酱的消失"
                                  title="[TV 01-16+OAD]">
                             <span class="anime_icon1_name1">[TV 01-16+OAD]</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20150080">
+                        <a class="anime_icon1_name_a" href="detail/20150080">
                             <div class="anime_icon1_name">长门有希酱的消失</div>
                         </a>
                     </li>
@@ -1378,117 +1377,117 @@
             </div>
             <hr class="hrspace clear" style="width: 98%;">
             <div class="blocktitle">
-                <a href="/movie/update">最近更新</a></div>
+                <a href="update">最近更新</a></div>
             <div class="blockcontent">
                 <ul class="ul_li_a5">
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20180105">
+                        <a href="detail/20180105">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/H539e86060b644e9890f1e011d802c457u.jpg"
                                  alt="智龙迷城 (2018)" title="第120话">
                             <span class="anime_icon1_name1">第120话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20180105">
+                        <a class="anime_icon1_name_a" href="detail/20180105">
                             <div class="anime_icon1_name">智龙迷城 (2018)</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20200256">
+                        <a href="detail/20200256">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/H9664778a6a8b4a95a9fcc3f609b1afcaR.jpg" alt="泽塔奥特曼"
                                  title="第13话">
                             <span class="anime_icon1_name1">第13话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20200256">
+                        <a class="anime_icon1_name_a" href="detail/20200256">
                             <div class="anime_icon1_name">泽塔奥特曼</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20180062">
+                        <a href="detail/20180062">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Ha30ad1ddfc644998a1571d1720e44b0dQ.jpg" alt="斗罗大陆"
                                  title="第121话">
                             <span class="anime_icon1_name1">第121话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20180062">
+                        <a class="anime_icon1_name_a" href="detail/20180062">
                             <div class="anime_icon1_name">斗罗大陆</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20200137">
+                        <a href="detail/20200137">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Hdf98c5eb3eb34c4791eaa9f882c94213i.jpg" alt="租借女友"
                                  title="02:00 第10话">
                             <span class="anime_icon1_name1">02:00 第10话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20200137">
+                        <a class="anime_icon1_name_a" href="detail/20200137">
                             <div class="anime_icon1_name">租借女友</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20200197">
+                        <a href="detail/20200197">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/H1202418316374cc5b1467029b4079fedg.jpg"
                                  alt="彼得·格里尔的贤者时间" title="02:05 第10话">
                             <span class="anime_icon1_name1">02:05 第10话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20200197">
+                        <a class="anime_icon1_name_a" href="detail/20200197">
                             <div class="anime_icon1_name">彼得·格里尔的贤者时间</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20200078">
+                        <a href="detail/20200078">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Ha81a6729c3ed4c648cc673f94093a93fV.jpg" alt="炎炎消防队 二之章"
                                  title="01:10 第11话">
                             <span class="anime_icon1_name1">01:10 第11话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20200078">
+                        <a class="anime_icon1_name_a" href="detail/20200078">
                             <div class="anime_icon1_name">炎炎消防队 二之章</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20200022">
+                        <a href="detail/20200022">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Hdd21e9791d5c4b6a8efcc1f90e68618bR.jpg"
                                  alt="弩级战队H×EROS"
                                  title="00:30 第10话">
                             <span class="anime_icon1_name1">00:30 第10话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20200022">
+                        <a class="anime_icon1_name_a" href="detail/20200022">
                             <div class="anime_icon1_name">弩级战队H×EROS</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20200143">
+                        <a href="detail/20200143">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/H116a3b8b451441658351677a1998895bS.jpg" alt="食戟之灵 第五季"
                                  title="00:30 第11话">
                             <span class="anime_icon1_name1">00:30 第11话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20200143">
+                        <a class="anime_icon1_name_a" href="detail/20200143">
                             <div class="anime_icon1_name">食戟之灵 第五季</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20190069">
+                        <a href="detail/20190069">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/Ha20c417738dc4234b7de099967f43e645.jpg" alt="科学的超电磁炮T"
                                  title="00:05 第23话">
                             <span class="anime_icon1_name1">00:05 第23话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20190069">
+                        <a class="anime_icon1_name_a" href="detail/20190069">
                             <div class="anime_icon1_name">科学的超电磁炮T</div>
                         </a>
                     </li>
 
                     <li class="anime_icon1">
-                        <a href="/movie/detail/20200128">
+                        <a href="detail/20200128">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  src="https://sc02.alicdn.com/kf/H62828d28a6334f7fb8a1b718568007daS.jpg" alt="天晴烂漫！"
                                  title="21:30 第11话">
                             <span class="anime_icon1_name1">21:30 第11话</span></a>
-                        <a class="anime_icon1_name_a" href="/movie/detail/20200128">
+                        <a class="anime_icon1_name_a" href="detail/20200128">
                             <div class="anime_icon1_name">天晴烂漫！</div>
                         </a>
                     </li>

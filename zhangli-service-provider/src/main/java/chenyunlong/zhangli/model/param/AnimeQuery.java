@@ -1,19 +1,23 @@
-package chenyunlong.zhangli.model.request;
+package chenyunlong.zhangli.model.param;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @author Stan
  */
 @Data
 @EqualsAndHashCode
-public class AnimeModel {
-    @NotNull
-    private Long url;
+public class AnimeQuery implements Serializable {
+
+    /**
+     * 关键字
+     */
+    private String keyword;
     @NotBlank
     private String name;
     @NotBlank
@@ -21,7 +25,6 @@ public class AnimeModel {
     @NotBlank
     private String district;
     @NotBlank
-    private String cover;
     private String type;
     private String orignalName;
     private String otherName;
@@ -32,5 +35,4 @@ public class AnimeModel {
     private String plotType;
     private String tags;
     private String officialWebsite;
-    private String playHeat;
 }

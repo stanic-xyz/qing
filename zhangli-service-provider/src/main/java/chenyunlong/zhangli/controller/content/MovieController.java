@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.controller.content;
 
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.page.PlayInfoModel;
@@ -97,8 +98,8 @@ public class MovieController {
     public ModelAndView search(
             @RequestParam(value = "query", required = false, defaultValue = "") String query,
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-            @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize
-    ) {
+            @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
+            AnimeQuery animeQuery) {
 
         long totalCount = animeInfoService.getTotalCount(query);
         int totalPage = (int) Math.ceil(((double) totalCount) / ((double) pageSize));
@@ -108,7 +109,7 @@ public class MovieController {
         if (page > totalPage) {
             page = totalPage;
         }
-        List<AnimeInfo> animeInfos = animeInfoService.query(query, page, pageSize);
+        List<AnimeInfo> animeInfos = animeInfoService.query(page, pageSize, animeQuery);
         ModelAndView modelAndView = new ModelAndView("search");
         modelAndView.addObject("animeInfos", animeInfos);
         modelAndView.addObject("query", query);
