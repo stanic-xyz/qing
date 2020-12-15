@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)../detail/20160083 -->
+<!-- saved from url=(0038)../movie/detail/20160083 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       lang="zh"
@@ -24,10 +24,10 @@
 <div id="root">
     <div id="top">
         <div id="logo">
-            <a href="./" title="AGE动漫">AGE动漫</a></div>
+            <a href="../movie/" title="AGE动漫">AGE动漫</a></div>
         <div class="loginout">
             <span class="svg_title svg_title_user"></span>
-            <a class="loginout_btn2" href="../accounts/profile/">stanic</a>
+            <a class="loginout_btn2" href="../movie/accounts/profile/">stanic</a>
 
             <script>
                 __html_set_username();
@@ -36,12 +36,12 @@
         </div>
     </div>
     <header id="nav">
-        <a class="nav_button " href="/">首页</a>
+        <a class="nav_button " href="../movie/">首页</a>
         <a class="nav_button nav_button_current" href="#">目录</a>
-        <a class="nav_button " href="../recommend">每日推荐</a>
-        <a class="nav_button " href="../update">最近更新</a>
-        <a class="nav_button " href="../rank">排行榜</a>
-        <form id="top_search_from" class="search_form" action="../search" method="get"
+        <a class="nav_button " href="../movie/recommend">每日推荐</a>
+        <a class="nav_button " href="../movie/update">最近更新</a>
+        <a class="nav_button " href="../movie/rank">排行榜</a>
+        <form id="top_search_from" class="search_form" action="../movie/search" method="get"
               onsubmit="return on_top_search_form();">
             <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
                    autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
@@ -84,271 +84,271 @@
                     <script th:src="@{/js/s_catalog.js}"></script>
                     <li><span>地区：</span>
                         <ul class="search-tag">
-                            <li class="on"><a href="../catalog/all-all-all-all-all-time-1">全部</a>
+                            <li class="on"><a href="../movie/catalog/all-all-all-all-all-time-1">全部</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-all-all-time-1-%E6%97%A5%E6%9C%AC-all-all">日本</a>
+                                <a href="../movie/catalog/all-all-all-all-all-time-1-%E6%97%A5%E6%9C%AC-all-all">日本</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-all-all-time-1-%E4%B8%AD%E5%9B%BD-all-all">中国</a>
+                                <a href="../movie/catalog/all-all-all-all-all-time-1-%E4%B8%AD%E5%9B%BD-all-all">中国</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-all-all-time-1-%E6%AC%A7%E7%BE%8E-all-all">欧美</a>
+                                <a href="../movie/catalog/all-all-all-all-all-time-1-%E6%AC%A7%E7%BE%8E-all-all">欧美</a>
                             </li>
                         </ul>
                     </li>
                     <li><span>版本：</span>
                         <ul class="search-tag">
-                            <li class="on"><a href="../catalog/all-all-all-all-all-time-1">全部</a>
+                            <li class="on"><a href="../movie/catalog/all-all-all-all-all-time-1">全部</a>
                             </li>
-                            <li><a href="../catalog/TV-all-all-all-all-time-1">TV</a></li>
+                            <li><a href="../movie/catalog/TV-all-all-all-all-time-1">TV</a></li>
                             <li>
-                                <a href="../catalog/%E5%89%A7%E5%9C%BA%E7%89%88-all-all-all-all-time-1">剧场版</a>
+                                <a href="../movie/catalog/%E5%89%A7%E5%9C%BA%E7%89%88-all-all-all-all-time-1">剧场版</a>
                             </li>
-                            <li><a href="../catalog/OVA-all-all-all-all-time-1">OVA</a></li>
+                            <li><a href="../movie/catalog/OVA-all-all-all-all-time-1">OVA</a></li>
                         </ul>
                     </li>
                     <li><span>首字母：</span>
                         <ul class="search-tag">
-                            <li class="on"><a href="../catalog/all-all-all-all-all-time-1">全部</a>
+                            <li class="on"><a href="../movie/catalog/all-all-all-all-all-time-1">全部</a>
                             </li>
-                            <li><a href="../catalog/all-all-A-all-all-time-1">A</a></li>
-                            <li><a href="../catalog/all-all-B-all-all-time-1">B</a></li>
-                            <li><a href="../catalog/all-all-C-all-all-time-1">C</a></li>
-                            <li><a href="../catalog/all-all-D-all-all-time-1">D</a></li>
-                            <li><a href="../catalog/all-all-E-all-all-time-1">E</a></li>
-                            <li><a href="../catalog/all-all-F-all-all-time-1">F</a></li>
-                            <li><a href="../catalog/all-all-G-all-all-time-1">G</a></li>
-                            <li><a href="../catalog/all-all-H-all-all-time-1">H</a></li>
-                            <li><a href="../catalog/all-all-I-all-all-time-1">I</a></li>
-                            <li><a href="../catalog/all-all-J-all-all-time-1">J</a></li>
-                            <li><a href="../catalog/all-all-K-all-all-time-1">K</a></li>
-                            <li><a href="../catalog/all-all-L-all-all-time-1">L</a></li>
-                            <li><a href="../catalog/all-all-M-all-all-time-1">M</a></li>
-                            <li><a href="../catalog/all-all-N-all-all-time-1">N</a></li>
-                            <li><a href="../catalog/all-all-O-all-all-time-1">O</a></li>
-                            <li><a href="../catalog/all-all-P-all-all-time-1">P</a></li>
-                            <li><a href="../catalog/all-all-Q-all-all-time-1">Q</a></li>
-                            <li><a href="../catalog/all-all-R-all-all-time-1">R</a></li>
-                            <li><a href="../catalog/all-all-S-all-all-time-1">S</a></li>
-                            <li><a href="../catalog/all-all-T-all-all-time-1">T</a></li>
-                            <li><a href="../catalog/all-all-U-all-all-time-1">U</a></li>
-                            <li><a href="../catalog/all-all-V-all-all-time-1">V</a></li>
-                            <li><a href="../catalog/all-all-W-all-all-time-1">W</a></li>
-                            <li><a href="../catalog/all-all-X-all-all-time-1">X</a></li>
-                            <li><a href="../catalog/all-all-Y-all-all-time-1">Y</a></li>
-                            <li><a href="../catalog/all-all-Z-all-all-time-1">Z</a></li>
+                            <li><a href="../movie/catalog/all-all-A-all-all-time-1">A</a></li>
+                            <li><a href="../movie/catalog/all-all-B-all-all-time-1">B</a></li>
+                            <li><a href="../movie/catalog/all-all-C-all-all-time-1">C</a></li>
+                            <li><a href="../movie/catalog/all-all-D-all-all-time-1">D</a></li>
+                            <li><a href="../movie/catalog/all-all-E-all-all-time-1">E</a></li>
+                            <li><a href="../movie/catalog/all-all-F-all-all-time-1">F</a></li>
+                            <li><a href="../movie/catalog/all-all-G-all-all-time-1">G</a></li>
+                            <li><a href="../movie/catalog/all-all-H-all-all-time-1">H</a></li>
+                            <li><a href="../movie/catalog/all-all-I-all-all-time-1">I</a></li>
+                            <li><a href="../movie/catalog/all-all-J-all-all-time-1">J</a></li>
+                            <li><a href="../movie/catalog/all-all-K-all-all-time-1">K</a></li>
+                            <li><a href="../movie/catalog/all-all-L-all-all-time-1">L</a></li>
+                            <li><a href="../movie/catalog/all-all-M-all-all-time-1">M</a></li>
+                            <li><a href="../movie/catalog/all-all-N-all-all-time-1">N</a></li>
+                            <li><a href="../movie/catalog/all-all-O-all-all-time-1">O</a></li>
+                            <li><a href="../movie/catalog/all-all-P-all-all-time-1">P</a></li>
+                            <li><a href="../movie/catalog/all-all-Q-all-all-time-1">Q</a></li>
+                            <li><a href="../movie/catalog/all-all-R-all-all-time-1">R</a></li>
+                            <li><a href="../movie/catalog/all-all-S-all-all-time-1">S</a></li>
+                            <li><a href="../movie/catalog/all-all-T-all-all-time-1">T</a></li>
+                            <li><a href="../movie/catalog/all-all-U-all-all-time-1">U</a></li>
+                            <li><a href="../movie/catalog/all-all-V-all-all-time-1">V</a></li>
+                            <li><a href="../movie/catalog/all-all-W-all-all-time-1">W</a></li>
+                            <li><a href="../movie/catalog/all-all-X-all-all-time-1">X</a></li>
+                            <li><a href="../movie/catalog/all-all-Y-all-all-time-1">Y</a></li>
+                            <li><a href="../movie/catalog/all-all-Z-all-all-time-1">Z</a></li>
                         </ul>
                     </li>
                     <li><span>年份：</span>
                         <ul class="search-tag">
-                            <li class="on"><a href="../catalog/all-all-all-all-all-time-1">全部</a>
+                            <li class="on"><a href="../movie/catalog/all-all-all-all-all-time-1">全部</a>
                             </li>
-                            <li><a href="../catalog/all-2020-all-all-all-time-1">2020</a></li>
-                            <li><a href="../catalog/all-2019-all-all-all-time-1">2019</a></li>
-                            <li><a href="../catalog/all-2018-all-all-all-time-1">2018</a></li>
-                            <li><a href="../catalog/all-2017-all-all-all-time-1">2017</a></li>
-                            <li><a href="../catalog/all-2016-all-all-all-time-1">2016</a></li>
-                            <li><a href="../catalog/all-2015-all-all-all-time-1">2015</a></li>
-                            <li><a href="../catalog/all-2014-all-all-all-time-1">2014</a></li>
-                            <li><a href="../catalog/all-2013-all-all-all-time-1">2013</a></li>
-                            <li><a href="../catalog/all-2012-all-all-all-time-1">2012</a></li>
-                            <li><a href="../catalog/all-2011-all-all-all-time-1">2011</a></li>
-                            <li><a href="../catalog/all-2010-all-all-all-time-1">2010</a></li>
-                            <li><a href="../catalog/all-2009-all-all-all-time-1">2009</a></li>
-                            <li><a href="../catalog/all-2008-all-all-all-time-1">2008</a></li>
-                            <li><a href="../catalog/all-2007-all-all-all-time-1">2007</a></li>
-                            <li><a href="../catalog/all-2006-all-all-all-time-1">2006</a></li>
-                            <li><a href="../catalog/all-2005-all-all-all-time-1">2005</a></li>
-                            <li><a href="../catalog/all-2004-all-all-all-time-1">2004</a></li>
-                            <li><a href="../catalog/all-2003-all-all-all-time-1">2003</a></li>
-                            <li><a href="../catalog/all-2002-all-all-all-time-1">2002</a></li>
-                            <li><a href="../catalog/all-2001-all-all-all-time-1">2001</a></li>
-                            <li><a href="../catalog/all-2000-all-all-all-time-1">2000以前</a></li>
+                            <li><a href="../movie/catalog/all-2020-all-all-all-time-1">2020</a></li>
+                            <li><a href="../movie/catalog/all-2019-all-all-all-time-1">2019</a></li>
+                            <li><a href="../movie/catalog/all-2018-all-all-all-time-1">2018</a></li>
+                            <li><a href="../movie/catalog/all-2017-all-all-all-time-1">2017</a></li>
+                            <li><a href="../movie/catalog/all-2016-all-all-all-time-1">2016</a></li>
+                            <li><a href="../movie/catalog/all-2015-all-all-all-time-1">2015</a></li>
+                            <li><a href="../movie/catalog/all-2014-all-all-all-time-1">2014</a></li>
+                            <li><a href="../movie/catalog/all-2013-all-all-all-time-1">2013</a></li>
+                            <li><a href="../movie/catalog/all-2012-all-all-all-time-1">2012</a></li>
+                            <li><a href="../movie/catalog/all-2011-all-all-all-time-1">2011</a></li>
+                            <li><a href="../movie/catalog/all-2010-all-all-all-time-1">2010</a></li>
+                            <li><a href="../movie/catalog/all-2009-all-all-all-time-1">2009</a></li>
+                            <li><a href="../movie/catalog/all-2008-all-all-all-time-1">2008</a></li>
+                            <li><a href="../movie/catalog/all-2007-all-all-all-time-1">2007</a></li>
+                            <li><a href="../movie/catalog/all-2006-all-all-all-time-1">2006</a></li>
+                            <li><a href="../movie/catalog/all-2005-all-all-all-time-1">2005</a></li>
+                            <li><a href="../movie/catalog/all-2004-all-all-all-time-1">2004</a></li>
+                            <li><a href="../movie/catalog/all-2003-all-all-all-time-1">2003</a></li>
+                            <li><a href="../movie/catalog/all-2002-all-all-all-time-1">2002</a></li>
+                            <li><a href="../movie/catalog/all-2001-all-all-all-time-1">2001</a></li>
+                            <li><a href="../movie/catalog/all-2000-all-all-all-time-1">2000以前</a></li>
                         </ul>
                     </li>
                     <li><span>季度：</span>
                         <ul class="search-tag">
-                            <li class="on"><a href="../catalog/all-all-all-all-all-time-1">全部</a>
+                            <li class="on"><a href="../movie/catalog/all-all-all-all-all-time-1">全部</a>
                             </li>
-                            <li><a href="../catalog/all-all-all-all-all-time-1-all-1-all">1月</a>
+                            <li><a href="../movie/catalog/all-all-all-all-all-time-1-all-1-all">1月</a>
                             </li>
-                            <li><a href="../catalog/all-all-all-all-all-time-1-all-4-all">4月</a>
+                            <li><a href="../movie/catalog/all-all-all-all-all-time-1-all-4-all">4月</a>
                             </li>
-                            <li><a href="../catalog/all-all-all-all-all-time-1-all-7-all">7月</a>
+                            <li><a href="../movie/catalog/all-all-all-all-all-time-1-all-7-all">7月</a>
                             </li>
-                            <li><a href="../catalog/all-all-all-all-all-time-1-all-10-all">10月</a>
+                            <li><a href="../movie/catalog/all-all-all-all-all-time-1-all-10-all">10月</a>
                             </li>
                         </ul>
                     </li>
                     <li><span>状态：</span>
                         <ul class="search-tag">
-                            <li class="on"><a href="../catalog/all-all-all-all-all-time-1">全部</a>
+                            <li class="on"><a href="../movie/catalog/all-all-all-all-all-time-1">全部</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-all-all-time-1-all-all-%E8%BF%9E%E8%BD%BD">连载</a>
+                                <a href="../movie/catalog/all-all-all-all-all-time-1-all-all-%E8%BF%9E%E8%BD%BD">连载</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-all-all-time-1-all-all-%E5%AE%8C%E7%BB%93">完结</a>
+                                <a href="../movie/catalog/all-all-all-all-all-time-1-all-all-%E5%AE%8C%E7%BB%93">完结</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-all-all-time-1-all-all-%E6%9C%AA%E6%92%AD%E6%94%BE">未播放</a>
+                                <a href="../movie/catalog/all-all-all-all-all-time-1-all-all-%E6%9C%AA%E6%92%AD%E6%94%BE">未播放</a>
                             </li>
                         </ul>
                     </li>
                     <li><span>类型：</span>
                         <ul class="search-tag">
-                            <li class="on"><a href="../catalog/all-all-all-all-all-time-1">全部</a>
+                            <li class="on"><a href="../movie/catalog/all-all-all-all-all-time-1">全部</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%90%9E%E7%AC%91-all-time-1">搞笑</a>
+                                <a href="../movie/catalog/all-all-all-%E6%90%9E%E7%AC%91-all-time-1">搞笑</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E8%BF%90%E5%8A%A8-all-time-1">运动</a>
+                                <a href="../movie/catalog/all-all-all-%E8%BF%90%E5%8A%A8-all-time-1">运动</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E5%8A%B1%E5%BF%97-all-time-1">励志</a>
+                                <a href="../movie/catalog/all-all-all-%E5%8A%B1%E5%BF%97-all-time-1">励志</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%83%AD%E8%A1%80-all-time-1">热血</a>
+                                <a href="../movie/catalog/all-all-all-%E7%83%AD%E8%A1%80-all-time-1">热血</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%88%98%E6%96%97-all-time-1">战斗</a>
+                                <a href="../movie/catalog/all-all-all-%E6%88%98%E6%96%97-all-time-1">战斗</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%AB%9E%E6%8A%80-all-time-1">竞技</a>
+                                <a href="../movie/catalog/all-all-all-%E7%AB%9E%E6%8A%80-all-time-1">竞技</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%A0%A1%E5%9B%AD-all-time-1">校园</a>
+                                <a href="../movie/catalog/all-all-all-%E6%A0%A1%E5%9B%AD-all-time-1">校园</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E9%9D%92%E6%98%A5-all-time-1">青春</a>
+                                <a href="../movie/catalog/all-all-all-%E9%9D%92%E6%98%A5-all-time-1">青春</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%88%B1%E6%83%85-all-time-1">爱情</a>
+                                <a href="../movie/catalog/all-all-all-%E7%88%B1%E6%83%85-all-time-1">爱情</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E5%86%92%E9%99%A9-all-time-1">冒险</a>
+                                <a href="../movie/catalog/all-all-all-%E5%86%92%E9%99%A9-all-time-1">冒险</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E5%90%8E%E5%AE%AB-all-time-1">后宫</a>
+                                <a href="../movie/catalog/all-all-all-%E5%90%8E%E5%AE%AB-all-time-1">后宫</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%99%BE%E5%90%88-all-time-1">百合</a>
+                                <a href="../movie/catalog/all-all-all-%E7%99%BE%E5%90%88-all-time-1">百合</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%B2%BB%E6%84%88-all-time-1">治愈</a>
+                                <a href="../movie/catalog/all-all-all-%E6%B2%BB%E6%84%88-all-time-1">治愈</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E8%90%9D%E8%8E%89-all-time-1">萝莉</a>
+                                <a href="../movie/catalog/all-all-all-%E8%90%9D%E8%8E%89-all-time-1">萝莉</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E9%AD%94%E6%B3%95-all-time-1">魔法</a>
+                                <a href="../movie/catalog/all-all-all-%E9%AD%94%E6%B3%95-all-time-1">魔法</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%82%AC%E7%96%91-all-time-1">悬疑</a>
+                                <a href="../movie/catalog/all-all-all-%E6%82%AC%E7%96%91-all-time-1">悬疑</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%8E%A8%E7%90%86-all-time-1">推理</a>
+                                <a href="../movie/catalog/all-all-all-%E6%8E%A8%E7%90%86-all-time-1">推理</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E5%A5%87%E5%B9%BB-all-time-1">奇幻</a>
+                                <a href="../movie/catalog/all-all-all-%E5%A5%87%E5%B9%BB-all-time-1">奇幻</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%A7%91%E5%B9%BB-all-time-1">科幻</a>
+                                <a href="../movie/catalog/all-all-all-%E7%A7%91%E5%B9%BB-all-time-1">科幻</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%B8%B8%E6%88%8F-all-time-1">游戏</a>
+                                <a href="../movie/catalog/all-all-all-%E6%B8%B8%E6%88%8F-all-time-1">游戏</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%A5%9E%E9%AD%94-all-time-1">神魔</a>
+                                <a href="../movie/catalog/all-all-all-%E7%A5%9E%E9%AD%94-all-time-1">神魔</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%81%90%E6%80%96-all-time-1">恐怖</a>
+                                <a href="../movie/catalog/all-all-all-%E6%81%90%E6%80%96-all-time-1">恐怖</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E8%A1%80%E8%85%A5-all-time-1">血腥</a>
+                                <a href="../movie/catalog/all-all-all-%E8%A1%80%E8%85%A5-all-time-1">血腥</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%9C%BA%E6%88%98-all-time-1">机战</a>
+                                <a href="../movie/catalog/all-all-all-%E6%9C%BA%E6%88%98-all-time-1">机战</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%88%98%E4%BA%89-all-time-1">战争</a>
+                                <a href="../movie/catalog/all-all-all-%E6%88%98%E4%BA%89-all-time-1">战争</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%8A%AF%E7%BD%AA-all-time-1">犯罪</a>
+                                <a href="../movie/catalog/all-all-all-%E7%8A%AF%E7%BD%AA-all-time-1">犯罪</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E5%8E%86%E5%8F%B2-all-time-1">历史</a>
+                                <a href="../movie/catalog/all-all-all-%E5%8E%86%E5%8F%B2-all-time-1">历史</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%A4%BE%E4%BC%9A-all-time-1">社会</a>
+                                <a href="../movie/catalog/all-all-all-%E7%A4%BE%E4%BC%9A-all-time-1">社会</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E8%81%8C%E5%9C%BA-all-time-1">职场</a>
+                                <a href="../movie/catalog/all-all-all-%E8%81%8C%E5%9C%BA-all-time-1">职场</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E5%89%A7%E6%83%85-all-time-1">剧情</a>
+                                <a href="../movie/catalog/all-all-all-%E5%89%A7%E6%83%85-all-time-1">剧情</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E4%BC%AA%E5%A8%98-all-time-1">伪娘</a>
+                                <a href="../movie/catalog/all-all-all-%E4%BC%AA%E5%A8%98-all-time-1">伪娘</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E8%80%BD%E7%BE%8E-all-time-1">耽美</a>
+                                <a href="../movie/catalog/all-all-all-%E8%80%BD%E7%BE%8E-all-time-1">耽美</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%AB%A5%E5%B9%B4-all-time-1">童年</a>
+                                <a href="../movie/catalog/all-all-all-%E7%AB%A5%E5%B9%B4-all-time-1">童年</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%95%99%E8%82%B2-all-time-1">教育</a>
+                                <a href="../movie/catalog/all-all-all-%E6%95%99%E8%82%B2-all-time-1">教育</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E4%BA%B2%E5%AD%90-all-time-1">亲子</a>
+                                <a href="../movie/catalog/all-all-all-%E4%BA%B2%E5%AD%90-all-time-1">亲子</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%9C%9F%E4%BA%BA-all-time-1">真人</a>
+                                <a href="../movie/catalog/all-all-all-%E7%9C%9F%E4%BA%BA-all-time-1">真人</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%AD%8C%E8%88%9E-all-time-1">歌舞</a>
+                                <a href="../movie/catalog/all-all-all-%E6%AD%8C%E8%88%9E-all-time-1">歌舞</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E8%82%89%E7%95%AA-all-time-1">肉番</a>
+                                <a href="../movie/catalog/all-all-all-%E8%82%89%E7%95%AA-all-time-1">肉番</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E7%BE%8E%E5%B0%91%E5%A5%B3-all-time-1">美少女</a>
+                                <a href="../movie/catalog/all-all-all-%E7%BE%8E%E5%B0%91%E5%A5%B3-all-time-1">美少女</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E8%BD%BB%E5%B0%8F%E8%AF%B4-all-time-1">轻小说</a>
+                                <a href="../movie/catalog/all-all-all-%E8%BD%BB%E5%B0%8F%E8%AF%B4-all-time-1">轻小说</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E5%90%B8%E8%A1%80%E9%AC%BC-all-time-1">吸血鬼</a>
+                                <a href="../movie/catalog/all-all-all-%E5%90%B8%E8%A1%80%E9%AC%BC-all-time-1">吸血鬼</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E4%B9%99%E5%A5%B3%E5%90%91-all-time-1">乙女向</a>
+                                <a href="../movie/catalog/all-all-all-%E4%B9%99%E5%A5%B3%E5%90%91-all-time-1">乙女向</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%B3%A1%E9%9D%A2%E7%95%AA-all-time-1">泡面番</a>
+                                <a href="../movie/catalog/all-all-all-%E6%B3%A1%E9%9D%A2%E7%95%AA-all-time-1">泡面番</a>
                             </li>
                             <li>
-                                <a href="../catalog/all-all-all-%E6%AC%A2%E4%B9%90%E5%90%91-all-time-1">欢乐向</a>
+                                <a href="../movie/catalog/all-all-all-%E6%AC%A2%E4%B9%90%E5%90%91-all-time-1">欢乐向</a>
                             </li>
                         </ul>
                     </li>
                     <li><span>资源：</span>
                         <ul class="search-tag">
-                            <li class="on"><a href="../catalog/all-all-all-all-all-time-1">全部</a>
+                            <li class="on"><a href="../movie/catalog/all-all-all-all-all-time-1">全部</a>
                             </li>
-                            <li><a href="../catalog/all-all-all-all-BDRIP-time-1">BDRIP</a></li>
-                            <li><a href="../catalog/all-all-all-all-AGE-RIP-time-1">AGE-RIP</a></li>
+                            <li><a href="../movie/catalog/all-all-all-all-BDRIP-time-1">BDRIP</a></li>
+                            <li><a href="../movie/catalog/all-all-all-all-AGE-RIP-time-1">AGE-RIP</a></li>
                         </ul>
                     </li>
                     <li><span>排序：</span>
                         <ul class="search-tag">
-                            <li class="on"><a href="../catalog/all-all-all-all-all-time-1">更新时间</a>
+                            <li class="on"><a href="../movie/catalog/all-all-all-all-all-time-1">更新时间</a>
                             </li>
-                            <li><a href="../catalog/all-all-all-all-all-name-1">名称</a></li>
+                            <li><a href="../movie/catalog/all-all-all-all-all-name-1">名称</a></li>
                             <li>
-                                <a href="../catalog/all-all-all-all-all-%E7%82%B9%E5%87%BB%E9%87%8F-1">点击量</a>
+                                <a href="../movie/catalog/all-all-all-all-all-%E7%82%B9%E5%87%BB%E9%87%8F-1">点击量</a>
                             </li>
                         </ul>
                     </li>
@@ -378,25 +378,25 @@
                     <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-2">2</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-2">2</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-3">3</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-3">3</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-4">4</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-4">4</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-5">5</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-5">5</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-6">6</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-6">6</a></li>
 
-                    <li><a class="pbutton  asciifont" href="../catalog/all-all-all-all-all-time-2">下一页</a>
+                    <li><a class="pbutton  asciifont" href="../movie/catalog/all-all-all-all-all-time-2">下一页</a>
                     </li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-106">尾页</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-106">尾页</a></li>
 
                 </div>
             </div>
@@ -406,13 +406,13 @@
 
                 <div class="cell blockdiff2" th:each="anime,iterStat : ${animeList}"
                      th:class="${iterStat.index%2==0?'cell blockdiff':'cell blockdiff2'}">
-                    <a th:href="${'../detail/'+anime.getId()}" class="cell_poster">
+                    <a th:href="${'../movie/detail/'+anime.getId()}" class="cell_poster">
                         <img referrerpolicy="no-referrer" width="150px" height="208px"
                              th:src="${anime.getCoverUrl()}" th:alt="${anime.getName()}">
                         <span class="newname">第120话</span></a>
                     <div class="cell_imform">
                         <div>
-                            <a th:href="${'../detail/'+anime.getId()}" class="cell_imform_name"
+                            <a th:href="${'../movie/detail/'+anime.getId()}" class="cell_imform_name"
                                th:text="${anime.getName()}">--</a>
                         </div>
                         <div class="cell_imform_kvs">
@@ -448,8 +448,8 @@
                             </div>
                         </div>
                         <div class="cell_imform_btns">
-                            <a class="nbutton2 cell_res_button" href="../detail/20180105">资源详情</a>
-                            <a class="nbutton2 cell_res_button" href="../play/20180105">在线播放</a>
+                            <a class="nbutton2 cell_res_button" href="../movie/detail/20180105">资源详情</a>
+                            <a class="nbutton2 cell_res_button" href="../movie/play/20180105">在线播放</a>
                         </div>
                     </div>
                 </div>
@@ -465,25 +465,25 @@
                     <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-2">2</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-2">2</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-3">3</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-3">3</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-4">4</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-4">4</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-5">5</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-5">5</a></li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-6">6</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-6">6</a></li>
 
-                    <li><a class="pbutton  asciifont" href="../catalog/all-all-all-all-all-time-2">下一页</a>
+                    <li><a class="pbutton  asciifont" href="../movie/catalog/all-all-all-all-all-time-2">下一页</a>
                     </li>
 
                     <li><a class="pbutton  asciifont"
-                           href="../catalog/all-all-all-all-all-time-106">尾页</a></li>
+                           href="../movie/catalog/all-all-all-all-all-time-106">尾页</a></li>
 
                 </div>
             </div>

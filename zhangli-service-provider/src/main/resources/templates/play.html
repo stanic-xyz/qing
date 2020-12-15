@@ -30,10 +30,10 @@
 <div id="root">
     <div id="top">
         <div id="logo">
-            <a href="../" title="AGE动漫">AGE动漫</a></div>
+            <a href="../../movie/" title="AGE动漫">AGE动漫</a></div>
         <div class="loginout">
             <span class="svg_title svg_title_user"></span>
-            <a class="loginout_btn2" href="../profile">登陆</a>
+            <a class="loginout_btn2" href="../../movie/profile">登陆</a>
             <script>
                 __html_set_username();
             </script>
@@ -41,11 +41,11 @@
     </div>
     <header id="nav">
         <a class="nav_button " href="/">首页</a>
-        <a class="nav_button " href="../catalog">目录</a>
-        <a class="nav_button " href="../recommend">每日推荐</a>
-        <a class="nav_button " href="../update">最近更新</a>
-        <a class="nav_button " href="../rank">排行榜</a>
-        <form id="top_search_from" class="search_form" action="../search" method="get"
+        <a class="nav_button " href="../../movie/catalog">目录</a>
+        <a class="nav_button " href="../../movie/recommend">每日推荐</a>
+        <a class="nav_button " href="../../movie/update">最近更新</a>
+        <a class="nav_button " href="../../movie/rank">排行榜</a>
+        <form id="top_search_from" class="search_form" action="../../movie/search" method="get"
               onsubmit="return on_top_search_form();">
             <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
                    autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
@@ -89,7 +89,7 @@
         <div class="baseblock">
             <div class="blocktitle">
                 <h4 id="detailname">
-                    <a th:href="${'../detail/'+playInfoModel?.animeInfo?.id}"
+                    <a th:href="${'../../movie/detail/'+playInfoModel?.animeInfo?.id}"
                        th:text="${playInfoModel?.animeInfo?.name}">
                     </a>
                 </h4>
@@ -100,7 +100,7 @@
                     <tbody>
                     <tr>
                         <td>
-                            <a th:href="${'../detail/'+playInfoModel?.animeInfo?.id}">
+                            <a th:href="${'../../movie/detail/'+playInfoModel?.animeInfo?.id}">
                                 <img referrerpolicy="no-referrer" id="play_poster_img" width="187" height="260"
                                      th:src="${playInfoModel?.animeInfo?.coverUrl}"
                                      th:alt="${playInfoModel?.animeInfo?.name}" alt="番剧剧照">
@@ -188,7 +188,7 @@
                                 <div class="movurl" style="display: block;">
                                     <ul>
                                         <li>
-                                            <a href="../play/20190209?playid=1_1" target="_self"
+                                            <a href="../../movie/play/20190209?playid=1_1" target="_self"
                                                title="PV 720P"
                                                style="border: 1px solid rgb(238, 0, 0); color: rgb(238, 0, 0);">PV</a>
                                         </li>
@@ -198,67 +198,67 @@
                                 <div class="movurl" style="display: none;">
                                     <ul>
                                         <li>
-                                            <a href="../play/20190209?playid=2_1" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_1" target="_self"
                                                title="第01话 [1080p][CHS]">第01话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_2" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_2" target="_self"
                                                title="第02话 [1080p][CHS]">第02话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_3" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_3" target="_self"
                                                title="第03话 [1080p][CHS]">第03话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_4" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_4" target="_self"
                                                title="第04话 [1080p][CHS]">第04话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_5" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_5" target="_self"
                                                title="第05话 [1080p][CHS]">第05话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_6" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_6" target="_self"
                                                title="第06话 [1080p][CHS]">第06话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_7" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_7" target="_self"
                                                title="第07话 [1080p][CHS]">第07话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_8" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_8" target="_self"
                                                title="第08话 [1080p][CHS]">第08话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_9" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_9" target="_self"
                                                title="第09话 [1080p][CHS]">第09话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_10" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_10" target="_self"
                                                title="第10话 [1080p][CHS]">第10话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_11" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_11" target="_self"
                                                title="第11话 [1080p][CHS]">第11话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_12" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_12" target="_self"
                                                title="第12话 [1080p][CHS]">第12话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=2_13" target="_self"
+                                            <a href="../../movie/play/20190209?playid=2_13" target="_self"
                                                title="第13话(OVA) [GB][1080P]">第13话(OVA)</a>
                                         </li>
                                     </ul>
@@ -267,67 +267,67 @@
                                 <div class="movurl" style="display:none">
                                     <ul>
                                         <li>
-                                            <a href="../play/20190209?playid=3_1" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_1" target="_self"
                                                title="第01话 [1080p][CH">第01话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_2" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_2" target="_self"
                                                title="第02话 [1080p][CHS]">第02话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_3" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_3" target="_self"
                                                title="第03话 [1080p][CHS]">第03话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_4" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_4" target="_self"
                                                title="第04话 [1080p][CHS]">第04话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_5" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_5" target="_self"
                                                title="第05话 [1080p][CHS]">第05话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_6" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_6" target="_self"
                                                title="第06话 [1080p][CHS]">第06话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_7" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_7" target="_self"
                                                title="第07话 [1080p][CHS]">第07话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_8" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_8" target="_self"
                                                title="第08话 [1080p][CHS]">第08话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_9" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_9" target="_self"
                                                title="第09话 [1080p][CHS]">第09话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_10" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_10" target="_self"
                                                title="第10话 [1080p][CHS]">第10话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_11" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_11" target="_self"
                                                title="第11话 [1080p][CHS]">第11话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_12" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_12" target="_self"
                                                title="第12话 [1080p][CHS]">第12话</a>
                                         </li>
 
                                         <li>
-                                            <a href="../play/20190209?playid=3_13" target="_self"
+                                            <a href="../../movie/play/20190209?playid=3_13" target="_self"
                                                title="第13话(OVA) [GB][1080P]">第13话(OVA)</a>
                                         </li>
                                     </ul>
@@ -344,11 +344,10 @@
                                 __age_play_ep_scroll();
                             </script>
                         </div>
-
                     </div>
 
                     <div id="ageframeblock" class="content">
-                        <div id="ageframediv" style="width: 980px; height: 540px;">
+                        <div id="ageframediv" style="width: 980px; height: 551px;">
                             <!--                            <span id="ipchk_getplay" hidden="hidden"-->
                             <!--                                  style="float: left;color: #F00;margin: 5px;font-size: 1.1em;"></span>-->
                             <!--                            <iframe id="age_playfram" src="/saved_resource.html" height="100%" width="100%"-->
@@ -364,7 +363,7 @@
                                 var videoObject = {
                                     container: '#ageframediv', //“#”代表容器的ID，“.”或“”代表容器的class
                                     variable: 'player', //播放函数名称，该属性必需设置，值等于下面的new ckplayer()的对象
-                                    video: 'https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/%E9%AD%94%E5%A5%B3%E4%B9%8B%E6%97%85%20%E5%89%8D%E5%AF%BCPV%20720P%20-%E5%9C%A8%E7%BA%BF%E8%A7%82%E7%9C%8B%26%E5%8A%A8%E6%BC%AB%E4%B8%8B%E8%BD%BD%20-%20AGE%E5%8A%A8%E6%BC%AB-ckplayer_11f378871c303f420396e04b7d21ab217a6e4e81.mp4?q-sign-algorithm=sha1&q-ak=AKIDhj9FvcRu3c4eksW1-RjxxKfbnq2FsC56JJyVm-gJo-I1JNeep_di6SoC_gxMf2Da&q-sign-time=1604628598;1604635798&q-key-time=1604628598;1604635798&q-header-list=&q-url-param-list=&q-signature=13ee397909ef311a4a77c76df8505c65eca2cd3f&x-cos-security-token=3JjFD6QPli1lsue5pwVLmkFEfptuXD4a1f5c89a96c2dda438ee5cf5236a53204mGy5mUMjqfd7y2zaGXOpTyX2XJefpfhpbjIxPxl-HPRk3_PjUJG0g2O3f-etRCttz9vH2j_maUZ0bciHWvxpFMRPaxCb-2tj3r-OPDW1DZm85fxAK9QOsH6QlcnQba6BGEF5JbmdT4fjiBXWMAia7J_apvTcYQ8pNJ0mjLVRxfVp_kIMDSzsXXvYdL9L9NrBekhvjVray9WNptt-bzU3BrU6wK1OiD2RzYMc-N6uFMycgVfCo7LWB5FnW-2usJxibuMa4iuiStRlJHsOMDMsDHhlrLCxCITgiC1CyNWLBhM3tdUU2Mreo8bFkKVZ5_Kz6kFSS6ZPHwyKVy95r6kTlOSty_dcnlRUN6OJpftEOsy76NqKnkUHaxJkQYQruS8S43CR1CoVvKz-U_gZNBIcR5738M3ZiIMVQfvOraRJpB-AGzOPNQhrLvbgeZ3ZI678B52Y_14B-faFZyUoKISjxYY3vuG-NDci3SyTxeh3BdSDzL_1ilg91gbWVtcStOjXPWGOm65e0j20ErDt1mDzvE0cwMsHA6KOrQLmv5xrtX30RKFUhYozSsskHELELYWBTI4xgfb9u5G_MZrfZVO27kcK52KOBH6UH7bPG9WlEUOQX9_cHl2CVMKMZR-0PfNl68XvPF7yFi8qHTlzj46QE2G-CXXqNLDhOa0rIyNMd3rWZaXHzx0DXQ2hWS8qINfB4o2jIk3XSntz1HkgFa8GSFp4hK8skFJ_XVldSx1dEHaJflMWacZG37S8oLQbOnwRpILaJEPx8HWaYWtCyDTuSuajVXI6keTaDuI8-MY9abdkrTNlFi1Z005kbtWti1PmLiUEss5rk5at56vUK-C9aVmD6DtDe7czDQopOTlCnfDIQwPvyrl8fq9A8HXbdWXtvKgqsyzqzT7AyAAUQNl4GOL5hQu_wRKtZ5QTpXL9dNQFqfXUubRL-tfD55PAbZTsO7YHU2RWa83A5v0ZsDUMMjkiRyacMBOrt5vxLrrq6GM6wtkOqmeL40sEUJynIE8f9pxyz29QjdOHC9kPBmydwsAinTp0JWh5WyOSxpfzXOpb9m6HAOfCsedRymggq_fd3js1w5PGd5NaSswUX2p18jz0pZx4hoNh163BGkn0gwJla3c3ymKHjrYbGIFd_qpy4NHX2A9Ba3qzrKggtT_lTuXJGfhWs-pBjuVQZJQ0TutYb8TGzVN9X6curWObxNMDiNVoY_JTuqTbp20eGDBDhRe3CjMvsjyxN0GiqFllODfgItH2sv0xeEXIwqpc0UjsKh7qhQpmc8U2Pe6gQiC3rTwD59bfjSVQj5l1I-W--m3AqCs9F1t07BK4hOIKT9nwl1e1VIXJllmlivPvMhl6YDOMQAL0xCgEhdPzv1uKKHCuVA8OZRqMJKCB-MXOnTpYLEM3tSaa7TBT4BnnbRapBXb2iGBN4dZZ2SQu1u4FkTy19DjlNb3nOHOIRs088r2sfbK8FAyBDfyNH4VNML4D9ZFixcmCKwgStGtXqylA7aUZaXsXNr1vax1lLerePs5XioKvmZOSGfT_F3R3jfFP30JYFWHFkYbDMvTHZ2CX8vBzxrzMFV9yCW_bXMWB6uuCcGE-HWje8-434gNHWCmSgWL_DwrRPPDYEYnpxhpUa9OoaCYAHuYsdc1lZrkh4JoPwk1hozvJOcFplmXS6pnMoHGeOQDeFcpfAjbGvR3uBD2WALJdFjj9ySE0aPwAK3Biq4leX60soNBzldmXkDamDqox4xAzkfQHdngzET_clOZ1L4nbk-muYjrp2TaatA_iJD6RmEKi0I4LFdQM-P6zM8hbkzw-qCA_irTz4VypEZZVGJIxvkIWPqW5jX3UUjdac3MUVb9itH9icmuYMQiT6osF6Sj_Zu93nt6IepubnaiYWGuqCBMySsBOCViNDx5_25StzVDyHBtseKb5nl5nhCQdsphaEHKwm0_i6jWNzJL7iUQ0Wqj7UoHGzzBSW4JzbRVpFhqCN0NC38cZG5HWeYIANB-ENvsaP2qdTcP9GfoEmYkiOaNZiVgguLQFfRwfGkLK5kei6z33xod4znjSWf7aH4dVwYO4OOKjUzf3k9lzT6XqoCpHq5sw8pbremSQ'//视频地址
+                                    video: 'https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/%E9%AD%94%E5%A5%B3%E4%B9%8B%E6%97%85%20%E5%89%8D%E5%AF%BCPV%20720P.mp4'//视频地址
                                 };
                                 var player = new ckplayer(videoObject);//初始化播放器
                             </script>
@@ -386,7 +385,7 @@
                         <div class="blockcontent">
 
 		<span class="res_links">
-			<a class="res_links_a" href="../link/20190209/0"
+			<a class="res_links_a" href="../../movie/link/20190209/0"
                target="_blank">[TV 01-12+OVA BD-1080P]</a>
 			<span class="res_links_pswd_tag">(提取码:</span>
 			<span class="res_links_pswd">1407)</span></span>
@@ -414,7 +413,7 @@
 
 
                 <div class="report_div">
-                    <form id="report_form" action="../report" method="GET">
+                    <form id="report_form" action="../../movie/report" method="GET">
                         <div>
                             <input id="report_aid" type="hidden" name="animeid" value="20190209">
                             <label>
@@ -473,81 +472,81 @@
                 <div class="blockcontent">
                     <ul class="ul_li_a8">
                         <li class="anime_icon1">
-                            <a href="../detail/20170042">
+                            <a href="../../movie/detail/20170042">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H913d39ec1c4d48829d5018875503d13bh.jpg"
                                      data-src="//sc02.alicdn.com/kf/H913d39ec1c4d48829d5018875503d13bh.jpg"></a>
-                            <a href="../detail/20170042">
+                            <a href="../../movie/detail/20170042">
                                 <div class="anime_icon1_name">徒然喜欢你</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="../detail/20180031">
+                            <a href="../../movie/detail/20180031">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/Haca4ba804e2243f68964e932b2e32eadY.jpg"
                                      data-src="//sc02.alicdn.com/kf/Haca4ba804e2243f68964e932b2e32eadY.jpg"></a>
-                            <a href="../detail/20180031">
+                            <a href="../../movie/detail/20180031">
                                 <div class="anime_icon1_name">优C世界</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="../detail/20170069">
+                            <a href="../../movie/detail/20170069">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H4287714e3b83442aa4fe8e18d3ba88e4m.jpg"
                                      data-src="//sc02.alicdn.com/kf/H4287714e3b83442aa4fe8e18d3ba88e4m.jpg"></a>
-                            <a href="../detail/20170069">
+                            <a href="../../movie/detail/20170069">
                                 <div class="anime_icon1_name">有顶天家族 第二季</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="../detail/20170142">
+                            <a href="../../movie/detail/20170142">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/Hb5dcf2c5404c4f07a1b18e1a4ae384ace.jpg"
                                      data-src="//sc02.alicdn.com/kf/Hb5dcf2c5404c4f07a1b18e1a4ae384ace.jpg"></a>
-                            <a href="../detail/20170142">
+                            <a href="../../movie/detail/20170142">
                                 <div class="anime_icon1_name">KiraKira☆光之美少女 A La Mode 清脆出炉！回忆的法式千层酥！</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="../detail/20110051">
+                            <a href="../../movie/detail/20110051">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H5053d55f53b04bd8b5fb341085e6fe96y.jpg"
                                      data-src="//sc02.alicdn.com/kf/H5053d55f53b04bd8b5fb341085e6fe96y.jpg"></a>
-                            <a href="../detail/20110051">
+                            <a href="../../movie/detail/20110051">
                                 <div class="anime_icon1_name">恶魔阿萨谢尔在召唤你</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="../detail/20170097">
+                            <a href="../../movie/detail/20170097">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H04440c7bcfed4fd99f014b2e05fb01a1u.jpg"
                                      data-src="//sc02.alicdn.com/kf/H04440c7bcfed4fd99f014b2e05fb01a1u.jpg"></a>
-                            <a href="../detail/20170097">
+                            <a href="../../movie/detail/20170097">
                                 <div class="anime_icon1_name">结城友奈是勇者 鹫尾须美之章</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="../detail/20140071">
+                            <a href="../../movie/detail/20140071">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H1c81c2a7246d447cbcf363d0514a30499.jpg"
                                      data-src="//sc02.alicdn.com/kf/H1c81c2a7246d447cbcf363d0514a30499.jpg"></a>
-                            <a href="../detail/20140071">
+                            <a href="../../movie/detail/20140071">
                                 <div class="anime_icon1_name">棺姬嘉依卡</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="../detail/20190052">
+                            <a href="../../movie/detail/20190052">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H94f6b0966c2140cba8510dec831046e0v.jpg"
                                      data-src="//sc02.alicdn.com/kf/H94f6b0966c2140cba8510dec831046e0v.jpg"></a>
-                            <a href="../detail/20190052">
+                            <a href="../../movie/detail/20190052">
                                 <div class="anime_icon1_name">一个人的〇〇小日子</div>
                             </a>
                         </li>
