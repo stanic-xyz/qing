@@ -29,7 +29,7 @@ public class MovieController {
 
     @GetMapping("/")
     public ModelAndView index() {
-        return new ModelAndView("index");
+        return new ModelAndView("home");
     }
 
     @GetMapping("detail/{movieId}")
