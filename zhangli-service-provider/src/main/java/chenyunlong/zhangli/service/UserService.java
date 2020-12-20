@@ -12,7 +12,6 @@ import java.util.List;
  * @author stan
  * @date 2018/6/3
  */
-@Mapper
 @Component
 public interface UserService {
 
@@ -45,9 +44,27 @@ public interface UserService {
      */
     User login(User user);
 
-    User findUserByUsername(String s);
+    /**
+     * 根据名称获取用户舒适信息
+     *
+     * @param username 用户名
+     * @return 用户信息
+     */
+    User findUserByUsername(String username);
 
+    /**
+     * 获取用户权限信息
+     *
+     * @param username 用户名
+     * @return 用户权限信息
+     */
     List<Permission> getPermissionByUsername(String username);
 
+    /**
+     * 添加用户信息
+     *
+     * @param user 用户信息
+     * @throws MyException 异常
+     */
     void addUserInfo(User user) throws MyException;
 }

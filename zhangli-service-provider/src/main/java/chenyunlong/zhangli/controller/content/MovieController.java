@@ -2,8 +2,8 @@ package chenyunlong.zhangli.controller.content;
 
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.param.AnimeQuery;
-import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
+import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.PlayInfoModel;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import cn.hutool.json.JSONUtil;
@@ -29,7 +29,12 @@ public class MovieController {
 
     @GetMapping("/")
     public ModelAndView index() {
-        return new ModelAndView("home");
+        List<AnimeInfo> recentAnime = animeInfoService.query(1, 15, new AnimeQuery());
+        ModelAndView modelAndView = new ModelAndView("home");
+        modelAndView.addObject("recentList", recentAnime);
+        modelAndView.addObject("dalyUpdateList", recentAnime);
+        modelAndView.addObject("recommendList", recentAnime);
+        return modelAndView;
     }
 
     @GetMapping("detail/{movieId}")

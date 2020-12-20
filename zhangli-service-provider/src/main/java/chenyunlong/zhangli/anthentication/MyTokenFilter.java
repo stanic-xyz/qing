@@ -16,6 +16,7 @@ import java.io.IOException;
 public class MyTokenFilter extends GenericFilterBean {
 
     private final static String AUTHORIZATION_HEADER = "Authorization";
+    private final static String AUTHORIZATION_QUERY = "token";
     private final TokenProvider tokenProvider;
 
 
@@ -47,6 +48,10 @@ public class MyTokenFilter extends GenericFilterBean {
     }
 
     private String resolveToken(HttpServletRequest request) {
+        String headerToken = request.getParameter(AUTHORIZATION_QUERY);
+        if (StringUtils.hasText(headerToken)) {
+            return headerToken;
+        }
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);

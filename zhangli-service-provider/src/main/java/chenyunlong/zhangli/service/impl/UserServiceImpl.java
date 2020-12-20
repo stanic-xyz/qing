@@ -50,8 +50,10 @@ public class UserServiceImpl implements UserService {
 
         User userInfo = userMapper.findByUsername(user.getUsername());
 
-        if (userInfo == null)
+        String encode = passwordEncoder.encode(user.getUsername());
+        if (userInfo == null) {
             return null;
+        }
         if (passwordEncoder.matches(user.getPassword(), userInfo.getPassword())) {
             return userInfo;
         }

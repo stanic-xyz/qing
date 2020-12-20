@@ -68,8 +68,8 @@ logging:
   level:
     root: info
     person.pluto: ${LOG_LEVEL:trace}
-    chenyunlong: info
-
+    chenyunlong.zhangli.mapper: debug
+    chenyunlong.zhangli: info
 
 zhangli:
   file:
@@ -116,3 +116,5 @@ management:
       show-details: ALWAYS
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
