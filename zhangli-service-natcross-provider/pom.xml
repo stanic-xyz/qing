@@ -10,11 +10,20 @@
     <artifactId>zhangli-service-natcross-provider</artifactId>
     <name>zhangli-service-natcross-provider</name>
     <description>Natcross Service project for ZhangliApplication</description>
+    <properties>
+        <flowable.version>6.6.0</flowable.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/ch.ethz.ganymed/ganymed-ssh2 -->
+        <dependency>
+            <groupId>ch.ethz.ganymed</groupId>
+            <artifactId>ganymed-ssh2</artifactId>
+            <version>build210</version>
         </dependency>
         <!--MySql-->
         <dependency>

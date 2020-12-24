@@ -1,13 +1,13 @@
 pipeline {
     agent {
         docker {
-            image "maven:3-alpine"
-            args "-v /root/.m2:/root/.m2"
+            image 'maven:3-alpine'
+            args '-v /root/.m2:/root/.m2'
             reuseNode true
         }
     }
     stages {
-        stage("阶段-1 拉取代码") {
+        stage('阶段-1 拉取代码') {
             steps {
                 checkout([
                         $class           : "GitSCM",
@@ -19,21 +19,13 @@ pipeline {
             steps {
                 script {
                     if (isUnix() == true) {
-                        sh "mvn -pl '!zhangli-service-natcross-provider' clean package -DskipTests=true"
+                        sh "cd ${WORKSPACE}"
+                        sh "mvn clean -pl 'zhangli-service-provider' package"
                     } else {
-                        bat "mvn -pl '!zhangli-service-natcross-provider' clean package -DskipTests=true"
+                        bat "cd ${WORKSPACE}"
+                        bat "mvn clean package"
                     }
                 }
-            }
-        }
-        stage('阶段-3 单元测试') {
-            post {
-                su {
-                    junit "**/target/surefire-reports/*.xml"
-                }
-            }
-            steps {
-                sh "mvn -pl '!zhangli-service-natcross-provider' test"
             }
         }
         stage('阶段-4 收集构建物') {

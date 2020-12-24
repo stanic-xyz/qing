@@ -34,7 +34,7 @@ pipeline {
         stage('阶段-3 收集构建物') {
             steps {
                 echo '收集构建物'
-                archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
+                archiveArtifacts (artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
             }
         }
 //        stage('阶段-3 推送zhangli-eureka-service到dockerhub') {
