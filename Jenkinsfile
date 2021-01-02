@@ -29,37 +29,8 @@ pipeline {
         stage('阶段-3 打包') {
             steps {
                 script {
-                    if (isUnix() == true) {
-                        echo 'linux'
-                        sh "mvn  -pl zhangli-service-provider clean package -DskipTests=true"
-                    } else {
-                        echo 'windows'
-                        bat "mvn  -pl zhangli-service-provider clean package -DskipTests=true"
-                    }
+                    sh "mvn  -pl zhangli-service-provider clean package dockerfile:build dockerfile:tag dockerfile:push -DskipTests=true"
                 }
-            }
-        }
-        stage('阶段-4 收集构建物') {
-            steps {
-                echo '收集构建物'
-                archiveArtifacts (artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
-            }
-        }
-        stage('阶段-5 打包鏡像') {
-            steps {
-                sh "mvn -pl zhangli-service-provider dockerfile:build dockerfile:tag dockerfile:push"
-            }
-        }
-
-        stage('阶段-6 打標籤') {
-            steps {
-                sh "mvn -pl zhangli-service-provider dockerfile:tag"
-            }
-        }
-
-        stage('阶段-7 推送到製品庫') {
-            steps {
-                sh "mvn -pl zhangli-service-provider dockerfile:push"
             }
         }
     }
