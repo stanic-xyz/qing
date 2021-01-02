@@ -7,7 +7,15 @@ pipeline {
         }
     }
     stages {
-        stage('阶段-1 单元测试') {
+        stage('阶段-1 拉取代码') {
+            steps {
+                checkout([
+                        $class           : "GitSCM",
+                        branches         : [[name: env.GIT_BUILD_REF]],
+                        userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
+            }
+        }
+        stage('阶段-2 单元测试') {
             steps {
                 sh "mvn -pl zhangli-service-provider test"
             }
@@ -18,7 +26,7 @@ pipeline {
                 }
             }
         }
-        stage('阶段-2 打包') {
+        stage('阶段-3 打包') {
             steps {
                 script {
                     if (isUnix() == true) {
@@ -31,25 +39,25 @@ pipeline {
                 }
             }
         }
-        stage('阶段-3 收集构建物') {
+        stage('阶段-4 收集构建物') {
             steps {
                 echo '收集构建物'
                 archiveArtifacts (artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
             }
         }
-        stage('阶段-3 打包鏡像') {
+        stage('阶段-5 打包鏡像') {
             steps {
                 sh "mvn -pl zhangli-service-provider dockerfile:build dockerfile:tag dockerfile:push"
             }
         }
 
-        stage('阶段-3 打標籤') {
+        stage('阶段-6 打標籤') {
             steps {
                 sh "mvn -pl zhangli-service-provider dockerfile:tag"
             }
         }
 
-        stage('阶段-3 推送到製品庫') {
+        stage('阶段-7 推送到製品庫') {
             steps {
                 sh "mvn -pl zhangli-service-provider dockerfile:push"
             }
