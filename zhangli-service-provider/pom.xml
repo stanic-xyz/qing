@@ -130,7 +130,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <repository>${docker.registry.username}/${project.artifactId}</repository>
+                    <repository>${docker.registry.prefix}/${project.artifactId}</repository>
                     <tag>${docker.registry.tag}</tag>
                     <username>${docker.registry.username}</username>
                     <password>${docker.registry.password}</password>
