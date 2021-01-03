@@ -1,6 +1,6 @@
 
 server:
-  port: 10102
+  port: 9001
 spring:
   application:
     name: zhangli-feign-client

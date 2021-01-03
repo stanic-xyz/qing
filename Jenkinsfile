@@ -1,11 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-            reuseNode true
-        }
-    }
+    agent any
     stages {
         stage('阶段-1 拉取代码') {
             steps {

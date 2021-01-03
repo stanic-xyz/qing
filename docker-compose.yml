@@ -4,42 +4,32 @@ services:
     networks:
       - dev
     container_name: eureka-service
-    image: stanics/zhangli-eureka-service:1.0.0.RELEASE
+    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-eureka-service:1.0.0.RELEASE
     ports:
       - 8761:8761
     environment:
       TZ: Asia/Shanghai
-  zhangli-service:
-    networks:
-      - dev
-    image: stanics/zhangli-service-provider:1.0.0.RELEASE
-    ports:
-      - 8080:8080
-    environment:
-      TZ: Asia/shanghai
-  #    links:
-  #      - mysql
   zuul-gateway:
     networks:
       - dev
-    image: stanics/zhangli-zuul-gateway:1.0.0.RELEASE
+    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-service-zuul-gateway:1.0.0.RELEASE
     container_name: zuul-gateway-service
     ports:
       - 9000:9000
     environment:
       TZ: Asia/Shanghai
-#  feign-client:
-#    networks:
-#      - dev
-#    image: stanics/zhangli-feign-client:1.0.0.RELEASE
-#    ports:
-#      - 9001:9001
-#    environment:
-#      TZ: Asia/Shanghai
+  feign-client:
+    networks:
+      - dev
+    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-feign-client:1.0.0.RELEASE
+    ports:
+      - 9001:9001
+    environment:
+      TZ: Asia/Shanghai
   config-server:
     networks:
       - dev
-    image: stanics/zhangli-config-git:1.0.0.RELEASE
+    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-config-git:1.0.0.RELEASE
     container_name: config-service
     ports:
       - 8888:8888
