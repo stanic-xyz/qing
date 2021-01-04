@@ -1,12 +1,12 @@
 package person.pluto.natcross2.channel;
 
+
 import person.pluto.natcross2.utils.Tools;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class LengthChannel extends SocketChannel<byte[], byte[]> {

@@ -8,7 +8,7 @@ package person.pluto.natcross2.utils;
  * @author Pluto
  * @since 2020-01-08 16:56:35
  */
-public final class Tools {
+public class Tools {
 
     /**
      * integer 转换为 byte[]

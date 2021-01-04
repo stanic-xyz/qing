@@ -9,14 +9,12 @@ server:
 spring:
   application:
     name: zhangli-service-natcross-provider
-  profiles:
-    active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       username: root
-      password: MysqlPwdROOT1996
-    url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
+      password: root
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
   servlet:
     multipart:
       max-file-size: 10MB
