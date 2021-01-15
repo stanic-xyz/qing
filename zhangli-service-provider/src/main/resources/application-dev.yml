@@ -1,0 +1,50 @@
+debug: true
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
+    hikari:
+      username: root
+      password: root
+  mail:
+    host: smtp.qq.com
+    username: 1576302867@qq.com
+    password: zcnjecjevbywgcjh
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 121.36.163.95
+  client:
+    use-dns-for-fetching-service-urls: true
+    eureka-server-d-n-s-name: chenyunlong.cn
+    eureka-server-u-r-l-context: eureka
+    eureka-server-port: 8761
+    prefer-same-zone-eureka: true
+    region: zhangli
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
+  level:
+    root: info
+    person.pluto: debug
+    chenyunlong.zhangli.mapper: debug
+    chenyunlong.zhangli: info
+mp:
+  wx:
+    appId: wx09bf7e704a150a9c
+    secret: 9fdb9fa846356d32247a9aa68d758791
+zhangli:
+  file:
+    baseUploadDir: upload/
+    image-server-url: http://www.stanic.xyz/pic/
+  # 是否异步记录用户操作日志
+  openAopLog: true
+  swagger:
+    doc-disabled: false

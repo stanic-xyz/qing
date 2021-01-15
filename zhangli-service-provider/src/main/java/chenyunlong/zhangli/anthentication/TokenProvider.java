@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.anthentication;
 
+import chenyunlong.zhangli.config.properties.SecurityProperties;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.utils.JwtUtil;
@@ -54,7 +55,7 @@ public class TokenProvider {
         } catch (IllegalArgumentException e) {
             logger.info("JWT token compact of handler are invalid.");
         } catch (JsonProcessingException e) {
-            logger.info("parse jsonobject failed.");
+            logger.info("parse jsonObject failed.");
         } catch (Exception e) {
             logger.error("解析jwt token 错误", e);
         }
@@ -76,25 +77,29 @@ public class TokenProvider {
 
         long now = (new Date()).getTime();
         Date validity;
+        SecurityProperties security = zhangliProperties.getSecurity();
+        if (security == null) {
+            security = new SecurityProperties();
+        }
+        //是否颁发一个长久的令牌
         if (rememberMe) {
-            validity = new Date(now + zhangliProperties.getSecurity().getTokenValidityInMilliseconds());
+            validity = new Date(now + security.getTokenValidityInMilliseconds());
         } else {
-            validity = new Date(now + zhangliProperties.getSecurity().getTokenValidityInMillisecondsForRememberMe());
+            validity = new Date(now + security.getTokenValidityInMillisecondsForRememberMe());
         }
 
         return Jwts.builder()
                 .setSubject(username)
-                .claim(zhangliProperties.getSecurity().getAuthticationPrefix(), authorities)
-                .signWith(SignatureAlgorithm.HS512, zhangliProperties.getSecurity().getSecretKey())
+                .claim(security.getAuthenticationPrefix(), authorities)
+                .signWith(SignatureAlgorithm.HS512, security.getSecretKey())
                 .setExpiration(validity)
                 .compact();
     }
 
     /**
-     * 通过jwt获取token信息
+     * 从jwt中获取token信息
      *
      * @param jwt jwt认证信息
-     * @return Authentication
      */
     public Authentication getAuthentication(String jwt) {
         Claims claims = Jwts.parser()
@@ -103,7 +108,7 @@ public class TokenProvider {
                 .getBody();
 
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(zhangliProperties.getSecurity().getAuthticationPrefix()).toString().split(","))
+                Arrays.stream(claims.get(zhangliProperties.getSecurity().getAuthenticationPrefix()).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
         return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);

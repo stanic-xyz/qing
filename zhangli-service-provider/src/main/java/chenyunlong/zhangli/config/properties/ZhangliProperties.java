@@ -14,20 +14,20 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "zhangli")
 public class ZhangliProperties {
     private boolean openAopLog = true;
-    private FileProperties file;
-    private SecurityProperties security;
-    private SwaggerProperties swagger;
-    private String authticationPrefix;
+    private FileProperties file = new FileProperties();
+    private SecurityProperties security = new SecurityProperties();
+    private SwaggerProperties swagger = new SwaggerProperties();
+    private String authenticationPrefix;
 
     public ZhangliProperties() {
     }
 
-    public ZhangliProperties(boolean openAopLog, FileProperties file, SecurityProperties security, SwaggerProperties swagger, String authticationPrefix) {
+    public ZhangliProperties(boolean openAopLog, FileProperties file, SecurityProperties security, SwaggerProperties swagger, String authenticationPrefix) {
         this.openAopLog = openAopLog;
         this.file = file;
         this.security = security;
         this.swagger = swagger;
-        this.authticationPrefix = authticationPrefix;
+        this.authenticationPrefix = authenticationPrefix;
     }
 
 }

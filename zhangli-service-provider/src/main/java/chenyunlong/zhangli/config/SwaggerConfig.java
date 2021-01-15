@@ -61,14 +61,14 @@ public class SwaggerConfig {
                 .required(false).build();
         //根据每个方法名也知道当前方法在设置什么参数
         pars.add(ticketPar.build());
-
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(swagger.getBasePackage()))
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(pars)
-                .apiInfo(apiInfo(swagger));
+                .apiInfo(apiInfo(swagger))
+                .enable(!zhangliProperties.getSwagger().isDocDisabled());
     }
 
     private ApiInfo apiInfo(SwaggerProperties swagger) {

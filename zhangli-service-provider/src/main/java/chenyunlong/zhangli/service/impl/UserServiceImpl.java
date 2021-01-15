@@ -7,7 +7,6 @@ import chenyunlong.zhangli.exception.MyException;
 import chenyunlong.zhangli.mapper.PermissionMapper;
 import chenyunlong.zhangli.mapper.UserMapper;
 import chenyunlong.zhangli.service.UserService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +21,15 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PermissionMapper permissionMapper;
 
-    private static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
 
-    public UserServiceImpl(UserMapper userMapper, PermissionMapper permissionMapper) {
+    public UserServiceImpl(UserMapper userMapper,
+                           PermissionMapper permissionMapper,
+                           PasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
         this.permissionMapper = permissionMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override

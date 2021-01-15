@@ -13,6 +13,11 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 日志记录切面
+ *
+ * @author Stan
+ */
 @Component
 @Aspect
 public class LogAspect {
@@ -30,7 +35,7 @@ public class LogAspect {
     }
 
     @Around("pointcut()")
-    public Object Around(ProceedingJoinPoint point) throws Throwable {
+    public Object around(ProceedingJoinPoint point) throws Throwable {
 
         Object result = null;
         long beginTime = System.currentTimeMillis();

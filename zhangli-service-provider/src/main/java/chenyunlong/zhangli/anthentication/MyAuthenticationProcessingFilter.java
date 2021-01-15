@@ -30,12 +30,9 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException {
-
+        //TODO 完善认证过程
         UsernamePasswordAuthenticationToken authRequest;
         authRequest = new UsernamePasswordAuthenticationToken("", "", null);
-
-        logger.debug(zhangliProperties.getSecurity().getJwtTimeOut().toString());
-        logger.debug("在这里debug");
         return this.getAuthenticationManager().authenticate(authRequest);
     }
 

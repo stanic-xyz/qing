@@ -1,27 +1,27 @@
 package chenyunlong.zhangli.listener;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
+/**
+ * 启动成功监听器
+ *
+ * @author Stan
+ * @date 2021.01.15
+ */
+@Slf4j
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class StartedListener implements ApplicationListener<ApplicationStartedEvent> {
-    private Logger log = LoggerFactory.getLogger((StartedListener.class));
 
     private final ZhangliProperties zhangliProperties;
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     public StartedListener(ZhangliProperties zhangliProperties) {
         this.zhangliProperties = zhangliProperties;
@@ -29,18 +29,14 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        this.printStartInfo();
-    }
-
-    private void printStartInfo() {
         String blogUrl = zhangliProperties.getSecurity().getAnonUrl();
-        if (log.isInfoEnabled()) {
-            log.info(AnsiOutput.toString(AnsiColor.BRIGHT_BLUE, "Halo started at         ", blogUrl));
-            log.info(AnsiOutput.toString(AnsiColor.BRIGHT_BLUE, "uploadDir is   ", blogUrl, "/", zhangliProperties.getFile().getBaseUploadDir()));
-            if (!zhangliProperties.getSwagger().isDocDisabled()) {
-                log.debug(AnsiOutput.toString(AnsiColor.BRIGHT_BLUE, "Halo api doc was enabled at  ", blogUrl, "/swagger-ui.html"));
-            }
-            log.info(AnsiOutput.toString(AnsiColor.BRIGHT_YELLOW, "Zhangli has started successfully!"));
+        log.info(AnsiOutput.toString(AnsiColor.GREEN, "Application started at " + event.getTimestamp()));
+        log.info(AnsiOutput.toString(AnsiColor.GREEN, "uploadDir:" + zhangliProperties.getFile().getBaseUploadDir()));
+        if (!zhangliProperties.getSwagger().isDocDisabled()) {
+            log.info(AnsiOutput.toString(AnsiColor.GREEN, "Api doc enabled at:/swagger-ui.html"));
+        } else {
+            log.info(AnsiOutput.toString(AnsiColor.GREEN, "Swagger api page is disabled!"));
         }
+        log.info(AnsiOutput.toString(AnsiColor.GREEN, "Application started successfully!"));
     }
 }

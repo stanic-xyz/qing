@@ -2,8 +2,6 @@ package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.model.vo.ApiResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,12 +17,11 @@ import java.io.IOException;
  */
 @Component
 public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler {
-    private final Logger logger = LoggerFactory.getLogger(MyAuthenticationFailureHandler.class);
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
 
-        ApiResult result;
+        ApiResult<String> result;
         if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
             result = ApiResult.faild(exception.getMessage());
         } else if (exception instanceof LockedException) {
@@ -36,7 +33,6 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
         } else if (exception instanceof DisabledException) {
             result = ApiResult.faild("账户被禁用，请联系管理员!");
         } else {
-            logger.error("登录失败：", exception);
             result = ApiResult.faild("登录失败!");
         }
 

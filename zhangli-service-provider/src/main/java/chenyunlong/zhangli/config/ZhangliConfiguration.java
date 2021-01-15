@@ -14,19 +14,15 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.ssl.TrustStrategy;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 import javax.net.ssl.SSLContext;
-import javax.security.cert.CertificateException;
 
 /**
  * 全局配置
@@ -61,7 +57,6 @@ public class ZhangliConfiguration {
     public AuthGithubRequest getAuthRequest() {
 
         log.info(zhangliProperties.getSwagger().getAuthor());
-
         return new AuthGithubRequest(AuthConfig.builder()
                 .clientId("c9391500bdf102edd70c")
                 .clientSecret("c2a9c47006fbc8d16b7e8186b10c89c6cc02ab7f")
@@ -74,16 +69,11 @@ public class ZhangliConfiguration {
 
         SSLContext sslContext = null;
         try {
-            sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
-                @Override
-                public boolean isTrusted(X509Certificate[] x509Certificates, String s) {
-                    return true;
-                }
-            }).build();
+            sslContext = new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build();
         } catch (Exception e) {
             log.error("初始化错误", e);
         }
-
+        assert sslContext != null;
         SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext,
                 new String[]{"TLSv1.2"},
                 null,
@@ -98,7 +88,10 @@ public class ZhangliConfiguration {
         restTemplate.setRequestFactory(factory);
 
         return restTemplate;
+    }
 
-
+    @Bean
+    PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

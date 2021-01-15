@@ -15,10 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -48,6 +45,14 @@ public class FileController {
         this.zhangliProperties = zhangliProperties;
         this.fileUploadService = fileUploadService;
         this.cosClient = cosClient;
+    }
+
+    @Log
+    @ApiOperation("获取存储桶列表")
+    @GetMapping("bucket/list")
+    public ApiResult<List<Bucket>> listBuckts() {
+        List<Bucket> buckets = cosClient.listBuckets();
+        return ApiResult.success(buckets);
     }
 
     /**

@@ -6,9 +6,19 @@
       "description": "Description for zhangli.swagger.author."
     },
     {
-      "name": "zhangli.security.authticationPrefix",
+      "name": "zhangli.security.authenticationPrefix",
       "type": "java.lang.String",
       "description": "授权认证的前缀."
+    },
+    {
+      "name": "mp.wx.appId",
+      "type": "java.lang.String",
+      "description": "微信后台接入的AppID."
+    },
+    {
+      "name": "mp.wx.secret",
+      "type": "java.lang.String",
+      "description": "微信后台接入的secret."
     }
   ]
 }
