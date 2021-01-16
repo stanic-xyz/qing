@@ -1,0 +1,19 @@
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: false
+    ip-address: 127.0.0.1
+  client:
+    use-dns-for-fetching-service-urls: false
+    eureka-server-d-n-s-name: chenyunlong.cn
+    eureka-server-u-r-l-context: eureka
+    eureka-server-port: 8761
+    prefer-same-zone-eureka: true
+    region: zhangli
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+zuul:
+  ignored-services: '*'
+  routes:
+    zhangli-feign-client: /userservice/**
+    zhangli-service-provider: /anime/**

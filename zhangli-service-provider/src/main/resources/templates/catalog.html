@@ -10,14 +10,11 @@
     <meta name="keywords" content="动漫目录,动漫下载">
     <meta name="description" content="动漫目录 动漫在线 动漫下载">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet"
-          href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/css/common.css">
-    <link type="text/css" rel="stylesheet"
-          href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/css/catalog.css">
-    <script type="text/javascript" src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/hm.js"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/catalog.css(host=${hostname})}">
+    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script type="text/javascript"
-            src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/history.js"></script>
+    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${hostname})}"></script>
 </head>
 
 <body>
@@ -30,7 +27,7 @@
             <a class="loginout_btn2" href="../movie/accounts/profile/">stanic</a>
 
             <script>
-                __html_set_username();
+                // __html_set_username();
             </script>
 
         </div>

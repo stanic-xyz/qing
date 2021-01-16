@@ -1,9 +1,3 @@
-spring:
-  cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: zhangli-config-git
 eureka:
   client:
     use-dns-for-fetching-service-urls: false

@@ -1,6 +1,4 @@
 spring:
-  devtools:
-    add-properties: false
   datasource:
     url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
     hikari:
@@ -38,7 +36,7 @@ mp:
 zhangli:
   file:
     baseUploadDir: upload/
-    image-server-url: http://www.stanic.xyz/pic/
+    image-server-url: https://bangumi.chenyunlong.cn
   # 是否异步记录用户操作日志
   openAopLog: true
   swagger:

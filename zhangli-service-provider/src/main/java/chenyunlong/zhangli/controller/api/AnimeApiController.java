@@ -35,8 +35,8 @@ public class AnimeApiController {
     }
 
     @Log("获取视频详情")
-    @GetMapping("detail/{aid:\\d}")
-    public ApiResult<AnimeInfoVo> movie(@PathVariable(value = "aid", required = false) String animeId) {
+    @GetMapping("detail/{aid}")
+    public ApiResult<AnimeInfoVo> movie(@PathVariable(value = "aid") Long animeId) {
         return ApiResult.success(animeInfoService.getMovieDetail(animeId));
     }
 

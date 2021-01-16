@@ -29,7 +29,7 @@
         <dockerfile.maven.version>1.4.13</dockerfile.maven.version>
         <docker.registry.prefix>stanic-docker.pkg.coding.net/zhangli/zhangli</docker.registry.prefix>
         <docker.registry.username>zhangli-1609624907018</docker.registry.username>
-        <docker.registry.password>3285656f461599d03000ff3fd3e85e9a6dfc2243 </docker.registry.password>
+        <docker.registry.password>3285656f461599d03000ff3fd3e85e9a6dfc2243</docker.registry.password>
         <docker.registry.tag>${project.version}</docker.registry.tag>
         <sentinel.version>1.7.2</sentinel.version>
         <swagger.version>2.9.2</swagger.version>
@@ -142,7 +142,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>true</fork><!-- 如果没有该配置，热部署的devtools不生效 -->
+                    <!-- 如果没有该配置，热部署的devtools不生效 -->
+                    <fork>true</fork>
                 </configuration>
             </plugin>
         </plugins>

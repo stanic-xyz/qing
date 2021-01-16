@@ -1,0 +1,5 @@
+eureka:
+  client:
+    use-dns-for-fetching-service-urls: true
+    service-url:
+      defaultZone: https://eureka.chenyunlong.cn/eureka/

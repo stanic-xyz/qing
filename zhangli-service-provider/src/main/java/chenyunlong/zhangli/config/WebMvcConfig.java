@@ -1,7 +1,10 @@
 package chenyunlong.zhangli.config;
 
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.intercepter.HostInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -11,6 +14,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    private final ZhangliProperties zhangliProperties;
+
+    public WebMvcConfig(ZhangliProperties zhangliProperties) {
+        this.zhangliProperties = zhangliProperties;
+    }
 
     /**
      * 配置跨域
@@ -22,5 +31,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowedMethods("*")
                 .allowedOrigins("*");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new HostInterceptor(zhangliProperties)).addPathPatterns("/movie/**");
     }
 }

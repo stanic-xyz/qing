@@ -4,24 +4,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title th:text="${playInfoModel?.animeInfo?.name+'-在线测试'}"></title>
-
     <meta name="keywords" th:content="${playInfoModel?.animeInfo?.name+'-在线测试'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet"
-          href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/css/common.css">
-    <link type="text/css" rel="stylesheet" href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/css/play.css">
-    <!-- overload -->
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/play.css(host=${hostname})}">
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/hm.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/detail.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/utils.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/jquery.foucs.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/history.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/s_runtimelib.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/s_playpre.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/age_playpre.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/s_dett_pf.js"></script>
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/ckplayer.js"></script>
+    <script th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/detail.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/utils.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/jquery.foucs.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/history.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/s_runtimelib.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/s_playpre.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/age_playpre.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/s_dett_pf.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/ckplayer.js(host=${hostname})}"></script>
     <!--    <script type="text/javascript" th:src="@{/js/s_dett.js}"></script>-->
 </head>
 
@@ -35,7 +32,7 @@
             <span class="svg_title svg_title_user"></span>
             <a class="loginout_btn2" href="../../movie/profile">登陆</a>
             <script>
-                __html_set_username();
+                // __html_set_username();
             </script>
         </div>
     </div>

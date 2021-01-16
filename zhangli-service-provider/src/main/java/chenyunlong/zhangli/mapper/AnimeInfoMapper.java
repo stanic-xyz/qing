@@ -45,7 +45,7 @@ public interface AnimeInfoMapper {
      * @param movieId 动漫ID
      * @return 具体的动画信息
      */
-    AnimeInfo selectAnimationDetail(String movieId);
+    AnimeInfo selectAnimationDetail(Long movieId);
 
     /**
      * 根据动画名称查询动画信息

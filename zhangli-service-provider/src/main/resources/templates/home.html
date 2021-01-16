@@ -9,13 +9,10 @@
     <meta name="keywords" content="在线动画,动漫下载,AGE动漫,Agefans">
     <meta name="description" content="AGE动漫专注于资源收集整理 海量的有效的高质量的动漫资源下载 动漫百度网盘下载">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet"
-          href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/css/common.css">
-    <link type="text/css" rel="stylesheet"
-          href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/css/index.css">
-    <script type="text/javascript" src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/hm.js"></script>
-    <script type="text/javascript"
-            src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/history.js"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/index.css(host=${hostname})}">
+    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${hostname})}"></script>
 
     <!-- overload -->
 </head>
@@ -49,7 +46,7 @@
         <script type="text/javascript">
             function on_top_search_form() {
                 var value = document.getElementById("top_search_input").value;
-                if (value == null || value == "") {
+                if (value == null || value === "") {
                     alert("请输入搜索关键字");
                     return false;
                 }
@@ -77,7 +74,7 @@
 
         <div id="new_tip1"
              style="color: #E00;padding: 8px;margin: 0 9px;margin-top: 10px;margin-bottom:-14px;font-size: 14px;border: 1px solid #C00;">
-            动漫交友站 欢迎大家分享给身边朋友！如果不能正常观看，请尝试使用谷歌浏览器。
+            动漫情报站 欢迎大家分享给身边朋友！如果能正常观看，才有鬼了！
         </div>
 
         <div class="spaceblock1"></div>
@@ -1032,7 +1029,7 @@
                     <li class="anime_icon1" th:each="anime:${recommendList}">
                         <a th:href="@{'detail/'+${anime.id}}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
-                                 th:src="${anime.coverUrl}"
+                                 th:src="@{https:{coverUrl}(coverUrl=${anime.coverUrl})}"
                                  th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}"
                                  alt="https://sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
@@ -1051,7 +1048,7 @@
                     <li class="anime_icon1" th:each="anime:${dalyUpdateList}">
                         <a th:href="@{'detail/'+${anime.id}}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
-                                 th:src="${anime.coverUrl}"
+                                 th:src="@{https:{coverUrl}(coverUrl=${anime.coverUrl})}"
                                  th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}"
                                  alt="https://sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
@@ -1070,31 +1067,27 @@
         <div id="footer_container">
             <div class="pannel clearfix">
                 <div class="pannel_head clearfix">
-                    <h3 class="title">友情链接：</h3></div>
+                    <h3 class="title">快速链接：</h3></div>
                 <ul class="link_text list_scroll clearfix">
                     <li>
-                        <a class="text_muted" href="https://www.88ys.com/" title="88影视网" target="_blank">88影视网</a></li>
-                    <li>
-                        <a class="text_muted" href="https://www.95mm.net/" title="MM范性感美女图" target="_blank">MM范性感美女图</a>
+                        <a class="text_muted" href="https://www.chenyunlong.cn/admin" title="博客地址"
+                           target="_blank">博客地址</a>
                     </li>
                     <li>
-                        <a class="text_muted" href="http://www.mgtv1.com/" title="美果TV" target="_blank">美果TV</a></li>
-                    <li>
-                        <a class="text_muted" href="https://www.weibotu.net/" title="微博兔影视" target="_blank">微博兔影视</a>
+                        <a class="text_muted" href="https://www.chenyunlong.cn" title="博客后台地址"
+                           target="_blank">博客后台地址</a>
                     </li>
                     <li>
-                        <a class="text_muted" href="https://www.px6080.net/" title="6080影视网" target="_blank">6080影视网</a>
+                        <a class="text_muted" href="https://status.chenyunlong.cn" title="状态查看"
+                           target="_blank">状态查看</a>
                     </li>
-                    <li>
-                        <a class="text_muted" href="https://www.mayiyingshi.com/" title="黑蚂蚁影院"
-                           target="_blank">黑蚂蚁影院</a></li>
-
                 </ul>
 
-                <span style="color: #DDD;">友链申请，欢迎PR3以上、收录正常的的网站友链：agefans@gmail.com</span>
-
+                <span style="color: #DDD;">
+                    如果你有任何关于该网站的问题，请发邮件至
+                    <a href="mailto:bangumi@chenyunlong.cn">bangumi@chenyunlong.cn</a>
+                </span>
             </div>
-
         </div>
     </footer>
 

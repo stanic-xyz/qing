@@ -4,15 +4,12 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>为美好的世界献上祝福！ BDRIP 720P/1080P 百度网盘 - AGE动漫</title>
-
-    <meta name="keywords" content="为美好的世界献上祝福！,动漫下载">
-    <meta name="description" content="为美好的世界献上祝福！在线观看 为美好的世界献上祝福！下载">
+    <title th:text="${animeInfoVo.getName()+'- 傻瓜动漫网站'}"></title>
+    <meta name="keywords" th:content="${animeInfoVo.getName()+'动漫分享'}">
+    <meta name="description" th:content="${animeInfoVo.getName()+'！在线观看'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet"
-          href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/css/common.css">
-    <link type="text/css" rel="stylesheet"
-          href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/css/detail.css">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/detail.css(host=${hostname})}">
     <!-- overload -->
     <style type="text/css">.anime_icon1 {
         margin-right: 24px;
@@ -27,16 +24,13 @@
         height: 205px;
     }</style>
 
-    <script type="text/javascript" src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/hm.js"></script>
-    <script type="text/javascript" src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/detail.js"></script>
-    <script type="text/javascript" src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/utils.js"></script>
+    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/detail.js(host=${hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${hostname})}"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script type="text/javascript"
-            src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/jquery.foucs.js"></script>
-    <script type="text/javascript"
-            src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/history.js"></script>
-    <script type="text/javascript"
-            src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/age_playpre.js"></script>
+    <script type="text/javascript" th:src="@{{host}/js/jquery.foucs.js(host=${hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${hostname})}"></script>
 </head>
 
 <body>
@@ -49,7 +43,7 @@
             <a class="loginout_btn2" href="../../movie/accounts/profile/">登陆</a>
 
             <script>
-                __html_set_username();
+                // __html_set_username();
             </script>
 
         </div>
@@ -63,8 +57,8 @@
         <a class="nav_button nav_button_current">详情</a>
         <form id="top_search_from" class="search_form" action="../../movie/search" method="get"
               onsubmit="return on_top_search_form();">
-            <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
-                   autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
+            <input autocapitalize="off" autocomplete="off" autocorrect="off" class="search_input" id="top_search_input"
+                   name="query" placeholder="输入关键字" spellcheck="false" value="" wrap="SOFT">
             <input class="search_submit" type="submit" value="">
             <input type="hidden" name="page" value="1"></form>
 
@@ -107,7 +101,7 @@
                 <div class="blockcontent">
                     <img referrerpolicy="no-referrer" class="poster" width="256px" height="356px"
                          th:src="${animeInfoVo.coverUrl}"
-                         alt="为美好的世界献上祝福！"></div>
+                         th:alt="${animeInfoVo.getName()}" alt="暂无"></div>
             </div>
             <div class="baseblock">
                 <div class="blockcontent">
@@ -359,16 +353,12 @@
 			<span class="res_links_pswd_tag">(提取码:</span>
 			<span class="res_links_pswd">fe5e)</span></span>
                     <br>
-
                 </div>
             </div>
-
 
             <div class="blockline1" style="margin: 8px;"></div>
             <div class="baseblock">
                 <div class="blocktitle">反馈：</div>
-
-
                 <div class="report_div">
                     <form id="report_form" action="../../movie/report" method="GET">
                         <div>
@@ -386,9 +376,9 @@
                             <input class="nbutton" type="submit" value="提交"></div>
                     </form>
                     <script>
-                        const AID = __get_detail_play_page_AID();
+                        // const AID = __get_detail_play_page_AID();
 
-                        $('#report_aid').attr('value', AID);
+                        // $('#report_aid').attr('value', AID);
 
                         /////////////////
                         $('#report_form').on('submit',
@@ -409,21 +399,10 @@
                             });
                         }</script>
                 </div>
-
-
             </div>
 
             <!-- adv1 -->
             <script th:src="@{/js/age.js}"></script>
-            <div style="text-align:center;padding:10px;">
-                <a rel="nofollow"
-                   href="https://vip.huijujiavip.com:8443/?f=www.agefans.tv"
-                   target="_blank">
-                    <img referrerpolicy="no-referrer"
-                         src="/img/U1630dd91322c4774815709c5760fffffH.gif"
-                         style="max-width:100%;"></a></div>
-
-
             <div class="blockline1" style="margin: 8px;"></div>
             <div class="baseblock">
                 <div class="blockcontent">
@@ -537,11 +516,6 @@
                                 __set_on_sendcomment();
                             </script>
                         </form>
-
-
-                        <script>
-                            __html_set_username();
-                        </script>
 
                         <!-- 评论列表 -->
                         <ul id="comment_list" style="margin-top: 16px;">

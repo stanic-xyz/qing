@@ -9,15 +9,17 @@ services:
       - 8761:8761
     environment:
       TZ: Asia/Shanghai
+      ENV: dev
   zuul-gateway:
     networks:
       - dev
     image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-service-zuul-gateway:1.0.0.RELEASE
     container_name: zuul-gateway-service
     ports:
-      - 9000:9000
+      - 9527:9527
     environment:
       TZ: Asia/Shanghai
+      ENV: dev
   feign-client:
     networks:
       - dev
@@ -26,6 +28,7 @@ services:
       - 9001:9001
     environment:
       TZ: Asia/Shanghai
+      ENV: dev
   config-server:
     networks:
       - dev
@@ -35,6 +38,7 @@ services:
       - 8888:8888
     environment:
       TZ: Asia/Shanghai
+      ENV: dev
 
 networks:
   dev:

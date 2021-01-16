@@ -31,7 +31,7 @@ public interface AnimeInfoService {
      * @param movieId 动漫ID
      * @return 动漫详情
      */
-    AnimeInfoVo getMovieDetail(String movieId);
+    AnimeInfoVo getMovieDetail(Long movieId);
 
     /**
      * 获取查询总数
@@ -59,7 +59,7 @@ public interface AnimeInfoService {
      * @param ep      分级序号
      * @return 动漫播放页视图
      */
-    AnimeInfoVo getPlayDetail(String animeId, int type, int ep);
+    AnimeInfoVo getPlayDetail(Long animeId, int type, int ep);
 
     /**
      * 更新动漫信息

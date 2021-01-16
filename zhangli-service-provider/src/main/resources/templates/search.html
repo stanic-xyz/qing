@@ -7,12 +7,10 @@
     <title th:text="${query+'搜索结果 - AGE动漫'}"></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet"
-          href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/css/common.css">
-    <link type="text/css" rel="stylesheet" href="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/catalog.css}">
-    <script src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/hm.js"></script>
-    <script type="text/javascript"
-            src="https://bangumi-1255705827.cos.ap-guangzhou.myqcloud.com/js/history.js"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/catalog.css(host=${hostname})}">
+    <script th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${hostname})}"></script>
 </head>
 
 <body>
@@ -25,7 +23,7 @@
             <a class="loginout_btn2" href="profile.html">stanic</a>
 
             <script>
-                __html_set_username();
+                // __html_set_username();
             </script>
 
         </div>
@@ -95,7 +93,8 @@
                         </li>
 
                         <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont" th:href="${'../movie/search?query='+query+'&page='+totalPage}">尾页</a>
+                            <a class="pbutton  asciifont"
+                               th:href="${'../movie/search?query='+query+'&page='+totalPage}">尾页</a>
                         </li>
                     </ul>
                 </div>
@@ -178,7 +177,8 @@
                         </li>
 
                         <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont" th:href="${'../movie/search?query='+query+'&page='+totalPage}">尾页</a>
+                            <a class="pbutton  asciifont"
+                               th:href="${'../movie/search?query='+query+'&page='+totalPage}">尾页</a>
                         </li>
                     </ul>
                 </div>

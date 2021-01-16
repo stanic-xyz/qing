@@ -1,19 +1,25 @@
 server:
-  port: 8888
+  port: 10086
 spring:
   application:
-    name: zhangli-config-git
+    name: zhangli-admin-server
   profiles:
     active: ${ENV:dev}
 eureka:
   instance:
-    leaseRenewalIntervalInSeconds: 10
     health-check-url-path: /actuator/health
     instance-id: ${spring.application.name}
+    prefer-ip-address: true
+    hostname: localhost
     metadata-map:
+      #needed to trigger info and endpoint update after restart
       startup: ${random.int}
   client:
-    registryFetchIntervalSeconds: 30
+    eureka-server-d-n-s-name: chenyunlong.cn
+    eureka-server-u-r-l-context: eureka
+    eureka-server-port: 8761
+    prefer-same-zone-eureka: true
+    region: zhangli
     register-with-eureka: true
 management:
   endpoints:
@@ -22,4 +28,4 @@ management:
         include: "*"
   endpoint:
     health:
-      show-details: always
+      show-details: ALWAYS

@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,7 @@ import javax.net.ssl.SSLSession;
 import java.io.IOException;
 import java.util.HashMap;
 
+@Slf4j
 class OKHttpClientBuilderTest {
 
     @Test
@@ -16,7 +18,7 @@ class OKHttpClientBuilderTest {
         String url = "https://www.agefans.net/_getplay?aid=20200101&playindex=3&epindex=1";
 //        String url = "https://www.baidu.cn";
         String json = "{}";
-        HashMap headers = new HashMap<>();
+        HashMap<String, String> headers = new HashMap<>();
         headers.put("Host", "www.agefans.net");
         headers.put("Referer", "https://www.agefans.net");
         headers.put("Cookie", "__cfduid=df3a792afd828c09d36d0d86d94d848111607796144; t1=1608421256583; k1=1608484612");
@@ -24,29 +26,20 @@ class OKHttpClientBuilderTest {
                 .url(url)
                 .headers(Headers.of(headers))
                 .build();
-        Response response = OKHttpClientBuilder.buildOKHttpClient()
-                .hostnameVerifier(new HostnameVerifier() {
-                    @Override
-                    public boolean verify(String s, SSLSession sslSession) {
-                        return true;
-                    }
-                })
-                .build()
-                .newCall(request)
-                .execute();
-//                .enqueue(new Callback() {
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//                        System.out.println("onFailure()");
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) {
-//                        System.out.println("onResponse()");
-//                    }
-//
-//                });
-        System.out.printf("");
+        try {
+
+            Response response = OKHttpClientBuilder.buildOKHttpClient()
+                    .hostnameVerifier((s, sslSession) -> true)
+                    .build()
+                    .newCall(request)
+                    .execute();
+            if (response.isSuccessful()) {
+                System.out.println(response.toString());
+                assert response.body() != null;
+                System.out.println(response.body().string());
+            }
+        } catch (Exception exception) {
+            System.out.println("请求失败了");
+        }
     }
 }

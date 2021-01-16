@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.controller.content;
 
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
@@ -22,15 +23,17 @@ import java.util.List;
 public class MovieController {
 
     private final AnimeInfoService animeInfoService;
+    private final ZhangliProperties zhangliProperties;
 
-    public MovieController(AnimeInfoService animeInfoService) {
+    public MovieController(AnimeInfoService animeInfoService, ZhangliProperties zhangliProperties) {
         this.animeInfoService = animeInfoService;
+        this.zhangliProperties = zhangliProperties;
     }
 
     @GetMapping("/")
-    public ModelAndView index() {
+    public ModelAndView index(ModelAndView modelAndView) {
         List<AnimeInfo> recentAnime = animeInfoService.query(1, 15, new AnimeQuery());
-        ModelAndView modelAndView = new ModelAndView("home");
+        modelAndView.setViewName("home");
         modelAndView.addObject("recentList", recentAnime);
         modelAndView.addObject("dalyUpdateList", recentAnime);
         modelAndView.addObject("recommendList", recentAnime);
@@ -38,7 +41,7 @@ public class MovieController {
     }
 
     @GetMapping("detail/{movieId}")
-    public ModelAndView movie(@PathVariable(value = "movieId", required = false) String movieId) {
+    public ModelAndView movie(@PathVariable(value = "movieId", required = false) Long movieId) {
         AnimeInfoVo animeInfo = animeInfoService.getMovieDetail(movieId);
         ModelAndView modelAndView = new ModelAndView("detail");
         modelAndView.addObject(animeInfo);
@@ -126,7 +129,7 @@ public class MovieController {
 
     @GetMapping("play/{movieId}")
     public ModelAndView play(
-            @PathVariable(value = "movieId") String animeId,
+            @PathVariable(value = "movieId") Long animeId,
             @RequestParam(value = "playid") String playid
     ) {
         String[] strings = playid.split("_");

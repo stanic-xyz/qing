@@ -3,16 +3,8 @@ server:
 eureka:
   instance:
     instance-id: ${spring.application.name}
-    hostname: bangumi.chenyunlong.cn
-    prefer-ip-address: true
-    ip-address: 121.36.163.95
   client:
-    use-dns-for-fetching-service-urls: true
-    eureka-server-d-n-s-name: chenyunlong.cn
-    eureka-server-u-r-l-context: eureka
-    eureka-server-port: 8761
-    prefer-same-zone-eureka: true
-    region: zhangli
+    register-with-eureka: true
 spring:
   profiles:
     active: ${ENV:dev}

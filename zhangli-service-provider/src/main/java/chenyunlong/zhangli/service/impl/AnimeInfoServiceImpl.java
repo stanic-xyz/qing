@@ -65,7 +65,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
      * @param movieId 动漫ID
      */
     @Override
-    public AnimeInfoVo getMovieDetail(String movieId) {
+    public AnimeInfoVo getMovieDetail(Long movieId) {
         AnimeInfo animeInfo = animeInfoMapper.selectAnimationDetail(movieId);
         if (animeInfo == null) {
             return null;
@@ -108,7 +108,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
      * @return 动漫播放页参数信息
      */
     @Override
-    public AnimeInfoVo getPlayDetail(String animeId, int sourceType, int epside) {
+    public AnimeInfoVo getPlayDetail(Long animeId, int sourceType, int epside) {
         AnimeInfo animeInfo = animeInfoMapper.selectAnimationDetail(animeId);
         if (animeInfo != null) {
             AnimeEpisodeEntityExample example = new AnimeEpisodeEntityExample();

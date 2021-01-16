@@ -16,15 +16,10 @@ spring:
     password: zcnjecjevbywgcjh
 eureka:
   instance:
-    prefer-ip-address: true
-    ip-address: 121.36.163.95
+    prefer-ip-address: false
   client:
-    use-dns-for-fetching-service-urls: true
-    eureka-server-d-n-s-name: chenyunlong.cn
-    eureka-server-u-r-l-context: eureka
-    eureka-server-port: 8761
-    prefer-same-zone-eureka: true
-    region: zhangli
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -43,7 +38,7 @@ mp:
 zhangli:
   file:
     baseUploadDir: upload/
-    image-server-url: http://www.stanic.xyz/pic/
+    image-server-url: http://localhost:8080
   # 是否异步记录用户操作日志
   openAopLog: true
   swagger:

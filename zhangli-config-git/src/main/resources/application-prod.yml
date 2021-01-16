@@ -1,23 +1,14 @@
 eureka:
   instance:
-    leaseRenewalIntervalInSeconds: 10
-    health-check-url-path: /actuator/health
-    metadata-map:
-      startup: ${random.int}    #needed to trigger info and endpoint update after restart
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
     ip-address: 121.36.163.95
     hostname: config.chenyunlong.cn
     prefer-ip-address: true
   client:
-    registryFetchIntervalSeconds: 30
-    register-with-eureka: true
+    use-dns-for-fetching-service-urls: true
+    eureka-server-d-n-s-name: chenyunlong.cn
+    eureka-server-u-r-l-context: eureka
+    eureka-server-port: 8761
+    prefer-same-zone-eureka: true
+    region: zhangli
     service-url:
       defaultZone: http://121.36.163.95:8761/eureka/
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
