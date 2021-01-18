@@ -953,7 +953,7 @@
                     console.log(msg)
 
                     function on_new_anime_page_btn(obj, idx) {
-                        var lastnode = document.querySelector('.new_anime_btn_current');
+                        const lastnode = document.querySelector('.new_anime_btn_current');
                         lastnode.classList.remove('new_anime_btn_current');
                         var currentnode = document.getElementById('new_anime_page_btn_' + idx);
                         currentnode.classList.add('new_anime_btn_current');
@@ -963,7 +963,7 @@
                             return x.wd === idx;
                         });
                         // the list page
-                        var new_anime_page = document.getElementById('new_anime_page');
+                        const new_anime_page = document.getElementById('new_anime_page');
 
                         var firstElementChild = new_anime_page.firstElementChild;
                         var delta = new_anime_wd.length - new_anime_page.children.length;

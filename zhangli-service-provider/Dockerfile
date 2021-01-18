@@ -1,6 +1,6 @@
 FROM java:8-jre AS zhangli-service-provider
 USER root
-ENV ENV pro
+ENV ENV prod
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"
 EXPOSE 8080

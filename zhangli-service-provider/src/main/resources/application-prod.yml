@@ -14,13 +14,6 @@ eureka:
     hostname: bangumi.chenyunlong.cn
     prefer-ip-address: true
     ip-address: 121.36.163.95
-  client:
-    use-dns-for-fetching-service-urls: true
-    eureka-server-d-n-s-name: chenyunlong.cn
-    eureka-server-u-r-l-context: eureka
-    eureka-server-port: 8761
-    prefer-same-zone-eureka: true
-    region: zhangli
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"

@@ -11,3 +11,6 @@ eureka:
     eureka-server-port: 8761
     prefer-same-zone-eureka: true
     region: zhangli
+    service-url:
+      defaultZone: https://eureka.chenyunlong.cn/eureka/
+    use-dns-for-fetching-service-urls: true
