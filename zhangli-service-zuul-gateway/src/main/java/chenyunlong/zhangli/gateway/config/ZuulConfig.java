@@ -16,6 +16,9 @@ import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author Stan
+ */
 @Configuration
 public class ZuulConfig {
 

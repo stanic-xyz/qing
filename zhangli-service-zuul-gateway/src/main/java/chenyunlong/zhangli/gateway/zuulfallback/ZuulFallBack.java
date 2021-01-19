@@ -13,6 +13,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * 失败回调
+ *
+ * @author Stan
+ */
 @Component
 public class ZuulFallBack implements FallbackProvider {
 
@@ -29,7 +34,6 @@ public class ZuulFallBack implements FallbackProvider {
             /**
              * 客户端向网关发送服务成功，网关向api服务请求失败，不应该把api的404 500 等问题抛给客户端
              * 网关和api服务对客户端来说都是黑盒子。
-             * @return
              * @throws IOException
              */
             @Override
@@ -55,14 +59,12 @@ public class ZuulFallBack implements FallbackProvider {
             /**
              * 微服务出现宕机后，客户端再次请求就会返回fallback中的预设值
              * @return
-             * @throws IOException
              */
 
             @Override
             public InputStream getBody() throws IOException {
                 //服务异常时，输出此处内容，并打印错误日志
-                log.error("error appear ");
-                return new ByteArrayInputStream("this service is ubable use".getBytes());
+                return new ByteArrayInputStream("this service is unavailable！".getBytes());
             }
 
             @Override

@@ -1,0 +1,45 @@
+version: '2'
+services:
+  eureka-service:
+    networks:
+      - dev
+    container_name: eureka-service
+    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-eureka-service:1.0.0.RELEASE
+    ports:
+      - 8761:8761
+    environment:
+      TZ: Asia/Shanghai
+      ENV: prod
+  zuul-gateway:
+    networks:
+      - dev
+    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-service-zuul-gateway:1.0.0.RELEASE
+    container_name: zuul-gateway-service
+    ports:
+      - 9527:9527
+    environment:
+      TZ: Asia/Shanghai
+      ENV: prod
+  feign-client:
+    networks:
+      - dev
+    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-feign-client:1.0.0.RELEASE
+    ports:
+      - 9001:9001
+    environment:
+      TZ: Asia/Shanghai
+      ENV: prod
+  config-server:
+    networks:
+      - dev
+    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-config-git:1.0.0.RELEASE
+    container_name: config-service
+    ports:
+      - 8888:8888
+    environment:
+      TZ: Asia/Shanghai
+      ENV: prod
+
+networks:
+  dev:
+    driver: bridge

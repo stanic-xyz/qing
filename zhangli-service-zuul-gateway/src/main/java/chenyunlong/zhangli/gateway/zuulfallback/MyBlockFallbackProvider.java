@@ -6,12 +6,17 @@ import com.alibaba.csp.sentinel.log.RecordLog;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import org.springframework.stereotype.Component;
 
-// 自定义 FallbackProvider
+/**
+ * 自定义 FallbackProvider
+ *
+ * @author Stan
+ */
 @Component
 public class MyBlockFallbackProvider implements ZuulBlockFallbackProvider {
 
-
-    // you can define route as service level 
+    /**
+     * you can define route as service level
+     */
     @Override
     public String getRoute() {
         return "*";
