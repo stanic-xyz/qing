@@ -145,6 +145,14 @@ public class Result<T> {
         return new Result<>(SystemErrorType.SYSTEM_ERROR, data);
     }
 
+    public static Result unauthorized(String message) {
+        return new Result<>(SystemErrorType.UNAUTHORIZED, null);
+    }
+
+    public static Result forbidden(String message) {
+        return new Result<>(SystemErrorType.FORBIDDEN, null);
+    }
+
 
     /**
      * 成功code=000000

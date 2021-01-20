@@ -33,6 +33,7 @@
         <docker.registry.tag>${project.version}</docker.registry.tag>
         <sentinel.version>1.7.2</sentinel.version>
         <swagger.version>2.9.2</swagger.version>
+        <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
     </properties>
     <modules>
         <module>zhangli-eureka-service</module>
@@ -78,7 +79,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
+                <version>Hoxton.SR5</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -100,6 +101,11 @@
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>stan</groupId>
+                <artifactId>zhangli-service-api</artifactId>
+                <version>${zhangli.common.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>

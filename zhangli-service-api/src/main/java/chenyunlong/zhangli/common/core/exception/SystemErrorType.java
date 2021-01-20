@@ -1,6 +1,12 @@
 package chenyunlong.zhangli.common.core.exception;
 
 
+/**
+ * 自定义错误类型
+ *
+ * @author Stan
+ */
+
 public enum SystemErrorType implements ErrorType {
 
     SYSTEM_ERROR("-1", "系统异常"),
@@ -11,7 +17,12 @@ public enum SystemErrorType implements ErrorType {
     ARGUMENT_NOT_VALID("020000", "请求参数校验不通过"),
     INVALID_TOKEN("020001", "无效token"),
     UPLOAD_FILE_SIZE_LIMIT("020010", "上传文件大小超过限制"),
-    DUPLICATE_PRIMARY_KEY("030000", "唯一键冲突");
+    DUPLICATE_PRIMARY_KEY("030000", "唯一键冲突"),
+    SUCCESS("200", "操作成功"),
+    FAILED("500", "操作失败"),
+    VALIDATE_FAILED("404", "参数检验失败"),
+    UNAUTHORIZED("401", "暂未登录或token已经过期"),
+    FORBIDDEN("403", "没有相关权限");
 
     /**
      * 错误类型码
