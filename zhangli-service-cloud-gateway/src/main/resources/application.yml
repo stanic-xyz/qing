@@ -23,7 +23,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: 'http://localhost:8201/mall-auth/rsa/publicKey' #配置RSA的公钥访问地址
+          jwk-set-uri: 'http://localhost:8201/auth/rsa/publicKey' #配置RSA的公钥访问地址
+  redis:
+    database: 0
+    port: 6379
+    host: localhost
+    password:
 eureka:
   instance:
     instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
@@ -37,6 +42,20 @@ eureka:
     eureka-server-port: 8761
     prefer-same-zone-eureka: true
     region: zhangli
+secure:
+  ignore:
+    urls: #配置白名单路径
+      - "/doc.html"
+      - "/swagger-resources/*"
+      - "/swagger/**"
+      - "/**/v2/api-docs"
+      - "/**/*.js"
+      - "/**/*.css"
+      - "/**/*.png"
+      - "/**/*.ico"
+      - "/webjars/springfox-swagger-ui/*"
+      - "/actuator/**"
+      - "/anime/**"
 management: #开启SpringBoot Admin的监控
   endpoints:
     web:

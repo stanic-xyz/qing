@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -14,18 +15,19 @@ import java.time.ZonedDateTime;
 /**
  * @author Stan
  */
+@Data
 @ApiModel(description = "rest请求的返回模型，所有rest正常都返回该类的对象")
 public class Result<T> {
 
     public static final String SUCCESSFUL_CODE = "000000";
-    public static final String SUCCESSFUL_MESG = "处理成功";
+    public static final String SUCCESSFUL_MSG = "处理成功";
 
     @ApiModelProperty(value = "处理结果code", required = true)
     private String code;
     @ApiModelProperty(value = "处理结果描述信息")
     private String msg;
     @ApiModelProperty(value = "请求结果生成时间戳")
-    private Instant time;
+    private final Instant time;
     @ApiModelProperty(value = "处理结果数据信息")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
@@ -39,7 +41,7 @@ public class Result<T> {
      */
     public Result(ErrorType errorType) {
         this.code = errorType.getCode();
-        this.msg = errorType.getMesg();
+        this.msg = errorType.getMsg();
         this.time = ZonedDateTime.now().toInstant();
     }
 
@@ -72,8 +74,8 @@ public class Result<T> {
      * @param data 处理结果数据信息
      * @return Result
      */
-    public static Result success(Object data) {
-        return new Result<>(SUCCESSFUL_CODE, SUCCESSFUL_MESG, data);
+    public static <T> Result<T> success(T data) {
+        return new Result<>(SUCCESSFUL_CODE, SUCCESSFUL_MSG, data);
     }
 
     /**
@@ -81,7 +83,7 @@ public class Result<T> {
      *
      * @return Result
      */
-    public static Result success() {
+    public static <T> Result<T> success() {
         return success(null);
     }
 
@@ -90,8 +92,8 @@ public class Result<T> {
      *
      * @return Result
      */
-    public static Result fail() {
-        return new Result(SystemErrorType.SYSTEM_ERROR);
+    public static Result<String> fail() {
+        return new Result<>(SystemErrorType.SYSTEM_ERROR);
     }
 
     /**
@@ -100,7 +102,7 @@ public class Result<T> {
      * @param baseException 错误信息
      * @return Result
      */
-    public static Result fail(BaseException baseException) {
+    public static Result<String> fail(BaseException baseException) {
         return fail(baseException, null);
     }
 
@@ -110,7 +112,7 @@ public class Result<T> {
      * @param data 处理结果数据信息
      * @return Result
      */
-    public static Result fail(BaseException baseException, Object data) {
+    public static <T> Result<T> fail(BaseException baseException, T data) {
         return new Result<>(baseException.getErrorType(), data);
     }
 
@@ -121,7 +123,7 @@ public class Result<T> {
      * @param data      处理结果数据信息
      * @return Result
      */
-    public static Result fail(ErrorType errorType, Object data) {
+    public static <T> Result<T> fail(ErrorType errorType, T data) {
         return new Result<>(errorType, data);
     }
 
@@ -131,7 +133,7 @@ public class Result<T> {
      * @param errorType 错误类型
      * @return Result
      */
-    public static Result fail(ErrorType errorType) {
+    public static <T> Result<T> fail(ErrorType errorType) {
         return Result.fail(errorType, null);
     }
 
@@ -141,15 +143,15 @@ public class Result<T> {
      * @param data 处理结果数据信息
      * @return Result
      */
-    public static Result fail(Object data) {
+    public static <T> Result<T> fail(T data) {
         return new Result<>(SystemErrorType.SYSTEM_ERROR, data);
     }
 
-    public static Result unauthorized(String message) {
+    public static Result<String> unauthorized(String message) {
         return new Result<>(SystemErrorType.UNAUTHORIZED, null);
     }
 
-    public static Result forbidden(String message) {
+    public static Result<String> forbidden(String message) {
         return new Result<>(SystemErrorType.FORBIDDEN, null);
     }
 

@@ -3,6 +3,10 @@ package stan.zhangli.zhangliserviceclouadgateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author Stan
+ * @date 2020/01/21
+ */
 @SpringBootApplication
 public class ZhangliServiceCloudGatewayApplication {
 

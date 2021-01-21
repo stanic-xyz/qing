@@ -1,17 +1,20 @@
 package chenyunlong.zhangli.common.core.exception;
 
+/**
+ * @author Stan
+ */
 public interface ErrorType {
     /**
      * 返回code
      *
-     * @return
+     * @return 错误码
      */
     String getCode();
 
     /**
-     * 返回mesg
+     * 错误消息
      *
-     * @return
+     * @return 提示消息
      */
-    String getMesg();
+    String getMsg();
 }
