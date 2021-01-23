@@ -1,9 +1,13 @@
+debug: true
 server:
   port: 9528
 spring:
   application:
     name: spring-cloud-api-gateway
   cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
     gateway:
       routes:
         - id: zhangli-service-provider
@@ -46,14 +50,14 @@ secure:
   ignore:
     urls: #配置白名单路径
       - "/doc.html"
-      - "/swagger-resources/*"
+      - "/swagger-resources/**"
       - "/swagger/**"
       - "/**/v2/api-docs"
       - "/**/*.js"
       - "/**/*.css"
       - "/**/*.png"
       - "/**/*.ico"
-      - "/webjars/springfox-swagger-ui/*"
+      - "/webjars/springfox-swagger-ui/**"
       - "/actuator/**"
       - "/anime/**"
 management: #开启SpringBoot Admin的监控

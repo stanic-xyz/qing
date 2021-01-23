@@ -1,12 +1,12 @@
 package chenyunlong.zhangli.controller.system;
 
-import chenyunlong.zhangli.annotation.Log;
+import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.anthentication.TokenProvider;
 import chenyunlong.zhangli.entities.User;
-import chenyunlong.zhangli.exception.LoginErrorException;
-import chenyunlong.zhangli.exception.MyException;
+import chenyunlong.zhangli.common.exception.LoginErrorException;
+import chenyunlong.zhangli.common.exception.MyException;
 import chenyunlong.zhangli.model.vo.ApiResult;
-import chenyunlong.zhangli.service.UserService;
+import chenyunlong.zhangli.common.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import me.zhyd.oauth.model.AuthCallback;

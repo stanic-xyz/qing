@@ -24,7 +24,6 @@
         <dependency>
             <groupId>me.zhyd.oauth</groupId>
             <artifactId>JustAuth</artifactId>
-            <version>1.15.8</version>
         </dependency>
         <dependency>
             <groupId>com.qcloud</groupId>
@@ -35,13 +34,15 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-spi</artifactId>
         </dependency>
         <!-- swagger-ui -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.5.0</version>
         </dependency>
         <!--jwt 支持-->
         <dependency>

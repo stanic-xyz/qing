@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.config;
 
-import chenyunlong.zhangli.common.core.constant.AuthConstant;
+import chenyunlong.zhangli.common.constant.AuthConstant;
 import cn.hutool.core.util.ArrayUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -50,7 +50,8 @@ public class ResourceServerConfig {
                 .pathMatchers(ArrayUtil.toArray(ignoreUrlsConfig.getUrls(), String.class)).permitAll()
                 //鉴权管理器配置
                 .anyExchange().access(authorizationManager)
-                .and().exceptionHandling()
+                .and()
+                .exceptionHandling()
                 //处理未授权
                 .accessDeniedHandler(restfulAccessDeniedHandler)
                 //处理未认证

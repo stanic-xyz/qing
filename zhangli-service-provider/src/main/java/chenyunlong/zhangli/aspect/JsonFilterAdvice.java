@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.aspect;
 
-import chenyunlong.zhangli.annotation.JsonFieldFilter;
+import chenyunlong.zhangli.common.annotation.JsonFieldFilter;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.validator;
 
-import chenyunlong.zhangli.annotation.IsCron;
+import chenyunlong.zhangli.common.annotation.IsCron;
 import org.quartz.CronExpression;
 
 import javax.validation.ConstraintValidator;

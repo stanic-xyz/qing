@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.filter;
 
-import chenyunlong.zhangli.common.core.constant.AuthConstant;
+import chenyunlong.zhangli.common.constant.AuthConstant;
 import cn.hutool.core.util.StrUtil;
 import com.nimbusds.jose.JWSObject;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,6 @@ import java.text.ParseException;
 @Component
 public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst(AuthConstant.JWT_TOKEN_HEADER);
@@ -47,6 +46,6 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return Ordered.HIGHEST_PRECEDENCE;
     }
 }

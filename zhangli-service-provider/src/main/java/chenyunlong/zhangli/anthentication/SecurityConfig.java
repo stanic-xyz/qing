@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.anthentication;
 
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import chenyunlong.zhangli.service.UserService;
+import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.common.service.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

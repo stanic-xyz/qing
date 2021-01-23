@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.filter;
 
-import chenyunlong.zhangli.common.core.constant.AuthConstant;
+import chenyunlong.zhangli.common.constant.AuthConstant;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;

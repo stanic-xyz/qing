@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.component;
 
-import chenyunlong.zhangli.common.core.entity.vo.Result;
+import chenyunlong.zhangli.common.api.Result;
 import cn.hutool.json.JSONUtil;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +31,7 @@ public class RestfulAccessDeniedHandler implements ServerAccessDeniedHandler {
         response.getHeaders().set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         response.getHeaders().set("Access-Control-Allow-Origin", "*");
         response.getHeaders().set("Cache-Control", "no-cache");
-        String body = JSONUtil.toJsonStr(Result.forbidden(denied.getMessage()));
+        String body = JSONUtil.toJsonStr(Result.forbidden());
         DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
         return response.writeWith(Mono.just(buffer));
     }

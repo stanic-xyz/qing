@@ -1,12 +1,12 @@
 package chenyunlong.zhangli.controller.api;
 
-import chenyunlong.zhangli.annotation.Log;
+import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.entities.AnimeType;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
-import chenyunlong.zhangli.service.AnimeInfoService;
+import chenyunlong.zhangli.common.service.AnimeInfoService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

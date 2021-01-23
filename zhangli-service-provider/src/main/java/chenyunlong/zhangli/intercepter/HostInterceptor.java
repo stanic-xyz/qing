@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.intercepter;
 
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 

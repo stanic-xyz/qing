@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.listener;
 
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;

@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.component;
 
-import chenyunlong.zhangli.common.core.entity.vo.Result;
+import chenyunlong.zhangli.common.api.Result;
 import cn.hutool.json.JSONUtil;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
  * 自定义返回结果：没有登录或token过期时
  *
  * @author Stan
- * @date 2020/01/02
+ * @date 2021/01/21
  */
 @Component
 public class RestAuthenticationEntryPoint implements ServerAuthenticationEntryPoint {

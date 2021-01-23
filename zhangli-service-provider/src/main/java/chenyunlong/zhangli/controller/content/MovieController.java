@@ -1,12 +1,12 @@
 package chenyunlong.zhangli.controller.content;
 
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.common.service.AnimeInfoService;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.PlayInfoModel;
-import chenyunlong.zhangli.service.AnimeInfoService;
 import cn.hutool.json.JSONUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -30,7 +30,7 @@ public class MovieController {
         this.zhangliProperties = zhangliProperties;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ModelAndView index(ModelAndView modelAndView) {
         List<AnimeInfo> recentAnime = animeInfoService.query(1, 15, new AnimeQuery());
         modelAndView.setViewName("home");

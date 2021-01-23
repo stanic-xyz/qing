@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.authorization;
 
-import chenyunlong.zhangli.common.core.constant.AuthConstant;
+import chenyunlong.zhangli.common.constant.AuthConstant;
 import chenyunlong.zhangli.common.domain.UserDto;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;

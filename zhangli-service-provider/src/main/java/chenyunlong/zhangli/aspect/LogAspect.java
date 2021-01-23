@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.aspect;
 
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.utils.HttpContextUtil;
 import chenyunlong.zhangli.utils.IPUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -29,7 +29,7 @@ public class LogAspect {
         this.zhangliProperties = zhangliProperties;
     }
 
-    @Pointcut("@annotation(chenyunlong.zhangli.annotation.Log)")
+    @Pointcut("@annotation(chenyunlong.zhangli.common.annotation.Log)")
     public void pointcut() {
         // do nothing
     }
