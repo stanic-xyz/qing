@@ -2,6 +2,9 @@ package chenyunlong.zhangli.remote;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Stan
+ */
 @Component
 public class MyFeignFallBack implements RemoteHello {
     @Override

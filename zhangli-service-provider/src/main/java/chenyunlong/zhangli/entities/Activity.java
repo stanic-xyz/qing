@@ -13,7 +13,10 @@ public class Activity implements Serializable {
     private Attachement attachement;
     private Date createTime;
     private Date modifyTime;
-    private Integer publishState;//发表状态0：未发表，1:已发表，
+    /**
+     * 发表状态0：未发表，1:已发表，
+     */
+    private Integer publishState;
 
 
     public Integer getPublishState() {
