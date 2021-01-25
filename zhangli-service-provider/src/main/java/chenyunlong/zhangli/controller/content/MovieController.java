@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.controller.content;
 
-import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
-import chenyunlong.zhangli.common.service.AnimeInfoService;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;

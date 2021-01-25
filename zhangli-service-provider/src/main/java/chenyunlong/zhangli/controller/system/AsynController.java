@@ -2,7 +2,7 @@ package chenyunlong.zhangli.controller.system;
 
 
 import chenyunlong.zhangli.common.DeferredResultResponse;
-import chenyunlong.zhangli.common.service.DeferredResultService;
+import chenyunlong.zhangli.service.DeferredResultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;

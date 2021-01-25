@@ -6,7 +6,8 @@ import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
-import chenyunlong.zhangli.common.service.AnimeInfoService;
+import chenyunlong.zhangli.service.AnimeInfoService;
+import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * @author Stan
  */
+@Api(tags = "anime")
 @Validated
 @RestController
 @RequestMapping("api/anime")

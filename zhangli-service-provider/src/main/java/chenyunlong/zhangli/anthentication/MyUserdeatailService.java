@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.anthentication;
 
 import chenyunlong.zhangli.entities.User;
-import chenyunlong.zhangli.common.service.UserService;
+import chenyunlong.zhangli.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

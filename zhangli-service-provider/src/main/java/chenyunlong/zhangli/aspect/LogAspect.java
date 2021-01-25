@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.aspect;
 
-import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.utils.HttpContextUtil;
 import chenyunlong.zhangli.utils.IPUtil;
 import org.aspectj.lang.ProceedingJoinPoint;

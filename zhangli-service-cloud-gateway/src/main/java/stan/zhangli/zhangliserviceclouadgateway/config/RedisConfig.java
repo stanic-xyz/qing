@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.config;
 
-import chenyunlong.zhangli.common.config.BaseRedisConfig;
+import chenyunlong.zhangli.config.BaseRedisConfig;
 import org.springframework.context.annotation.Configuration;
 
 /**

@@ -31,5 +31,6 @@
     <select id="listTypes" resultType="chenyunlong.zhangli.entities.AnimeType">
         select id, name, description
         from anime_type
+        order by `order`
     </select>
 </mapper>

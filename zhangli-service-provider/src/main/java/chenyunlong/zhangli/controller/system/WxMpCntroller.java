@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.controller.system;
 
-import chenyunlong.zhangli.common.service.DuplicatedMessageChecker;
+import chenyunlong.zhangli.service.DuplicatedMessageChecker;
 import com.riversoft.weixin.common.decrypt.AesException;
 import com.riversoft.weixin.common.decrypt.MessageDecryption;
 import com.riversoft.weixin.common.decrypt.SHA1;

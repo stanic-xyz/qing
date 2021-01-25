@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.anthentication;
 
-import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
