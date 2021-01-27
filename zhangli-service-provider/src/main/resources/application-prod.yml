@@ -8,6 +8,12 @@ spring:
     host: smtp.qq.com
     username: 1576302867@qq.com
     password: xoqywcevpshnbabf
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://121.36.163.95:8848
+      config:
+        server-addr: http://121.36.163.95:8848
 eureka:
   instance:
     instance-id: ${spring.application.name}

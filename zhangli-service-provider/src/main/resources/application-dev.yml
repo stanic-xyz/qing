@@ -14,6 +14,16 @@ spring:
     host: smtp.qq.com
     username: 1576302867@qq.com
     password: zcnjecjevbywgcjh
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://localhost:8848
+      config:
+        server-addr: http://localhost:8848
+  rabbitmq:
+    username: guest
+    password: guest
+    host: localhost
 eureka:
   instance:
     prefer-ip-address: false

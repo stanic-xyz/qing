@@ -19,6 +19,12 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://localhost:8848
+      config:
+        server-addr: http://localhost:8848
 mybatis:
   mapperLocations: classpath*:mapper*/*.xml
   configuration:
