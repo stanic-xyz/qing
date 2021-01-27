@@ -1,12 +1,12 @@
 package chenyunlong.zhangli.controller.content;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.PlayInfoModel;
+import chenyunlong.zhangli.service.AnimeInfoService;
 import cn.hutool.json.JSONUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;

@@ -23,7 +23,7 @@ import java.util.List;
 @Api(tags = "anime")
 @RestController
 @RequestMapping("api/district")
-public class DistrictController {
+public class AnimeController {
     @Autowired
     private DistrictService districtService;
     @Autowired
@@ -31,7 +31,7 @@ public class DistrictController {
     @Autowired
     private AnimeTypeService animeTypeService;
 
-    public DistrictController(DistrictService districtService) {
+    public AnimeController(DistrictService districtService) {
         this.districtService = districtService;
     }
 
