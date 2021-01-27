@@ -5,22 +5,15 @@ spring:
     name: zhangli-admin-server
   profiles:
     active: ${ENV:dev}
-eureka:
-  instance:
-    health-check-url-path: /actuator/health
-    instance-id: ${spring.application.name}
-    prefer-ip-address: true
-    hostname: localhost
-    metadata-map:
-      #needed to trigger info and endpoint update after restart
-      startup: ${random.int}
-  client:
-    eureka-server-d-n-s-name: chenyunlong.cn
-    eureka-server-u-r-l-context: eureka
-    eureka-server-port: 8761
-    prefer-same-zone-eureka: true
-    region: zhangli
-    register-with-eureka: true
+  security:
+    # 配置登录用户名和密码
+    user:
+      name: macro
+      password: 123456
+  boot:
+    admin:
+      discovery:
+        ignored-services: ${spring.application.name}
 management:
   endpoints:
     web:

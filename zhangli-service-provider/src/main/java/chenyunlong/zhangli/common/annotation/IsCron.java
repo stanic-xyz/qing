@@ -1,9 +1,9 @@
 package chenyunlong.zhangli.common.annotation;
 
 import chenyunlong.zhangli.validator.CronValidator;
+import com.nimbusds.jose.Payload;
 
 import javax.validation.Constraint;
-import javax.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

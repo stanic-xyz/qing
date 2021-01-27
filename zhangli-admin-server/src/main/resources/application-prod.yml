@@ -1,5 +1,7 @@
-eureka:
-  client:
-    use-dns-for-fetching-service-urls: true
-    service-url:
-      defaultZone: https://eureka.chenyunlong.cn/eureka/
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://localhost:8848
+      config:
+        server-addr: http://localhost:8848

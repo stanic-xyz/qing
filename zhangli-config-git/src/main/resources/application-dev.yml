@@ -1,3 +1,8 @@
+
+spring:
+  cloud:
+    discovery:
+
 eureka:
   client:
     service-url:
