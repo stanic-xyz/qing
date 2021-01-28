@@ -55,7 +55,7 @@ public interface AnimeInfoMapper {
      * @param pageSize   分页大小
      * @return 返回
      */
-    List<AnimeInfo> selectAnimationW(@Param("anime") AnimeQuery animeQuery, Integer offset, Integer pageSize);
+    List<AnimeInfo> selectAnimationW(@Param("anime") AnimeQuery animeQuery, Long offset, Integer pageSize);
 
     /**
      * 根据名称查询动漫信息
@@ -78,4 +78,17 @@ public interface AnimeInfoMapper {
      * @param animeId 动漫ID
      */
     void deleteByAnimeId(Long animeId);
+
+    /**
+     * 获取连载中的动漫总数
+     *
+     * @return 连载中的动漫总数
+     */
+    long getUpdateAnimeCount();
+
+    /**
+     * @param pageRequest 分页对象
+     * @return 连载中的动漫信息
+     */
+    List<AnimeInfo> selectAnimeByUpdateTime(@Param("pageRequest") Pageable pageRequest);
 }

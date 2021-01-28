@@ -6,6 +6,7 @@ import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -44,12 +45,12 @@ public interface AnimeInfoService {
     /**
      * 查询动画信息
      *
+     *
+     * @param pageable
      * @param animeInfo 查询参数（名称)
-     * @param page      当前页
-     * @param pageSize  分页大小
      * @return 满足条件的动画信息
      */
-    List<AnimeInfo> query(Integer page, Integer pageSize, AnimeQuery animeInfo);
+    List<AnimeInfo> query(Pageable pageable, AnimeQuery animeInfo);
 
     /**
      * 获取播放页数据
@@ -89,4 +90,11 @@ public interface AnimeInfoService {
      * @return 动漫类型信息
      */
     AnimeType addAnimeType(AnimeType animeType);
+
+    /**
+     * @param page     当前页
+     * @param pageSize 分页大小
+     * @return 动漫分页信息了
+     */
+    Page<AnimeInfo> getUpdateAnimeInfo(Integer page, Integer pageSize);
 }

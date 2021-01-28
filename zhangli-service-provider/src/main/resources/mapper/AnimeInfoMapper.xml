@@ -116,6 +116,34 @@
         from anime_info
         where name like concat('%', #{name}, '%')
     </select>
+    <select id="getUpdateAnimeCount" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM anime_info
+        where play_status = '连载'
+    </select>
+    <select id="selectAnimeByUpdateTime" resultMap="BaseResultMap">
+        SELECT `id`,
+               `name`,
+               `district`,
+               `cover_url`,
+               `type`,
+               `instruction`,
+               `other_name`,
+               `author`,
+               `company`,
+               `premiere_date`,
+               `play_status`,
+               `plot_type`,
+               `tags`,
+               `official_website`,
+               `play_heat`,
+               `orignal_name`
+        FROM anime_info
+        where play_status = '连载'
+        order by premiere_date desc
+        limit #{pageRequest.offset} ,#{pageRequest.pageSize}
+
+    </select>
 
     <insert id="insert">
         INSERT INTO `zhangli`.`anime_info`

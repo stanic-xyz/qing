@@ -3,11 +3,14 @@ package chenyunlong.zhangli.controller.content;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.param.AnimeQuery;
+import chenyunlong.zhangli.model.vo.AnimeOptionsModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.PlayInfoModel;
 import chenyunlong.zhangli.service.AnimeInfoService;
+import chenyunlong.zhangli.service.AnimeOptionsService;
 import cn.hutool.json.JSONUtil;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +27,20 @@ public class MovieController {
 
     private final AnimeInfoService animeInfoService;
     private final ZhangliProperties zhangliProperties;
+    private final AnimeOptionsService animeOptionsService;
 
-    public MovieController(AnimeInfoService animeInfoService, ZhangliProperties zhangliProperties) {
+    public MovieController(AnimeInfoService animeInfoService,
+                           ZhangliProperties zhangliProperties,
+                           AnimeOptionsService animeOptionsService) {
         this.animeInfoService = animeInfoService;
         this.zhangliProperties = zhangliProperties;
+        this.animeOptionsService = animeOptionsService;
     }
 
     @GetMapping("")
     public ModelAndView index(ModelAndView modelAndView) {
-        List<AnimeInfo> recentAnime = animeInfoService.query(1, 15, new AnimeQuery());
+        PageRequest pageRequest = PageRequest.of(1, 24);
+        List<AnimeInfo> recentAnime = animeInfoService.query(pageRequest, new AnimeQuery());
         modelAndView.setViewName("home");
         modelAndView.addObject("recentList", recentAnime);
         modelAndView.addObject("dalyUpdateList", recentAnime);
@@ -65,7 +73,9 @@ public class MovieController {
         }
         PageRequest pageRequest = PageRequest.of(page - 1, 24);
         AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest);
+        AnimeOptionsModel animeOptionsModel = animeOptionsService.getOptions();
         ModelAndView modelAndView = new ModelAndView("catalog");
+        modelAndView.addObject("option", animeOptionsModel);
         modelAndView.addObject("animeList", rankModel.getAnimeInfoList());
         modelAndView.addObject("total", rankModel.getTotalCount());
         modelAndView.addObject("number", pageRequest.getPageNumber() + 1);
@@ -92,8 +102,14 @@ public class MovieController {
 
 
     @GetMapping("update")
-    public ModelAndView update() {
-        return new ModelAndView("update");
+    public ModelAndView update(@RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "24") Integer pageSize) {
+        Page<AnimeInfo> animeInfoPage = animeInfoService.getUpdateAnimeInfo(page, pageSize);
+        animeInfoPage.getNumber();
+        animeInfoPage.getTotalPages();
+        ModelAndView modelAndView = new ModelAndView("update");
+        modelAndView.addObject("animeInfoPage", animeInfoPage);
+        return modelAndView;
     }
 
 
@@ -111,13 +127,8 @@ public class MovieController {
 
         long totalCount = animeInfoService.getTotalCount(query);
         int totalPage = (int) Math.ceil(((double) totalCount) / ((double) pageSize));
-        if (page < 1) {
-            page = 1;
-        }
-        if (page > totalPage) {
-            page = totalPage;
-        }
-        List<AnimeInfo> animeInfos = animeInfoService.query(page, pageSize, animeQuery);
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        List<AnimeInfo> animeInfos = animeInfoService.query(pageRequest, animeQuery);
         ModelAndView modelAndView = new ModelAndView("search");
         modelAndView.addObject("animeInfos", animeInfos);
         modelAndView.addObject("query", query);

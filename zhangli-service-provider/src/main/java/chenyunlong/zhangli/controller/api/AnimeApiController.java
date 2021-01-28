@@ -8,6 +8,8 @@ import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import io.swagger.annotations.Api;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +57,15 @@ public class AnimeApiController {
                                                 @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
                                                 @RequestParam(value = "animeName", required = false, defaultValue = "") String animeName,
                                                 AnimeQuery animeInfo) {
-        return ApiResult.success(animeInfoService.query(page, pageSize, animeInfo));
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        return ApiResult.success(animeInfoService.query(pageRequest, animeInfo));
+    }
+
+    @Log("获取所有动漫信息")
+    @GetMapping("update/page")
+    public ApiResult<Page<AnimeInfo>> getUpdateInfo(@RequestParam(defaultValue = "1") Integer page,
+                                                    @RequestParam(defaultValue = "24") Integer pageSize) {
+        return ApiResult.success(animeInfoService.getUpdateAnimeInfo(page, pageSize));
     }
 
     @Log("删除视频信息")
@@ -76,4 +86,5 @@ public class AnimeApiController {
     public ApiResult<AnimeType> addAnimeType(@Valid @RequestBody AnimeType animeType) {
         return ApiResult.success(animeInfoService.addAnimeType(animeType));
     }
+
 }

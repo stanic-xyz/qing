@@ -15,6 +15,9 @@ import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -88,16 +91,9 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     }
 
     @Override
-    public List<AnimeInfo> query(Integer page, Integer pageSize, AnimeQuery animeInfo) {
+    public List<AnimeInfo> query(Pageable pageable, AnimeQuery animeInfo) {
 
-        if (page <= 0) {
-            page = 1;
-        }
-        if (pageSize < 1) {
-            pageSize = 15;
-        }
-
-        return animeInfoMapper.selectAnimationW(animeInfo, (page - 1) * pageSize, pageSize);
+        return animeInfoMapper.selectAnimationW(animeInfo, pageable.getOffset(), pageable.getPageSize());
     }
 
     /**
@@ -135,10 +131,19 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AnimeType addAnimeType(AnimeType animeType) {
         animeTypeMapper.addAnimeType(animeType);
         return animeType;
+    }
+
+    @Override
+    public Page<AnimeInfo> getUpdateAnimeInfo(Integer page, Integer pageSize) {
+
+        long total = animeInfoMapper.getUpdateAnimeCount();
+        Pageable pageRequest = PageRequest.of(page, pageSize);
+        List<AnimeInfo> animeInfoList = animeInfoMapper.selectAnimeByUpdateTime(pageRequest);
+        return new PageImpl<>(animeInfoList, pageRequest, total);
     }
 
     private void getPlayDetail() {
