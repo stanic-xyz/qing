@@ -54,8 +54,8 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     }
 
     @Override
-    public AnimeInfoRankModel getRankPage(Pageable pageable) {
-        List<AnimeInfo> animeInfoList = animeInfoMapper.listAnimes(pageable);
+    public AnimeInfoRankModel getRankPage(Pageable pageable, AnimeQuery animeQuery) {
+        List<AnimeInfo> animeInfoList = animeInfoMapper.listAnimes(pageable, animeQuery);
         long count = animeInfoMapper.count();
         return new AnimeInfoRankModel(animeInfoList, count);
     }

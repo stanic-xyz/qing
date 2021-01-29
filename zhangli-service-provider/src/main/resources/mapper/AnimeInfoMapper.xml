@@ -36,7 +36,7 @@
         where id = #{animeId}
     </delete>
 
-    <select id="listAnimes" resultMap="BaseResultMap">
+    <select id="listAnimes" resultMap="BaseResultMap" parameterType="chenyunlong.zhangli.model.param.AnimeQuery">
         SELECT `id`,
                `name`,
                `district`,

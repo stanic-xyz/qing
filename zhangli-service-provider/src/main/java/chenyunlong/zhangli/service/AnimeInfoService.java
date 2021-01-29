@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface AnimeInfoService {
 
-    AnimeInfoRankModel getRankPage(Pageable pageable);
+    AnimeInfoRankModel getRankPage(Pageable pageable, AnimeQuery animeQuery);
 
     /**
      * 添加动漫信息

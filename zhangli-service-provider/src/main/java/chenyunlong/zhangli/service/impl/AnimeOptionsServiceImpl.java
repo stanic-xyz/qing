@@ -7,6 +7,7 @@ import chenyunlong.zhangli.model.vo.AnimeOptionsModel;
 import chenyunlong.zhangli.service.AnimeOptionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springfox.documentation.annotations.Cacheable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class AnimeOptionsServiceImpl implements AnimeOptionsService {
     @Autowired
     private DistrictMapper districtMapper;
 
+    @Cacheable("options")
     @Override
     public AnimeOptionsModel getOptions() {
         AnimeOptionsModel optionsModel = new AnimeOptionsModel();

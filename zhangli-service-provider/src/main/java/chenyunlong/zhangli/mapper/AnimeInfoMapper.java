@@ -20,10 +20,11 @@ public interface AnimeInfoMapper {
     /**
      * 分页获取动画信息
      *
-     * @param pageable 分页信息
+     * @param pageable   分页信息
+     * @param animeQuery 查询条件
      * @return 所有动画的分页信息
      */
-    List<AnimeInfo> listAnimes(@Param("page") Pageable pageable);
+    List<AnimeInfo> listAnimes(@Param("page") Pageable pageable, AnimeQuery animeQuery);
 
     /**
      * 计算满足条件的记录个数

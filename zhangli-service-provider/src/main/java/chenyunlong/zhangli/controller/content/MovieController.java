@@ -57,24 +57,17 @@ public class MovieController {
     }
 
     @GetMapping("catalog")
-    public ModelAndView catalog(
-            @RequestParam(value = "district", required = false, defaultValue = "all") String district,
-            @RequestParam(value = "version", required = false, defaultValue = "all") String version,
-            @RequestParam(value = "index", required = false, defaultValue = "all") String index,
-            @RequestParam(value = "year", required = false, defaultValue = "all") String year,
-            @RequestParam(value = "season", required = false, defaultValue = "all") String season,
-            @RequestParam(value = "status", required = false, defaultValue = "all") String status,
-            @RequestParam(value = "resourceType", required = false, defaultValue = "all") String resourceType,
-            @RequestParam(value = "orderType", required = false, defaultValue = "times") String orderType,
-            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "24") Integer pageSize) {
+    public ModelAndView catalog(AnimeQuery animeQuery,
+                                @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                                @RequestParam(value = "pageSize", required = false, defaultValue = "24") Integer pageSize) {
         if (page < 1) {
             page = 1;
         }
         PageRequest pageRequest = PageRequest.of(page - 1, 24);
-        AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest);
+        AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest, animeQuery);
         AnimeOptionsModel animeOptionsModel = animeOptionsService.getOptions();
         ModelAndView modelAndView = new ModelAndView("catalog");
+        modelAndView.addObject("query", animeQuery);
         modelAndView.addObject("option", animeOptionsModel);
         modelAndView.addObject("animeList", rankModel.getAnimeInfoList());
         modelAndView.addObject("total", rankModel.getTotalCount());
@@ -86,13 +79,14 @@ public class MovieController {
     public ModelAndView rank(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "tag", required = false) String tag,
-            @RequestParam(value = "year", required = false) String catyear
+            @RequestParam(value = "year", required = false) String catyear,
+            AnimeQuery animeQuery
     ) {
         if (page < 1) {
             page = 1;
         }
         PageRequest pageRequest = PageRequest.of(page - 1, 75);
-        AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest);
+        AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest, animeQuery);
         ModelAndView modelAndView = new ModelAndView("rank");
         modelAndView.addObject("animeList", rankModel.getAnimeInfoList());
         modelAndView.addObject("total", rankModel.getTotalCount());
