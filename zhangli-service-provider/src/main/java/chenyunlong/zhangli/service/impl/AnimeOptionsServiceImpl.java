@@ -1,14 +1,17 @@
 package chenyunlong.zhangli.service.impl;
 
+import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.mapper.AnimeTypeMapper;
 import chenyunlong.zhangli.mapper.DistrictMapper;
 import chenyunlong.zhangli.mapper.VersionMapper;
 import chenyunlong.zhangli.model.vo.AnimeOptionsModel;
+import chenyunlong.zhangli.model.vo.YearInfo;
 import chenyunlong.zhangli.service.AnimeOptionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springfox.documentation.annotations.Cacheable;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +22,9 @@ import java.util.List;
  */
 @Service
 public class AnimeOptionsServiceImpl implements AnimeOptionsService {
+
+    @Autowired
+    private AnimeInfoMapper animeInfoMapper;
     @Autowired
     private AnimeTypeMapper animeTypeMapper;
     @Autowired
@@ -29,6 +35,7 @@ public class AnimeOptionsServiceImpl implements AnimeOptionsService {
     @Cacheable("options")
     @Override
     public AnimeOptionsModel getOptions() {
+        LocalDate earliestAnime = animeInfoMapper.selectEarliestyear();
         AnimeOptionsModel optionsModel = new AnimeOptionsModel();
         optionsModel.setTypeList(animeTypeMapper.listTypes());
         optionsModel.setDistrictList(districtMapper.getDistrictInfo());
@@ -40,6 +47,22 @@ public class AnimeOptionsServiceImpl implements AnimeOptionsService {
             a += 1;
         }
         optionsModel.setIndexList(indexList);
+        //添加查询年份信息
+        List<YearInfo> years = new LinkedList<>();
+
+        LocalDate now = LocalDate.now();
+        for (int i = 0; i < 10; i++) {
+            YearInfo yearInfo = new YearInfo();
+            yearInfo.setQueryValue("[" + now.getYear() + "," + now.plusYears(-1).getYear() + ")");
+            yearInfo.setName(String.valueOf(now.getYear()));
+            now = now.plusYears(-1);
+            years.add(yearInfo);
+        }
+        YearInfo yearInfo = new YearInfo();
+        yearInfo.setQueryValue("[" + now.getYear() + "," + (earliestAnime != null ? earliestAnime.getYear() : "1980") + "]");
+        yearInfo.setName(now.getYear() + "及以前");
+        years.add(yearInfo);
+        optionsModel.setYears(years);
         return optionsModel;
     }
 }

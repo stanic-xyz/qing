@@ -11,6 +11,7 @@ import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.AnimeOptionsService;
 import cn.hutool.json.JSONUtil;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -66,12 +67,15 @@ public class MovieController {
         PageRequest pageRequest = PageRequest.of(page - 1, 24);
         AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest, animeQuery);
         AnimeOptionsModel animeOptionsModel = animeOptionsService.getOptions();
+        PageImpl<AnimeInfo> animeInfoPage = new PageImpl<>(rankModel.getAnimeInfoList(), pageRequest, rankModel.getTotalCount());
         ModelAndView modelAndView = new ModelAndView("catalog");
         modelAndView.addObject("query", animeQuery);
+        modelAndView.addObject("years", animeOptionsModel.getYears());
         modelAndView.addObject("option", animeOptionsModel);
         modelAndView.addObject("animeList", rankModel.getAnimeInfoList());
         modelAndView.addObject("total", rankModel.getTotalCount());
         modelAndView.addObject("number", pageRequest.getPageNumber() + 1);
+        modelAndView.addObject("paeInfo", animeInfoPage);
         return modelAndView;
     }
 
