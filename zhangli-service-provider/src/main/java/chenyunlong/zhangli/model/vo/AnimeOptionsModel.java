@@ -17,4 +17,5 @@ public class AnimeOptionsModel implements Serializable {
     private List<Version> versionList;
     private List<District> districtList;
     private List<String> indexList;
+    private List<YearInfo> years;
 }
