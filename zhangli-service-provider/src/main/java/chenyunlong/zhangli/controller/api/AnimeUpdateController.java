@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.controller.api;
 
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.param.AnimeQuery;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.AnimeRecommendService;
 import io.swagger.annotations.Api;
@@ -25,9 +26,9 @@ public class AnimeUpdateController {
 
 
     @GetMapping("list")
-    public ApiResult<List<AnimeInfo>> getRecommendAnimeInfoList() {
+    public ApiResult<List<AnimeInfo>> getRecommendAnimeInfoList(AnimeQuery animeQuery) {
 
         Pageable pageable = PageRequest.of(1, 20);
-        return ApiResult.success(animeRecommendService.getRecommendAnimeInfoList(pageable));
+        return ApiResult.success(animeRecommendService.getRecommendAnimeInfoList(pageable, animeQuery));
     }
 }

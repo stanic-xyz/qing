@@ -36,24 +36,47 @@
         where id = #{animeId}
     </delete>
 
-    <select id="listAnimes" resultMap="BaseResultMap">
+    <select id="listAnimes" resultMap="BaseResultMap" parameterType="chenyunlong.zhangli.model.param.AnimeQuery">
         SELECT `id`,
-               `name`,
-               `district`,
-               `cover_url`,
-               `type`,
-               `instruction`,
-               `other_name`,
-               `author`,
-               `company`,
-               `premiere_date`,
-               `play_status`,
-               `plot_type`,
-               `tags`,
-               `official_website`,
-               `play_heat`,
-               `orignal_name`
+        `name`,
+        `district`,
+        `cover_url`,
+        `type`,
+        `instruction`,
+        `other_name`,
+        `author`,
+        `company`,
+        `premiere_date`,
+        `play_status`,
+        `plot_type`,
+        `tags`,
+        `official_website`,
+        `play_heat`,
+        `orignal_name`
         FROM anime_info
+        <where>
+            <if test="(query.keyword != null) and (query.keyword != '')">
+                and name like concat('%',#{query.keyword},'%')
+            </if>
+            <if test="(query.district != null) and (query.keyword != '') and (query.keyword != 'all')">
+                and name like concat('%',#{query.keyword},'%')
+            </if>
+            <if test="(query.year != null) and (query.year != '') (query.year != 'all')">
+                and premiere_date > #{query.startYear} and premiere_date &lt; #{query.endYear}
+            </if>
+            <if test="(query.version != null) and (query.version != '') and (query.version != 'all')">
+                and type = #{query.version}
+            </if>
+            <if test="(query.status != null) and (query.status != '') and (query.status != 'all')">
+                and play_status = #{query.status}
+            </if>
+            <if test="(query.type != null) and (query.type != '') and (query.type != 'all')">
+                and tags like concat('%',#{query.type},'%')
+            </if>
+        </where>
+        <if test="query.sort!= null and query.sort!=''">
+            order by #{query.sort}
+        </if>
         limit #{page.offset} ,#{page.pageSize}
     </select>
 
@@ -78,9 +101,29 @@
         where id = #{movieId}
     </select>
 
-    <select id="count" resultType="long">
-        select count(*)
-        FROM anime_info;
+    <select id="count" resultType="long" parameterType="chenyunlong.zhangli.model.param.AnimeQuery">
+        select count(1)
+        FROM anime_info
+        <where>
+            <if test="(query.keyword != null) and (query.keyword != '')">
+                and name like concat('%',#{query.keyword},'%')
+            </if>
+            <if test="(query.district != null) and (query.keyword != '') and (query.keyword != 'all')">
+                and name like concat('%',#{query.keyword},'%')
+            </if>
+            <if test="(query.year != null) and (query.year != '') (query.year != 'all')">
+                and premiere_date > #{query.startYear} and premiere_date &lt; #{query.endYear}
+            </if>
+            <if test="(query.version != null) and (query.version != '') and (query.version != 'all')">
+                and type = #{query.version}
+            </if>
+            <if test="(query.status != null) and (query.status != '') and (query.status != 'all')">
+                and play_status = #{query.status}
+            </if>
+            <if test="(query.type != null) and (query.type != '') and (query.type != 'all')">
+                and tags like concat('%',#{query.type},'%')
+            </if>
+        </where>
     </select>
     <select id="selectAnimationW" resultMap="BaseResultMap">
         SELECT `id`,
@@ -143,6 +186,11 @@
         order by premiere_date desc
         limit #{pageRequest.offset} ,#{pageRequest.pageSize}
 
+    </select>
+    <select id="selectEarliestyear" resultType="java.time.LocalDate">
+        SELECT min(`premiere_date`)
+        FROM anime_info
+        where !isnull(premiere_date)
     </select>
 
     <insert id="insert">

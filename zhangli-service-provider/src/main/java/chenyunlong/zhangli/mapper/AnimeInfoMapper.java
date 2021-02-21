@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -20,17 +21,18 @@ public interface AnimeInfoMapper {
     /**
      * 分页获取动画信息
      *
-     * @param pageable 分页信息
+     * @param pageable   分页信息
+     * @param animeQuery 查询条件
      * @return 所有动画的分页信息
      */
-    List<AnimeInfo> listAnimes(@Param("page") Pageable pageable);
+    List<AnimeInfo> listAnimes(@Param("page") Pageable pageable, @Param("query") AnimeQuery animeQuery);
 
     /**
      * 计算满足条件的记录个数
      *
      * @return 总数
      */
-    Long count();
+    Long count(@Param("query") AnimeQuery animeQuery);
 
     /**
      * 添加动画
@@ -91,4 +93,11 @@ public interface AnimeInfoMapper {
      * @return 连载中的动漫信息
      */
     List<AnimeInfo> selectAnimeByUpdateTime(@Param("pageRequest") Pageable pageRequest);
+
+    /**
+     * 获取最早的一部动漫年份（不包括年份不确定的动漫）
+     *
+     * @return 年份最早的番
+     */
+    LocalDate selectEarliestyear();
 }
