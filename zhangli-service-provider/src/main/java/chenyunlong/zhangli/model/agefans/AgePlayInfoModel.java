@@ -3,7 +3,7 @@
  */
 package chenyunlong.zhangli.model.agefans;
 
-import lombok.*;
+import lombok.Data;
 
 /**
  * @author Stan
@@ -18,5 +18,4 @@ public class AgePlayInfoModel {
     private String vurlBak;
     private String purlMp4;
     private String ex;
-
 }

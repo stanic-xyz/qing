@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.model.model;
+package chenyunlong.zhangli.model.enums;
 
 import org.apache.commons.lang.StringUtils;
 
