@@ -1,20 +1,15 @@
 server:
   port: 8080
-eureka:
-  instance:
-    instance-id: ${spring.application.name}
-  client:
-    register-with-eureka: true
 spring:
   profiles:
-    active: ${ENV:dev}
+    active: prod
   application:
     name: zhangli-service-provider
   messages:
     encoding: UTF-8
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: UTC
+    time-zone: GMT+8
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -35,9 +30,6 @@ spring:
     host: smtp.qq.com
     username: 1576302867@qq.com
     password: xoqywcevpshnbabf
-ribbon:
-  eureka:
-    enabled: true
 zhangli:
   file:
     baseUploadDir: upload/

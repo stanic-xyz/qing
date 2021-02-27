@@ -6,7 +6,7 @@ spring:
     restart:
       enabled: true
   datasource:
-    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=GMT+8
     hikari:
       username: root
       password: root
@@ -17,19 +17,13 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: http://localhost:8848
+        server-addr: localhost:8848
       config:
-        server-addr: http://localhost:8848
+        server-addr: localhost:8848
   rabbitmq:
     username: guest
     password: guest
     host: localhost
-eureka:
-  instance:
-    prefer-ip-address: false
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
