@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 @Slf4j
-class okHttpClientBuilderTest {
+class OkHttpClientBuilderTest {
 
     @Test
     public void testSSHTest() throws IOException {
