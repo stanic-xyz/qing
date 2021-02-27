@@ -1,0 +1,29 @@
+version: '2'
+services:
+  service-provider:
+    networks:
+      - dev
+    container_name: service-provider
+    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-service-provider:1.0.0.RELEASE
+    ports:
+      - 8080:8080
+    environment:
+      TZ: Asia/Shanghai
+      ENV: prod
+      NACOS_SERVER: nacos:8848
+    links:
+      - nacos:nacos
+  nacos:
+    image: nacos/nacos-server:latest
+    container_name: nacos-standalone
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+    volumes:
+      - ../../logs/standalone-logs/:/home/nacos/logs
+      - ./init.d/custom.properties:/home/nacos/init.d/custom.properties
+    ports:
+      - "8848:8848"
+networks:
+  dev:
+    driver: bridge
