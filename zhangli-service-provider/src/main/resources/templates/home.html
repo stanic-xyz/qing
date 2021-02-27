@@ -19,57 +19,8 @@
 
 <body>
 <div id="root">
-    <div id="top">
-        <div id="logo">
-            <a href="" title="AGE动漫">AGE动漫</a></div>
-        <div class="loginout">
-            <span class="svg_title svg_title_user"></span>
-            <a class="loginout_btn2" href="profile">stanic</a>
-            <!--            <script>-->
-            <!--                __html_set_username();-->
-            <!--            </script>-->
-        </div>
-    </div>
-    <header id="nav">
-        <a class="nav_button  nav_button_current " href="">首页</a>
-        <a class="nav_button " href="catalog">目录</a>
-        <a class="nav_button " href="recommend">每日推荐</a>
-        <a class="nav_button " href="update">最近更新</a>
-        <a class="nav_button " href="rank">排行榜</a>
-        <form id="top_search_from" class="search_form" action="search" method="get"
-              onsubmit="return on_top_search_form();">
-            <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
-                   autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
-            <input class="search_submit" type="submit" value="">
-            <input type="hidden" name="page" value="1"></form>
-
-        <script type="text/javascript">
-            function on_top_search_form() {
-                var value = document.getElementById("top_search_input").value;
-                if (value == null || value === "") {
-                    alert("请输入搜索关键字");
-                    return false;
-                }
-            }
-
-            var top_search_input = document.getElementById("top_search_input");
-
-            function onfocus() {
-                top_search_input.classList.add("search_input_ex");
-            }
-
-            function onfocusout() {
-                top_search_input.classList.remove("search_input_ex");
-            }
-
-            if (top_search_input.addEventListener) {
-                top_search_input.addEventListener('focus', onfocus);
-                top_search_input.addEventListener('focusout', onfocusout);
-            } else {
-                top_search_input.onfocus = onfocus;
-                top_search_input.onfocusout = onfocusout;
-            }</script>
-    </header>
+    <div id="top" th:include="common/header :: top()"></div>
+    <header id="nav" th:include="common/header :: commonHead('index')"></header>
     <div id="container">
 
         <div id="new_tip1"
@@ -1063,33 +1014,7 @@
         <div class="clear"></div>
     </div>
 
-    <footer id="footer">
-        <div id="footer_container">
-            <div class="pannel clearfix">
-                <div class="pannel_head clearfix">
-                    <h3 class="title">快速链接：</h3></div>
-                <ul class="link_text list_scroll clearfix">
-                    <li>
-                        <a class="text_muted" href="https://www.chenyunlong.cn/admin" title="博客地址"
-                           target="_blank">博客地址</a>
-                    </li>
-                    <li>
-                        <a class="text_muted" href="https://www.chenyunlong.cn" title="博客后台地址"
-                           target="_blank">博客后台地址</a>
-                    </li>
-                    <li>
-                        <a class="text_muted" href="https://status.chenyunlong.cn" title="状态查看"
-                           target="_blank">状态查看</a>
-                    </li>
-                </ul>
-
-                <span style="color: #DDD;">
-                    如果你有任何关于该网站的问题，请发邮件至
-                    <a href="mailto:bangumi@chenyunlong.cn">bangumi@chenyunlong.cn</a>
-                </span>
-            </div>
-        </div>
-    </footer>
+    <footer id="footer" th:include="common/header :: footer()"></footer>
 
 </div>
 <script>var _hmt = _hmt || [];

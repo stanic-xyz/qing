@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div id="top" th:fragment="top()">
+    <div id="logo">
+        <a th:href="@{../../movie/}" title="AGE动漫">AGE动漫</a></div>
+    <div class="loginout">
+        <span class="svg_title svg_title_user"></span>
+        <a class="loginout_btn2" th:href="@{../../movie/profile/}">登陆</a>
+        <script>
+            // __html_set_username();
+        </script>
+    </div>
+</div>
+
+<header id="nav" th:fragment="commonHead(title)">
+    <a th:class="${title=='index'?'nav_button nav_button_current':'nav_button'}" th:href="@{../../movie/}">首页</a>
+    <a th:class="${title=='catlog'?'nav_button nav_button_current':'nav_button'}"
+       th:href="@{../../movie/catalog}">目录</a>
+    <a th:class="${title=='recommend'?'nav_button nav_button_current':'nav_button'}"
+       th:href="@{../../movie/recommend}">每日推荐</a>
+    <a th:class="${title=='update'?'nav_button nav_button_current':'nav_button'}"
+       th:href="@{../../movie/update}">最近更新</a>
+    <a th:class="${title=='rank'?'nav_button nav_button_current':'nav_button'}" th:href="@{../../movie/rank}">排行榜</a>
+    <a th:class="${title=='detail'?'nav_button nav_button_current':'nav_button'}"
+       th:style="${title=='detail'?'':'display: none'}">详情</a>
+    <a th:class="${title=='search'?'nav_button nav_button_current':'nav_button'}"
+       th:style="${title=='search'?'':'display: none'}">搜索</a>
+    <form id="top_search_from" class="search_form" th:action="@{../../movie/search}" method="get"
+          onsubmit="return on_top_search_form();">
+        <label for="top_search_input"></label>
+        <input autocapitalize="off" autocomplete="off" autocorrect="off"
+               class="search_input" id="top_search_input"
+               name="query" placeholder="输入关键字" spellcheck="false" value=""
+        >
+        <input class="search_submit" type="submit" value="">
+        <input type="hidden" name="page" value="1"></form>
+
+    <script type="text/javascript">function on_top_search_form() {
+        const value = document.getElementById("top_search_input").value;
+        if (value == null || value === "") {
+            alert("请输入搜索关键字");
+            return false;
+        }
+    }
+
+    var top_search_input = document.getElementById("top_search_input");
+
+    function onfocus() {
+        top_search_input.classList.add("search_input_ex");
+    }
+
+    function onfocusout() {
+        top_search_input.classList.remove("search_input_ex");
+    }
+
+    if (top_search_input.addEventListener) {
+        top_search_input.addEventListener('focus', onfocus);
+        top_search_input.addEventListener('focusout', onfocusout);
+    } else {
+        top_search_input.onfocus = onfocus;
+        top_search_input.onfocusout = onfocusout;
+    }</script>
+</header>
+
+
+<footer th:fragment="footer()">
+    <div id="footer_container">
+        <div class="pannel clearfix">
+            <div class="pannel_head clearfix">
+                <h3 class="title">快速链接：</h3></div>
+            <ul class="link_text list_scroll clearfix">
+                <li>
+                    <a class="text_muted" href="https://www.chenyunlong.cn" title="博客地址"
+                       target="_blank">博客地址</a>
+                </li>
+                <li>
+                    <a class="text_muted" href="https://www.chenyunlong.cn/admin" title="博客后台地址"
+                       target="_blank">博客后台地址</a>
+                </li>
+                <li>
+                    <a class="text_muted" href="https://status.chenyunlong.cn" title="状态查看"
+                       target="_blank">服务器状态</a>
+                </li>
+            </ul>
+
+            <span style="color: #DDD;">
+                    如果你有任何关于该网站的问题，请发邮件至
+                    <a href="mailto:bangumi@chenyunlong.cn">bangumi@chenyunlong.cn</a>
+                </span>
+        </div>
+    </div>
+</footer>

@@ -29,45 +29,7 @@
 
         </div>
     </div>
-    <header id="nav">
-        <a class="nav_button" href="../movie/">首页</a>
-        <a class="nav_button " href="../movie/catalog">目录</a>
-        <a class="nav_button " href="../movie/recommend">每日推荐</a>
-        <a class="nav_button " href="../movie/update">最近更新</a>
-        <a class="nav_button nav_button_current" href="../movie/rank">排行榜</a>
-        <form id="top_search_from" class="search_form" action="../movie/search" method="get"
-              onsubmit="return on_top_search_form();">
-            <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
-                   autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
-            <input class="search_submit" type="submit" value="">
-            <input type="hidden" name="page" value="1"></form>
-
-        <script type="text/javascript">function on_top_search_form() {
-            var value = document.getElementById("top_search_input").value;
-            if (value == null || value == "") {
-                alert("请输入搜索关键字");
-                return false;
-            }
-        }
-
-        var top_search_input = document.getElementById("top_search_input");
-
-        function onfocus() {
-            top_search_input.classList.add("search_input_ex");
-        }
-
-        function onfocusout() {
-            top_search_input.classList.remove("search_input_ex");
-        }
-
-        if (top_search_input.addEventListener) {
-            top_search_input.addEventListener('focus', onfocus);
-            top_search_input.addEventListener('focusout', onfocusout);
-        } else {
-            top_search_input.onfocus = onfocus;
-            top_search_input.onfocusout = onfocusout;
-        }</script>
-    </header>
+    <header id="nav" th:include="common/header :: commonHead('rank')"></header>
     <div id="container">
         <div class="spaceblock1"></div>
         <div class="div_left baseblock">
@@ -252,9 +214,7 @@
         </ul>
         <div class="spaceblock1"></div>
     </div>
-    <footer id="footer">
-        <div id="footer_container"></div>
-    </footer>
+    <footer id="footer" th:include="common/header :: footer()"></footer>
     <script type="text/javascript">function oncatsw(obj) {
         var cats = document.getElementById('cats');
         cats.isopen = !cats.isopen;

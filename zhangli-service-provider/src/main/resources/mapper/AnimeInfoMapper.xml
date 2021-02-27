@@ -22,7 +22,7 @@
         <result column="tags" property="tags"/>
         <result column="official_website" property="officialWebsite"/>
         <result column="play_heat" property="playHeat"/>
-        <result column="orignal_name" property="orignalName"/>
+        <result column="original_name" property="originalName"/>
     </resultMap>
     <update id="update">
         update anime_info
@@ -52,7 +52,7 @@
         `tags`,
         `official_website`,
         `play_heat`,
-        `orignal_name`
+        `original_name`
         FROM anime_info
         <where>
             <if test="(query.keyword != null) and (query.keyword != '')">
@@ -96,7 +96,7 @@
                `tags`,
                `official_website`,
                `play_heat`,
-               `orignal_name`
+               `original_name`
         FROM anime_info
         where id = #{movieId}
     </select>
@@ -141,7 +141,7 @@
         `tags`,
         `official_website`,
         `play_heat`,
-        `orignal_name`
+        `original_name`
         FROM anime_info
         <where>
             <if test="anime.keyword!=null and anime.keyword!=''">
@@ -180,7 +180,7 @@
                `tags`,
                `official_website`,
                `play_heat`,
-               `orignal_name`
+               `original_name`
         FROM anime_info
         where play_status = '连载'
         order by premiere_date desc
@@ -191,6 +191,26 @@
         SELECT min(`premiere_date`)
         FROM anime_info
         where !isnull(premiere_date)
+    </select>
+    <select id="listRecommendAnimeInfo" resultMap="BaseResultMap">
+        SELECT anime.id,
+               `name`,
+               `district`,
+               `cover_url`,
+               `type`,
+               `instruction`,
+               `other_name`,
+               `author`,
+               `company`,
+               `premiere_date`,
+               `play_status`,
+               `plot_type`,
+               `tags`,
+               `official_website`,
+               `play_heat`,
+               `original_name`
+        FROM anime_recommend
+                 left join anime_info anime on aiv = anime.id
     </select>
 
     <insert id="insert">
@@ -210,7 +230,7 @@
          `tags`,
          `official_website`,
          `play_heat`,
-         `orignal_name`)
+         original_name)
         values (#{anime.id}, #{anime.name}, #{anime.district}, #{anime.coverUrl}, #{anime.type},
                 #{anime.instruction}, #{anime.otherName}, #{anime.author}, #{anime.company}, #{anime.premiereDate},
                 #{anime.playStatus}, #{anime.plotType}, #{anime.tags}, #{anime.officialWebsite}, #{anime.playHeat},

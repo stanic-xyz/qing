@@ -19,7 +19,7 @@ public class AnimeInfo implements Serializable {
     private String district;
     private String coverUrl;
     private String type;
-    private String orignalName;
+    private String originalName;
     private String otherName;
     private String author;
     private String company;

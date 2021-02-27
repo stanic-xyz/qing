@@ -1,7 +1,6 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <!-- saved from url=(0038)/movie/detail/20160083 -->
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -14,14 +13,15 @@
 </head>
 <body>
 <header class="panel-cover"
-        style="background-image: url(https://wxt.sinaimg.cn/large/007drMcOgy1ggs1nkkf9mj31hc0u0q98.jpg)">
+        style="background-image: url(/img/404bg.jpg)">
     <div class="panel-main">
         <div class="panel-main__inner panel-inverted">
             <div class="panel-main__content">
-                <a href="/movie/" title="AGE动漫"><img
-                        th:src="@{/img/007drMcOgy1ggs1nsasf6j30b40b374x.jpg}"
-                        width="150"
-                        alt="AGEFANS LOGO" class="panel-cover__logo logo"></a>
+                <a th:href="@{/movie/}">
+                    <img alt="AGEFANS LOGO"
+                         class="panel-cover__logo logo"
+                         th:src="@{/img/007drMcOgy1ggs1nsasf6j30b40b374x.jpg}"
+                         title="AGE动漫" width="150"/></a>
                 <hr class="panel-cover__divider">
                 <p class="panel-cover__description">对不起，您要找的页面被AGE君丢失了，(＞人＜；)</p>
                 <hr class="panel-cover__divider panel-cover__divider--secondary">

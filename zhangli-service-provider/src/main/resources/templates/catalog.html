@@ -10,6 +10,7 @@
     <meta name="keywords" content="动漫目录,动漫下载">
     <meta name="description" content="动漫目录 动漫在线 动漫下载">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/catalog.css(host=${hostname})}">
     <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
@@ -19,58 +20,8 @@
 
 <body>
 <div id="root">
-    <div id="top">
-        <div id="logo">
-            <a href="../movie/" title="AGE动漫">AGE动漫</a></div>
-        <div class="loginout">
-            <span class="svg_title svg_title_user"></span>
-            <a class="loginout_btn2" href="../movie/accounts/profile/">stanic</a>
-
-            <script>
-                // __html_set_username();
-            </script>
-
-        </div>
-    </div>
-    <header id="nav">
-        <a class="nav_button " href="../movie/">首页</a>
-        <a class="nav_button nav_button_current" href="#">目录</a>
-        <a class="nav_button " href="../movie/recommend">每日推荐</a>
-        <a class="nav_button " href="../movie/update">最近更新</a>
-        <a class="nav_button " href="../movie/rank">排行榜</a>
-        <form id="top_search_from" class="search_form" action="../movie/search" method="get"
-              onsubmit="return on_top_search_form();">
-            <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
-                   autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
-            <input class="search_submit" type="submit" value="">
-            <input type="hidden" name="page" value="1"></form>
-
-        <script type="text/javascript">function on_top_search_form() {
-            var value = document.getElementById("top_search_input").value;
-            if (value == null || value == "") {
-                alert("请输入搜索关键字");
-                return false;
-            }
-        }
-
-        var top_search_input = document.getElementById("top_search_input");
-
-        function onfocus() {
-            top_search_input.classList.add("search_input_ex");
-        }
-
-        function onfocusout() {
-            top_search_input.classList.remove("search_input_ex");
-        }
-
-        if (top_search_input.addEventListener) {
-            top_search_input.addEventListener('focus', onfocus);
-            top_search_input.addEventListener('focusout', onfocusout);
-        } else {
-            top_search_input.onfocus = onfocus;
-            top_search_input.onfocusout = onfocusout;
-        }</script>
-    </header>
+    <div id="top" th:include="common/header :: top()"></div>
+    <header id="nav" th:include="common/header :: commonHead('catlog')"></header>
     <div id="container">
         <div class="spaceblock"></div>
         <div class="baseblock">
@@ -263,7 +214,7 @@
                                 <span class="cell_imform_value" th:text="${anime.getType()}">暂无</span></div>
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">原版名称：</span>
-                                <span class="cell_imform_value" th:text="${anime.getOrignalName()}">暂无</span></div>
+                                <span class="cell_imform_value" th:text="${anime.getOriginalName()}">暂无</span></div>
                             <div class="cell_imform_kv">
                                 <span class="cell_imform_tag">其他名称：</span>
                                 <span class="cell_imform_value" th:text="${anime.getOtherName()}">暂无</span></div>
@@ -331,9 +282,7 @@
             </div>
         </div>
     </div>
-    <footer id="footer">
-        <div id="footer_container"></div>
-    </footer>
+    <footer id="footer" th:include="common/header :: footer()"></footer>
 </div>
 <script>var _hmt = _hmt || [];
 (function () {
