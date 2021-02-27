@@ -1,26 +1,19 @@
 package chenyunlong.zhangli.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
-@RunWith(SpringRunner.class)
 class AnimeInfoServiceImplTest {
 
     private final OkHttpClient httpClient = new OkHttpClient();
 
-    @Test
     void getPlayDetail() {
         Random random = new Random();
 
