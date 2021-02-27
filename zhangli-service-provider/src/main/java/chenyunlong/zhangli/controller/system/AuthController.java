@@ -110,7 +110,7 @@ public class AuthController {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             return ApiResult.success(tokenProvider.createToken(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getToken(), authorities), false));
         } else {
-            throw new AuthenticationException("认证错误了");
+            throw new AuthenticationException(authResponse.getMsg());
         }
     }
 }

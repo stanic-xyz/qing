@@ -45,8 +45,7 @@ public interface AnimeInfoService {
     /**
      * 查询动画信息
      *
-     *
-     * @param pageable
+     * @param pageable  分页信息
      * @param animeInfo 查询参数（名称)
      * @return 满足条件的动画信息
      */
@@ -97,4 +96,11 @@ public interface AnimeInfoService {
      * @return 动漫分页信息了
      */
     Page<AnimeInfo> getUpdateAnimeInfo(Integer page, Integer pageSize);
+
+    /**
+     * 获取推荐用户列表
+     *
+     * @return 推荐动漫列表
+     */
+    List<AnimeInfo> getRecommendAnimeInfoList();
 }

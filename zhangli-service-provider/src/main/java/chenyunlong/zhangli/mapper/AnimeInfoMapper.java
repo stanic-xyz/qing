@@ -21,7 +21,7 @@ public interface AnimeInfoMapper {
     /**
      * 分页获取动画信息
      *
-     * @param pageable   分页信息
+     * @param pageable       分页信息
      * @param animeInfoQuery 查询条件
      * @return 所有动画的分页信息
      */
@@ -53,8 +53,8 @@ public interface AnimeInfoMapper {
      * 根据动画名称查询动画信息
      *
      * @param animeInfoQuery 动画名称
-     * @param offset     偏差值
-     * @param pageSize   分页大小
+     * @param offset         偏差值
+     * @param pageSize       分页大小
      * @return 返回
      */
     List<AnimeInfo> selectAnimationW(@Param("anime") AnimeInfoQuery animeInfoQuery, Long offset, Integer pageSize);
@@ -100,4 +100,11 @@ public interface AnimeInfoMapper {
      * @return 年份最早的番
      */
     LocalDate selectEarliestyear();
+
+    /**
+     * 获取推荐的动漫列表
+     *
+     * @return 推荐的动漫列表
+     */
+    List<AnimeInfo> listRecommendAnimeInfo();
 }

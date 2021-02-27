@@ -25,56 +25,8 @@
 
 <body>
 <div id="root">
-    <div id="top">
-        <div id="logo">
-            <a href="../../movie/" title="AGE动漫">AGE动漫</a></div>
-        <div class="loginout">
-            <span class="svg_title svg_title_user"></span>
-            <a class="loginout_btn2" href="../../movie/profile">登陆</a>
-            <script>
-                // __html_set_username();
-            </script>
-        </div>
-    </div>
-    <header id="nav">
-        <a class="nav_button " href="/">首页</a>
-        <a class="nav_button " href="../../movie/catalog">目录</a>
-        <a class="nav_button " href="../../movie/recommend">每日推荐</a>
-        <a class="nav_button " href="../../movie/update">最近更新</a>
-        <a class="nav_button " href="../../movie/rank">排行榜</a>
-        <form id="top_search_from" class="search_form" action="../../movie/search" method="get"
-              onsubmit="return on_top_search_form();">
-            <input id="top_search_input" class="search_input" name="query" wrap="SOFT" spellcheck="false"
-                   autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="输入关键字" value="">
-            <input class="search_submit" type="submit" value="">
-            <input type="hidden" name="page" value="1"></form>
-
-        <script type="text/javascript">function on_top_search_form() {
-            var value = document.getElementById("top_search_input").value;
-            if (value == null || value === "") {
-                alert("请输入搜索关键字");
-                return false;
-            }
-        }
-
-        var top_search_input = document.getElementById("top_search_input");
-
-        function onfocus() {
-            top_search_input.classList.add("search_input_ex");
-        }
-
-        function onfocusout() {
-            top_search_input.classList.remove("search_input_ex");
-        }
-
-        if (top_search_input.addEventListener) {
-            top_search_input.addEventListener('focus', onfocus);
-            top_search_input.addEventListener('focusout', onfocusout);
-        } else {
-            top_search_input.onfocus = onfocus;
-            top_search_input.onfocusout = onfocusout;
-        }</script>
-    </header>
+    <div id="top" th:include="common/header :: top()"></div>
+    <header id="nav" th:include="common/header :: commonHead('play')"></header>
     <div id="container">
 
         <div id="new_tip1"
@@ -122,7 +74,7 @@
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">原版名称：</span>
                                     <span class="play_imform_val"
-                                          th:text="${playInfoModel?.animeInfo?.getOriginalName}">ぬるぺた</span>
+                                          th:text="${playInfoModel?.animeInfo?.getOriginalName()}">ぬるぺた</span>
                                 </li>
                                 <li class="play_imform_kv">
                                     <span class="play_imform_tag">其它名称：</span>
@@ -380,14 +332,11 @@
                     <div id="wangpan-div" class="baseblock2">
                         <div class="blocktitle">网盘资源：</div>
                         <div class="blockcontent">
-
-		<span class="res_links">
-			<a class="res_links_a" href="../../movie/link/20190209/0"
-               target="_blank">[TV 01-12+OVA BD-1080P]</a>
-			<span class="res_links_pswd_tag">(提取码:</span>
-			<span class="res_links_pswd">1407)</span></span>
+                            <span class="res_links">
+                                <a class="res_links_a" th:href="@{../../movie/link/20190209/0}" target="_blank">[TV 01-12+OVA BD-1080P]</a>
+                                <span class="res_links_pswd_tag">(提取码:</span>
+                                <span class="res_links_pswd">1407)</span></span>
                             <br>
-
                         </div>
                     </div>
                 </div>
@@ -669,9 +618,7 @@
                 </div>
             </div>
         </div>
-        <footer id="footer">
-            <div id="footer_container"></div>
-        </footer>
+        <footer id="footer" th:include="common/header :: footer()"></footer>
     </div>
 
 

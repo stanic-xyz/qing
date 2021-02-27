@@ -112,8 +112,11 @@ public class MovieController {
 
 
     @GetMapping("recommend")
-    public ModelAndView recommend() {
-        return new ModelAndView("recommend");
+    public ModelAndView recommend(ModelAndView modelAndView) {
+        List<AnimeInfo> animeInfoList = animeInfoService.getRecommendAnimeInfoList();
+        modelAndView.setViewName("recommend");
+        modelAndView.addObject("animeInfos", animeInfoList);
+        return modelAndView;
     }
 
     @GetMapping("search")
@@ -170,7 +173,13 @@ public class MovieController {
     }
 
     @GetMapping("404")
-    public ModelAndView err() {
+    public ModelAndView nul() {
         return new ModelAndView("404");
+    }
+
+    @GetMapping("link/{animeId}/{epsodeId}")
+    public ModelAndView link(@PathVariable(value = "animeId") Long animeId,
+                             @PathVariable(value = "epsodeId") Long epsodeId) {
+        return new ModelAndView("redirect:https://pan.baidu.com/share/init?surl=Vjn9aJ2IY3bJlpO4X8H9kg");
     }
 }

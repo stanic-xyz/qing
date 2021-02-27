@@ -151,6 +151,16 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
         return new PageImpl<>(animeInfoList, pageRequest, total);
     }
 
+    /**
+     * 获取推荐用户列表
+     *
+     * @return 推荐动漫列表
+     */
+    @Override
+    public List<AnimeInfo> getRecommendAnimeInfoList() {
+        return animeInfoMapper.listRecommendAnimeInfo();
+    }
+
     private void getPlayDetail() {
         String url = "https://www.agefans.tv/_getplay?aid=20120053&playindex=3&epindex=2&r=";
         String referUrl = "https://www.agefans.tv/_getplay?aid=20200101&playindex=3&epindex=1&r=123123123";
