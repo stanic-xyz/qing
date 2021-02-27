@@ -216,14 +216,6 @@
     <build>
         <finalName>zhangli</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <!-- 如果没有该配置，热部署的devtools不生效 -->
-                    <fork>true</fork>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
     <developers>
