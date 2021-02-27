@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
-import chenyunlong.zhangli.model.param.AnimeQuery;
+import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
@@ -22,17 +22,17 @@ public interface AnimeInfoMapper {
      * 分页获取动画信息
      *
      * @param pageable   分页信息
-     * @param animeQuery 查询条件
+     * @param animeInfoQuery 查询条件
      * @return 所有动画的分页信息
      */
-    List<AnimeInfo> listAnimes(@Param("page") Pageable pageable, @Param("query") AnimeQuery animeQuery);
+    List<AnimeInfo> listAnimes(@Param("page") Pageable pageable, @Param("query") AnimeInfoQuery animeInfoQuery);
 
     /**
      * 计算满足条件的记录个数
      *
      * @return 总数
      */
-    Long count(@Param("query") AnimeQuery animeQuery);
+    Long count(@Param("query") AnimeInfoQuery animeInfoQuery);
 
     /**
      * 添加动画
@@ -52,12 +52,12 @@ public interface AnimeInfoMapper {
     /**
      * 根据动画名称查询动画信息
      *
-     * @param animeQuery 动画名称
+     * @param animeInfoQuery 动画名称
      * @param offset     偏差值
      * @param pageSize   分页大小
      * @return 返回
      */
-    List<AnimeInfo> selectAnimationW(@Param("anime") AnimeQuery animeQuery, Long offset, Integer pageSize);
+    List<AnimeInfo> selectAnimationW(@Param("anime") AnimeInfoQuery animeInfoQuery, Long offset, Integer pageSize);
 
     /**
      * 根据名称查询动漫信息

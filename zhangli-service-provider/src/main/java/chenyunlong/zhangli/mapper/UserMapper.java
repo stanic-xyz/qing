@@ -1,10 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.entities.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,7 +20,7 @@ public interface UserMapper {
      * @return 用户的权限信息
      */
     @Select("SELECT * FROM user WHERE userid = #{userId}")
-    User selectById(@Param("userId") String userId);
+    User selectById(@Param("userId") Integer userId);
 
     /**
      * 根据用户名获取用户信息
@@ -41,4 +38,21 @@ public interface UserMapper {
      */
     @Insert("INSERT INTO `user`(`username`,`password`,`phone`,`open_id`,`email`)VALUES(#{username},#{password}},#{phone},#{openId},#{email})")
     void addUser(User user);
+
+    /**
+     * 根据用户的email获取用户信息
+     *
+     * @param email 用户的email
+     * @return 用户信息
+     */
+    @Select("select * from user where email = #{email}")
+    User findByEmail(@Param("email") String email);
+
+    /**
+     * 更新用户的密码
+     *
+     * @param user 更新后的用户信息
+     */
+    @Update("update user set password=#{user.password} where userid=#{user.userId}")
+    void updatePassword(@Param("user") User user);
 }

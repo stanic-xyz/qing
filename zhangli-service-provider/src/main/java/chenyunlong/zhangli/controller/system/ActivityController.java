@@ -4,8 +4,8 @@ import chenyunlong.zhangli.entities.Activity;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.ActivityService;
 import chenyunlong.zhangli.service.AttachementService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,16 +13,17 @@ import java.util.List;
 /**
  * @author Stan
  */
+@Api(tags = "活动信息")
 @RestController
 @RequestMapping("activity")
 public class ActivityController {
 
     private final ActivityService activityService;
-    @Autowired
-    private AttachementService attachementService;
+    private final AttachementService attachementService;
 
-    public ActivityController(ActivityService activityService) {
+    public ActivityController(ActivityService activityService, AttachementService attachementService) {
         this.activityService = activityService;
+        this.attachementService = attachementService;
     }
 
     /**

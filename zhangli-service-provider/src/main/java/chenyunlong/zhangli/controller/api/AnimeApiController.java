@@ -3,7 +3,7 @@ package chenyunlong.zhangli.controller.api;
 import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.entities.AnimeType;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
-import chenyunlong.zhangli.model.param.AnimeQuery;
+import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.service.AnimeInfoService;
@@ -56,7 +56,7 @@ public class AnimeApiController {
     public ApiResult<List<AnimeInfo>> listAnime(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                                 @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
                                                 @RequestParam(value = "animeName", required = false, defaultValue = "") String animeName,
-                                                AnimeQuery animeInfo) {
+                                                AnimeInfoQuery animeInfo) {
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         return ApiResult.success(animeInfoService.query(pageRequest, animeInfo));
     }

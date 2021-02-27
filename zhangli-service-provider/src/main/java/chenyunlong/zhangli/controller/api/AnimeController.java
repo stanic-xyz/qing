@@ -9,7 +9,6 @@ import chenyunlong.zhangli.service.AnimeTypeService;
 import chenyunlong.zhangli.service.DistrictService;
 import chenyunlong.zhangli.service.VersionService;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,15 +23,14 @@ import java.util.List;
 @RestController
 @RequestMapping("api/district")
 public class AnimeController {
-    @Autowired
-    private DistrictService districtService;
-    @Autowired
-    private VersionService versionService;
-    @Autowired
-    private AnimeTypeService animeTypeService;
+    private final DistrictService districtService;
+    private final VersionService versionService;
+    private final AnimeTypeService animeTypeService;
 
-    public AnimeController(DistrictService districtService) {
+    public AnimeController(DistrictService districtService, VersionService versionService, AnimeTypeService animeTypeService) {
         this.districtService = districtService;
+        this.versionService = versionService;
+        this.animeTypeService = animeTypeService;
     }
 
     @GetMapping("list")

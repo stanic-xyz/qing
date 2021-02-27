@@ -1,9 +1,11 @@
 package chenyunlong.zhangli.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * @author Stan
  */
-public class MyException extends Exception {
+public class MyException extends MyAbstractException {
 
     private String msg;
     private int code;
@@ -12,6 +14,14 @@ public class MyException extends Exception {
         super(msg);
         this.msg = msg;
         this.code = code;
+    }
+
+    public MyException(String message) {
+        super(message);
+    }
+
+    public MyException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 
@@ -29,5 +39,15 @@ public class MyException extends Exception {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    /**
+     * Http status code
+     *
+     * @return {@link HttpStatus}
+     */
+    @Override
+    public HttpStatus getStatus() {
+        return null;
     }
 }

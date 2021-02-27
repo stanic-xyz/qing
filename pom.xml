@@ -38,7 +38,7 @@
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
         <logstash-logback.version>5.3</logstash-logback.version>
         <hutool.version>5.2.0</hutool.version>
-        <justauth.version>1.15.8</justauth.version>
+        <justauth.version>1.15.9</justauth.version>
         <spring-cloud-alibaba.version>2.2.0.RELEASE</spring-cloud-alibaba.version>
         <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
         <admin-starter-server.version>2.2.3</admin-starter-server.version>

@@ -18,12 +18,12 @@ import org.springframework.web.context.request.async.DeferredResult;
 /**
  * @author Stan
  */
-@Api("异步请求")
+@Api(tags = "异步任务请求")
 @RestController
-@RequestMapping("asyn")
-public class AsynController {
+@RequestMapping("async")
+public class AsyncController {
 
-    private final Logger log = LoggerFactory.getLogger(AsynController.class);
+    private final Logger log = LoggerFactory.getLogger(AsyncController.class);
     private final DeferredResultService deferredResultService;
 
     /**
@@ -33,7 +33,7 @@ public class AsynController {
     private final String requestId = "haha";
 
     @Autowired
-    public AsynController(DeferredResultService deferredResultService) {
+    public AsyncController(DeferredResultService deferredResultService) {
         this.deferredResultService = deferredResultService;
     }
 

@@ -1,7 +1,12 @@
 package chenyunlong.zhangli.config.properties;
 
+import lombok.Data;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author Stan
+ */
+@Data
 @Configuration
 public class MailProperties {
     private String username;
@@ -16,19 +21,4 @@ public class MailProperties {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
