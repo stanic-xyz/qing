@@ -6,10 +6,10 @@ spring:
     restart:
       enabled: true
   datasource:
-    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=GMT+8
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
     hikari:
       username: root
-      password: root
+      password: 123456
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com

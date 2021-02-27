@@ -3,7 +3,7 @@ package chenyunlong.zhangli.service.impl;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.mapper.AnimeRecommendMapper;
-import chenyunlong.zhangli.model.param.AnimeQuery;
+import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.service.AnimeRecommendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,7 @@ public class AnimeRecommendServiceImpl implements AnimeRecommendService {
     private AnimeInfoMapper animeInfoMapper;
 
     @Override
-    public List<AnimeInfo> getRecommendAnimeInfoList(Pageable pageable, AnimeQuery animeQuery) {
-        return animeInfoMapper.listAnimes(pageable, animeQuery);
+    public List<AnimeInfo> getRecommendAnimeInfoList(Pageable pageable, AnimeInfoQuery animeInfoQuery) {
+        return animeInfoMapper.listAnimes(pageable, animeInfoQuery);
     }
 }

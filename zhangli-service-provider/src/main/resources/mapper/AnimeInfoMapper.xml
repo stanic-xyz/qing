@@ -36,7 +36,7 @@
         where id = #{animeId}
     </delete>
 
-    <select id="listAnimes" resultMap="BaseResultMap" parameterType="chenyunlong.zhangli.model.param.AnimeQuery">
+    <select id="listAnimes" resultMap="BaseResultMap" parameterType="chenyunlong.zhangli.model.params.AnimeInfoQuery">
         SELECT `id`,
         `name`,
         `district`,
@@ -101,7 +101,7 @@
         where id = #{movieId}
     </select>
 
-    <select id="count" resultType="long" parameterType="chenyunlong.zhangli.model.param.AnimeQuery">
+    <select id="count" resultType="long" parameterType="chenyunlong.zhangli.model.params.AnimeInfoQuery">
         select count(1)
         FROM anime_info
         <where>

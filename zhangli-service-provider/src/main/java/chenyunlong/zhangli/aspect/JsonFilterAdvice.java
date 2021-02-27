@@ -19,7 +19,8 @@ import java.util.List;
 
 /**
  * 通过实现ResponseBodyAdvice接口来完成对响应结果的过滤
- * author
+ *
+ * @author Stan
  */
 @ControllerAdvice
 public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
@@ -40,19 +41,19 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
     }
 
     /**
-     * 对最后的响应结果进行修改
+     * 请求结果了
      *
-     * @param apiResult
-     * @param methodParameter
-     * @param mediaType
-     * @param convertClass
-     * @param serverHttpRequest
-     * @param serverHttpResponse
-     * @return
+     * @param apiResult          返回结果
+     * @param methodParameter    方法仓鼠信息
+     * @param mediaType          返回的media类型
+     * @param convertClass       转换的但是
+     * @param serverHttpRequest  httpRequest
+     * @param serverHttpResponse httpResponse
+     * @return 请求的结果了
      */
     @Override
-    public ApiResult beforeBodyWrite(ApiResult apiResult, MethodParameter methodParameter, MediaType mediaType,
-                                     Class<? extends HttpMessageConverter<?>> convertClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+    public ApiResult<Object> beforeBodyWrite(ApiResult apiResult, MethodParameter methodParameter, MediaType mediaType,
+                                             Class<? extends HttpMessageConverter<?>> convertClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
 
         //获取方法的相关注解
         JsonFieldFilter annotation = methodParameter.getMethodAnnotation(JsonFieldFilter.class);

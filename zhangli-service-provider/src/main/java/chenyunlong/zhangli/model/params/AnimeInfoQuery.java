@@ -1,9 +1,10 @@
-package chenyunlong.zhangli.model.param;
+package chenyunlong.zhangli.model.params;
 
+import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.dto.base.InputConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -11,7 +12,7 @@ import java.time.LocalDate;
  */
 @Data
 @EqualsAndHashCode
-public class AnimeQuery implements Serializable {
+public class AnimeInfoQuery implements InputConverter<AnimeInfo> {
 
     private String keyword = "";
     private String district = "all";

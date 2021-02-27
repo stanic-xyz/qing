@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.model.vo.anime;
 
-import chenyunlong.zhangli.entities.anime.AnimeEpisode;
 import lombok.Data;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public class AnimeInfoVo {
     private String district;
     private String coverUrl;
     private String type;
-    private String orignalName;
+    private String originalName;
     private String otherName;
     private String author;
     private String company;

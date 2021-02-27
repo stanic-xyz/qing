@@ -58,12 +58,11 @@ public class ZhangliConfiguration {
 
     @Bean
     public AuthGithubRequest getAuthRequest() {
-
         log.info(zhangliProperties.getSwagger().getAuthor());
         return new AuthGithubRequest(AuthConfig.builder()
                 .clientId("c9391500bdf102edd70c")
                 .clientSecret("c2a9c47006fbc8d16b7e8186b10c89c6cc02ab7f")
-                .redirectUri("http://localhost:8001/authrize/callback")
+                .redirectUri("http://localhost:8080/authorize/callback")
                 .build());
     }
 

@@ -39,11 +39,11 @@ zhangli:
   swagger:
     author: Stan
     basePackage: chenyunlong.zhangli
-    description: Zhangli's Rear Gargen  API Document.
+    description: Zhangli's Rear Gargen  API Documentation.
     email: 1576302867@qq.com
     license: Apache 2.0
     licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
-    title: Stan's Application from Agefans
+    title: Application from Agefans
     url: http://bangumi.chenyunlong.cn
     version: V1.0.0
     doc-disabled: false

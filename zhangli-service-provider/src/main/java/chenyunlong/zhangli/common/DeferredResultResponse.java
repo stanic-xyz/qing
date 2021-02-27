@@ -1,13 +1,25 @@
 package chenyunlong.zhangli.common;
 
+/**
+ * @author Stan
+ */
 public class DeferredResultResponse {
     private Integer code;
     private String msg;
 
     public enum Msg {
-        TIMEOUT("超时"),
+        /**
+         * 失败
+         */
         FAILED("失败"),
-        SUCCESS("成功");
+        /**
+         * 成功
+         */
+        SUCCESS("成功"),
+        /**
+         * 超时
+         */
+        TIMEOUT("超时");
 
         private String desc;
 

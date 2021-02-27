@@ -2,7 +2,7 @@ package chenyunlong.zhangli.controller.content;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
-import chenyunlong.zhangli.model.param.AnimeQuery;
+import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.AnimeOptionsModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
@@ -41,7 +41,7 @@ public class MovieController {
     @GetMapping("")
     public ModelAndView index(ModelAndView modelAndView) {
         PageRequest pageRequest = PageRequest.of(1, 24);
-        List<AnimeInfo> recentAnime = animeInfoService.query(pageRequest, new AnimeQuery());
+        List<AnimeInfo> recentAnime = animeInfoService.query(pageRequest, new AnimeInfoQuery());
         modelAndView.setViewName("home");
         modelAndView.addObject("recentList", recentAnime);
         modelAndView.addObject("dalyUpdateList", recentAnime);
@@ -58,18 +58,18 @@ public class MovieController {
     }
 
     @GetMapping("catalog")
-    public ModelAndView catalog(AnimeQuery animeQuery,
+    public ModelAndView catalog(AnimeInfoQuery animeInfoQuery,
                                 @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "24") Integer pageSize) {
         if (page < 1) {
             page = 1;
         }
         PageRequest pageRequest = PageRequest.of(page - 1, 24);
-        AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest, animeQuery);
+        AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest, animeInfoQuery);
         AnimeOptionsModel animeOptionsModel = animeOptionsService.getOptions();
         PageImpl<AnimeInfo> animeInfoPage = new PageImpl<>(rankModel.getAnimeInfoList(), pageRequest, rankModel.getTotalCount());
         ModelAndView modelAndView = new ModelAndView("catalog");
-        modelAndView.addObject("query", animeQuery);
+        modelAndView.addObject("query", animeInfoQuery);
         modelAndView.addObject("years", animeOptionsModel.getYears());
         modelAndView.addObject("option", animeOptionsModel);
         modelAndView.addObject("animeList", rankModel.getAnimeInfoList());
@@ -84,13 +84,13 @@ public class MovieController {
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "tag", required = false) String tag,
             @RequestParam(value = "year", required = false) String catyear,
-            AnimeQuery animeQuery
+            AnimeInfoQuery animeInfoQuery
     ) {
         if (page < 1) {
             page = 1;
         }
         PageRequest pageRequest = PageRequest.of(page - 1, 75);
-        AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest, animeQuery);
+        AnimeInfoRankModel rankModel = animeInfoService.getRankPage(pageRequest, animeInfoQuery);
         ModelAndView modelAndView = new ModelAndView("rank");
         modelAndView.addObject("animeList", rankModel.getAnimeInfoList());
         modelAndView.addObject("total", rankModel.getTotalCount());
@@ -121,12 +121,12 @@ public class MovieController {
             @RequestParam(value = "query", required = false, defaultValue = "") String query,
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
             @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
-            AnimeQuery animeQuery) {
+            AnimeInfoQuery animeInfoQuery) {
 
         long totalCount = animeInfoService.getTotalCount(query);
         int totalPage = (int) Math.ceil(((double) totalCount) / ((double) pageSize));
         PageRequest pageRequest = PageRequest.of(page, pageSize);
-        List<AnimeInfo> animeInfos = animeInfoService.query(pageRequest, animeQuery);
+        List<AnimeInfo> animeInfos = animeInfoService.query(pageRequest, animeInfoQuery);
         ModelAndView modelAndView = new ModelAndView("search");
         modelAndView.addObject("animeInfos", animeInfos);
         modelAndView.addObject("query", query);

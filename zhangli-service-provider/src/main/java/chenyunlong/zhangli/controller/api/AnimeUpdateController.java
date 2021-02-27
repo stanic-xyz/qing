@@ -1,11 +1,10 @@
 package chenyunlong.zhangli.controller.api;
 
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
-import chenyunlong.zhangli.model.param.AnimeQuery;
+import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.AnimeRecommendService;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
@@ -21,14 +20,16 @@ import java.util.List;
 @Api(tags = "anime/update")
 @RestController
 public class AnimeUpdateController {
-    @Autowired
-    private AnimeRecommendService animeRecommendService;
+    private final AnimeRecommendService animeRecommendService;
+
+    public AnimeUpdateController(AnimeRecommendService animeRecommendService) {
+        this.animeRecommendService = animeRecommendService;
+    }
 
 
     @GetMapping("list")
-    public ApiResult<List<AnimeInfo>> getRecommendAnimeInfoList(AnimeQuery animeQuery) {
-
+    public ApiResult<List<AnimeInfo>> getRecommendAnimeInfoList(AnimeInfoQuery animeInfoQuery) {
         Pageable pageable = PageRequest.of(1, 20);
-        return ApiResult.success(animeRecommendService.getRecommendAnimeInfoList(pageable, animeQuery));
+        return ApiResult.success(animeRecommendService.getRecommendAnimeInfoList(pageable, animeInfoQuery));
     }
 }
