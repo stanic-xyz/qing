@@ -28,13 +28,7 @@
     <div id="top" th:include="common/header :: top()"></div>
     <header id="nav" th:include="common/header :: commonHead('play')"></header>
     <div id="container">
-
-        <div id="new_tip1"
-             style="color: #E00;padding: 8px;margin: 0 9px;margin-top: 10px;margin-bottom:-14px;font-size: 14px;border: 1px solid #cc0000;">
-            AGE动漫网 备用地址：www.agefans.net 欢迎大家分享给身边朋友！为确保正常观看，请使用谷歌浏览器。
-        </div>
-
-        <div class="spaceblock1"></div>
+        <div id="new_tip1" th:include="common/header :: notification('play')"></div>
         <div class="baseblock">
             <div class="blocktitle">
                 <h4 id="detailname">

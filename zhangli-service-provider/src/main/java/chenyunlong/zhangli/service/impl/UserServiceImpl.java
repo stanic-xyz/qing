@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean passwordMatch(@NonNull User userInfo, @Nullable String password) {
-        return passwordEncoder.matches(userInfo.getPassword(), password);
+        return passwordEncoder.matches(password, userInfo.getPassword());
     }
 
 }

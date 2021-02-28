@@ -39,12 +39,7 @@
     <header id="nav" th:include="common/header :: commonHead('detail')"></header>
     <div id="container">
 
-        <div id="new_tip1"
-             style="color: #E00;padding: 8px;margin: 0 9px;margin-top: 10px;margin-bottom:-14px;font-size: 14px;border: 1px solid #C00;">
-            动漫交友站 欢迎大家分享给身边朋友！如果不能正常观看，请尝试使用谷歌浏览器。
-        </div>
-
-        <div class="spaceblock1"></div>
+        <div id="new_tip1" th:include="common/header :: notification('play')"></div>
         <div class="div_left">
             <div class="baseblock">
                 <div class="blockcontent">

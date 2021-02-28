@@ -23,12 +23,7 @@
     <header id="nav" th:include="common/header :: commonHead('index')"></header>
     <div id="container">
 
-        <div id="new_tip1"
-             style="color: #E00;padding: 8px;margin: 0 9px;margin-top: 10px;margin-bottom:-14px;font-size: 14px;border: 1px solid #C00;">
-            动漫情报站 欢迎大家分享给身边朋友！如果能正常观看，才有鬼了！
-        </div>
-
-        <div class="spaceblock1"></div>
+        <div id="new_tip1" th:include="common/header :: notification('www.agefans.net')"></div>
         <div class="div_right baseblock">
             <div class="blocktitle">每周放送列表</div>
             <div class="blockcontent">
