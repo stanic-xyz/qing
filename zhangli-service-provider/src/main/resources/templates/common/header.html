@@ -7,10 +7,15 @@
     <div class="loginout">
         <span class="svg_title svg_title_user"></span>
         <a class="loginout_btn2" th:href="@{../../movie/profile/}">登陆</a>
-        <script>
-            // __html_set_username();
-        </script>
+        <script>__html_set_username();</script>
     </div>
+</div>
+
+<div th:fragment="notification(content)">
+    <div style="color: white;padding: 8px;margin: 10px 9px -14px;font-size: 14px;border: 1px solid #cc0000;"
+         th:text="${ '本站地址：'+content+' 欢迎大家分享给身边朋友！如果能够正常观看，那才是怪事了！'}">
+    </div>
+    <div class="spaceblock1"></div>
 </div>
 
 <header id="nav" th:fragment="commonHead(title)">
@@ -29,10 +34,9 @@
     <form id="top_search_from" class="search_form" th:action="@{../../movie/search}" method="get"
           onsubmit="return on_top_search_form();">
         <label for="top_search_input"></label>
-        <input autocapitalize="off" autocomplete="off" autocorrect="off"
+        <input autocapitalize="on" autocomplete='on'
                class="search_input" id="top_search_input"
-               name="query" placeholder="输入关键字" spellcheck="false" value=""
-        >
+               name="query" placeholder="输入关键字" spellcheck="false" value="">
         <input class="search_submit" type="submit" value="">
         <input type="hidden" name="page" value="1"></form>
 
@@ -44,7 +48,7 @@
         }
     }
 
-    var top_search_input = document.getElementById("top_search_input");
+    const top_search_input = document.getElementById("top_search_input");
 
     function onfocus() {
         top_search_input.classList.add("search_input_ex");
@@ -85,7 +89,7 @@
             </ul>
 
             <span style="color: #DDD;">
-                    如果你有任何关于该网站的问题，请发邮件至
+                    如果你有任何关于此网站的问题，请发邮件至
                     <a href="mailto:bangumi@chenyunlong.cn">bangumi@chenyunlong.cn</a>
                 </span>
         </div>
