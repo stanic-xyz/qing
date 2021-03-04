@@ -167,6 +167,11 @@ public class MovieController {
         return JSONUtil.parse(jsonStr).toStringPretty();
     }
 
+    @GetMapping("login")
+    public ModelAndView login() {
+        return new ModelAndView("login");
+    }
+
     @GetMapping("profile")
     public ModelAndView profile() {
         return new ModelAndView("profile");
