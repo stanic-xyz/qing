@@ -12,8 +12,10 @@ spring:
     nacos:
       discovery:
         server-addr: 121.36.163.95:8848
+        enabled: false
       config:
         server-addr: 121.36.163.95:8848
+        enabled: false
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
