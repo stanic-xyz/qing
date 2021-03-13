@@ -1,15 +1,19 @@
 package chenyunlong.zhangli.controller.content;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.AnimeOptionsModel;
+import chenyunlong.zhangli.model.vo.anime.AnimeEpisodeVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.PlayInfoModel;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.AnimeOptionsService;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Stan
@@ -52,8 +58,14 @@ public class MovieController {
     @GetMapping("detail/{movieId}")
     public ModelAndView movie(@PathVariable(value = "movieId", required = false) Long movieId) {
         AnimeInfoVo animeInfo = animeInfoService.getMovieDetail(movieId);
+        final List<AnimeEpisodeVo> episodes = new LinkedList<>();
+        if (animeInfo != null) {
+            List<AnimeEpisodeEntity> animeEpisodeList = animeInfoService.getAnimeEpisodes(movieId);
+            animeEpisodeList.forEach(animeEpisodeEntity -> episodes.add(new AnimeEpisodeVo().<AnimeEpisodeVo>convertFrom(animeEpisodeEntity)));
+        }
         ModelAndView modelAndView = new ModelAndView("detail");
-        modelAndView.addObject(animeInfo);
+        modelAndView.addObject("episodes", episodes);
+        modelAndView.addObject("animeInfo", animeInfo);
         return modelAndView;
     }
 

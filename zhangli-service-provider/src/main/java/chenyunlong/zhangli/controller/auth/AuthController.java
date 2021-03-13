@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.controller.system;
+package chenyunlong.zhangli.controller.auth;
 
 import chenyunlong.zhangli.anthentication.TokenProvider;
 import chenyunlong.zhangli.common.annotation.Log;
