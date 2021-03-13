@@ -1,11 +1,13 @@
 package chenyunlong.zhangli.model.vo.anime;
 
+import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity;
+import chenyunlong.zhangli.model.dto.base.OutputConverter;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class AnimeEpisodeVo {
+public class AnimeEpisodeVo implements OutputConverter<AnimeEpisodeVo, AnimeEpisodeEntity> {
     /**
      * 视频ID
      */

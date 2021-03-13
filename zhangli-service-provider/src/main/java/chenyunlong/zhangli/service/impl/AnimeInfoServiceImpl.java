@@ -106,17 +106,12 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
      *
      * @param animeId    动漫ID
      * @param sourceType 播放分类
-     * @param epside     片段
+     * @param ep         片段
      * @return 动漫播放页参数信息
      */
     @Override
-    public AnimeInfoVo getPlayDetail(Long animeId, int sourceType, int epside) {
+    public AnimeInfoVo getPlayDetail(Long animeId, int sourceType, int ep) {
         AnimeInfo animeInfo = animeInfoMapper.selectAnimationDetail(animeId);
-        if (animeInfo != null) {
-            AnimeEpisodeEntityExample example = new AnimeEpisodeEntityExample();
-            example.createCriteria().andAnimeIdEqualTo(animeInfo.getId());
-            animeEpisodeMapper.selectByExample(example);
-        }
         return new ObjectMapper().convertValue(animeInfo, AnimeInfoVo.class);
     }
 
@@ -159,6 +154,19 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     @Override
     public List<AnimeInfo> getRecommendAnimeInfoList() {
         return animeInfoMapper.listRecommendAnimeInfo();
+    }
+
+    /**
+     * 获取动漫的播放信息
+     *
+     * @param movieId 动漫ID
+     * @return 动漫的所有集数
+     */
+    @Override
+    public List<AnimeEpisodeEntity> getAnimeEpisodes(Long movieId) {
+        AnimeEpisodeEntityExample example = new AnimeEpisodeEntityExample();
+        example.createCriteria().andAnimeIdEqualTo(movieId);
+        return animeEpisodeMapper.selectByExample(example);
     }
 
     private void getPlayDetail() {

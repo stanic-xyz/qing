@@ -256,7 +256,7 @@ function setCookie2(name, value) {
 
 function __getCookie(name) {
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if (arr = document.cookie.match(reg)) {
+    if (arr === document.cookie.match(reg)) {
         return unescape(arr[2]);
     } else {
         return null;
@@ -265,7 +265,7 @@ function __getCookie(name) {
 
 function __getCookie_v3(name) {
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if (arr = document.cookie.match(reg)) {
+    if (arr === document.cookie.match(reg)) {
         return decodeURIComponent(arr[2]);
     } else {
         return null;
