@@ -4,9 +4,9 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title th:text="${animeInfoVo.getName()+'- 傻瓜动漫网站'}"></title>
-    <meta name="keywords" th:content="${animeInfoVo.getName()+'动漫分享'}">
-    <meta name="description" th:content="${animeInfoVo.getName()+'！在线观看'}">
+    <title th:text="${animeInfo.getName()+'- 傻瓜动漫网站'}"></title>
+    <meta name="keywords" th:content="${animeInfo.getName()+'动漫分享'}">
+    <meta name="description" th:content="${animeInfo.getName()+'！在线观看'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/detail.css(host=${hostname})}">
@@ -44,8 +44,8 @@
             <div class="baseblock">
                 <div class="blockcontent">
                     <img referrerpolicy="no-referrer" class="poster" width="256px" height="356px"
-                         th:src="${animeInfoVo.coverUrl}"
-                         th:alt="${animeInfoVo.getName()}" alt="暂无"></div>
+                         th:src="${animeInfo.coverUrl}"
+                         th:alt="${animeInfo.name}" alt="暂无"></div>
             </div>
             <div class="baseblock">
                 <div class="blockcontent">
@@ -55,48 +55,48 @@
                         <ul class="blockcontent">
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">地区：</span>
-                                <span class="detail_imform_value" th:text="${animeInfoVo.getDistrict()}">日本</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.district}">日本</span>
                                 <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">动画种类：</span>
-                                <span class="detail_imform_value" th:text="${animeInfoVo.getType()}">TV</span></li>
+                                <span class="detail_imform_value" th:text="${animeInfo.type}">TV</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">原版名称：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfoVo.getName()}">この素晴らしい世界に祝福を！</span>
+                                      th:text="${animeInfo.getName()}">この素晴らしい世界に祝福を！</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">其它名称：</span>
-                                <span class="detail_imform_value" th:text="${animeInfoVo.getOriginalName()}">暂无</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.originalName}">暂无</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">原作：</span>
-                                <span class="detail_imform_value" th:text="${animeInfoVo.getAuthor()}">暂无</span></li>
+                                <span class="detail_imform_value" th:text="${animeInfo.author}">暂无</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">制作公司：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfoVo.getCompany()}">Studio DEEN</span>
+                                      th:text="${animeInfo.getCompany()}">Studio DEEN</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">首播时间：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfoVo.getPremiereDate()}">2016-01-13</span></li>
+                                      th:text="${animeInfo.getPremiereDate()}">2016-01-13</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">播放状态：</span>
-                                <span class="detail_imform_value" th:text="${animeInfoVo.getPlayStatus()}">暂无</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.playStatus}">暂无</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">剧情类型：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfoVo.getPlotType()}">搞笑 奇幻 冒险 后宫</span></li>
+                                      th:text="${animeInfo.getPlotType()}">搞笑 奇幻 冒险 后宫</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">标签：</span>
-                                <span class="detail_imform_value" th:text="${animeInfoVo.getTags()}">搞笑 奇幻 冒险 后宫 治愈 魔法 轻小说 欢乐向</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.tags}">搞笑 奇幻 冒险 后宫 治愈 魔法 轻小说 欢乐向</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">官方网站：</span>
-                                <span class="detail_imform_value" th:text="${animeInfoVo.getOfficialWebsite()}">http://konosuba.com/</span>
+                                <span class="detail_imform_value" th:text="${animeInfo.officialWebsite}">http://konosuba.com/</span>
                             </li>
                         </ul>
                     </div>
@@ -129,13 +129,13 @@
         <div class="div_right">
             <div class="baseblock">
                 <div class="blockcontent">
-                    <h4 class="detail_imform_name" th:text="${animeInfoVo.getName()}">--</h4></div>
+                    <h4 class="detail_imform_name" th:text="${animeInfo.name}">--</h4></div>
             </div>
             <div class="blockline1" style="margin: 8px;"></div>
             <div class="baseblock">
                 <div class="blockcontent">
                     <div class="detail_imform_desc_pre">
-                        <p th:text="${animeInfoVo.getInstruction()}">暂无</p>
+                        <p th:text="${animeInfo.getInstruction()}">暂无</p>
                     </div>
                 </div>
             </div>
@@ -161,118 +161,20 @@
 
                     <div class="movurl" style="display: block;">
                         <ul>
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_1" target="_self"
-                                   title="第01话 [GB][BDRIP][720P][x264_AAC]">第01话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_2" target="_self"
-                                   title="第02话 [GB][BDRIP][720P][x264_AAC]">第02话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_3" target="_self"
-                                   title="第03话 [GB][BDRIP][720P][x264_AAC]">第03话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_4" target="_self"
-                                   title="第04话 [GB][BDRIP][720P][x264_AAC]">第04话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_5" target="_self"
-                                   title="第05话 [GB][BDRIP][720P][x264_AAC]">第05话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_6" target="_self"
-                                   title="第06话 [GB][BDRIP][720P][x264_AAC]">第06话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_7" target="_self"
-                                   title="第07话 [GB][BDRIP][720P][x264_AAC]">第07话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_8" target="_self"
-                                   title="第08话 [GB][BDRIP][720P][x264_AAC]">第08话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_9" target="_self"
-                                   title="第09话 [GB][BDRIP][720P][x264_AAC]">第09话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_10" target="_self"
-                                   title="第10话 [GB][BDRIP][720P][x264_AAC]">第10话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=3_11" target="_self"
-                                   title="第11话 OVA)][GB][BDRIP][720P][x264_AAC]">第11话</a>
+                            <li th:each="episode:${episodes}">
+                                <a th:href="@{../../movie/play/{animeId}(playid='3_1',animeId=${animeInfo.id})}"
+                                   target="_self"
+                                   title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="${episode.name}"></a>
                             </li>
                         </ul>
                     </div>
 
                     <div class="movurl" style="display:none">
                         <ul>
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_1" target="_self"
-                                   title="第01话 [GB][BDRIP][720P][x264_AAC]">第01话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_2" target="_self"
-                                   title="第02话 [GB][BDRIP][720P][x264_AAC]">第02话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_3" target="_self"
-                                   title="第03话 [GB][BDRIP][720P][x264_AAC]">第03话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_4" target="_self"
-                                   title="第04话 [GB][BDRIP][720P][x264_AAC]">第04话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_5" target="_self"
-                                   title="第05话 [GB][BDRIP][720P][x264_AAC]">第05话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_6" target="_self"
-                                   title="第06话 [GB][BDRIP][720P][x264_AAC]">第06话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_7" target="_self"
-                                   title="第07话 [GB][BDRIP][720P][x264_AAC]">第07话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_8" target="_self"
-                                   title="第08话 [GB][BDRIP][720P][x264_AAC]">第08话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_9" target="_self"
-                                   title="第09话 [GB][BDRIP][720P][x264_AAC]">第09话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_10" target="_self"
-                                   title="第10话 [GB][BDRIP][720P][x264_AAC]">第10话</a>
-                            </li>
-
-                            <li>
-                                <a href="../../movie/play/20160083?playid=4_11" target="_self"
-                                   title="第11话 OVA)][GB][BDRIP][720P][x264_AAC]">第11话</a>
+                            <li th:each="episode:${episodes}">
+                                <a th:href="@{../../movie/play/{animeId}(playid='3_1',animeId=${animeInfo.id})}"
+                                   target="_self"
+                                   title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="第01话"></a>
                             </li>
                         </ul>
                     </div>
