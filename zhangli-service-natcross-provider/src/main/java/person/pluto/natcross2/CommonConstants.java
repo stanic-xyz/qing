@@ -13,17 +13,19 @@ public final class CommonConstants {
     /**
      * 服务端地址，支持IP或域名，这个根据服务端放的网络位置进行设置
      */
-    public static final String SERVICE_IP = "127.0.0.1";
+    public static final String SERVICE_IP = "192.168.129.214";
     /**
      * 客户端服务的端口
      */
     public static final int SERVICE_PORT = 10010;
 
     /**
-     * 映射对
+     * 添加公司里面的常用服务地址
      */
     public static ListenDest[] listenDestArray = new ListenDest[]{
-            ListenDest.of(8880, "127.0.0.1", 10086)
+            ListenDest.of(30103, "192.168.129.1", 30103),
+            ListenDest.of(20102, "192.168.129.64", 20102),
+            ListenDest.of(10103, "192.168.129.1", 10103)
     };
 
     /**
