@@ -13,7 +13,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       username: root
-      password: root
+      password: 123456
     url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
   servlet:
     multipart:
@@ -23,8 +23,10 @@ spring:
     nacos:
       discovery:
         server-addr: http://localhost:8848
+        enabled: false
       config:
         server-addr: http://localhost:8848
+        enabled: false
 mybatis:
   mapperLocations: classpath*:mapper*/*.xml
   configuration:
