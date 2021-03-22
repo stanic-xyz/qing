@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.mail;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,8 @@ public class MailServiceImpl extends AbstractMailService {
         sendMailTemplate(true, messageHelper -> {
             // build message content with freemarker
             try {
-                Template template = freeMarker.getConfiguration().getTemplate(templateName);
+                Configuration configuration = freeMarker.getConfiguration();
+                Template template = configuration.getTemplate(templateName);
                 String contentResult = FreeMarkerTemplateUtils.processTemplateIntoString(template,
                         content);
                 messageHelper.setSubject(subject);
