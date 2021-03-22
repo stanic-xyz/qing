@@ -18,6 +18,8 @@ public class ZhangliProperties {
     private SecurityProperties security = new SecurityProperties();
     private SwaggerProperties swagger = new SwaggerProperties();
     private String authenticationPrefix;
+    private EmailProperties email = new EmailProperties();
+    private boolean emailEnabled;
 
     public ZhangliProperties() {
     }
@@ -29,6 +31,5 @@ public class ZhangliProperties {
         this.swagger = swagger;
         this.authenticationPrefix = authenticationPrefix;
     }
-
 }
 

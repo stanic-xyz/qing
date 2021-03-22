@@ -5,7 +5,7 @@ import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.common.exception.AuthenticationException;
 import chenyunlong.zhangli.common.exception.BadRequestException;
 import chenyunlong.zhangli.common.exception.LoginErrorException;
-import chenyunlong.zhangli.common.exception.MyException;
+import chenyunlong.zhangli.common.exception.AbstractException;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.model.params.LoginParam;
 import chenyunlong.zhangli.model.vo.ApiResult;
@@ -80,14 +80,14 @@ public class AuthController {
      * @param userName 用户名
      * @param password 密码，原始密码，不需要经过加密
      * @return 认证信息
-     * @throws MyException 注册异常信息
+     * @throws AbstractException 注册异常信息
      */
     @PostMapping("register")
-    public ApiResult<Object> register(@RequestParam String userName, @RequestParam String password) throws MyException {
+    public ApiResult<Object> register(@RequestParam String userName, @RequestParam String password) throws AbstractException {
         try {
             userService.addUserInfo(new User(userName, password));
             return ApiResult.success();
-        } catch (MyException exp) {
+        } catch (AbstractException exp) {
             return ApiResult.faild(exp.getMessage());
         }
     }

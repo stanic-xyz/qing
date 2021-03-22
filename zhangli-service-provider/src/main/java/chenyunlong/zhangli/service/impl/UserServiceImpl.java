@@ -2,7 +2,8 @@ package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.common.exception.BadRequestException;
 import chenyunlong.zhangli.common.exception.ErrorCode;
-import chenyunlong.zhangli.common.exception.MyException;
+import chenyunlong.zhangli.common.exception.LoginErrorException;
+import chenyunlong.zhangli.common.exception.AbstractException;
 import chenyunlong.zhangli.entities.Permission;
 import chenyunlong.zhangli.entities.User;
 import chenyunlong.zhangli.mapper.PermissionMapper;
@@ -103,12 +104,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUserInfo(User user) throws MyException {
+    public void addUserInfo(User user) throws AbstractException {
 
         User userInfo = userMapper.findByUsername(user.getUsername());
 
         if (userInfo != null) {
-            throw new MyException("用户已存在", ErrorCode.USER_ALREADY_EXISTS);
+            throw new LoginErrorException("用户已存在", ErrorCode.USER_ALREADY_EXISTS);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userMapper.addUser(user);
