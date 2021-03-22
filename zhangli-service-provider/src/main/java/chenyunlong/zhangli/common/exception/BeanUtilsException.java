@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  *
  * @author johnniang
  */
-public class BeanUtilsException extends MyException {
+public class BeanUtilsException extends AbstractException {
 
     public BeanUtilsException(String message) {
         super(message);

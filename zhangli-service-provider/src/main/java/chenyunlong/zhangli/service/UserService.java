@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service;
 
-import chenyunlong.zhangli.common.exception.MyException;
+import chenyunlong.zhangli.common.exception.AbstractException;
 import chenyunlong.zhangli.entities.Permission;
 import chenyunlong.zhangli.entities.User;
 import org.springframework.stereotype.Component;
@@ -78,9 +78,9 @@ public interface UserService {
      * 添加用户信息
      *
      * @param user 用户信息
-     * @throws MyException 异常
+     * @throws AbstractException 异常
      */
-    void addUserInfo(User user) throws MyException;
+    void addUserInfo(User user) throws AbstractException;
 
     /**
      * 根据Email获取用户信息
