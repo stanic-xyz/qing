@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  *
  * @author Stan
  */
-public class AuthenticationException extends MyException {
+public class AuthenticationException extends AbstractException {
 
     public AuthenticationException(String message) {
         super(message);

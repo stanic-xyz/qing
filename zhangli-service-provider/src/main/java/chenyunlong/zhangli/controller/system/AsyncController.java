@@ -2,11 +2,11 @@ package chenyunlong.zhangli.controller.system;
 
 
 import chenyunlong.zhangli.common.DeferredResultResponse;
+import chenyunlong.zhangli.mail.MailService;
 import chenyunlong.zhangli.service.DeferredResultService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +19,13 @@ import org.springframework.web.context.request.async.DeferredResult;
  * @author Stan
  */
 @Api(tags = "异步任务请求")
+@Slf4j
 @RestController
 @RequestMapping("async")
 public class AsyncController {
 
-    private final Logger log = LoggerFactory.getLogger(AsyncController.class);
     private final DeferredResultService deferredResultService;
-
+    private final MailService mailService;
     /**
      * 为了方便测试，简单模拟一个
      * 多个请求用同一个requestId会出问题
@@ -33,8 +33,9 @@ public class AsyncController {
     private final String requestId = "haha";
 
     @Autowired
-    public AsyncController(DeferredResultService deferredResultService) {
+    public AsyncController(DeferredResultService deferredResultService, MailService mailService) {
         this.deferredResultService = deferredResultService;
+        this.mailService = mailService;
     }
 
     @ApiOperation(value = "deferedResult请求", notes = "timeout参数用于指定延迟时间")
@@ -68,5 +69,11 @@ public class AsyncController {
         deferredResultService.settingResult(requestId, deferredResultResponse);
 
         return "Done";
+    }
+
+    @GetMapping("mailto")
+    public String sendMail(String to, String subject, String message) {
+        mailService.sendTextMail(to, subject, message);
+        return "发送成功";
     }
 }

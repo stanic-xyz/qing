@@ -1,7 +1,10 @@
 spring:
   application:
     name: zhangli-service-provider
-#  cloud:
-#    nacos:
-#      config:
-#        server-addr: 121.36.163.95:8848
+  cloud:
+    nacos:
+      config:
+        server-addr: 121.36.163.95:8848
+        enabled: false
+      discovery:
+        enabled: false

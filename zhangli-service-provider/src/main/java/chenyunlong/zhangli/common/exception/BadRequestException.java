@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  *
  * @author Stan
  */
-public class BadRequestException extends MyException {
+public class BadRequestException extends AbstractException {
 
     public BadRequestException(String message) {
         super(message);

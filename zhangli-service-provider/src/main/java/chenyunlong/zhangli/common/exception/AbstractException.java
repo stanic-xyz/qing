@@ -5,22 +5,22 @@ import org.springframework.http.HttpStatus;
 /**
  * @author Stan
  */
-public class MyException extends MyAbstractException {
+public abstract class AbstractException extends MyAbstractException {
 
     private String msg;
     private int code;
 
-    public MyException(String msg, int code) {
+    public AbstractException(String msg, int code) {
         super(msg);
         this.msg = msg;
         this.code = code;
     }
 
-    public MyException(String message) {
+    public AbstractException(String message) {
         super(message);
     }
 
-    public MyException(String message, Throwable cause) {
+    public AbstractException(String message, Throwable cause) {
         super(message, cause);
     }
 
