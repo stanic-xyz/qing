@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Stan
  */
@@ -74,6 +77,14 @@ public class AsyncController {
     @GetMapping("mailto")
     public String sendMail(String to, String subject, String message) {
         mailService.sendTextMail(to, subject, message);
+        return "发送成功";
+    }
+
+    @GetMapping("templateMailto")
+    public String sendTemplateMail(String to, String subject, String message) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("from", "1576302867@qq.com");
+        mailService.sendTemplateMail(to, subject, data, "register.ftl");
         return "发送成功";
     }
 }
