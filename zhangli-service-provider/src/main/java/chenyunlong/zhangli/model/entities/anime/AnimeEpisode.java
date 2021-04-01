@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.entities.anime;
+package chenyunlong.zhangli.model.entities.anime;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -6,10 +6,10 @@ import lombok.Data;
 
 /**
  * anime_episode
- * @author 
+ * @author
  */
 @Data
-public class AnimeEpisodeEntity implements Serializable {
+public class AnimeEpisode implements Serializable {
     /**
      * 视频ID
      */

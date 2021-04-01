@@ -6,7 +6,7 @@
 
 <mapper namespace="chenyunlong.zhangli.mapper.AnimeInfoMapper">
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.anime.AnimeInfo">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.anime.AnimeInfo">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="district" property="district"/>

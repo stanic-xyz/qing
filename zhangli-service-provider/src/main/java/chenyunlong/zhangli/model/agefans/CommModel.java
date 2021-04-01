@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.agefans;
 
-import chenyunlong.zhangli.entities.AnimeMenu;
+import chenyunlong.zhangli.model.entities.AnimeMenu;
 import lombok.Data;
 
 import java.io.Serializable;

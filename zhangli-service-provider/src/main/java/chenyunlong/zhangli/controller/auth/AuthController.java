@@ -6,7 +6,7 @@ import chenyunlong.zhangli.common.exception.AuthenticationException;
 import chenyunlong.zhangli.common.exception.BadRequestException;
 import chenyunlong.zhangli.common.exception.LoginErrorException;
 import chenyunlong.zhangli.common.exception.AbstractException;
-import chenyunlong.zhangli.entities.User;
+import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.model.params.LoginParam;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.UserService;

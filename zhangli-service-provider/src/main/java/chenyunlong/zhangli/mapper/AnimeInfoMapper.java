@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.mapper;
 
-import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

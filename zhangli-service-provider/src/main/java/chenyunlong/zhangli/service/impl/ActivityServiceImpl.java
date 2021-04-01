@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.entities.Activity;
+import chenyunlong.zhangli.model.entities.Activity;
 import chenyunlong.zhangli.mapper.ActivityMapper;
 import chenyunlong.zhangli.service.ActivityService;
 import org.springframework.stereotype.Service;

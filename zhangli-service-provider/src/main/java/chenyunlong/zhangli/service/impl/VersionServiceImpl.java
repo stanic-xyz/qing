@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.entities.Version;
+import chenyunlong.zhangli.model.entities.Version;
 import chenyunlong.zhangli.mapper.VersionMapper;
 import chenyunlong.zhangli.service.VersionService;
 import org.springframework.beans.factory.annotation.Autowired;

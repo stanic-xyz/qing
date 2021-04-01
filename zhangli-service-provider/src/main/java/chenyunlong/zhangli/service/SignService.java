@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service;
 
-import chenyunlong.zhangli.entities.Sign;
+import chenyunlong.zhangli.model.entities.Sign;
 
 /**
  * @author Stan

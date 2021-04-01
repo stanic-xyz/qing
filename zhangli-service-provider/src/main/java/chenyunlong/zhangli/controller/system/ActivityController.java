@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.controller.system;
 
-import chenyunlong.zhangli.entities.Activity;
+import chenyunlong.zhangli.model.entities.Activity;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.ActivityService;
 import chenyunlong.zhangli.service.AttachementService;

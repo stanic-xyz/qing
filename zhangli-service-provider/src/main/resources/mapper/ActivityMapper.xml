@@ -7,10 +7,10 @@
 <mapper namespace="chenyunlong.zhangli.mapper.ActivityMapper">
 
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.Activity">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.Activity">
         <id column="activity_id" property="activityId"/>
         <result column="activity_name" property="activityName"/>
-<!--        <association property="attachement" javaType="chenyunlong.zhangli.entities.Attachement">-->
+<!--        <association property="attachement" javaType="chenyunlong.zhangli.model.entities.Attachement">-->
 <!--            <id property="attachementId" column="attachement_id" jdbcType="Long"/>-->
 <!--            <result property="attachementName" column="attachement_name"/>-->
 <!--            <result property="attachementUrl" column="attachement_url"/>-->
@@ -29,7 +29,7 @@
         where activity_id = #{activityId}
     </select>
 
-    <insert id="insert" parameterType="chenyunlong.zhangli.entities.Activity">
+    <insert id="insert" parameterType="chenyunlong.zhangli.model.entities.Activity">
         insert into activity(activity_name)
         values (#{activityName})
     </insert>

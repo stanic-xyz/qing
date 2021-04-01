@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)../../movie/detail/20160083 -->
+<!-- saved from url=(0038)/detail/20160083 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -110,15 +110,15 @@
                         <ul class="blockcontent">
 
                             <li class="relates_series">
-                                <a href="../../movie/detail/20170004">为美好的世界献上祝福！ 第二季</a>
+                                <a href="/detail/20170004">为美好的世界献上祝福！ 第二季</a>
                             </li>
 
                             <li class="relates_series">
-                                <a href="../../movie/detail/20160084">为美好的世界献上祝福！OAD</a>
+                                <a href="/detail/20160084">为美好的世界献上祝福！OAD</a>
                             </li>
 
                             <li class="relates_series">
-                                <a href="../../movie/detail/20180187">为美好的世界献上祝福！红传说</a>
+                                <a href="/detail/20180187">为美好的世界献上祝福！红传说</a>
                             </li>
 
                         </ul>
@@ -162,7 +162,7 @@
                     <div class="movurl" style="display: block;">
                         <ul>
                             <li th:each="episode:${episodes}">
-                                <a th:href="@{../../movie/play/{animeId}(playid='3_1',animeId=${animeInfo.id})}"
+                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${animeInfo.id})}"
                                    target="_self"
                                    title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="${episode.name}"></a>
                             </li>
@@ -172,7 +172,7 @@
                     <div class="movurl" style="display:none">
                         <ul>
                             <li th:each="episode:${episodes}">
-                                <a th:href="@{../../movie/play/{animeId}(playid='3_1',animeId=${animeInfo.id})}"
+                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${animeInfo.id})}"
                                    target="_self"
                                    title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="第01话"></a>
                             </li>
@@ -195,7 +195,7 @@
                 <div class="blockcontent">
 
 		<span class="res_links">
-			<a class="res_links_a" href="../../movie/link/20160083/0" target="_blank">[TV 01-10+OVA 720P]</a>
+			<a class="res_links_a" href="/link/20160083/0" target="_blank">[TV 01-10+OVA 720P]</a>
 			<span class="res_links_pswd_tag">(提取码:</span>
 			<span class="res_links_pswd">fe5e)</span></span>
                     <br>
@@ -206,7 +206,7 @@
             <div class="baseblock">
                 <div class="blocktitle">反馈：</div>
                 <div class="report_div">
-                    <form id="report_form" action="../../movie/report" method="GET">
+                    <form id="report_form" action="/report" method="GET">
                         <div>
                             <input id="report_aid" type="hidden" name="animeid" value="20160083">
                             <label>
@@ -236,7 +236,7 @@
                         function registPost() {
                             $.ajax({
                                 type: "get",
-                                url: "../../movie/report?" + $('#report_form').serialize(),
+                                url: "/report?" + $('#report_form').serialize(),
                             }).success(function (message) {
                                 alert(message);
                             }).fail(function (err) {
@@ -261,81 +261,81 @@
                         <ul class="ul_li_a4">
 
                             <li class="anime_icon1">
-                                <a href="../../movie/detail/20160111">
+                                <a href="/detail/20160111">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                          src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"
                                          data-src="//sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"></a>
-                                <a href="../../movie/detail/20160111">
+                                <a href="/detail/20160111">
                                     <div class="anime_icon1_name">伤物语</div>
                                 </a>
                             </li>
 
                             <li class="anime_icon1">
-                                <a href="../../movie/detail/20160144">
+                                <a href="/detail/20160144">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                          src="https://sc02.alicdn.com/kf/H6a603e2add694ff0b50dece25094df5fy.jpg"
                                          data-src="//sc02.alicdn.com/kf/H6a603e2add694ff0b50dece25094df5fy.jpg"></a>
-                                <a href="../../movie/detail/20160144">
+                                <a href="/detail/20160144">
                                     <div class="anime_icon1_name">任性HighSpec</div>
                                 </a>
                             </li>
 
                             <li class="anime_icon1">
-                                <a href="../../movie/detail/20140104">
+                                <a href="/detail/20140104">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                          src="https://sc02.alicdn.com/kf/H62beed20bbc04a8b89924fc0cd97834aW.jpg"
                                          data-src="//sc02.alicdn.com/kf/H62beed20bbc04a8b89924fc0cd97834aW.jpg"></a>
-                                <a href="../../movie/detail/20140104">
+                                <a href="/detail/20140104">
                                     <div class="anime_icon1_name">星刻的龙骑士</div>
                                 </a>
                             </li>
 
                             <li class="anime_icon1">
-                                <a href="../../movie/detail/20150073">
+                                <a href="/detail/20150073">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                          src="https://sc02.alicdn.com/kf/Hd1d5946ae75446c4b77a47dc284d52a4X.jpg"
                                          data-src="//sc02.alicdn.com/kf/Hd1d5946ae75446c4b77a47dc284d52a4X.jpg"></a>
-                                <a href="../../movie/detail/20150073">
+                                <a href="/detail/20150073">
                                     <div class="anime_icon1_name">新妹魔王的契约者</div>
                                 </a>
                             </li>
 
                             <li class="anime_icon1">
-                                <a href="../../movie/detail/20180205">
+                                <a href="/detail/20180205">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                          src="https://sc02.alicdn.com/kf/H413fac31013947698d23d216ef21a184O.jpg"
                                          data-src="//sc02.alicdn.com/kf/H413fac31013947698d23d216ef21a184O.jpg"></a>
-                                <a href="../../movie/detail/20180205">
+                                <a href="/detail/20180205">
                                     <div class="anime_icon1_name">Anima Yell</div>
                                 </a>
                             </li>
 
                             <li class="anime_icon1">
-                                <a href="../../movie/detail/20200168">
+                                <a href="/detail/20200168">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                          src="https://sc02.alicdn.com/kf/H938a52db40094ef59233cdc1c8911decg.jpg"
                                          data-src="//sc02.alicdn.com/kf/H938a52db40094ef59233cdc1c8911decg.jpg"></a>
-                                <a href="../../movie/detail/20200168">
+                                <a href="/detail/20200168">
                                     <div class="anime_icon1_name">七原罪 第四季(愤怒的审判)</div>
                                 </a>
                             </li>
 
                             <li class="anime_icon1">
-                                <a href="../../movie/detail/20000021">
+                                <a href="/detail/20000021">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                          src="https://sc02.alicdn.com/kf/H73c64cf0b71c41eeb7d48ccf247c2635Q.jpg"
                                          data-src="//sc02.alicdn.com/kf/H73c64cf0b71c41eeb7d48ccf247c2635Q.jpg"></a>
-                                <a href="../../movie/detail/20000021">
+                                <a href="/detail/20000021">
                                     <div class="anime_icon1_name">天空之城</div>
                                 </a>
                             </li>
 
                             <li class="anime_icon1">
-                                <a href="../../movie/detail/20060015">
+                                <a href="/detail/20060015">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                          src="https://sc02.alicdn.com/kf/H8263762bc67b4461b081b436c0f52b131.jpg"
                                          data-src="//sc02.alicdn.com/kf/H8263762bc67b4461b081b436c0f52b131.jpg"></a>
-                                <a href="../../movie/detail/20060015">
+                                <a href="/detail/20060015">
                                     <div class="anime_icon1_name">海贼王剧场版 机关城的机械巨兵</div>
                                 </a>
                             </li>

@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 
-import chenyunlong.zhangli.entities.Sign;
+import chenyunlong.zhangli.model.entities.Sign;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

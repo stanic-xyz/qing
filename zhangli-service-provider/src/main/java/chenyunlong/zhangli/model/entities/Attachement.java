@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.entities;
+package chenyunlong.zhangli.model.entities;
 
 import java.io.Serializable;
 

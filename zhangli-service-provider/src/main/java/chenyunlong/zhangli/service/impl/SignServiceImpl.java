@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.entities.Sign;
+import chenyunlong.zhangli.model.entities.Sign;
 import chenyunlong.zhangli.mapper.SignMapper;
 import chenyunlong.zhangli.service.SignService;
 import org.springframework.beans.factory.annotation.Autowired;

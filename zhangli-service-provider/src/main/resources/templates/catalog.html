@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)../movie/detail/20160083 -->
+<!-- saved from url=(0038)/detail/20160083 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       lang="zh"
@@ -32,11 +32,11 @@
                     <li><span>地区：</span>
                         <ul class="search-tag">
                             <li class="on" th:class="${(query.district==null||query.district=='all')?'on':''}"><a
-                                    th:href="@{../movie/catalog(resourceType=${query.resourceType},district='all',seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">全部</a>
+                                    th:href="@{/catalog(resourceType=${query.resourceType},district='all',seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">全部</a>
                             </li>
                             <li th:each="district : ${option.districtList}"
                                 th:class="${query.district==district.name?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${district.name},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}"
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${district.name},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}"
                                    th:text="${district.name}">
                                 </a>
                             </li>
@@ -46,10 +46,10 @@
                         <span>版本：</span>
                         <ul class="search-tag">
                             <li th:class="${(query.version==null||query.version=='all')?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district='all',seasonMonth=${query.seasonMonth},version='all',year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">全部</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district='all',seasonMonth=${query.seasonMonth},version='all',year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">全部</a>
                             <li th:each="version:${option.versionList}"
                                 th:class="${(version.name==query.version)?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${version.name},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}"
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${version.name},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}"
                                    th:text="${version.name}"></a>
                             </li>
                         </ul>
@@ -57,11 +57,11 @@
                     <li><span>年份：</span>
                         <ul class="search-tag">
                             <li th:class="${(query.year==null||query.year=='all')?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year='all',status=${query.status},type=${query.type},sort=${query.sort})}">全部</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year='all',status=${query.status},type=${query.type},sort=${query.sort})}">全部</a>
                             </li>
                             <li th:each="year:${option.years}"
                                 th:class="${(year.queryValue==query.year)?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${year.queryValue},status=${query.status},type=${query.type},sort=${query.sort})}"
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${year.queryValue},status=${query.status},type=${query.type},sort=${query.sort})}"
                                    th:text="${year.name}">
                                 </a>
                             </li>
@@ -71,45 +71,45 @@
                         <span>季度：</span>
                         <ul class="search-tag">
                             <li th:class="${(query.seasonMonth==null||query.seasonMonth==-1)?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth='-1',version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">全部</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth='-1',version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">全部</a>
                             </li>
                             <li th:class="${query.seasonMonth==1?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=1,version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">1月</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=1,version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">1月</a>
                             </li>
                             <li th:class="${query.seasonMonth==4?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=4,version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">4月</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=4,version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">4月</a>
                             </li>
                             <li th:class="${query.seasonMonth==7?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=7,version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">7月</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=7,version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">7月</a>
                             </li>
                             <li th:class="${query.seasonMonth==10?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=10,version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">10月</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=10,version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort})}">10月</a>
                             </li>
                         </ul>
                     </li>
                     <li><span>状态：</span>
                         <ul class="search-tag">
                             <li th:class="${(query.status==null||query.status=='all')?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='all',type=${query.type},sort=${query.sort})}">全部</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='all',type=${query.type},sort=${query.sort})}">全部</a>
                             </li>
                             <li th:class="${query.status=='连载'?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='连载',type=${query.type},sort=${query.sort})}">连载</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='连载',type=${query.type},sort=${query.sort})}">连载</a>
                             </li>
                             <li th:class="${query.status=='完结'?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='完结',type=${query.type},sort=${query.sort})}">完结</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='完结',type=${query.type},sort=${query.sort})}">完结</a>
                             </li>
                             <li th:class="${query.status=='未播放'?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='未播放',type=${query.type},sort=${query.sort})}">未播放</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='未播放',type=${query.type},sort=${query.sort})}">未播放</a>
                             </li>
                         </ul>
                     </li>
                     <li><span>类型：</span>
                         <ul class="search-tag">
                             <li th:class="${(query.type==null||query.type=='all')?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type='all',sort=${query.sort})}">全部</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type='all',sort=${query.sort})}">全部</a>
                             </li>
                             <li th:each="type : ${option.typeList}" th:class="${query.type==type.name?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${type.name},sort=${query.sort})}"
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${type.name},sort=${query.sort})}"
                                    th:text="${type.name}"></a>
                             </li>
                         </ul>
@@ -117,26 +117,26 @@
                     <li><span>资源：</span>
                         <ul class="search-tag">
                             <li th:class="${(query.resourceType==null||query.resourceType=='all')?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType='all',district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='完结',type=${query.type},sort=${query.sort})}">全部</a>
+                                <a th:href="@{/catalog(resourceType='all',district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='完结',type=${query.type},sort=${query.sort})}">全部</a>
                             </li>
                             <li th:class="${query.resourceType=='BDRIP'?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType='BDRIP',district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='完结',type=${query.type},sort=${query.sort})}">BDRIP</a>
+                                <a th:href="@{/catalog(resourceType='BDRIP',district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='完结',type=${query.type},sort=${query.sort})}">BDRIP</a>
                             </li>
                             <li th:class="${query.resourceType=='AGE-RIP'?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType='AGE-RIP',district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='完结',type=${query.type},sort=${query.sort})}">AGE-RIP</a>
+                                <a th:href="@{/catalog(resourceType='AGE-RIP',district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status='完结',type=${query.type},sort=${query.sort})}">AGE-RIP</a>
                             </li>
                         </ul>
                     </li>
                     <li><span>排序：</span>
                         <ul class="search-tag">
                             <li th:class="${query.sort=='premiere_date'?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort='premiere_date')}">更新时间</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort='premiere_date')}">更新时间</a>
                             </li>
                             <li th:class="${query.sort=='name'?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort='name')}">名称</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort='name')}">名称</a>
                             </li>
                             <li th:class="${query.sort=='play_heat'?'on':''}">
-                                <a th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort='play_heat')}">更新时间</a>
+                                <a th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort='play_heat')}">更新时间</a>
                             </li>
                         </ul>
                     </li>
@@ -159,53 +159,30 @@
         <div class="baseblock">
             <div class="blockcontent" style="position: relative;">
                 <span class="asciifont result_count" th:text="${paeInfo.totalElements +'纪录'}"></span>
-                <div style="text-align: center; line-height: 36px;">
-                    <li>
-                        <a class="pbutton pbutton_current asciifont" href="javascript:void(0);"
-                           th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort},page=1)}">首页</a>
-                    </li>
+                <!--                <div style="text-align: center; line-height: 36px;">-->
+                <!--                    <li>-->
+                <!--                        <a class="pbutton pbutton_current asciifont" href="javascript:void(0);"-->
+                <!--                           th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year},status=${query.status},type=${query.type},sort=${query.sort},page=1)}">首页</a>-->
+                <!--                    </li>-->
+                <!--                    <a class="pbutton pbutton_current asciifont" href="javascript:void(0);"-->
+                <!--                       th:href="@{/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year}, status=${query.status},type=${query.type},sort=${query.sort},page=1)}">尾页</a>-->
 
-                    <li>
-                        <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a>
-                    </li>
-
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-2">2</a></li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-3">3</a></li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-4">4</a></li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-5">5</a></li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-6">6</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/catalog/all-all-all-all-all-time-2">下一页</a>
-                    </li>
-
-                    <a class="pbutton pbutton_current asciifont" href="javascript:void(0);"
-                       th:href="@{../movie/catalog(resourceType=${query.resourceType},district=${query.district},seasonMonth=${query.seasonMonth},version=${query.version},year=${query.year}, status=${query.status},type=${query.type},sort=${query.sort},page=1)}">尾页</a>
-
-                </div>
+                <!--                </div>-->
+                <div th:include="common/header::pager('/catalog',${paeInfo.getTotalPages()},${paeInfo.number},${paeInfo.getSize()})"></div>
             </div>
         </div>
         <div class="baseblock">
             <div class="blockcontent1">
                 <div class="cell blockdiff2" th:each="anime,iterStat : ${animeList}"
                      th:class="${iterStat.index%2==0?'cell blockdiff':'cell blockdiff2'}">
-                    <a th:href="${'../movie/detail/'+anime.getId()}" class="cell_poster">
+                    <a th:href="${'/detail/'+anime.getId()}" class="cell_poster">
                         <img referrerpolicy="no-referrer" width="150px" height="208px"
                              th:src="${anime.coverUrl}" th:alt="${anime.getName()}" alt="暂无描述"
                              src="https://sc02.alicdn.com/kf/H3f0b74c52af14186be19063d7fcb92c7f.jpg">
                         <span class="newname">第120话</span></a>
                     <div class="cell_imform">
                         <div>
-                            <a th:href="${'../movie/detail/'+anime.getId()}" class="cell_imform_name"
+                            <a th:href="${'/detail/'+anime.getId()}" class="cell_imform_name"
                                th:text="${anime.getName()}">--</a>
                         </div>
                         <div class="cell_imform_kvs">
@@ -241,8 +218,8 @@
                             </div>
                         </div>
                         <div class="cell_imform_btns">
-                            <a class="nbutton2 cell_res_button" href="../movie/detail/20180105">资源详情</a>
-                            <a class="nbutton2 cell_res_button" href="../movie/play/20180105">在线播放</a>
+                            <a class="nbutton2 cell_res_button" href="/detail/20180105">资源详情</a>
+                            <a class="nbutton2 cell_res_button" href="/play/20180105">在线播放</a>
                         </div>
                     </div>
                 </div>
@@ -251,34 +228,7 @@
         <div class="baseblock">
             <div class="blockcontent">
                 <span id="result_count" class="asciifont result_count" th:text="${total+'纪录'}">0纪录</span>
-                <div style="text-align: center; line-height: 36px;">
-
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">首页</a></li>
-
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-2">2</a></li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-3">3</a></li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-4">4</a></li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-5">5</a></li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-6">6</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/catalog/all-all-all-all-all-time-2">下一页</a>
-                    </li>
-
-                    <li><a class="pbutton  asciifont"
-                           href="../movie/catalog/all-all-all-all-all-time-106">尾页</a></li>
-
-                </div>
+                <div th:include="common/header::pager('/catalog',${paeInfo.getTotalPages()},${paeInfo.number},${paeInfo.getSize()})"></div>
             </div>
         </div>
     </div>

@@ -7,7 +7,7 @@
 <mapper namespace="chenyunlong.zhangli.mapper.AnimeTypeMapper">
 
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.AnimeType">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.AnimeType">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="description" property="description"/>
@@ -16,7 +16,7 @@
     <insert id="addAnimeType" keyProperty="id" useGeneratedKeys="true">
         insert into anime_type(name, description) value (#{name}, #{description})
     </insert>
-    <delete id="deleteAnimeType" parameterType="chenyunlong.zhangli.entities.AnimeType">
+    <delete id="deleteAnimeType" parameterType="chenyunlong.zhangli.model.entities.AnimeType">
         delete
         from anime_type
         where id = #{id}
@@ -28,7 +28,7 @@
         where id = #{id}
     </select>
 
-    <select id="listTypes" resultType="chenyunlong.zhangli.entities.AnimeType">
+    <select id="listTypes" resultType="chenyunlong.zhangli.model.entities.AnimeType">
         select id, name, description
         from anime_type
         order by `order`

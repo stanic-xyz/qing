@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.service;
 
 
-import chenyunlong.zhangli.entities.Activity;
+import chenyunlong.zhangli.model.entities.Activity;
 
 import java.util.List;
 

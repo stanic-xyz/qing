@@ -7,7 +7,7 @@
 <mapper namespace="chenyunlong.zhangli.mapper.UserMapper">
 
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.User">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.User">
         <id column="userid" property="userId"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>

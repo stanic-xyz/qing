@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.mapper;
 
-import chenyunlong.zhangli.entities.Activity;
+import chenyunlong.zhangli.model.entities.Activity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 

@@ -6,7 +6,7 @@
 
 <mapper namespace="chenyunlong.zhangli.mapper.PermissionMapper">
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.Permission">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.Permission">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="description" property="description"/>

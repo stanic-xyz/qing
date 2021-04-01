@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service;
 
-import chenyunlong.zhangli.entities.District;
+import chenyunlong.zhangli.model.entities.District;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

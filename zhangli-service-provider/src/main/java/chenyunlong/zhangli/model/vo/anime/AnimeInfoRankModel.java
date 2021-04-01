@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.vo.anime;
 
-import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import lombok.*;
 
 import java.util.List;
