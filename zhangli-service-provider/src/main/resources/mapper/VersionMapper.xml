@@ -7,7 +7,7 @@
 <mapper namespace="chenyunlong.zhangli.mapper.VersionMapper">
 
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.Version">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.Version">
         <id column="vid" property="vid"/>
         <result column="name" property="name"/>
         <result column="code" property="code"/>
@@ -18,7 +18,7 @@
         select vid, code, name, description
         from anime_version
     </select>
-    <insert id="addVersionInfo" parameterType="chenyunlong.zhangli.entities.Version">
+    <insert id="addVersionInfo" parameterType="chenyunlong.zhangli.model.entities.Version">
         insert into anime_district (name, code, description)
         values ('123', 123, 123)
     </insert>

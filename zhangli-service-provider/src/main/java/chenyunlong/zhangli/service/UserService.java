@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.service;
 
 import chenyunlong.zhangli.common.exception.AbstractException;
-import chenyunlong.zhangli.entities.Permission;
-import chenyunlong.zhangli.entities.User;
+import chenyunlong.zhangli.model.entities.Permission;
+import chenyunlong.zhangli.model.entities.User;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;

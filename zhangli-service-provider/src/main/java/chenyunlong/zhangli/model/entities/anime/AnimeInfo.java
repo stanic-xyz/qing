@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.entities.anime;
+package chenyunlong.zhangli.model.entities.anime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

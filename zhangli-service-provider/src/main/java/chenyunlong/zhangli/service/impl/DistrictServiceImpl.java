@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.service.DistrictService;
-import chenyunlong.zhangli.entities.District;
+import chenyunlong.zhangli.model.entities.District;
 import chenyunlong.zhangli.mapper.DistrictMapper;
 import org.springframework.stereotype.Service;
 

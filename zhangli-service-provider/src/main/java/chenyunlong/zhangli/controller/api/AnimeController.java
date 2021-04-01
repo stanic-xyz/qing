@@ -1,9 +1,9 @@
 package chenyunlong.zhangli.controller.api;
 
 import chenyunlong.zhangli.common.annotation.Log;
-import chenyunlong.zhangli.entities.AnimeType;
-import chenyunlong.zhangli.entities.District;
-import chenyunlong.zhangli.entities.Version;
+import chenyunlong.zhangli.model.entities.AnimeType;
+import chenyunlong.zhangli.model.entities.District;
+import chenyunlong.zhangli.model.entities.Version;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.service.AnimeTypeService;
 import chenyunlong.zhangli.service.DistrictService;

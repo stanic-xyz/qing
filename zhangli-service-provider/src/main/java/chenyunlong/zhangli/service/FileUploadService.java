@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.service;
 
 
-import chenyunlong.zhangli.entities.UploadFile;
+import chenyunlong.zhangli.model.entities.UploadFile;
 
 public interface FileUploadService {
 

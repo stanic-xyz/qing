@@ -7,7 +7,7 @@
 <mapper namespace="chenyunlong.zhangli.mapper.FileMapper">
 
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.UploadFile">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.UploadFile">
         <id column="fileid" property="fileId"/>
         <result column="file_name" property="fileName"/>
         <result column="file_size" property="fileSize"/>

@@ -3,10 +3,10 @@
 
 <div id="top" th:fragment="top()">
     <div id="logo">
-        <a th:href="@{../../movie/}" title="AGE动漫">AGE动漫</a></div>
+        <a th:href="@{/}" title="AGE动漫">AGE动漫</a></div>
     <div class="loginout">
         <span class="svg_title svg_title_user"></span>
-        <a class="loginout_btn2" th:href="@{../../movie/profile/}">登陆</a>
+        <a class="loginout_btn2" th:href="@{/profile/}">登陆</a>
         <script>__html_set_username();</script>
     </div>
 </div>
@@ -19,19 +19,19 @@
 </div>
 
 <header id="nav" th:fragment="commonHead(title)">
-    <a th:class="${title=='index'?'nav_button nav_button_current':'nav_button'}" th:href="@{../../movie/}">首页</a>
+    <a th:class="${title=='index'?'nav_button nav_button_current':'nav_button'}" th:href="@{/}">首页</a>
     <a th:class="${title=='catlog'?'nav_button nav_button_current':'nav_button'}"
-       th:href="@{../../movie/catalog}">目录</a>
+       th:href="@{/catalog}">目录</a>
     <a th:class="${title=='recommend'?'nav_button nav_button_current':'nav_button'}"
-       th:href="@{../../movie/recommend}">每日推荐</a>
+       th:href="@{/recommend}">每日推荐</a>
     <a th:class="${title=='update'?'nav_button nav_button_current':'nav_button'}"
-       th:href="@{../../movie/update}">最近更新</a>
-    <a th:class="${title=='rank'?'nav_button nav_button_current':'nav_button'}" th:href="@{../../movie/rank}">排行榜</a>
+       th:href="@{/update}">最近更新</a>
+    <a th:class="${title=='rank'?'nav_button nav_button_current':'nav_button'}" th:href="@{/rank}">排行榜</a>
     <a th:class="${title=='detail'?'nav_button nav_button_current':'nav_button'}"
        th:style="${title=='detail'?'':'display: none'}">详情</a>
     <a th:class="${title=='search'?'nav_button nav_button_current':'nav_button'}"
        th:style="${title=='search'?'':'display: none'}">搜索</a>
-    <form id="top_search_from" class="search_form" th:action="@{../../movie/search}" method="get"
+    <form id="top_search_from" class="search_form" th:action="@{/search}" method="get"
           onsubmit="return on_top_search_form();">
         <label for="top_search_input"></label>
         <input autocapitalize="on" autocomplete='on'
@@ -95,3 +95,21 @@
         </div>
     </div>
 </footer>
+
+<pager th:fragment="pager(url,pages,currentPage,pageSize)">
+    <div style="text-align: center;line-height: 36px">
+        <a class="pbutton  asciifont" th:href="@{{url}(page=1,url=${url},pageSize=${pageSize})}">首页</a>
+        <a class="pbutton  asciifont"
+           th:if="${currentPage>1} == true"
+           th:href="@{{url}(page=${currentPage - 1},url=${url},pageSize=${pageSize})}">上一页</a>
+        <a th:href="@{{url}(page=${i},url=${url},pageSize=${pageSize})}"
+           th:each="i :${#numbers.sequence(1,(pages - 1))}"
+           th:if="${(i - currentPage)<3 &&(i - currentPage)>-3}"
+           th:text="${i}"
+           th:class="${currentPage == i}? 'pbutton pbutton_current asciifont' :'pbutton  asciifont' "></a>
+        <a class="pbutton  asciifont"
+           th:if="${currentPage<pages} == true"
+           th:href="@{{url}(page=${currentPage+1},url=${url},pageSize=${pageSize})}">下一页</a>
+        <a class="pbutton  asciifont" th:href="@{{url}(page=${pages - 1},url=${url},pageSize=${pageSize})}">尾页</a>
+    </div>
+</pager>

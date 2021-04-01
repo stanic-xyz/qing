@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.mapper.AnimeRecommendMapper;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;

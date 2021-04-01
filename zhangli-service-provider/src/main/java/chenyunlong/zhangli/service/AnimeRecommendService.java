@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service;
 
-import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import org.springframework.data.domain.Pageable;
 

@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service;
 
-import chenyunlong.zhangli.entities.AnimeType;
+import chenyunlong.zhangli.model.entities.AnimeType;
 
 import java.util.List;
 

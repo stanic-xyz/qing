@@ -56,8 +56,7 @@ public class MailServiceImpl extends AbstractMailService {
             try {
                 Configuration configuration = freeMarker.getConfiguration();
                 Template template = configuration.getTemplate(templateName);
-                String contentResult = FreeMarkerTemplateUtils.processTemplateIntoString(template,
-                        content);
+                String contentResult = FreeMarkerTemplateUtils.processTemplateIntoString(template, content);
                 messageHelper.setSubject(subject);
                 messageHelper.setTo(to);
                 messageHelper.setText(contentResult, true);
@@ -66,7 +65,6 @@ public class MailServiceImpl extends AbstractMailService {
             } catch (MessagingException e) {
                 throw new RuntimeException("Failed to set message subject, to or test", e);
             }
-
         });
     }
 

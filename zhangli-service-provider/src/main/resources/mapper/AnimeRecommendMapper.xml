@@ -7,7 +7,7 @@
 <mapper namespace="chenyunlong.zhangli.mapper.AnimeRecommendMapper">
 
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.AnimeRecommendEntity">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.AnimeRecommendEntity">
         <id column="id" property="id"/>
         <result column="aid" property="aid"/>
         <result column="reason" property="reason"/>
@@ -19,7 +19,7 @@
         select vid, code, name, description
         from anime_version
     </select>
-    <insert id="addVersionInfo" parameterType="chenyunlong.zhangli.entities.AnimeRecommendEntity">
+    <insert id="addVersionInfo" parameterType="chenyunlong.zhangli.model.entities.AnimeRecommendEntity">
         insert into anime_recommend (aid, resaon, date)
         values (#{anime.aid}, #{anime.reason}, #{anime.date})
     </insert>

@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.controller.api;
 
 import chenyunlong.zhangli.common.annotation.Log;
-import chenyunlong.zhangli.entities.AnimeType;
-import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.AnimeType;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;

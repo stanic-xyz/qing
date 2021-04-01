@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.entities;
+package chenyunlong.zhangli.model.entities;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

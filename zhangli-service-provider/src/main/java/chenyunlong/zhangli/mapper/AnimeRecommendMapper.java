@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.mapper;
 
-import chenyunlong.zhangli.entities.AnimeRecommendEntity;
+import chenyunlong.zhangli.model.entities.AnimeRecommendEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
