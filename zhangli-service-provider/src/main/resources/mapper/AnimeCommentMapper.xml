@@ -6,7 +6,7 @@
 
 <mapper namespace="chenyunlong.zhangli.mapper.AnimeCommentMapper">
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.AnimeComment">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.AnimeComment">
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="content" property="content"/>

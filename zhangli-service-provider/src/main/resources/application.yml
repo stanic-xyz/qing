@@ -29,7 +29,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com
-    password: xoqywcevpshnbabf
+    password: puopstuzawtqgehg
   freemarker:
     template-loader-path: classpath:/templates/mail/
     suffix: .ftl
@@ -57,7 +57,7 @@ zhangli:
     email-from-name: Stan
     username: 1576302867@qq.com
     password: puopstuzawtqgehg
-    host: smtp.qq.comf
+    host: smtp.qq.com
     protocol: smtps
     port: 465
 management:

@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.entities.AnimeType;
+import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.mapper.AnimeTypeMapper;
 import chenyunlong.zhangli.service.AnimeTypeService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service;
 
-import chenyunlong.zhangli.entities.Version;
+import chenyunlong.zhangli.model.entities.Version;
 
 import java.util.List;
 

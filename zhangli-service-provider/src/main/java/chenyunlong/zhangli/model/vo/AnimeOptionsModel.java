@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.model.vo;
 
-import chenyunlong.zhangli.entities.AnimeType;
-import chenyunlong.zhangli.entities.District;
-import chenyunlong.zhangli.entities.Version;
+import chenyunlong.zhangli.model.entities.AnimeType;
+import chenyunlong.zhangli.model.entities.District;
+import chenyunlong.zhangli.model.entities.Version;
 import lombok.Data;
 
 import java.io.Serializable;

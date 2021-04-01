@@ -1,11 +1,11 @@
 package chenyunlong.zhangli.service;
 
 
-import chenyunlong.zhangli.entities.AnimeType;
-import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity;
-import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.AnimeType;
+import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.AnimePlaylistEntity;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
-import chenyunlong.zhangli.model.vo.anime.AnimeEpisodeVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import org.springframework.data.domain.Page;
@@ -122,4 +122,12 @@ public interface AnimeInfoService {
      * @return 动漫的所有集数
      */
     List<AnimeEpisodeEntity> getAnimeEpisodes(Long movieId);
+
+    /**
+     * 获取动漫的播放列表
+     *
+     * @param animeId 动漫ID
+     * @return 动漫播放列表
+     */
+    List<AnimePlaylistEntity> getAnimePlayList(Long animeId);
 }

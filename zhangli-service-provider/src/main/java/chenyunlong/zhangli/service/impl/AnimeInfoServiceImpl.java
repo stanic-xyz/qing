@@ -1,11 +1,12 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.entities.AnimeType;
-import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity;
-import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample;
-import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.AnimeType;
+import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.AnimePlaylistEntity;
 import chenyunlong.zhangli.mapper.AnimeEpisodeMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
+import chenyunlong.zhangli.mapper.AnimePlaylistMapper;
 import chenyunlong.zhangli.mapper.AnimeTypeMapper;
 import chenyunlong.zhangli.model.agefans.AgePlayInfoModel;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
@@ -41,16 +42,18 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     private final RestTemplate restTemplate;
     private final AnimeEpisodeMapper animeEpisodeMapper;
     private final AnimeTypeMapper animeTypeMapper;
+    private final AnimePlaylistMapper animePlaylistMapper;
 
 
     public AnimeInfoServiceImpl(AnimeInfoMapper animeInfoMapper,
                                 RestTemplate restTemplate,
                                 AnimeEpisodeMapper animeEpisodeMapper,
-                                AnimeTypeMapper animeTypeMapper) {
+                                AnimeTypeMapper animeTypeMapper, AnimePlaylistMapper animePlaylistMapper) {
         this.animeInfoMapper = animeInfoMapper;
         this.restTemplate = restTemplate;
         this.animeEpisodeMapper = animeEpisodeMapper;
         this.animeTypeMapper = animeTypeMapper;
+        this.animePlaylistMapper = animePlaylistMapper;
     }
 
     @Override
@@ -81,9 +84,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
         }
         ObjectMapper objectMapper = new ObjectMapper();
         AnimeInfoVo animeInfoVo = objectMapper.convertValue(animeInfo, AnimeInfoVo.class);
-        AnimeEpisodeEntityExample episodeEntityExample = new AnimeEpisodeEntityExample();
-        episodeEntityExample.createCriteria().andAnimeIdEqualTo(animeInfo.getId());
-        List<AnimeEpisodeEntity> episodes = animeEpisodeMapper.selectByExample(episodeEntityExample);
+        List<AnimeEpisodeEntity> episodes = animeEpisodeMapper.selectByAnimeId(animeInfo.getId());
         List<AnimeEpisodeVo> episodeVos = new LinkedList<>();
         episodes.forEach(episode -> episodeVos.add(objectMapper.convertValue(episode, AnimeEpisodeVo.class)));
         animeInfoVo.setEpisodes(episodeVos);
@@ -164,9 +165,12 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
      */
     @Override
     public List<AnimeEpisodeEntity> getAnimeEpisodes(Long movieId) {
-        AnimeEpisodeEntityExample example = new AnimeEpisodeEntityExample();
-        example.createCriteria().andAnimeIdEqualTo(movieId);
-        return animeEpisodeMapper.selectByExample(example);
+        return animeEpisodeMapper.selectByAnimeId(movieId);
+    }
+
+    @Override
+    public List<AnimePlaylistEntity> getAnimePlayList(Long animeId) {
+        return animePlaylistMapper.getAnimePlayList(animeId);
     }
 
     private void getPlayDetail() {

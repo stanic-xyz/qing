@@ -1,19 +1,19 @@
 package chenyunlong.zhangli.controller.content;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity;
-import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.AnimePlaylistEntity;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.AnimeOptionsModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeEpisodeVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
+import chenyunlong.zhangli.model.vo.anime.PlayListDTO;
 import chenyunlong.zhangli.model.vo.page.PlayInfoModel;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.AnimeOptionsService;
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
  * @author Stan
  */
 @Controller
-@RequestMapping("movie")
 public class MovieController {
 
     private final AnimeInfoService animeInfoService;
@@ -59,12 +58,22 @@ public class MovieController {
     public ModelAndView movie(@PathVariable(value = "movieId", required = false) Long movieId) {
         AnimeInfoVo animeInfo = animeInfoService.getMovieDetail(movieId);
         final List<AnimeEpisodeVo> episodes = new LinkedList<>();
+        final List<PlayListDTO> playListDTOList = new LinkedList<>();
         if (animeInfo != null) {
-            List<AnimeEpisodeEntity> animeEpisodeList = animeInfoService.getAnimeEpisodes(movieId);
-            animeEpisodeList.forEach(animeEpisodeEntity -> episodes.add(new AnimeEpisodeVo().<AnimeEpisodeVo>convertFrom(animeEpisodeEntity)));
+            List<AnimePlaylistEntity> playList = animeInfoService.getAnimePlayList(animeInfo.getId());
+            List<AnimeEpisodeEntity> animeEpisodeList = animeInfoService.getAnimeEpisodes(animeInfo.getId());
+            playListDTOList.addAll(playList.stream().map(playInfo -> {
+                PlayListDTO playListDTO = new PlayListDTO();
+                playListDTO.setPlayList(animeEpisodeList.stream().filter(animeEpisodeEntity
+                        -> playInfo.getId().equals(animeEpisodeEntity.getPlaylistId())).collect(Collectors.toList()));
+                return playListDTO;
+            }).collect(Collectors.toList()));
+            animeEpisodeList.forEach(animeEpisodeEntity
+                    -> episodes.add(new AnimeEpisodeVo().<AnimeEpisodeVo>convertFrom(animeEpisodeEntity)));
         }
         ModelAndView modelAndView = new ModelAndView("detail");
         modelAndView.addObject("episodes", episodes);
+        modelAndView.addObject("playList", playListDTOList);
         modelAndView.addObject("animeInfo", animeInfo);
         return modelAndView;
     }

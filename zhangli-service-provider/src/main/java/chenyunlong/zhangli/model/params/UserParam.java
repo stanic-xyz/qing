@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.params;
 
-import chenyunlong.zhangli.entities.UserInfo;
+import chenyunlong.zhangli.model.entities.UserInfo;
 import chenyunlong.zhangli.model.dto.base.InputConverter;
 import lombok.Data;
 

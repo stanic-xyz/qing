@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.vo.anime;
 
-import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity;
+import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.model.dto.base.OutputConverter;
 import lombok.Data;
 
@@ -17,10 +17,7 @@ public class AnimeEpisodeVo implements OutputConverter<AnimeEpisodeVo, AnimeEpis
      * 动漫ID
      */
     private Long animeId;
-
-    /**
-     * 视频标题名称
-     */
+    private Long playlistId;
     private String name;
 
     /**

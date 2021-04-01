@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.dto;
 
-import chenyunlong.zhangli.entities.Link;
+import chenyunlong.zhangli.model.entities.Link;
 import chenyunlong.zhangli.model.dto.base.OutputConverter;
 import lombok.Data;
 

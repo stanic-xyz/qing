@@ -22,32 +22,11 @@
         <div class="spaceblock"></div>
         <div class="baseblock">
             <div class="blockcontent">
-                <div style="text-align: center; line-height: 36px;">
-
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">首页</a></li>
-
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=2">2</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=3">3</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=4">4</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=5">5</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=6">6</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=2">下一页</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=106">尾页</a></li>
-
-                </div>
+                <div th:include="common/header::pager('/update',${animeInfoPage.getTotalPages()},${animeInfoPage.number},${animeInfoPage.getSize()})"></div>
                 <div class="spaceblock"></div>
                 <ul class="ul_li_a6">
-
                     <li th:each="anime : ${animeInfoPage.content}" class="anime_icon2">
-                        <a th:href="@{'../movie/detail/'+${anime.id}}">
+                        <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
                             <img referrerpolicy="no-referrer" width="150px" height="208px" class="anime_icon2_img"
                                  th:src="@{https:{coverUrl}(coverUrl=${anime.coverUrl})}" alt="租借女友"
                                  title="02:00 第10话">
@@ -56,27 +35,7 @@
                             <a th:href="@{'../movie/detail/'+${anime.id}}" th:text="${anime.name}">租借女友</a></h4>
                     </li>
                 </ul>
-                <div style="text-align: center; line-height: 36px;">
-
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">首页</a></li>
-
-                    <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=2">2</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=3">3</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=4">4</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=5">5</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=6">6</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=2">下一页</a></li>
-
-                    <li><a class="pbutton  asciifont" href="../movie/update?page=106">尾页</a></li>
-
-                </div>
+                <div th:include="common/header::pager('/update',${animeInfoPage.getTotalPages()},${animeInfoPage.number},${animeInfoPage.getSize()})"></div>
             </div>
         </div>
     </div>

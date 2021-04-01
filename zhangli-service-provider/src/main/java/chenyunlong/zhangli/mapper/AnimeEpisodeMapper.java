@@ -1,36 +1,25 @@
 package chenyunlong.zhangli.mapper;
 
-import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntity;
-import chenyunlong.zhangli.entities.anime.AnimeEpisodeEntityExample;
+import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
-
+/**
+ * @author Stan
+ */
 @Mapper
 @Component
 public interface AnimeEpisodeMapper {
-    long countByExample(AnimeEpisodeEntityExample example);
-
-    int deleteByExample(AnimeEpisodeEntityExample example);
-
-    int deleteByPrimaryKey(Long id);
-
-    int insert(AnimeEpisodeEntity record);
-
-    int insertSelective(AnimeEpisodeEntity record);
-
-    List<AnimeEpisodeEntity> selectByExample(AnimeEpisodeEntityExample example);
-
-    AnimeEpisodeEntity selectByPrimaryKey(Long id);
-
-    int updateByExampleSelective(@Param("record") AnimeEpisodeEntity record, @Param("example") AnimeEpisodeEntityExample example);
-
-    int updateByExample(@Param("record") AnimeEpisodeEntity record, @Param("example") AnimeEpisodeEntityExample example);
-
-    int updateByPrimaryKeySelective(AnimeEpisodeEntity record);
-
-    int updateByPrimaryKey(AnimeEpisodeEntity record);
+    /**
+     * 获取某番剧的播放剧集
+     *
+     * @param animeId 番剧ID
+     * @return 播放剧集信息
+     */
+    @Select("select * from anime_episode where anime_id=#{animeId}")
+    List<AnimeEpisodeEntity> selectByAnimeId(@Param("animeId") Long animeId);
 }

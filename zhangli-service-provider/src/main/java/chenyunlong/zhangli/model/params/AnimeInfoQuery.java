@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.params;
 
-import chenyunlong.zhangli.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.dto.base.InputConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

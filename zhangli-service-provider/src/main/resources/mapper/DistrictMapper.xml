@@ -7,7 +7,7 @@
 <mapper namespace="chenyunlong.zhangli.mapper.DistrictMapper">
 
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.entities.District">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.District">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="code" property="description"/>
@@ -18,7 +18,7 @@
         select id, code, name, description
         from anime_district
     </select>
-    <insert id="addDistrictInfo" parameterType="chenyunlong.zhangli.entities.District">
+    <insert id="addDistrictInfo" parameterType="chenyunlong.zhangli.model.entities.District">
         insert into anime_district (name, code, description)
         values ('123', 123, 123)
     </insert>
