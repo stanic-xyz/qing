@@ -18,7 +18,7 @@ spring:
         enabled: false
 logging:
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
   level:
     root: info
     person.pluto: info
