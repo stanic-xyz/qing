@@ -1,4 +1,6 @@
 debug: true
+server:
+  port: 8081
 spring:
   devtools:
     livereload:
@@ -26,6 +28,9 @@ spring:
     username: guest
     password: guest
     host: localhost
+  thymeleaf:
+    cache: false
+    prefix: file:${user.dir}/zhangli-service-provider/src/main/resources/templates/
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
