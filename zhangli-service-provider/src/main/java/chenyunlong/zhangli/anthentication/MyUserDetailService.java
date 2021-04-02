@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Component
-public class MyUserdeatailService implements UserDetailsService {
+public class MyUserDetailService implements UserDetailsService {
 
     private final UserService userService;
 
 
-    public MyUserdeatailService(UserService userService) {
+    public MyUserDetailService(UserService userService) {
         this.userService = userService;
     }
 
