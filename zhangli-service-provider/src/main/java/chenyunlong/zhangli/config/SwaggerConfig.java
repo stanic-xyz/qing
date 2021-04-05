@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.config;
 
-import chenyunlong.zhangli.anthentication.TokenProvider;
+import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.config.properties.SwaggerProperties;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import org.springframework.context.annotation.Bean;

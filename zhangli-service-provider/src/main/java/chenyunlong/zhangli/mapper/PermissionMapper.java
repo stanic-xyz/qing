@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.model.entities.Permission;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 @Mapper
 @Component
-public interface PermissionMapper {
+public interface PermissionMapper extends BaseMapper<Permission> {
     /**
      * 获取用户的权限信息
      *

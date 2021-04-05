@@ -10,7 +10,7 @@ import java.util.List;
  * @author Stan
  */
 @Data
-public class CommModel implements Serializable {
+public class CommModel {
     private String index;
     private String indexName;
     private String indexImg;

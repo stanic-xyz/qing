@@ -1,7 +1,12 @@
 package chenyunlong.zhangli.config;
 
+import chenyunlong.zhangli.cache.AbstractStringCacheStore;
+import chenyunlong.zhangli.cache.InMemoryCacheStore;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.intercepter.HostInterceptor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  * @author stan
  */
+@Slf4j
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
@@ -35,6 +41,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new HostInterceptor(zhangliProperties)).addPathPatterns("/movie/**");
+        registry.addInterceptor(new HostInterceptor(zhangliProperties)).addPathPatterns("/**");
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AbstractStringCacheStore stringCacheStore() {
+        AbstractStringCacheStore stringCacheStore = new InMemoryCacheStore();
+        log.info("cache store load impl : [{}]", stringCacheStore.getClass());
+        return stringCacheStore;
+
     }
 }

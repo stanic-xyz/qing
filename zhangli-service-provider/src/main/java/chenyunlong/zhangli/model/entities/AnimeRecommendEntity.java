@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.model.entities;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,7 +10,8 @@ import java.time.LocalDateTime;
  * @author Stan
  */
 @Data
-public class AnimeRecommendEntity implements Serializable {
+@TableName("anime_recommend")
+public class AnimeRecommendEntity {
     /**
      * 主键ID
      */

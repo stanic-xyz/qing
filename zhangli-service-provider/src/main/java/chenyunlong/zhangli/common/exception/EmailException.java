@@ -1,5 +1,7 @@
 package chenyunlong.zhangli.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * Email exception.
  *
@@ -14,5 +16,10 @@ public class EmailException extends AbstractException {
 
     public EmailException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    @Override
+    public HttpStatus getStatus() {
+        return HttpStatus.BAD_REQUEST;
     }
 }

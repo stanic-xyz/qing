@@ -30,13 +30,7 @@
         where anime_info.id = #{id}
     </update>
 
-    <delete id="deleteByAnimeId" parameterType="long">
-        delete
-        from `anime_info`
-        where id = #{animeId}
-    </delete>
-
-    <select id="listAnimes" resultMap="BaseResultMap" parameterType="chenyunlong.zhangli.model.params.AnimeInfoQuery">
+    <select id="listAnime" resultMap="BaseResultMap" parameterType="chenyunlong.zhangli.model.params.AnimeInfoQuery">
         SELECT `id`,
         `name`,
         `district`,

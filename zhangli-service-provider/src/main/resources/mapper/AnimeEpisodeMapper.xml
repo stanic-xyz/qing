@@ -7,7 +7,7 @@
         <result column="playlist_id" property="playlistId"/>
         <result column="name" property="name"/>
         <result column="status" property="status"/>
-        <result column="uploadder_name" property="uploadderName"/>
+        <result column="uploader_name" property="uploaderName"/>
         <result column="uploader_id" property="uploaderId"/>
         <result column="upload_time" property="uploadTime"/>
         <result column="url1" property="url1"/>

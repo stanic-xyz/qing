@@ -4,7 +4,7 @@ import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.District;
 import chenyunlong.zhangli.model.entities.Version;
-import chenyunlong.zhangli.model.vo.ApiResult;
+import chenyunlong.zhangli.model.support.ApiResult;
 import chenyunlong.zhangli.service.AnimeTypeService;
 import chenyunlong.zhangli.service.DistrictService;
 import chenyunlong.zhangli.service.VersionService;

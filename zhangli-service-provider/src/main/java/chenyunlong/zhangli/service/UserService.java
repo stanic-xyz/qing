@@ -3,6 +3,7 @@ package chenyunlong.zhangli.service;
 import chenyunlong.zhangli.common.exception.AbstractException;
 import chenyunlong.zhangli.model.entities.Permission;
 import chenyunlong.zhangli.model.entities.User;
+import chenyunlong.zhangli.model.params.LoginParam;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,6 @@ import java.util.List;
  */
 @Component
 public interface UserService {
-
 
     /**
      * 通过用户查询用户
@@ -78,9 +78,10 @@ public interface UserService {
      * 添加用户信息
      *
      * @param user 用户信息
+     * @return 添加后的用户信息
      * @throws AbstractException 异常
      */
-    void addUserInfo(User user) throws AbstractException;
+    User addUserInfo(User user) throws AbstractException;
 
     /**
      * 根据Email获取用户信息
@@ -98,4 +99,12 @@ public interface UserService {
      * @return 密码匹配结果
      */
     boolean passwordMatch(@NotNull User userInfo, String password);
+
+    /**
+     * 认证
+     *
+     * @param loginParam 登录参数
+     * @return 取消操作了
+     */
+    User authenticate(LoginParam loginParam);
 }

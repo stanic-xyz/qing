@@ -10,3 +10,5 @@ create table anime_playlist
 
 alter table anime_episode
     add playlist_id bigint not null comment '播放列表ID' after anime_id;
+
+drop table user_info;

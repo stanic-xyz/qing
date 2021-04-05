@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.model.entities.anime.AnimePlaylistEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @Mapper
 @Component
-public interface AnimePlaylistMapper {
+public interface AnimePlaylistMapper extends BaseMapper<AnimePlaylistEntity> {
 
     /**
      * 获取动漫播放列表
