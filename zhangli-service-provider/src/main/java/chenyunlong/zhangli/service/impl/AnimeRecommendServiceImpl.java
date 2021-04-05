@@ -17,14 +17,17 @@ import java.util.List;
 @Service
 public class AnimeRecommendServiceImpl implements AnimeRecommendService {
 
-    @Autowired
-    private AnimeRecommendMapper animeRecommendMapper;
+    private final AnimeRecommendMapper animeRecommendMapper;
 
-    @Autowired
-    private AnimeInfoMapper animeInfoMapper;
+    private final AnimeInfoMapper animeInfoMapper;
+
+    public AnimeRecommendServiceImpl(AnimeRecommendMapper animeRecommendMapper, AnimeInfoMapper animeInfoMapper) {
+        this.animeRecommendMapper = animeRecommendMapper;
+        this.animeInfoMapper = animeInfoMapper;
+    }
 
     @Override
     public List<AnimeInfo> getRecommendAnimeInfoList(Pageable pageable, AnimeInfoQuery animeInfoQuery) {
-        return animeInfoMapper.listAnimes(pageable, animeInfoQuery);
+        return animeInfoMapper.listAnime(pageable, animeInfoQuery);
     }
 }

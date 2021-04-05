@@ -1,20 +1,19 @@
 package chenyunlong.zhangli.common.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 /**
- * @author Stan
- */
-public abstract class AbstractException extends MyAbstractException {
+ * @author 陈云龙
+ * @date 2021/02/27
+ **/
+public abstract class AbstractException extends RuntimeException {
 
-    private String msg;
-    private int code;
-
-    public AbstractException(String msg, int code) {
-        super(msg);
-        this.msg = msg;
-        this.code = code;
-    }
+    /**
+     * Error errorData.
+     */
+    private Object errorData;
 
     public AbstractException(String message) {
         super(message);
@@ -24,30 +23,27 @@ public abstract class AbstractException extends MyAbstractException {
         super(message, cause);
     }
 
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     /**
      * Http status code
      *
      * @return {@link HttpStatus}
      */
-    @Override
-    public HttpStatus getStatus() {
-        return null;
+    public abstract HttpStatus getStatus();
+
+    @Nullable
+    public Object getErrorData() {
+        return errorData;
+    }
+
+    /**
+     * Sets error errorData.
+     *
+     * @param errorData error data
+     * @return current exception.
+     */
+    @NonNull
+    public AbstractException setErrorData(@Nullable Object errorData) {
+        this.errorData = errorData;
+        return this;
     }
 }

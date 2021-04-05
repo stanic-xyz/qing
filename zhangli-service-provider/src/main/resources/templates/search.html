@@ -22,30 +22,7 @@
         <div class="baseblock">
             <div class="blockcontent">
                 <span id="result_count" th:text="${totalCount+'纪录'}"></span>
-                <div style="text-align: center; line-height: 36px;">
-                    <ul>
-                        <li>
-                            <a class="pbutton pbutton_current asciifont"
-                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'/search?query='+query+'&page=1'}">首页</a>
-                        </li>
-
-                        <li>
-                            <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
-
-                        <li>
-                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">2</a>
-                        </li>
-
-                        <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">下一页</a>
-                        </li>
-
-                        <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont"
-                               th:href="${'/search?query='+query+'&page='+totalPage}">尾页</a>
-                        </li>
-                    </ul>
-                </div>
+                <div th:include="common/header::pager('/search',${totalPage},${currentIndex},${24})"></div>
             </div>
 
             <div class="blockcontent1">
@@ -105,30 +82,31 @@
         <div class="baseblock">
             <div class="blockcontent">
                 <span th:text="${totalCount+'纪录'}"></span>
-                <div style="text-align: center; line-height: 36px;">
-                    <ul>
-                        <li>
-                            <a class="pbutton pbutton_current asciifont"
-                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'/search?query='+query+'&page=1'}">首页</a>
-                        </li>
+<!--                <div style="text-align: center; line-height: 36px;">-->
+<!--                    <ul>-->
+<!--                        <li>-->
+<!--                            <a class="pbutton pbutton_current asciifont"-->
+<!--                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'/search?query='+query+'&page=1'}">首页</a>-->
+<!--                        </li>-->
 
-                        <li>
-                            <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>
+<!--                        <li>-->
+<!--                            <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>-->
 
-                        <li>
-                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">2</a>
-                        </li>
+<!--                        <li>-->
+<!--                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">2</a>-->
+<!--                        </li>-->
 
-                        <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">下一页</a>
-                        </li>
+<!--                        <li th:if="${currentIndex != totalPage}">-->
+<!--                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">下一页</a>-->
+<!--                        </li>-->
 
-                        <li th:if="${currentIndex != totalPage}">
-                            <a class="pbutton  asciifont"
-                               th:href="${'/search?query='+query+'&page='+totalPage}">尾页</a>
-                        </li>
-                    </ul>
-                </div>
+<!--                        <li th:if="${currentIndex != totalPage}">-->
+<!--                            <a class="pbutton  asciifont"-->
+<!--                               th:href="${'/search?query='+query+'&page='+totalPage}">尾页</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+                <div th:include="common/header::pager('/search',${totalPage},${currentIndex},${24})"></div>
             </div>
         </div>
     </div>

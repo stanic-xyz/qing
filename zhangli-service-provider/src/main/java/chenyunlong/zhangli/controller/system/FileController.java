@@ -3,7 +3,7 @@ package chenyunlong.zhangli.controller.system;
 import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.model.entities.UploadFile;
-import chenyunlong.zhangli.model.vo.ApiResult;
+import chenyunlong.zhangli.model.support.ApiResult;
 import chenyunlong.zhangli.service.FileUploadService;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;
@@ -105,7 +105,7 @@ public class FileController {
             fileUploadService.saveFile(uploadFile);
             return ApiResult.success();
         } else {
-            return ApiResult.faild("没有上传图片啊");
+            return ApiResult.fail("没有上传图片啊");
         }
     }
 
@@ -139,7 +139,7 @@ public class FileController {
                 objectListing = cosClient.listObjects(listObjectsRequest);
             } catch (CosClientException e) {
                 e.printStackTrace();
-                return ApiResult.faild(e.getMessage());
+                return ApiResult.fail(e.getMessage());
             }
             // common prefix表示表示被delimiter截断的路径, 如delimter设置为/, common prefix则表示所有子目录的路径
             List<String> commonPrefixs = objectListing.getCommonPrefixes();

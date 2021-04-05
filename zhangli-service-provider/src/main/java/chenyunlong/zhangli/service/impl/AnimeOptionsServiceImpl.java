@@ -23,14 +23,17 @@ import java.util.List;
 @Service
 public class AnimeOptionsServiceImpl implements AnimeOptionsService {
 
-    @Autowired
-    private AnimeInfoMapper animeInfoMapper;
-    @Autowired
-    private AnimeTypeMapper animeTypeMapper;
-    @Autowired
-    private VersionMapper versionMapper;
-    @Autowired
-    private DistrictMapper districtMapper;
+    private final AnimeInfoMapper animeInfoMapper;
+    private final AnimeTypeMapper animeTypeMapper;
+    private final VersionMapper versionMapper;
+    private final DistrictMapper districtMapper;
+
+    public AnimeOptionsServiceImpl(AnimeInfoMapper animeInfoMapper, AnimeTypeMapper animeTypeMapper, VersionMapper versionMapper, DistrictMapper districtMapper) {
+        this.animeInfoMapper = animeInfoMapper;
+        this.animeTypeMapper = animeTypeMapper;
+        this.versionMapper = versionMapper;
+        this.districtMapper = districtMapper;
+    }
 
     @Cacheable("options")
     @Override
@@ -64,5 +67,10 @@ public class AnimeOptionsServiceImpl implements AnimeOptionsService {
         years.add(yearInfo);
         optionsModel.setYears(years);
         return optionsModel;
+    }
+
+    @Override
+    public int getRecentPageSize() {
+        return 25;
     }
 }

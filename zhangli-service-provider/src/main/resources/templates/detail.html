@@ -4,12 +4,12 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title th:text="${animeInfo.getName()+'- 傻瓜动漫网站'}"></title>
-    <meta name="keywords" th:content="${animeInfo.getName()+'动漫分享'}">
-    <meta name="description" th:content="${animeInfo.getName()+'！在线观看'}">
+    <title th:text="${data.animeInfo.getName()+'- 傻瓜动漫网站'}"></title>
+    <meta name="keywords" th:content="${data.animeInfo.getName()+'动漫分享'}">
+    <meta name="description" th:content="${data.animeInfo.getName()+'！在线观看'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
-    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/detail.css(host=${hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data.hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/detail.css(host=${data.hostname})}">
     <!-- overload -->
     <style type="text/css">.anime_icon1 {
         margin-right: 24px;
@@ -24,13 +24,13 @@
         height: 205px;
     }</style>
 
-    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/detail.js(host=${hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/detail.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${data.hostname})}"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script type="text/javascript" th:src="@{{host}/js/jquery.foucs.js(host=${hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/jquery.foucs.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${data.hostname})}"></script>
 </head>
 
 <body>
@@ -44,8 +44,8 @@
             <div class="baseblock">
                 <div class="blockcontent">
                     <img referrerpolicy="no-referrer" class="poster" width="256px" height="356px"
-                         th:src="${animeInfo.coverUrl}"
-                         th:alt="${animeInfo.name}" alt="暂无"></div>
+                         th:src="${data.animeInfo.coverUrl}"
+                         th:alt="${data.animeInfo.name}" alt="暂无"></div>
             </div>
             <div class="baseblock">
                 <div class="blockcontent">
@@ -55,48 +55,49 @@
                         <ul class="blockcontent">
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">地区：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.district}">日本</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.district}">日本</span>
                                 <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">动画种类：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.type}">TV</span></li>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.type}">TV</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">原版名称：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfo.getName()}">この素晴らしい世界に祝福を！</span>
+                                      th:text="${data.animeInfo.getName()}">この素晴らしい世界に祝福を！</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">其它名称：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.originalName}">暂无</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.originalName}">暂无</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">原作：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.author}">暂无</span></li>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.author}">暂无</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">制作公司：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfo.getCompany()}">Studio DEEN</span>
+                                      th:text="${data.animeInfo.getCompany()}">Studio DEEN</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">首播时间：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfo.getPremiereDate()}">2016-01-13</span></li>
+                                      th:text="${data.animeInfo.getPremiereDate()}">2016-01-13</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">播放状态：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.playStatus}">暂无</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.playStatus}">暂无</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">剧情类型：</span>
                                 <span class="detail_imform_value"
-                                      th:text="${animeInfo.getPlotType()}">搞笑 奇幻 冒险 后宫</span></li>
+                                      th:text="${data.animeInfo.getPlotType()}">搞笑 奇幻 冒险 后宫</span></li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">标签：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.tags}">搞笑 奇幻 冒险 后宫 治愈 魔法 轻小说 欢乐向</span>
+                                <span class="detail_imform_value"
+                                      th:text="${data.animeInfo.tags}">搞笑 奇幻 冒险 后宫 治愈 魔法 轻小说 欢乐向</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">官方网站：</span>
-                                <span class="detail_imform_value" th:text="${animeInfo.officialWebsite}">http://konosuba.com/</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.officialWebsite}">http://konosuba.com/</span>
                             </li>
                         </ul>
                     </div>
@@ -129,25 +130,37 @@
         <div class="div_right">
             <div class="baseblock">
                 <div class="blockcontent">
-                    <h4 class="detail_imform_name" th:text="${animeInfo.name}">--</h4></div>
+                    <h4 class="detail_imform_name" th:text="${data.animeInfo.name}">--</h4></div>
             </div>
             <div class="blockline1" style="margin: 8px;"></div>
             <div class="baseblock">
                 <div class="blockcontent">
                     <div class="detail_imform_desc_pre">
-                        <p th:text="${animeInfo.getInstruction()}">暂无</p>
+                        <p th:text="${data.animeInfo.getInstruction()}">暂无</p>
                     </div>
                 </div>
             </div>
             <div class="blockline1" style="margin: 8px;"></div>
-
+            <script type="text/javascript">
+                function setTab(m, n) {
+                    var tli = document.getElementById("menu" + m).getElementsByTagName("li");
+                    var mli = document.getElementById("main" + m).getElementsByTagName("div");
+                    for (i = 0; i < tli.length; i++) {
+                        tli[i].className = i === n ? "on" : "";
+                        mli[i].style.display = i === n ? "block" : "none";
+                        const pli_cnt = mli[i].getElementsByTagName("ul")[0].getElementsByTagName("li");
+                        if (!pli_cnt.length) {
+                            tli[i].style.display = 'block';
+                        }
+                    }
+                }
+            </script>
             <div id="playlist-div" class="baseblock">
                 <div class="blocktitle">在线播放：</div>
-                <ul class="menu0" id="menu0">
-                    <li onclick="setTab(0,0)" class="" style="display: none;">播放列表1</li>
-                    <li onclick="setTab(0,1)" class="" style="display: none;">播放列表2</li>
-                    <li onclick="setTab(0,2)" class="on">播放列表3</li>
-                    <li onclick="setTab(0,3)" class="">播放列表4</li>
+                <ul class="menu0" id="menu0" th:each="playList,iterStat : ${data.animeInfo.playList}">
+                    <li th:data="" class=""
+                        style="display: block;"
+                        th:text="${playList.name}"></li>
                 </ul>
                 <div class="main0" id="main0">
 
@@ -161,8 +174,8 @@
 
                     <div class="movurl" style="display: block;">
                         <ul>
-                            <li th:each="episode:${episodes}">
-                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${animeInfo.id})}"
+                            <li th:each="episode:${data.animeInfo.playList}">
+                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${data.animeInfo.id})}"
                                    target="_self"
                                    title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="${episode.name}"></a>
                             </li>
@@ -171,8 +184,8 @@
 
                     <div class="movurl" style="display:none">
                         <ul>
-                            <li th:each="episode:${episodes}">
-                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${animeInfo.id})}"
+                            <li th:each="episode:${data.animeInfo.playList}">
+                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${data.animeInfo.id})}"
                                    target="_self"
                                    title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="第01话"></a>
                             </li>
@@ -259,6 +272,16 @@
                     </div>
                     <div id="recommend_block" class="switchblock" hidden="">
                         <ul class="ul_li_a4">
+
+                            <li class="anime_icon1"
+                                th:each="animeInfo,iterStat:${data.recommendation}">
+                                <a th:href="@{/detail/{animeId}(animeId=${animeInfo.id})}">
+                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                         th:src="${animeInfo?.coverUrl}"></a>
+                                <a th:href="@{/detail/{animeId}(animeId=${animeInfo.id})}">
+                                    <div class="anime_icon1_name" th:text="${animeInfo.name}"></div>
+                                </a>
+                            </li>
 
                             <li class="anime_icon1">
                                 <a href="/detail/20160111">

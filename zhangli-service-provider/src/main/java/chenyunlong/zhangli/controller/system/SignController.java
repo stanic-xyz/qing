@@ -2,7 +2,7 @@ package chenyunlong.zhangli.controller.system;
 
 import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.model.entities.Sign;
-import chenyunlong.zhangli.model.vo.ApiResult;
+import chenyunlong.zhangli.model.support.ApiResult;
 import chenyunlong.zhangli.service.SignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -7,8 +7,8 @@ import lombok.Data;
 /**
  * Link output dto.
  *
- * @author ryanwang
- * @date 2019/3/21
+ * @author Stan
+ * @date 2021/04/05
  */
 @Data
 public class LinkDTO implements OutputConverter<LinkDTO, Link> {

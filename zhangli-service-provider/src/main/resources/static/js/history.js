@@ -45,22 +45,6 @@ qike123.switchTab = function (i, o, p) {
     }
 };
 
-////////////////////
-
-function setTab(m, n) {
-    var tli = document.getElementById("menu" + m).getElementsByTagName("li");
-    var mli = document.getElementById("main" + m).getElementsByTagName("div");
-    for (i = 0; i < tli.length; i++) {
-        tli[i].className = i == n ? "on" : "";
-        mli[i].style.display = i == n ? "block" : "none";
-        const pli_cnt = mli[i].getElementsByTagName("ul")[0].getElementsByTagName("li");
-        if (!pli_cnt.length) {
-            tli[i].style.display = 'none';
-        }
-    }
-}
-
-
 function __get_playtab_on_index(m) {
     //
     const def_pindex = Number($('#DEF_PLAYINDEX').text());
@@ -332,8 +316,7 @@ function FEI2(in_epi) {
 
 
 function __html_set_username() {
-    var username = __getCookie_v3('username');
-    var node = document.getElementsByClassName('loginout_btn2')[0];
+    var username = docCookies.getItem('zhangli_token');
     if (node) {
         if (username) {
             node.innerHTML = username;

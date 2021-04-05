@@ -11,14 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 /**
- * @author: 陈云龙
- * @date: 2020/6/29
- * @description 判断用户是否有权限的接口的实现
+ * 判断用户是否有权限的接口的实现
+ *
+ * @author : 陈云龙
+ * @date : 2020/6/29
  */
 @Component("rbacService")
 public class RbacServiceImpl implements RbacService {
 
-    private AntPathMatcher antPathMatcher = new AntPathMatcher();
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
 
     @Override

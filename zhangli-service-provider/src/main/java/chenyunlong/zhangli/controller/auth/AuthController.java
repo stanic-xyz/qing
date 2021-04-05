@@ -1,16 +1,18 @@
 package chenyunlong.zhangli.controller.auth;
 
-import chenyunlong.zhangli.anthentication.TokenProvider;
+import chenyunlong.zhangli.security.support.TokenProvider;
+import chenyunlong.zhangli.cache.lock.CacheLock;
 import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.common.exception.AuthenticationException;
-import chenyunlong.zhangli.common.exception.BadRequestException;
 import chenyunlong.zhangli.common.exception.LoginErrorException;
 import chenyunlong.zhangli.common.exception.AbstractException;
+import chenyunlong.zhangli.model.dto.LoginPreCheckDTO;
 import chenyunlong.zhangli.model.entities.User;
+import chenyunlong.zhangli.model.enums.MFAType;
 import chenyunlong.zhangli.model.params.LoginParam;
-import chenyunlong.zhangli.model.vo.ApiResult;
+import chenyunlong.zhangli.model.params.UserParam;
+import chenyunlong.zhangli.model.support.ApiResult;
 import chenyunlong.zhangli.service.UserService;
-import cn.hutool.core.lang.Validator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,12 +24,11 @@ import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,46 +50,30 @@ public class AuthController {
         this.tokenProvider = tokenProvider;
     }
 
-    @Log("通过表单登陆")
-    @ApiOperation("通过表单登陆")
-    @PostMapping("formLogin")
-    public ApiResult<String> formLoin(@RequestBody LoginParam loginParam) throws LoginErrorException {
-        Assert.notNull(loginParam, "Login param must not be null");
-
-        String username = loginParam.getUsername();
-
-        String mismatchTip = "用户名或者密码不正确";
-        final User userInfo;
-        //判断是通过email登录还是通过用户名登录
-        userInfo = Validator.isEmail(username) ? userService.findUserByEmail(username) : userService.findUserByUsername(username);
-        if (userInfo == null) {
-            throw new BadRequestException(mismatchTip);
-        }
-
-        if (!userService.passwordMatch(userInfo, loginParam.getPassword())) {
-            throw new BadRequestException(mismatchTip);
-        }
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-
-        return ApiResult.success(tokenProvider.createToken(new UsernamePasswordAuthenticationToken(userInfo.getUsername(), userInfo.getPassword(), authorities), false));
+    @PostMapping("login/precheck")
+    @ApiOperation("Login")
+    @CacheLock(autoDelete = false, prefix = "login_precheck")
+    public LoginPreCheckDTO authPreCheck(@RequestBody @Valid LoginParam loginParam) {
+        final User user = userService.authenticate(loginParam);
+        return new LoginPreCheckDTO(MFAType.useMFA(user.getMfaType()));
     }
 
-    /**
-     * 添加用户信息
-     *
-     * @param userName 用户名
-     * @param password 密码，原始密码，不需要经过加密
-     * @return 认证信息
-     * @throws AbstractException 注册异常信息
-     */
+    @Log("通过表单登陆")
+    @ApiOperation("通过表单登陆")
+    @PostMapping(value = "formLogin")
+    public ApiResult<String> formLoin(@RequestBody LoginParam loginParam) throws LoginErrorException {
+
+        User authenticate = userService.authenticate(loginParam);
+        return ApiResult.success();
+    }
+
     @PostMapping("register")
-    public ApiResult<Object> register(@RequestParam String userName, @RequestParam String password) throws AbstractException {
+    public ApiResult<User> register(@RequestBody UserParam userParam) throws AbstractException {
         try {
-            userService.addUserInfo(new User(userName, password));
-            return ApiResult.success();
+            User user = userService.addUserInfo(userParam.convertTo());
+            return ApiResult.success(user);
         } catch (AbstractException exp) {
-            return ApiResult.faild(exp.getMessage());
+            return ApiResult.fail(exp.getMessage());
         }
     }
 

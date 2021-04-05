@@ -9,8 +9,8 @@ import javax.validation.constraints.Size;
 /**
  * Login param.
  *
- * @author johnniang
- * @date 3/28/19
+ * @author Stan
+ * @date 2021/04/05
  */
 @Data
 @ToString
@@ -25,6 +25,6 @@ public class LoginParam {
     private String password;
 
     @Size(min = 6, max = 6, message = "两步验证码应为 {max} 位")
-    private String authcode;
+    private String authCode;
 
 }

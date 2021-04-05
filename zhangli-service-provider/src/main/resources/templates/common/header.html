@@ -108,7 +108,7 @@
            th:text="${i}"
            th:class="${currentPage == i}? 'pbutton pbutton_current asciifont' :'pbutton  asciifont' "></a>
         <a class="pbutton  asciifont"
-           th:if="${currentPage<pages} == true"
+           th:if="${currentPage < (pages - 1)} == true"
            th:href="@{{url}(page=${currentPage+1},url=${url},pageSize=${pageSize})}">下一页</a>
         <a class="pbutton  asciifont" th:href="@{{url}(page=${pages - 1},url=${url},pageSize=${pageSize})}">尾页</a>
     </div>

@@ -10,8 +10,8 @@ import java.util.Date;
 /**
  * Base entity.
  *
- * @author johnniang
- * @date 3/20/19
+ * @author Stan
+ * @date 2021/04/03
  */
 @Data
 @ToString

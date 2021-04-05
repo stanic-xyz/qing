@@ -1,20 +1,23 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.common.exception.BadRequestException;
-import chenyunlong.zhangli.common.exception.ErrorCode;
-import chenyunlong.zhangli.common.exception.LoginErrorException;
-import chenyunlong.zhangli.common.exception.AbstractException;
+import chenyunlong.zhangli.common.exception.*;
+import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.model.entities.Permission;
 import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.mapper.PermissionMapper;
 import chenyunlong.zhangli.mapper.UserMapper;
+import chenyunlong.zhangli.model.params.LoginParam;
 import chenyunlong.zhangli.service.UserService;
+import cn.hutool.core.lang.Validator;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,17 +26,23 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    int ACCESS_TOKEN_EXPIRED_SECONDS = 24 * 3600;
+
+
     private final UserMapper userMapper;
     private final PermissionMapper permissionMapper;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
 
 
     public UserServiceImpl(UserMapper userMapper,
                            PermissionMapper permissionMapper,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder, TokenProvider tokenProvider) {
         this.userMapper = userMapper;
         this.permissionMapper = permissionMapper;
         this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
@@ -83,9 +92,8 @@ public class UserServiceImpl implements UserService {
 
         User userInfo = userMapper.findByUsername(user.getUsername());
 
-        String encode = passwordEncoder.encode(user.getUsername());
         if (userInfo == null) {
-            return null;
+            throw new NotFoundException("用户不存在");
         }
         if (passwordEncoder.matches(user.getPassword(), userInfo.getPassword())) {
             return userInfo;
@@ -104,7 +112,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUserInfo(User user) throws AbstractException {
+    public User addUserInfo(User user) throws AbstractException {
 
         User userInfo = userMapper.findByUsername(user.getUsername());
 
@@ -113,6 +121,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userMapper.addUser(user);
+        return user;
     }
 
     /**
@@ -136,6 +145,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean passwordMatch(@NonNull User userInfo, @Nullable String password) {
         return passwordEncoder.matches(password, userInfo.getPassword());
+    }
+
+    @Override
+    public User authenticate(LoginParam loginParam) {
+        Assert.notNull(loginParam, "Login param must not be null");
+
+        String username = loginParam.getUsername();
+
+        String mismatchTip = "用户名或者密码不正确";
+        final User userInfo;
+        //判断是通过email登录还是通过用户名登录
+        userInfo = Validator.isEmail(username) ? findUserByEmail(username) : findUserByUsername(username);
+        if (userInfo == null) {
+            throw new BadRequestException(mismatchTip);
+        }
+
+        if (!passwordMatch(userInfo, loginParam.getPassword())) {
+            throw new BadRequestException(mismatchTip);
+        }
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        return userInfo;
     }
 
 }
