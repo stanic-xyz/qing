@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.model.entities.UploadFile;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Mapper
 @Component
-public interface FileMapper {
+public interface FileMapper extends BaseMapper<UploadFile> {
 
     /**
      * 插入文件

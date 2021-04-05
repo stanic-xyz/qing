@@ -20,6 +20,7 @@ public class ZhangliProperties {
     private String authenticationPrefix;
     private EmailProperties email = new EmailProperties();
     private boolean emailEnabled;
+    private String cache;
 
     public ZhangliProperties() {
     }

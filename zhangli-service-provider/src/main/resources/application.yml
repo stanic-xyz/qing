@@ -68,5 +68,3 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-mybatis:
-  mapper-locations: classpath:mapper/*.xml

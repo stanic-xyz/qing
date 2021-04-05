@@ -1,5 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
+import chenyunlong.zhangli.model.entities.AnimeMenu;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -10,5 +12,5 @@ import org.springframework.stereotype.Component;
  */
 @Mapper
 @Component
-public interface AnimeMenuMapper {
+public interface AnimeMenuMapper extends BaseMapper<AnimeMenu> {
 }

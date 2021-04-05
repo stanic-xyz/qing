@@ -1,13 +1,17 @@
 package chenyunlong.zhangli.model.entities;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author 陈云龙
  * @date 2021/02/27
  **/
 @Data
-public class Link {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class Link extends BaseEntity {
     private Integer id;
 
     /**

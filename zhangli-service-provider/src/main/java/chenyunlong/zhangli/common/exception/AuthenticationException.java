@@ -13,10 +13,6 @@ public class AuthenticationException extends AbstractException {
         super(message);
     }
 
-    public AuthenticationException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
     @Override
     public HttpStatus getStatus() {
         return HttpStatus.UNAUTHORIZED;

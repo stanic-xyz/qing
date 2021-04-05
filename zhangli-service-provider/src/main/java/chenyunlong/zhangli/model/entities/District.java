@@ -6,7 +6,9 @@ import lombok.*;
  * @author Stan
  */
 @Data
-public class District {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class District extends BaseEntity {
     private Long id;
     private String name;
     private String code;

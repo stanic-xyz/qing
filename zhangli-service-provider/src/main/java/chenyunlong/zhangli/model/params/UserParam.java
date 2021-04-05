@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.params;
 
-import chenyunlong.zhangli.model.entities.UserInfo;
+import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.model.dto.base.InputConverter;
 import lombok.Data;
 
@@ -10,10 +10,12 @@ import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 /**
+ * 注册用户的参数信息
+ *
  * @author Stan
  */
 @Data
-public class UserParam implements InputConverter<UserInfo> {
+public class UserParam implements InputConverter<User> {
 
     @NotBlank(message = "用户名不能为空")
     @Size(max = 50, message = "用户名的字符长度不能超过 {max}")

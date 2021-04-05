@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.model.entities.AnimeRecommendEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @date 2020/01/26
  */
 @Mapper
-public interface AnimeRecommendMapper {
+public interface AnimeRecommendMapper extends BaseMapper<AnimeRecommendEntity> {
     /**
      * 获取所有版本信息
      *

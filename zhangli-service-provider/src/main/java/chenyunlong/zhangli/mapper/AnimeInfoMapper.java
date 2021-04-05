@@ -2,6 +2,7 @@ package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @Mapper
 @Component
-public interface AnimeInfoMapper {
+public interface AnimeInfoMapper extends BaseMapper<AnimeInfo> {
 
     /**
      * 分页获取动画信息
@@ -25,7 +26,7 @@ public interface AnimeInfoMapper {
      * @param animeInfoQuery 查询条件
      * @return 所有动画的分页信息
      */
-    List<AnimeInfo> listAnimes(@Param("page") Pageable pageable, @Param("query") AnimeInfoQuery animeInfoQuery);
+    List<AnimeInfo> listAnime(@Param("page") Pageable pageable, @Param("query") AnimeInfoQuery animeInfoQuery);
 
     /**
      * 计算满足条件的记录个数
@@ -33,13 +34,6 @@ public interface AnimeInfoMapper {
      * @return 总数
      */
     Long count(@Param("query") AnimeInfoQuery animeInfoQuery);
-
-    /**
-     * 添加动画
-     *
-     * @param anime 动画信息
-     */
-    void insert(@Param("anime") AnimeInfo anime);
 
     /**
      * 获取动漫详情
@@ -75,13 +69,6 @@ public interface AnimeInfoMapper {
     void update(AnimeInfo animeInfo);
 
     /**
-     * 根据ID删除动漫信息
-     *
-     * @param animeId 动漫ID
-     */
-    void deleteByAnimeId(Long animeId);
-
-    /**
      * 获取连载中的动漫总数
      *
      * @return 连载中的动漫总数
@@ -107,4 +94,12 @@ public interface AnimeInfoMapper {
      * @return 推荐的动漫列表
      */
     List<AnimeInfo> listRecommendAnimeInfo();
+
+    /**
+     * 通过动漫ID获取动漫信息的原始记录
+     *
+     * @param animeId 动漫ID
+     * @return 动漫信息的原始记录
+     */
+    AnimeInfo fetchById(Integer animeId);
 }

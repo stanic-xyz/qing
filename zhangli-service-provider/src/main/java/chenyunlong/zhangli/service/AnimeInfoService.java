@@ -1,15 +1,14 @@
 package chenyunlong.zhangli.service;
 
 
+import chenyunlong.zhangli.model.dto.EpisodeDTO;
+import chenyunlong.zhangli.model.dto.PlayListDTO;
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.entities.AnimeType;
-import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
-import chenyunlong.zhangli.model.entities.anime.AnimePlaylistEntity;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
-import chenyunlong.zhangli.model.vo.anime.AnimeInfoRankModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 
@@ -22,26 +21,27 @@ public interface AnimeInfoService {
     /**
      * 获取排行榜信息
      *
-     * @param pageable       分页信息
+     * @param pageInfo       分页信息
      * @param animeInfoQuery 查询条件
      * @return 动漫信息
      */
-    AnimeInfoRankModel getRankPage(Pageable pageable, AnimeInfoQuery animeInfoQuery);
+    IPage<AnimeInfo> getRankPage(IPage<AnimeInfo> pageInfo, AnimeInfoQuery animeInfoQuery);
 
     /**
      * 添加动漫信息
      *
      * @param animeInfo 动漫信息
+     * @return 创建的动漫详情
      */
-    void add(AnimeInfo animeInfo);
+    AnimeInfoVo create(AnimeInfo animeInfo);
 
     /**
      * 获取动漫详情
      *
-     * @param movieId 动漫ID
+     * @param animeId 动漫ID
      * @return 动漫详情
      */
-    AnimeInfoVo getMovieDetail(Long movieId);
+    AnimeInfo getById(Long animeId);
 
     /**
      * 获取查询总数
@@ -58,7 +58,7 @@ public interface AnimeInfoService {
      * @param animeInfo 查询参数（名称)
      * @return 满足条件的动画信息
      */
-    List<AnimeInfo> query(Pageable pageable, AnimeInfoQuery animeInfo);
+    IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> pageable, AnimeInfoQuery animeInfo);
 
     /**
      * 获取播放页数据
@@ -74,8 +74,9 @@ public interface AnimeInfoService {
      * 更新动漫信息
      *
      * @param animeInfo 动漫信息
+     * @return 更新后的动漫详情信息
      */
-    void updateAnime(AnimeInfo animeInfo);
+    AnimeInfoVo updateBy(AnimeInfo animeInfo);
 
     /**
      * 删除动漫信息
@@ -102,26 +103,25 @@ public interface AnimeInfoService {
     /**
      * 获取更新信息
      *
-     * @param page     当前页
-     * @param pageSize 分页大小
+     * @param page 当前页
      * @return 动漫分页信息了
      */
-    Page<AnimeInfo> getUpdateAnimeInfo(Integer page, Integer pageSize);
+    IPage<AnimeInfoVo> getUpdateAnimeInfo(IPage<AnimeInfo> page);
 
     /**
      * 获取推荐用户列表
      *
      * @return 推荐动漫列表
      */
-    List<AnimeInfo> getRecommendAnimeInfoList();
+    List<AnimeInfoMinimalDTO> getRecommendAnimeInfoList();
 
     /**
      * 获取动漫的播放信息
      *
-     * @param movieId 动漫ID
+     * @param animeId 动漫ID
      * @return 动漫的所有集数
      */
-    List<AnimeEpisodeEntity> getAnimeEpisodes(Long movieId);
+    List<EpisodeDTO> getAnimeEpisodes(Long animeId);
 
     /**
      * 获取动漫的播放列表
@@ -129,5 +129,29 @@ public interface AnimeInfoService {
      * @param animeId 动漫ID
      * @return 动漫播放列表
      */
-    List<AnimePlaylistEntity> getAnimePlayList(Long animeId);
+    List<PlayListDTO> getAnimePlayList(Long animeId);
+
+    /**
+     * Converts to detail vo.
+     *
+     * @param animeInfoDetail post must not be null
+     * @return post detail vo
+     */
+    AnimeInfoVo convertToDetailVo(AnimeInfo animeInfoDetail);
+
+    /**
+     * 获取动漫信息
+     *
+     * @param animeId 动漫ID
+     * @return 动漫详情
+     */
+    AnimeInfo getById(Integer animeId);
+
+    /**
+     * 获取最近更新的动漫列表
+     *
+     * @param recentPageSize 获取的动漫条数
+     * @return 最近更新的动漫信息
+     */
+    List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize);
 }

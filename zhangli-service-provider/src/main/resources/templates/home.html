@@ -5,16 +5,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>在线动画 动漫下载 - AGE动漫</title>
-
     <meta name="keywords" content="在线动画,动漫下载,AGE动漫,Agefans">
     <meta name="description" content="AGE动漫专注于资源收集整理 海量的有效的高质量的动漫资源下载 动漫百度网盘下载">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
-    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/index.css(host=${hostname})}">
-    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${hostname})}"></script>
-
-    <!-- overload -->
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data.hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/index.css(host=${data.hostname})}">
+    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
 </head>
 
 <body>
@@ -52,7 +49,7 @@
                 </ul>
 
                 <ul id="new_anime_page">
-                    <li class="one_new_anime" th:each="anime : ${recentList}">
+                    <li class="one_new_anime" th:each="anime : ${data.recentList}">
                         <a class="one_new_anime_name" th:href="@{'detail/'+${anime.id}}"
                            th:text="${anime.name}">达尔文游戏</a>
                         <a class="one_new_anime_ji" th:href="@{'detail/'+${anime.id}}">[TV 01-11]</a>
@@ -895,7 +892,7 @@
                             "mtime": "2020-07-10 10:41:20",
                             "namefornew": "第14话"
                         }];
-                    var msg = [[${recentList}]];
+                    var msg = [[${data.recentList}]];
                     console.log(msg)
 
                     function on_new_anime_page_btn(obj, idx) {
@@ -953,12 +950,11 @@
                 </script>
             </div>
 
-            <!-- -->
             <hr class="hrspace clear" style="width: 95%;">
             <div class="blocktitle">最近更新</div>
             <div class="blockcontent">
                 <ul id="anime_update">
-                    <li class="one_new_anime" th:each="anime : ${recentList}">
+                    <li class="one_new_anime" th:each="anime : ${data.recentList}">
                         <a th:href="@{'../movie/detail/'+${anime.id}}" href="detail/20180105" class="one_new_anime_name"
                            style="width: 220px;" th:text="${anime.name}">智龙迷城 (2018)</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;"
@@ -972,7 +968,7 @@
                 <a href="recommend">每日推荐</a></div>
             <div class="blockcontent">
                 <ul class="ul_li_a5">
-                    <li class="anime_icon1" th:each="anime:${recommendList}">
+                    <li class="anime_icon1" th:each="anime:${data.recommendList}">
                         <a th:href="@{'detail/'+${anime.id}}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  th:src="@{https:{coverUrl}(coverUrl=${anime.coverUrl})}"
@@ -991,7 +987,7 @@
                 <a href="update">最近更新</a></div>
             <div class="blockcontent">
                 <ul class="ul_li_a5">
-                    <li class="anime_icon1" th:each="anime:${dalyUpdateList}">
+                    <li class="anime_icon1" th:each="anime:${data.recentList}">
                         <a th:href="@{'detail/'+${anime.id}}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  th:src="@{https:{coverUrl}(coverUrl=${anime.coverUrl})}"

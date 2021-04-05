@@ -12,7 +12,7 @@ import java.util.List;
  * @author Stan
  */
 @Data
-public class AnimeOptionsModel implements Serializable {
+public class AnimeOptionsModel {
     private List<AnimeType> typeList;
     private List<Version> versionList;
     private List<District> districtList;

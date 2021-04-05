@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.model.entities.AnimeType;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 @Mapper
 @Component
-public interface AnimeTypeMapper {
+public interface AnimeTypeMapper extends BaseMapper<AnimeType> {
     /**
      * 获取所有类型
      *

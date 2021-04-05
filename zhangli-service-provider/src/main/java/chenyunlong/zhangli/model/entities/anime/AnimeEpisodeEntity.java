@@ -1,18 +1,22 @@
 package chenyunlong.zhangli.model.entities.anime;
 
 import java.io.Serializable;
+import java.security.BasicPermission;
 import java.time.LocalDateTime;
 
+import chenyunlong.zhangli.model.entities.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * anime_episode
  *
  * @author Stan
  */
+
 @Data
-public class AnimeEpisodeEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(callSuper = true)
+public class AnimeEpisodeEntity extends BaseEntity {
     /**
      * 视频ID
      */
@@ -23,6 +27,9 @@ public class AnimeEpisodeEntity implements Serializable {
      */
     private Long animeId;
 
+    /**
+     * 播放列表ID
+     */
     private Long playlistId;
 
     /**
@@ -38,7 +45,7 @@ public class AnimeEpisodeEntity implements Serializable {
     /**
      * 上传者名称
      */
-    private String uploadderName;
+    private String uploaderName;
 
     /**
      * 上传用户ID

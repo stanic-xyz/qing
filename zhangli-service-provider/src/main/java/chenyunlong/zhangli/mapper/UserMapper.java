@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.mapper;
 
 import chenyunlong.zhangli.model.entities.User;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
  */
 @Mapper
 @Component
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 根据ID获取用户信息
