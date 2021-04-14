@@ -1,11 +1,8 @@
-debug: true
 server:
   port: 9528
 spring:
   application:
     name: spring-cloud-api-gateway
-  profiles:
-    active: ${ENV:dev}
   cloud:
     loadbalancer:
       ribbon:
@@ -25,6 +22,10 @@ spring:
             - StripPrefix=1
           predicates:
             - Path=/natcross/**
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
   security:
     oauth2:
       resourceserver:
@@ -62,7 +63,8 @@ secure:
       - "/webjars/springfox-swagger-ui/**"
       - "/actuator/**"
       - "/anime/**"
-management: #开启SpringBoot Admin的监控
+#开启SpringBoot Admin的监控
+management:
   endpoints:
     web:
       exposure:
