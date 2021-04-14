@@ -974,7 +974,8 @@
                                  th:src="@{https:{coverUrl}(coverUrl=${anime.coverUrl})}"
                                  th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}"
-                                 alt="https://sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
+                                 th:alt-title="${anime.name}"
+                                 alt="">
                             <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
                         <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
                             <div class="anime_icon1_name" th:text="${anime.name}"></div>
