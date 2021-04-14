@@ -54,6 +54,7 @@
         <module>zhangli-service-provider</module>
         <module>zhangli-service-natcross-provider</module>
         <module>zhangli-admin-server</module>
+        <module>zhangli-bus-server</module>
     </modules>
     <dependencies>
         <dependency>

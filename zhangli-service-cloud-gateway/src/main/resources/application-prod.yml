@@ -1,0 +1,8 @@
+debug: true
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 121.36.163.95:8848
+      config:
+        server-addr: 121.36.163.95:8848

@@ -1,4 +1,8 @@
+server:
+  port: ${SERVER_PORT:10086}
 spring:
+  application:
+    name: zhangli-admin-server
   cloud:
     nacos:
       discovery:
@@ -6,11 +10,3 @@ spring:
       config:
         server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
         file-extension: yml
-eureka:
-  client:
-    eureka-server-d-n-s-name: chenyunlong.cn
-    eureka-server-u-r-l-context: eureka
-    eureka-server-port: 8761
-    prefer-same-zone-eureka: true
-    region: zhangli
-
