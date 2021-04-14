@@ -4,16 +4,16 @@ spring:
   application:
     name: zhangli-admin-server
   profiles:
-    active: ${ENV:dev}
+    active: ${ENV:prod}
   security:
     # 配置登录用户名和密码
     user:
-      name: macro
+      name: stan
       password: 123456
-  boot:
-    admin:
-      discovery:
-        ignored-services: ${spring.application.name}
+#  boot:
+#    admin:
+#      discovery:
+#        ignored-services: ${spring.application.name}
 management:
   endpoints:
     web:

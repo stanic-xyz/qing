@@ -4,7 +4,6 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 121.36.163.95:8848
-        enabled: false
+        server-addr: localhost:8848
       discovery:
-        enabled: false
+        server-addr: localhost:8848
