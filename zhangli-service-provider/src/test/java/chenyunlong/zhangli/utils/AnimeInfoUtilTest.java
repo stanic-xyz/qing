@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
+
 @Slf4j
 class AnimeInfoUtilTest {
 
@@ -27,5 +29,11 @@ class AnimeInfoUtilTest {
             hasNext = responseData.getHasNext();
             num = responseData.getNum();
         }
+    }
+
+    @Test
+    public void testStreamEmptyAverage() {
+        double average = new LinkedList<Integer>().stream().mapToInt(Integer::intValue).average().orElse(0);
+        assert average == 0;
     }
 }
