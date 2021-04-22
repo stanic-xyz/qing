@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.controller.api;
+package chenyunlong.zhangli.controller.admin.api;
 
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;

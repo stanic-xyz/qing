@@ -58,8 +58,8 @@ public class ActivityController {
      * @return 返回消息信息
      */
     @GetMapping("activity/{activityId:\\d+}")
-    public ApiResult getActivityDetail(@PathVariable(name = "activityId") Long activityId) {
-        int attachementCount = attachementService.getAttachementCount(activityId);
+    public ApiResult<Activity> getActivityDetail(@PathVariable(name = "activityId") Long activityId) {
+        attachementService.getAttachementCount(activityId);
         return ApiResult.success(activityService.getActivityById(activityId));
     }
 }
