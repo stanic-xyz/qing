@@ -31,6 +31,7 @@
     <script type="text/javascript" th:src="@{{host}/js/jquery.foucs.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/snowfall.min.js(host=${data.hostname})}"></script>
 </head>
 
 <body>
@@ -510,6 +511,17 @@
     <footer id="footer" th:include="common/header :: footer()"></footer>
 </div>
 
+<script>
+    //调用飘落函数 实现飘落效果
+    $(document).snowfall({
+        image: ["/img/common/kanzaki1.png"],
+        flakeCount: 20,
+        minSize: 10,
+        maxSize: 60,
+        maxSpeed: 2,
+        shadow: false
+    });
+</script>
 <script>var _hmt = _hmt || [];
 (function () {
     var hm = document.createElement("script");
