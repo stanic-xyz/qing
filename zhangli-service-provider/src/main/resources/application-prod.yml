@@ -7,7 +7,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com
-    password: xoqywcevpshnbabf
+    password: uqvyyxhvhdpnbabg
   cloud:
     nacos:
       discovery:
