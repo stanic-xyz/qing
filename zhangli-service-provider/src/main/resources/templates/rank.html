@@ -105,10 +105,10 @@
                         </ul>
                     </div>
                 </div>
+                <div th:include="common/header::pager('/rank',${total / 75},${number},75)"></div>
             </div>
         </div>
         <div class="clear"></div>
-        <div th:include="common/header::pager('/rank',${total / 75},${number},75)"></div>
     </div>
     <footer id="footer" th:include="common/header :: footer()"></footer>
     <script type="text/javascript">function oncatsw(obj) {

@@ -11,4 +11,6 @@ create table anime_playlist
 alter table anime_episode
     add playlist_id bigint not null comment '播放列表ID' after anime_id;
 
-drop table user_info;
+create unique index user_email_index on user (email);
+
+create unique index user_username_index on user (username);
