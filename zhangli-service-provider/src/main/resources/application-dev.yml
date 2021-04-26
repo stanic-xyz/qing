@@ -15,7 +15,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com
-    password: zcnjecjevbywgcjh
+    password: uqvyyxhvhdpnbabg
   cloud:
     nacos:
       discovery:
@@ -37,9 +37,9 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
   level:
     root: info
-    person.pluto: debug
+    person.pluto: info
     chenyunlong.zhangli.mapper: debug
-    chenyunlong.zhangli: info
+    chenyunlong.zhangli: debug
 mp:
   wx:
     appId: wx09bf7e704a150a9c

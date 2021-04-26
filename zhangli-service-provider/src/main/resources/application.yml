@@ -29,7 +29,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com
-    password: puopstuzawtqgehg
+    password: uqvyyxhvhdpnbabg
   freemarker:
     template-loader-path: classpath:/templates/mail/
     suffix: .ftl
@@ -67,4 +67,4 @@ management:
         include: "*"
   endpoint:
     health:
-      show-details: ALWAYS
+      show-details: always
