@@ -1,95 +1,45 @@
 
 package chenyunlong.zhangli.model.bilibili;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
+@Data
 public class BiliAnime {
 
     @Expose
     private String badge;
-    @SerializedName("badge_info")
+    @JsonProperty("badge_info")
     private BadgeInfo badgeInfo;
-    @SerializedName("badge_type")
+    @JsonProperty("badge_type")
     private Long badgeType;
     @Expose
     private String cover;
-    @SerializedName("index_show")
+    @JsonProperty("index_show")
     private String indexShow;
-    @SerializedName("is_finish")
+    @JsonProperty("is_finish")
     private Long isFinish;
     @Expose
     private String link;
-    @SerializedName("media_id")
+    @JsonProperty("media_id")
     private Long mediaId;
     @Expose
     private String order;
-    @SerializedName("order_type")
+    @JsonProperty("order_type")
     private String orderType;
-    @SerializedName("season_id")
+    @JsonProperty("season_id")
     private Long seasonId;
-    @SerializedName("season_type")
+    @JsonProperty("season_type")
     private Long seasonType;
     @Expose
     private String title;
-    @SerializedName("title_icon")
+    @JsonProperty("title_icon")
     private String titleIcon;
-
-    public String getBadge() {
-        return badge;
-    }
-
-    public BadgeInfo getBadgeInfo() {
-        return badgeInfo;
-    }
-
-    public Long getBadgeType() {
-        return badgeType;
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public String getIndexShow() {
-        return indexShow;
-    }
-
-    public Long getIsFinish() {
-        return isFinish;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public Long getMediaId() {
-        return mediaId;
-    }
-
-    public String getOrder() {
-        return order;
-    }
-
-    public String getOrderType() {
-        return orderType;
-    }
-
-    public Long getSeasonId() {
-        return seasonId;
-    }
-
-    public Long getSeasonType() {
-        return seasonType;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getTitleIcon() {
-        return titleIcon;
-    }
 
     public static class Builder {
 

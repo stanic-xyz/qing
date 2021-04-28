@@ -120,8 +120,7 @@ public abstract class AbstractMailService implements MailService {
      * @param callback   callback message handler
      * @param tryToAsync if the send procedure should try to asynchronous
      */
-    protected void sendMailTemplate(boolean tryToAsync,
-                                    @Nullable Consumer<MimeMessageHelper> callback) {
+    protected void sendMailTemplate(boolean tryToAsync, @Nullable Consumer<MimeMessageHelper> callback) {
         ExecutorService executorService = getExecutorService();
         if (tryToAsync) {
             // send mail asynchronously
