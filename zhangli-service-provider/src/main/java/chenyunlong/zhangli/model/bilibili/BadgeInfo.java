@@ -1,29 +1,19 @@
 
 package chenyunlong.zhangli.model.bilibili;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import lombok.Data;
 
+@Data
 public class BadgeInfo {
 
-    @SerializedName("bg_color")
+    @JsonProperty("bg_color")
     private String bgColor;
-    @SerializedName("bg_color_night")
+    @JsonProperty("bg_color_night")
     private String bgColorNight;
     @Expose
     private String text;
-
-    public String getBgColor() {
-        return bgColor;
-    }
-
-    public String getBgColorNight() {
-        return bgColorNight;
-    }
-
-    public String getText() {
-        return text;
-    }
 
     public static class Builder {
 

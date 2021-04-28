@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.controller.system;
 
-import chenyunlong.zhangli.service.DuplicatedMessageChecker;
+import chenyunlong.zhangli.service.WeixinMessageService;
 import com.riversoft.weixin.common.decrypt.AesException;
 import com.riversoft.weixin.common.decrypt.MessageDecryption;
 import com.riversoft.weixin.common.decrypt.SHA1;
@@ -31,10 +31,10 @@ public class WxMpController {
 
     private final Logger log = LoggerFactory.getLogger(WxMpController.class);
 
-    private final DuplicatedMessageChecker duplicatedMessageChecker;
+    private final WeixinMessageService weixinMessageService;
 
-    public WxMpController(DuplicatedMessageChecker duplicatedMessageChecker) {
-        this.duplicatedMessageChecker = duplicatedMessageChecker;
+    public WxMpController(WeixinMessageService weixinMessageService) {
+        this.weixinMessageService = weixinMessageService;
     }
 
     @GetMapping("oauth/mp")
@@ -122,7 +122,7 @@ public class WxMpController {
 
     private XmlMessageHeader mpDispatch(XmlMessageHeader xmlRequest) {
         try {
-            if (!duplicatedMessageChecker.isDuplicated(xmlRequest.getFromUser() + xmlRequest.getCreateTime().getTime())) {
+            if (!weixinMessageService.isDuplicated(xmlRequest.getFromUser() + xmlRequest.getCreateTime().getTime())) {
                 String welcome = "您好:" + xmlRequest.getFromUser();
                 log.info("后台收到了消息：" + welcome);
                 CareMessages.defaultCareMessages().text(xmlRequest.getFromUser(), welcome);

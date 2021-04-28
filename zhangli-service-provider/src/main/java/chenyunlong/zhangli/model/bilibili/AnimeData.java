@@ -1,6 +1,7 @@
 
 package chenyunlong.zhangli.model.bilibili;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class AnimeData {
 
-    @SerializedName("has_next")
+    @JsonProperty("has_next")
     private Long hasNext;
     @Expose
     private List<BiliAnime> list;
