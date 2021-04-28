@@ -8,16 +8,16 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class DuplicatedMessageChecker {
-    private final Logger log = LoggerFactory.getLogger(DuplicatedMessageChecker.class);
+public class WeixinMessageService {
+    private final Logger log = LoggerFactory.getLogger(WeixinMessageService.class);
     //构建一个队列
     private final static Map<String, Long> messages = new ConcurrentHashMap<String, Long>();
 
     /**
      * 查看消息是否重复了
      *
-     * @param signture
-     * @return
+     * @param signture 消息签名
+     * @return 消息是否重复
      */
     public boolean isDuplicated(String signture) {
 
