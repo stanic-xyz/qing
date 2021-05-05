@@ -316,17 +316,14 @@ function FEI2(in_epi) {
 
 
 function __html_set_username() {
-    var username = docCookies.getItem('zhangli_token');
+    var userInfo = localStorage.getItem("userInfo");
+    var node = document.getElementById('comment_user');
     if (node) {
-        if (username) {
-            node.innerHTML = username;
+        if (userInfo !== null) {
+            node.innerHTML = JSON.parse(userInfo).username
         } else {
             node.innerHTML = '登陆';
         }
-    }
-    var node = document.getElementById('comment_user');
-    if (node) {
-        node.value = username;
     }
 }
 

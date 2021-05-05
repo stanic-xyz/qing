@@ -10,13 +10,17 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 public class MyTokenFilter extends GenericFilterBean {
 
     private final static String AUTHORIZATION_HEADER = "Authorization";
     private final static String AUTHORIZATION_QUERY = "token";
+    private final static String AUTHORIZATION_COOKIES = "zhangli_token";
     private final TokenProvider tokenProvider;
 
 
@@ -56,6 +60,7 @@ public class MyTokenFilter extends GenericFilterBean {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
-        return null;
+        Optional<Cookie> zhangliToken = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals(AUTHORIZATION_COOKIES)).findFirst();
+        return zhangliToken.map(Cookie::getValue).orElse(null);
     }
 }

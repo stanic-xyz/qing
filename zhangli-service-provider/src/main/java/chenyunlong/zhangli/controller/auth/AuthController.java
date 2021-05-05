@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.controller.auth;
 
+import chenyunlong.zhangli.model.vo.system.UserInfoVO;
 import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.cache.lock.CacheLock;
 import chenyunlong.zhangli.common.annotation.Log;
@@ -61,10 +62,12 @@ public class AuthController {
     @Log("通过表单登陆")
     @ApiOperation("通过表单登陆")
     @PostMapping(value = "formLogin")
-    public ApiResult<String> formLoin(@RequestBody LoginParam loginParam) throws LoginErrorException {
-
+    public ApiResult<UserInfoVO> formLoin(@RequestBody LoginParam loginParam) throws LoginErrorException {
         User authenticate = userService.authenticate(loginParam);
-        return ApiResult.success();
+        UserInfoVO userInfoVO = new UserInfoVO().convertFrom(authenticate);
+        String jwtToken = tokenProvider.createJwtToken(userInfoVO, false);
+        userInfoVO.setToken(jwtToken);
+        return ApiResult.success(userInfoVO);
     }
 
     @PostMapping("register")
@@ -93,7 +96,7 @@ public class AuthController {
             AuthUser user = (AuthUser) authResponse.getData();
             List<GrantedAuthority> authorities = new LinkedList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            return ApiResult.success(tokenProvider.createToken(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getToken(), authorities), false));
+            return ApiResult.success(tokenProvider.createJwtToken(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getToken(), authorities), false));
         } else {
             throw new AuthenticationException(authResponse.getMsg());
         }

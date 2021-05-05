@@ -11,15 +11,11 @@ public class SecurityProperties {
     /**
      * 匿名访问地址
      */
-    private String anonUrl;
+    private String anonUrl = "";
     /**
      * token有效时间  默认1天
      */
     private long jwtTimeOut = 10086400L;
-    /**
-     * 安全认证前缀
-     */
-    private String authenticationPrefix = "auth";
     /**
      * 安全密钥
      */

@@ -11,7 +11,7 @@ spring:
     url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=GMT%2B8
     hikari:
       username: root
-      password: 123456
+      password: root
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com
@@ -20,8 +20,10 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+        enabled: false
       config:
         server-addr: localhost:8848
+        enabled: false
   rabbitmq:
     username: guest
     password: guest
