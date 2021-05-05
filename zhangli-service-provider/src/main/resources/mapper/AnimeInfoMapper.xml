@@ -76,21 +76,21 @@
 
     <select id="selectAnimationDetail" resultMap="BaseResultMap">
         SELECT `id`,
-               `name`,
-               `district`,
-               `cover_url`,
-               `type`,
-               `instruction`,
-               `other_name`,
-               `author`,
-               `company`,
-               `premiere_date`,
-               `play_status`,
-               `plot_type`,
-               `tags`,
-               `official_website`,
-               `play_heat`,
-               `original_name`
+        `name`,
+        `district`,
+        `cover_url`,
+        `type`,
+        `instruction`,
+        `other_name`,
+        `author`,
+        `company`,
+        `premiere_date`,
+        `play_status`,
+        `plot_type`,
+        `tags`,
+        `official_website`,
+        `play_heat`,
+        `original_name`
         FROM anime_info
         where id = #{movieId}
     </select>
@@ -160,21 +160,21 @@
     </select>
     <select id="selectAnimeByUpdateTime" resultMap="BaseResultMap">
         SELECT `id`,
-               `name`,
-               `district`,
-               `cover_url`,
-               `type`,
-               `instruction`,
-               `other_name`,
-               `author`,
-               `company`,
-               `premiere_date`,
-               `play_status`,
-               `plot_type`,
-               `tags`,
-               `official_website`,
-               `play_heat`,
-               `original_name`
+        `name`,
+        `district`,
+        `cover_url`,
+        `type`,
+        `instruction`,
+        `other_name`,
+        `author`,
+        `company`,
+        `premiere_date`,
+        `play_status`,
+        `plot_type`,
+        `tags`,
+        `official_website`,
+        `play_heat`,
+        `original_name`
         FROM anime_info
         where play_status = '连载'
         order by premiere_date desc
@@ -188,47 +188,47 @@
     </select>
     <select id="listRecommendAnimeInfo" resultMap="BaseResultMap">
         SELECT anime.id,
-               `name`,
-               `district`,
-               `cover_url`,
-               `type`,
-               `instruction`,
-               `other_name`,
-               `author`,
-               `company`,
-               `premiere_date`,
-               `play_status`,
-               `plot_type`,
-               `tags`,
-               `official_website`,
-               `play_heat`,
-               `original_name`
+        `name`,
+        `district`,
+        `cover_url`,
+        `type`,
+        `instruction`,
+        `other_name`,
+        `author`,
+        `company`,
+        `premiere_date`,
+        `play_status`,
+        `plot_type`,
+        `tags`,
+        `official_website`,
+        `play_heat`,
+        `original_name`
         FROM anime_recommend
-                 left join anime_info anime on aiv = anime.id
+        left join anime_info anime on aid = anime.id
     </select>
 
     <insert id="insert">
         INSERT INTO `zhangli`.`anime_info`
         (`id`,
-         `name`,
-         `district`,
-         `cover_url`,
-         `type`,
-         `instruction`,
-         `other_name`,
-         `author`,
-         `company`,
-         `premiere_date`,
-         `play_status`,
-         `plot_type`,
-         `tags`,
-         `official_website`,
-         `play_heat`,
-         original_name)
+        `name`,
+        `district`,
+        `cover_url`,
+        `type`,
+        `instruction`,
+        `other_name`,
+        `author`,
+        `company`,
+        `premiere_date`,
+        `play_status`,
+        `plot_type`,
+        `tags`,
+        `official_website`,
+        `play_heat`,
+        original_name)
         values (#{anime.id}, #{anime.name}, #{anime.district}, #{anime.coverUrl}, #{anime.type},
-                #{anime.instruction}, #{anime.otherName}, #{anime.author}, #{anime.company}, #{anime.premiereDate},
-                #{anime.playStatus}, #{anime.plotType}, #{anime.tags}, #{anime.officialWebsite}, #{anime.playHeat},
-                #{anime.orignalName})
+        #{anime.instruction}, #{anime.otherName}, #{anime.author}, #{anime.company}, #{anime.premiereDate},
+        #{anime.playStatus}, #{anime.plotType}, #{anime.tags}, #{anime.officialWebsite}, #{anime.playHeat},
+        #{anime.orignalName})
 
     </insert>
 </mapper>

@@ -16,19 +16,7 @@
 
 <body>
 <div id="root">
-    <div id="top">
-        <div id="logo">
-            <a th:href="@{/}" title="AGE动漫">AGE动漫</a></div>
-        <div class="loginout">
-            <span class="svg_title svg_title_user"></span>
-            <a class="loginout_btn2" th:href="@{/accounts/profile/}">stanic</a>
-
-            <script>
-                // __html_set_username();
-            </script>
-
-        </div>
-    </div>
+    <div id="top" th:include="common/header :: top()"></div>
     <header id="nav" th:include="common/header :: commonHead('rank')"></header>
     <div id="container">
         <div class="spaceblock1"></div>

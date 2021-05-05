@@ -1,8 +1,11 @@
 package chenyunlong.zhangli.config;
 
+import chenyunlong.zhangli.model.vo.system.UserInfoVO;
 import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.config.properties.SwaggerProperties;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,22 +37,25 @@ public class SwaggerConfig {
 
     private final ZhangliProperties zhangliProperties;
     private final TokenProvider tokenProvider;
+    private final ObjectMapper objectMapper;
 
-    public SwaggerConfig(ZhangliProperties zhangliProperties, TokenProvider tokenProvider) {
+    public SwaggerConfig(ZhangliProperties zhangliProperties, TokenProvider tokenProvider, ObjectMapper objectMapper) {
         this.zhangliProperties = zhangliProperties;
         this.tokenProvider = tokenProvider;
+        this.objectMapper = objectMapper;
     }
 
     @Bean
-    public Docket swaggerApi() {
+    public Docket swaggerApi() throws JsonProcessingException {
         SwaggerProperties swagger = zhangliProperties.getSwagger();
 
         Collection<SimpleGrantedAuthority> authorities = new LinkedList<>();
 
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        UserInfoVO userInfoVO = new UserInfoVO();
         //生成一个临时的token
-        Authentication authenticationToken = new UsernamePasswordAuthenticationToken("stan", "", authorities);
-        String token = tokenProvider.createToken(authenticationToken, false);
+        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(objectMapper.writeValueAsString(userInfoVO), "", authorities);
+        String token = tokenProvider.createJwtToken(authenticationToken, false);
         //添加一个参数
         ParameterBuilder ticketPar = new ParameterBuilder();
         //根据每个方法名也知道当前方法在设置什么参数

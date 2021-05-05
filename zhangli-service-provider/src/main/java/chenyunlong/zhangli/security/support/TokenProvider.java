@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.security.support;
 
 import chenyunlong.zhangli.config.properties.SecurityProperties;
-import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.model.vo.system.UserInfoVO;
 import chenyunlong.zhangli.utils.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +27,9 @@ import java.util.stream.Collectors;
 public class TokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
+    private static final String AUTHORITIES_HEADER = "auth";
+    private static final String FIELD_USER_ID = "userId";
+    private static final String USER_INFO = "userInfo";
     private final ZhangliProperties zhangliProperties;
     private final ObjectMapper objectMapper;
 
@@ -42,10 +45,10 @@ public class TokenProvider {
      * @param jwtToken token 信息
      * @return 用户信息
      */
-    public User getUserNameFromToken(String jwtToken) {
+    public UserInfoVO getUserNameFromToken(String jwtToken) {
         try {
             Claims claims = JwtUtil.parseJWT(jwtToken, zhangliProperties.getSecurity().getSecretKey());
-            return objectMapper.readValue(claims.getSubject(), User.class);
+            return objectMapper.readValue(claims.getSubject(), UserInfoVO.class);
         } catch (SecurityException | MalformedJwtException e) {
             logger.info("Invalid JWT signature.");
         } catch (ExpiredJwtException e) {
@@ -69,13 +72,12 @@ public class TokenProvider {
      * @param rememberMe     是否记住我，认证信息时间设置为一个月
      * @return jwtToken信息
      */
-    public String createToken(Authentication authentication, boolean rememberMe) {
-        String username = (String) authentication.getPrincipal();
+    public String createJwtToken(Authentication authentication, boolean rememberMe) throws JsonProcessingException {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        long now = (new Date()).getTime();
+        long now = new Date().getTime();
         Date validity;
         SecurityProperties security = zhangliProperties.getSecurity();
         if (security == null) {
@@ -89,11 +91,45 @@ public class TokenProvider {
         }
 
         return Jwts.builder()
-                .setSubject(username)
-                .claim(security.getAuthenticationPrefix(), authorities)
-                .signWith(SignatureAlgorithm.HS512, security.getSecretKey())
+                .setSubject((String) authentication.getPrincipal())
+                .claim(AUTHORITIES_HEADER, authorities)
+                .claim(USER_INFO, authentication.getPrincipal())
+                .signWith(SignatureAlgorithm.HS256, security.getSecretKey())
                 .setExpiration(validity)
                 .compact();
+    }
+
+    /**
+     * 酱token生成jwt生成token信息
+     *
+     * @param userinfoVo token
+     * @param rememberMe 是否记住我，认证信息时间设置为一个月
+     * @return jwtToken信息
+     */
+    public String createJwtToken(UserInfoVO userinfoVo, boolean rememberMe) {
+        long now = new Date().getTime();
+        Date validity;
+        SecurityProperties security = zhangliProperties.getSecurity();
+        //是否颁发一个长久的令牌
+        if (rememberMe) {
+            validity = new Date(now + security.getTokenValidityInMilliseconds());
+        } else {
+            validity = new Date(now + security.getTokenValidityInMillisecondsForRememberMe());
+        }
+
+        try {
+            return Jwts.builder()
+                    .setSubject(objectMapper.writeValueAsString(userinfoVo))
+                    .claim(AUTHORITIES_HEADER, "authorities")
+                    .claim(FIELD_USER_ID, "")
+                    .claim("userAgent", "")
+                    .signWith(SignatureAlgorithm.HS512, security.getSecretKey())
+                    .setExpiration(validity)
+                    .compact();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -108,7 +144,7 @@ public class TokenProvider {
                 .getBody();
 
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(zhangliProperties.getSecurity().getAuthenticationPrefix()).toString().split(","))
+                Arrays.stream(claims.get(AUTHORITIES_HEADER).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
         return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
@@ -122,7 +158,8 @@ public class TokenProvider {
      */
     public boolean validateToken(String jwtToken) {
         try {
-            Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey()).parseClaimsJws(jwtToken);
+            Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey())
+                    .parseClaimsJws(jwtToken);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             logger.info("Invalid JWT signature.");
