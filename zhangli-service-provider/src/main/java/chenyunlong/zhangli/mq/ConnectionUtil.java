@@ -14,12 +14,11 @@ public class ConnectionUtil {
         //端口
         factory.setPort(5672);
         //设置账号信息，用户名、密码、vhost
-//        factory.setVirtualHost("/");
+        //factory.setVirtualHost("/");
         factory.setUsername("guest");
         factory.setPassword("guest");
         // 通过工程获取连接
-        Connection connection = factory.newConnection();
-        return connection;
+        return factory.newConnection();
     }
 
 }

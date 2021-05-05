@@ -37,6 +37,19 @@
 <script th:src="@{{host}/js/cookies.js(host=${hostname})}"></script>
 <script th:src="@{{host}/js/axios.js(host=${hostname})}"></script>
 <script type="application/javascript">
+    //获取参数封装
+    function GetParam(name) {
+        //设置正则表达式
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        // 设置或返回从问号 (?) 开始的 URL（查询部分）
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            // 解码一个编码的 URI 组件。
+            return decodeURIComponent(r[2]);
+        }
+        return null;
+    }
+
     function handleBtn() {
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
@@ -46,10 +59,16 @@
             password: password
         }).then(function (response) {
             if (response.data.code === 0) {
-                alert("登录成功")
                 var exp = new Date();
                 exp.setTime(exp.getTime() + (30 * 24 * 60 * 60 * 1000));
-                docCookies.setItem("zhangli_token", response.data.data, exp, "/")
+                docCookies.setItem("zhangli_token", response.data.data.token, exp, "/")
+                localStorage.setItem("userInfo", JSON.stringify(response.data.data))
+                const query = GetParam("redirect_to")
+                if (query !== undefined && query !== null && query !== '') {
+                    location.href = query;
+                } else {
+                    location.href = "/"
+                }
             }
         }).catch(function (error) {
             console.log(error.data)
