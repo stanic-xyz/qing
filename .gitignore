@@ -49,3 +49,4 @@ build/
 ### VS Code ###
 .vscode/
 /logs/
+/zhangli-service-provider/src/main/resources/static/img/kf/

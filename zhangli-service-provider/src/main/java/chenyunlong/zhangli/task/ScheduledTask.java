@@ -1,24 +1,19 @@
 package chenyunlong.zhangli.task;
 
 
-import chenyunlong.zhangli.mapper.BiliAnimeMapper;
 import chenyunlong.zhangli.model.bilibili.AnimeData;
 import chenyunlong.zhangli.model.bilibili.BgngumeResponse;
 import chenyunlong.zhangli.model.bilibili.BiliAnime;
-import chenyunlong.zhangli.model.entities.bilibili.BiliAnimeInfoEntity;
 import chenyunlong.zhangli.service.BilibiliAnimeService;
-import chenyunlong.zhangli.utils.BeanUtils;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.Executor;
 
 
 @Slf4j
@@ -28,10 +23,12 @@ public class ScheduledTask {
 
     private final RestTemplate restTemplate;
     private final BilibiliAnimeService bilibiliAnimeService;
+    private final Executor executor;
 
-    public ScheduledTask(RestTemplate restTemplate, BilibiliAnimeService bilibiliAnimeService) {
+    public ScheduledTask(RestTemplate restTemplate, BilibiliAnimeService bilibiliAnimeService, Executor taskExecutor) {
         this.restTemplate = restTemplate;
         this.bilibiliAnimeService = bilibiliAnimeService;
+        this.executor = taskExecutor;
     }
 
     /**
@@ -40,7 +37,7 @@ public class ScheduledTask {
      */
     @Scheduled(cron = "0 0 0/2 * * ?")
     public void syncNetworkLogs() {
-        new Thread(() -> {
+        executor.execute(() -> {
             List<BiliAnime> animeList = new LinkedList<>();
             //接口最大条数10000条
             long pageSize = 10000;
@@ -61,6 +58,6 @@ public class ScheduledTask {
             log.info("从哔哩哔哩同步了{}部动漫的评分数据！！", animeList.size());
 
             bilibiliAnimeService.insertBatch(animeList);
-        }).start();
+        });
     }
 }

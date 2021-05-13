@@ -32,6 +32,7 @@
     <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/snowfall.min.js(host=${data.hostname})}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.1/dist/echarts.min.js"></script>
 </head>
 
 <body>
@@ -192,8 +193,6 @@
                             </li>
                         </ul>
                     </div>
-
-
                 </div>
 
                 <script id="DEF_PLAYINDEX">2</script>
@@ -216,6 +215,34 @@
                 </div>
             </div>
 
+            <div class="blockline1" style="margin: 8px;"></div>
+            <div id="score" style="height:320px;"></div>
+            <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('score'));
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '评分信息',
+                    },
+                    tooltip: {},
+                    // legend: {
+                    //     data: ['销量']
+                    // },
+                    xAxis: {
+                        data: ["2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08"]
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '评分',
+                        type: 'bar',
+                        data: [9.5, 9.5, 9.5, 9.5, 5.5, 9.5, 5.5, 9.5]
+                    }]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            </script>
             <div class="blockline1" style="margin: 8px;"></div>
             <div class="baseblock">
                 <div class="blocktitle">反馈：</div>
@@ -273,97 +300,24 @@
                     </div>
                     <div id="recommend_block" class="switchblock" hidden="">
                         <ul class="ul_li_a4">
-
-                            <li class="anime_icon1"
-                                th:each="animeInfo,iterStat:${data.recommendation}">
-                                <a th:href="@{/detail/{animeId}(animeId=${animeInfo.id})}">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         th:src="${animeInfo?.coverUrl}"></a>
-                                <a th:href="@{/detail/{animeId}(animeId=${animeInfo.id})}">
-                                    <div class="anime_icon1_name" th:text="${animeInfo.name}"></div>
-                                </a>
-                            </li>
-
                             <li class="anime_icon1">
                                 <a href="/detail/20160111">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                          src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"
-                                         data-src="//sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"></a>
+                                         data-src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"></a>
                                 <a href="/detail/20160111">
                                     <div class="anime_icon1_name">伤物语</div>
                                 </a>
                             </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20160144">
+                            <li class="anime_icon1" th:each="anime:${data.relevant}">
+                                <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         src="https://sc02.alicdn.com/kf/H6a603e2add694ff0b50dece25094df5fy.jpg"
-                                         data-src="//sc02.alicdn.com/kf/H6a603e2add694ff0b50dece25094df5fy.jpg"></a>
-                                <a href="/detail/20160144">
-                                    <div class="anime_icon1_name">任性HighSpec</div>
+                                         th:src="${anime.coverUrl}"
+                                         th:data-src="${anime.coverUrl}"></a>
+                                <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
+                                    <div class="anime_icon1_name" th:text="${anime.name}"></div>
                                 </a>
                             </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20140104">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         src="https://sc02.alicdn.com/kf/H62beed20bbc04a8b89924fc0cd97834aW.jpg"
-                                         data-src="//sc02.alicdn.com/kf/H62beed20bbc04a8b89924fc0cd97834aW.jpg"></a>
-                                <a href="/detail/20140104">
-                                    <div class="anime_icon1_name">星刻的龙骑士</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20150073">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         src="https://sc02.alicdn.com/kf/Hd1d5946ae75446c4b77a47dc284d52a4X.jpg"
-                                         data-src="//sc02.alicdn.com/kf/Hd1d5946ae75446c4b77a47dc284d52a4X.jpg"></a>
-                                <a href="/detail/20150073">
-                                    <div class="anime_icon1_name">新妹魔王的契约者</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20180205">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         src="https://sc02.alicdn.com/kf/H413fac31013947698d23d216ef21a184O.jpg"
-                                         data-src="//sc02.alicdn.com/kf/H413fac31013947698d23d216ef21a184O.jpg"></a>
-                                <a href="/detail/20180205">
-                                    <div class="anime_icon1_name">Anima Yell</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20200168">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         src="https://sc02.alicdn.com/kf/H938a52db40094ef59233cdc1c8911decg.jpg"
-                                         data-src="//sc02.alicdn.com/kf/H938a52db40094ef59233cdc1c8911decg.jpg"></a>
-                                <a href="/detail/20200168">
-                                    <div class="anime_icon1_name">七原罪 第四季(愤怒的审判)</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20000021">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         src="https://sc02.alicdn.com/kf/H73c64cf0b71c41eeb7d48ccf247c2635Q.jpg"
-                                         data-src="//sc02.alicdn.com/kf/H73c64cf0b71c41eeb7d48ccf247c2635Q.jpg"></a>
-                                <a href="/detail/20000021">
-                                    <div class="anime_icon1_name">天空之城</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20060015">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         src="https://sc02.alicdn.com/kf/H8263762bc67b4461b081b436c0f52b131.jpg"
-                                         data-src="//sc02.alicdn.com/kf/H8263762bc67b4461b081b436c0f52b131.jpg"></a>
-                                <a href="/detail/20060015">
-                                    <div class="anime_icon1_name">海贼王剧场版 机关城的机械巨兵</div>
-                                </a>
-                            </li>
-
                         </ul>
                     </div>
                     <div id="comments_block" class="switchblock">
