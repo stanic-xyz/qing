@@ -11,7 +11,7 @@ spring:
     url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=GMT%2B8
     hikari:
       username: root
-      password: root
+      password: 123456
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com

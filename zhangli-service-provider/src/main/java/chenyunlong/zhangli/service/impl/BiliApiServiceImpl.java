@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BilibiliAnimeServiceImpl implements BilibiliAnimeService {
+public class BiliApiServiceImpl implements BilibiliAnimeService {
     private final BiliAnimeMapper biliAnimeMapper;
 
-    public BilibiliAnimeServiceImpl(BiliAnimeMapper biliAnimeMapper) {
+    public BiliApiServiceImpl(BiliAnimeMapper biliAnimeMapper) {
         this.biliAnimeMapper = biliAnimeMapper;
     }
 

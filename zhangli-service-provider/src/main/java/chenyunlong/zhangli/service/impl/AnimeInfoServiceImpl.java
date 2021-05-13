@@ -14,6 +14,7 @@ import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.service.AnimeEpisodeService;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.PlaylistService;
+import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -26,8 +27,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -203,6 +210,37 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
         queryWrapper.orderByDesc("premiere_date").last("limit 0," + recentPageSize);
         List<AnimeInfo> animeInfoList = animeInfoMapper.selectList(queryWrapper);
         return animeInfoList.stream().map(animeInfo -> (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void downloadImages() throws IOException {
+        List<AnimeInfo> animeInfos = animeInfoMapper.selectList(new QueryWrapper<>());
+        final File[] listFiles;
+        File exsitsFile = ResourceUtils.getFile("E:\\GitHub\\cdn\\age");
+        if (exsitsFile.isDirectory()) {
+            listFiles = exsitsFile.listFiles();
+        } else {
+            listFiles = new File[]{};
+        }
+
+        File file = ResourceUtils.getFile("E:\\GitHub\\cdn");
+        int index = 0;
+        for (AnimeInfo animeInfo : animeInfos) {
+            try {
+                String imgUrl = animeInfo.getCoverUrl().replace("https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/", "");
+                if (StringUtils.hasText(imgUrl) && Arrays.stream(listFiles).noneMatch(file1 -> file1.getName().endsWith(imgUrl))) {
+                    String ageImgUrl = "https://sc04.alicdn.com/kf/" + imgUrl;
+                    log.info("{}->>图片不存在，正在下载-->>", ageImgUrl);
+                    log.info(imgUrl);
+                    HttpUtil.downloadFile(ageImgUrl, file.getAbsolutePath());
+                } else {
+                    log.info("{}->>图片已存在：{}", animeInfo.getName(), animeInfo.getCoverUrl());
+                }
+                index++;
+            } catch (Exception exception) {
+                log.error(animeInfo.getCoverUrl(), exception);
+            }
+        }
     }
 
     private void getPlayDetail() {

@@ -8,6 +8,7 @@ import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.support.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.service.AnimeInfoService;
+import cn.hutool.core.thread.NamedThreadFactory;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -15,7 +16,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * @author Stan
@@ -60,10 +64,9 @@ public class AnimeApiController {
     @GetMapping("listAnime")
     public ApiResult<List<AnimeInfoVo>> listAnime(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                                   @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                                  @RequestParam(value = "animeName", required = false, defaultValue = "") String animeName,
                                                   AnimeInfoQuery animeInfo) {
-        IPage<AnimeInfo> animeInfoIPage = new Page<>(page, pageSize);
-        IPage<AnimeInfoVo> animeInfos = animeInfoService.listByPage(animeInfoIPage, animeInfo);
+        IPage<AnimeInfo> animeInfoPage = new Page<>(page, pageSize);
+        IPage<AnimeInfoVo> animeInfos = animeInfoService.listByPage(animeInfoPage, animeInfo);
         return ApiResult.success(animeInfos.getRecords());
     }
 
@@ -94,4 +97,17 @@ public class AnimeApiController {
         return ApiResult.success(animeInfoService.addAnimeType(animeType));
     }
 
+    @Log("获取所有类型信息")
+    @PostMapping("img/downloadImages")
+    public ApiResult<Void> downloadImages() throws IOException {
+        ExecutorService executor = new ScheduledThreadPoolExecutor(2, new NamedThreadFactory("zhangli-", false));
+        executor.execute(() -> {
+            try {
+                animeInfoService.downloadImages();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return ApiResult.success();
+    }
 }
