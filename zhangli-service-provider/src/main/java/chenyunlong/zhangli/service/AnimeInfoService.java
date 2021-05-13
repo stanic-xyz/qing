@@ -10,6 +10,8 @@ import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -154,4 +156,11 @@ public interface AnimeInfoService {
      * @return 最近更新的动漫信息
      */
     List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize);
+
+    /**
+     * 下载图片
+     *
+     * @throws IOException 创建文件异常
+     */
+    void downloadImages() throws IOException;
 }

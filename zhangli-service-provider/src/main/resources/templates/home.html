@@ -955,7 +955,7 @@
             <div class="blockcontent">
                 <ul id="anime_update">
                     <li class="one_new_anime" th:each="anime : ${data.recentList}">
-                        <a th:href="@{'../movie/detail/'+${anime.id}}" href="detail/20180105" class="one_new_anime_name"
+                        <a th:href="@{'/detail/'+${anime.id}}" href="" class="one_new_anime_name"
                            style="width: 220px;" th:text="${anime.name}">智龙迷城 (2018)</a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;"
                               th:text="${anime.premiereDate}"></span>
@@ -969,9 +969,9 @@
             <div class="blockcontent">
                 <ul class="ul_li_a5">
                     <li class="anime_icon1" th:each="anime:${data.recommendList}">
-                        <a th:href="@{'detail/'+${anime.id}}">
+                        <a th:href="@{'/detail/'+${anime.id}}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
-                                 th:src="@{https:{coverUrl}(coverUrl=${anime.coverUrl})}"
+                                 th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}"
                                  th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}"
                                  th:alt-title="${anime.name}"
@@ -989,12 +989,12 @@
             <div class="blockcontent">
                 <ul class="ul_li_a5">
                     <li class="anime_icon1" th:each="anime:${data.recentList}">
-                        <a th:href="@{'detail/'+${anime.id}}">
+                        <a th:href="@{'/detail/'+${anime.id}}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
-                                 th:src="@{https:{coverUrl}(coverUrl=${anime.coverUrl})}"
+                                 th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}"
                                  th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}"
-                                 alt="https://sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
+                                 alt="//sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
                             <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
                         <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
                             <div class="anime_icon1_name" th:text="${anime.name}"></div>
@@ -1012,7 +1012,7 @@
 <script>var _hmt = _hmt || [];
 (function () {
     var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
+    hm.src = "//hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
     var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(hm, s);
 })();
