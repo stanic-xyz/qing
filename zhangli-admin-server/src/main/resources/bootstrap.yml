@@ -1,12 +1,10 @@
-server:
-  port: ${SERVER_PORT:10086}
 spring:
   application:
     name: zhangli-admin-server
   cloud:
     nacos:
-      discovery:
-        server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
       config:
-        server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
-        file-extension: yml
+        server-addr: 121.36.163.95:8848
+        enabled: false
+      discovery:
+        enabled: false
