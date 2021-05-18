@@ -3,6 +3,9 @@ package chenyunlong.zhangli.utils;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -24,8 +27,8 @@ public class DateUtils {
      * @return current date
      */
     @NonNull
-    public static Date now() {
-        return new Date();
+    public static LocalDateTime now() {
+        return LocalDateTime.now();
     }
 
     /**
@@ -44,19 +47,19 @@ public class DateUtils {
     }
 
     /**
-     * Adds date.
+     * Adds dateTime.
      *
-     * @param date     current date must not be null
+     * @param dateTime current dateTime must not be null
      * @param time     time must not be less than 1
      * @param timeUnit time unit must not be null
-     * @return added date
+     * @return added dateTime
      */
-    public static Date add(@NonNull Date date, long time, @NonNull TimeUnit timeUnit) {
-        Assert.notNull(date, "Date must not be null");
+    public static LocalDateTime add(@NonNull LocalDateTime dateTime, long time, @NonNull TimeUnit timeUnit) {
+        Assert.notNull(dateTime, "Date must not be null");
         Assert.isTrue(time >= 0, "Addition time must not be less than 1");
         Assert.notNull(timeUnit, "Time unit must not be null");
 
-        Date result;
+        LocalDateTime result;
 
         int timeIntValue;
 
@@ -69,22 +72,22 @@ public class DateUtils {
         // Calc the expiry time
         switch (timeUnit) {
             case DAYS:
-                result = org.apache.commons.lang3.time.DateUtils.addDays(date, timeIntValue);
+                result = dateTime.plusDays(timeIntValue);
                 break;
             case HOURS:
-                result = org.apache.commons.lang3.time.DateUtils.addHours(date, timeIntValue);
+                result = dateTime.plusHours(timeIntValue);
                 break;
             case MINUTES:
-                result = org.apache.commons.lang3.time.DateUtils.addMinutes(date, timeIntValue);
+                result = dateTime.plusMinutes(timeIntValue);
                 break;
             case SECONDS:
-                result = org.apache.commons.lang3.time.DateUtils.addSeconds(date, timeIntValue);
+                result = dateTime.plusSeconds(timeIntValue);
                 break;
             case MILLISECONDS:
-                result = org.apache.commons.lang3.time.DateUtils.addMilliseconds(date, timeIntValue);
+                result = dateTime.plus(timeIntValue, ChronoUnit.MILLIS);
                 break;
             default:
-                result = date;
+                result = dateTime;
         }
         return result;
     }

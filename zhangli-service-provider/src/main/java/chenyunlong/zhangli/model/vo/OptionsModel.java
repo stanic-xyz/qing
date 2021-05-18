@@ -12,7 +12,7 @@ import java.util.List;
  * @author Stan
  */
 @Data
-public class AnimeOptionsModel {
+public class OptionsModel {
     private List<AnimeType> typeList;
     private List<Version> versionList;
     private List<District> districtList;

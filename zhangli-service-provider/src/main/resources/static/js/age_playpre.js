@@ -391,7 +391,7 @@ function __on_delcomment(_in_cid, _in_sid, _in_password) {
 
 function __get_detail_play_page_AID() {
     var AID = window.location.href.replace(/.*\/detail\/(\d{8}).*/, '$1');
-    if (AID.length != 8) {
+    if (AID.length !== 8) {
         AID = window.location.href.replace(/.*\/play\/(\d{8}).*/, '$1')
     }
     return AID
@@ -410,16 +410,14 @@ function __set_on_sendcomment() {
 }
 
 function __timeCycle(time) {
-    var unixtime = time;
-    var unixTimestamp = new Date(unixtime * 1000);
+    var unixTimestamp = new Date(time * 1000);
     var Y = unixTimestamp.getFullYear(),
         M = ((unixTimestamp.getMonth() + 1) > 10 ? (unixTimestamp.getMonth() + 1) : '0' + (unixTimestamp.getMonth() + 1)),
         D = (unixTimestamp.getDate() > 10 ? unixTimestamp.getDate() : '0' + unixTimestamp.getDate()),
         h = (unixTimestamp.getHours() < 10) ? "0" + unixTimestamp.getHours() : unixTimestamp.getHours(),
         min = (unixTimestamp.getMinutes() < 10) ? "0" + unixTimestamp.getMinutes() : unixTimestamp.getMinutes(),
         s = (unixTimestamp.getSeconds() < 10) ? "0" + unixTimestamp.getSeconds() : unixTimestamp.getSeconds();
-    var toDay = Y + '-' + M + '-' + D + " " + h + ":" + min + ":" + s;
-    return toDay
+    return Y + '-' + M + '-' + D + " " + h + ":" + min + ":" + s
 }
 
 function __content_img_on(_content_val) {
@@ -472,8 +470,15 @@ function html_fmt_comments_lis(_json_obj) {
     $('.comment_page').html(html_pageurls)
 }
 
+/**
+ * 放弃了上面的东西了
+ * @param _in_cid
+ * @param pageindex
+ * @param pagesize
+ * @private
+ */
 function __s_show_comments_page(_in_cid, pageindex, pagesize) {
-    const r_url = "/movie/get_comments?" + ('cid=' + _in_cid) + ('&pagesize=' + pagesize) + ('&pageindex=' + pageindex);
+    const r_url = "/get_comments?" + ('cid=' + _in_cid) + ('&pagesize=' + pagesize) + ('&pageindex=' + pageindex);
     $.ajax({type: "get", url: r_url,}).success(function (message) {
         const _json_obj = JSON.parse(message);
         html_fmt_comments_lis(_json_obj)
