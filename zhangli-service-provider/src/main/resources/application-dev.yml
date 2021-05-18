@@ -54,3 +54,4 @@ zhangli:
   openAopLog: true
   swagger:
     doc-disabled: false
+  index-size: 26

@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.service;
 
 
-import chenyunlong.zhangli.model.entities.Activity;
+import chenyunlong.zhangli.model.entities.ActivityEntity;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface ActivityService {
      * @param keyWorld 活动关键字
      * @return 活动列表
      */
-    List<Activity> queryActivitiesByPage(String keyWorld);
+    List<ActivityEntity> queryActivitiesByPage(String keyWorld);
 
     /**
      * 获取活动信息
@@ -25,13 +25,13 @@ public interface ActivityService {
      * @param activityId 活动信息ID
      * @return 活动信息详情
      */
-    Activity getActivityById(Long activityId);
+    ActivityEntity getActivityById(Long activityId);
 
     /**
      * 添加活动信息
      *
      * @param activity 需要添加的活动信息
      */
-    void addActivity(Activity activity);
+    void addActivity(ActivityEntity activity);
 
 }

@@ -975,6 +975,7 @@
                                  th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}"
                                  th:alt-title="${anime.name}"
+                                 loading="lazy"
                                  alt="">
                             <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
                         <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
@@ -994,6 +995,7 @@
                                  th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}"
                                  th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}"
+                                 loading="lazy"
                                  alt="//sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
                             <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
                         <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">

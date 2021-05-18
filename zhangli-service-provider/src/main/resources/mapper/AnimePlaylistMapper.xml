@@ -6,7 +6,7 @@
 
 <mapper namespace="chenyunlong.zhangli.mapper.AnimePlaylistMapper">
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.anime.AnimePlaylistEntity">
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.anime.PlaylistEntity">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="description" property="description"/>
