@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.controller;
 
+import chenyunlong.zhangli.remote.BaseService;
 import chenyunlong.zhangli.remote.RemoteHello;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +19,14 @@ public class HelloController {
 
     private final RemoteHello remoteHello;
 
+    private final BaseService baseService;
+
     @Value("${test}")
     private String test;
 
-    public HelloController(RemoteHello remoteHello) {
+    public HelloController(RemoteHello remoteHello, BaseService baseService) {
         this.remoteHello = remoteHello;
+        this.baseService = baseService;
     }
 
     @GetMapping("hello")
@@ -32,4 +36,12 @@ public class HelloController {
         logger.debug("来自远程的请求");
         return "this is hello world!" + test + ":" + value;
     }
+
+
+    @GetMapping("gschoolInfo")
+    public String hello(@RequestParam String appId, String accessToken, String sysIds, String schoolId) {
+        String value = baseService.getUserInfo(appId, accessToken, sysIds, schoolId);
+        return "this is hello world!" + test + ":" + value;
+    }
+
 }
