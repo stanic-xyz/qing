@@ -16,6 +16,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class LoginPreCheckDTO {
 
-    private boolean needMFACode;
+    private Boolean needMfaCode;
 
 }

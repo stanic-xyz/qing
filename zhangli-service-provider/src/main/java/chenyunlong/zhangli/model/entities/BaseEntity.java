@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -21,15 +22,15 @@ public class BaseEntity {
     /**
      * Create time.
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * Update time.
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     protected void prePersist() {
-        Date now = DateUtils.now();
+        LocalDateTime now = DateUtils.now();
         if (createTime == null) {
             createTime = now;
         }
@@ -40,11 +41,11 @@ public class BaseEntity {
     }
 
     protected void preUpdate() {
-        updateTime = new Date();
+        updateTime = DateUtils.now();
     }
 
     protected void preRemove() {
-        updateTime = new Date();
+        updateTime = DateUtils.now();
     }
 
 }

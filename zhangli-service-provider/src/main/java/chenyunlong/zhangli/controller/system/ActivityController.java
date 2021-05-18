@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.controller.system;
 
-import chenyunlong.zhangli.model.entities.Activity;
+import chenyunlong.zhangli.model.entities.ActivityEntity;
 import chenyunlong.zhangli.model.support.ApiResult;
 import chenyunlong.zhangli.service.ActivityService;
 import chenyunlong.zhangli.service.AttachementService;
@@ -32,7 +32,7 @@ public class ActivityController {
      * @return 活动信息列表
      */
     @GetMapping("list")
-    public ApiResult<List<Activity>> listActivity(
+    public ApiResult<List<ActivityEntity>> listActivity(
             @RequestParam(value = "keyword", required = false) String keyword) {
         return ApiResult.success(activityService.queryActivitiesByPage(keyword));
     }
@@ -45,7 +45,7 @@ public class ActivityController {
      */
     @PostMapping
     @ApiOperation("添加动态信息")
-    public ApiResult<Object> addActivity(@RequestBody Activity activity) {
+    public ApiResult<Object> addActivity(@RequestBody ActivityEntity activity) {
         activityService.addActivity(activity);
         return ApiResult.success();
     }
@@ -58,7 +58,7 @@ public class ActivityController {
      * @return 返回消息信息
      */
     @GetMapping("activity/{activityId:\\d+}")
-    public ApiResult<Activity> getActivityDetail(@PathVariable(name = "activityId") Long activityId) {
+    public ApiResult<ActivityEntity> getActivityDetail(@PathVariable(name = "activityId") Long activityId) {
         attachementService.getAttachementCount(activityId);
         return ApiResult.success(activityService.getActivityById(activityId));
     }

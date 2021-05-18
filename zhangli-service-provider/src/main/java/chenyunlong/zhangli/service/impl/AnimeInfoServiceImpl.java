@@ -1,12 +1,14 @@
 package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.common.exception.NotFoundException;
+import chenyunlong.zhangli.mapper.AnimeCommentMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.mapper.AnimeTypeMapper;
 import chenyunlong.zhangli.model.agefans.AgePlayInfoModel;
 import chenyunlong.zhangli.model.dto.EpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
+import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
@@ -32,7 +34,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +51,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     private final AnimeEpisodeService episodeService;
     private final AnimeTypeMapper animeTypeMapper;
     private final PlaylistService playlistService;
+    private final AnimeCommentMapper commentMapper;
     private final String domainName = "anime";
 
 
@@ -57,12 +59,13 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
                                 RestTemplate restTemplate,
                                 AnimeEpisodeService episodeService,
                                 AnimeTypeMapper animeTypeMapper,
-                                PlaylistService playlistService) {
+                                PlaylistService playlistService, AnimeCommentMapper commentMapper) {
         this.animeInfoMapper = animeInfoMapper;
         this.restTemplate = restTemplate;
         this.episodeService = episodeService;
         this.animeTypeMapper = animeTypeMapper;
         this.playlistService = playlistService;
+        this.commentMapper = commentMapper;
     }
 
     @Override
@@ -241,6 +244,12 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
                 log.error(animeInfo.getCoverUrl(), exception);
             }
         }
+    }
+
+    @Override
+    public IPage<AnimeComment> getComment(Long cid, Integer pageIndex, Integer pageSize) {
+        QueryWrapper<AnimeComment> queryWrapper = new QueryWrapper<>();
+        return commentMapper.selectPage(new Page<>(pageIndex, pageSize), queryWrapper);
     }
 
     private void getPlayDetail() {

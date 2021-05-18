@@ -4,13 +4,13 @@ package chenyunlong.zhangli.service;
 import chenyunlong.zhangli.model.dto.EpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
+import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -163,4 +163,14 @@ public interface AnimeInfoService {
      * @throws IOException 创建文件异常
      */
     void downloadImages() throws IOException;
+
+    /**
+     * 获取动漫的评论信息
+     *
+     * @param cid       动漫ID
+     * @param pageIndex 当前页
+     * @param pageSize  分页大小
+     * @return 平均信息列表
+     */
+    IPage<AnimeComment> getComment(Long cid, Integer pageIndex, Integer pageSize);
 }

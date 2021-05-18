@@ -3,6 +3,7 @@ package chenyunlong.zhangli.cache;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -25,10 +26,10 @@ class CacheWrapper<V> implements Serializable {
     /**
      * Expired time.
      */
-    private Date expireAt;
+    private LocalDateTime expireAt;
 
     /**
      * Create time.
      */
-    private Date createAt;
+    private LocalDateTime createAt;
 }

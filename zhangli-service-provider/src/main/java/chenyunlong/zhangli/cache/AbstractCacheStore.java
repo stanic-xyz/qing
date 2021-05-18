@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -45,13 +46,14 @@ public abstract class AbstractCacheStore<K, V> implements CacheStore<K, V> {
      */
     abstract Boolean putInternalIfAbsent(@NonNull K key, @NonNull CacheWrapper<V> cacheWrapper);
 
+    @NonNull
     @Override
-    public Optional<V> get(K key) {
+    public Optional<V> get(@NonNull K key) {
         Assert.notNull(key, "Cache key must not be blank");
 
         return getInternal(key).map(cacheWrapper -> {
             // Check expiration
-            if (cacheWrapper.getExpireAt() != null && cacheWrapper.getExpireAt().before(DateUtils.now())) {
+            if (cacheWrapper.getExpireAt() != null && cacheWrapper.getExpireAt().isBefore(DateUtils.now())) {
                 // Expired then delete it
                 log.warn("Cache key: [{}] has been expired", key);
 
@@ -72,12 +74,12 @@ public abstract class AbstractCacheStore<K, V> implements CacheStore<K, V> {
     }
 
     @Override
-    public Boolean putIfAbsent(K key, V value, long timeout, TimeUnit timeUnit) {
+    public Boolean putIfAbsent(@NonNull K key, @NonNull V value, long timeout, @NonNull TimeUnit timeUnit) {
         return putInternalIfAbsent(key, buildCacheWrapper(value, timeout, timeUnit));
     }
 
     @Override
-    public void put(K key, V value) {
+    public void put(@NonNull K key, @NonNull V value) {
         putInternal(key, buildCacheWrapper(value, 0, null));
     }
 
@@ -94,9 +96,9 @@ public abstract class AbstractCacheStore<K, V> implements CacheStore<K, V> {
         Assert.notNull(value, "Cache value must not be null");
         Assert.isTrue(timeout >= 0, "Cache expiration timeout must not be less than 1");
 
-        Date now = DateUtils.now();
+        LocalDateTime now = DateUtils.now();
 
-        Date expireAt = null;
+        LocalDateTime expireAt = null;
 
         if (timeout > 0 && timeUnit != null) {
             expireAt = DateUtils.add(now, timeout, timeUnit);

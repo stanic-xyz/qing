@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service;
 
-import chenyunlong.zhangli.model.vo.AnimeOptionsModel;
+import chenyunlong.zhangli.model.vo.OptionsModel;
 
 /**
  * 选项服务
@@ -9,9 +9,11 @@ import chenyunlong.zhangli.model.vo.AnimeOptionsModel;
  */
 public interface AnimeOptionsService {
     /**
+     * 获取选项信息
+     *
      * @return 获取所有筛选条件
      */
-    AnimeOptionsModel getOptions();
+    OptionsModel getOptions();
 
     /**
      * 获取最近列表的默认分页大小

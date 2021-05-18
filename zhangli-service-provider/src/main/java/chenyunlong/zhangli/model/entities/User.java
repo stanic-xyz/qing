@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 
@@ -29,7 +30,7 @@ public class User extends BaseEntity {
     private String email;
     private String avatar;
     private String description;
-    private Date expireTime;
+    private LocalDateTime expireTime;
     private MFAType mfaType;
     private String mfaKey;
 

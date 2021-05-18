@@ -170,6 +170,7 @@
                      th:class="${iterStat.index%2==0?'cell blockdiff':'cell blockdiff2'}">
                     <a th:href="${'/detail/'+anime.getId()}" class="cell_poster">
                         <img referrerpolicy="no-referrer" width="150px" height="208px"
+                             loading="lazy"
                              th:src="${anime.coverUrl}" th:alt="${anime.getName()}" alt="暂无描述"
                              src="//sc02.alicdn.com/kf/H3f0b74c52af14186be19063d7fcb92c7f.jpg">
                         <span class="newname">第120话</span></a>
