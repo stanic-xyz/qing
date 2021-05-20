@@ -11,6 +11,7 @@ import chenyunlong.zhangli.service.AnimeInfoService;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +37,7 @@ public class MovieController {
     }
 
     @GetMapping("")
-    public ModelAndView index(ModelAndView modelAndView) {
+    public ModelAndView index(ModelAndView modelAndView) throws JsonProcessingException {
         IndexModel indexModel = animeInfoModel.listIndex();
         modelAndView.setViewName("home");
         modelAndView.addObject("data", indexModel);

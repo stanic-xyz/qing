@@ -1,7 +1,6 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)/detail/20160083 -->
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title th:text="${data.animeInfo.getName()+'- 傻瓜动漫网站'}"></title>
@@ -11,18 +10,20 @@
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data.hostname})}">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/detail.css(host=${data.hostname})}">
     <!-- overload -->
-    <style type="text/css">.anime_icon1 {
-        margin-right: 24px;
-    }
+    <style type="text/css">
+        .anime_icon1 {
+            margin-right: 24px;
+        }
 
-    .anime_icon1 {
-        width: 148px;
-    }
+        .anime_icon1 {
+            width: 148px;
+        }
 
-    .anime_icon1 .anime_icon1_img {
-        width: 148px;
-        height: 205px;
-    }</style>
+        .anime_icon1 .anime_icon1_img {
+            width: 148px;
+            height: 205px;
+        }
+    </style>
 
     <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/detail.js(host=${data.hostname})}"></script>
@@ -36,453 +37,459 @@
 </head>
 
 <body>
-<div id="root">
-    <div id="top" th:include="common/header :: top()"></div>
-    <header id="nav" th:include="common/header :: commonHead('detail')"></header>
-    <div id="container">
+    <div id="root">
+        <div id="top" th:include="common/header :: top()"></div>
+        <header id="nav" th:include="common/header :: commonHead('detail')"></header>
+        <div id="container">
 
-        <div id="new_tip1" th:include="common/header :: notification('play')"></div>
-        <div class="div_left">
-            <div class="baseblock">
-                <div class="blockcontent">
-                    <img referrerpolicy="no-referrer" class="poster" width="256px" height="356px"
-                         th:src="${data.animeInfo.coverUrl}"
-                         th:alt="${data.animeInfo.name}" alt="暂无"></div>
-            </div>
-            <div class="baseblock">
-                <div class="blockcontent">
-
-                    <div class="baseblock2">
-                        <div class="blocktitle detail_title1">基本信息：</div>
-                        <ul class="blockcontent">
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">地区：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.district}">日本</span>
-                                <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
-                            </li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">动画种类：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.type}">TV</span></li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">原版名称：</span>
-                                <span class="detail_imform_value"
-                                      th:text="${data.animeInfo.getName()}">この素晴らしい世界に祝福を！</span>
-                            </li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">其它名称：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.originalName}">暂无</span>
-                            </li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">原作：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.author}">暂无</span></li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">制作公司：</span>
-                                <span class="detail_imform_value"
-                                      th:text="${data.animeInfo.getCompany()}">Studio DEEN</span>
-                            </li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">首播时间：</span>
-                                <span class="detail_imform_value"
-                                      th:text="${data.animeInfo.getPremiereDate()}">2016-01-13</span></li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">播放状态：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.playStatus}">暂无</span>
-                            </li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">剧情类型：</span>
-                                <span class="detail_imform_value"
-                                      th:text="${data.animeInfo.getPlotType()}">搞笑 奇幻 冒险 后宫</span></li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">标签：</span>
-                                <span class="detail_imform_value"
-                                      th:text="${data.animeInfo.tags}">搞笑 奇幻 冒险 后宫 治愈 魔法 轻小说 欢乐向</span>
-                            </li>
-                            <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">官方网站：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.officialWebsite}">http://konosuba.com/</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-            <div class="baseblock">
-                <div class="blockcontent">
-                    <div class="baseblock2">
-                        <div class="blocktitle detail_title1">相关动画：</div>
-                        <ul class="blockcontent">
-
-                            <li class="relates_series">
-                                <a href="/detail/20170004">为美好的世界献上祝福！ 第二季</a>
-                            </li>
-
-                            <li class="relates_series">
-                                <a href="/detail/20160084">为美好的世界献上祝福！OAD</a>
-                            </li>
-
-                            <li class="relates_series">
-                                <a href="/detail/20180187">为美好的世界献上祝福！红传说</a>
-                            </li>
-
-                        </ul>
+            <div id="new_tip1" th:include="common/header :: notification('play')"></div>
+            <div class="div_left">
+                <div class="baseblock">
+                    <div class="blockcontent">
+                        <img referrerpolicy="no-referrer" class="poster" width="256px" height="356px"
+                            th:src="${data.animeInfo.coverUrl}" th:alt="${data.animeInfo.name}" alt="暂无">
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="div_right">
-            <div class="baseblock">
-                <div class="blockcontent">
-                    <h4 class="detail_imform_name" th:text="${data.animeInfo.name}">--</h4></div>
-            </div>
-            <div class="blockline1" style="margin: 8px;"></div>
-            <div class="baseblock">
-                <div class="blockcontent">
-                    <div class="detail_imform_desc_pre">
-                        <p th:text="${data.animeInfo.getInstruction()}">暂无</p>
+                <div class="baseblock">
+                    <div class="blockcontent">
+
+                        <div class="baseblock2">
+                            <div class="blocktitle detail_title1">基本信息：</div>
+                            <ul class="blockcontent">
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">地区：</span>
+                                    <span class="detail_imform_value" th:text="${data.animeInfo.district}">日本</span>
+                                    <a class="detail_imform_show_full"
+                                        href="javascript:detail_show_full();">&lt;&lt;展开</a>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">动画种类：</span>
+                                    <span class="detail_imform_value" th:text="${data.animeInfo.type}">TV</span>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">原版名称：</span>
+                                    <span class="detail_imform_value"
+                                        th:text="${data.animeInfo.getName()}">この素晴らしい世界に祝福を！</span>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">其它名称：</span>
+                                    <span class="detail_imform_value" th:text="${data.animeInfo.originalName}">暂无</span>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">原作：</span>
+                                    <span class="detail_imform_value" th:text="${data.animeInfo.author}">暂无</span>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">制作公司：</span>
+                                    <span class="detail_imform_value" th:text="${data.animeInfo.getCompany()}">Studio
+                                        DEEN</span>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">首播时间：</span>
+                                    <span class="detail_imform_value"
+                                        th:text="${data.animeInfo.getPremiereDate()}">2016-01-13</span>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">播放状态：</span>
+                                    <span class="detail_imform_value" th:text="${data.animeInfo.playStatus}">暂无</span>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">剧情类型：</span>
+                                    <span class="detail_imform_value" th:text="${data.animeInfo.getPlotType()}">搞笑 奇幻 冒险
+                                        后宫</span>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">标签：</span>
+                                    <span class="detail_imform_value" th:text="${data.animeInfo.tags}">搞笑 奇幻 冒险 后宫 治愈 魔法
+                                        轻小说 欢乐向</span>
+                                </li>
+                                <li class="detail_imform_kv">
+                                    <span class="detail_imform_tag">官方网站：</span>
+                                    <span class="detail_imform_value"
+                                        th:text="${data.animeInfo.officialWebsite}">http://konosuba.com/</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="baseblock">
+                    <div class="blockcontent">
+                        <div class="baseblock2">
+                            <div class="blocktitle detail_title1">相关动画：</div>
+                            <ul class="blockcontent">
+
+                                <li class="relates_series">
+                                    <a href="/detail/20170004">为美好的世界献上祝福！ 第二季</a>
+                                </li>
+
+                                <li class="relates_series">
+                                    <a href="/detail/20160084">为美好的世界献上祝福！OAD</a>
+                                </li>
+
+                                <li class="relates_series">
+                                    <a href="/detail/20180187">为美好的世界献上祝福！红传说</a>
+                                </li>
+
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="blockline1" style="margin: 8px;"></div>
-            <script type="text/javascript">
-                function setTab(m, n) {
-                    var tli = document.getElementById("menu" + m).getElementsByTagName("li");
-                    var mli = document.getElementById("main" + m).getElementsByTagName("div");
-                    for (i = 0; i < tli.length; i++) {
-                        tli[i].className = i === n ? "on" : "";
-                        mli[i].style.display = i === n ? "block" : "none";
-                        const pli_cnt = mli[i].getElementsByTagName("ul")[0].getElementsByTagName("li");
-                        if (!pli_cnt.length) {
-                            tli[i].style.display = 'block';
+            <div class="div_right">
+                <div class="baseblock">
+                    <div class="blockcontent">
+                        <h4 class="detail_imform_name" th:text="${data.animeInfo.name}">--</h4>
+                    </div>
+                </div>
+                <div class="blockline1" style="margin: 8px;"></div>
+                <div class="baseblock">
+                    <div class="blockcontent">
+                        <div class="detail_imform_desc_pre">
+                            <p th:text="${data.animeInfo.getInstruction()}">暂无</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="blockline1" style="margin: 8px;"></div>
+                <script type="text/javascript">
+                    function setTab(m, n) {
+                        var tli = document.getElementById("menu" + m).getElementsByTagName("li");
+                        var mli = document.getElementById("main" + m).getElementsByTagName("div");
+                        for (i = 0; i < tli.length; i++) {
+                            tli[i].className = i === n ? "on" : "";
+                            mli[i].style.display = i === n ? "block" : "none";
+                            const pli_cnt = mli[i].getElementsByTagName("ul")[0].getElementsByTagName("li");
+                            if (!pli_cnt.length) {
+                                tli[i].style.display = 'block';
+                            }
                         }
                     }
-                }
-            </script>
-            <div id="playlist-div" class="baseblock">
-                <div class="blocktitle">在线播放：</div>
-                <ul class="menu0" id="menu0" th:each="playList,iterStat : ${data.animeInfo.playList}">
-                    <li th:data="" class=""
-                        style="display: block;"
-                        th:text="${playList.name}"></li>
-                </ul>
-                <div class="main0" id="main0">
-
-                    <div class="movurl" style="display:none">
-                        <ul></ul>
-                    </div>
-
-                    <div class="movurl" style="display: none;">
-                        <ul></ul>
-                    </div>
-
-                    <div class="movurl" style="display: block;">
-                        <ul>
-                            <li th:each="episode:${data.animeInfo.playList}">
-                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${data.animeInfo.id})}"
-                                   target="_self"
-                                   title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="${episode.name}"></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="movurl" style="display:none">
-                        <ul>
-                            <li th:each="episode:${data.animeInfo.playList}">
-                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${data.animeInfo.id})}"
-                                   target="_self"
-                                   title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="第01话"></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <script id="DEF_PLAYINDEX">2</script>
-
-                <script>
-                    __set_playtab_on_index(0);
                 </script>
-            </div>
+                <div id="playlist-div" class="baseblock">
+                    <div class="blocktitle">在线播放：</div>
+                    <ul class="menu0" id="menu0" th:each="playList,iterStat : ${data.animeInfo.playList}">
+                        <li th:data="" class="" style="display: block;" th:text="${playList.name}"></li>
+                    </ul>
+                    <div class="main0" id="main0">
 
-            <div class="blockline1" style="margin: 8px;"></div>
-            <div id="wangpan-div" class="baseblock">
-                <div class="blocktitle">网盘资源：</div>
-                <div class="blockcontent">
+                        <div class="movurl" style="display:none">
+                            <ul></ul>
+                        </div>
 
-		<span class="res_links">
-			<a class="res_links_a" href="/link/20160083/0" target="_blank">[TV 01-10+OVA 720P]</a>
-			<span class="res_links_pswd_tag">(提取码:</span>
-			<span class="res_links_pswd">fe5e)</span></span>
-                    <br>
-                </div>
-            </div>
+                        <div class="movurl" style="display: none;">
+                            <ul></ul>
+                        </div>
 
-            <div class="blockline1" style="margin: 8px;"></div>
-            <div id="score" style="height:260px;"></div>
-            <script type="text/javascript">
-                // 基于准备好的dom，初始化echarts实例
-                var myChart = echarts.init(document.getElementById('score'));
-                // 指定图表的配置项和数据
-                var option = {
-                    title: {
-                        text: '评分信息',
-                    },
-                    tooltip: {},
-                    // legend: {
-                    //     data: ['销量']
-                    // },
-                    xAxis: {
-                        data: ["2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08"]
-                    },
-                    yAxis: {},
-                    series: [{
-                        name: '评分',
-                        type: 'bar',
-                        data: [9.5, 9.5, 9.5, 9.5, 5.5, 9.5, 5.5, 9.5]
-                    }]
-                };
+                        <div class="movurl" style="display: block;">
+                            <ul>
+                                <li th:each="episode:${data.animeInfo.playList}">
+                                    <a th:href="@{/play/{animeId}(playid='3_1',animeId=${data.animeInfo.id})}"
+                                        target="_self" title="第01话 [GB][BDRIP][720P][x264_AAC]"
+                                        th:text="${episode.name}"></a>
+                                </li>
+                            </ul>
+                        </div>
 
-                // 使用刚指定的配置项和数据显示图表。
-                myChart.setOption(option);
-            </script>
-            <div class="blockline1" style="margin: 8px;"></div>
-            <div class="baseblock">
-                <div class="blocktitle">反馈：</div>
-                <div class="report_div">
-                    <form id="report_form" action="/report" method="GET">
-                        <div>
-                            <input id="report_aid" type="hidden" name="animeid" value="20160083">
-                            <label>
-                                <input type="checkbox" name="link_invalid" value="1">链接失效</label>
-                            <label>
-                                <input type="checkbox" name="bad_quality" value="1">资源质量差</label>
-                            <label>
-                                <input type="checkbox" name="some_missing" value="1">集数缺失</label>
-                            <label>
-                                <input type="checkbox" name="other" value="1">其他</label>
-                            <input name="other_text" placeholder="请告诉AGE详细情况~~" wrap="SOFT" spellcheck="0"
-                                   autocapitalize="off" autocomplete="off" autocorrect="off">
-                            <input class="nbutton" type="submit" value="提交"></div>
-                    </form>
+                        <div class="movurl" style="display:none">
+                            <ul>
+                                <li th:each="episode:${data.animeInfo.playList}">
+                                    <a th:href="@{/play/{animeId}(playid='3_1',animeId=${data.animeInfo.id})}"
+                                        target="_self" title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="第01话"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <script id="DEF_PLAYINDEX">2</script>
+
                     <script>
-                        // const AID = __get_detail_play_page_AID();
-
-                        // $('#report_aid').attr('value', AID);
-                        /////////////////
-                        $('#report_form').on('submit',
-                            function () {
-                                registPost();
-                                event.preventDefault(); //阻止form表单默认提交
-                            });
-
-                        ///////////////////
-                        function registPost() {
-                            $.ajax({
-                                type: "get",
-                                url: "/report?" + $('#report_form').serialize(),
-                            }).success(function (message) {
-                                alert(message);
-                            }).fail(function (err) {
-                                alert('未知错误');
-                            });
-                        }</script>
+                        __set_playtab_on_index(0);
+                    </script>
                 </div>
-            </div>
 
-            <!-- adv1 -->
-            <!--            <script th:src="@{/js/age.js}"></script>-->
-            <div class="blockline1" style="margin: 8px;"></div>
-            <div class="baseblock">
-                <div class="blockcontent">
-                    <!-- switch -->
-                    <div style="padding-left: 8px;">
-                        <button class="switchbtn" id="btnrecommend" onclick="onbtnrecommend(this)">相关推荐</button>
-                        <button class="switchbtn switchbtn_current" id="btncomment" onclick="onbtncomment(this)">留言板
-                        </button>
-                    </div>
-                    <div id="recommend_block" class="switchblock" hidden="">
-                        <ul class="ul_li_a4">
-                            <li class="anime_icon1">
-                                <a href="/detail/20160111">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"
-                                         data-src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"></a>
-                                <a href="/detail/20160111">
-                                    <div class="anime_icon1_name">伤物语</div>
-                                </a>
-                            </li>
-                            <li class="anime_icon1" th:each="anime:${data.relevant}">
-                                <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                         th:src="${anime.coverUrl}"
-                                         th:data-src="${anime.coverUrl}"></a>
-                                <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
-                                    <div class="anime_icon1_name" th:text="${anime.name}"></div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="comments_block" class="switchblock">
+                <div class="blockline1" style="margin: 8px;"></div>
+                <div id="wangpan-div" class="baseblock">
+                    <div class="blocktitle">网盘资源：</div>
+                    <div class="blockcontent">
 
-                        <form id="comment_form" action="javascript:void(0)" method="GET">
+                        <span class="res_links">
+                            <a class="res_links_a" href="/link/20160083/0" target="_blank">[TV 01-10+OVA 720P]</a>
+                            <span class="res_links_pswd_tag">(提取码:</span>
+                            <span class="res_links_pswd">fe5e)</span></span>
+                        <br>
+                    </div>
+                </div>
+
+                <div class="blockline1" style="margin: 8px;"></div>
+                <div id="score" style="height:260px;"></div>
+                <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('score'));
+                    // 指定图表的配置项和数据
+                    var option = {
+                        title: {
+                            text: '评分信息',
+                        },
+                        tooltip: {},
+                        // legend: {
+                        //     data: ['销量']
+                        // },
+                        xAxis: {
+                            data: ["2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08"]
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '评分',
+                            type: 'bar',
+                            data: [9.5, 9.5, 9.5, 9.5, 5.5, 9.5, 5.5, 9.5]
+                        }]
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                </script>
+                <div class="blockline1" style="margin: 8px;"></div>
+                <div class="baseblock">
+                    <div class="blocktitle">反馈：</div>
+                    <div class="report_div">
+                        <form id="report_form" action="/report" method="GET">
                             <div>
-                                <input id="comment_id" type="hidden" name="cid" value="20160083">
-                                <textarea id="comment_content" wrap="SOFT" spellcheck="false" autocapitalize="off"
-                                          autocomplete="off" autocorrect="off" placeholder="说点什么吧"
-                                          name="comment_content" tid="20180132"
-                                          csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm"></textarea>
-                                <label class="comment_imform_tag">昵称：</label>
-                                <input readonly="true" id="comment_user" class="" name="comment_user" wrap="SOFT"
-                                       spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
-                                       placeholder="名字" value="游客">
-                                <input class="nbutton" type="submit" name="">
+                                <input id="report_aid" type="hidden" name="animeid" value="20160083">
+                                <label>
+                                    <input type="checkbox" name="link_invalid" value="1">链接失效</label>
+                                <label>
+                                    <input type="checkbox" name="bad_quality" value="1">资源质量差</label>
+                                <label>
+                                    <input type="checkbox" name="some_missing" value="1">集数缺失</label>
+                                <label>
+                                    <input type="checkbox" name="other" value="1">其他</label>
+                                <input name="other_text" placeholder="请告诉AGE详细情况~~" wrap="SOFT" spellcheck="0"
+                                    autocapitalize="off" autocomplete="off" autocorrect="off">
+                                <input class="nbutton" type="submit" value="提交">
                             </div>
-                            <script>
-                                __set_on_sendcomment();
-                            </script>
                         </form>
-
-                        <!-- 评论列表 -->
-                        <ul id="comment_list" style="margin-top: 16px;">
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="commentcell_user">XiangGangGOU</div>
-                                <div class="commentcell_content">
-                                    <div>动画质量说真的很不错</div>
-                                    <div class="commentcell_time asciifont">2020-09-07 16:41:46</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="commentcell_user">游客11302320116061</div>
-                                <div class="commentcell_content">
-                                    <div>网盘挂了……</div>
-                                    <div class="commentcell_time asciifont">2020-09-07 13:35:19</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="commentcell_user">游客111019086052</div>
-                                <div class="commentcell_content">
-                                    <div>沙雕番，……</div>
-                                    <div class="commentcell_time asciifont">2020-09-07 09:22:53</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="commentcell_user">游客171011101360190</div>
-                                <div class="commentcell_content">
-                                    <div>第一集还不错</div>
-                                    <div class="commentcell_time asciifont">2020-09-06 16:40:27</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="commentcell_user">shenshi450</div>
-                                <div class="commentcell_content">
-                                    <div>盒子妈 这名字如何</div>
-                                    <div class="commentcell_time asciifont">2020-09-05 11:42:52</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="commentcell_user">游客11701350900194</div>
-                                <div class="commentcell_content">
-                                    <div>盒子妈 这名字
-                                        如何
-                                    </div>
-                                    <div class="commentcell_time asciifont">2020-09-05 11:42:17</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="commentcell_user">游客1140970380228</div>
-                                <div class="commentcell_content">
-                                    <div>op好好听
-                                    </div>
-                                    <div class="commentcell_time asciifont">2020-08-31 22:28:28</div>
-                                </div>
-                            </li>
-                            <hr class="hrspace2">
-                            <div id="current_comment_page" page=""></div>
-                        </ul>
-
-
-                        <!-- 评论翻页 -->
-                        <div class="spaceblock1"></div>
-                        <ul class="comment_page">
-                            <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">首页</a></li>
-
-                            <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">1</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                   onclick="__age_show_comments_page(1)">2</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                   onclick="__age_show_comments_page(2)">3</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                   onclick="__age_show_comments_page(3)">4</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                   onclick="__age_show_comments_page(4)">5</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                   onclick="__age_show_comments_page(5)">6</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                   onclick="__age_show_comments_page(1)">下一页</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                   onclick="__age_show_comments_page(54)">尾页</a></li>
-                        </ul>
-
-                        <!-- write comments -->
                         <script>
-                            __age_show_comments_page(0);
-                        </script>
+                            // const AID = __get_detail_play_page_AID();
 
+                            // $('#report_aid').attr('value', AID);
+                            /////////////////
+                            $('#report_form').on('submit',
+                                function () {
+                                    registPost();
+                                    event.preventDefault(); //阻止form表单默认提交
+                                });
 
+                            ///////////////////
+                            function registPost() {
+                                $.ajax({
+                                    type: "get",
+                                    url: "/report?" + $('#report_form').serialize(),
+                                }).success(function (message) {
+                                    alert(message);
+                                }).fail(function (err) {
+                                    alert('未知错误');
+                                });
+                            }</script>
                     </div>
+                </div>
 
-                    <!-- switch logic -->
-                    <script type="text/javascript">var hash = window.location.hash;
-                    if (hash === '#btncomment') {
-                        onbtncomment();
-                    } else if (hash === '#btnrecommend') {
-                        onbtnrecommend();
-                    } else {
-                        if (Math.random() > 0.5) {
-                            onbtnrecommend();
-                        } else {
-                            onbtncomment();
-                        }
-                    }</script>
+                <!-- adv1 -->
+                <!--            <script th:src="@{/js/age.js}"></script>-->
+                <div class="blockline1" style="margin: 8px;"></div>
+                <div class="baseblock">
+                    <div class="blockcontent">
+                        <!-- switch -->
+                        <div style="padding-left: 8px;">
+                            <button class="switchbtn" id="btnrecommend" onclick="onbtnrecommend(this)">相关推荐</button>
+                            <button class="switchbtn switchbtn_current" id="btncomment" onclick="onbtncomment(this)">留言板
+                            </button>
+                        </div>
+                        <div id="recommend_block" class="switchblock" hidden="">
+                            <ul class="ul_li_a4">
+                                <li class="anime_icon1">
+                                    <a href="/detail/20160111">
+                                        <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148"
+                                            height="205"
+                                            src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"
+                                            data-src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"></a>
+                                    <a href="/detail/20160111">
+                                        <div class="anime_icon1_name">伤物语</div>
+                                    </a>
+                                </li>
+                                <li class="anime_icon1" th:each="anime:${data.relevant}">
+                                    <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
+                                        <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148"
+                                            height="205" th:src="${anime.coverUrl}" th:data-src="${anime.coverUrl}"></a>
+                                    <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
+                                        <div class="anime_icon1_name" th:text="${anime.name}"></div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="comments_block" class="switchblock">
+
+                            <form id="comment_form" action="javascript:void(0)" method="GET">
+                                <div>
+                                    <input id="comment_id" type="hidden" name="cid" value="20160083">
+                                    <textarea id="comment_content" wrap="SOFT" spellcheck="false" autocapitalize="off"
+                                        autocomplete="off" autocorrect="off" placeholder="说点什么吧" name="comment_content"
+                                        tid="20180132"
+                                        csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm"></textarea>
+                                    <label class="comment_imform_tag">昵称：</label>
+                                    <input readonly="true" id="comment_user" class="" name="comment_user" wrap="SOFT"
+                                        spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
+                                        placeholder="名字" value="游客">
+                                    <input class="nbutton" type="submit" name="">
+                                </div>
+                                <script>
+                                    __set_on_sendcomment();
+                                </script>
+                            </form>
+
+                            <!-- 评论列表 -->
+                            <ul id="comment_list" style="margin-top: 16px;">
+                                <li class="comment">
+                                    <hr class="hrspace2">
+                                    <div class="commentcell_user">XiangGangGOU</div>
+                                    <div class="commentcell_content">
+                                        <div>动画质量说真的很不错</div>
+                                        <div class="commentcell_time asciifont">2020-09-07 16:41:46</div>
+                                    </div>
+                                </li>
+                                <li class="comment">
+                                    <hr class="hrspace2">
+                                    <div class="commentcell_user">游客11302320116061</div>
+                                    <div class="commentcell_content">
+                                        <div>网盘挂了……</div>
+                                        <div class="commentcell_time asciifont">2020-09-07 13:35:19</div>
+                                    </div>
+                                </li>
+                                <li class="comment">
+                                    <hr class="hrspace2">
+                                    <div class="commentcell_user">游客111019086052</div>
+                                    <div class="commentcell_content">
+                                        <div>沙雕番，……</div>
+                                        <div class="commentcell_time asciifont">2020-09-07 09:22:53</div>
+                                    </div>
+                                </li>
+                                <li class="comment">
+                                    <hr class="hrspace2">
+                                    <div class="commentcell_user">游客171011101360190</div>
+                                    <div class="commentcell_content">
+                                        <div>第一集还不错</div>
+                                        <div class="commentcell_time asciifont">2020-09-06 16:40:27</div>
+                                    </div>
+                                </li>
+                                <li class="comment">
+                                    <hr class="hrspace2">
+                                    <div class="commentcell_user">shenshi450</div>
+                                    <div class="commentcell_content">
+                                        <div>盒子妈 这名字如何</div>
+                                        <div class="commentcell_time asciifont">2020-09-05 11:42:52</div>
+                                    </div>
+                                </li>
+                                <li class="comment">
+                                    <hr class="hrspace2">
+                                    <div class="commentcell_user">游客11701350900194</div>
+                                    <div class="commentcell_content">
+                                        <div>盒子妈 这名字
+                                            如何
+                                        </div>
+                                        <div class="commentcell_time asciifont">2020-09-05 11:42:17</div>
+                                    </div>
+                                </li>
+                                <li class="comment">
+                                    <hr class="hrspace2">
+                                    <div class="commentcell_user">游客1140970380228</div>
+                                    <div class="commentcell_content">
+                                        <div>op好好听
+                                        </div>
+                                        <div class="commentcell_time asciifont">2020-08-31 22:28:28</div>
+                                    </div>
+                                </li>
+                                <hr class="hrspace2">
+                                <div id="current_comment_page" page=""></div>
+                            </ul>
+
+
+                            <!-- 评论翻页 -->
+                            <div class="spaceblock1"></div>
+                            <ul class="comment_page">
+                                <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">首页</a></li>
+
+                                <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">1</a></li>
+
+                                <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                        onclick="__age_show_comments_page(1)">2</a></li>
+
+                                <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                        onclick="__age_show_comments_page(2)">3</a></li>
+
+                                <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                        onclick="__age_show_comments_page(3)">4</a></li>
+
+                                <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                        onclick="__age_show_comments_page(4)">5</a></li>
+
+                                <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                        onclick="__age_show_comments_page(5)">6</a></li>
+
+                                <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                        onclick="__age_show_comments_page(1)">下一页</a></li>
+
+                                <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                                        onclick="__age_show_comments_page(54)">尾页</a></li>
+                            </ul>
+
+                            <!-- write comments -->
+                            <script>
+                                __age_show_comments_page(0);
+                            </script>
+
+
+                        </div>
+
+                        <!-- switch logic -->
+                        <script type="text/javascript">var hash = window.location.hash;
+                            if (hash === '#btncomment') {
+                                onbtncomment();
+                            } else if (hash === '#btnrecommend') {
+                                onbtnrecommend();
+                            } else {
+                                if (Math.random() > 0.5) {
+                                    onbtnrecommend();
+                                } else {
+                                    onbtncomment();
+                                }
+                            }</script>
+                    </div>
                 </div>
             </div>
+            <!-- end div_right -->
         </div>
-        <!-- end div_right -->
+        <!-- end content -->
+        <footer id="footer" th:include="common/header :: footer()"></footer>
     </div>
-    <!-- end content -->
-    <footer id="footer" th:include="common/header :: footer()"></footer>
-</div>
 
-<script>
-    //调用飘落函数 实现飘落效果
-    $(document).snowfall({
-        image: ["/img/common/kanzaki1.png"],
-        flakeCount: 20,
-        minSize: 10,
-        maxSize: 60,
-        maxSpeed: 2,
-        shadow: false
-    });
-</script>
-<script>var _hmt = _hmt || [];
-(function () {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-})();
-</script>
+    <script>
+        //调用飘落函数 实现飘落效果
+        $(document).snowfall({
+            image: ["/img/common/kanzaki1.png"],
+            flakeCount: 20,
+            minSize: 10,
+            maxSize: 60,
+            maxSpeed: 2,
+            shadow: false
+        });
+    </script>
+    <script>var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </body>
+
 </html>

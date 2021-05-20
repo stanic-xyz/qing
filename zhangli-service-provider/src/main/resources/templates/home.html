@@ -1,7 +1,6 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)detail/20160083 -->
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>在线动画 动漫下载 - AGE动漫</title>
@@ -15,1009 +14,173 @@
 </head>
 
 <body>
-<div id="root">
-    <div id="top" th:include="common/header :: top()"></div>
-    <header id="nav" th:include="common/header :: commonHead('index')"></header>
-    <div id="container">
+    <div id="root">
+        <div id="top" th:include="common/header :: top()"></div>
+        <header id="nav" th:include="common/header :: commonHead('index')"></header>
+        <div id="container">
 
-        <div id="new_tip1" th:include="common/header :: notification('www.agefans.net')"></div>
-        <div class="div_right baseblock">
-            <div class="blocktitle">每周放送列表</div>
-            <div class="blockcontent">
-                <ul id="new_anime_btns">
-                    <li id="new_anime_page_btn_1" class="new_anime_btn highlighttag"
-                        onclick="on_new_anime_page_btn(this, 1)">周一
-                    </li>
-                    <li id="new_anime_page_btn_2" class="new_anime_btn  highlighttag"
-                        onclick="on_new_anime_page_btn(this, 2)">周二
-                    </li>
-                    <li id="new_anime_page_btn_3" class="new_anime_btn  highlighttag"
-                        onclick="on_new_anime_page_btn(this, 3)">周三
-                    </li>
-                    <li id="new_anime_page_btn_4" class="new_anime_btn  highlighttag"
-                        onclick="on_new_anime_page_btn(this, 4)">周四
-                    </li>
-                    <li id="new_anime_page_btn_5" class="new_anime_btn  highlighttag"
-                        onclick="on_new_anime_page_btn(this, 5)">周五
-                    </li>
-                    <li id="new_anime_page_btn_6" class="new_anime_btn highlighttag new_anime_btn_current"
-                        onclick="on_new_anime_page_btn(this, 6)">周六
-                    </li>
-                    <li id="new_anime_page_btn_0" class="new_anime_btn  highlighttag"
-                        onclick="on_new_anime_page_btn(this, 0)">周日
-                    </li>
-                </ul>
+            <div id="new_tip1" th:include="common/header :: notification('www.agefans.net')"></div>
+            <div class="div_right baseblock">
+                <div class="blocktitle">每周放送列表</div>
+                <div class="blockcontent">
+                    <ul id="new_anime_btns">
+                        <li id="new_anime_page_btn_1" class="new_anime_btn highlighttag"
+                            onclick="on_new_anime_page_btn(this, 1)">周一
+                        </li>
+                        <li id="new_anime_page_btn_2" class="new_anime_btn  highlighttag"
+                            onclick="on_new_anime_page_btn(this, 2)">周二
+                        </li>
+                        <li id="new_anime_page_btn_3" class="new_anime_btn  highlighttag"
+                            onclick="on_new_anime_page_btn(this, 3)">周三
+                        </li>
+                        <li id="new_anime_page_btn_4" class="new_anime_btn  highlighttag"
+                            onclick="on_new_anime_page_btn(this, 4)">周四
+                        </li>
+                        <li id="new_anime_page_btn_5" class="new_anime_btn  highlighttag"
+                            onclick="on_new_anime_page_btn(this, 5)">周五
+                        </li>
+                        <li id="new_anime_page_btn_6" class="new_anime_btn highlighttag new_anime_btn_current"
+                            onclick="on_new_anime_page_btn(this, 6)">周六
+                        </li>
+                        <li id="new_anime_page_btn_0" class="new_anime_btn  highlighttag"
+                            onclick="on_new_anime_page_btn(this, 0)">周日
+                        </li>
+                    </ul>
 
-                <ul id="new_anime_page">
-                    <li class="one_new_anime" th:each="anime : ${data.recentList}">
-                        <a class="one_new_anime_name" th:href="@{'detail/'+${anime.id}}"
-                           th:text="${anime.name}">达尔文游戏</a>
-                        <a class="one_new_anime_ji" th:href="@{'detail/'+${anime.id}}">[TV 01-11]</a>
-                    </li>
-                </ul>
+                    <ul id="new_anime_page">
+                        <li class="one_new_anime" th:each="anime : ${data.recentList}">
+                            <a class="one_new_anime_name" th:href="@{'detail/'+${anime.id}}"
+                                th:text="${anime.name}">达尔文游戏</a>
+                            <a class="one_new_anime_ji" th:href="@{'detail/'+${anime.id}}">[TV 01-11]</a>
+                        </li>
+                    </ul>
 
-                <script type="text/javascript" th:inline="javascript">
-                    var new_anime_list = [
-                        {
-                            "isnew": false,
-                            "id": "20200087",
-                            "wd": 1,
-                            "name": "ReBIRTH",
-                            "mtime": "2020-09-07 12:35:32",
-                            "namefornew": "第22话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200060",
-                            "wd": 1,
-                            "name": "社长，战斗时间到了！",
-                            "mtime": "2020-06-29 00:05:32",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200119",
-                            "wd": 1,
-                            "name": "邪神与厨二病少女 第二季",
-                            "mtime": "2020-05-01 02:34:59",
-                            "namefornew": "[TV 01-12]"
-                        }, {
-                            "isnew": false,
-                            "id": "20190119",
-                            "wd": 1,
-                            "name": "公主连结！Re:Dive",
-                            "mtime": "2020-06-29 23:03:52",
-                            "namefornew": "第13话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200108",
-                            "wd": 1,
-                            "name": "白猫计划 零之纪元",
-                            "mtime": "2020-06-22 23:09:41",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200131",
-                            "wd": 1,
-                            "name": "啄木鸟侦探社",
-                            "mtime": "2020-06-29 23:33:17",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190342",
-                            "wd": 1,
-                            "name": "超级小白",
-                            "mtime": "2020-09-07 00:03:15",
-                            "namefornew": "00:00 第48话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200248",
-                            "wd": 1,
-                            "name": "巨人族的新娘",
-                            "mtime": "2020-08-01 01:20:40",
-                            "namefornew": "[WEB 01-09(R]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200121",
-                            "wd": 1,
-                            "name": "王者天下 第三季",
-                            "mtime": "2020-04-27 03:45:45",
-                            "namefornew": "第4话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200258",
-                            "wd": 1,
-                            "name": "忍者Collection",
-                            "mtime": "2020-08-31 10:38:10",
-                            "namefornew": "第8话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200144",
-                            "wd": 1,
-                            "name": "女学。～圣女斯克威尔学院～",
-                            "mtime": "2020-09-07 12:16:37",
-                            "namefornew": "第15话"
-                        }, {
-                            "isnew": false,
-                            "id": "20180190",
-                            "wd": 2,
-                            "name": "平凡职业成就世界最强",
-                            "mtime": "2020-05-24 16:00:26",
-                            "namefornew": "[BD 00-13+OVA]"
-                        }, {
-                            "isnew": false,
-                            "id": "20190074",
-                            "wd": 2,
-                            "name": "Z/X Code reunion",
-                            "mtime": "2019-12-25 00:02:56",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190133",
-                            "wd": 2,
-                            "name": "钻石王牌 act2",
-                            "mtime": "2020-03-31 18:37:49",
-                            "namefornew": "第52话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190067",
-                            "wd": 2,
-                            "name": "BanG Dream! 第三季",
-                            "mtime": "2020-04-07 19:49:28",
-                            "namefornew": "第13话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200050",
-                            "wd": 2,
-                            "name": "八十龟酱观察日记 第二季",
-                            "mtime": "2020-04-11 10:42:47",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200046",
-                            "wd": 2,
-                            "name": "A3！满开剧团 春\u0026夏",
-                            "mtime": "2020-06-23 00:35:19",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200214",
-                            "wd": 2,
-                            "name": "高校之神",
-                            "mtime": "2020-09-08 00:02:47",
-                            "namefornew": "00:00 第10话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200158",
-                            "wd": 2,
-                            "name": "水果篮子 第二季",
-                            "mtime": "2020-09-08 01:34:38",
-                            "namefornew": "01:30 第23话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200079",
-                            "wd": 2,
-                            "name": "影之诗",
-                            "mtime": "2020-09-08 18:08:22",
-                            "namefornew": "17:55 第22话"
-                        }, {
-                            "isnew": false,
-                            "id": "20170082",
-                            "wd": 2,
-                            "name": "黑色五叶草",
-                            "mtime": "2020-09-08 18:50:45",
-                            "namefornew": "18:25 第142话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200103",
-                            "wd": 2,
-                            "name": "魔法律事务所 第二季",
-                            "mtime": "2020-09-08 19:34:58",
-                            "namefornew": "19:30 第10话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200223",
-                            "wd": 2,
-                            "name": "赛马娘四格",
-                            "mtime": "2020-09-08 21:08:10",
-                            "namefornew": "21:00 第10话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200075",
-                            "wd": 2,
-                            "name": "放学后海堤日记",
-                            "mtime": "2020-09-08 22:34:05",
-                            "namefornew": "22:30 第10话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200033",
-                            "wd": 3,
-                            "name": "异世界四重奏 第二季",
-                            "mtime": "2020-04-01 00:47:27",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200037",
-                            "wd": 3,
-                            "name": "魔术士欧菲流浪之旅",
-                            "mtime": "2020-04-08 01:59:37",
-                            "namefornew": "第14话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190057",
-                            "wd": 3,
-                            "name": "歌牌情缘 第三季",
-                            "mtime": "2020-03-25 02:47:28",
-                            "namefornew": "第24话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190152",
-                            "wd": 3,
-                            "name": "七原罪 第三季(诸神的逆鳞)",
-                            "mtime": "2020-03-25 18:08:58",
-                            "namefornew": "[TV 01-24]"
-                        }, {
-                            "isnew": false,
-                            "id": "20190204",
-                            "wd": 3,
-                            "name": "虚空魔法使 第二季",
-                            "mtime": "2020-02-26 19:38:26",
-                            "namefornew": "第21话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200008",
-                            "wd": 3,
-                            "name": "因为太怕痛就全点防御力了",
-                            "mtime": "2020-03-25 22:32:07",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200048",
-                            "wd": 3,
-                            "name": "number24",
-                            "mtime": "2020-04-09 06:34:44",
-                            "namefornew": "[TV 01-12]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200068",
-                            "wd": 3,
-                            "name": "Re：从零开始的异世界生活 新编集版",
-                            "mtime": "2020-05-06 08:33:10",
-                            "namefornew": "第SP6话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200125",
-                            "wd": 3,
-                            "name": "球咏",
-                            "mtime": "2020-06-17 22:05:41",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200134",
-                            "wd": 3,
-                            "name": "神之塔",
-                            "mtime": "2020-06-24 23:35:42",
-                            "namefornew": "第13话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200107",
-                            "wd": 3,
-                            "name": "大欺诈师",
-                            "mtime": "2020-06-16 11:08:37",
-                            "namefornew": "第14话"
-                        }, {
-                            "isnew": false,
-                            "id": "20190205",
-                            "wd": 3,
-                            "name": "鸭子的天空",
-                            "mtime": "2020-09-09 18:05:10",
-                            "namefornew": "17:55 第46话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200216",
-                            "wd": 3,
-                            "name": "猎魔武士",
-                            "mtime": "2020-09-09 22:06:31",
-                            "namefornew": "22:00 第8话"
-                        }, {
-                            "isnew": false,
-                            "id": "20190127",
-                            "wd": 3,
-                            "name": "Re：从零开始的异世界生活 第二季",
-                            "mtime": "2020-09-09 23:01:21",
-                            "namefornew": "23:00 第10话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200202",
-                            "wd": 3,
-                            "name": "恋与制作人",
-                            "mtime": "2020-09-09 22:58:56",
-                            "namefornew": "23:00 第9话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200036",
-                            "wd": 4,
-                            "name": "空挺Dragons",
-                            "mtime": "2020-01-09 01:07:00",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190210",
-                            "wd": 4,
-                            "name": "无限之住人",
-                            "mtime": "2020-03-26 07:56:33",
-                            "namefornew": "第24话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200031",
-                            "wd": 4,
-                            "name": "NEKOPARA",
-                            "mtime": "2020-03-26 22:22:13",
-                            "namefornew": "[TV 01-12]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200029",
-                            "wd": 4,
-                            "name": "奇幻☆怪盗",
-                            "mtime": "2020-06-03 23:40:41",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200058",
-                            "wd": 4,
-                            "name": "SHOW BY ROCK!! Mashumairesh!!",
-                            "mtime": "2020-03-26 22:43:56",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200028",
-                            "wd": 4,
-                            "name": "索玛丽与森林之神",
-                            "mtime": "2020-03-26 23:14:55",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200011",
-                            "wd": 4,
-                            "name": "Infinite Dendrogram -无尽连锁-",
-                            "mtime": "2020-04-16 05:53:14",
-                            "namefornew": "第13话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200039",
-                            "wd": 4,
-                            "name": "星掠者",
-                            "mtime": "2020-06-25 01:09:11",
-                            "namefornew": "第24话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200100",
-                            "wd": 4,
-                            "name": "八男？别闹了！",
-                            "mtime": "2020-06-18 20:02:01",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200067",
-                            "wd": 4,
-                            "name": "隐瞒之事",
-                            "mtime": "2020-06-18 23:51:39",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200242",
-                            "wd": 4,
-                            "name": "DECA-DENCE",
-                            "mtime": "2020-09-10 00:05:29",
-                            "namefornew": "00:00 第10话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200130",
-                            "wd": 4,
-                            "name": "高达创形者Re:RISE 第二季",
-                            "mtime": "2020-08-27 19:07:11",
-                            "namefornew": "第26话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200221",
-                            "wd": 4,
-                            "name": "BanG Dream! 少女乐团派对！☆PICO～大份～",
-                            "mtime": "2020-09-10 22:08:50",
-                            "namefornew": "22:00 第19话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200009",
-                            "wd": 5,
-                            "name": "理科生坠入情网故尝试证明",
-                            "mtime": "2020-01-10 23:31:19",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200043",
-                            "wd": 5,
-                            "name": "宝石商人理查德的谜鉴定",
-                            "mtime": "2020-03-27 00:40:06",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200038",
-                            "wd": 5,
-                            "name": "家有圆圆？！～我家的圆圆你知道吗～",
-                            "mtime": "2020-03-20 01:30:28",
-                            "namefornew": "第11话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200026",
-                            "wd": 5,
-                            "name": "地缚少年花子君",
-                            "mtime": "2020-03-27 15:08:30",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200005",
-                            "wd": 5,
-                            "name": "神推登上武道馆我就死而无憾",
-                            "mtime": "2020-03-27 05:38:26",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190366",
-                            "wd": 5,
-                            "name": "恋爱小行星",
-                            "mtime": "2020-03-27 23:06:04",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200120",
-                            "wd": 5,
-                            "name": "座敷童子榻榻米酱",
-                            "mtime": "2020-06-26 21:42:54",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200065",
-                            "wd": 5,
-                            "name": "新樱花大战",
-                            "mtime": "2020-06-19 22:09:29",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200104",
-                            "wd": 5,
-                            "name": "富豪刑事 Balance:UNLIMITED",
-                            "mtime": "2020-09-11 01:12:08",
-                            "namefornew": "00:55 第9话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200124",
-                            "wd": 5,
-                            "name": "非枪人生 第二季",
-                            "mtime": "2020-09-11 02:09:08",
-                            "namefornew": "02:00 第21话"
-                        }, {
-                            "isnew": true,
-                            "id": "20190129",
-                            "wd": 5,
-                            "name": "我的青春恋爱物语果然有问题 第三季",
-                            "mtime": "2020-09-11 14:59:50",
-                            "namefornew": "15:00 第10话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200133",
-                            "wd": 5,
-                            "name": "魔神英雄传 七魂的龙神丸",
-                            "mtime": "2020-06-26 21:50:07",
-                            "namefornew": "本周停播 第4话"
-                        }, {
-                            "isnew": true,
-                            "id": "20200159",
-                            "wd": 5,
-                            "name": "宇崎酱想要玩耍！",
-                            "mtime": "2020-09-11 20:34:13",
-                            "namefornew": "20:30 第10话"
-                        }, {
-                            "isnew": true,
-                            "id": "20200128",
-                            "wd": 5,
-                            "name": "天晴烂漫！",
-                            "mtime": "2020-09-11 21:31:49",
-                            "namefornew": "21:30 第11话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200024",
-                            "wd": 6,
-                            "name": "达尔文游戏",
-                            "mtime": "2020-03-21 00:49:01",
-                            "namefornew": "[TV 01-11]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200025",
-                            "wd": 6,
-                            "name": "织田肉桂信长",
-                            "mtime": "2020-03-28 01:25:51",
-                            "namefornew": "[TV 01-12]"
-                        }, {
-                            "isnew": false,
-                            "id": "20190199",
-                            "wd": 6,
-                            "name": "歌舞伎町夏洛克",
-                            "mtime": "2020-08-26 11:40:24",
-                            "namefornew": "第25话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200040",
-                            "wd": 6,
-                            "name": "请在T台上微笑",
-                            "mtime": "2020-03-28 03:00:07",
-                            "namefornew": "[WEB 01-12]"
-                        }, {
-                            "isnew": false,
-                            "id": "20190202",
-                            "wd": 6,
-                            "name": "入间同学入魔了",
-                            "mtime": "2020-03-07 19:10:04",
-                            "namefornew": "第23话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190039",
-                            "wd": 6,
-                            "name": "暗黑破坏神在身边",
-                            "mtime": "2020-03-28 20:03:21",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200023",
-                            "wd": 6,
-                            "name": "22/7",
-                            "mtime": "2020-03-28 23:32:50",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190331",
-                            "wd": 6,
-                            "name": "偶像活动 on Parade",
-                            "mtime": "2020-07-13 10:25:41",
-                            "namefornew": "特别篇06"
-                        }, {
-                            "isnew": false,
-                            "id": "20200035",
-                            "wd": 6,
-                            "name": "异种族风俗娘评鉴指南",
-                            "mtime": "2020-01-11 23:56:37",
-                            "namefornew": "[TV 01-12]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200113",
-                            "wd": 6,
-                            "name": "奥特英雄传 赛罗与捷德",
-                            "mtime": "2020-06-13 10:10:51",
-                            "namefornew": "第23集(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190398",
-                            "wd": 6,
-                            "name": "镇魂街 第二季",
-                            "mtime": "2020-01-18 20:09:42",
-                            "namefornew": "第5话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200055",
-                            "wd": 6,
-                            "name": "排球少年 第四季",
-                            "mtime": "2020-04-04 22:39:28",
-                            "namefornew": "第13话(上半季完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200196",
-                            "wd": 6,
-                            "name": "ARGONAVIS from BanG Dream!",
-                            "mtime": "2020-07-04 02:23:22",
-                            "namefornew": "第13话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200109",
-                            "wd": 6,
-                            "name": "LISTENERS",
-                            "mtime": "2020-06-20 10:13:42",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200135",
-                            "wd": 6,
-                            "name": "听我的电波吧",
-                            "mtime": "2020-06-20 10:23:08",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200057",
-                            "wd": 6,
-                            "name": "阿尔蒂",
-                            "mtime": "2020-06-20 22:36:30",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": true,
-                            "id": "20190069",
-                            "wd": 6,
-                            "name": "科学的超电磁炮T",
-                            "mtime": "2020-09-12 00:09:09",
-                            "namefornew": "00:05 第23话"
-                        }, {
-                            "isnew": true,
-                            "id": "20200143",
-                            "wd": 6,
-                            "name": "食戟之灵 第五季",
-                            "mtime": "2020-09-12 00:30:52",
-                            "namefornew": "00:30 第11话"
-                        }, {
-                            "isnew": true,
-                            "id": "20200022",
-                            "wd": 6,
-                            "name": "弩级战队H×EROS",
-                            "mtime": "2020-09-12 00:37:06",
-                            "namefornew": "00:30 第10话"
-                        }, {
-                            "isnew": true,
-                            "id": "20200078",
-                            "wd": 6,
-                            "name": "炎炎消防队 二之章",
-                            "mtime": "2020-09-12 01:15:09",
-                            "namefornew": "01:10 第11话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200074",
-                            "wd": 6,
-                            "name": "文豪与炼金术师 ～审判的齿轮～",
-                            "mtime": "2020-08-08 01:30:33",
-                            "namefornew": "第13话(完结)"
-                        }, {
-                            "isnew": true,
-                            "id": "20200137",
-                            "wd": 6,
-                            "name": "租借女友",
-                            "mtime": "2020-09-12 02:21:06",
-                            "namefornew": "02:00 第10话"
-                        }, {
-                            "isnew": true,
-                            "id": "20200197",
-                            "wd": 6,
-                            "name": "彼得·格里尔的贤者时间",
-                            "mtime": "2020-09-12 01:58:15",
-                            "namefornew": "02:05 第10话"
-                        }, {
-                            "isnew": true,
-                            "id": "20180105",
-                            "wd": 6,
-                            "name": "智龙迷城 (2018)",
-                            "mtime": "2020-09-12 12:27:55",
-                            "namefornew": "第120话"
-                        }, {
-                            "isnew": true,
-                            "id": "20180062",
-                            "wd": 6,
-                            "name": "斗罗大陆",
-                            "mtime": "2020-09-12 10:03:31",
-                            "namefornew": "第121话"
-                        }, {
-                            "isnew": true,
-                            "id": "20200256",
-                            "wd": 6,
-                            "name": "泽塔奥特曼",
-                            "mtime": "2020-09-12 10:04:34",
-                            "namefornew": "第13话"
-                        }, {
-                            "isnew": false,
-                            "id": "20000005",
-                            "wd": 6,
-                            "name": "名侦探柯南",
-                            "mtime": "2020-09-05 19:44:25",
-                            "namefornew": "19:30 第1037集"
-                        }, {
-                            "isnew": false,
-                            "id": "20200229",
-                            "wd": 6,
-                            "name": "宝石幻想光芒重现",
-                            "mtime": "2020-09-05 21:05:53",
-                            "namefornew": "21:00 第10话"
-                        }, {
-                            "isnew": false,
-                            "id": "20190008",
-                            "wd": 0,
-                            "name": "Fate/Grand Order 绝对魔兽战线 巴比伦尼亚",
-                            "mtime": "2020-03-22 00:07:14",
-                            "namefornew": "[TV 00-21]"
-                        }, {
-                            "isnew": false,
-                            "id": "20190031",
-                            "wd": 0,
-                            "name": "魔法纪录 魔法少女小圆外传",
-                            "mtime": "2020-03-29 05:20:37",
-                            "namefornew": "[TV 01-13]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200010",
-                            "wd": 0,
-                            "name": "虚构推理",
-                            "mtime": "2020-03-29 05:11:18",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20190141",
-                            "wd": 0,
-                            "name": "闪亮美妙☆频道 第二季",
-                            "mtime": "2020-03-29 12:41:41",
-                            "namefornew": "[TV 52-102]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200030",
-                            "wd": 0,
-                            "name": "异兽魔都",
-                            "mtime": "2020-06-21 18:52:09",
-                            "namefornew": "附赠魔"
-                        }, {
-                            "isnew": false,
-                            "id": "20180097",
-                            "wd": 0,
-                            "name": "咯咯咯的鬼太郎 第六季",
-                            "mtime": "2020-03-29 12:45:11",
-                            "namefornew": "[TV 01-97]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200015",
-                            "wd": 0,
-                            "name": "辉夜大小姐想让我告白～天才们的恋爱头脑战～ 第二季",
-                            "mtime": "2020-06-28 00:06:37",
-                            "namefornew": "[TV 01-12]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200097",
-                            "wd": 0,
-                            "name": "昨日之歌",
-                            "mtime": "2020-06-21 00:37:12",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200051",
-                            "wd": 0,
-                            "name": "转生恶役只好拔除破灭旗标",
-                            "mtime": "2020-06-21 01:58:12",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200185",
-                            "wd": 0,
-                            "name": "爱书的下克上～为了成为图书管理员不择手段～ 第二季",
-                            "mtime": "2020-06-21 02:14:45",
-                            "namefornew": "第12话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200064",
-                            "wd": 0,
-                            "name": "怪怪守护神 第二季",
-                            "mtime": "2020-06-21 22:35:21",
-                            "namefornew": "[TV 01-12]"
-                        }, {
-                            "isnew": false,
-                            "id": "20200081",
-                            "wd": 0,
-                            "name": "格莱普尼尔",
-                            "mtime": "2020-06-28 22:34:39",
-                            "namefornew": "第13话(完结)"
-                        }, {
-                            "isnew": false,
-                            "id": "20200122",
-                            "wd": 0,
-                            "name": "辣妹与恐龙",
-                            "mtime": "2020-05-17 01:36:47",
-                            "namefornew": "本周停播 01:30 第7话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200102",
-                            "wd": 0,
-                            "name": "IDOLiSH7-偶像星愿- Second BEAT!",
-                            "mtime": "2020-04-19 22:42:56",
-                            "namefornew": "本周停播 22:30 第4话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200129",
-                            "wd": 0,
-                            "name": "魔王学院的不适合者",
-                            "mtime": "2020-09-06 00:00:24",
-                            "namefornew": "00:00 第10话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200123",
-                            "wd": 0,
-                            "name": "刀剑神域 Alicization篇 War of Underworld 第二季",
-                            "mtime": "2020-09-06 00:35:16",
-                            "namefornew": "00:30 第21话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200305",
-                            "wd": 0,
-                            "name": "假面骑士圣刃",
-                            "mtime": "2020-09-06 10:08:52",
-                            "namefornew": "第1集"
-                        }, {
-                            "isnew": false,
-                            "id": "20200187",
-                            "wd": 0,
-                            "name": "闪亮美妙☆频道 第三季",
-                            "mtime": "2020-09-06 10:28:26",
-                            "namefornew": "第116话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200116",
-                            "wd": 0,
-                            "name": "甜梦猫",
-                            "mtime": "2020-09-06 10:39:01",
-                            "namefornew": "第19话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200095",
-                            "wd": 0,
-                            "name": "数码宝贝大冒险(2020)",
-                            "mtime": "2020-09-06 11:21:31",
-                            "namefornew": "第14话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200114",
-                            "wd": 0,
-                            "name": "Healin Good 光之美少女",
-                            "mtime": "2020-09-06 12:06:16",
-                            "namefornew": "第23集"
-                        }, {
-                            "isnew": false,
-                            "id": "20000001",
-                            "wd": 0,
-                            "name": "海贼王",
-                            "mtime": "2020-09-06 11:59:19",
-                            "namefornew": "12:00 第940话"
-                        }, {
-                            "isnew": false,
-                            "id": "20170172",
-                            "wd": 0,
-                            "name": "博人传 火影忍者新时代",
-                            "mtime": "2020-09-06 17:33:21",
-                            "namefornew": "17:30 第164话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200041",
-                            "wd": 0,
-                            "name": "魔物娘的医生",
-                            "mtime": "2020-09-06 23:36:30",
-                            "namefornew": "23:30 第9话"
-                        }, {
-                            "isnew": false,
-                            "id": "20200186",
-                            "wd": 0,
-                            "name": "游戏王SEVENS",
-                            "mtime": "2020-07-10 10:41:20",
-                            "namefornew": "第14话"
-                        }];
-                    var msg = [[${data.recentList}]];
-                    console.log(msg)
+                    <script type="text/javascript" th:inline="javascript">
+                        var new_anime_list = [[${ data.updateInfoList }]]
 
-                    function on_new_anime_page_btn(obj, idx) {
-                        const lastnode = document.querySelector('.new_anime_btn_current');
-                        lastnode.classList.remove('new_anime_btn_current');
-                        var currentnode = document.getElementById('new_anime_page_btn_' + idx);
-                        currentnode.classList.add('new_anime_btn_current');
+                        function on_new_anime_page_btn(obj, idx) {
+                            const lastnode = document.querySelector('.new_anime_btn_current');
+                            lastnode.classList.remove('new_anime_btn_current');
+                            var currentnode = document.getElementById('new_anime_page_btn_' + idx);
+                            currentnode.classList.add('new_anime_btn_current');
+
+                            //
+                            var new_anime_wd = new_anime_list.filter(function (x) {
+                                if (x.wd === idx) {
+                                    console.log(x)
+                                }
+                                return x.wd === idx;
+                            });
+                            // the list page
+                            const new_anime_page = document.getElementById('new_anime_page');
+
+                            var firstElementChild = new_anime_page.firstElementChild;
+                            var delta = new_anime_wd.length - new_anime_page.children.length;
+                            if (delta < 0) {
+                                for (var i = 0; i < -delta; i++) {
+                                    new_anime_page.removeChild(new_anime_page.firstElementChild);
+                                }
+                            }
+                            if (delta > 0) {
+                                for (var i = 0; i < delta; i++) {
+                                    new_anime_page.appendChild(firstElementChild.cloneNode(true));
+                                }
+                            }
+                            for (var i = 0; i < new_anime_wd.length; i++) {
+                                var data = new_anime_wd[i];
+                                var node = new_anime_page.children[i];
+                                var nodename = node.children[0];
+                                var nodename1 = node.children[1];
+                                nodename.text = data.name;
+                                nodename.setAttribute('href', 'detail/' + data.id);
+                                nodename1.text = data.namefornew;
+                                nodename1.setAttribute('href', 'detail/' + data.id);
+                                var nodenew = node.children[2];
+                                if (data.isnew && !nodenew) {
+                                    var nodenew = document.createElement('div');
+                                    nodenew.setAttribute('class', 'one_anime_new');
+                                    nodenew.innerText = 'new!';
+                                    node.appendChild(nodenew);
+                                } else if (!data.isnew && nodenew) {
+                                    node.removeChild(nodenew);
+                                }
+                            }
+                            //
+                            new_anime_page.removeAttribute('hidden');
+                        }
 
                         //
-                        var new_anime_wd = new_anime_list.filter(function (x) {
-                            return x.wd === idx;
-                        });
-                        // the list page
-                        const new_anime_page = document.getElementById('new_anime_page');
+                        var mydate = new Date();
+                        var myddy = mydate.getDay();
+                        on_new_anime_page_btn(undefined, myddy);
+                    </script>
+                </div>
 
-                        var firstElementChild = new_anime_page.firstElementChild;
-                        var delta = new_anime_wd.length - new_anime_page.children.length;
-                        if (delta < 0) {
-                            for (var i = 0; i < -delta; i++) {
-                                new_anime_page.removeChild(new_anime_page.firstElementChild);
-                            }
-                        }
-                        if (delta > 0) {
-                            for (var i = 0; i < delta; i++) {
-                                new_anime_page.appendChild(firstElementChild.cloneNode(true));
-                            }
-                        }
-                        for (var i = 0; i < new_anime_wd.length; i++) {
-                            var data = new_anime_wd[i];
-                            var node = new_anime_page.children[i];
-                            var nodename = node.children[0];
-                            var nodename1 = node.children[1];
-                            nodename.text = data.name;
-                            nodename.setAttribute('href', 'detail/' + data.id);
-                            nodename1.text = data.namefornew;
-                            nodename1.setAttribute('href', 'detail/' + data.id);
-                            var nodenew = node.children[2];
-                            if (data.isnew && !nodenew) {
-                                var nodenew = document.createElement('div');
-                                nodenew.setAttribute('class', 'one_anime_new');
-                                nodenew.innerText = 'new!';
-                                node.appendChild(nodenew);
-                            } else if (!data.isnew && nodenew) {
-                                node.removeChild(nodenew);
-                            }
-                        }
-                        //
-                        new_anime_page.removeAttribute('hidden');
-                    }
-
-                    //
-                    var mydate = new Date();
-                    var myddy = mydate.getDay();
-                    on_new_anime_page_btn(undefined, myddy);
-                </script>
+                <hr class="hrspace clear" style="width: 95%;">
+                <div class="blocktitle">最近更新</div>
+                <div class="blockcontent">
+                    <ul id="anime_update">
+                        <li class="one_new_anime" th:each="anime : ${data.recentList}">
+                            <a th:href="@{'/detail/'+${anime.id}}" href="" class="one_new_anime_name"
+                                style="width: 220px;" th:text="${anime.name}">智龙迷城 (2018)</a>
+                            <span class="anime_update_date asciifont" style="margin-left: 12px;"
+                                th:text="${anime.premiereDate}"></span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-
-            <hr class="hrspace clear" style="width: 95%;">
-            <div class="blocktitle">最近更新</div>
-            <div class="blockcontent">
-                <ul id="anime_update">
-                    <li class="one_new_anime" th:each="anime : ${data.recentList}">
-                        <a th:href="@{'/detail/'+${anime.id}}" href="" class="one_new_anime_name"
-                           style="width: 220px;" th:text="${anime.name}">智龙迷城 (2018)</a>
-                        <span class="anime_update_date asciifont" style="margin-left: 12px;"
-                              th:text="${anime.premiereDate}"></span>
-                    </li>
-                </ul>
+            <div class="div_left baseblock">
+                <div class="blocktitle">
+                    <a href="recommend">每日推荐</a>
+                </div>
+                <div class="blockcontent">
+                    <ul class="ul_li_a5">
+                        <li class="anime_icon1" th:each="anime:${data.recommendList}">
+                            <a th:href="@{'/detail/'+${anime.id}}">
+                                <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
+                                    th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
+                                    th:title="${'[TV 01-12]'}" th:alt-title="${anime.name}" loading="lazy" alt="">
+                                <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
+                            <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
+                                <div class="anime_icon1_name" th:text="${anime.name}"></div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <hr class="hrspace clear" style="width: 98%;">
+                <div class="blocktitle">
+                    <a href="update">最近更新</a>
+                </div>
+                <div class="blockcontent">
+                    <ul class="ul_li_a5">
+                        <li class="anime_icon1" th:each="anime:${data.recentList}">
+                            <a th:href="@{'/detail/'+${anime.id}}">
+                                <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
+                                    th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
+                                    th:title="${'[TV 01-12]'}" loading="lazy"
+                                    alt="//sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
+                                <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
+                            <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
+                                <div class="anime_icon1_name" th:text="${anime.name}"></div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+            <div class="clear"></div>
         </div>
-        <div class="div_left baseblock">
-            <div class="blocktitle">
-                <a href="recommend">每日推荐</a></div>
-            <div class="blockcontent">
-                <ul class="ul_li_a5">
-                    <li class="anime_icon1" th:each="anime:${data.recommendList}">
-                        <a th:href="@{'/detail/'+${anime.id}}">
-                            <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
-                                 th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}"
-                                 th:alt="${anime.name}"
-                                 th:title="${'[TV 01-12]'}"
-                                 th:alt-title="${anime.name}"
-                                 loading="lazy"
-                                 alt="">
-                            <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
-                            <div class="anime_icon1_name" th:text="${anime.name}"></div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <hr class="hrspace clear" style="width: 98%;">
-            <div class="blocktitle">
-                <a href="update">最近更新</a></div>
-            <div class="blockcontent">
-                <ul class="ul_li_a5">
-                    <li class="anime_icon1" th:each="anime:${data.recentList}">
-                        <a th:href="@{'/detail/'+${anime.id}}">
-                            <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
-                                 th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}"
-                                 th:alt="${anime.name}"
-                                 th:title="${'[TV 01-12]'}"
-                                 loading="lazy"
-                                 alt="//sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
-                            <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
-                            <div class="anime_icon1_name" th:text="${anime.name}"></div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="clear"></div>
+
+        <footer id="footer" th:include="common/header :: footer()"></footer>
+
     </div>
-
-    <footer id="footer" th:include="common/header :: footer()"></footer>
-
-</div>
-<script>var _hmt = _hmt || [];
-(function () {
-    var hm = document.createElement("script");
-    hm.src = "//hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-})();
-</script>
+    <script>var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </body>
+
 </html>
