@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 
+/**
+ * @author Stan
+ */
 @Slf4j
 @Component
 @EnableScheduling
@@ -44,19 +47,23 @@ public class ScheduledTask {
             long hasNext = 1;
             long num = 1;
             while (hasNext != 0) {
-                BgngumeResponse response = restTemplate.getForObject("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=-1&style_id=-1&order=4&st=1&sort=0&page={num}&season_type=1&pagesize={pageSize}&type=1", BgngumeResponse.class, num, pageSize);
-                if (response != null && response.getCode() == 0 && response.getData() != null && response.getData().getList() != null) {
-                    AnimeData data = response.getData();
-                    animeList.addAll(data.getList());
-                    hasNext = data.getHasNext();
-                    num = data.getNum() + 1;
-                } else {
-                    log.error("获取数据失败了");
-                    break;
+                try {
+                    BgngumeResponse response = restTemplate.getForObject("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=-1&style_id=-1&order=4&st=1&sort=0&page={num}&season_type=1&pagesize={pageSize}&type=1", BgngumeResponse.class, num, pageSize);
+                    if (response != null && response.getCode() == 0 && response.getData() != null && response.getData().getList() != null) {
+                        AnimeData data = response.getData();
+                        animeList.addAll(data.getList());
+                        hasNext = data.getHasNext();
+                        num = data.getNum() + 1;
+                    } else {
+                        log.error("获取数据失败了");
+                        break;
+                    }
+                } catch (Exception exception) {
+                    hasNext = 0;
+                    log.error("本次同步任务失败！");
                 }
             }
             log.info("从哔哩哔哩同步了{}部动漫的评分数据！！", animeList.size());
-
             bilibiliAnimeService.insertBatch(animeList);
         });
     }

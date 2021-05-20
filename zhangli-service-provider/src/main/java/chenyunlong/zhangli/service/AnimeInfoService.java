@@ -4,6 +4,7 @@ package chenyunlong.zhangli.service;
 import chenyunlong.zhangli.model.dto.EpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
 import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
@@ -173,4 +174,11 @@ public interface AnimeInfoService {
      * @return 平均信息列表
      */
     IPage<AnimeComment> getComment(Long cid, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 获取最近的动漫信息
+     *
+     * @return 动漫信息（最基础的信息）
+     */
+    List<AnimeInfoUpdateDTO> getUpdateInfo();
 }

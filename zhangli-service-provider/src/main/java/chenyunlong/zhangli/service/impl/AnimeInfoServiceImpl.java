@@ -8,6 +8,7 @@ import chenyunlong.zhangli.model.agefans.AgePlayInfoModel;
 import chenyunlong.zhangli.model.dto.EpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
 import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
@@ -35,6 +36,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -250,6 +253,21 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     public IPage<AnimeComment> getComment(Long cid, Integer pageIndex, Integer pageSize) {
         QueryWrapper<AnimeComment> queryWrapper = new QueryWrapper<>();
         return commentMapper.selectPage(new Page<>(pageIndex, pageSize), queryWrapper);
+    }
+
+    @Override
+    public List<AnimeInfoUpdateDTO> getUpdateInfo() {
+        QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("premiere_date");
+        queryWrapper.last("limit 100");
+        return animeInfoMapper.selectList(queryWrapper).stream().map(animeInfo
+                -> {
+            AnimeInfoUpdateDTO updateDTO = new AnimeInfoUpdateDTO().convertFrom(animeInfo);
+            updateDTO.setIsNew(true);
+            updateDTO.setNameForNew("最新一集");
+            updateDTO.setPremiereDate(updateDTO.getPremiereDate() != null ? updateDTO.getPremiereDate() : LocalDateTime.now());
+            return updateDTO;
+        }).collect(Collectors.toList());
     }
 
     private void getPlayDetail() {

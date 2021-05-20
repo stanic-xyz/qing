@@ -4,6 +4,9 @@ import chenyunlong.zhangli.model.bilibili.BiliAnime;
 
 import java.util.List;
 
+/**
+ * @author Stan
+ */
 public interface BilibiliAnimeService {
     /**
      * 添加bilibili上面同步的视频
