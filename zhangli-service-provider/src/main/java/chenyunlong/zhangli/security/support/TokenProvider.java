@@ -72,12 +72,12 @@ public class TokenProvider {
      * @param rememberMe     是否记住我，认证信息时间设置为一个月
      * @return jwtToken信息
      */
-    public String createJwtToken(Authentication authentication, boolean rememberMe) throws JsonProcessingException {
+    public String createJwtToken(Authentication authentication, boolean rememberMe) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        long now = new Date().getTime();
+        long now = System.currentTimeMillis();
         Date validity;
         SecurityProperties security = zhangliProperties.getSecurity();
         if (security == null) {
@@ -107,7 +107,7 @@ public class TokenProvider {
      * @return jwtToken信息
      */
     public String createJwtToken(UserInfoVO userinfoVo, boolean rememberMe) {
-        long now = new Date().getTime();
+        long now = System.currentTimeMillis();
         Date validity;
         SecurityProperties security = zhangliProperties.getSecurity();
         //是否颁发一个长久的令牌

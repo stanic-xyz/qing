@@ -12,6 +12,9 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Stan
+ */
 @Service
 public class BiliApiServiceImpl implements BilibiliAnimeService {
     private final BiliAnimeMapper biliAnimeMapper;

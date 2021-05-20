@@ -13,8 +13,11 @@ import chenyunlong.zhangli.model.vo.page.IndexModel;
 import chenyunlong.zhangli.model.vo.page.UpdateModel;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.AnimeOptionsService;
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -41,14 +44,12 @@ public class AnimeInfoModel {
     /**
      * 首页数据展示结构
      */
-    public IndexModel listIndex() {
-        int recentPageSize = optionService.getRecentPageSize();
-        List<AnimeInfoMinimalDTO> recommendAnimeInfoList = animeInfoService.getRecommendAnimeInfoList();
-        List<AnimeInfoMinimalDTO> recentAnimeInfoList = animeInfoService.getRecentUpdate(recentPageSize);
+    public IndexModel listIndex() throws JsonProcessingException {
         IndexModel indexModel = new IndexModel();
-        indexModel.setRecentList(recentAnimeInfoList);
-        indexModel.setDalyUpdateList(recommendAnimeInfoList);
-        indexModel.setRecommendList(recommendAnimeInfoList);
+        indexModel.setRecentList(animeInfoService.getRecentUpdate(optionService.getRecentPageSize()));
+        indexModel.setDalyUpdateList(animeInfoService.getRecommendAnimeInfoList());
+        indexModel.setRecommendList(animeInfoService.getRecommendAnimeInfoList());
+        indexModel.setUpdateInfoList(animeInfoService.getUpdateInfo());
         return indexModel;
     }
 

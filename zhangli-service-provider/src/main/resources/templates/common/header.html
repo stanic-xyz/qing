@@ -3,7 +3,8 @@
 
 <div id="top" th:fragment="top()">
     <div id="logo">
-        <a th:href="@{/}" title="AGE动漫">AGE动漫</a></div>
+        <a th:href="@{/}" title="AGE动漫">AGE动漫</a>
+    </div>
     <div class="loginout">
         <span class="svg_title svg_title_user"></span>
         <a id="comment_user" class="loginout_btn2" th:href="@{/profile/}">登陆</a>
@@ -13,58 +14,55 @@
 
 <div th:fragment="notification(content)">
     <div style="color: white;padding: 8px;margin: 10px 9px -14px;font-size: 14px;border: 1px solid #cc0000;"
-         th:text="${ '本站地址：'+content+' 欢迎大家分享给身边朋友！如果能够正常观看，那才是怪事了！'}">
+        th:text="${ '本站地址：'+content+' 欢迎大家分享给身边朋友！如果能够正常观看，那才是怪事了！'}">
     </div>
     <div class="spaceblock1"></div>
 </div>
 
 <header id="nav" th:fragment="commonHead(title)">
     <a th:class="${title=='index'?'nav_button nav_button_current':'nav_button'}" th:href="@{/}">首页</a>
-    <a th:class="${title=='catlog'?'nav_button nav_button_current':'nav_button'}"
-       th:href="@{/catalog}">目录</a>
-    <a th:class="${title=='recommend'?'nav_button nav_button_current':'nav_button'}"
-       th:href="@{/recommend}">每日推荐</a>
-    <a th:class="${title=='update'?'nav_button nav_button_current':'nav_button'}"
-       th:href="@{/update}">最近更新</a>
+    <a th:class="${title=='catlog'?'nav_button nav_button_current':'nav_button'}" th:href="@{/catalog}">目录</a>
+    <a th:class="${title=='recommend'?'nav_button nav_button_current':'nav_button'}" th:href="@{/recommend}">每日推荐</a>
+    <a th:class="${title=='update'?'nav_button nav_button_current':'nav_button'}" th:href="@{/update}">最近更新</a>
     <a th:class="${title=='rank'?'nav_button nav_button_current':'nav_button'}" th:href="@{/rank}">排行榜</a>
     <a th:class="${title=='detail'?'nav_button nav_button_current':'nav_button'}"
-       th:style="${title=='detail'?'':'display: none'}">详情</a>
+        th:style="${title=='detail'?'':'display: none'}">详情</a>
     <a th:class="${title=='search'?'nav_button nav_button_current':'nav_button'}"
-       th:style="${title=='search'?'':'display: none'}">搜索</a>
+        th:style="${title=='search'?'':'display: none'}">搜索</a>
     <form id="top_search_from" class="search_form" th:action="@{/search}" method="get"
-          onsubmit="return on_top_search_form();">
+        onsubmit="return on_top_search_form();">
         <label for="top_search_input"></label>
-        <input autocapitalize="on" autocomplete='on'
-               class="search_input" id="top_search_input"
-               name="query" placeholder="输入关键字" spellcheck="false" value="">
+        <input autocapitalize="on" autocomplete='on' class="search_input" id="top_search_input" name="query"
+            placeholder="输入关键字" spellcheck="false" value="">
         <input class="search_submit" type="submit" value="">
-        <input type="hidden" name="page" value="1"></form>
+        <input type="hidden" name="page" value="1">
+    </form>
 
     <script type="text/javascript">function on_top_search_form() {
-        const value = document.getElementById("top_search_input").value;
-        if (value == null || value === "") {
-            alert("请输入搜索关键字");
-            return false;
+            const value = document.getElementById("top_search_input").value;
+            if (value == null || value === "") {
+                alert("请输入搜索关键字");
+                return false;
+            }
         }
-    }
 
-    const top_search_input = document.getElementById("top_search_input");
+        const top_search_input = document.getElementById("top_search_input");
 
-    function onfocus() {
-        top_search_input.classList.add("search_input_ex");
-    }
+        function onfocus() {
+            top_search_input.classList.add("search_input_ex");
+        }
 
-    function onfocusout() {
-        top_search_input.classList.remove("search_input_ex");
-    }
+        function onfocusout() {
+            top_search_input.classList.remove("search_input_ex");
+        }
 
-    if (top_search_input.addEventListener) {
-        top_search_input.addEventListener('focus', onfocus);
-        top_search_input.addEventListener('focusout', onfocusout);
-    } else {
-        top_search_input.onfocus = onfocus;
-        top_search_input.onfocusout = onfocusout;
-    }</script>
+        if (top_search_input.addEventListener) {
+            top_search_input.addEventListener('focus', onfocus);
+            top_search_input.addEventListener('focusout', onfocusout);
+        } else {
+            top_search_input.onfocus = onfocus;
+            top_search_input.onfocusout = onfocusout;
+        }</script>
 </header>
 
 
@@ -72,26 +70,25 @@
     <div id="footer_container">
         <div class="pannel clearfix">
             <div class="pannel_head clearfix">
-                <h3 class="title">快速链接：</h3></div>
+                <h3 class="title">快速链接：</h3>
+            </div>
             <ul class="link_text list_scroll clearfix">
                 <li>
-                    <a class="text_muted" href="https://www.chenyunlong.cn" title="博客地址"
-                       target="_blank">博客地址</a>
+                    <a class="text_muted" href="https://www.chenyunlong.cn" title="博客地址" target="_blank">博客地址</a>
                 </li>
                 <li>
                     <a class="text_muted" href="https://www.chenyunlong.cn/admin" title="博客后台地址"
-                       target="_blank">博客后台地址</a>
+                        target="_blank">博客后台地址</a>
                 </li>
                 <li>
-                    <a class="text_muted" href="https://status.chenyunlong.cn" title="状态查看"
-                       target="_blank">服务器状态</a>
+                    <a class="text_muted" href="https://status.chenyunlong.cn" title="状态查看" target="_blank">服务器状态</a>
                 </li>
             </ul>
 
             <span style="color: #DDD;">
-                    如果你有任何关于此网站的问题，请发邮件至
-                    <a href="mailto:bangumi@chenyunlong.cn">bangumi@chenyunlong.cn</a>
-                </span>
+                如果你有任何关于此网站的问题，请发邮件至
+                <a href="mailto:bangumi@chenyunlong.cn">bangumi@chenyunlong.cn</a>
+            </span>
         </div>
     </div>
 </footer>
@@ -99,17 +96,14 @@
 <pager th:fragment="pager(url,pages,currentPage,pageSize)">
     <div style="text-align: center;line-height: 36px">
         <a class="pbutton  asciifont" th:href="@{{url}(page=1,url=${url},pageSize=${pageSize})}">首页</a>
-        <a class="pbutton  asciifont"
-           th:if="${currentPage>1} == true"
-           th:href="@{{url}(page=${currentPage - 1},url=${url},pageSize=${pageSize})}">上一页</a>
+        <a class="pbutton  asciifont" th:if="${currentPage>1} == true"
+            th:href="@{{url}(page=${currentPage - 1},url=${url},pageSize=${pageSize})}">上一页</a>
         <a th:href="@{{url}(page=${i},url=${url},pageSize=${pageSize})}"
-           th:each="i :${#numbers.sequence(1,(pages - 1))}"
-           th:if="${(i - currentPage)<3 &&(i - currentPage)>-3}"
-           th:text="${i}"
-           th:class="${currentPage == i}? 'pbutton pbutton_current asciifont' :'pbutton  asciifont' "></a>
-        <a class="pbutton  asciifont"
-           th:if="${currentPage < (pages - 1)} == true"
-           th:href="@{{url}(page=${currentPage+1},url=${url},pageSize=${pageSize})}">下一页</a>
+            th:each="i :${#numbers.sequence(1,(pages - 1))}" th:if="${(i - currentPage)<3 &&(i - currentPage)>-3}"
+            th:text="${i}"
+            th:class="${currentPage == i}? 'pbutton pbutton_current asciifont' :'pbutton  asciifont' "></a>
+        <a class="pbutton  asciifont" th:if="${currentPage < (pages - 1)} == true"
+            th:href="@{{url}(page=${currentPage+1},url=${url},pageSize=${pageSize})}">下一页</a>
         <a class="pbutton  asciifont" th:href="@{{url}(page=${pages - 1},url=${url},pageSize=${pageSize})}">尾页</a>
     </div>
 </pager>
