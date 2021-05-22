@@ -10,7 +10,7 @@ import lombok.ToString;
  **/
 @Data
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class Link extends BaseEntity {
     private Integer id;
 

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data.hostname})}">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/index.css(host=${data.hostname})}">
-    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>
+    <!-- <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script> -->
     <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
 </head>
 
@@ -48,10 +48,9 @@
                     </ul>
 
                     <ul id="new_anime_page">
-                        <li class="one_new_anime" th:each="anime : ${data.recentList}">
-                            <a class="one_new_anime_name" th:href="@{'detail/'+${anime.id}}"
-                                th:text="${anime.name}">达尔文游戏</a>
-                            <a class="one_new_anime_ji" th:href="@{'detail/'+${anime.id}}">[TV 01-11]</a>
+                        <li class="one_new_anime">
+                            <a class="one_new_anime_name" href="detail/20040002">达尔文游戏</a>
+                            <a class="one_new_anime_ji" href="detail/20040002">[TV 01-11]</a>
                         </li>
                     </ul>
 
@@ -59,45 +58,45 @@
                         var new_anime_list = [[${ data.updateInfoList }]]
 
                         function on_new_anime_page_btn(obj, idx) {
-                            const lastnode = document.querySelector('.new_anime_btn_current');
-                            lastnode.classList.remove('new_anime_btn_current');
-                            var currentnode = document.getElementById('new_anime_page_btn_' + idx);
-                            currentnode.classList.add('new_anime_btn_current');
+                            const lastNode = document.querySelector('.new_anime_btn_current');
+                            lastNode.classList.remove('new_anime_btn_current');
+                            const currentNode = document.getElementById('new_anime_page_btn_' + idx);
+                            currentNode.classList.add('new_anime_btn_current');
 
-                            //
-                            var new_anime_wd = new_anime_list.filter(function (x) {
+                            //动漫列表
+                            const newAnimeWd = new_anime_list.filter(function (x) {
                                 if (x.wd === idx) {
                                     console.log(x)
                                 }
                                 return x.wd === idx;
                             });
                             // the list page
-                            const new_anime_page = document.getElementById('new_anime_page');
+                            const newAnimePage = document.getElementById('new_anime_page');
 
-                            var firstElementChild = new_anime_page.firstElementChild;
-                            var delta = new_anime_wd.length - new_anime_page.children.length;
+                            let firstElementChild = newAnimePage.firstElementChild;
+                            let delta = newAnimeWd.length - newAnimePage.children.length;
                             if (delta < 0) {
-                                for (var i = 0; i < -delta; i++) {
-                                    new_anime_page.removeChild(new_anime_page.firstElementChild);
+                                for (let i = 0; i < -delta; i++) {
+                                    newAnimePage.removeChild(newAnimePage.firstElementChild);
                                 }
                             }
                             if (delta > 0) {
-                                for (var i = 0; i < delta; i++) {
-                                    new_anime_page.appendChild(firstElementChild.cloneNode(true));
+                                for (let i = 0; i < delta; i++) {
+                                    newAnimePage.appendChild(firstElementChild.cloneNode(true));
                                 }
                             }
-                            for (var i = 0; i < new_anime_wd.length; i++) {
-                                var data = new_anime_wd[i];
-                                var node = new_anime_page.children[i];
-                                var nodename = node.children[0];
-                                var nodename1 = node.children[1];
+                            for (let i = 0; i < newAnimeWd.length; i++) {
+                                let data = newAnimeWd[i];
+                                let node = newAnimePage.children[i];
+                                let nodename = node.children[0];
+                                let nodename1 = node.children[1];
                                 nodename.text = data.name;
                                 nodename.setAttribute('href', 'detail/' + data.id);
                                 nodename1.text = data.namefornew;
                                 nodename1.setAttribute('href', 'detail/' + data.id);
-                                var nodenew = node.children[2];
+                                let nodenew = node.children[2];
                                 if (data.isnew && !nodenew) {
-                                    var nodenew = document.createElement('div');
+                                    nodenew = document.createElement('div');
                                     nodenew.setAttribute('class', 'one_anime_new');
                                     nodenew.innerText = 'new!';
                                     node.appendChild(nodenew);
@@ -105,14 +104,11 @@
                                     node.removeChild(nodenew);
                                 }
                             }
-                            //
-                            new_anime_page.removeAttribute('hidden');
+                            newAnimePage.removeAttribute('hidden');
                         }
 
-                        //
-                        var mydate = new Date();
-                        var myddy = mydate.getDay();
-                        on_new_anime_page_btn(undefined, myddy);
+                        let myDay = new Date().getDay();
+                        on_new_anime_page_btn(undefined, myDay);
                     </script>
                 </div>
 
@@ -171,16 +167,7 @@
         </div>
 
         <footer id="footer" th:include="common/header :: footer()"></footer>
-
     </div>
-    <script>var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "//hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
 </body>
 
 </html>

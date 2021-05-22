@@ -1,7 +1,9 @@
 package chenyunlong.zhangli.model.entities.anime;
 
+import chenyunlong.zhangli.model.entities.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -9,10 +11,11 @@ import java.io.Serializable;
 /**
  * @author Stan
  */
+@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnimeInfo implements Serializable {
+public class AnimeInfo extends BaseEntity {
     private Long id;
     private String name;
     private String instruction;

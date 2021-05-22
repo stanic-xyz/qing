@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Stan
  */
 @Data
-public class AnimeMenu implements Serializable {
+public class AnimeMenu extends BaseEntity {
     private String id;
     private String name;
     private String path;

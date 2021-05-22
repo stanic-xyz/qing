@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @author Stan
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @TableName("figure")
 public class FigureEntity extends BaseEntity {
     private String name;
