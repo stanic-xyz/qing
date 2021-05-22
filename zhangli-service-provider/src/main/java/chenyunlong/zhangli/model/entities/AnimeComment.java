@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.model.entities;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -10,8 +11,9 @@ import java.time.LocalDateTime;
  *
  * @author Stan
  */
+@EqualsAndHashCode(callSuper = false)
 @Data
-public class AnimeComment implements Serializable {
+public class AnimeComment extends BaseEntity {
     private Long id;
     private String username;
     private String content;
