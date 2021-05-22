@@ -2,14 +2,12 @@ package chenyunlong.zhangli.model.entities;
 
 
 import chenyunlong.zhangli.model.enums.MFAType;
-import chenyunlong.zhangli.utils.DateUtils;
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
 
 /**
  * 用户信息
@@ -33,21 +31,4 @@ public class User extends BaseEntity {
     private LocalDateTime expireTime;
     private MFAType mfaType;
     private String mfaKey;
-
-    @Override
-    public void prePersist() {
-        super.prePersist();
-        if (email == null) {
-            email = "";
-        }
-        if (avatar == null) {
-            avatar = "";
-        }
-        if (description == null) {
-            description = "";
-        }
-        if (expireTime == null) {
-            expireTime = DateUtils.now();
-        }
-    }
 }

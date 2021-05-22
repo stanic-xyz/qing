@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("anime_recommend")
-public class AnimeRecommendEntity {
+public class AnimeRecommendEntity extends BaseEntity {
     /**
      * 主键ID
      */

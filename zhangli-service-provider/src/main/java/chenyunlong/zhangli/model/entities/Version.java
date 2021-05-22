@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Stan
  */
 @Data
-public class Version implements Serializable {
+public class Version extends BaseEntity {
     private Long vid;
     private String code;
     private String name;
