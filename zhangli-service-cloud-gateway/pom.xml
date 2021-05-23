@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>stan</groupId>
-            <artifactId>zhangli-service-api</artifactId>
+            <artifactId>zhangli-common</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>

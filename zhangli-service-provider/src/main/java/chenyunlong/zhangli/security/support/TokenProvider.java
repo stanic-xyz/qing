@@ -7,8 +7,7 @@ import chenyunlong.zhangli.utils.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,10 +22,10 @@ import java.util.stream.Collectors;
 /**
  * @author Stan
  */
+@Slf4j
 @Component
 public class TokenProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
     private static final String AUTHORITIES_HEADER = "auth";
     private static final String FIELD_USER_ID = "userId";
     private static final String USER_INFO = "userInfo";
@@ -51,17 +50,17 @@ public class TokenProvider {
             Claims claims = JwtUtil.parseJWT(jwtToken, zhangliProperties.getSecurity().getSecretKey());
             return objectMapper.readValue(claims.getSubject(), UserInfoVO.class);
         } catch (SecurityException | MalformedJwtException e) {
-            logger.debug("Invalid JWT signature.");
+            log.debug("Invalid JWT signature.");
         } catch (ExpiredJwtException e) {
-            logger.debug("Expired JWT token.");
+            log.debug("Expired JWT token.");
         } catch (UnsupportedJwtException e) {
-            logger.debug("Unsupported JWT token.");
+            log.debug("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {
-            logger.debug("JWT token compact of handler are invalid.");
+            log.debug("JWT token compact of handler are invalid.");
         } catch (JsonProcessingException e) {
-            logger.debug("parse jsonObject failed.");
+            log.debug("parse jsonObject failed.");
         } catch (Exception e) {
-            logger.error("解析jwt token 错误", e);
+            log.error("解析jwt token 错误", e);
         }
         return null;
     }
@@ -159,18 +158,10 @@ public class TokenProvider {
      */
     public boolean validateToken(String jwtToken) {
         try {
-            Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey())
-                    .parseClaimsJws(jwtToken);
+            Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey()).parseClaimsJws(jwtToken);
             return true;
-        } catch (SecurityException | MalformedJwtException e) {
-            logger.debug("Invalid JWT signature.");
-        } catch (ExpiredJwtException e) {
-            logger.debug("Expired JWT token.");
-        } catch (UnsupportedJwtException e) {
-            logger.debug("Unsupported JWT token.");
-        } catch (IllegalArgumentException e) {
-            logger.debug("JWT token compact of handler are invalid.");
+        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | ExpiredJwtException | IllegalArgumentException ignore) {
+            return false;
         }
-        return false;
     }
 }
