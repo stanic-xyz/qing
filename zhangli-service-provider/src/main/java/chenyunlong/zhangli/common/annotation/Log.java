@@ -1,12 +1,36 @@
 package chenyunlong.zhangli.common.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import chenyunlong.zhangli.model.enums.BusinessType;
+import chenyunlong.zhangli.model.enums.OperatorType;
 
-@Target(ElementType.METHOD)
+import java.lang.annotation.*;
+
+/**
+ * 自定义操作日志记录注解
+ *
+ * @author ruoyi
+ */
+@Target({ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface Log {
-    String value() default "";
+    /**
+     * 模块
+     */
+    String title() default "";
+
+    /**
+     * 功能
+     */
+    BusinessType businessType() default BusinessType.OTHER;
+
+    /**
+     * 操作人类别
+     */
+    OperatorType operatorType() default OperatorType.MANAGE;
+
+    /**
+     * 是否保存请求的参数
+     */
+    boolean isSaveRequestData() default true;
 }

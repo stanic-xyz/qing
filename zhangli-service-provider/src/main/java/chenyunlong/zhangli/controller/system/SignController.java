@@ -7,6 +7,7 @@ import chenyunlong.zhangli.service.SignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -19,19 +20,19 @@ public class SignController {
     @Autowired
     private SignService signService;
 
-    @Log("获取签到状态")
+    @Log(title = "获取签到状态")
     @GetMapping("get")
     public ApiResult<Integer> sign(Integer userId) {
         return ApiResult.success(signService.getSignStatus(userId));
     }
 
-    @Log("钉一下")
+    @Log(title = "钉一下")
     @PostMapping("ding")
     public ApiResult<Object> dingyixia(@RequestParam("userId") Long userId) {
 
         int signRecord = 0;
-        Date date = new Date();
-        int day = date.getDay();
+        LocalDate date = LocalDate.now();
+        int day = date.getDayOfMonth();
 
         signRecord = signRecord << day;
 

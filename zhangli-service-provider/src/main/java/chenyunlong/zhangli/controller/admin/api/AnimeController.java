@@ -4,6 +4,7 @@ import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.District;
 import chenyunlong.zhangli.model.entities.Version;
+import chenyunlong.zhangli.model.enums.BusinessType;
 import chenyunlong.zhangli.model.support.ApiResult;
 import chenyunlong.zhangli.service.AnimeTypeService;
 import chenyunlong.zhangli.service.DistrictService;
@@ -43,13 +44,12 @@ public class AnimeController {
         return ApiResult.success(versionService.getAllVersions());
     }
 
-    @Log("获取所有类型信息")
     @GetMapping("type/list")
     public ApiResult<List<AnimeType>> getAnimeInfoService() {
         return ApiResult.success(animeTypeService.getAllTypeInfo());
     }
 
-    @Log("获取所有类型信息")
+    @Log(title = "动漫管理", businessType = BusinessType.INSERT)
     @PostMapping("type/add")
     public ApiResult<AnimeType> addAnimeType(@Valid @RequestBody AnimeType animeType) {
         animeTypeService.addAnimeType(animeType);

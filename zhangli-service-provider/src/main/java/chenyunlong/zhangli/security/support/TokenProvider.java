@@ -45,20 +45,21 @@ public class TokenProvider {
      * @param jwtToken token 信息
      * @return 用户信息
      */
+    @SuppressWarnings("unused")
     public UserInfoVO getUserNameFromToken(String jwtToken) {
         try {
             Claims claims = JwtUtil.parseJWT(jwtToken, zhangliProperties.getSecurity().getSecretKey());
             return objectMapper.readValue(claims.getSubject(), UserInfoVO.class);
         } catch (SecurityException | MalformedJwtException e) {
-            logger.info("Invalid JWT signature.");
+            logger.debug("Invalid JWT signature.");
         } catch (ExpiredJwtException e) {
-            logger.info("Expired JWT token.");
+            logger.debug("Expired JWT token.");
         } catch (UnsupportedJwtException e) {
-            logger.info("Unsupported JWT token.");
+            logger.debug("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {
-            logger.info("JWT token compact of handler are invalid.");
+            logger.debug("JWT token compact of handler are invalid.");
         } catch (JsonProcessingException e) {
-            logger.info("parse jsonObject failed.");
+            logger.debug("parse jsonObject failed.");
         } catch (Exception e) {
             logger.error("解析jwt token 错误", e);
         }
@@ -162,13 +163,13 @@ public class TokenProvider {
                     .parseClaimsJws(jwtToken);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
-            logger.info("Invalid JWT signature.");
+            logger.debug("Invalid JWT signature.");
         } catch (ExpiredJwtException e) {
-            logger.info("Expired JWT token.");
+            logger.debug("Expired JWT token.");
         } catch (UnsupportedJwtException e) {
-            logger.info("Unsupported JWT token.");
+            logger.debug("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {
-            logger.info("JWT token compact of handler are invalid.");
+            logger.debug("JWT token compact of handler are invalid.");
         }
         return false;
     }

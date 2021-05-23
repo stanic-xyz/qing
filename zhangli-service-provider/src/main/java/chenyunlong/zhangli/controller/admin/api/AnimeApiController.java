@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.controller.admin.api;
 
-import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoParam;
@@ -36,14 +35,12 @@ public class AnimeApiController {
         this.animeInfoService = animeInfoService;
     }
 
-    @Log("添加视频信息")
     @PostMapping
     public ApiResult<AnimeInfoVo> addAnime(@Valid @RequestBody AnimeInfoParam animeInfo) {
         AnimeInfoVo animeInfoVo = animeInfoService.create(animeInfo.convertTo());
         return ApiResult.success(animeInfoVo);
     }
 
-    @Log("获取视频详情")
     @GetMapping("detail/{aid}")
     public ApiResult<AnimeInfoVo> movie(@PathVariable(value = "aid") Long animeId) {
         AnimeInfoVo animeInfoVo = animeInfoService.convertToDetailVo(animeInfoService.getById(animeId));
@@ -51,7 +48,6 @@ public class AnimeApiController {
         return ApiResult.success(animeInfoVo);
     }
 
-    @Log("修改视频信息")
     @PutMapping("{animeId:\\d+}")
     public ApiResult<AnimeInfoVo> updateBy(@PathVariable("animeId") Integer animeId,
                                            @Valid @RequestBody AnimeInfoParam animeInfoParam) {
@@ -60,7 +56,6 @@ public class AnimeApiController {
         return ApiResult.success(animeInfoService.updateBy(animeInfoToUpdate));
     }
 
-    @Log("获取所有动漫信息")
     @GetMapping("listAnime")
     public ApiResult<List<AnimeInfoVo>> listAnime(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                                   @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
@@ -70,7 +65,6 @@ public class AnimeApiController {
         return ApiResult.success(animeInfos.getRecords());
     }
 
-    @Log("获取所有动漫信息")
     @GetMapping("update/page")
     public ApiResult<IPage<AnimeInfoVo>> getUpdateInfo(@RequestParam(defaultValue = "1") Integer page,
                                                        @RequestParam(defaultValue = "24") Integer pageSize) {
@@ -78,26 +72,22 @@ public class AnimeApiController {
         return ApiResult.success(animeInfoPage);
     }
 
-    @Log("删除视频信息")
     @DeleteMapping("deleteAnime")
     public ApiResult<Void> deleteAnime(@RequestParam("aid") Long animeId) {
         animeInfoService.deleteAnime(animeId);
         return ApiResult.success();
     }
 
-    @Log("获取所有类型信息")
     @GetMapping("listTypes")
     public ApiResult<List<AnimeType>> getAnimeInfoService() {
         return ApiResult.success(animeInfoService.getAllAnimeType());
     }
 
-    @Log("获取所有类型信息")
     @PostMapping("type/add")
     public ApiResult<AnimeType> addAnimeType(@Valid @RequestBody AnimeType animeType) {
         return ApiResult.success(animeInfoService.addAnimeType(animeType));
     }
 
-    @Log("获取所有类型信息")
     @PostMapping("img/downloadImages")
     public ApiResult<Void> downloadImages() throws IOException {
         ExecutorService executor = new ScheduledThreadPoolExecutor(2, new NamedThreadFactory("zhangli-", false));
