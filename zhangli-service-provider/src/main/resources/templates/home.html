@@ -10,164 +10,161 @@
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data.hostname})}">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/index.css(host=${data.hostname})}">
     <!-- <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script> -->
-    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/gh/YunlongChen/cdn/zhangli/js/history.js"></script>
 </head>
 
 <body>
-    <div id="root">
-        <div id="top" th:include="common/header :: top()"></div>
-        <header id="nav" th:include="common/header :: commonHead('index')"></header>
-        <div id="container">
+<div id="root">
+    <div id="top" th:include="common/header :: top()"></div>
+    <header id="nav" th:include="common/header :: commonHead('index')"></header>
+    <div id="container">
 
-            <div id="new_tip1" th:include="common/header :: notification('www.agefans.net')"></div>
-            <div class="div_right baseblock">
-                <div class="blocktitle">每周放送列表</div>
-                <div class="blockcontent">
-                    <ul id="new_anime_btns">
-                        <li id="new_anime_page_btn_1" class="new_anime_btn highlighttag"
-                            onclick="on_new_anime_page_btn(this, 1)">周一
-                        </li>
-                        <li id="new_anime_page_btn_2" class="new_anime_btn  highlighttag"
-                            onclick="on_new_anime_page_btn(this, 2)">周二
-                        </li>
-                        <li id="new_anime_page_btn_3" class="new_anime_btn  highlighttag"
-                            onclick="on_new_anime_page_btn(this, 3)">周三
-                        </li>
-                        <li id="new_anime_page_btn_4" class="new_anime_btn  highlighttag"
-                            onclick="on_new_anime_page_btn(this, 4)">周四
-                        </li>
-                        <li id="new_anime_page_btn_5" class="new_anime_btn  highlighttag"
-                            onclick="on_new_anime_page_btn(this, 5)">周五
-                        </li>
-                        <li id="new_anime_page_btn_6" class="new_anime_btn highlighttag new_anime_btn_current"
-                            onclick="on_new_anime_page_btn(this, 6)">周六
-                        </li>
-                        <li id="new_anime_page_btn_0" class="new_anime_btn  highlighttag"
-                            onclick="on_new_anime_page_btn(this, 0)">周日
-                        </li>
-                    </ul>
+        <div id="new_tip1" th:include="common/header :: notification('www.agefans.net')"></div>
+        <div class="div_right baseblock">
+            <div class="blocktitle">每周放送列表</div>
+            <div class="blockcontent">
+                <ul id="new_anime_btns">
+                    <li id="new_anime_page_btn_1" class="new_anime_btn highlighttag"
+                        onclick="on_new_anime_page_btn(this, 1)">周一
+                    </li>
+                    <li id="new_anime_page_btn_2" class="new_anime_btn  highlighttag"
+                        onclick="on_new_anime_page_btn(this, 2)">周二
+                    </li>
+                    <li id="new_anime_page_btn_3" class="new_anime_btn  highlighttag"
+                        onclick="on_new_anime_page_btn(this, 3)">周三
+                    </li>
+                    <li id="new_anime_page_btn_4" class="new_anime_btn  highlighttag"
+                        onclick="on_new_anime_page_btn(this, 4)">周四
+                    </li>
+                    <li id="new_anime_page_btn_5" class="new_anime_btn  highlighttag"
+                        onclick="on_new_anime_page_btn(this, 5)">周五
+                    </li>
+                    <li id="new_anime_page_btn_6" class="new_anime_btn highlighttag new_anime_btn_current"
+                        onclick="on_new_anime_page_btn(this, 6)">周六
+                    </li>
+                    <li id="new_anime_page_btn_0" class="new_anime_btn  highlighttag"
+                        onclick="on_new_anime_page_btn(this, 0)">周日
+                    </li>
+                </ul>
 
-                    <ul id="new_anime_page">
-                        <li class="one_new_anime">
-                            <a class="one_new_anime_name" href="detail/20040002">达尔文游戏</a>
-                            <a class="one_new_anime_ji" href="detail/20040002">[TV 01-11]</a>
-                        </li>
-                    </ul>
+                <ul id="new_anime_page">
+                    <li class="one_new_anime" th:each="anime : ${data.recentList}">
+                        <a class="one_new_anime_name" th:href="@{'/detail/'+${anime.id}}"
+                           th:text="${anime.name}">达尔文游戏</a>
+                        <a class="one_new_anime_ji" th:href="@{'/detail/'+${anime.id}}"
+                           th:text="${anime.premiereDate}"></a>
+                    </li>
+                </ul>
 
-                    <script type="text/javascript" th:inline="javascript">
-                        var new_anime_list = [[${ data.updateInfoList }]]
+                <script type="text/javascript" th:inline="javascript">
+                    const new_anime_list = [[${ data.updateInfoList }]];
 
-                        function on_new_anime_page_btn(obj, idx) {
-                            const lastNode = document.querySelector('.new_anime_btn_current');
-                            lastNode.classList.remove('new_anime_btn_current');
-                            const currentNode = document.getElementById('new_anime_page_btn_' + idx);
-                            currentNode.classList.add('new_anime_btn_current');
+                    function on_new_anime_page_btn(obj, idx) {
+                        const lastNode = document.querySelector('.new_anime_btn_current');
+                        lastNode.classList.remove('new_anime_btn_current');
+                        const currentNode = document.getElementById('new_anime_page_btn_' + idx);
+                        currentNode.classList.add('new_anime_btn_current');
 
-                            //动漫列表
-                            const newAnimeWd = new_anime_list.filter(function (x) {
-                                if (x.wd === idx) {
-                                    console.log(x)
-                                }
-                                return x.wd === idx;
-                            });
-                            // the list page
-                            const newAnimePage = document.getElementById('new_anime_page');
+                        //动漫列表
+                        const newAnimeWd = new_anime_list.filter(function (x) {
+                            return x.wd === idx;
+                        });
+                        // the list page
+                        const newAnimePage = document.getElementById('new_anime_page');
 
-                            let firstElementChild = newAnimePage.firstElementChild;
-                            let delta = newAnimeWd.length - newAnimePage.children.length;
-                            if (delta < 0) {
-                                for (let i = 0; i < -delta; i++) {
-                                    newAnimePage.removeChild(newAnimePage.firstElementChild);
-                                }
+                        let firstElementChild = newAnimePage.firstElementChild;
+                        let delta = newAnimeWd.length - newAnimePage.children.length;
+                        if (delta < 0) {
+                            for (let i = 0; i < -delta; i++) {
+                                newAnimePage.removeChild(newAnimePage.firstElementChild);
                             }
-                            if (delta > 0) {
-                                for (let i = 0; i < delta; i++) {
-                                    newAnimePage.appendChild(firstElementChild.cloneNode(true));
-                                }
-                            }
-                            for (let i = 0; i < newAnimeWd.length; i++) {
-                                let data = newAnimeWd[i];
-                                let node = newAnimePage.children[i];
-                                let nodename = node.children[0];
-                                let nodename1 = node.children[1];
-                                nodename.text = data.name;
-                                nodename.setAttribute('href', 'detail/' + data.id);
-                                nodename1.text = data.namefornew;
-                                nodename1.setAttribute('href', 'detail/' + data.id);
-                                let nodenew = node.children[2];
-                                if (data.isnew && !nodenew) {
-                                    nodenew = document.createElement('div');
-                                    nodenew.setAttribute('class', 'one_anime_new');
-                                    nodenew.innerText = 'new!';
-                                    node.appendChild(nodenew);
-                                } else if (!data.isnew && nodenew) {
-                                    node.removeChild(nodenew);
-                                }
-                            }
-                            newAnimePage.removeAttribute('hidden');
                         }
-
-                        let myDay = new Date().getDay();
-                        on_new_anime_page_btn(undefined, myDay);
-                    </script>
-                </div>
-
-                <hr class="hrspace clear" style="width: 95%;">
-                <div class="blocktitle">最近更新</div>
-                <div class="blockcontent">
-                    <ul id="anime_update">
-                        <li class="one_new_anime" th:each="anime : ${data.recentList}">
-                            <a th:href="@{'/detail/'+${anime.id}}" href="" class="one_new_anime_name"
-                                style="width: 220px;" th:text="${anime.name}">智龙迷城 (2018)</a>
-                            <span class="anime_update_date asciifont" style="margin-left: 12px;"
-                                th:text="${anime.premiereDate}"></span>
-                        </li>
-                    </ul>
-                </div>
+                        if (delta > 0) {
+                            for (let i = 0; i < delta; i++) {
+                                newAnimePage.appendChild(firstElementChild.cloneNode(true));
+                            }
+                        }
+                        for (let i = 0; i < newAnimeWd.length; i++) {
+                            let data = newAnimeWd[i];
+                            let node = newAnimePage.children[i];
+                            let nodeName = node.children[0];
+                            let nodeName1 = node.children[1];
+                            nodeName.text = data.name;
+                            nodeName.setAttribute('href', 'detail/' + data.id);
+                            nodeName1.text = data.namefornew;
+                            nodeName1.setAttribute('href', 'detail/' + data.id);
+                            let nodeNew = node.children[2];
+                            if (data.isnew && !nodeNew) {
+                                nodeNew = document.createElement('div');
+                                nodeNew.setAttribute('class', 'one_anime_new');
+                                nodeNew.innerText = 'new!';
+                                node.appendChild(nodeNew);
+                            } else if (!data.isnew && nodeNew) {
+                                node.removeChild(nodeNew);
+                            }
+                        }
+                        newAnimePage.removeAttribute('hidden');
+                    }
+                </script>
             </div>
-            <div class="div_left baseblock">
-                <div class="blocktitle">
-                    <a href="recommend">每日推荐</a>
-                </div>
-                <div class="blockcontent">
-                    <ul class="ul_li_a5">
-                        <li class="anime_icon1" th:each="anime:${data.recommendList}">
-                            <a th:href="@{'/detail/'+${anime.id}}">
-                                <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
-                                    th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
-                                    th:title="${'[TV 01-12]'}" th:alt-title="${anime.name}" loading="lazy" alt="">
-                                <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
-                            <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
-                                <div class="anime_icon1_name" th:text="${anime.name}"></div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <hr class="hrspace clear" style="width: 98%;">
-                <div class="blocktitle">
-                    <a href="update">最近更新</a>
-                </div>
-                <div class="blockcontent">
-                    <ul class="ul_li_a5">
-                        <li class="anime_icon1" th:each="anime:${data.recentList}">
-                            <a th:href="@{'/detail/'+${anime.id}}">
-                                <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
-                                    th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
-                                    th:title="${'[TV 01-12]'}" loading="lazy"
-                                    alt="//sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
-                                <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
-                            <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
-                                <div class="anime_icon1_name" th:text="${anime.name}"></div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+
+            <hr class="hrspace clear" style="width: 95%;">
+            <div class="blocktitle">最近更新</div>
+            <div class="blockcontent">
+                <ul id="anime_update">
+                    <li class="one_new_anime" th:each="anime : ${data.recentList}">
+                        <a th:href="@{'/detail/'+${anime.id}}" href="" class="one_new_anime_name"
+                           style="width: 220px;" th:text="${anime.name}">智龙迷城 (2018)</a>
+                        <span class="anime_update_date asciifont" style="margin-left: 12px;"
+                              th:text="${anime.premiereDate}"></span>
+                    </li>
+                </ul>
             </div>
-            <div class="clear"></div>
         </div>
-
-        <footer id="footer" th:include="common/header :: footer()"></footer>
+        <div class="div_left baseblock">
+            <div class="blocktitle">
+                <a href="recommend">每日推荐</a>
+            </div>
+            <div class="blockcontent">
+                <ul class="ul_li_a5">
+                    <li class="anime_icon1" th:each="anime:${data.recommendList}">
+                        <a th:href="@{'/detail/'+${anime.id}}">
+                            <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
+                                 th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
+                                 th:title="${'[TV 01-12]'}" th:alt-title="${anime.name}" loading="lazy" alt="">
+                            <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
+                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
+                            <div class="anime_icon1_name" th:text="${anime.name}"></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <hr class="hrspace clear" style="width: 98%;">
+            <div class="blocktitle">
+                <a href="update">最近更新</a>
+            </div>
+            <div class="blockcontent">
+                <ul class="ul_li_a5">
+                    <li class="anime_icon1" th:each="anime:${data.recentList}">
+                        <a th:href="@{'/detail/'+${anime.id}}">
+                            <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
+                                 th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
+                                 th:title="${'[TV 01-12]'}" loading="lazy"
+                                 alt="//sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
+                            <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
+                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
+                            <div class="anime_icon1_name" th:text="${anime.name}"></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="clear"></div>
     </div>
+
+    <footer id="footer" th:include="common/header :: footer()"></footer>
+</div>
 </body>
 
 </html>
