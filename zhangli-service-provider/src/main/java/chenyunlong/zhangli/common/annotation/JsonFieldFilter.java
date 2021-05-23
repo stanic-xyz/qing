@@ -11,8 +11,6 @@ public @interface JsonFieldFilter {
 
     /**
      * 过滤掉不需要的属性
-     *
-     * @return
      */
     String[] filters() default {"x_last_changed"};
 
