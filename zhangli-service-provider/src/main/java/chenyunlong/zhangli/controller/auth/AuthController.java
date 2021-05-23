@@ -59,7 +59,7 @@ public class AuthController {
         return new LoginPreCheckDTO(MFAType.useMFA(user.getMfaType()));
     }
 
-    @Log("通过表单登陆")
+    @Log(title = "通过表单登陆")
     @ApiOperation("通过表单登陆")
     @PostMapping(value = "formLogin")
     public ApiResult<UserInfoVO> formLoin(@RequestBody LoginParam loginParam) throws LoginErrorException {
