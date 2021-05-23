@@ -45,23 +45,23 @@ public class BaseEntity {
      * 搜索值
      */
     @TableField(exist = false)
-    private String searchValue;
+    private String searchValue = "";
 
     /**
      * 创建者
      */
     @TableField(exist = false)
-    private String createBy;
+    private String createBy = "";
 
     /**
      * 更新者
      */
     @TableField(exist = false)
-    private String updateBy;
+    private String updateBy = "";
 
     /**
      * 备注
      */
     @TableField(exist = false)
-    private String remark;
+    private String remark = "";
 }

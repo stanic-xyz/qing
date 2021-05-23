@@ -49,18 +49,22 @@ UNLOCK TABLES;
 -- Table structure for table `anime_conment`
 --
 
-DROP TABLE IF EXISTS `anime_conment`;
+DROP TABLE IF EXISTS anime_comment;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
-CREATE TABLE `anime_conment`
+CREATE TABLE `anime_comment`
 (
-    `id`       bigint(20) NOT NULL AUTO_INCREMENT COMMENT '评论ID',
-    `sid`      bigint(20)   DEFAULT NULL COMMENT 'id',
-    `username` varchar(255) DEFAULT NULL COMMENT '评论者昵称',
-    `content`  text       NOT NULL COMMENT '评论内容',
-    `cid`      bigint(20) NOT NULL COMMENT '番剧ID',
-    `time`     bigint(20)   DEFAULT NULL COMMENT '时间戳',
-    `ip`       varchar(15)  DEFAULT NULL COMMENT 'ip地址',
+    `id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '评论ID',
+    `cid`          bigint(20)   NOT NULL COMMENT '番剧ID',
+    `username`     varchar(255)          DEFAULT NULL COMMENT '评论者昵称',
+    `content`      text         NOT NULL COMMENT '评论内容',
+    `ip_address`   varchar(15)    null       DEFAULT NULL COMMENT 'ip地址',
+    `create_time`  datetime     not null default NOW() comment '创建时间',
+    `update_time`  datetime     not null default NOW() comment '创建时间',
+    `search_value` varchar(20)  not null default '' comment '查询参数',
+    `create_by`    varchar(255) not null default '' comment '创建人',
+    `update_by`    varchar(255) not null default '' comment '最后更新人',
+    `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
@@ -69,10 +73,10 @@ CREATE TABLE `anime_conment`
 -- Dumping data for table `anime_conment`
 --
 
-LOCK TABLES `anime_conment` WRITE;
-/*!40000 ALTER TABLE `anime_conment`
+LOCK TABLES anime_comment WRITE;
+/*!40000 ALTER TABLE anime_comment
     DISABLE KEYS */;
-/*!40000 ALTER TABLE `anime_conment`
+/*!40000 ALTER TABLE anime_comment
     ENABLE KEYS */;
 UNLOCK TABLES;
 

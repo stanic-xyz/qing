@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @Data
 public class AnimeComment extends BaseEntity {
     private Long id;
+    private Long cid;
     private String username;
     private String content;
-    private LocalDateTime createTime;
-    private Long mid;
+    private String ipAddress;
 }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import lombok.*;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -30,10 +30,6 @@ public class Result<T> {
     @ApiModelProperty(value = "处理结果数据信息")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
-
-    public Result() {
-        this.time = ZonedDateTime.now().toInstant();
-    }
 
     /**
      * @param errorType 错误类型
@@ -73,7 +69,7 @@ public class Result<T> {
      * @return Result
      */
     public static <T> Result<T> success(T data) {
-        return new Result<T>(SystemErrorType.SUCCESS, data);
+        return new Result<>(SystemErrorType.SUCCESS, data);
     }
 
     /**
