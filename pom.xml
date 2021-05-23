@@ -49,7 +49,7 @@
         <module>zhangli-feign-client</module>
         <module>zhangli-service-zuul-gateway</module>
         <module>zhangli-config-git</module>
-        <module>zhangli-service-api</module>
+        <module>zhangli-common</module>
         <module>zhangli-service-cloud-gateway</module>
         <module>zhangli-service-provider</module>
         <module>zhangli-service-natcross-provider</module>
@@ -81,7 +81,7 @@
             </dependency>
             <dependency>
                 <groupId>stan</groupId>
-                <artifactId>zhangli-service-api</artifactId>
+                <artifactId>zhangli-common</artifactId>
                 <version>${zhangli.common.version}</version>
             </dependency>
             <dependency>
