@@ -17,6 +17,10 @@
             <artifactId>hutool-all</artifactId>
         </dependency>
         <dependency>
+            <groupId>stan</groupId>
+            <artifactId>zhangli-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
