@@ -56,14 +56,14 @@ public abstract class BaseSwaggerConfig {
     private List<SecurityContext> securityContexts() {
         //设置需要登录认证的路径
         List<SecurityContext> result = new ArrayList<>();
-        result.add(getContextByPath("/*/.*"));
+        result.add(getContextByPath());
         return result;
     }
 
-    private SecurityContext getContextByPath(String pathRegex) {
+    private SecurityContext getContextByPath() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex(pathRegex))
+                .forPaths(PathSelectors.regex("/*/.*"))
                 .build();
     }
 
@@ -78,6 +78,7 @@ public abstract class BaseSwaggerConfig {
 
     /**
      * 自定义Swagger配置
+     *
      * @return Swagger配置文件
      */
     public abstract SwaggerProperties swaggerProperties();

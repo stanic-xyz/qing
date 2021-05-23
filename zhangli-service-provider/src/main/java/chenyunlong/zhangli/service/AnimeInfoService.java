@@ -181,4 +181,13 @@ public interface AnimeInfoService {
      * @return 动漫信息（最基础的信息）
      */
     List<AnimeInfoUpdateDTO> getUpdateInfo();
+
+    /**
+     * 添加评论信息
+     *
+     * @param cid     动漫ID
+     * @param content 平均内容
+     * @param user    用户名
+     */
+    void addComment(Long cid, String content, String user);
 }
