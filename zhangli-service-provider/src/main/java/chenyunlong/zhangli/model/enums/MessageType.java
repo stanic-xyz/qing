@@ -1,5 +1,7 @@
 package chenyunlong.zhangli.model.enums;
 
+import chenyunlong.zhangli.enums.ValueEnum;
+
 /**
  * @author Stan
  */

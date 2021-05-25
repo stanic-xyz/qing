@@ -29,7 +29,6 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        String blogUrl = zhangliProperties.getSecurity().getAnonUrl();
         log.info(AnsiOutput.toString(AnsiColor.GREEN, "Application started at " + event.getTimestamp()));
         log.info(AnsiOutput.toString(AnsiColor.GREEN, "uploadDir:" + zhangliProperties.getFile().getBaseUploadDir()));
         if (!zhangliProperties.getSwagger().isDocDisabled()) {

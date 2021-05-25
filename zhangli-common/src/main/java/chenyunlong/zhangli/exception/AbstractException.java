@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.common.exception;
+package chenyunlong.zhangli.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;

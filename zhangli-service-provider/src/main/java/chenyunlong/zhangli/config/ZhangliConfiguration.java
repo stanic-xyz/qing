@@ -42,13 +42,6 @@ import java.security.NoSuchAlgorithmException;
 @EnableConfigurationProperties({ZhangliProperties.class, SwaggerProperties.class})
 public class ZhangliConfiguration {
 
-    private final ZhangliProperties zhangliProperties;
-
-
-    public ZhangliConfiguration(ZhangliProperties zhangliProperties) {
-        this.zhangliProperties = zhangliProperties;
-    }
-
     @Bean
     public ObjectMapper getObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -62,7 +55,6 @@ public class ZhangliConfiguration {
 
     @Bean
     public AuthGithubRequest getAuthRequest() {
-        log.info(zhangliProperties.getSwagger().getAuthor());
         return new AuthGithubRequest(AuthConfig.builder()
                 .clientId("c9391500bdf102edd70c")
                 .clientSecret("c2a9c47006fbc8d16b7e8186b10c89c6cc02ab7f")

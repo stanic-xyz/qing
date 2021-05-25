@@ -1,12 +1,10 @@
 package chenyunlong.zhangli.model.entities.anime;
 
-import chenyunlong.zhangli.model.entities.BaseEntity;
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 /**
  * @author Stan
