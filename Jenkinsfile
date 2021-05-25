@@ -11,7 +11,7 @@ pipeline {
         }
         stage('阶段-2 单元测试') {
             steps {
-                sh "mvn -pl zhangli-service-provider test"
+                sh "mvn -pl zhangli-common,zhangli-service-provider test"
             }
             post {
                 always {
@@ -23,7 +23,7 @@ pipeline {
         stage('阶段-3 打包') {
             steps {
                 script {
-                    sh "mvn  -pl zhangli-service-provider clean package dockerfile:build dockerfile:tag dockerfile:push -DskipTests=true"
+                    sh "mvn  -pl zhangli-common,zhangli-service-provider clean package dockerfile:build dockerfile:tag dockerfile:push -DskipTests=true"
                 }
             }
         }
