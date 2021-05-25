@@ -1,10 +1,8 @@
 package chenyunlong.zhangli.model.entities;
 
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 用户评论信息

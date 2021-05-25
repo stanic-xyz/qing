@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.model.entities;
 
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.*;
 
 /**

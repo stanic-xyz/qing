@@ -1,14 +1,17 @@
 package chenyunlong.zhangli.model.entities;
 
+import chenyunlong.zhangli.core.domain.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
-
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Stan
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class Version extends BaseEntity {
+    @TableId
     private Long vid;
     private String code;
     private String name;

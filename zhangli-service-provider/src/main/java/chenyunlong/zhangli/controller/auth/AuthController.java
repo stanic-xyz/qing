@@ -6,7 +6,7 @@ import chenyunlong.zhangli.cache.lock.CacheLock;
 import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.common.exception.AuthenticationException;
 import chenyunlong.zhangli.common.exception.LoginErrorException;
-import chenyunlong.zhangli.common.exception.AbstractException;
+import chenyunlong.zhangli.exception.AbstractException;
 import chenyunlong.zhangli.model.dto.LoginPreCheckDTO;
 import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.model.enums.MFAType;

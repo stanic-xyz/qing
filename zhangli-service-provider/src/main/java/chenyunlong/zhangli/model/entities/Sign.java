@@ -1,10 +1,10 @@
 package chenyunlong.zhangli.model.entities;
 
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = false)
 @Data

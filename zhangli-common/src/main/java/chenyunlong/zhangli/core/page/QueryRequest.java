@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.common.domain;
+package chenyunlong.zhangli.core.page;
 
 import lombok.Data;
 
