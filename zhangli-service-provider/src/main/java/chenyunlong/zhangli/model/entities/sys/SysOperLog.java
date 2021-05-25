@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model.entities.sys;
 
 import chenyunlong.zhangli.annotation.Excel;
-import chenyunlong.zhangli.model.entities.BaseEntity;
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

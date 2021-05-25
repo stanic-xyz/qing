@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.service;
 
-import chenyunlong.zhangli.common.exception.AbstractException;
+import chenyunlong.zhangli.exception.AbstractException;
 import chenyunlong.zhangli.model.entities.Permission;
 import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.model.params.LoginParam;

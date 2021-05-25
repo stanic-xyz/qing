@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.enums;
 
-import lombok.Data;
+import chenyunlong.zhangli.enums.ValueEnum;
 
 /**
  * 视频的状态

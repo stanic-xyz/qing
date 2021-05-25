@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.model.enums;
+package chenyunlong.zhangli.enums;
 
 import org.springframework.util.Assert;
 

@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.common.exception;
 
+import chenyunlong.zhangli.exception.AbstractException;
 import org.springframework.http.HttpStatus;
 
 public class ServiceException extends AbstractException {

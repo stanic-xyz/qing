@@ -1,10 +1,8 @@
 package chenyunlong.zhangli.model.entities.anime;
 
-import java.io.Serializable;
-import java.security.BasicPermission;
 import java.time.LocalDateTime;
 
-import chenyunlong.zhangli.model.entities.BaseEntity;
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

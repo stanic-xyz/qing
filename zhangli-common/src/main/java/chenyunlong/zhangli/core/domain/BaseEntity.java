@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.model.entities;
+package chenyunlong.zhangli.core.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;

@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.common.exception.*;
+import chenyunlong.zhangli.exception.AbstractException;
 import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.model.entities.Permission;
 import chenyunlong.zhangli.model.entities.User;
