@@ -16,7 +16,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 空字符串
      */
-    private static final String NULLSTR = "";
+    private static final String NULL_STR = "";
 
     /**
      * 下划线
@@ -100,7 +100,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return true：为空 false：非空
      */
     public static boolean isEmpty(String str) {
-        return isNull(str) || NULLSTR.equals(str.trim());
+        return isNull(str) || NULL_STR.equals(str.trim());
     }
 
     /**
@@ -159,7 +159,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static String substring(final String str, int start) {
         if (str == null) {
-            return NULLSTR;
+            return NULL_STR;
         }
 
         if (start < 0) {
@@ -170,7 +170,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             start = 0;
         }
         if (start > str.length()) {
-            return NULLSTR;
+            return NULL_STR;
         }
 
         return str.substring(start);
@@ -186,7 +186,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static String substring(final String str, int start, int end) {
         if (str == null) {
-            return NULLSTR;
+            return NULL_STR;
         }
 
         if (end < 0) {
@@ -201,7 +201,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
 
         if (start > end) {
-            return NULLSTR;
+            return NULL_STR;
         }
 
         if (start < 0) {
@@ -245,9 +245,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         // 前置字符是否大写
         boolean preCharIsUpperCase;
         // 当前字符是否大写
-        boolean curreCharIsUpperCase;
+        boolean currentCharIsUpperCase;
         // 下一字符是否大写
-        boolean nexteCharIsUpperCase = true;
+        boolean nextCharIsUpperCase = true;
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
             if (i > 0) {
@@ -256,15 +256,15 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
                 preCharIsUpperCase = false;
             }
 
-            curreCharIsUpperCase = Character.isUpperCase(c);
+            currentCharIsUpperCase = Character.isUpperCase(c);
 
             if (i < (str.length() - 1)) {
-                nexteCharIsUpperCase = Character.isUpperCase(str.charAt(i + 1));
+                nextCharIsUpperCase = Character.isUpperCase(str.charAt(i + 1));
             }
 
-            if (preCharIsUpperCase && curreCharIsUpperCase && !nexteCharIsUpperCase) {
+            if (preCharIsUpperCase && currentCharIsUpperCase && !nextCharIsUpperCase) {
                 sb.append(SEPARATOR);
-            } else if ((i != 0 && !preCharIsUpperCase) && curreCharIsUpperCase) {
+            } else if ((i != 0 && !preCharIsUpperCase) && currentCharIsUpperCase) {
                 sb.append(SEPARATOR);
             }
             sb.append(Character.toLowerCase(c));
@@ -275,13 +275,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 是否包含字符串
      *
-     * @param str  验证字符串
-     * @param strs 字符串组
+     * @param str     验证字符串
+     * @param strings 字符串组
      * @return 包含返回true
      */
-    public static boolean inStringIgnoreCase(String str, String... strs) {
-        if (str != null && strs != null) {
-            for (String s : strs) {
+    public static boolean inStringIgnoreCase(String str, String... strings) {
+        if (str != null && strings != null) {
+            for (String s : strings) {
                 if (str.equalsIgnoreCase(trim(s))) {
                     return true;
                 }
