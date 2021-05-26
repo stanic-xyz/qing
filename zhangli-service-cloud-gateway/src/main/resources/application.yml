@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: spring-cloud-api-gateway
+  profiles:
+    active: prod
   cloud:
     loadbalancer:
       ribbon:
