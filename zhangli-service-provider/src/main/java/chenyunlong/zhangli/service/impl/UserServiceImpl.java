@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
      * @return 放弃上面的东西
      */
     @Override
-    public User updatePassword(String oldPassword, String newPassword, Integer userId) {
+    public User updatePassword(String oldPassword, String newPassword, Long userId) {
         Assert.hasText(oldPassword, "Old password must not be blank");
         Assert.hasText(newPassword, "New password must not be blank");
         Assert.notNull(userId, "User id must not be blank");
