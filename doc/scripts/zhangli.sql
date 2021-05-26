@@ -38,7 +38,7 @@ CREATE TABLE `anime_comment`
 (
     `id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '评论ID',
     `cid`          bigint(20)   NOT NULL COMMENT '番剧ID',
-    `username`     varchar(255) not null DEFAULT NULL COMMENT '评论者昵称',
+    `username`     varchar(255) not null COMMENT '评论者昵称',
     `content`      text         NOT NULL COMMENT '评论内容',
     `ip_address`   varchar(15)  null     DEFAULT NULL COMMENT 'ip地址',
     `create_time`  datetime     not null default NOW() comment '创建时间',
