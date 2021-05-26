@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.core.domain;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -26,7 +25,6 @@ public class BaseEntity {
     /**
      * Create time.
      */
-    @TableField(exist = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -35,7 +33,6 @@ public class BaseEntity {
     /**
      * Update time.
      */
-    @TableField(exist = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -44,24 +41,20 @@ public class BaseEntity {
     /**
      * 搜索值
      */
-    @TableField(exist = false)
     private String searchValue = "";
 
     /**
      * 创建者
      */
-    @TableField(exist = false)
     private String createBy = "";
 
     /**
      * 更新者
      */
-    @TableField(exist = false)
     private String updateBy = "";
 
     /**
      * 备注
      */
-    @TableField(exist = false)
     private String remark = "";
 }
