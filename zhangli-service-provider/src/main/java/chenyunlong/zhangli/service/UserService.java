@@ -40,7 +40,7 @@ public interface UserService {
      * @param userId      用户ID
      * @return 放弃上面的东西
      */
-    User updatePassword(String oldPassword, String newPassword, Integer userId);
+    User updatePassword(String oldPassword, String newPassword, Long userId);
 
     /**
      * 注册

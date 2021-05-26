@@ -15,15 +15,6 @@ import org.springframework.stereotype.Component;
 public interface UserMapper extends BaseMapper<User> {
 
     /**
-     * 根据ID获取用户信息
-     *
-     * @param userId 用户ID
-     * @return 用户的权限信息
-     */
-    @Select("SELECT * FROM user WHERE userid = #{userId}")
-    User selectById(@Param("userId") Integer userId);
-
-    /**
      * 根据用户名获取用户信息
      *
      * @param username 用户名

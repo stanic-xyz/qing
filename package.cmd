@@ -1,1 +1,0 @@
-mvn clean package -Ddockerfile.skip=true -DskipTests=true

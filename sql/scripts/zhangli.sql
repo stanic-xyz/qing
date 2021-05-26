@@ -9,10 +9,6 @@
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
---
--- Table structure for table `activity`
---
-
 DROP TABLE IF EXISTS `activity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
@@ -51,10 +47,6 @@ CREATE TABLE `anime_comment`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
---
--- Table structure for table `anime_district`
---
-
 DROP TABLE IF EXISTS `anime_district`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
@@ -75,11 +67,6 @@ CREATE TABLE `anime_district`
   AUTO_INCREMENT = 4
   DEFAULT CHARSET = utf8mb4;
 
-
---
--- Dumping data for table `anime_district`
---
-
 LOCK TABLES `anime_district` WRITE;
 /*!40000 ALTER TABLE `anime_district`
     DISABLE KEYS */;
@@ -90,10 +77,6 @@ VALUES (1, '日本', 'jp', '日本地区'),
 /*!40000 ALTER TABLE `anime_district`
     ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `anime_episode`
---
 
 DROP TABLE IF EXISTS `anime_episode`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -121,22 +104,6 @@ CREATE TABLE `anime_episode`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='视频内容';
 
-
---
--- Dumping data for table `anime_episode`
---
-
-LOCK TABLES `anime_episode` WRITE;
-/*!40000 ALTER TABLE `anime_episode`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `anime_episode`
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `anime_feedback`
---
-
 DROP TABLE IF EXISTS `anime_feedback`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
@@ -157,22 +124,6 @@ CREATE TABLE `anime_feedback`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='反馈信息';
-
-
---
--- Dumping data for table `anime_feedback`
---
-
-LOCK TABLES `anime_feedback` WRITE;
-/*!40000 ALTER TABLE `anime_feedback`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `anime_feedback`
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `anime_info`
---
 
 DROP TABLE IF EXISTS `anime_info`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -205,12 +156,6 @@ CREATE TABLE `anime_info`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 20210015
   DEFAULT CHARSET = utf8 COMMENT ='番剧信息';
-
-
-
---
--- Table structure for table `anime_menu`
---
 
 DROP TABLE IF EXISTS `anime_menu`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -248,10 +193,6 @@ create table anime_playlist
         primary key (id)
 );
 
---
--- Table structure for table `anime_resource`
---
-
 DROP TABLE IF EXISTS `anime_resource`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
@@ -282,22 +223,6 @@ CREATE TABLE `anime_recommend`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='番剧播放资源';
-
-
---
--- Dumping data for table `anime_resource`
---
-
-LOCK TABLES `anime_resource` WRITE;
-/*!40000 ALTER TABLE `anime_resource`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `anime_resource`
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `anime_type`
---
 
 DROP TABLE IF EXISTS `anime_type`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -377,10 +302,6 @@ VALUES (1, '欢乐向', '欢乐向', 1),
     ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `anime_version`
---
-
 DROP TABLE IF EXISTS `anime_version`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
@@ -446,22 +367,6 @@ CREATE TABLE `car`
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
-
---
--- Dumping data for table `car`
---
-
-LOCK TABLES `car` WRITE;
-/*!40000 ALTER TABLE `car`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `car`
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `course`
---
-
 DROP TABLE IF EXISTS `course`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
@@ -483,22 +388,12 @@ CREATE TABLE `course`
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
-
---
--- Dumping data for table `course`
---
-
 LOCK TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `course`
     ENABLE KEYS */;
 UNLOCK TABLES;
-
-
---
--- Table structure for table `permission`
---
 
 DROP TABLE IF EXISTS `permission`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -512,11 +407,6 @@ CREATE TABLE `permission`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-
---
--- Dumping data for table `permission`
---
-
 LOCK TABLES `permission` WRITE;
 /*!40000 ALTER TABLE `permission`
     DISABLE KEYS */;
@@ -526,10 +416,6 @@ VALUES (1, 'read', '读取'),
 /*!40000 ALTER TABLE `permission`
     ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `role`
---
 
 DROP TABLE IF EXISTS `role`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -549,11 +435,6 @@ CREATE TABLE `role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-
---
--- Dumping data for table `role`
---
-
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role`
     DISABLE KEYS */;
@@ -563,10 +444,6 @@ VALUES (1, 'admin', '管理团', now(), now(), 'stan', '', '', ''),
 /*!40000 ALTER TABLE `role`
     ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `role_permission`
---
 
 DROP TABLE IF EXISTS `role_permission`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -580,11 +457,6 @@ CREATE TABLE `role_permission`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-
---
--- Dumping data for table `role_permission`
---
-
 LOCK TABLES `role_permission` WRITE;
 /*!40000 ALTER TABLE `role_permission`
     DISABLE KEYS */;
@@ -595,10 +467,6 @@ VALUES (1, 1, 1),
 /*!40000 ALTER TABLE `role_permission`
     ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `school_info`
---
 
 DROP TABLE IF EXISTS `school_info`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -617,22 +485,6 @@ CREATE TABLE `school_info`
     PRIMARY KEY (`school_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
-
-
---
--- Dumping data for table `school_info`
---
-
-LOCK TABLES `school_info` WRITE;
-/*!40000 ALTER TABLE `school_info`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `school_info`
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `t_listen_port`
---
 
 DROP TABLE IF EXISTS `t_listen_port`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -658,10 +510,6 @@ CREATE TABLE `t_listen_port`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
---
--- Table structure for table `t_sign_record`
---
-
 DROP TABLE IF EXISTS `t_sign_record`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
@@ -682,10 +530,6 @@ CREATE TABLE `t_sign_record`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8;
-
---
--- Table structure for table `upload_file`
---
 
 DROP TABLE IF EXISTS `upload_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -708,10 +552,6 @@ CREATE TABLE `upload_file`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 138
   DEFAULT CHARSET = utf8;
-
---
--- Table structure for table `user`
---
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -762,10 +602,6 @@ CREATE TABLE `user_role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
---
--- Table structure for table `wechat_content`
---
-
 DROP TABLE IF EXISTS `wechat_content`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
@@ -791,21 +627,12 @@ CREATE TABLE `wechat_content`
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
-
---
--- Dumping data for table `wechat_content`
---
-
 LOCK TABLES `wechat_content` WRITE;
 /*!40000 ALTER TABLE `wechat_content`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `wechat_content`
     ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `wechat_content_wechat_images`
---
 
 DROP TABLE IF EXISTS `wechat_content_wechat_images`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -824,22 +651,6 @@ CREATE TABLE `wechat_content_wechat_images`
     KEY `content_id_index` (`wechat_content_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
-
-
---
--- Dumping data for table `wechat_content_wechat_images`
---
-
-LOCK TABLES `wechat_content_wechat_images` WRITE;
-/*!40000 ALTER TABLE `wechat_content_wechat_images`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `wechat_content_wechat_images`
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `wechat_images`
---
 
 DROP TABLE IF EXISTS `wechat_images`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -865,19 +676,7 @@ CREATE TABLE `wechat_images`
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
-
---
--- Dumping data for table `wechat_images`
---
-
-LOCK TABLES `wechat_images` WRITE;
-/*!40000 ALTER TABLE `wechat_images`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `wechat_images`
-    ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
-
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS */;
@@ -885,5 +684,3 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
-
--- Dump completed on 2021-01-26  0:46:52

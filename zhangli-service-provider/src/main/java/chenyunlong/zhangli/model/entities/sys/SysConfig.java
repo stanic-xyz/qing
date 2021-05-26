@@ -2,6 +2,8 @@ package chenyunlong.zhangli.model.entities.sys;
 
 import chenyunlong.zhangli.annotation.Excel;
 import chenyunlong.zhangli.core.domain.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,14 +15,16 @@ import javax.validation.constraints.Size;
  *
  * @author ruoyi
  */
-@EqualsAndHashCode(callSuper = false)
 @Data
+@TableName("sys_config")
+@EqualsAndHashCode(callSuper = false)
 public class SysConfig extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 参数主键
      */
+    @TableId
     @Excel(name = "参数主键", cellType = Excel.ColumnType.NUMERIC)
     private Long configId;
 
@@ -53,5 +57,7 @@ public class SysConfig extends BaseEntity {
      */
     @Excel(name = "系统内置", readConverterExp = "Y=是,N=否")
     private String configType;
+
+    private String params;
 
 }

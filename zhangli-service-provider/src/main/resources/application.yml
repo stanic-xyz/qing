@@ -36,6 +36,8 @@ spring:
 mybatis-plus:
   global-config:
     banner: false
+  type-aliases-package: chenyunlong.zhangli.**.domain,chenyunlong.zhangli.**.entities
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
 zhangli:
   file:
     baseUploadDir: upload/
