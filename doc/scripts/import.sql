@@ -1,7 +1,5 @@
-LOCK TABLES `anime_info` WRITE;
-/*!40000 ALTER TABLE `anime_info`
-    DISABLE KEYS */;
-INSERT INTO `anime_info`
+INSERT INTO `anime_info`(`id`,  `name`,  `district`,  `cover_url`,  `type`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
+  `play_status`,  `plot_type`,  `tags`,  `official_website`,  `play_heat`,  `original_name`)
 VALUES (20000001, '海贼王', NULL, '//sc02.alicdn.com/kf/H6eec4b52f5ed449b8583e5ab518e7849p.jpg', 'TV',
         '电视动画《航海王》改编自尾田荣一郎创作的同名长篇少年漫画，动画由东映动画制作。\n\n海贼王哥尔·D·罗杰在临死前曾留下了关于其毕生的财富“One Piece”的消息，由此引得群雄并起，众海盗们为了这笔传说中的巨额财富展开争夺，各种势力、政权不断交替，整个世界进入了动荡混乱的“大海贼时代”。\n\n生长在东海某小村庄的路飞受到海贼香克斯的精神指引，决定成为一名出色的海盗。为了达成这个目标，并找到万众瞩目的One Piece，路飞踏上艰苦的旅程。一路上他遇到了无数磨难，也结识了索隆、娜美、山治、乌索普、罗宾等一众性格各异的好友。他们携手一同展开充满传奇色彩的大冒险。',
         '航海王 / ワンピース', NULL, '1999-10-20', '東映動画', '连载', '搞笑 冒险 热血 励志', '搞笑 冒险 热血 励志', NULL, '10000', 'ONE PIECE'),
@@ -3138,7 +3136,8 @@ VALUES (20000001, '海贼王', NULL, '//sc02.alicdn.com/kf/H6eec4b52f5ed449b8583
         '《魔法少女奈叶ViVid》是《魔法少女奈叶》系列的第四期动画，根据都筑真纪原作、藤真拓哉作画的同名漫画改编。在2014年8月举办的夏Comiket（C86）会场上，公布了其TV动画化的决定。\n\n《魔法少女奈叶ViVid》以奈叶收养的女孩薇薇欧为主人公。故事讲述了“JS事件”之后，曾经的空中王牌奈叶收起羽翼暂作休息，而刚进入魔法学校初等科的薇薇欧在掌握了魔法基本知识后，收到了奈叶和菲特赠送的专用法器“神圣之心”；而另一边，自称为“霸王”的神秘人物英格威特，正准备掀起一股新的波澜……',
         '暂无', NULL, '2015-04-03', 'A-1 Pictures', '完结', '百合 战斗 魔法 奇幻', '百合 战斗 魔法 奇幻', NULL, '10000',
         '魔法少女リリカルなのはViVid');
-INSERT INTO `anime_info`
+INSERT INTO `anime_info`(`id`,  `name`,  `district`,  `cover_url`,  `type`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
+  `play_status`,  `plot_type`,  `tags`,  `official_website`,  `play_heat`,  `original_name`)
 VALUES (20150144, 'Love Live! The School Idol Movie', NULL,
         '//sc02.alicdn.com/kf/Hd6746e8b8a024802abb7838e9094d8c2Y.jpg', '剧场版',
         '学园偶像们以演出角逐的大赛“LoveLive!”的上届优胜者μ\'s，由于三年级的毕业而决定活动结束，然而在毕业典礼后，μ\'s众人突然收到了一条消息，并由此展开了新的演唱会。\n\n与从未见过的世界接触，一点一点成长着的九个人。她们作为学园偶像，出现了最后能做到的事情。在有限的时间里，μ\'s所发现的最为愉悦的演唱会。',
@@ -6711,7 +6710,8 @@ VALUES (20150144, 'Love Live! The School Idol Movie', NULL,
        (20190149, 'HELLO WORLD', NULL, '//sc02.alicdn.com/kf/Hde8767a63432487697a131d894b7ebd4j.jpg', '剧场版',
         '《HELLO WORLD》是伊藤智彦执导，野崎窗编剧，堀口悠纪子角色设计，Graphinica制作的原创动画电影。作品是以2027年的日本京都为舞台的SF爱情故事。\n\n不论世界如何崩坏，我想再见你一面－－\n\n本片以2027年的京都为舞台，描述一名高中生直实的面前，突然出现一位自称是来自10年后的自己的青年，希望直实和他一起改变未来，只为了拯救在3个月后会开始交往的同学一行瑠璃。然而，其背后真正的目的究竟为何？这个现实世界背后又隐藏着怎样惊人的秘密？',
         '你好世界', NULL, '2019-09-20', 'Graphinica', '完结', '科幻 爱情', '科幻 爱情', NULL, '10000', 'HELLO WORLD');
-INSERT INTO `anime_info`
+INSERT INTO `anime_info`(`id`,  `name`,  `district`,  `cover_url`,  `type`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
+  `play_status`,  `plot_type`,  `tags`,  `official_website`,  `play_heat`,  `original_name`)
 VALUES (20190150, '荒野的寿飞行队外传 天空的春风飞行队', NULL, '//sc02.alicdn.com/kf/H28b3f557901a46f593869fa24e672f0ce.jpg', 'WEB',
         '在2019年3月下旬举行的AnimeJapan2019上，短动画片的外传作品“大空的halkase飞行队”发表了。同年4月“荒野上的kotobuki飞行队大天空的起飞女孩!”预定在内及Youtube上公开，第一集将于4月10日播出，第二集预定在4月末播出，之后基本上都在月末发表。',
         '暂无', NULL, '2019-04-10', 'GEMBA', '完结', '百合 科幻 战争', '百合 科幻 战争', NULL, '10000', '荒野のコトブキ飛行隊 外伝 大空のハルカゼ飛行隊'),
@@ -8646,8 +8646,3 @@ VALUES (20190150, '荒野的寿飞行队外传 天空的春风飞行队', NULL, 
        (20210012, 'Free! 完全新作剧场版', NULL, '//sc02.alicdn.com/kf/H7bd77e6d774c4672843b2db80f65f6e67.jpg', '剧场版',
         '由京阿尼制作，「Free！」完全新作剧场版动画先导PV预告公开！\n\n「Free！」讲述了岩鸢高中的游泳部的男子高中生们展开的有关游泳，热血张扬的青春故事。该作将于2021年上映。', '暂无', NULL,
         '2021', '京都动画', '未播放', '校园 运动', '校园 运动', NULL, '10000', 'Free! 完全新作劇場版');
-/*!40000 ALTER TABLE `anime_info`
-    ENABLE KEYS */;
-
-
-UNLOCK TABLES;
