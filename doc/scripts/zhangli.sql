@@ -1,9 +1,3 @@
--- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
---
--- Host: 127.0.0.1    Database: zhangli
--- ------------------------------------------------------
--- Server version	8.0.17
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
@@ -37,10 +31,6 @@ CREATE TABLE `activity`
   AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8;
 
---
--- Table structure for table `anime_conment`
---
-
 DROP TABLE IF EXISTS anime_comment;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
@@ -48,7 +38,7 @@ CREATE TABLE `anime_comment`
 (
     `id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '评论ID',
     `cid`          bigint(20)   NOT NULL COMMENT '番剧ID',
-    `username`     varchar(255)          DEFAULT NULL COMMENT '评论者昵称',
+    `username`     varchar(255) not null DEFAULT NULL COMMENT '评论者昵称',
     `content`      text         NOT NULL COMMENT '评论内容',
     `ip_address`   varchar(15)  null     DEFAULT NULL COMMENT 'ip地址',
     `create_time`  datetime     not null default NOW() comment '创建时间',
@@ -110,23 +100,23 @@ DROP TABLE IF EXISTS `anime_episode`;
 
 CREATE TABLE `anime_episode`
 (
-    `id`             bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '视频ID',
-    `anime_id`       bigint(20)            DEFAULT NULL COMMENT '动漫ID',
-    `name`           varchar(255) NOT NULL COMMENT '视频标题名称',
-    `status`         int(11)               DEFAULT '0' COMMENT '视频状态，0正常',
-    `uploadder_name` varchar(100)          DEFAULT NULL COMMENT '上传者名称',
-    `uploader_id`    bigint(20)            DEFAULT NULL COMMENT '上传用户ID',
-    `upload_time`    datetime              DEFAULT NULL COMMENT '视频上传时间',
-    `url1`           varchar(255) NOT NULL COMMENT '视频地址',
-    `url3`           varchar(255)          DEFAULT NULL COMMENT '视频播放地址3',
-    `url2`           varchar(255)          DEFAULT NULL COMMENT '视频播放地址2',
-    `order_no`       int(11)      NOT NULL COMMENT '视频排序',
-    `create_time`    datetime     not null default NOW() comment '创建时间',
-    `update_time`    datetime     not null default NOW() comment '创建时间',
-    `search_value`   varchar(20)  not null default '' comment '查询参数',
-    `create_by`      varchar(255) not null default '' comment '创建人',
-    `update_by`      varchar(255) not null default '' comment '最后更新人',
-    `remark`         varchar(255) not null default '' comment '创建时间',
+    `id`            bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '视频ID',
+    `anime_id`      bigint(20)            DEFAULT NULL COMMENT '动漫ID',
+    `name`          varchar(255) NOT NULL COMMENT '视频标题名称',
+    `status`        int(11)               DEFAULT '0' COMMENT '视频状态，0正常',
+    `uploader_name` varchar(100)          DEFAULT NULL COMMENT '上传者名称',
+    `uploader_id`   bigint(20)            DEFAULT NULL COMMENT '上传用户ID',
+    `upload_time`   datetime              DEFAULT NULL COMMENT '视频上传时间',
+    `url1`          varchar(255) NOT NULL COMMENT '视频地址',
+    `url3`          varchar(255)          DEFAULT NULL COMMENT '视频播放地址3',
+    `url2`          varchar(255)          DEFAULT NULL COMMENT '视频播放地址2',
+    `order_no`      int(11)      NOT NULL COMMENT '视频排序',
+    `create_time`   datetime     not null default NOW() comment '创建时间',
+    `update_time`   datetime     not null default NOW() comment '创建时间',
+    `search_value`  varchar(20)  not null default '' comment '查询参数',
+    `create_by`     varchar(255) not null default '' comment '创建人',
+    `update_by`     varchar(255) not null default '' comment '最后更新人',
+    `remark`        varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='视频内容';
@@ -409,8 +399,7 @@ CREATE TABLE `anime_version`
     PRIMARY KEY (`vid`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 8
-  DEFAULT CHARSET = utf8mb4
-  ;
+  DEFAULT CHARSET = utf8mb4;
 
 
 --
@@ -453,10 +442,9 @@ CREATE TABLE `car`
     `update_by`    varchar(255) not null default '' comment '最后更新人',
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`),
-    KEY `FKpfqcaiuly21miefv7d0yjag0f` (`user_userid`)
+    KEY `username_index` (`user_userid`)
 ) ENGINE = MyISAM
-  DEFAULT CHARSET = utf8mb4
-  ;
+  DEFAULT CHARSET = utf8mb4;
 
 
 --
@@ -491,11 +479,9 @@ CREATE TABLE `course`
     `update_by`    varchar(255) not null default '' comment '最后更新人',
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`),
-    KEY `FKr10oqjrd9sp3e6e5f80a5ahca` (`car_id`),
-    KEY `FKo89po0h3p5kaem9q5dhidm7ey` (`user_userid`)
+    KEY `car_index` (`car_id`)
 ) ENGINE = MyISAM
-  DEFAULT CHARSET = utf8mb4
-  ;
+  DEFAULT CHARSET = utf8mb4;
 
 
 --
@@ -630,8 +616,7 @@ CREATE TABLE `school_info`
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`school_id`)
 ) ENGINE = MyISAM
-  DEFAULT CHARSET = utf8mb4
-  ;
+  DEFAULT CHARSET = utf8mb4;
 
 
 --
@@ -707,7 +692,7 @@ DROP TABLE IF EXISTS `upload_file`;
 
 CREATE TABLE `upload_file`
 (
-    `fileid`       bigint(20)   NOT NULL AUTO_INCREMENT,
+    `file_id`      bigint(20)   NOT NULL AUTO_INCREMENT,
     `file_name`    varchar(255)          DEFAULT NULL,
     `file_size`    bigint(20)            DEFAULT NULL,
     `mime_type`    varchar(255)          DEFAULT NULL,
@@ -719,7 +704,7 @@ CREATE TABLE `upload_file`
     `update_by`    varchar(255) not null default '' comment '最后更新人',
     `remark`       varchar(255) not null default '' comment '创建时间',
 
-    PRIMARY KEY (`fileid`)
+    PRIMARY KEY (`file_id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 138
   DEFAULT CHARSET = utf8;
@@ -749,31 +734,16 @@ CREATE TABLE `user`
     `update_by`    varchar(255)  not null default '' comment '最后更新人',
     `remark`       varchar(255)  not null default '' comment '创建时间',
     PRIMARY KEY (`userid`),
-    UNIQUE KEY `UK_sb8bbouer5wak8vyiiy4pf2bx` (`username`)
+    UNIQUE KEY `username_index` (`username`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 124
   DEFAULT CHARSET = utf8;
 
 
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user`
-    DISABLE KEYS */;
 INSERT INTO `user`
 VALUES (123, 'stan', '纯纯的黑色幽默', 'avatar_path', 'description', '1576302867@qq.com',
         '13628091432', '$2a$10$45ScSS1BeuYizV2QYJ9HVOfpBoTOxnjXyCkNPFkTJnf9o3bW0l.4G',
         '13628091432', now(), now(), 'stan', '', '', '');
-/*!40000 ALTER TABLE `user`
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
-
---
--- Table structure for table `user_role`
---
 
 DROP TABLE IF EXISTS `user_role`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -819,8 +789,7 @@ CREATE TABLE `wechat_content`
     `remark`           varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = MyISAM
-  DEFAULT CHARSET = utf8mb4
-  ;
+  DEFAULT CHARSET = utf8mb4;
 
 
 --
@@ -851,11 +820,10 @@ CREATE TABLE `wechat_content_wechat_images`
     `create_by`         varchar(255) not null default '' comment '创建人',
     `update_by`         varchar(255) not null default '' comment '最后更新人',
     `remark`            varchar(255) not null default '' comment '创建时间',
-    UNIQUE KEY `UK_gnpdvk1n2a4eu10wiitxr5lr6` (`wechat_images_id`),
-    KEY `FKn11v52h3feurudah9x6cl1jh7` (`wechat_content_id`)
+    UNIQUE KEY message_index (`wechat_images_id`),
+    KEY `content_id_index` (`wechat_content_id`)
 ) ENGINE = MyISAM
-  DEFAULT CHARSET = utf8mb4
-  ;
+  DEFAULT CHARSET = utf8mb4;
 
 
 --
@@ -893,10 +861,9 @@ CREATE TABLE `wechat_images`
     `update_by`         varchar(255) not null default '' comment '最后更新人',
     `remark`            varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`),
-    KEY `FKi100wdu51bbo65gc5ioxryw7i` (`wechat_content_id`)
+    KEY `content_id_index` (`wechat_content_id`)
 ) ENGINE = MyISAM
-  DEFAULT CHARSET = utf8mb4
-  ;
+  DEFAULT CHARSET = utf8mb4;
 
 
 --
