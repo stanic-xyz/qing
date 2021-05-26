@@ -204,7 +204,7 @@
                `play_heat`,
                `original_name`
         FROM anime_recommend
-                 left join anime_info anime on aiv = anime.id
+                 left join anime_info anime on anime_recommend.aid = anime.id
     </select>
 
     <insert id="insert">
