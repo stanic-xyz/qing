@@ -9,7 +9,7 @@
 /*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
 /*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
-/*!40103 SET TIME_ZONE = '+00:00' */;
+/*!40103 SET TIME_ZONE = '+08:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
@@ -83,8 +83,7 @@ CREATE TABLE `anime_district`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 4
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  DEFAULT CHARSET = utf8mb4;
 
 
 --
@@ -411,7 +410,7 @@ CREATE TABLE `anime_version`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 8
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  ;
 
 
 --
@@ -457,7 +456,7 @@ CREATE TABLE `car`
     KEY `FKpfqcaiuly21miefv7d0yjag0f` (`user_userid`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  ;
 
 
 --
@@ -496,7 +495,7 @@ CREATE TABLE `course`
     KEY `FKo89po0h3p5kaem9q5dhidm7ey` (`user_userid`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  ;
 
 
 --
@@ -632,7 +631,7 @@ CREATE TABLE `school_info`
     PRIMARY KEY (`school_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  ;
 
 
 --
@@ -821,7 +820,7 @@ CREATE TABLE `wechat_content`
     PRIMARY KEY (`id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  ;
 
 
 --
@@ -856,7 +855,7 @@ CREATE TABLE `wechat_content_wechat_images`
     KEY `FKn11v52h3feurudah9x6cl1jh7` (`wechat_content_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  ;
 
 
 --
@@ -897,7 +896,7 @@ CREATE TABLE `wechat_images`
     KEY `FKi100wdu51bbo65gc5ioxryw7i` (`wechat_content_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+  ;
 
 
 --
