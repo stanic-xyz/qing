@@ -3,7 +3,7 @@ package chenyunlong.zhangli.controller.system;
 import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.model.entities.UploadFile;
-import chenyunlong.zhangli.model.support.ApiResult;
+import chenyunlong.zhangli.core.support.ApiResult;
 import chenyunlong.zhangli.service.FileUploadService;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;

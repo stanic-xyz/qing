@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.model.support;
+package chenyunlong.zhangli.core.support;
 
 import lombok.Data;
 

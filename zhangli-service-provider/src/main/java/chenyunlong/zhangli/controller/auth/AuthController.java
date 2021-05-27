@@ -12,7 +12,7 @@ import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.model.enums.MFAType;
 import chenyunlong.zhangli.model.params.LoginParam;
 import chenyunlong.zhangli.model.params.UserParam;
-import chenyunlong.zhangli.model.support.ApiResult;
+import chenyunlong.zhangli.core.support.ApiResult;
 import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
