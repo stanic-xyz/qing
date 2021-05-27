@@ -1,4 +1,4 @@
-package chenyunlong.zhangli.model.support;
+package chenyunlong.zhangli.core.support;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,14 +31,13 @@ public class ApiResult<T> {
      * @return ok result with message and data
      */
     public static <T> ApiResult<T> success() {
-        return new ApiResult<>(0, "success", null);
+        return new ApiResult<T>(0, "success", null);
     }
 
     /**
      * Creates an ok result with data only. (Default message is OK, status is 200)
      *
      * @param data data to response
-     * @param <T>  data type
      * @return base response with data
      */
     public static <T> ApiResult<T> success(T data) {
@@ -52,6 +51,6 @@ public class ApiResult<T> {
      * @return base response with data
      */
     public static <T> ApiResult<T> fail(String msg) {
-        return new ApiResult<>(1, msg, null);
+        return new ApiResult<T>(1, msg, null);
     }
 }

@@ -1,11 +1,7 @@
-package chenyunlong.zhangli.model.support;
+package chenyunlong.zhangli.core.support;
 
-import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 

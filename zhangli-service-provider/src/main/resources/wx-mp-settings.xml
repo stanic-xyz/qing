@@ -3,7 +3,6 @@
     <secret>9fdb9fa846356d32247a9aa68d758791</secret>
     <token>Stan</token>
     <aesKey>ZcipcxwIwYh0WFFdBPZXlrxzNVmTWPq4OuVh4RzHGh6</aesKey>
-    <!-- 可以指定自己的tokenHolderClass，继承com.riversoft.weixin.common.AccessTokenHolder
+    <!-- 可以指定自己的tokenHolderClass，继承com.riversoft.weixin.common.AccessTokenHolder-->
     <tokenHolderClass>com.abc.Abc</tokenHolderClass>
-    -->
 </AppSetting>

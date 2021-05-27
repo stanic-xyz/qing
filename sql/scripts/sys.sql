@@ -44,3 +44,6 @@ values (8, '主框架页-菜单导航显示风格', 'sys.index.menuStyle', 'defa
 insert into sys_config
 values (9, '主框架页-是否开启页脚', 'sys.index.ignoreFooter', 'true', 'Y', 'admin', sysdate(), '', null,
         '是否开启底部页脚显示（true显示，false隐藏）');
+insert into sys_config
+values (10, '主框架页-是否使用cdn加速', 'sys.content.cdn', 'true', 'Y', 'admin', sysdate(), '', null,
+        'cdn地址');
