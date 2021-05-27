@@ -1,27 +1,23 @@
 package chenyunlong.zhangli.controller.content.model;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
+import chenyunlong.zhangli.core.support.Pagination;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
-import chenyunlong.zhangli.model.support.Pagination;
 import chenyunlong.zhangli.model.vo.OptionsModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.CatalogModel;
 import chenyunlong.zhangli.model.vo.page.DetailModel;
 import chenyunlong.zhangli.model.vo.page.IndexModel;
 import chenyunlong.zhangli.model.vo.page.UpdateModel;
+import chenyunlong.zhangli.service.AnimeCommentService;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.AnimeOptionsService;
-import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author Stan
@@ -33,12 +29,14 @@ public class AnimeInfoModel {
     private final AnimeOptionsService optionService;
     private final AnimeOptionsService animeOptionsService;
     private final ZhangliProperties zhangliProperties;
+    private final AnimeCommentService animeCommentService;
 
-    public AnimeInfoModel(AnimeInfoService animeInfoService, AnimeOptionsService optionService, AnimeOptionsService animeOptionsService, ZhangliProperties zhangliProperties) {
+    public AnimeInfoModel(AnimeInfoService animeInfoService, AnimeOptionsService optionService, AnimeOptionsService animeOptionsService, ZhangliProperties zhangliProperties, AnimeCommentService animeCommentService) {
         this.animeInfoService = animeInfoService;
         this.optionService = optionService;
         this.animeOptionsService = animeOptionsService;
         this.zhangliProperties = zhangliProperties;
+        this.animeCommentService = animeCommentService;
     }
 
     /**
@@ -55,18 +53,11 @@ public class AnimeInfoModel {
 
     public DetailModel detail(Long animeId) {
         DetailModel detailModel = new DetailModel();
-
-        AnimeInfoVo animeInfo = animeInfoService.convertToDetailVo(animeInfoService.getById(animeId));
-
-        detailModel.setAnimeInfo(animeInfo);
-
-        List<AnimeInfoMinimalDTO> relevantAnimeInfoList = animeInfoService.getRecommendAnimeInfoList();
-
-        detailModel.setRelevant(relevantAnimeInfoList);
-
-        List<AnimeInfoMinimalDTO> recommendAnimeInfoList = animeInfoService.getRecommendAnimeInfoList();
-
-        detailModel.setRecommendation(recommendAnimeInfoList);
+        detailModel.setAnimeInfo(animeInfoService.convertToDetailVo(animeInfoService.getById(animeId)));
+        detailModel.setRelevant(animeInfoService.getRecommendAnimeInfoList());
+        detailModel.setRecommendation(animeInfoService.getRecommendAnimeInfoList());
+        //获取前十条评论信息
+        detailModel.setComments(animeCommentService.getCommentsByAnimeId(animeId, 1, 10));
         return detailModel;
     }
 

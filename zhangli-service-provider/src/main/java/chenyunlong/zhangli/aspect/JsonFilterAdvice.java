@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.aspect;
 
 import chenyunlong.zhangli.common.annotation.JsonFieldFilter;
-import chenyunlong.zhangli.model.support.ApiResult;
+import chenyunlong.zhangli.core.support.ApiResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

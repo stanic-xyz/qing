@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model.vo.page;
 
+import chenyunlong.zhangli.core.support.Pagination;
 import chenyunlong.zhangli.model.dto.LinkDTO;
-import chenyunlong.zhangli.model.support.Pagination;
 import lombok.Data;
 
 import java.util.List;

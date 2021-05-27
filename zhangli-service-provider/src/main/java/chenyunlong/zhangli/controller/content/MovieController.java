@@ -5,15 +5,16 @@ import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
-import chenyunlong.zhangli.model.support.ApiResult;
+import chenyunlong.zhangli.core.support.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.*;
 import chenyunlong.zhangli.service.AnimeInfoService;
+import chenyunlong.zhangli.service.ReportService;
+import chenyunlong.zhangli.utils.StringUtils;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,11 +29,13 @@ public class MovieController {
 
     private final AnimeInfoService animeInfoService;
     private final AnimeInfoModel animeInfoModel;
+    private final ReportService reportService;
 
     public MovieController(AnimeInfoService animeInfoService,
-                           AnimeInfoModel animeInfoModel) {
+                           AnimeInfoModel animeInfoModel, ReportService reportService) {
         this.animeInfoService = animeInfoService;
         this.animeInfoModel = animeInfoModel;
+        this.reportService = reportService;
     }
 
     @GetMapping("")
@@ -144,7 +147,7 @@ public class MovieController {
                               @RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex) {
         IPage<AnimeComment> commentPage = animeInfoService.getComment(cid, pageIndex, pageSize);
         String jsonStr = "{\"AllCnt\":121,\"comments\":[{\"sid\":320522,\"content\":\"刀剑 任何一季 都没有 刀剑外传GGO好看 人设造型缺乏特点 魅力 剧本乏善可陈 反观GGO仅仅12集 却看得荡气回肠 人设立体造型鲜明 剧本有张力 大呼过瘾 而刀剑全三季是流水帐一样的动画\",\"time\":1598710393,\"username\":\"游客1140880176018\",\"cid\":\"20170140\"},{\"sid\":320335,\"content\":\"秒杀桐人，我笑了\",\"time\":1598702633,\"username\":\"游客11701520156059\",\"cid\":\"20170140\"},{\"sid\":317906,\"content\":\"1\",\"time\":1598583544,\"username\":\"游客17104201570183\",\"cid\":\"20170140\"},{\"sid\":314485,\"content\":\"最后成了人生淫家……\",\"time\":1598347924,\"username\":\"游客110019090050\",\"cid\":\"20170140\"},{\"sid\":314418,\"content\":\"前期很惊艳，后期很迷惑……\",\"time\":1598343672,\"username\":\"游客110019090050\",\"cid\":\"20170140\"},{\"sid\":311914,\"content\":\"藏在侧躺的尸体背后……这主角身高怕是没50厘米\",\"time\":1598234765,\"username\":\"游客580180280134\",\"cid\":\"20170140\"},{\"sid\":311905,\"content\":\"为啥没世界清静模式\",\"time\":1598234161,\"username\":\"游客580180280134\",\"cid\":\"20170140\"}],\"PageCtrl\":[{\"Title\":\"首页\",\"Url\":\"/get_comments?cid=20170140\\u0026pageindex=-1\",\"Index\":-1},{\"Title\":\"1\",\"Url\":\"\",\"Index\":-1},{\"Title\":\"2\",\"Url\":\"/get_comments?cid=20170140\\u0026pageindex=1\",\"Index\":1},{\"Title\":\"3\",\"Url\":\"/get_comments?cid=20170140\\u0026pageindex=2\",\"Index\":2},{\"Title\":\"4\",\"Url\":\"/get_comments?cid=20170140\\u0026pageindex=3\",\"Index\":3},{\"Title\":\"5\",\"Url\":\"/get_comments?cid=20170140\\u0026pageindex=4\",\"Index\":4},{\"Title\":\"6\",\"Url\":\"/get_comments?cid=20170140\\u0026pageindex=5\",\"Index\":5},{\"Title\":\"下一页\",\"Url\":\"/get_comments?cid=20170140\\u0026pageindex=1\",\"Index\":1},{\"Title\":\"尾页\",\"Url\":\"/get_comments?cid=20170140\\u0026pageindex=17\",\"Index\":17}],\"html_pageurls\":\"\\n\\t\\t\\t\\u003cli\\u003e\\u003ca class=\\\"pbutton pbutton_current asciifont\\\" href=\\\"javascript:void(0)\\\"\\u003e首页\\u003c/a\\u003e\\u003c/li\\u003e\\n\\t\\t\\t\\n\\t\\t\\t\\u003cli\\u003e\\u003ca class=\\\"pbutton pbutton_current asciifont\\\" href=\\\"javascript:void(0)\\\"\\u003e1\\u003c/a\\u003e\\u003c/li\\u003e\\n\\t\\t\\t\\n\\t\\t\\t\\u003cli\\u003e\\u003ca class=\\\"pbutton  asciifont\\\" href=\\\"javascript:void(0)\\\" onclick=\\\"__age_show_comments_page(1)\\\"\\u003e2\\u003c/a\\u003e\\u003c/li\\u003e\\n\\t\\t\\t\\n\\t\\t\\t\\u003cli\\u003e\\u003ca class=\\\"pbutton  asciifont\\\" href=\\\"javascript:void(0)\\\" onclick=\\\"__age_show_comments_page(2)\\\"\\u003e3\\u003c/a\\u003e\\u003c/li\\u003e\\n\\t\\t\\t\\n\\t\\t\\t\\u003cli\\u003e\\u003ca class=\\\"pbutton  asciifont\\\" href=\\\"javascript:void(0)\\\" onclick=\\\"__age_show_comments_page(3)\\\"\\u003e4\\u003c/a\\u003e\\u003c/li\\u003e\\n\\t\\t\\t\\n\\t\\t\\t\\u003cli\\u003e\\u003ca class=\\\"pbutton  asciifont\\\" href=\\\"javascript:void(0)\\\" onclick=\\\"__age_show_comments_page(4)\\\"\\u003e5\\u003c/a\\u003e\\u003c/li\\u003e\\n\\t\\t\\t\\n\\t\\t\\t\\u003cli\\u003e\\u003ca class=\\\"pbutton  asciifont\\\" href=\\\"javascript:void(0)\\\" onclick=\\\"__age_show_comments_page(5)\\\"\\u003e6\\u003c/a\\u003e\\u003c/li\\u003e\\n\\t\\t\\t\\n\\t\\t\\t\\u003cli\\u003e\\u003ca class=\\\"pbutton  asciifont\\\" href=\\\"javascript:void(0)\\\" onclick=\\\"__age_show_comments_page(1)\\\"\\u003e下一页\\u003c/a\\u003e\\u003c/li\\u003e\\n\\t\\t\\t\\n\\t\\t\\t\\u003cli\\u003e\\u003ca class=\\\"pbutton  asciifont\\\" href=\\\"javascript:void(0)\\\" onclick=\\\"__age_show_comments_page(17)\\\"\\u003e尾页\\u003c/a\\u003e\\u003c/li\\u003e\\n\\t\\t\\t\"}";
-        return JSONUtil.parse(jsonStr).toStringPretty();
+        return ApiResult.success(commentPage);
     }
 
     @ResponseBody
@@ -153,6 +156,21 @@ public class MovieController {
                                         @RequestParam(value = "comment_content", defaultValue = "10") String content,
                                         @RequestParam(value = "comment_user", defaultValue = "1") String user) {
         animeInfoService.addComment(cid, content, user);
+        return ApiResult.success();
+    }
+
+    @ResponseBody
+    @GetMapping("report")
+    public ApiResult<Void> report(@RequestParam("cid") Long cid,
+                                  @RequestParam(value = "link_invalid", defaultValue = "0", required = false) Boolean linkInvalid,
+                                  @RequestParam(value = "bad_quality", defaultValue = "0", required = false) Boolean badQuality,
+                                  @RequestParam(value = "some_missing", defaultValue = "0", required = false) Boolean someMissing,
+                                  @RequestParam(value = "detail", defaultValue = "", required = false) String detail,
+                                  @RequestParam(value = "username", defaultValue = "admin", required = false) String username) {
+        if (!linkInvalid && !badQuality & !someMissing && !StringUtils.isEmpty(detail)) {
+            return ApiResult.fail("参数不能为空");
+        }
+        reportService.addReport(username, cid, linkInvalid, someMissing, badQuality, detail);
         return ApiResult.success();
     }
 
