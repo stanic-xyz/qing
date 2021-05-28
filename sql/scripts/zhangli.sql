@@ -14,8 +14,8 @@ DROP TABLE IF EXISTS `activity`;
 
 CREATE TABLE `activity`
 (
-    `activity_id`   bigint(20)   NOT NULL AUTO_INCREMENT,
-    `activity_name` varchar(100) NOT NULL,
+    `activity_id`   bigint(20)   not null AUTO_INCREMENT,
+    `activity_name` varchar(100) not null,
     `create_time`   datetime     not null default NOW() comment '创建时间',
     `update_time`   datetime     not null default NOW() comment '创建时间',
     `search_value`  varchar(20)  not null default '' comment '查询参数',
@@ -32,10 +32,10 @@ DROP TABLE IF EXISTS anime_comment;
 
 CREATE TABLE `anime_comment`
 (
-    `id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '评论ID',
-    `cid`          bigint(20)   NOT NULL COMMENT '番剧ID',
+    `id`           bigint(20)   not null AUTO_INCREMENT COMMENT '评论ID',
+    `cid`          bigint(20)   not null COMMENT '番剧ID',
     `username`     varchar(255) not null COMMENT '评论者昵称',
-    `content`      text         NOT NULL COMMENT '评论内容',
+    `content`      text         not null COMMENT '评论内容',
     `ip_address`   varchar(15)  null     DEFAULT NULL COMMENT 'ip地址',
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
@@ -52,20 +52,21 @@ DROP TABLE IF EXISTS `anime_district`;
 
 CREATE TABLE `anime_district`
 (
-    `id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-    `name`         varchar(50)                                             DEFAULT NULL COMMENT '地区名称',
-    `code`         varchar(10)                                             DEFAULT NULL COMMENT '地区编码',
-    `description`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述信息',
-    `create_time`  datetime     not null                                   default NOW() comment '创建时间',
-    `update_time`  datetime     not null                                   default NOW() comment '创建时间',
-    `search_value` varchar(20)  not null                                   default '' comment '查询参数',
-    `create_by`    varchar(255) not null                                   default '' comment '创建人',
-    `update_by`    varchar(255) not null                                   default '' comment '最后更新人',
-    `remark`       varchar(255) not null                                   default '' comment '创建时间',
+    `id`           bigint(20)   not null AUTO_INCREMENT COMMENT '主键ID',
+    `name`         varchar(50)           DEFAULT NULL COMMENT '地区名称',
+    `code`         varchar(10)           DEFAULT NULL COMMENT '地区编码',
+    `description`  varchar(255)          DEFAULT NULL COMMENT '描述信息',
+    `create_time`  datetime     not null default now() comment '创建时间',
+    `update_time`  datetime     not null default NOW() comment '创建时间',
+    `search_value` varchar(20)  not null default '' comment '查询参数',
+    `create_by`    varchar(255) not null default '' comment '创建人',
+    `update_by`    varchar(255) not null default '' comment '最后更新人',
+    `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 4
-  DEFAULT CHARSET = utf8mb4;
+  AUTO_INCREMENT = 10
+  DEFAULT CHARSET = utf8mb4,
+  collate utf8_general_ci;
 
 LOCK TABLES `anime_district` WRITE;
 /*!40000 ALTER TABLE `anime_district`
@@ -83,17 +84,17 @@ DROP TABLE IF EXISTS `anime_episode`;
 
 CREATE TABLE `anime_episode`
 (
-    `id`            bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '视频ID',
+    `id`            bigint(20)   not null AUTO_INCREMENT COMMENT '视频ID',
     `anime_id`      bigint(20)            DEFAULT NULL COMMENT '动漫ID',
-    `name`          varchar(255) NOT NULL COMMENT '视频标题名称',
+    `name`          varchar(255) not null COMMENT '视频标题名称',
     `status`        int(11)               DEFAULT '0' COMMENT '视频状态，0正常',
     `uploader_name` varchar(100)          DEFAULT NULL COMMENT '上传者名称',
     `uploader_id`   bigint(20)            DEFAULT NULL COMMENT '上传用户ID',
     `upload_time`   datetime              DEFAULT NULL COMMENT '视频上传时间',
-    `url1`          varchar(255) NOT NULL COMMENT '视频地址',
+    `url1`          varchar(255) not null COMMENT '视频地址',
     `url3`          varchar(255)          DEFAULT NULL COMMENT '视频播放地址3',
     `url2`          varchar(255)          DEFAULT NULL COMMENT '视频播放地址2',
-    `order_no`      int(11)      NOT NULL COMMENT '视频排序',
+    `order_no`      int(11)      not null COMMENT '视频排序',
     `create_time`   datetime     not null default NOW() comment '创建时间',
     `update_time`   datetime     not null default NOW() comment '创建时间',
     `search_value`  varchar(20)  not null default '' comment '查询参数',
@@ -109,12 +110,12 @@ DROP TABLE IF EXISTS `anime_feedback`;
 
 CREATE TABLE `anime_feedback`
 (
-    `id`                bigint(20)   NOT NULL AUTO_INCREMENT,
+    `id`                bigint(20)   not null AUTO_INCREMENT,
     `type`              int(11)               DEFAULT NULL COMMENT '反馈类型\n1、链接失效\n2、资源质量差\n3、集数缺失\n4、其他',
-    `detail`            text COMMENT '详细信息',
-    `mid`               bigint(20)   NOT NULL COMMENT '番剧ID',
+    `detail`            text         not null COMMENT '详细信息',
+    `mid`               bigint(20)   not null COMMENT '番剧ID',
     `uid`               bigint(20)            DEFAULT NULL COMMENT '用户ID',
-    `processing_status` int(11)      NOT NULL COMMENT '处理状态\n0、未处理\n1、处理中\n2、已处理',
+    `processing_status` int(11)      not null COMMENT '处理状态\n0、未处理\n1、处理中\n2、已处理',
     `create_time`       datetime     not null default NOW() comment '创建时间',
     `update_time`       datetime     not null default NOW() comment '创建时间',
     `search_value`      varchar(20)  not null default '' comment '查询参数',
@@ -130,10 +131,10 @@ DROP TABLE IF EXISTS `anime_info`;
 
 CREATE TABLE `anime_info`
 (
-    `id`               bigint(20)   NOT NULL AUTO_INCREMENT,
-    `name`             varchar(255) NOT NULL,
+    `id`               bigint(20)   not null AUTO_INCREMENT,
+    `name`             varchar(255) not null,
     `district`         varchar(255)          DEFAULT NULL COMMENT '地区(日本、中国、欧美）',
-    `cover_url`        varchar(255) NOT NULL COMMENT '封面地址',
+    `cover_url`        varchar(255) not null COMMENT '封面地址',
     `type`             varchar(255)          DEFAULT NULL COMMENT 'OVA\nTV\n剧场版(theater_version)',
     `instruction`      text COMMENT '番剧介绍',
     `other_name`       varchar(255)          DEFAULT NULL COMMENT '其它名称',
@@ -198,9 +199,9 @@ DROP TABLE IF EXISTS `anime_resource`;
 
 CREATE TABLE `anime_resource`
 (
-    `id`           bigint(20)   NOT NULL AUTO_INCREMENT,
-    `mid`          bigint(20)   NOT NULL COMMENT '番剧ID',
-    `name`         varchar(255) NOT NULL COMMENT '播放资源列表名称',
+    `id`           bigint(20)   not null AUTO_INCREMENT,
+    `mid`          bigint(20)   not null COMMENT '番剧ID',
+    `name`         varchar(255) not null COMMENT '播放资源列表名称',
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
     `search_value` varchar(20)  not null default '' comment '查询参数',
@@ -215,10 +216,10 @@ DROP TABLE IF EXISTS `anime_recommend`;
 
 CREATE TABLE `anime_recommend`
 (
-    `id`          bigint(20)   NOT NULL AUTO_INCREMENT,
-    `aid`         bigint(20)   NOT NULL COMMENT '番剧ID',
-    `reason`      varchar(255) NOT NULL COMMENT '推荐理由',
-    `create_time` datetime     NOT NULL,
+    `id`          bigint(20)   not null AUTO_INCREMENT,
+    `aid`         bigint(20)   not null COMMENT '番剧ID',
+    `reason`      varchar(255) not null COMMENT '推荐理由',
+    `create_time` datetime     not null,
     `order_no`    int          not null default 0 comment '排序ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
@@ -229,8 +230,8 @@ DROP TABLE IF EXISTS `anime_type`;
 
 CREATE TABLE `anime_type`
 (
-    `id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-    `name`         varchar(10)  NOT NULL COMMENT '类型名称',
+    `id`           bigint(20)   not null AUTO_INCREMENT COMMENT '主键ID',
+    `name`         varchar(10)  not null COMMENT '类型名称',
     `description`  text COMMENT '详细介绍信息',
     `order`        int(11)               DEFAULT NULL COMMENT '排序号',
     `create_time`  datetime     not null default NOW() comment '创建时间',
@@ -307,9 +308,9 @@ DROP TABLE IF EXISTS `anime_version`;
 
 CREATE TABLE `anime_version`
 (
-    `vid`          bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-    `code`         varchar(10)  NOT NULL,
-    `name`         varchar(50)  NOT NULL COMMENT '名称',
+    `vid`          bigint(20)   not null AUTO_INCREMENT COMMENT '自增ID',
+    `code`         varchar(10)  not null,
+    `name`         varchar(50)  not null COMMENT '名称',
     `description`  varchar(255)          DEFAULT NULL COMMENT '描述信息',
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
@@ -351,7 +352,7 @@ DROP TABLE IF EXISTS `car`;
 
 CREATE TABLE `car`
 (
-    `id`           bigint(20)   NOT NULL AUTO_INCREMENT,
+    `id`           bigint(20)   not null AUTO_INCREMENT,
     `car_img`      varchar(255)          DEFAULT NULL,
     `car_number`   varchar(255)          DEFAULT NULL,
     `car_status`   int(11)               DEFAULT NULL,
@@ -372,7 +373,7 @@ DROP TABLE IF EXISTS `course`;
 
 CREATE TABLE `course`
 (
-    `id`           bigint(20)   NOT NULL AUTO_INCREMENT,
+    `id`           bigint(20)   not null AUTO_INCREMENT,
     `course_name`  varchar(255)          DEFAULT NULL,
     `course_time`  date                  DEFAULT NULL,
     `car_id`       bigint(20)            DEFAULT NULL,
@@ -400,9 +401,9 @@ DROP TABLE IF EXISTS `permission`;
 
 CREATE TABLE `permission`
 (
-    `id`          bigint(20)   NOT NULL,
-    `name`        varchar(32)  NOT NULL,
-    `description` varchar(255) NOT NULL,
+    `id`          bigint(20)   not null,
+    `name`        varchar(32)  not null,
+    `description` varchar(255) not null,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
@@ -422,9 +423,9 @@ DROP TABLE IF EXISTS `role`;
 
 CREATE TABLE `role`
 (
-    `role_id`          bigint(20)   NOT NULL,
-    `role_name`        varchar(255) NOT NULL,
-    `role_description` varchar(255) NOT NULL,
+    `role_id`          bigint(20)   not null,
+    `role_name`        varchar(255) not null,
+    `role_description` varchar(255) not null,
     `create_time`      datetime     not null default NOW() comment '创建时间',
     `update_time`      datetime     not null default NOW() comment '创建时间',
     `search_value`     varchar(20)  not null default '' comment '查询参数',
@@ -450,9 +451,9 @@ DROP TABLE IF EXISTS `role_permission`;
 
 CREATE TABLE `role_permission`
 (
-    `id`            bigint(20) NOT NULL,
-    `role_id`       bigint(20) NOT NULL,
-    `permission_id` bigint(20) NOT NULL,
+    `id`            bigint(20) not null,
+    `role_id`       bigint(20) not null,
+    `permission_id` bigint(20) not null,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
@@ -473,7 +474,7 @@ DROP TABLE IF EXISTS `school_info`;
 
 CREATE TABLE `school_info`
 (
-    `school_id`    bigint(20)   NOT NULL,
+    `school_id`    bigint(20)   not null,
     `school_code`  varchar(255)          DEFAULT NULL,
     `school_name`  varchar(255)          DEFAULT NULL,
     `create_time`  datetime     not null default NOW() comment '创建时间',
@@ -515,9 +516,9 @@ DROP TABLE IF EXISTS `t_sign_record`;
 
 CREATE TABLE `t_sign_record`
 (
-    `id`                  bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '自增键',
-    `user_id`             bigint(20)   NOT NULL COMMENT '索引，用户表的id',
-    `date_month`          date         NOT NULL COMMENT '索引，月份，形如2019-02',
+    `id`                  bigint(20)   not null AUTO_INCREMENT COMMENT '自增键',
+    `user_id`             bigint(20)   not null COMMENT '索引，用户表的id',
+    `date_month`          date         not null COMMENT '索引，月份，形如2019-02',
     `mask`                int(32)               DEFAULT NULL COMMENT '用户签到的数据',
     `continue_sign_month` int(11)               DEFAULT '0' COMMENT '连续签到天数',
     `create_time`         datetime     not null default NOW() comment '创建时间',
@@ -536,7 +537,7 @@ DROP TABLE IF EXISTS `upload_file`;
 
 CREATE TABLE `upload_file`
 (
-    `file_id`      bigint(20)   NOT NULL AUTO_INCREMENT,
+    `file_id`      bigint(20)   not null AUTO_INCREMENT,
     `file_name`    varchar(255)          DEFAULT NULL,
     `file_size`    bigint(20)            DEFAULT NULL,
     `mime_type`    varchar(255)          DEFAULT NULL,
@@ -558,11 +559,11 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user`
 (
-    `userid`       bigint(20)    NOT NULL AUTO_INCREMENT,
+    `userid`       bigint(20)    not null AUTO_INCREMENT,
     `username`     varchar(10)            DEFAULT NULL COMMENT '用户登录的账号，长度为十位字符',
-    `nickname`     nvarchar(20)  NOT NULL UNIQUE COMMENT '用户界面上展示的昵称',
-    `avatar`       varchar(255)  NOT NULL DEFAULT '' COMMENT '用户的头像地址',
-    `description`  nvarchar(200) NOT NULL DEFAULT '' COMMENT '个人简介',
+    `nickname`     nvarchar(20)  not null UNIQUE COMMENT '用户界面上展示的昵称',
+    `avatar`       varchar(255)  not null DEFAULT '' COMMENT '用户的头像地址',
+    `description`  nvarchar(200) not null DEFAULT '' COMMENT '个人简介',
     `email`        varchar(255)           DEFAULT NULL,
     `open_id`      varchar(30)            DEFAULT NULL,
     `password`     varchar(255)           DEFAULT NULL,
@@ -590,9 +591,9 @@ DROP TABLE IF EXISTS `user_role`;
 
 CREATE TABLE `user_role`
 (
-    `id`           bigint(20)   NOT NULL,
-    `role_id`      bigint(20)   NOT NULL,
-    `user_id`      bigint(20)   NOT NULL,
+    `id`           bigint(20)   not null,
+    `role_id`      bigint(20)   not null,
+    `user_id`      bigint(20)   not null,
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
     `search_value` varchar(20)  not null default '' comment '查询参数',
@@ -607,15 +608,15 @@ DROP TABLE IF EXISTS `wechat_content`;
 
 CREATE TABLE `wechat_content`
 (
-    `id`               bigint(20)   NOT NULL AUTO_INCREMENT,
-    `x_create_userid`  bigint(20)   NOT NULL,
-    `x_last_edit_time` bigint(20)   NOT NULL,
-    `x_create_time`    bigint(20)   NOT NULL,
-    `x_data_flag`      bit(1)       NOT NULL,
+    `id`               bigint(20)   not null AUTO_INCREMENT,
+    `x_create_userid`  bigint(20)   not null,
+    `x_last_edit_time` bigint(20)   not null,
+    `x_create_time`    bigint(20)   not null,
+    `x_data_flag`      bit(1)       not null,
     `content`          varchar(255)          DEFAULT NULL,
     `head_img_url`     varchar(255)          DEFAULT NULL,
     `message_type`     int(11)               DEFAULT NULL,
-    `user_id`          bigint(20)   NOT NULL,
+    `user_id`          bigint(20)   not null,
     `username`         varchar(255)          DEFAULT NULL,
     `create_time`      datetime     not null default NOW() comment '创建时间',
     `update_time`      datetime     not null default NOW() comment '创建时间',
@@ -639,8 +640,8 @@ DROP TABLE IF EXISTS `wechat_content_wechat_images`;
 
 CREATE TABLE `wechat_content_wechat_images`
 (
-    `wechat_content_id` bigint(20)   NOT NULL,
-    `wechat_images_id`  bigint(20)   NOT NULL,
+    `wechat_content_id` bigint(20)   not null,
+    `wechat_images_id`  bigint(20)   not null,
     `create_time`       datetime     not null default NOW() comment '创建时间',
     `update_time`       datetime     not null default NOW() comment '创建时间',
     `search_value`      varchar(20)  not null default '' comment '查询参数',
@@ -657,11 +658,11 @@ DROP TABLE IF EXISTS `wechat_images`;
 
 CREATE TABLE `wechat_images`
 (
-    `id`                bigint(20)   NOT NULL AUTO_INCREMENT,
-    `x_create_userid`   bigint(20)   NOT NULL,
-    `x_last_edit_time`  bigint(20)   NOT NULL,
-    `x_create_time`     bigint(20)   NOT NULL,
-    `x_data_flag`       bit(1)       NOT NULL,
+    `id`                bigint(20)   not null AUTO_INCREMENT,
+    `x_create_userid`   bigint(20)   not null,
+    `x_last_edit_time`  bigint(20)   not null,
+    `x_create_time`     bigint(20)   not null,
+    `x_data_flag`       bit(1)       not null,
     `image_url`         varchar(255)          DEFAULT NULL,
     `image_name`        varchar(255)          DEFAULT NULL,
     `wechat_content_id` bigint(20)            DEFAULT NULL,
