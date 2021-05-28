@@ -3,6 +3,7 @@ package chenyunlong.zhangli.model.entities.anime;
 import java.time.LocalDateTime;
 
 import chenyunlong.zhangli.core.domain.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +15,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@TableName("anime_episode")
 public class AnimeEpisodeEntity extends BaseEntity {
     /**
      * 视频ID

@@ -15,4 +15,12 @@ public interface PlaylistService {
      * @return 播放列表
      */
     List<PlayListDTO> listPlayListBy(Long animeId);
+
+    /**
+     * 获取播放列表
+     *
+     * @param playlistId 播放列表ID
+     * @return 播放列表信息
+     */
+    PlayListDTO getById(Long playlistId);
 }

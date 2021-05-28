@@ -17,7 +17,7 @@ import java.util.List;
  * @author Stan
  */
 @Validated
-@Api(tags = "anime/update")
+@Api(tags = "api/anime/update")
 @RestController
 public class AnimeUpdateController {
     private final AnimeRecommendService animeRecommendService;
