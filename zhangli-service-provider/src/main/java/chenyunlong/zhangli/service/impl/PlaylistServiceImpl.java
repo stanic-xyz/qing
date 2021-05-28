@@ -30,6 +30,15 @@ public class PlaylistServiceImpl implements PlaylistService {
         return convertToListVo(playlistEntities);
     }
 
+    @Override
+    public PlayListDTO getById(Long playlistId) {
+        PlaylistEntity playlistEntity = animePlaylistMapper.selectById(playlistId);
+        if (playlistEntity == null) {
+            return null;
+        }
+        return new PlayListDTO().convertFrom(playlistEntity);
+    }
+
     public List<PlayListDTO> convertToListVo(List<PlaylistEntity> episodeEntities) {
         return episodeEntities.stream().map(episode
                 -> (PlayListDTO) new PlayListDTO().convertFrom(episode)).collect(Collectors.toList());
