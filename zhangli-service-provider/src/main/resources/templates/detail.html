@@ -25,11 +25,11 @@
         }
     </style>
 
-<!--    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>-->
+    <!--    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>-->
     <script type="text/javascript" th:src="@{{host}/js/detail.js(host=${data.hostname})}"></script>
-<!--    <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${data.hostname})}"></script>-->
+    <!--    <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${data.hostname})}"></script>-->
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-<!--    <script type="text/javascript" th:src="@{{host}/js/jquery.foucs.js(host=${data.hostname})}"></script>-->
+    <!--    <script type="text/javascript" th:src="@{{host}/js/jquery.foucs.js(host=${data.hostname})}"></script>-->
     <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
     <!--    <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${data.hostname})}"></script>-->
     <script type="text/javascript" th:src="@{{host}/js/snowfall.min.js(host=${data.hostname})}"></script>
@@ -167,8 +167,11 @@
             </script>
             <div id="playlist-div" class="baseblock">
                 <div class="blocktitle">在线播放：</div>
-                <ul class="menu0" id="menu0" th:each="playList,iterStat : ${data.animeInfo.playList}">
-                    <li th:data="" class="" style="display: block;" th:text="${playList.name}"></li>
+                <ul class="menu0" id="menu0">
+                    <li style="display: block"
+                        th:text="${listInfo?.name}"
+                        th:each="listInfo,iterStat : ${data?.animeInfo?.playList}">
+                    </li>
                 </ul>
                 <div class="main0" id="main0">
 
@@ -183,9 +186,11 @@
                     <div class="movurl" style="display: block;">
                         <ul>
                             <li th:each="episode:${data.animeInfo.playList}">
-                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${data.animeInfo.id})}"
-                                   target="_self" title="第01话 [GB][BDRIP][720P][x264_AAC]"
-                                   th:text="${episode.name}"></a>
+                                <a th:href="@{/play/{animeId}(playid=${episode?.id},animeId=${data.animeInfo.id})}"
+                                   target="_self"
+                                   th:title="${episode.name}"
+                                   th:text="${episode.name}">
+                                </a>
                             </li>
                         </ul>
                     </div>
