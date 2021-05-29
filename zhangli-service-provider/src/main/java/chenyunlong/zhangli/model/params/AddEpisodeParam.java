@@ -4,18 +4,16 @@ import chenyunlong.zhangli.model.dto.base.InputConverter;
 import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
 
 @Data
 public class AddEpisodeParam implements InputConverter<AnimeEpisodeEntity> {
     private Long animeId;
-    private Long playlistId;
+    @NotBlank(message = "视频名称不能为空")
     private String name;
-    private Integer status;
     private String uploaderName;
     private Long uploaderId;
-    private LocalDateTime uploadTime;
-    private String url1;
-    private String url3;
-    private String url2;
+    @NotBlank(message = "播放地址不能为空")
+    private String url;
+    private Integer orderNo;
 }

@@ -1,7 +1,5 @@
 package chenyunlong.zhangli.model.entities.anime;
 
-import java.time.LocalDateTime;
-
 import chenyunlong.zhangli.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -28,11 +26,6 @@ public class AnimeEpisodeEntity extends BaseEntity {
     private Long animeId;
 
     /**
-     * 播放列表ID
-     */
-    private Long playlistId;
-
-    /**
      * 视频标题名称
      */
     private String name;
@@ -53,24 +46,9 @@ public class AnimeEpisodeEntity extends BaseEntity {
     private Long uploaderId;
 
     /**
-     * 视频上传时间
-     */
-    private LocalDateTime uploadTime;
-
-    /**
      * 视频地址
      */
-    private String url1;
-
-    /**
-     * 视频播放地址3
-     */
-    private String url3;
-
-    /**
-     * 视频播放地址2
-     */
-    private String url2;
+    private String url;
 
     /**
      * 视频排序
