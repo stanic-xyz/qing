@@ -42,7 +42,14 @@ class EpisodeControllerTest {
         queryWrapper.last("LIMIT 0,1");
         AnimeEpisodeEntity episodeEntity = animeEpisodeMapper.selectOne(queryWrapper);
         if (episodeEntity == null) {
-            return;
+            episodeEntity = new AnimeEpisodeEntity();
+            episodeEntity.setName("测试播放视频");
+            episodeEntity.setStatus(0);
+            episodeEntity.setOrderNo(0);
+            episodeEntity.setUploaderId(0L);
+            episodeEntity.setUploaderName("admin");
+            episodeEntity.setUrl("https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/media/testvideo.mp4");
+            animeEpisodeMapper.insert(episodeEntity);
         }
 
         for (AnimeInfo animeInfo : animeInfoList) {

@@ -12,10 +12,6 @@ spring:
     hikari:
       username: root
       password: 123456
-  mail:
-    host: smtp.qq.com
-    username: 1576302867@qq.com
-    password: uqvyyxhvhdpnbabg
   cloud:
     nacos:
       discovery:

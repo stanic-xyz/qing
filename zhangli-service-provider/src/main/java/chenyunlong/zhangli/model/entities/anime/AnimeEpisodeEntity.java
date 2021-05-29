@@ -21,11 +21,6 @@ public class AnimeEpisodeEntity extends BaseEntity {
     private Long id;
 
     /**
-     * 动漫ID
-     */
-    private Long animeId;
-
-    /**
      * 视频标题名称
      */
     private String name;
@@ -53,5 +48,5 @@ public class AnimeEpisodeEntity extends BaseEntity {
     /**
      * 视频排序
      */
-    private Integer orderNo;
+    private Integer orderNo = 0;
 }

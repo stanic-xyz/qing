@@ -25,15 +25,14 @@
         }
     </style>
 
-    <!--    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>-->
+    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/detail.js(host=${data.hostname})}"></script>
-    <!--    <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${data.hostname})}"></script>-->
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <!--    <script type="text/javascript" th:src="@{{host}/js/jquery.foucs.js(host=${data.hostname})}"></script>-->
+    <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
-    <!--    <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${data.hostname})}"></script>-->
+    <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/snowfall.min.js(host=${data.hostname})}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.1/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.1.1/dist/echarts.min.js"></script>
 </head>
 
 <body>
@@ -47,7 +46,8 @@
             <div class="baseblock">
                 <div class="blockcontent">
                     <img referrerpolicy="no-referrer" class="poster" width="256px" height="356px"
-                         th:src="${data.animeInfo.coverUrl}" th:alt="${data.animeInfo.name}" alt="暂无">
+                         th:src="${data.animeInfo.coverUrl}" th:alt="${data?.animeInfo?.name}"
+                         alt="暂无" src="">
                 </div>
             </div>
             <div class="baseblock">
@@ -151,41 +151,23 @@
                 </div>
             </div>
             <div class="blockline1" style="margin: 8px;"></div>
-            <script type="text/javascript">
-                function setTab(m, n) {
-                    var tli = document.getElementById("menu" + m).getElementsByTagName("li");
-                    var mli = document.getElementById("main" + m).getElementsByTagName("div");
-                    for (i = 0; i < tli.length; i++) {
-                        tli[i].className = i === n ? "on" : "";
-                        mli[i].style.display = i === n ? "block" : "none";
-                        const pli_cnt = mli[i].getElementsByTagName("ul")[0].getElementsByTagName("li");
-                        if (!pli_cnt.length) {
-                            tli[i].style.display = 'block';
-                        }
-                    }
-                }
-            </script>
             <div id="playlist-div" class="baseblock">
                 <div class="blocktitle">在线播放：</div>
                 <ul class="menu0" id="menu0">
                     <li style="display: block"
+                        th:each="listInfo,iterStat : ${data?.animeInfo?.playList}"
+                        th:class="${iterStat.index == 0 ? 'on' : '' }"
                         th:text="${listInfo?.name}"
-                        th:each="listInfo,iterStat : ${data?.animeInfo?.playList}">
+                        th:data-index="${iterStat.index}"
+                        onclick="setTab(0,this.getAttribute('data-index'))">
                     </li>
                 </ul>
                 <div class="main0" id="main0">
-
-                    <div class="movurl" style="display:none">
-                        <ul></ul>
-                    </div>
-
-                    <div class="movurl" style="display: none;">
-                        <ul></ul>
-                    </div>
-
-                    <div class="movurl" style="display: block;">
+                    <div class="movurl"
+                         th:each="playList,status:${data.animeInfo.playList}"
+                         th:style="${status.index == 0? 'display: block;':'display: none;'}">
                         <ul>
-                            <li th:each="episode:${data.animeInfo.playList}">
+                            <li th:each="episode:${playList?.episodeList}">
                                 <a th:href="@{/play/{animeId}(playid=${episode?.id},animeId=${data.animeInfo.id})}"
                                    target="_self"
                                    th:title="${episode.name}"
@@ -194,23 +176,22 @@
                             </li>
                         </ul>
                     </div>
-
-                    <div class="movurl" style="display:none">
-                        <ul>
-                            <li th:each="episode:${data.animeInfo.playList}">
-                                <a th:href="@{/play/{animeId}(playid='3_1',animeId=${data.animeInfo.id})}"
-                                   target="_self" title="第01话 [GB][BDRIP][720P][x264_AAC]" th:text="第01话"></a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
-
-                <script id="DEF_PLAYINDEX">2</script>
-
-                <script>
-                    __set_playtab_on_index(0);
-                </script>
             </div>
+            <script type="text/javascript">
+                function setTab(m, n) {
+                    const tli = document.getElementById("menu0").getElementsByTagName("li");
+                    const mli = document.getElementById("main0").getElementsByTagName("div");
+                    for (i = 0; i < tli.length; i++) {
+                        tli[i].className = (i == n ? "on" : "");
+                        mli[i].style.display = (i == n ? "block" : "none");
+                        const pli_cnt = mli[i].getElementsByTagName("ul")[0].getElementsByTagName("li");
+                        if (!pli_cnt.length) {
+                            tli[i].style.display = 'block';
+                        }
+                    }
+                }
+            </script>
 
             <div class="blockline1" style="margin: 8px;"></div>
             <div id="wangpan-div" class="baseblock">

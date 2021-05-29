@@ -66,6 +66,18 @@ public class MovieController {
         return modelAndView;
     }
 
+    @GetMapping("play/{movieId}")
+    public ModelAndView play(
+            @PathVariable(value = "movieId") Long animeId,
+            @RequestParam(value = "playid") Long playid
+    ) {
+
+        PlayModel playModel = animeInfoModel.play(animeId, playid);
+        ModelAndView modelAndView = new ModelAndView("play");
+        modelAndView.addObject("data", playModel);
+        return modelAndView;
+    }
+
     @GetMapping("rank")
     public ModelAndView rank(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
@@ -116,27 +128,6 @@ public class MovieController {
         modelAndView.addObject("totalCount", totalCount);
         modelAndView.addObject("currentIndex", page);
         modelAndView.addObject("totalPage", totalPage);
-        return modelAndView;
-    }
-
-    @GetMapping("play/{movieId}")
-    public ModelAndView play(
-            @PathVariable(value = "movieId") Long animeId,
-            @RequestParam(value = "playid") String playid
-    ) {
-        String[] strings = playid.split("_");
-        int type = 0;
-        int ep = 0;
-        if (strings.length == 2) {
-            type = Integer.parseInt(strings[0]);
-            ep = Integer.parseInt(strings[1]);
-        }
-
-        AnimeInfoVo animeInfoVo = animeInfoService.getPlayDetail(animeId, type, ep);
-        PlayInfoModel playInfoModel = new PlayInfoModel();
-        playInfoModel.setAnimeInfo(animeInfoVo);
-        ModelAndView modelAndView = new ModelAndView("play");
-        modelAndView.addObject(playInfoModel);
         return modelAndView;
     }
 

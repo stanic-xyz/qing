@@ -5,6 +5,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
@@ -27,17 +28,15 @@ import java.util.Map;
 public class MailServiceImpl extends AbstractMailService {
 
     private final FreeMarkerConfigurer freeMarker;
-    private final ZhangliProperties zhangliProperties;
 
-    public MailServiceImpl(FreeMarkerConfigurer freeMarker, ZhangliProperties zhangliProperties) {
-        super(zhangliProperties);
+    public MailServiceImpl(FreeMarkerConfigurer freeMarker, JavaMailSender mailSender, ZhangliProperties zhangliProperties) {
+        super(zhangliProperties, mailSender);
         this.freeMarker = freeMarker;
-        this.zhangliProperties = zhangliProperties;
     }
 
     @Override
     public void sendTextMail(String to, String subject, String content) {
-        sendMailTemplate(true, messageHelper -> {
+        sendMailTemplate(false, messageHelper -> {
             try {
                 messageHelper.setSubject(subject);
                 messageHelper.setTo(to);
