@@ -6,11 +6,9 @@ import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.OptionsModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
-import chenyunlong.zhangli.model.vo.page.CatalogModel;
-import chenyunlong.zhangli.model.vo.page.DetailModel;
-import chenyunlong.zhangli.model.vo.page.IndexModel;
-import chenyunlong.zhangli.model.vo.page.UpdateModel;
+import chenyunlong.zhangli.model.vo.page.*;
 import chenyunlong.zhangli.service.AnimeCommentService;
+import chenyunlong.zhangli.service.AnimeEpisodeService;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.AnimeOptionsService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -30,13 +28,15 @@ public class AnimeInfoModel {
     private final AnimeOptionsService animeOptionsService;
     private final ZhangliProperties zhangliProperties;
     private final AnimeCommentService animeCommentService;
+    private final AnimeEpisodeService episodeService;
 
-    public AnimeInfoModel(AnimeInfoService animeInfoService, AnimeOptionsService optionService, AnimeOptionsService animeOptionsService, ZhangliProperties zhangliProperties, AnimeCommentService animeCommentService) {
+    public AnimeInfoModel(AnimeInfoService animeInfoService, AnimeOptionsService optionService, AnimeOptionsService animeOptionsService, ZhangliProperties zhangliProperties, AnimeCommentService animeCommentService, AnimeEpisodeService episodeService) {
         this.animeInfoService = animeInfoService;
         this.optionService = optionService;
         this.animeOptionsService = animeOptionsService;
         this.zhangliProperties = zhangliProperties;
         this.animeCommentService = animeCommentService;
+        this.episodeService = episodeService;
     }
 
     /**
@@ -59,6 +59,18 @@ public class AnimeInfoModel {
         //获取前十条评论信息
         detailModel.setComments(animeCommentService.getCommentsByAnimeId(animeId, 1, 10));
         return detailModel;
+    }
+
+
+    public PlayModel play(Long animeId, Long playId) {
+        PlayModel playModel = new PlayModel();
+        playModel.setAnimeInfo(animeInfoService.convertToPlayVo(animeInfoService.getById(animeId)));
+        playModel.setRelevant(animeInfoService.getRecommendAnimeInfoList());
+        playModel.setRecommendation(animeInfoService.getRecommendAnimeInfoList());
+        //获取前十条评论信息
+        playModel.setComments(animeCommentService.getCommentsByAnimeId(animeId, 1, 10));
+        playModel.setEpisodeInfo(episodeService.getById(playId));
+        return playModel;
     }
 
     /**

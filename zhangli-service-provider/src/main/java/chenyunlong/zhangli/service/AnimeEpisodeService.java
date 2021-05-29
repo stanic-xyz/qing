@@ -1,7 +1,6 @@
 package chenyunlong.zhangli.service;
 
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
-import chenyunlong.zhangli.model.dto.EpisodeDTO;
 import chenyunlong.zhangli.model.params.AddEpisodeParam;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public interface AnimeEpisodeService {
      * @param animeId 动漫ID
      * @return 动漫的单集信息集合
      */
-    List<EpisodeDTO> listEpisodeBy(Long animeId);
+    List<AnimeEpisodeDTO> listEpisodeByAnimeId(Long animeId);
 
     /**
      * 视频信息
@@ -23,4 +22,12 @@ public interface AnimeEpisodeService {
      * @return 动漫信息
      */
     AnimeEpisodeDTO add(AddEpisodeParam episodeParam);
+
+    /**
+     * 获取视频播放详情
+     *
+     * @param playId 播放视频ID
+     * @return 视频播放详情
+     */
+    AnimeEpisodeDTO getById(Long playId);
 }

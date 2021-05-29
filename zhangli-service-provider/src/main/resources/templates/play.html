@@ -3,637 +3,637 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title th:text="${playInfoModel?.animeInfo?.name+'-在线测试'}"></title>
-    <meta name="keywords" th:content="${playInfoModel?.animeInfo?.name+'-在线测试'}">
+    <title th:text="${data?.animeInfo?.name+'-在线测试'}"></title>
+    <meta name="keywords" th:content="${data?.animeInfo?.name+'-在线测试'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
-    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/play.css(host=${hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data?.hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/play.css(host=${data?.hostname})}">
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
-    <script th:src="@{{host}/js/detail.js(host=${hostname})}"></script>
-    <script th:src="@{{host}/js/utils.js(host=${hostname})}"></script>
-    <script th:src="@{{host}/js/jquery.foucs.js(host=${hostname})}"></script>
-    <script th:src="@{{host}/js/history.js(host=${hostname})}"></script>
-    <script th:src="@{{host}/js/s_runtimelib.js(host=${hostname})}"></script>
-    <script th:src="@{{host}/js/s_playpre.js(host=${hostname})}"></script>
-    <script th:src="@{{host}/js/age_playpre.js(host=${hostname})}"></script>
-    <script th:src="@{{host}/js/s_dett_pf.js(host=${hostname})}"></script>
-    <script th:src="@{{host}/js/ckplayer.js(host=${hostname})}"></script>
+    <script th:src="@{{host}/js/hm.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/detail.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/utils.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/jquery.foucs.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/history.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/s_runtimelib.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/s_playpre.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/age_playpre.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/s_dett_pf.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/ckplayer.js(host=${data?.hostname})}"></script>
     <!--    <script type="text/javascript" th:src="@{/js/s_dett.js}"></script>-->
 </head>
 
 
 <body>
-    <div id="root">
-        <div id="top" th:include="common/header :: top()"></div>
-        <header id="nav" th:include="common/header :: commonHead('play')"></header>
-        <div id="container">
-            <div id="new_tip1" th:include="common/header :: notification('play')"></div>
-            <div class="baseblock">
-                <div class="blocktitle">
-                    <h4 id="detailname">
-                        <a th:href="${'/detail/'+playInfoModel?.animeInfo?.id}"
-                            th:text="${playInfoModel?.animeInfo?.name}">
-                        </a>
-                    </h4>
-                </div>
-                <div class="line"></div>
-                <div class="blockcontent">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <a th:href="${'/detail/'+playInfoModel?.animeInfo?.id}">
-                                        <img referrerpolicy="no-referrer" id="play_poster_img" width="187" height="260"
-                                            th:src="${playInfoModel?.animeInfo?.coverUrl}"
-                                            th:alt="${playInfoModel?.animeInfo?.name}" alt="番剧剧照"> 0
-                                    </a>
-                                </td>
-                                <td>
-                                    <ul id="play_imform">
+<div id="root">
+    <div id="top" th:include="common/header :: top()"></div>
+    <header id="nav" th:include="common/header :: commonHead('play')"></header>
+    <div id="container">
+        <div id="new_tip1" th:include="common/header :: notification('play')"></div>
+        <div class="baseblock">
+            <div class="blocktitle">
+                <h4 id="detailname">
+                    <a th:href="${'/detail/'+data?.animeInfo?.id}"
+                       th:text="${data?.animeInfo?.name}">
+                    </a>
+                </h4>
+            </div>
+            <div class="line"></div>
+            <div class="blockcontent">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <a th:href="${'/detail/'+data?.animeInfo?.id}">
+                                <img referrerpolicy="no-referrer" id="play_poster_img" width="187" height="260"
+                                     th:src="${data?.animeInfo?.coverUrl}"
+                                     th:alt="${data?.animeInfo?.name}" alt="番剧剧照"> 0
+                            </a>
+                        </td>
+                        <td>
+                            <ul id="play_imform">
 
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">地区：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.district}">日本</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">动画种类：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.type}">暂无</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">原作：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.author}">暂无</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">原版名称：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.getOriginalName()}">ぬるぺた</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">其它名称：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.otherName}">Nullpeta / 娜露和贝塔</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">制作公司：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.company}">SHIN-EI动画</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">首播时间：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.premiereDate}">2019-10-04</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">播放状态：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.playStatus}">完结</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">剧情类型：</span>
-                                            <span class="play_imform_val" th:text="${playInfoModel?.animeInfo?.tags}">搞笑
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">地区：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.district}">日本</span>
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">动画种类：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.type}">暂无</span>
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">原作：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.author}">暂无</span>
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">原版名称：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.getOriginalName()}">ぬるぺた</span>
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">其它名称：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.otherName}">Nullpeta / 娜露和贝塔</span>
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">制作公司：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.company}">SHIN-EI动画</span>
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">首播时间：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.premiereDate}">2019-10-04</span>
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">播放状态：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.playStatus}">完结</span>
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">剧情类型：</span>
+                                    <span class="play_imform_val" th:text="${data?.animeInfo?.tags}">搞笑
                                                 奇幻 百合 治愈</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">更新时间：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.premiereDate}">2020-02-02
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">更新时间：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.premiereDate}">2020-02-02
                                                 18:33:43</span>
-                                        </li>
-                                        <li class="play_imform_kv">
-                                            <span class="play_imform_tag">官方网站：</span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.officialWebsite}">https://nullpeta.com</span>
-                                        </li>
-                                        <li class="play_imform_kv" style="display: none;">
-                                            <span class="play_imform_tag"></span>
-                                            <span class="play_imform_val"
-                                                th:text="${playInfoModel?.animeInfo?.name}">NULL &amp; PETA</span>
+                                </li>
+                                <li class="play_imform_kv">
+                                    <span class="play_imform_tag">官方网站：</span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.officialWebsite}">https://nullpeta.com</span>
+                                </li>
+                                <li class="play_imform_kv" style="display: none;">
+                                    <span class="play_imform_tag"></span>
+                                    <span class="play_imform_val"
+                                          th:text="${data?.animeInfo?.name}">NULL &amp; PETA</span>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="baseblock">
+            <div class="blockcontent">
+                <div id="pp" class="baseblock2">
+                    <div class="blocktitle ppp" id="pp1" routeidx="1">
+                        <span>在线播放：</span>
+                    </div>
+
+                    <div id="playlist-div" class="blockcontent">
+
+                        <div class="tabs" id="id_play_tabs">
+                            <ul class="menu0" id="menu0">
+                                <li onclick="setTab(0,0)" class="on">播放列表1<span class="split"></span></li>
+                                <li onclick="setTab(0,1)" class="">播放列表2<span class="split"></span></li>
+                                <li onclick="setTab(0,2)" class="">播放列表3<span class="split"></span></li>
+                                <li onclick="setTab(0,3)" class="" style="display: none;">播放列表4</li>
+                            </ul>
+                            <div class="main0" id="main0">
+
+                                <div class="movurl" style="display: block;">
+                                    <ul>
+                                        <li>
+                                            <a href="/play/20190209?playid=1_1" target="_self" title="PV 720P"
+                                               style="border: 1px solid rgb(238, 0, 0); color: rgb(238, 0, 0);">PV</a>
                                         </li>
                                     </ul>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="baseblock">
-                <div class="blockcontent">
-                    <div id="pp" class="baseblock2">
-                        <div class="blocktitle ppp" id="pp1" routeidx="1">
-                            <span>在线播放：</span>
-                        </div>
-
-                        <div id="playlist-div" class="blockcontent">
-
-                            <div class="tabs" id="id_play_tabs">
-                                <ul class="menu0" id="menu0">
-                                    <li onclick="setTab(0,0)" class="on">播放列表1<span class="split"></span></li>
-                                    <li onclick="setTab(0,1)" class="">播放列表2<span class="split"></span></li>
-                                    <li onclick="setTab(0,2)" class="">播放列表3<span class="split"></span></li>
-                                    <li onclick="setTab(0,3)" class="" style="display: none;">播放列表4</li>
-                                </ul>
-                                <div class="main0" id="main0">
-
-                                    <div class="movurl" style="display: block;">
-                                        <ul>
-                                            <li>
-                                                <a href="/play/20190209?playid=1_1" target="_self" title="PV 720P"
-                                                    style="border: 1px solid rgb(238, 0, 0); color: rgb(238, 0, 0);">PV</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="movurl" style="display: none;">
-                                        <ul>
-                                            <li>
-                                                <a href="/play/20190209?playid=2_1" target="_self"
-                                                    title="第01话 [1080p][CHS]">第01话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_2" target="_self"
-                                                    title="第02话 [1080p][CHS]">第02话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_3" target="_self"
-                                                    title="第03话 [1080p][CHS]">第03话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_4" target="_self"
-                                                    title="第04话 [1080p][CHS]">第04话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_5" target="_self"
-                                                    title="第05话 [1080p][CHS]">第05话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_6" target="_self"
-                                                    title="第06话 [1080p][CHS]">第06话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_7" target="_self"
-                                                    title="第07话 [1080p][CHS]">第07话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_8" target="_self"
-                                                    title="第08话 [1080p][CHS]">第08话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_9" target="_self"
-                                                    title="第09话 [1080p][CHS]">第09话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_10" target="_self"
-                                                    title="第10话 [1080p][CHS]">第10话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_11" target="_self"
-                                                    title="第11话 [1080p][CHS]">第11话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_12" target="_self"
-                                                    title="第12话 [1080p][CHS]">第12话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=2_13" target="_self"
-                                                    title="第13话(OVA) [GB][1080P]">第13话(OVA)</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="movurl" style="display:none">
-                                        <ul>
-                                            <li>
-                                                <a href="/play/20190209?playid=3_1" target="_self"
-                                                    title="第01话 [1080p][CH">第01话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_2" target="_self"
-                                                    title="第02话 [1080p][CHS]">第02话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_3" target="_self"
-                                                    title="第03话 [1080p][CHS]">第03话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_4" target="_self"
-                                                    title="第04话 [1080p][CHS]">第04话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_5" target="_self"
-                                                    title="第05话 [1080p][CHS]">第05话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_6" target="_self"
-                                                    title="第06话 [1080p][CHS]">第06话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_7" target="_self"
-                                                    title="第07话 [1080p][CHS]">第07话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_8" target="_self"
-                                                    title="第08话 [1080p][CHS]">第08话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_9" target="_self"
-                                                    title="第09话 [1080p][CHS]">第09话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_10" target="_self"
-                                                    title="第10话 [1080p][CHS]">第10话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_11" target="_self"
-                                                    title="第11话 [1080p][CHS]">第11话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_12" target="_self"
-                                                    title="第12话 [1080p][CHS]">第12话</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/play/20190209?playid=3_13" target="_self"
-                                                    title="第13话(OVA) [GB][1080P]">第13话(OVA)</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="movurl" style="display:none">
-                                        <ul></ul>
-                                    </div>
                                 </div>
 
-                                <script id="DEF_PLAYINDEX">1</script>
-                                <script>
-                                    __set_playtab_curr_on_index(0);
-                                    __age_play_ep_scroll();
-                                </script>
-                            </div>
-                        </div>
+                                <div class="movurl" style="display: none;">
+                                    <ul>
+                                        <li>
+                                            <a href="/play/20190209?playid=2_1" target="_self"
+                                               title="第01话 [1080p][CHS]">第01话</a>
+                                        </li>
 
-                        <div id="ageframeblock" class="content">
-                            <div id="ageframediv" style="width: 980px; height: 551px;">
-                                <!--                            <span id="ipchk_getplay" hidden="hidden"-->
-                                <!--                                  style="float: left;color: #F00;margin: 5px;font-size: 1.1em;"></span>-->
-                                <!--                            <iframe id="age_playfram" src="/saved_resource.html" height="100%" width="100%"-->
-                                <!--                                    scrolling="no" allowfullscreen="" frameborder="0"></iframe>-->
-                                <!--                            <div id="testvideo_div" hidden="hidden"></div>-->
-                                <!--                            <a class="fullscn" style="display: none;">网页全屏</a></div>-->
-                                <!--                        <script>-->
-                                <!--                            __yx_SetMainPlayIFrameSRC("age_playfram", __age_cb_getplay_url);-->
-                                <!--                            __age_exp_playfull_set("ageframediv");-->
-                                <!--                        </script>-->
-                                <script type="text/javascript">
-                                    //定义一个变量：videoObject，用来做为视频初始化配置
-                                    var videoObject = {
-                                        container: '#ageframediv', //“#”代表容器的ID，“.”或“”代表容器的class
-                                        variable: 'player', //播放函数名称，该属性必需设置，值等于下面的new ckplayer()的对象
-                                        video: 'http://localhost/紫罗兰-10.mp4'//视频地址
-                                    };
-                                    var player = new ckplayer(videoObject);//初始化播放器
-                                </script>
+                                        <li>
+                                            <a href="/play/20190209?playid=2_2" target="_self"
+                                               title="第02话 [1080p][CHS]">第02话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_3" target="_self"
+                                               title="第03话 [1080p][CHS]">第03话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_4" target="_self"
+                                               title="第04话 [1080p][CHS]">第04话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_5" target="_self"
+                                               title="第05话 [1080p][CHS]">第05话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_6" target="_self"
+                                               title="第06话 [1080p][CHS]">第06话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_7" target="_self"
+                                               title="第07话 [1080p][CHS]">第07话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_8" target="_self"
+                                               title="第08话 [1080p][CHS]">第08话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_9" target="_self"
+                                               title="第09话 [1080p][CHS]">第09话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_10" target="_self"
+                                               title="第10话 [1080p][CHS]">第10话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_11" target="_self"
+                                               title="第11话 [1080p][CHS]">第11话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_12" target="_self"
+                                               title="第12话 [1080p][CHS]">第12话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=2_13" target="_self"
+                                               title="第13话(OVA) [GB][1080P]">第13话(OVA)</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="movurl" style="display:none">
+                                    <ul>
+                                        <li>
+                                            <a href="/play/20190209?playid=3_1" target="_self"
+                                               title="第01话 [1080p][CH">第01话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_2" target="_self"
+                                               title="第02话 [1080p][CHS]">第02话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_3" target="_self"
+                                               title="第03话 [1080p][CHS]">第03话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_4" target="_self"
+                                               title="第04话 [1080p][CHS]">第04话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_5" target="_self"
+                                               title="第05话 [1080p][CHS]">第05话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_6" target="_self"
+                                               title="第06话 [1080p][CHS]">第06话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_7" target="_self"
+                                               title="第07话 [1080p][CHS]">第07话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_8" target="_self"
+                                               title="第08话 [1080p][CHS]">第08话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_9" target="_self"
+                                               title="第09话 [1080p][CHS]">第09话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_10" target="_self"
+                                               title="第10话 [1080p][CHS]">第10话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_11" target="_self"
+                                               title="第11话 [1080p][CHS]">第11话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_12" target="_self"
+                                               title="第12话 [1080p][CHS]">第12话</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/play/20190209?playid=3_13" target="_self"
+                                               title="第13话(OVA) [GB][1080P]">第13话(OVA)</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="movurl" style="display:none">
+                                    <ul></ul>
+                                </div>
                             </div>
+
+                            <script id="DEF_PLAYINDEX">1</script>
+                            <script>
+                                __set_playtab_curr_on_index(0);
+                                __age_play_ep_scroll();
+                            </script>
+                        </div>
+                    </div>
+
+                    <div id="ageframeblock" class="content">
+                        <div id="ageframediv" style="width: 980px; height: 551px;">
+                            <!--                            <span id="ipchk_getplay" hidden="hidden"-->
+                            <!--                                  style="float: left;color: #F00;margin: 5px;font-size: 1.1em;"></span>-->
+                            <!--                            <iframe id="age_playfram" src="/saved_resource.html" height="100%" width="100%"-->
+                            <!--                                    scrolling="no" allowfullscreen="" frameborder="0"></iframe>-->
+                            <!--                            <div id="testvideo_div" hidden="hidden"></div>-->
+                            <!--                            <a class="fullscn" style="display: none;">网页全屏</a></div>-->
+                            <!--                        <script>-->
+                            <!--                            __yx_SetMainPlayIFrameSRC("age_playfram", __age_cb_getplay_url);-->
+                            <!--                            __age_exp_playfull_set("ageframediv");-->
+                            <!--                        </script>-->
+                            <script th:inline="javascript">
+                                //定义一个变量：videoObject，用来做为视频初始化配置
+                                var videoObject = {
+                                    container: '#ageframediv', //“#”代表容器的ID，“.”或“”代表容器的class
+                                    variable: 'player', //播放函数名称，该属性必需设置，值等于下面的new ckplayer()的对象
+                                    video: [[${data?.episodeInfo?.url}]]//视频地址
+                                };
+                                var player = new ckplayer(videoObject);//初始化播放器
+                            </script>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <script>
-                    document.querySelector('#pp').scrollIntoView(false);
-                </script>
+            <script>
+                document.querySelector('#pp').scrollIntoView(false);
+            </script>
 
-                <div class="baseblock">
-                    <div class="blockcontent">
-                        <div id="wangpan-div" class="baseblock2">
-                            <div class="blocktitle">网盘资源：</div>
-                            <div class="blockcontent">
+            <div class="baseblock">
+                <div class="blockcontent">
+                    <div id="wangpan-div" class="baseblock2">
+                        <div class="blocktitle">网盘资源：</div>
+                        <div class="blockcontent">
                                 <span class="res_links">
                                     <a class="res_links_a" th:href="@{/link/20190209/0}" target="_blank">[TV 01-12+OVA
                                         BD-1080P]</a>
                                     <span class="res_links_pswd_tag">(提取码:</span>
                                     <span class="res_links_pswd">1407)</span></span>
-                                <br>
-                            </div>
+                            <br>
                         </div>
-                    </div>
-                </div>
-
-
-                <div class="spaceblock1"></div>
-                <div class="baseblock">
-                    <div class="blocktitle">简介：</div>
-                    <div class="line"></div>
-                    <div class="blockcontent">
-                        <div class="play_desc">
-                            <p th:text="${playInfoModel?.animeInfo?.instruction}"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="spaceblock1"></div>
-                <div class="baseblock">
-                    <div class="blocktitle">反馈：</div>
-
-
-                    <div class="report_div">
-                        <form id="report_form" action="/report" method="GET">
-                            <div>
-                                <input id="report_aid" type="hidden" name="animeid" value="20190209">
-                                <label>
-                                    <input type="checkbox" name="link_invalid" value="1">链接失效</label>
-                                <label>
-                                    <input type="checkbox" name="bad_quality" value="1">资源质量差</label>
-                                <label>
-                                    <input type="checkbox" name="some_missing" value="1">集数缺失</label>
-                                <label>
-                                    <input type="checkbox" name="other" value="1">其他</label>
-                                <input name="other_text" placeholder="请告诉AGE详细情况~~" wrap="SOFT" spellcheck="0"
-                                    autocapitalize="off" autocomplete="off" autocorrect="off">
-                                <input class="nbutton" type="submit" value="提交">
-                            </div>
-                        </form>
-                        <script>
-                            const AID = __get_detail_play_page_AID();
-
-                            $('#report_aid').attr('value', AID);
-
-                            $(`#report_form`).on('submit',
-                                function () {
-                                    registPost();
-                                    event.preventDefault(); //阻止form表单默认提交
-                                });
-
-                            function registPost() {
-                                $.ajax({
-                                    type: "get",
-                                    url: "/report?" + $('#report_form').serialize(),
-                                }).success(function (message) {
-                                    alert(message);
-                                }).fail(function (err) {
-                                    alert('未知错误');
-                                });
-                            }
-                        </script>
-                    </div>
-                </div>
-                <div class="spaceblock1"></div>
-                <div class="baseblock">
-                    <div class="blocktitle">看过《NULL &amp; PETA》的人还看过：</div>
-                    <div class="line"></div>
-                    <div class="blockcontent">
-                        <ul class="ul_li_a8">
-                            <li class="anime_icon1">
-                                <a href="/detail/20170042">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                        src="/H913d39ec1c4d48829d5018875503d13bh.jpg"
-                                        data-src="//sc02.alicdn.com/kf/H913d39ec1c4d48829d5018875503d13bh.jpg"></a>
-                                <a href="/detail/20170042">
-                                    <div class="anime_icon1_name">徒然喜欢你</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20180031">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                        src="/Haca4ba804e2243f68964e932b2e32eadY.jpg"
-                                        data-src="//sc02.alicdn.com/kf/Haca4ba804e2243f68964e932b2e32eadY.jpg"></a>
-                                <a href="/detail/20180031">
-                                    <div class="anime_icon1_name">优C世界</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20170069">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                        src="/H4287714e3b83442aa4fe8e18d3ba88e4m.jpg"
-                                        data-src="//sc02.alicdn.com/kf/H4287714e3b83442aa4fe8e18d3ba88e4m.jpg"></a>
-                                <a href="/detail/20170069">
-                                    <div class="anime_icon1_name">有顶天家族 第二季</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20170142">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                        src="/Hb5dcf2c5404c4f07a1b18e1a4ae384ace.jpg"
-                                        data-src="//sc02.alicdn.com/kf/Hb5dcf2c5404c4f07a1b18e1a4ae384ace.jpg"></a>
-                                <a href="/detail/20170142">
-                                    <div class="anime_icon1_name">KiraKira☆光之美少女 A La Mode 清脆出炉！回忆的法式千层酥！</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20110051">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                        src="/H5053d55f53b04bd8b5fb341085e6fe96y.jpg"
-                                        data-src="//sc02.alicdn.com/kf/H5053d55f53b04bd8b5fb341085e6fe96y.jpg"></a>
-                                <a href="/detail/20110051">
-                                    <div class="anime_icon1_name">恶魔阿萨谢尔在召唤你</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20170097">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                        src="/H04440c7bcfed4fd99f014b2e05fb01a1u.jpg"
-                                        data-src="//sc02.alicdn.com/kf/H04440c7bcfed4fd99f014b2e05fb01a1u.jpg"></a>
-                                <a href="/detail/20170097">
-                                    <div class="anime_icon1_name">结城友奈是勇者 鹫尾须美之章</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20140071">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                        src="/H1c81c2a7246d447cbcf363d0514a30499.jpg"
-                                        data-src="//sc02.alicdn.com/kf/H1c81c2a7246d447cbcf363d0514a30499.jpg"></a>
-                                <a href="/detail/20140071">
-                                    <div class="anime_icon1_name">棺姬嘉依卡</div>
-                                </a>
-                            </li>
-
-                            <li class="anime_icon1">
-                                <a href="/detail/20190052">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
-                                        src="/H94f6b0966c2140cba8510dec831046e0v.jpg"
-                                        data-src="//sc02.alicdn.com/kf/H94f6b0966c2140cba8510dec831046e0v.jpg"></a>
-                                <a href="/detail/20190052">
-                                    <div class="anime_icon1_name">一个人的〇〇小日子</div>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-                <div class="spaceblock1"></div>
-                <div class="baseblock">
-                    <div class="blocktitle">留言板：</div>
-                    <div class="line"></div>
-
-                    <div class="blockcontent">
-
-                        <form id="comment_form" action="javascript:void(0)" method="GET">
-                            <div>
-                                <input id="comment_id" type="hidden" name="cid" value="20190209">
-                                <textarea id="comment_content" wrap="SOFT" spellcheck="false" autocapitalize="off"
-                                    autocomplete="off" autocorrect="off" placeholder="说点什么吧" name="comment_content"
-                                    tid="20180132"
-                                    csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm"></textarea>
-                                <label class="comment_imform_tag">昵称：</label>
-                                <input readonly="true" id="comment_user" class="" name="comment_user" wrap="SOFT"
-                                    spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
-                                    placeholder="名字" value="游客">
-                                <input class="nbutton" type="submit" name="">
-                            </div>
-                            <script>
-                                __set_on_sendcomment();
-                            </script>
-                        </form>
-
-
-                        <script>
-                            __html_set_username();
-                        </script>
-
-                        <!-- 评论列表 -->
-                        <ul id="comment_list" style="margin-top: 16px;">
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="comment_cell_user">游客120023001980153</div>
-                                <div class="comment_cell_content">
-                                    <div>●●●○○ 4.0-</div>
-                                    <div class="comment_cell_time asciifont">2020-09-12 17:56:57</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="comment_cell_user">游客12002300198083</div>
-                                <div class="comment_cell_content">
-                                    <div>◆◆◆◆◇ 4.0-</div>
-                                    <div class="comment_cell_time asciifont">2020-09-08 07:41:29</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="comment_cell_user">游客12002300197066</div>
-                                <div class="comment_cell_content">
-                                    <div>★★★★☆ 4.0</div>
-                                    <div class="comment_cell_time asciifont">2020-09-01 14:59:12</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="comment_cell_user">游客183016201790255</div>
-                                <div class="comment_cell_content">
-                                    <div>ha hi hu he ho</div>
-                                    <div class="comment_cell_time asciifont">2020-09-01 14:40:19</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="comment_cell_user">游客120023001900182</div>
-                                <div class="comment_cell_content">
-                                    <div>na ni nu ne no</div>
-                                    <div class="comment_cell_time asciifont">2020-09-01 11:12:40</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="comment_cell_user">游客11701520156012</div>
-                                <div class="comment_cell_content">
-                                    <div>在飞行</div>
-                                    <div class="comment_cell_time asciifont">2020-09-01 09:31:24</div>
-                                </div>
-                            </li>
-                            <li class="comment">
-                                <hr class="hrspace2">
-                                <div class="comment_cell_user">游客17206901350194</div>
-                                <div class="comment_cell_content">
-                                    <div>說真的如果晚上有人讀教科書給我聽可能真的比較容易入睡</div>
-                                    <div class="comment_cell_time asciifont">2020-08-27 15:40:03</div>
-                                </div>
-                            </li>
-                            <hr class="hrspace2">
-                            <div id="current_comment_page" page=""></div>
-                        </ul>
-
-
-                        <!-- 评论翻页 -->
-                        <div class="spaceblock1"></div>
-                        <ul class="comment_page">
-                            <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">首页</a></li>
-
-                            <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">1</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                    onclick="__age_show_comments_page(1)">2</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                    onclick="__age_show_comments_page(2)">3</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                    onclick="__age_show_comments_page(3)">4</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                    onclick="__age_show_comments_page(4)">5</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                    onclick="__age_show_comments_page(5)">6</a></li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                    onclick="__age_show_comments_page(1)">下一页</a>
-                            </li>
-
-                            <li><a class="pbutton  asciifont" href="javascript:void(0)"
-                                    onclick="__age_show_comments_page(12)">尾页</a>
-                            </li>
-                        </ul>
-
-                        <!-- write comments -->
-                        <script>
-                            __age_show_comments_page(0);
-                        </script>
                     </div>
                 </div>
             </div>
-            <footer id="footer" th:include="common/header :: footer()"></footer>
+
+
+            <div class="spaceblock1"></div>
+            <div class="baseblock">
+                <div class="blocktitle">简介：</div>
+                <div class="line"></div>
+                <div class="blockcontent">
+                    <div class="play_desc">
+                        <p th:text="${data?.animeInfo?.instruction}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="spaceblock1"></div>
+            <div class="baseblock">
+                <div class="blocktitle">反馈：</div>
+
+
+                <div class="report_div">
+                    <form id="report_form" action="/report" method="GET">
+                        <div>
+                            <input id="report_aid" type="hidden" name="animeid" value="20190209">
+                            <label>
+                                <input type="checkbox" name="link_invalid" value="1">链接失效</label>
+                            <label>
+                                <input type="checkbox" name="bad_quality" value="1">资源质量差</label>
+                            <label>
+                                <input type="checkbox" name="some_missing" value="1">集数缺失</label>
+                            <label>
+                                <input type="checkbox" name="other" value="1">其他</label>
+                            <input name="other_text" placeholder="请告诉AGE详细情况~~" wrap="SOFT" spellcheck="0"
+                                   autocapitalize="off" autocomplete="off" autocorrect="off">
+                            <input class="nbutton" type="submit" value="提交">
+                        </div>
+                    </form>
+                    <script>
+                        const AID = __get_detail_play_page_AID();
+
+                        $('#report_aid').attr('value', AID);
+
+                        $(`#report_form`).on('submit',
+                            function () {
+                                registPost();
+                                event.preventDefault(); //阻止form表单默认提交
+                            });
+
+                        function registPost() {
+                            $.ajax({
+                                type: "get",
+                                url: "/report?" + $('#report_form').serialize(),
+                            }).success(function (message) {
+                                alert(message);
+                            }).fail(function (err) {
+                                alert('未知错误');
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
+            <div class="spaceblock1"></div>
+            <div class="baseblock">
+                <div class="blocktitle">看过《NULL &amp; PETA》的人还看过：</div>
+                <div class="line"></div>
+                <div class="blockcontent">
+                    <ul class="ul_li_a8">
+                        <li class="anime_icon1">
+                            <a href="/detail/20170042">
+                                <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                     src="/H913d39ec1c4d48829d5018875503d13bh.jpg"
+                                     data-src="//sc02.alicdn.com/kf/H913d39ec1c4d48829d5018875503d13bh.jpg"></a>
+                            <a href="/detail/20170042">
+                                <div class="anime_icon1_name">徒然喜欢你</div>
+                            </a>
+                        </li>
+
+                        <li class="anime_icon1">
+                            <a href="/detail/20180031">
+                                <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                     src="/Haca4ba804e2243f68964e932b2e32eadY.jpg"
+                                     data-src="//sc02.alicdn.com/kf/Haca4ba804e2243f68964e932b2e32eadY.jpg"></a>
+                            <a href="/detail/20180031">
+                                <div class="anime_icon1_name">优C世界</div>
+                            </a>
+                        </li>
+
+                        <li class="anime_icon1">
+                            <a href="/detail/20170069">
+                                <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                     src="/H4287714e3b83442aa4fe8e18d3ba88e4m.jpg"
+                                     data-src="//sc02.alicdn.com/kf/H4287714e3b83442aa4fe8e18d3ba88e4m.jpg"></a>
+                            <a href="/detail/20170069">
+                                <div class="anime_icon1_name">有顶天家族 第二季</div>
+                            </a>
+                        </li>
+
+                        <li class="anime_icon1">
+                            <a href="/detail/20170142">
+                                <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                     src="/Hb5dcf2c5404c4f07a1b18e1a4ae384ace.jpg"
+                                     data-src="//sc02.alicdn.com/kf/Hb5dcf2c5404c4f07a1b18e1a4ae384ace.jpg"></a>
+                            <a href="/detail/20170142">
+                                <div class="anime_icon1_name">KiraKira☆光之美少女 A La Mode 清脆出炉！回忆的法式千层酥！</div>
+                            </a>
+                        </li>
+
+                        <li class="anime_icon1">
+                            <a href="/detail/20110051">
+                                <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                     src="/H5053d55f53b04bd8b5fb341085e6fe96y.jpg"
+                                     data-src="//sc02.alicdn.com/kf/H5053d55f53b04bd8b5fb341085e6fe96y.jpg"></a>
+                            <a href="/detail/20110051">
+                                <div class="anime_icon1_name">恶魔阿萨谢尔在召唤你</div>
+                            </a>
+                        </li>
+
+                        <li class="anime_icon1">
+                            <a href="/detail/20170097">
+                                <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                     src="/H04440c7bcfed4fd99f014b2e05fb01a1u.jpg"
+                                     data-src="//sc02.alicdn.com/kf/H04440c7bcfed4fd99f014b2e05fb01a1u.jpg"></a>
+                            <a href="/detail/20170097">
+                                <div class="anime_icon1_name">结城友奈是勇者 鹫尾须美之章</div>
+                            </a>
+                        </li>
+
+                        <li class="anime_icon1">
+                            <a href="/detail/20140071">
+                                <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                     src="/H1c81c2a7246d447cbcf363d0514a30499.jpg"
+                                     data-src="//sc02.alicdn.com/kf/H1c81c2a7246d447cbcf363d0514a30499.jpg"></a>
+                            <a href="/detail/20140071">
+                                <div class="anime_icon1_name">棺姬嘉依卡</div>
+                            </a>
+                        </li>
+
+                        <li class="anime_icon1">
+                            <a href="/detail/20190052">
+                                <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
+                                     src="/H94f6b0966c2140cba8510dec831046e0v.jpg"
+                                     data-src="//sc02.alicdn.com/kf/H94f6b0966c2140cba8510dec831046e0v.jpg"></a>
+                            <a href="/detail/20190052">
+                                <div class="anime_icon1_name">一个人的〇〇小日子</div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="spaceblock1"></div>
+            <div class="baseblock">
+                <div class="blocktitle">留言板：</div>
+                <div class="line"></div>
+
+                <div class="blockcontent">
+
+                    <form id="comment_form" action="javascript:void(0)" method="GET">
+                        <div>
+                            <input id="comment_id" type="hidden" name="cid" value="20190209">
+                            <textarea id="comment_content" wrap="SOFT" spellcheck="false" autocapitalize="off"
+                                      autocomplete="off" autocorrect="off" placeholder="说点什么吧" name="comment_content"
+                                      tid="20180132"
+                                      csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm"></textarea>
+                            <label class="comment_imform_tag">昵称：</label>
+                            <input readonly="true" id="comment_user" class="" name="comment_user" wrap="SOFT"
+                                   spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
+                                   placeholder="名字" value="游客">
+                            <input class="nbutton" type="submit" name="">
+                        </div>
+                        <script>
+                            __set_on_sendcomment();
+                        </script>
+                    </form>
+
+
+                    <script>
+                        __html_set_username();
+                    </script>
+
+                    <!-- 评论列表 -->
+                    <ul id="comment_list" style="margin-top: 16px;">
+                        <li class="comment">
+                            <hr class="hrspace2">
+                            <div class="comment_cell_user">游客120023001980153</div>
+                            <div class="comment_cell_content">
+                                <div>●●●○○ 4.0-</div>
+                                <div class="comment_cell_time asciifont">2020-09-12 17:56:57</div>
+                            </div>
+                        </li>
+                        <li class="comment">
+                            <hr class="hrspace2">
+                            <div class="comment_cell_user">游客12002300198083</div>
+                            <div class="comment_cell_content">
+                                <div>◆◆◆◆◇ 4.0-</div>
+                                <div class="comment_cell_time asciifont">2020-09-08 07:41:29</div>
+                            </div>
+                        </li>
+                        <li class="comment">
+                            <hr class="hrspace2">
+                            <div class="comment_cell_user">游客12002300197066</div>
+                            <div class="comment_cell_content">
+                                <div>★★★★☆ 4.0</div>
+                                <div class="comment_cell_time asciifont">2020-09-01 14:59:12</div>
+                            </div>
+                        </li>
+                        <li class="comment">
+                            <hr class="hrspace2">
+                            <div class="comment_cell_user">游客183016201790255</div>
+                            <div class="comment_cell_content">
+                                <div>ha hi hu he ho</div>
+                                <div class="comment_cell_time asciifont">2020-09-01 14:40:19</div>
+                            </div>
+                        </li>
+                        <li class="comment">
+                            <hr class="hrspace2">
+                            <div class="comment_cell_user">游客120023001900182</div>
+                            <div class="comment_cell_content">
+                                <div>na ni nu ne no</div>
+                                <div class="comment_cell_time asciifont">2020-09-01 11:12:40</div>
+                            </div>
+                        </li>
+                        <li class="comment">
+                            <hr class="hrspace2">
+                            <div class="comment_cell_user">游客11701520156012</div>
+                            <div class="comment_cell_content">
+                                <div>在飞行</div>
+                                <div class="comment_cell_time asciifont">2020-09-01 09:31:24</div>
+                            </div>
+                        </li>
+                        <li class="comment">
+                            <hr class="hrspace2">
+                            <div class="comment_cell_user">游客17206901350194</div>
+                            <div class="comment_cell_content">
+                                <div>說真的如果晚上有人讀教科書給我聽可能真的比較容易入睡</div>
+                                <div class="comment_cell_time asciifont">2020-08-27 15:40:03</div>
+                            </div>
+                        </li>
+                        <hr class="hrspace2">
+                        <div id="current_comment_page" page=""></div>
+                    </ul>
+
+
+                    <!-- 评论翻页 -->
+                    <div class="spaceblock1"></div>
+                    <ul class="comment_page">
+                        <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">首页</a></li>
+
+                        <li><a class="pbutton pbutton_current asciifont" href="javascript:void(0)">1</a></li>
+
+                        <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                               onclick="__age_show_comments_page(1)">2</a></li>
+
+                        <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                               onclick="__age_show_comments_page(2)">3</a></li>
+
+                        <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                               onclick="__age_show_comments_page(3)">4</a></li>
+
+                        <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                               onclick="__age_show_comments_page(4)">5</a></li>
+
+                        <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                               onclick="__age_show_comments_page(5)">6</a></li>
+
+                        <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                               onclick="__age_show_comments_page(1)">下一页</a>
+                        </li>
+
+                        <li><a class="pbutton  asciifont" href="javascript:void(0)"
+                               onclick="__age_show_comments_page(12)">尾页</a>
+                        </li>
+                    </ul>
+
+                    <!-- write comments -->
+                    <script>
+                        __age_show_comments_page(0);
+                    </script>
+                </div>
+            </div>
         </div>
-
-
-        <script>var _hmt = _hmt || [];
-            (function () {
-                var hm = document.createElement("script");
-                hm.src = "https://hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
-                var s = document.getElementsByTagName("script")[0];
-                s.parentNode.insertBefore(hm, s);
-            })();
-        </script>
+        <footer id="footer" th:include="common/header :: footer()"></footer>
     </div>
+
+
+    <script>var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</div>
 </body>
 
 </html>

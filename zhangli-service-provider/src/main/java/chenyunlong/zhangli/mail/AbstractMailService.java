@@ -2,10 +2,12 @@ package chenyunlong.zhangli.mail;
 
 import chenyunlong.zhangli.common.exception.EmailException;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import cn.hutool.extra.mail.Mail;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -29,17 +31,19 @@ import java.util.function.Consumer;
 public abstract class AbstractMailService implements MailService {
 
     private static final int DEFAULT_POOL_SIZE = 5;
+
+
     private final ZhangliProperties zhangliProperties;
 
-    private JavaMailSender cachedMailSender;
-
-    private String cachedFromName;
+    private JavaMailSender mailSender;
 
     @Nullable
     private ExecutorService executorService;
+    private String cachedFromName;
 
-    protected AbstractMailService(ZhangliProperties zhangliProperties) {
+    protected AbstractMailService(ZhangliProperties zhangliProperties, JavaMailSender mailSender) {
         this.zhangliProperties = zhangliProperties;
+        this.mailSender = mailSender;
     }
 
     @NonNull
@@ -59,7 +63,7 @@ public abstract class AbstractMailService implements MailService {
      */
     @Override
     public void testConnection() {
-        JavaMailSender javaMailSender = getMailSender();
+        MailSender javaMailSender = getMailSender();
         if (javaMailSender instanceof JavaMailSenderImpl) {
             JavaMailSenderImpl mailSender = (JavaMailSenderImpl) javaMailSender;
             try {
@@ -81,7 +85,7 @@ public abstract class AbstractMailService implements MailService {
             return;
         }
 
-        if (!zhangliProperties.getEmail().isEnabled()) {
+        if (!zhangliProperties.isMailEnabled()) {
             // If disabled
             log.info("Email has been disabled by yourself, you can re-enable it through email settings"
                     + " on admin page.");
@@ -138,14 +142,13 @@ public abstract class AbstractMailService implements MailService {
      */
     @NonNull
     private synchronized JavaMailSender getMailSender() {
-        if (this.cachedMailSender == null) {
-            // create mail sender factory
-            MailSenderFactory mailSenderFactory = new MailSenderFactory();
-            // get mail sender
-            this.cachedMailSender = mailSenderFactory.getMailSender(zhangliProperties.getEmail());
-        }
-
-        return this.cachedMailSender;
+//        if (this.mailSender == null) {
+//            // create mail sender factory
+//            MailSenderFactory mailSenderFactory = new MailSenderFactory();
+//            // get mail sender
+//            this.mailSender = mailSenderFactory.getMailSender(mailProperties);
+//        }
+        return this.mailSender;
     }
 
     /**
@@ -155,14 +158,8 @@ public abstract class AbstractMailService implements MailService {
      * @return from-name internet address
      * @throws UnsupportedEncodingException throws when you give a wrong character encoding
      */
-    private synchronized InternetAddress getFromAddress(@NonNull JavaMailSender javaMailSender)
-            throws UnsupportedEncodingException {
+    private synchronized InternetAddress getFromAddress(@NonNull JavaMailSender javaMailSender) throws UnsupportedEncodingException {
         Assert.notNull(javaMailSender, "Java mail sender must not be null");
-
-        if (StringUtils.isBlank(this.cachedFromName)) {
-            // set personal name
-            this.cachedFromName = zhangliProperties.getEmail().getUsername();
-        }
 
         if (javaMailSender instanceof JavaMailSenderImpl) {
             // get user name(email)
@@ -181,7 +178,7 @@ public abstract class AbstractMailService implements MailService {
      * Clear cached instance.
      */
     protected void clearCache() {
-        this.cachedMailSender = null;
+        this.mailSender = null;
         this.cachedFromName = null;
         log.debug("Cleared all mail caches");
     }

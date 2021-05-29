@@ -1,7 +1,10 @@
 package chenyunlong.zhangli.mapper;
 
+import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -23,4 +26,6 @@ public interface AnimeEpisodeMapper extends BaseMapper<AnimeEpisodeEntity> {
      */
     @Select("select * from anime_episode where anime_id=#{animeId}")
     List<AnimeEpisodeEntity> selectByAnimeId(@Param("animeId") Long animeId);
+
+    List<AnimeEpisodeDTO> listEpisodeByAnimeId(@Param(Constants.WRAPPER) QueryWrapper<AnimeEpisodeEntity> queryWrapper);
 }

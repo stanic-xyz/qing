@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class AnimeEpisodeDTO implements OutputConverter<AnimeEpisodeDTO, AnimeEpisodeEntity> {
@@ -22,8 +23,7 @@ public class AnimeEpisodeDTO implements OutputConverter<AnimeEpisodeDTO, AnimeEp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime uploadTime;
-    private String url1;
-    private String url3;
-    private String url2;
+    private String url;
     private Integer orderNo;
+    private List<AnimeEpisodeDTO> animeEpisodeList;
 }

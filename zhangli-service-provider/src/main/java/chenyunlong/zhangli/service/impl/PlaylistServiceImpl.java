@@ -1,9 +1,11 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.mapper.AnimeEpisodeMapper;
 import chenyunlong.zhangli.mapper.AnimePlaylistMapper;
+import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
+import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.model.entities.anime.PlaylistEntity;
+import chenyunlong.zhangli.service.AnimeEpisodeService;
 import chenyunlong.zhangli.service.PlaylistService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,12 @@ import java.util.stream.Collectors;
 public class PlaylistServiceImpl implements PlaylistService {
 
     private final AnimePlaylistMapper animePlaylistMapper;
-    private final AnimeEpisodeMapper episodeMapper;
+    private final AnimeEpisodeService episodeService;
 
-    public PlaylistServiceImpl(AnimePlaylistMapper animePlaylistMapper, AnimeEpisodeMapper episodeMapper) {
+    public PlaylistServiceImpl(AnimePlaylistMapper animePlaylistMapper,
+                               AnimeEpisodeService episodeService) {
         this.animePlaylistMapper = animePlaylistMapper;
-        this.episodeMapper = episodeMapper;
+        this.episodeService = episodeService;
     }
 
     @Override
@@ -30,7 +33,11 @@ public class PlaylistServiceImpl implements PlaylistService {
         QueryWrapper<PlaylistEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("anime_id", animeId);
         List<PlaylistEntity> playlistEntities = animePlaylistMapper.selectList(queryWrapper);
-        return convertToListVo(playlistEntities);
+        QueryWrapper<AnimeEpisodeEntity> episodeQueryWrapper = new QueryWrapper<>();
+        episodeQueryWrapper.eq("anime_id", animeId);
+        List<AnimeEpisodeDTO> episodeDTOList = episodeService.listEpisodeByAnimeId(animeId);
+
+        return convertToListVo(playlistEntities, episodeDTOList);
     }
 
     @Override
@@ -42,13 +49,16 @@ public class PlaylistServiceImpl implements PlaylistService {
         return new PlayListDTO().convertFrom(playlistEntity);
     }
 
-    public List<PlayListDTO> convertToListVo(List<PlaylistEntity> episodeEntities) {
-        return episodeEntities.stream().map(episode
-                ->
+    public List<PlayListDTO> convertToListVo(List<PlaylistEntity> playlistEntities, List<AnimeEpisodeDTO> episodeEntities) {
+        //转换查询到的列表信息
+        return playlistEntities.stream().map(episode ->
         {
+            //查询列表中的视频信息
             PlayListDTO playListDTO = new PlayListDTO().convertFrom(episode);
-
+            playListDTO.setEpisodeList(episodeEntities.stream().filter(animeEpisodeDTO -> animeEpisodeDTO.getAnimeId().equals(episode.getAnimeId())).collect(Collectors.toList()));
             return playListDTO;
         }).collect(Collectors.toList());
     }
+
+
 }

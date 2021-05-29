@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @Configuration
-@NoArgsConstructor
-@AllArgsConstructor
 @ConfigurationProperties(prefix = "zhangli")
 public class ZhangliProperties {
     private boolean openAopLog = true;
@@ -20,7 +18,6 @@ public class ZhangliProperties {
     private SecurityProperties security = new SecurityProperties();
     private SwaggerProperties swagger = new SwaggerProperties();
     private String authenticationPrefix;
-    private EmailProperties email = new EmailProperties();
     private boolean emailEnabled;
     private String cache;
     /**
@@ -31,5 +28,7 @@ public class ZhangliProperties {
      * 展示的搜索年份数量
      */
     private int yearCount = 10;
+
+    private boolean isMailEnabled = false;
 }
 

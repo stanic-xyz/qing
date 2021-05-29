@@ -4,8 +4,7 @@ import chenyunlong.zhangli.common.exception.NotFoundException;
 import chenyunlong.zhangli.mapper.AnimeCommentMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.mapper.AnimeTypeMapper;
-import chenyunlong.zhangli.model.agefans.AgePlayInfoModel;
-import chenyunlong.zhangli.model.dto.EpisodeDTO;
+import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
@@ -13,11 +12,11 @@ import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
+import chenyunlong.zhangli.model.vo.anime.AnimeInfoPlayVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.service.AnimeEpisodeService;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.PlaylistService;
-import chenyunlong.zhangli.utils.IpUtils;
 import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -25,10 +24,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
@@ -37,11 +32,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -81,7 +74,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     @Override
     public AnimeInfoVo create(AnimeInfo animeInfo) {
         animeInfoMapper.insert(animeInfo);
-        return convertTo(animeInfo);
+        return convertToDetail(animeInfo);
     }
 
     @Override
@@ -101,7 +94,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     @Override
     public IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> page, AnimeInfoQuery animeInfo) {
         QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
-        return convertTo(animeInfoMapper.selectPage(page, queryWrapper));
+        return convertToDetail(animeInfoMapper.selectPage(page, queryWrapper));
     }
 
     /**
@@ -121,7 +114,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     @Override
     public AnimeInfoVo updateBy(AnimeInfo animeInfo) {
         animeInfoMapper.update(animeInfo);
-        return convertTo(animeInfo);
+        return convertToDetail(animeInfo);
     }
 
     /**
@@ -130,17 +123,27 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
      * @param animeInfo 动漫信息
      * @return 可以用于界面展示的数据
      */
-    private AnimeInfoVo convertTo(AnimeInfo animeInfo) {
-        //TODO 还有其他数据需要等到以后再进行转化了
+    private AnimeInfoVo convertToDetail(AnimeInfo animeInfo) {
         AnimeInfoVo animeInfoVo = new AnimeInfoVo().convertFrom(animeInfo);
         animeInfoVo.setPlayList(playlistService.listPlayListBy(animeInfo.getId()));
         return animeInfoVo;
     }
 
-    private IPage<AnimeInfoVo> convertTo(IPage<AnimeInfo> animeInfo) {
-        //TODO 还有其他数据需要等到以后再进行转化了
+    /**
+     * 从持久化对象转化为砖石对象
+     *
+     * @param animeInfo 动漫信息
+     * @return 可以用于界面展示的数据
+     */
+    private AnimeInfoPlayVo convertToPlayInfo(AnimeInfo animeInfo) {
+        AnimeInfoPlayVo animeInfoVo = new AnimeInfoPlayVo().convertFrom(animeInfo);
+        animeInfoVo.setPlayList(playlistService.listPlayListBy(animeInfo.getId()));
+        return animeInfoVo;
+    }
+
+    private IPage<AnimeInfoVo> convertToDetail(IPage<AnimeInfo> animeInfo) {
         Page<AnimeInfoVo> animeInfoPage = new Page<>(animeInfo.getCurrent(), animeInfo.getSize(), animeInfo.getTotal(), animeInfo.isSearchCount());
-        animeInfoPage.setRecords(animeInfo.getRecords().stream().map(this::convertTo).collect(Collectors.toList()));
+        animeInfoPage.setRecords(animeInfo.getRecords().stream().map(this::convertToDetail).collect(Collectors.toList()));
         return animeInfoPage;
     }
 
@@ -166,7 +169,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
         QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
         IPage<AnimeInfo> page = animeInfoMapper.selectPage(animeInfoPage, queryWrapper);
         Page<AnimeInfoVo> animeInfoVoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal(), page.isSearchCount());
-        animeInfoVoPage.setRecords(page.getRecords().stream().map(this::convertTo).collect(Collectors.toList()));
+        animeInfoVoPage.setRecords(page.getRecords().stream().map(this::convertToDetail).collect(Collectors.toList()));
         return animeInfoVoPage;
     }
 
@@ -188,8 +191,8 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
      * @return 动漫的所有集数
      */
     @Override
-    public List<EpisodeDTO> getAnimeEpisodes(Long animeId) {
-        return episodeService.listEpisodeBy(animeId);
+    public List<AnimeEpisodeDTO> getAnimeEpisodes(Long animeId) {
+        return episodeService.listEpisodeByAnimeId(animeId);
     }
 
     @Override
@@ -199,7 +202,12 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
 
     @Override
     public AnimeInfoVo convertToDetailVo(AnimeInfo animeInfo) {
-        return convertTo(animeInfo);
+        return convertToDetail(animeInfo);
+    }
+
+    @Override
+    public AnimeInfoPlayVo convertToPlayVo(AnimeInfo animeInfo) {
+        return convertToPlayInfo(animeInfo);
     }
 
     @Override
@@ -251,8 +259,9 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
     }
 
     @Override
-    public IPage<AnimeComment> getComment(Long cid, Integer pageIndex, Integer pageSize) {
+    public IPage<AnimeComment> getComment(Long animeId, Integer pageIndex, Integer pageSize) {
         QueryWrapper<AnimeComment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("cid", animeId);
         return commentMapper.selectPage(new Page<>(pageIndex, pageSize), queryWrapper);
     }
 

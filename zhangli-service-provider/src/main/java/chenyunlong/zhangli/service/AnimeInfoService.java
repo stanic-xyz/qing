@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.service;
 
 
-import chenyunlong.zhangli.model.dto.EpisodeDTO;
+import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
@@ -9,6 +9,7 @@ import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
+import chenyunlong.zhangli.model.vo.anime.AnimeInfoPlayVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
@@ -124,7 +125,7 @@ public interface AnimeInfoService {
      * @param animeId 动漫ID
      * @return 动漫的所有集数
      */
-    List<EpisodeDTO> getAnimeEpisodes(Long animeId);
+    List<AnimeEpisodeDTO> getAnimeEpisodes(Long animeId);
 
     /**
      * 获取动漫的播放列表
@@ -141,6 +142,15 @@ public interface AnimeInfoService {
      * @return post detail vo
      */
     AnimeInfoVo convertToDetailVo(AnimeInfo animeInfoDetail);
+
+
+    /**
+     * Converts to play vo.
+     *
+     * @param animeInfoDetail post must not be null
+     * @return post detail vo
+     */
+    AnimeInfoPlayVo convertToPlayVo(AnimeInfo animeInfoDetail);
 
     /**
      * 获取动漫信息
@@ -168,12 +178,12 @@ public interface AnimeInfoService {
     /**
      * 获取动漫的评论信息
      *
-     * @param cid       动漫ID
+     * @param animeId   动漫ID
      * @param pageIndex 当前页
      * @param pageSize  分页大小
      * @return 平均信息列表
      */
-    IPage<AnimeComment> getComment(Long cid, Integer pageIndex, Integer pageSize);
+    IPage<AnimeComment> getComment(Long animeId, Integer pageIndex, Integer pageSize);
 
     /**
      * 获取最近的动漫信息
