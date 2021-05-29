@@ -66,7 +66,7 @@ CREATE TABLE `anime_district`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 10
   DEFAULT CHARSET = utf8mb4,
-  collate utf8_general_ci;
+  collate utf8mb4_general_ci;
 
 LOCK TABLES `anime_district` WRITE;
 /*!40000 ALTER TABLE `anime_district`
@@ -78,32 +78,6 @@ VALUES (1, '日本', 'jp', '日本地区'),
 /*!40000 ALTER TABLE `anime_district`
     ENABLE KEYS */;
 UNLOCK TABLES;
-
-DROP TABLE IF EXISTS `anime_episode`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-
-CREATE TABLE `anime_episode`
-(
-    `id`            bigint(20)   not null AUTO_INCREMENT COMMENT '视频ID',
-    `anime_id`      bigint(20)            DEFAULT NULL COMMENT '动漫ID',
-    `name`          varchar(255) not null COMMENT '视频标题名称',
-    `status`        int(11)               DEFAULT '0' COMMENT '视频状态，0正常',
-    `uploader_name` varchar(100)          DEFAULT NULL COMMENT '上传者名称',
-    `uploader_id`   bigint(20)            DEFAULT NULL COMMENT '上传用户ID',
-    `upload_time`   datetime              DEFAULT NULL COMMENT '视频上传时间',
-    `url1`          varchar(255) not null COMMENT '视频地址',
-    `url3`          varchar(255)          DEFAULT NULL COMMENT '视频播放地址3',
-    `url2`          varchar(255)          DEFAULT NULL COMMENT '视频播放地址2',
-    `order_no`      int(11)      not null COMMENT '视频排序',
-    `create_time`   datetime     not null default NOW() comment '创建时间',
-    `update_time`   datetime     not null default NOW() comment '创建时间',
-    `search_value`  varchar(20)  not null default '' comment '查询参数',
-    `create_by`     varchar(255) not null default '' comment '创建人',
-    `update_by`     varchar(255) not null default '' comment '最后更新人',
-    `remark`        varchar(255) not null default '' comment '创建时间',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='视频内容';
 
 DROP TABLE IF EXISTS `anime_feedback`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -193,6 +167,46 @@ create table anime_playlist
     constraint table_playlist_pk
         primary key (id)
 );
+
+DROP TABLE IF EXISTS `anime_episode`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+
+CREATE TABLE `anime_episode`
+(
+    `id`            bigint(20)   not null AUTO_INCREMENT COMMENT '视频ID',
+    `name`          varchar(255) not null COMMENT '视频标题名称',
+    `status`        int(11)               DEFAULT '0' COMMENT '视频状态，0正常',
+    `uploader_name` varchar(100)          DEFAULT NULL COMMENT '上传者名称',
+    `uploader_id`   bigint(20)            DEFAULT NULL COMMENT '上传用户ID',
+    `url`           varchar(255) not null COMMENT '视频地址',
+    `order_no`      int(11)      not null COMMENT '视频排序',
+    `create_time`   datetime     not null default NOW() comment '创建时间',
+    `update_time`   datetime     not null default NOW() comment '创建时间',
+    `search_value`  varchar(20)  not null default '' comment '查询参数',
+    `create_by`     varchar(255) not null default '' comment '创建人',
+    `update_by`     varchar(255) not null default '' comment '最后更新人',
+    `remark`        varchar(255) not null default '' comment '创建时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8 COMMENT ='播放视频';
+
+DROP TABLE IF EXISTS `anime_list_episode`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+
+CREATE TABLE `anime_list_episode`
+(
+    `id`           bigint       not null AUTO_INCREMENT COMMENT '视频ID',
+    `list_id`      bigint       not null COMMENT '列表ID',
+    `episode_id`   bigint       not null COMMENT '视频ID',
+    `create_time`  datetime     not null default NOW() comment '创建时间',
+    `update_time`  datetime     not null default NOW() comment '创建时间',
+    `search_value` varchar(20)  not null default '' comment '查询参数',
+    `create_by`    varchar(255) not null default '' comment '创建人',
+    `update_by`    varchar(255) not null default '' comment '最后更新人',
+    `remark`       varchar(255) not null default '' comment '创建时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8 COMMENT ='播放列表，视频中间表';
 
 DROP TABLE IF EXISTS `anime_resource`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;

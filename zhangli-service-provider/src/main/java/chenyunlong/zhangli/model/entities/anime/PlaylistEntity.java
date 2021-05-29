@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.model.entities.anime;
 
 import chenyunlong.zhangli.core.domain.BaseEntity;
+import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;

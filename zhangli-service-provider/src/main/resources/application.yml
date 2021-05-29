@@ -57,14 +57,6 @@ zhangli:
     doc-disabled: false
   security:
     authenticationPrefix: authentication_
-  email:
-    enabled: true
-    email-from-name: Stan
-    username: 1576302867@qq.com
-    password: puopstuzawtqgehg
-    host: smtp.qq.com
-    protocol: smtps
-    port: 465
 management:
   endpoints:
     web:

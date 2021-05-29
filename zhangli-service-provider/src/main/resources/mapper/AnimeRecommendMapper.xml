@@ -20,7 +20,7 @@
         from anime_version
     </select>
     <insert id="addVersionInfo" parameterType="chenyunlong.zhangli.model.entities.AnimeRecommendEntity">
-        insert into anime_recommend (aid, resaon, date)
+        insert into anime_recommend (`aid`, `resaon`, `date`)
         values (#{anime.aid}, #{anime.reason}, #{anime.date})
     </insert>
 </mapper>
