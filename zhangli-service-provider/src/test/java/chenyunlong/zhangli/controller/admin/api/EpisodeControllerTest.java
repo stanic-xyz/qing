@@ -1,10 +1,13 @@
 package chenyunlong.zhangli.controller.admin.api;
 
+import chenyunlong.zhangli.mapper.AnimeEpisodeMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
+import chenyunlong.zhangli.mapper.AnimeListEpisodeMapper;
 import chenyunlong.zhangli.mapper.AnimePlaylistMapper;
+import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.ListEpisodeEntity;
 import chenyunlong.zhangli.model.entities.anime.PlaylistEntity;
-import chenyunlong.zhangli.model.params.AddEpisodeParam;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -22,7 +24,7 @@ import java.util.List;
 class EpisodeControllerTest {
 
     @Autowired
-    private EpisodeController episodeController;
+    private AnimeEpisodeMapper animeEpisodeMapper;
 
     @Autowired
     private AnimeInfoMapper animeInfoMapper;
@@ -30,10 +32,18 @@ class EpisodeControllerTest {
     @Autowired
     private AnimePlaylistMapper playlistMapper;
 
+    @Autowired
+    private AnimeListEpisodeMapper listEpisodeMapper;
+
     @Test
     void add() {
-
         List<AnimeInfo> animeInfoList = animeInfoMapper.selectList(new QueryWrapper<>());
+        QueryWrapper<AnimeEpisodeEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.last("LIMIT 0,1");
+        AnimeEpisodeEntity episodeEntity = animeEpisodeMapper.selectOne(queryWrapper);
+        if (episodeEntity == null) {
+            return;
+        }
 
         for (AnimeInfo animeInfo : animeInfoList) {
             //添加三个测试目录
@@ -42,23 +52,14 @@ class EpisodeControllerTest {
                 playList.setAnimeId(animeInfo.getId());
                 playList.setDescription("测试列表" + i);
                 playList.setName("播放列表" + i);
-                playList.setSearchValue(animeInfo.getName());
+                playList.setSearchValue("");
                 playList.preCheck();
                 playlistMapper.insert(playList);
 
-                for (int j = 0; j < 10; j++) {
-                    AddEpisodeParam episodePara = new AddEpisodeParam();
-                    episodePara.setName("第" + j + "集：测试视频" + j);
-                    episodePara.setPlaylistId(playList.getId());
-                    episodePara.setStatus(1);
-                    episodePara.setUploaderId((long) 1);
-                    episodePara.setUploadTime(LocalDateTime.now());
-                    episodePara.setAnimeId(animeInfo.getId());
-                    episodePara.setUrl1("http://localhost/media/test1.mp4");
-                    episodePara.setUrl2("http://localhost/media/test2.mp4");
-                    episodePara.setUrl3("http://localhost/media/test3.mp4");
-                    episodeController.add(episodePara);
-                }
+                ListEpisodeEntity listEpisodeEntiry = new ListEpisodeEntity();
+                listEpisodeEntiry.setListId(playList.getId());
+                listEpisodeEntiry.setEpisodeId(episodeEntity.getId());
+                listEpisodeMapper.insert(listEpisodeEntiry);
             }
         }
     }

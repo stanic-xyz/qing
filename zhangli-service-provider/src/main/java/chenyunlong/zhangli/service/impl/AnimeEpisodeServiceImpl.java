@@ -5,12 +5,10 @@ import chenyunlong.zhangli.mapper.AnimeEpisodeMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.dto.EpisodeDTO;
-import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AddEpisodeParam;
 import chenyunlong.zhangli.service.AnimeEpisodeService;
-import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.PlaylistService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,9 @@ public class AnimeEpisodeServiceImpl implements AnimeEpisodeService {
     private final AnimeInfoMapper animeInfoMapper;
     private final PlaylistService playlistService;
 
-    public AnimeEpisodeServiceImpl(AnimeEpisodeMapper episodeMapper, AnimeInfoMapper animeInfoMapper, PlaylistService playlistService) {
+    public AnimeEpisodeServiceImpl(AnimeEpisodeMapper episodeMapper,
+                                   AnimeInfoMapper animeInfoMapper,
+                                   PlaylistService playlistService) {
         this.episodeMapper = episodeMapper;
         this.animeInfoMapper = animeInfoMapper;
         this.playlistService = playlistService;
@@ -48,12 +48,8 @@ public class AnimeEpisodeServiceImpl implements AnimeEpisodeService {
         if (animeInfo == null) {
             throw new ServiceException("动漫信息不存在");
         }
-        if (episodeEntity.getPlaylistId() == null) {
-            PlayListDTO playListInfo = playlistService.getById(episodeEntity.getPlaylistId());
-            if (playListInfo != null) {
-                episodeEntity.setPlaylistId(playListInfo.getId());
-            }
-        }
+        //设置状态，刚上传
+        episodeEntity.setStatus(0);
         episodeMapper.insert(episodeEntity);
         return new AnimeEpisodeDTO().convertFrom(episodeEntity);
     }

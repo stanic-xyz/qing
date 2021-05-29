@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.service.impl;
 
+import chenyunlong.zhangli.mapper.AnimeEpisodeMapper;
 import chenyunlong.zhangli.mapper.AnimePlaylistMapper;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.entities.anime.PlaylistEntity;
@@ -17,9 +18,11 @@ import java.util.stream.Collectors;
 public class PlaylistServiceImpl implements PlaylistService {
 
     private final AnimePlaylistMapper animePlaylistMapper;
+    private final AnimeEpisodeMapper episodeMapper;
 
-    public PlaylistServiceImpl(AnimePlaylistMapper animePlaylistMapper) {
+    public PlaylistServiceImpl(AnimePlaylistMapper animePlaylistMapper, AnimeEpisodeMapper episodeMapper) {
         this.animePlaylistMapper = animePlaylistMapper;
+        this.episodeMapper = episodeMapper;
     }
 
     @Override
@@ -41,6 +44,11 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     public List<PlayListDTO> convertToListVo(List<PlaylistEntity> episodeEntities) {
         return episodeEntities.stream().map(episode
-                -> (PlayListDTO) new PlayListDTO().convertFrom(episode)).collect(Collectors.toList());
+                ->
+        {
+            PlayListDTO playListDTO = new PlayListDTO().convertFrom(episode);
+
+            return playListDTO;
+        }).collect(Collectors.toList());
     }
 }
