@@ -1,10 +1,6 @@
 package chenyunlong.zhangli.core.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import chenyunlong.zhangli.utils.StringUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -35,20 +31,41 @@ public class BaseEntity {
     /**
      * 搜索值
      */
-    private String searchValue = "";
+    private String searchValue;
 
     /**
      * 创建者
      */
-    private String createBy = "";
+    private String createBy;
 
     /**
      * 更新者
      */
-    private String updateBy = "";
+    private String updateBy;
 
     /**
      * 备注
      */
-    private String remark = "";
+    private String remark;
+
+    /**
+     * 数据检查
+     */
+    public void preCheck() {
+        if (createBy == null) {
+            createTime = LocalDateTime.now();
+        }
+        if (updateTime == null) {
+            updateTime = LocalDateTime.now();
+        }
+        if (StringUtils.isEmpty(searchValue)) {
+            searchValue = "";
+        }
+        if (StringUtils.isEmpty(createBy)) {
+            createBy = "";
+        }
+        if (StringUtils.isEmpty(updateBy)) {
+            updateBy = "";
+        }
+    }
 }
