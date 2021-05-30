@@ -33,6 +33,11 @@ spring:
   freemarker:
     template-loader-path: classpath:/templates/mail/
     suffix: .ftl
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  cache:
+    type: simple
 mybatis-plus:
   global-config:
     banner: false
