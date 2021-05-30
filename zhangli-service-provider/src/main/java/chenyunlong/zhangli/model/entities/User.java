@@ -2,7 +2,7 @@ package chenyunlong.zhangli.model.entities;
 
 
 import chenyunlong.zhangli.core.domain.BaseEntity;
-import chenyunlong.zhangli.model.enums.MFAType;
+import chenyunlong.zhangli.enums.MFAType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
