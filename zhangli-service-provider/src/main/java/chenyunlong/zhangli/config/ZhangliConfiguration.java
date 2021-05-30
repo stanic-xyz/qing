@@ -64,7 +64,6 @@ public class ZhangliConfiguration {
 
     @Bean
     RestTemplate restTemplate() {
-
         SSLContext sslContext = null;
         try {
             sslContext = new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build();
