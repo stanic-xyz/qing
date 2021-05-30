@@ -691,6 +691,31 @@ CREATE TABLE `wechat_images`
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
+
+DROP TABLE IF EXISTS `bilibili_anime`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+
+CREATE TABLE `bilibili_anime`
+(
+    `id`           bigint       not null AUTO_INCREMENT,
+    `media_d`      bigint(20)   not null,
+    `title`        varchar(255) not null default '',
+    `season_id`    bigint(20)   not null default 0,
+    `cover`        varchar(255) not null default '',
+    `is_finished`  int          not null DEFAULT 0,
+    `index_show`   varchar(255) not null default '',
+    `link`         varchar(255) not null default '',
+    `create_time`  datetime     not null default NOW() comment '创建时间',
+    `update_time`  datetime     not null default NOW() comment '创建时间',
+    `search_value` varchar(20)  not null default '' comment '查询参数',
+    `create_by`    varchar(255) not null default '' comment '创建人',
+    `update_by`    varchar(255) not null default '' comment '最后更新人',
+    `remark`       varchar(255) not null default '' comment '创建时间',
+    PRIMARY KEY (`id`),
+    KEY `content_id_index` (`media_d`)
+) ENGINE = MyISAM
+  DEFAULT CHARSET = utf8mb4;
+
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
