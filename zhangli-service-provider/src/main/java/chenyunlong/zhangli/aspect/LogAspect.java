@@ -2,7 +2,7 @@ package chenyunlong.zhangli.aspect;
 
 import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.model.entities.sys.SysOperLog;
-import chenyunlong.zhangli.model.enums.BusinessStatus;
+import chenyunlong.zhangli.enums.BusinessStatus;
 import chenyunlong.zhangli.utils.HttpContextUtil;
 import chenyunlong.zhangli.utils.IpUtils;
 import com.alibaba.fastjson.JSONObject;
