@@ -75,13 +75,6 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo(SwaggerProperties swagger) {
         Contact contact = new Contact(swagger.getAuthor(), swagger.getUrl(), swagger.getEmail());
-        return new ApiInfo(
-                swagger.getTitle(),
-                swagger.getDescription(),
-                swagger.getVersion(),
-                null,
-                contact.toString(),
-                swagger.getLicense(),
-                swagger.getLicenseUrl());
+        return new ApiInfo(swagger.getTitle(), swagger.getDescription(), swagger.getVersion(), null, contact, swagger.getLicense(), swagger.getLicenseUrl(), Collections.emptyList());
     }
 }
