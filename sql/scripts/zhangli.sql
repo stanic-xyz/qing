@@ -698,7 +698,7 @@ DROP TABLE IF EXISTS `bilibili_anime`;
 CREATE TABLE `bilibili_anime`
 (
     `id`           bigint       not null AUTO_INCREMENT,
-    `media_d`      bigint(20)   not null,
+    `media_id`     bigint(20)   not null,
     `title`        varchar(255) not null default '',
     `season_id`    bigint(20)   not null default 0,
     `cover`        varchar(255) not null default '',
@@ -712,7 +712,7 @@ CREATE TABLE `bilibili_anime`
     `update_by`    varchar(255) not null default '' comment '最后更新人',
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`),
-    KEY `content_id_index` (`media_d`)
+    KEY `content_id_index` (`media_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
