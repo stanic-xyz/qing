@@ -698,7 +698,7 @@ DROP TABLE IF EXISTS `bilibili_anime`;
 CREATE TABLE `bilibili_anime`
 (
     `id`           bigint       not null AUTO_INCREMENT,
-    `media_d`      bigint(20)   not null,
+    `media_id`     bigint(20)   not null,
     `title`        varchar(255) not null default '',
     `season_id`    bigint(20)   not null default 0,
     `cover`        varchar(255) not null default '',
