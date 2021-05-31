@@ -1,3 +1,5 @@
+use zhangli;
+
 INSERT INTO `anime_info`(`id`,  `name`,  `district`,  `cover_url`,  `type`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
   `play_status`,  `plot_type`,  `tags`,  `official_website`,  `play_heat`,  `original_name`)
 VALUES (20000001, '海贼王', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/H6eec4b52f5ed449b8583e5ab518e7849p.jpg', 'TV',
