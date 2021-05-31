@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
+    url: jdbc:mysql://121.36.163.95:3306/zhangli?serverTimezone=UTC
     hikari:
       username: root
-      password: MysqlPwdROOT1996
+      password: 123456
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com
