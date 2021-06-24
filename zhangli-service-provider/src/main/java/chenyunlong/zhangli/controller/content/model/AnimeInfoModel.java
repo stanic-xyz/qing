@@ -11,6 +11,7 @@ import chenyunlong.zhangli.service.AnimeCommentService;
 import chenyunlong.zhangli.service.AnimeEpisodeService;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.AnimeOptionsService;
+import chenyunlong.zhangli.utils.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -61,7 +62,6 @@ public class AnimeInfoModel {
         return detailModel;
     }
 
-
     public PlayModel play(Long animeId, Long playId) {
         PlayModel playModel = new PlayModel();
         playModel.setAnimeInfo(animeInfoService.convertToPlayVo(animeInfoService.getById(animeId)));
@@ -69,7 +69,9 @@ public class AnimeInfoModel {
         playModel.setRecommendation(animeInfoService.getRecommendAnimeInfoList());
         //获取前十条评论信息
         playModel.setComments(animeCommentService.getCommentsByAnimeId(animeId, 1, 10));
-        playModel.setEpisodeInfo(episodeService.getById(playId));
+        if (playId != null) {
+            playModel.setEpisodeInfo(episodeService.getById(playId));
+        }
         return playModel;
     }
 

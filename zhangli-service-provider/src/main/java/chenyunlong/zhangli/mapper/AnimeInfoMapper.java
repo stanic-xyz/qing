@@ -94,12 +94,4 @@ public interface AnimeInfoMapper extends BaseMapper<AnimeInfo> {
      * @return 推荐的动漫列表
      */
     List<AnimeInfo> listRecommendAnimeInfo();
-
-    /**
-     * 通过动漫ID获取动漫信息的原始记录
-     *
-     * @param animeId 动漫ID
-     * @return 动漫信息的原始记录
-     */
-    AnimeInfo fetchById(Integer animeId);
 }

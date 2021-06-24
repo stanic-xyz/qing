@@ -212,8 +212,10 @@
                             </div>
                         </div>
                         <div class="cell_imform_btns">
-                            <a class="nbutton2 cell_res_button" href="/detail/20180105">资源详情</a>
-                            <a class="nbutton2 cell_res_button" href="/play/20180105">在线播放</a>
+                            <a class="nbutton2 cell_res_button"
+                               th:href="@{/detail/{animeId}(animeId=${anime.id})}">资源详情</a>
+                            <a class="nbutton2 cell_res_button"
+                               th:href="@{/play/{animeId}(animeId=${anime.id})}">在线播放</a>
                         </div>
                     </div>
                 </div>

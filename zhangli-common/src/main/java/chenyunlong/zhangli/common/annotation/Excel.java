@@ -117,7 +117,7 @@ public @interface Excel {
             this.value = value;
         }
 
-        int value() {
+        public int value() {
             return this.value;
         }
     }

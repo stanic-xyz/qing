@@ -78,15 +78,6 @@ public class AnimeApiController {
         return ApiResult.success();
     }
 
-    @GetMapping("listTypes")
-    public ApiResult<List<AnimeType>> getAnimeInfoService() {
-        return ApiResult.success(animeInfoService.getAllAnimeType());
-    }
-
-    @PostMapping("type/add")
-    public ApiResult<AnimeType> addAnimeType(@Valid @RequestBody AnimeType animeType) {
-        return ApiResult.success(animeInfoService.addAnimeType(animeType));
-    }
 
     @PostMapping("img/downloadImages")
     public ApiResult<Void> downloadImages() throws IOException {

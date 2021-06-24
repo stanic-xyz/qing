@@ -1,16 +1,21 @@
 package chenyunlong.zhangli.common.exception;
 
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * 系统异常基类
  *
  * @author Stan
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class BaseException extends RuntimeException {
     /**
      * 异常对应的错误类型
      */
-    private final ErrorType errorType;
+    private ErrorType errorType;
 
     /**
      * 默认是系统异常
@@ -33,14 +38,8 @@ public class BaseException extends RuntimeException {
         this.errorType = errorType;
     }
 
-    public ErrorType getErrorType() {
-        return errorType;
+    public BaseException(String module, String code, Object[] args, String defaultMessage) {
+
     }
 
-    @Override
-    public String toString() {
-        return "BaseException{" +
-                "errorType=" + errorType +
-                '}';
-    }
 }

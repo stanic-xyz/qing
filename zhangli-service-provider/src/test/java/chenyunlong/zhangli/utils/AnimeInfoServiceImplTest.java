@@ -32,16 +32,16 @@ class AnimeInfoServiceImplTest {
         requestFactory.setReadTimeout(60 * 1000);
 
 
-        String url = "https://www.agefans.net/_getplay?aid=20200026&playindex=2&epindex=1";
-        String referUrl = "https://www.agefans.net";
+        String url = "https://www.agefans.cc/_getplay?aid=20200026&playindex=2&epindex=1";
+        String referUrl = "https://www.agefans.cc";
         StringBuilder cookie = new StringBuilder();
-        String playUrl = "https://play.agefans.net/_getplay2?kp=4zPeWaqNhi20IUkB6rXFO2pAJ1otsSb%2FIzpjyjuYSXKly9zoxWCaSFno%2FSoM8yFblxl8IVjeTJ5eIaCbwj%2BgpYDwjV02ZDL8dxaEsoxzUR9hzjeC4pd38w%3D%3D";
+        String playUrl = "https://play.agefans.cc/_getplay2?kp=4zPeWaqNhi20IUkB6rXFO2pAJ1otsSb%2FIzpjyjuYSXKly9zoxWCaSFno%2FSoM8yFblxl8IVjeTJ5eIaCbwj%2BgpYDwjV02ZDL8dxaEsoxzUR9hzjeC4pd38w%3D%3D";
 
         String currentUrl = url + "&r=" + random.nextDouble();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache");
         headers.add("Cookie", cookie.toString());
-        headers.add("Host", "www.agefans.net");
+        headers.add("Host", "www.agefans.cc");
         headers.add("Referer", referUrl);
 
         HttpEntity<String> stringHttpEntity = new HttpEntity<>(null, headers);
@@ -61,7 +61,7 @@ class AnimeInfoServiceImplTest {
         headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache");
         headers.add("Cookie", cookie.toString());
-        headers.add("Host", "www.agefans.net");
+        headers.add("Host", "www.agefans.cc");
         headers.add("Referer", referUrl);
         stringHttpEntity = new HttpEntity<>(null, headers);
 

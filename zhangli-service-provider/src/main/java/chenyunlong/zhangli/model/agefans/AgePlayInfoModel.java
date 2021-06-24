@@ -3,6 +3,7 @@
  */
 package chenyunlong.zhangli.model.agefans;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -15,7 +16,9 @@ public class AgePlayInfoModel {
     private String purlf;
     private String vurl;
     private String playid;
+    @JsonProperty("vurl_bak")
     private String vurlBak;
+    @JsonProperty("purl_mp4")
     private String purlMp4;
     private String ex;
 }

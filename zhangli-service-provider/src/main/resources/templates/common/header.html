@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<head th:fragment="header(title)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title th:text="${title}"></title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <!-- bootstrap-table 表格插件样式 -->
+    <link th:href="@{/ajax/libs/bootstrap-table/bootstrap-table.min.css?v=20210202}" rel="stylesheet"/>
+    <link th:href="@{/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css?v=20200903}" rel="stylesheet"/>
+    <link th:href="@{/ruoyi/css/ry-ui.css?v=4.6.1}" rel="stylesheet"/>
+</head>
+
 <div id="top" th:fragment="top()">
     <div id="logo">
         <a th:href="@{/}" title="AGE动漫">AGE动漫</a>
@@ -14,7 +31,7 @@
 
 <div th:fragment="notification(content)">
     <div style="color: white;padding: 8px;margin: 10px 9px -14px;font-size: 14px;border: 1px solid #cc0000;"
-        th:text="${ '本站地址：'+content+' 欢迎大家分享给身边朋友！如果能够正常观看，那才是怪事了！'}">
+         th:text="${ '本站地址：'+content+' 欢迎大家分享给身边朋友！如果能够正常观看，那才是怪事了！'}">
     </div>
     <div class="spaceblock1"></div>
 </div>
@@ -26,43 +43,43 @@
     <a th:class="${title=='update'?'nav_button nav_button_current':'nav_button'}" th:href="@{/update}">最近更新</a>
     <a th:class="${title=='rank'?'nav_button nav_button_current':'nav_button'}" th:href="@{/rank}">排行榜</a>
     <a th:class="${title=='detail'?'nav_button nav_button_current':'nav_button'}"
-        th:style="${title=='detail'?'':'display: none'}">详情</a>
+       th:style="${title=='detail'?'':'display: none'}">详情</a>
     <a th:class="${title=='search'?'nav_button nav_button_current':'nav_button'}"
-        th:style="${title=='search'?'':'display: none'}">搜索</a>
+       th:style="${title=='search'?'':'display: none'}">搜索</a>
     <form id="top_search_from" class="search_form" th:action="@{/search}" method="get"
-        onsubmit="return on_top_search_form();">
+          onsubmit="return on_top_search_form();">
         <label for="top_search_input"></label>
         <input autocapitalize="on" autocomplete='on' class="search_input" id="top_search_input" name="query"
-            placeholder="输入关键字" spellcheck="false" value="">
+               placeholder="输入关键字" spellcheck="false" value="">
         <input class="search_submit" type="submit" value="">
         <input type="hidden" name="page" value="1">
     </form>
 
     <script type="text/javascript">function on_top_search_form() {
-            const value = document.getElementById("top_search_input").value;
-            if (value == null || value === "") {
-                alert("请输入搜索关键字");
-                return false;
-            }
+        const value = document.getElementById("top_search_input").value;
+        if (value == null || value === "") {
+            alert("请输入搜索关键字");
+            return false;
         }
+    }
 
-        const top_search_input = document.getElementById("top_search_input");
+    const top_search_input = document.getElementById("top_search_input");
 
-        function onfocus() {
-            top_search_input.classList.add("search_input_ex");
-        }
+    function onfocus() {
+        top_search_input.classList.add("search_input_ex");
+    }
 
-        function onfocusout() {
-            top_search_input.classList.remove("search_input_ex");
-        }
+    function onfocusout() {
+        top_search_input.classList.remove("search_input_ex");
+    }
 
-        if (top_search_input.addEventListener) {
-            top_search_input.addEventListener('focus', onfocus);
-            top_search_input.addEventListener('focusout', onfocusout);
-        } else {
-            top_search_input.onfocus = onfocus;
-            top_search_input.onfocusout = onfocusout;
-        }</script>
+    if (top_search_input.addEventListener) {
+        top_search_input.addEventListener('focus', onfocus);
+        top_search_input.addEventListener('focusout', onfocusout);
+    } else {
+        top_search_input.onfocus = onfocus;
+        top_search_input.onfocusout = onfocusout;
+    }</script>
 </header>
 
 
@@ -78,7 +95,7 @@
                 </li>
                 <li>
                     <a class="text_muted" href="https://www.chenyunlong.cn/admin" title="博客后台地址"
-                        target="_blank">博客后台地址</a>
+                       target="_blank">博客后台地址</a>
                 </li>
                 <li>
                     <a class="text_muted" href="https://status.chenyunlong.cn" title="状态查看" target="_blank">服务器状态</a>
@@ -97,13 +114,13 @@
     <div style="text-align: center;line-height: 36px">
         <a class="pbutton  asciifont" th:href="@{{url}(page=1,url=${url},pageSize=${pageSize})}">首页</a>
         <a class="pbutton  asciifont" th:if="${currentPage>1} == true"
-            th:href="@{{url}(page=${currentPage - 1},url=${url},pageSize=${pageSize})}">上一页</a>
+           th:href="@{{url}(page=${currentPage - 1},url=${url},pageSize=${pageSize})}">上一页</a>
         <a th:href="@{{url}(page=${i},url=${url},pageSize=${pageSize})}"
-            th:each="i :${#numbers.sequence(1,(pages - 1))}" th:if="${(i - currentPage)<3 &&(i - currentPage)>-3}"
-            th:text="${i}"
-            th:class="${currentPage == i}? 'pbutton pbutton_current asciifont' :'pbutton  asciifont' "></a>
+           th:each="i :${#numbers.sequence(1,(pages - 1))}" th:if="${(i - currentPage)<3 &&(i - currentPage)>-3}"
+           th:text="${i}"
+           th:class="${currentPage == i}? 'pbutton pbutton_current asciifont' :'pbutton  asciifont' "></a>
         <a class="pbutton  asciifont" th:if="${currentPage < (pages - 1)} == true"
-            th:href="@{{url}(page=${currentPage+1},url=${url},pageSize=${pageSize})}">下一页</a>
+           th:href="@{{url}(page=${currentPage+1},url=${url},pageSize=${pageSize})}">下一页</a>
         <a class="pbutton  asciifont" th:href="@{{url}(page=${pages - 1},url=${url},pageSize=${pageSize})}">尾页</a>
     </div>
 </pager>

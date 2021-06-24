@@ -32,8 +32,4 @@ public class AnimeRecommendEntity extends BaseEntity {
      */
     private LocalDateTime date;
 
-    /**
-     * 条件排序号
-     */
-    private Integer orderNo;
 }

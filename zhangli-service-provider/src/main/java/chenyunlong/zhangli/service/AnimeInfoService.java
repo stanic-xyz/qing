@@ -6,7 +6,6 @@ import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
 import chenyunlong.zhangli.model.entities.AnimeComment;
-import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoPlayVo;
@@ -88,21 +87,6 @@ public interface AnimeInfoService {
      * @param animeId 动漫ID
      */
     void deleteAnime(Long animeId);
-
-    /**
-     * 获取所有的类型信息
-     *
-     * @return 类型信息
-     */
-    List<AnimeType> getAllAnimeType();
-
-    /**
-     * 添加动漫类型信息
-     *
-     * @param animeType 动漫类型
-     * @return 动漫类型信息
-     */
-    AnimeType addAnimeType(AnimeType animeType);
 
     /**
      * 获取更新信息
@@ -200,4 +184,5 @@ public interface AnimeInfoService {
      * @param user    用户名
      */
     void addComment(Long cid, String content, String user);
+
 }

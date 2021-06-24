@@ -49,6 +49,11 @@ public class BaseEntity {
     private String remark;
 
     /**
+     * 排序号
+     */
+    private Integer orderNo;
+
+    /**
      * 数据检查
      */
     public void preCheck() {
@@ -62,10 +67,14 @@ public class BaseEntity {
             searchValue = "";
         }
         if (StringUtils.isEmpty(createBy)) {
-            createBy = "";
+            createBy = "system";
         }
         if (StringUtils.isEmpty(updateBy)) {
             updateBy = "";
+        }
+        if (orderNo == null) {
+            //不进行排序
+            orderNo = 0;
         }
     }
 }
