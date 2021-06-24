@@ -3,7 +3,7 @@ spring:
     nacos:
       discovery:
         server-addr: http://localhost:8848
-        enabled: false
+        enabled: true
       config:
         server-addr: http://localhost:8848
         enabled: false

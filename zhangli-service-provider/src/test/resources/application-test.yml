@@ -1,0 +1,48 @@
+debug: true
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=GMT%2B8
+    hikari:
+      username: root
+      password: 123456
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        enabled: false
+      config:
+        server-addr: localhost:8848
+        enabled: false
+  rabbitmq:
+    username: guest
+    password: guest
+    host: localhost
+  thymeleaf:
+    cache: false
+    prefix: file:${user.dir}/zhangli-service-provider/src/main/resources/templates/
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
+  level:
+    root: info
+    person.pluto: info
+    chenyunlong.zhangli.mapper: debug
+    chenyunlong.zhangli: debug
+mp:
+  wx:
+    appId: wx09bf7e704a150a9c
+    secret: 9fdb9fa846356d32247a9aa68d758791
+zhangli:
+  file:
+    baseUploadDir: upload/
+    image-server-url: http://localhost:8080
+  # 是否异步记录用户操作日志
+  openAopLog: true
+  swagger:
+    doc-disabled: false
+  index-size: 26

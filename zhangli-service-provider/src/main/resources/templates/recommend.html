@@ -3,15 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>动漫推荐 - AGE动漫</title>
-
     <meta name="keywords" content="动漫推荐,AGE动漫">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
     <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/history.js(host=${hostname})}"></script>
-    <!-- overload -->
 </head>
 
 <body>
@@ -39,14 +37,5 @@
     </div>
     <footer id="footer" th:include="common/header :: footer()"></footer>
 </div>
-<script>var _hmt = _hmt || [];
-(function () {
-    var hm = document.createElement("script");
-    hm.src = "//hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-})();</script>
-
-
 </body>
 </html>

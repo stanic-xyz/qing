@@ -59,54 +59,50 @@
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">地区：</span>
                                 <span class="detail_imform_value" th:text="${data.animeInfo.district}">日本</span>
-                                <a class="detail_imform_show_full"
-                                   href="javascript:detail_show_full();">&lt;&lt;展开</a>
+                                <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
                             </li>
                             <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">动画种类：</span>
+                                <span class="detail_imform_tag"></span>
                                 <span class="detail_imform_value" th:text="${data.animeInfo.type}">TV</span>
                             </li>
                             <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">原版名称：</span>
-                                <span class="detail_imform_value"
-                                      th:text="${data.animeInfo.getName()}">この素晴らしい世界に祝福を！</span>
+                                <span class="detail_imform_tag"></span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.getName()}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">其它名称：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.originalName}">暂无</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.originalName}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">原作：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.author}">暂无</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.author}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">制作公司：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.getCompany()}">Studio
-                                        DEEN</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.getCompany()}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">首播时间：</span>
-                                <span class="detail_imform_value"
-                                      th:text="${data.animeInfo.getPremiereDate()}">2016-01-13</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.getPremiereDate()}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">播放状态：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.playStatus}">暂无</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.playStatus}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">剧情类型：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.getPlotType()}">搞笑 奇幻 冒险
-                                        后宫</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.getPlotType()}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">标签：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.tags}">搞笑 奇幻 冒险 后宫 治愈 魔法
-                                        轻小说 欢乐向</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.tags}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">官方网站：</span>
-                                <span class="detail_imform_value"
-                                      th:text="${data.animeInfo.officialWebsite}">http://konosuba.com/</span>
+                                <span class="detail_imform_value">
+                                    <a th:href="${data?.animeInfo?.officialWebsite}" target="_blank"
+                                       th:text="${data?.animeInfo?.officialWebsite}"></a>
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -197,7 +193,6 @@
             <div id="wangpan-div" class="baseblock">
                 <div class="blocktitle">网盘资源：</div>
                 <div class="blockcontent">
-
                         <span class="res_links">
                             <a class="res_links_a" href="/link/20160083/0" target="_blank">[TV 01-10+OVA 720P]</a>
                             <span class="res_links_pswd_tag">(提取码:</span>
@@ -210,24 +205,27 @@
             <div id="score" style="height:260px;"></div>
             <script type="text/javascript">
                 // 基于准备好的dom，初始化echarts实例
-                var myChart = echarts.init(document.getElementById('score'));
+                const myChart = echarts.init(document.getElementById('score'));
                 // 指定图表的配置项和数据
-                var option = {
+                const option = {
                     title: {
-                        text: '评分信息',
+                        x: "center",
+                        text: "评分信息"
                     },
                     tooltip: {},
-                    // legend: {
-                    //     data: ['销量']
-                    // },
+                    legend: {
+                        data: ['销量']
+                    },
                     xAxis: {
                         data: ["2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08"]
                     },
-                    yAxis: {},
+                    yAxis: {
+                        data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                    },
                     series: [{
                         name: '评分',
                         type: 'bar',
-                        data: [9.5, 9.5, 9.5, 9.5, 5.5, 9.5, 5.5, 9.5]
+                        data: [9.5, 9.5, 9.5, 9.5, 5.5, 9.5, 5.3, 9.5]
                     }]
                 };
 

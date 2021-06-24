@@ -6,12 +6,12 @@ import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.core.support.ApiResult;
+import chenyunlong.zhangli.model.params.AnimeInfoSearchParam;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.*;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.ReportService;
 import chenyunlong.zhangli.utils.StringUtils;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -47,7 +47,7 @@ public class MovieController {
     }
 
     @GetMapping("detail/{movieId}")
-    public ModelAndView movie(@PathVariable(value = "movieId", required = false) Long animeId) {
+    public ModelAndView movie(@PathVariable(value = "movieId") Long animeId) {
         DetailModel detailModel = animeInfoModel.detail(animeId);
         ModelAndView modelAndView = new ModelAndView("detail");
         modelAndView.addObject("data", detailModel);
@@ -69,10 +69,9 @@ public class MovieController {
     @GetMapping("play/{movieId}")
     public ModelAndView play(
             @PathVariable(value = "movieId") Long animeId,
-            @RequestParam(value = "playid") Long playid
-    ) {
+            @RequestParam(value = "playid", required = false) Long playId) {
 
-        PlayModel playModel = animeInfoModel.play(animeId, playid);
+        PlayModel playModel = animeInfoModel.play(animeId, playId);
         ModelAndView modelAndView = new ModelAndView("play");
         modelAndView.addObject("data", playModel);
         return modelAndView;
@@ -117,11 +116,11 @@ public class MovieController {
             @RequestParam(value = "query", required = false, defaultValue = "") String query,
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
             @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
-            AnimeInfoQuery animeInfoQuery) {
+            AnimeInfoQuery searchParam) {
 
         long totalCount = animeInfoService.getTotalCount(query);
         int totalPage = (int) Math.ceil(((double) totalCount) / ((double) pageSize));
-        IPage<AnimeInfoVo> animeInfoPage = animeInfoService.listByPage(new Page<>(page, pageSize), animeInfoQuery);
+        IPage<AnimeInfoVo> animeInfoPage = animeInfoService.listByPage(new Page<>(page, pageSize), searchParam);
         ModelAndView modelAndView = new ModelAndView("search");
         modelAndView.addObject("animeInfos", animeInfoPage.getRecords());
         modelAndView.addObject("query", query);

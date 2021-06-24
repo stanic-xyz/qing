@@ -30,6 +30,7 @@ public class AnimeUpdateController {
     @GetMapping("list")
     public ApiResult<List<AnimeInfo>> getRecommendAnimeInfoList(AnimeInfoQuery animeInfoQuery) {
         Pageable pageable = PageRequest.of(1, 20);
-        return ApiResult.success(animeRecommendService.getRecommendAnimeInfoList(pageable, animeInfoQuery));
+        animeRecommendService.getRecommendAnimeInfoList(pageable, animeInfoQuery);
+        return ApiResult.success();
     }
 }
