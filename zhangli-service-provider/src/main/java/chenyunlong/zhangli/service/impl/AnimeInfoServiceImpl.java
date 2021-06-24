@@ -9,7 +9,6 @@ import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
 import chenyunlong.zhangli.model.entities.AnimeComment;
-import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoPlayVo;
@@ -19,13 +18,13 @@ import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.PlaylistService;
 import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
@@ -35,6 +34,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -44,7 +44,6 @@ import java.util.stream.Collectors;
 @Service
 public class AnimeInfoServiceImpl implements AnimeInfoService {
     private final AnimeInfoMapper animeInfoMapper;
-    private final RestTemplate restTemplate;
     private final AnimeEpisodeService episodeService;
     private final AnimeTypeMapper animeTypeMapper;
     private final PlaylistService playlistService;
@@ -58,7 +57,6 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
                                 AnimeTypeMapper animeTypeMapper,
                                 PlaylistService playlistService, AnimeCommentMapper commentMapper) {
         this.animeInfoMapper = animeInfoMapper;
-        this.restTemplate = restTemplate;
         this.episodeService = episodeService;
         this.animeTypeMapper = animeTypeMapper;
         this.playlistService = playlistService;
@@ -93,8 +91,35 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
 
     @Override
     public IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> page, AnimeInfoQuery animeInfo) {
-        QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
-        return convertToDetail(animeInfoMapper.selectPage(page, queryWrapper));
+        return convertToDetail(animeInfoMapper.selectPage(page, buildQueryWrapper(animeInfo)));
+    }
+
+    /**
+     * 构建查询条件
+     *
+     * @param animeInfo 查询条件
+     * @return 查询条件
+     */
+    private LambdaQueryWrapper<AnimeInfo> buildQueryWrapper(AnimeInfoQuery animeInfo) {
+        LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.hasText(animeInfo.getKeyword()), AnimeInfo::getName, animeInfo.getKeyword());
+        queryWrapper.eq(StringUtils.hasText(animeInfo.getDistrict()) && !"all".equals(animeInfo.getDistrict()), AnimeInfo::getDistrict, animeInfo.getDistrict());
+        queryWrapper.eq(StringUtils.hasText(animeInfo.getName()), AnimeInfo::getName, animeInfo.getName());
+        queryWrapper.eq(StringUtils.hasText(animeInfo.getVersion()) && !"all".equals(animeInfo.getVersion()), AnimeInfo::getPlotType, animeInfo.getVersion());
+        queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
+        queryWrapper.eq(StringUtils.hasText(animeInfo.getResourceType()) && !"all".equals(animeInfo.getResourceType()), AnimeInfo::getType, animeInfo.getResourceType());
+        queryWrapper.eq(StringUtils.hasText(animeInfo.getYear()) && !"all".equals(animeInfo.getYear()), AnimeInfo::getPremiereDate, animeInfo.getYear());
+        queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
+        queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
+        queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
+        queryWrapper.orderBy(StringUtils.hasText(animeInfo.getSort()), false, AnimeInfo::getPremiereDate);
+//        private String year = "all";
+//        private String status = "all";
+//        private String type = "all";
+//        private Integer seasonMonth = -1;
+//        private String resourceType = "all";
+//        private String sort = "premiere_date";
+        return queryWrapper;
     }
 
     /**
@@ -152,17 +177,6 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
         animeInfoMapper.deleteById(animeId);
     }
 
-    @Override
-    public List<AnimeType> getAllAnimeType() {
-        return animeTypeMapper.listTypes();
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public AnimeType addAnimeType(AnimeType animeType) {
-        animeTypeMapper.addAnimeType(animeType);
-        return animeType;
-    }
 
     @Override
     public IPage<AnimeInfoVo> getUpdateAnimeInfo(IPage<AnimeInfo> animeInfoPage) {
@@ -212,7 +226,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
 
     @Override
     public AnimeInfo getById(Integer animeId) {
-        AnimeInfo animeInfo = animeInfoMapper.fetchById(animeId);
+        AnimeInfo animeInfo = animeInfoMapper.selectById(animeId);
         if (animeInfo == null) {
             throw new NotFoundException(domainName + "was not found or has been deleted");
         }
@@ -243,7 +257,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
         for (AnimeInfo animeInfo : animeInfos) {
             try {
                 String imgUrl = animeInfo.getCoverUrl().replace("https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/", "");
-                if (StringUtils.hasText(imgUrl) && Arrays.stream(listFiles).noneMatch(file1 -> file1.getName().endsWith(imgUrl))) {
+                if (StringUtils.hasText(imgUrl) && Arrays.stream(Objects.requireNonNull(listFiles)).noneMatch(file1 -> file1.getName().endsWith(imgUrl))) {
                     String ageImgUrl = "https://sc04.alicdn.com/kf/" + imgUrl;
                     log.info("{}->>图片不存在，正在下载-->>", ageImgUrl);
                     log.info(imgUrl);
@@ -256,6 +270,7 @@ public class AnimeInfoServiceImpl implements AnimeInfoService {
                 log.error(animeInfo.getCoverUrl(), exception);
             }
         }
+        log.info("同步了{}条数据", index);
     }
 
     @Override

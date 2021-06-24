@@ -6,7 +6,6 @@ import chenyunlong.zhangli.security.MyAuthenticationEntryPoint;
 import chenyunlong.zhangli.security.filter.MyTokenFilter;
 import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.service.UserService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -63,8 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors()
                 .and()
-                .csrf()
-                .disable()
+                .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(myAuthenticationEntryPoint)
                 .accessDeniedHandler(myAccessDeniedHandler)
@@ -72,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/actuator/**", "/authrize/**", "/file/**", "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**").permitAll()
+                .antMatchers("/actuator/**", "/authorize/**", "/file/**", "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**").permitAll()
                 .antMatchers("/easyui/**", "detail/**").permitAll()
                 .antMatchers("/js/**", "/css/**", "/img/*").permitAll()
                 .antMatchers("/login").permitAll()

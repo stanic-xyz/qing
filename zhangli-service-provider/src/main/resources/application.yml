@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8080
 spring:
   profiles:
     active: prod
@@ -38,6 +38,7 @@ spring:
     port: 6379
   cache:
     type: simple
+
 mybatis-plus:
   global-config:
     banner: false
@@ -46,7 +47,7 @@ mybatis-plus:
 zhangli:
   file:
     baseUploadDir: upload/
-    image-server-url: http://www.stanic.xyz/pic/
+    image-server-url: https://www.stanic.xyz/pic/
   # 是否异步记录用户操作日志
   openAopLog: true
   swagger:
@@ -57,7 +58,7 @@ zhangli:
     license: Apache 2.0
     licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
     title: Application from Agefans
-    url: http://bangumi.chenyunlong.cn
+    url: https://bangumi.chenyunlong.cn
     version: V1.0.0
     doc-disabled: false
   security:
@@ -66,7 +67,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include:
+          - "*"
   endpoint:
     health:
       show-details: always

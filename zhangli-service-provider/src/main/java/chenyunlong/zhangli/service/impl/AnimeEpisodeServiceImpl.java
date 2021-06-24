@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.mapper.AnimeEpisodeMapper;
+import chenyunlong.zhangli.mapper.AnimeListEpisodeMapper;
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.model.params.AddEpisodeParam;

@@ -157,15 +157,16 @@ drop table if exists anime_playlist;
 create table anime_playlist
 (
     `id`           bigint auto_increment comment '播放列表主键ID',
-    `name`         nvarchar(255) not null comment '播放列表名称',
-    `anime_id`     bigint        not null comment '所属动漫主键ID',
-    `description`  text          null comment '描述信息',
-    `create_time`  datetime      not null default NOW() comment '创建时间',
-    `update_time`  datetime      not null default NOW() comment '创建时间',
-    `search_value` varchar(20)   not null default '' comment '查询参数',
-    `create_by`    varchar(255)  not null default '' comment '创建人',
-    `update_by`    varchar(255)  not null default '' comment '最后更新人',
-    `remark`       varchar(255)  not null default '' comment '创建时间',
+    `name`         nvarchar(255)              not null comment '播放列表名称',
+    `anime_id`     bigint                     not null comment '所属动漫主键ID',
+    `description`  text                       null comment '描述信息',
+    `create_time`  datetime     default NOW() not null comment '创建时间',
+    `update_time`  datetime     default NOW() not null comment '创建时间',
+    `search_value` varchar(20)  default ''    not null comment '查询参数',
+    `create_by`    varchar(255) default ''    not null comment '创建人',
+    `update_by`    varchar(255) default ''    not null comment '最后更新人',
+    `remark`       varchar(255) default ''    not null comment '创建时间',
+    `order_no`     int          default 0     not null comment '排序号',
     constraint table_playlist_pk
         primary key (id)
 );
@@ -197,15 +198,16 @@ DROP TABLE IF EXISTS `anime_list_episode`;
 
 CREATE TABLE `anime_list_episode`
 (
-    `id`           bigint       not null AUTO_INCREMENT COMMENT '视频ID',
-    `list_id`      bigint       not null COMMENT '列表ID',
-    `episode_id`   bigint       not null COMMENT '视频ID',
-    `create_time`  datetime     not null default NOW() comment '创建时间',
-    `update_time`  datetime     not null default NOW() comment '创建时间',
-    `search_value` varchar(20)  not null default '' comment '查询参数',
-    `create_by`    varchar(255) not null default '' comment '创建人',
-    `update_by`    varchar(255) not null default '' comment '最后更新人',
-    `remark`       varchar(255) not null default '' comment '创建时间',
+    `id`           bigint                     not null AUTO_INCREMENT COMMENT '视频ID',
+    `list_id`      bigint                     not null COMMENT '列表ID',
+    `episode_id`   bigint                     not null COMMENT '视频ID',
+    `create_time`  datetime     default NOW() not null comment '创建时间',
+    `update_time`  datetime     default NOW() not null comment '创建时间',
+    `search_value` varchar(20)  default ''    not null comment '查询参数',
+    `create_by`    varchar(255) default ''    not null comment '创建人',
+    `update_by`    varchar(255) default ''    not null comment '最后更新人',
+    `remark`       varchar(255) default ''    not null comment '创建时间',
+    `order_no`     int          default 0     not null comment '排序号',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='播放列表，视频中间表';
@@ -232,11 +234,16 @@ DROP TABLE IF EXISTS `anime_recommend`;
 
 CREATE TABLE `anime_recommend`
 (
-    `id`          bigint(20)   not null AUTO_INCREMENT,
-    `aid`         bigint(20)   not null COMMENT '番剧ID',
-    `reason`      varchar(255) not null COMMENT '推荐理由',
-    `create_time` datetime     not null,
-    `order_no`    int          not null default 0 comment '排序ID',
+    `id`           bigint(20)   not null AUTO_INCREMENT,
+    `aid`          bigint(20)   not null COMMENT '番剧ID',
+    `reason`       varchar(255) not null COMMENT '推荐理由',
+    `order_no`     int(11)      not null COMMENT '视频排序',
+    `create_time`  datetime     not null default NOW() comment '创建时间',
+    `update_time`  datetime     not null default NOW() comment '创建时间',
+    `search_value` varchar(20)  not null default '' comment '查询参数',
+    `create_by`    varchar(255) not null default '' comment '创建人',
+    `update_by`    varchar(255) not null default '' comment '最后更新人',
+    `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='番剧播放资源';
@@ -249,7 +256,7 @@ CREATE TABLE `anime_type`
     `id`           bigint(20)   not null AUTO_INCREMENT COMMENT '主键ID',
     `name`         varchar(10)  not null COMMENT '类型名称',
     `description`  text COMMENT '详细介绍信息',
-    `order`        int(11)               DEFAULT NULL COMMENT '排序号',
+    `order_no`     int(11)               DEFAULT NULL COMMENT '排序号',
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
     `search_value` varchar(20)  not null default '' comment '查询参数',
@@ -269,7 +276,7 @@ CREATE TABLE `anime_type`
 LOCK TABLES `anime_type` WRITE;
 /*!40000 ALTER TABLE `anime_type`
     DISABLE KEYS */;
-INSERT INTO `anime_type`(`id`, `name`, `description`, `order`)
+INSERT INTO `anime_type`(`id`, `name`, `description`, `order_no`)
 VALUES (1, '欢乐向', '欢乐向', 1),
        (2, '搞笑', '搞笑', 2),
        (3, '运动', '运动', 3),
@@ -705,6 +712,7 @@ CREATE TABLE `bilibili_anime`
     `season_id`    bigint(20)   not null default 0,
     `cover`        varchar(255) not null default '',
     `is_finished`  int          not null DEFAULT 0,
+    `score`        double       not null default 0,
     `index_show`   varchar(255) not null default '',
     `link`         varchar(255) not null default '',
     `create_time`  datetime     not null default NOW() comment '创建时间',

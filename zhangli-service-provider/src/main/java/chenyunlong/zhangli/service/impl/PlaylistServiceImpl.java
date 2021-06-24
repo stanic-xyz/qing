@@ -51,11 +51,11 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     public List<PlayListDTO> convertToListVo(List<PlaylistEntity> playlistEntities, List<AnimeEpisodeDTO> episodeEntities) {
         //转换查询到的列表信息
-        return playlistEntities.stream().map(episode ->
+        return playlistEntities.stream().map(playlistEntity ->
         {
             //查询列表中的视频信息
-            PlayListDTO playListDTO = new PlayListDTO().convertFrom(episode);
-            playListDTO.setEpisodeList(episodeEntities.stream().filter(animeEpisodeDTO -> animeEpisodeDTO.getAnimeId().equals(episode.getAnimeId())).collect(Collectors.toList()));
+            PlayListDTO playListDTO = new PlayListDTO().convertFrom(playlistEntity);
+            playListDTO.setEpisodeList(episodeEntities.stream().filter(animeEpisodeDTO -> animeEpisodeDTO.getPlaylistId().equals(playlistEntity.getId())).collect(Collectors.toList()));
             return playListDTO;
         }).collect(Collectors.toList());
     }

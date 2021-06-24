@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
+import java.time.LocalDateTime;
+
 /**
  * 启动成功监听器
  *
@@ -21,21 +23,10 @@ import org.springframework.core.annotation.Order;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class StartedListener implements ApplicationListener<ApplicationStartedEvent> {
 
-    private final ZhangliProperties zhangliProperties;
-
     public StartedListener(ZhangliProperties zhangliProperties) {
-        this.zhangliProperties = zhangliProperties;
     }
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        log.info(AnsiOutput.toString(AnsiColor.GREEN, "Application started at " + event.getTimestamp()));
-        log.info(AnsiOutput.toString(AnsiColor.GREEN, "uploadDir:" + zhangliProperties.getFile().getBaseUploadDir()));
-        if (!zhangliProperties.getSwagger().isDocDisabled()) {
-            log.info(AnsiOutput.toString(AnsiColor.GREEN, "Api doc enabled at:/swagger-ui.html"));
-        } else {
-            log.info(AnsiOutput.toString(AnsiColor.GREEN, "Swagger api page is disabled!"));
-        }
-        log.info(AnsiOutput.toString(AnsiColor.GREEN, "Application started successfully!"));
     }
 }

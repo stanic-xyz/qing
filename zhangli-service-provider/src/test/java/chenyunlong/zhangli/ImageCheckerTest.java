@@ -29,6 +29,7 @@ public class ImageCheckerTest {
         File file = ResourceUtils.getFile("E:\\GitHub\\cdn\\age");
         if (file.isDirectory()) {
             File[] listFiles = file.listFiles();
+            assert listFiles != null;
             for (File listFile : listFiles) {
                 System.out.println(listFile.getName());
             }

@@ -43,6 +43,8 @@
         <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
         <admin-starter-server.version>2.2.3</admin-starter-server.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
+        <poi.version>4.1.2</poi.version>
+        <commons.io.version>2.5</commons.io.version>
     </properties>
     <modules>
         <module>zhangli-eureka-service</module>
@@ -180,6 +182,18 @@
                 <groupId>de.codecentric</groupId>
                 <artifactId>spring-boot-admin-starter-server</artifactId>
                 <version>${admin-starter-server.version}</version>
+            </dependency>
+            <!-- excel工具 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <!--io常用工具类 -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

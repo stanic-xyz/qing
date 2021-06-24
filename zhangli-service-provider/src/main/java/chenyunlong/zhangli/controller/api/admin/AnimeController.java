@@ -26,12 +26,10 @@ import java.util.List;
 public class AnimeController {
     private final DistrictService districtService;
     private final VersionService versionService;
-    private final AnimeTypeService animeTypeService;
 
-    public AnimeController(DistrictService districtService, VersionService versionService, AnimeTypeService animeTypeService) {
+    public AnimeController(DistrictService districtService, VersionService versionService) {
         this.districtService = districtService;
         this.versionService = versionService;
-        this.animeTypeService = animeTypeService;
     }
 
     @GetMapping("list")
@@ -43,17 +41,4 @@ public class AnimeController {
     public ApiResult<List<Version>> getVersionList() {
         return ApiResult.success(versionService.getAllVersions());
     }
-
-    @GetMapping("type/list")
-    public ApiResult<List<AnimeType>> getAnimeInfoService() {
-        return ApiResult.success(animeTypeService.getAllTypeInfo());
-    }
-
-    @Log(title = "动漫管理", businessType = BusinessType.INSERT)
-    @PostMapping("type/add")
-    public ApiResult<AnimeType> addAnimeType(@Valid @RequestBody AnimeType animeType) {
-        animeTypeService.addAnimeType(animeType);
-        return ApiResult.success();
-    }
-
 }
