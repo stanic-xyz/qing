@@ -11,12 +11,14 @@ import chenyunlong.zhangli.service.AnimeCommentService;
 import chenyunlong.zhangli.service.AnimeEpisodeService;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.AnimeOptionsService;
-import chenyunlong.zhangli.utils.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Stan
@@ -108,5 +110,28 @@ public class AnimeInfoModel {
         catalogModel.setTotal(animeInfoPage.getTotal());
         catalogModel.setPagination(new Pagination(animeInfoPage));
         return catalogModel;
+    }
+
+    public SearchModel searchModel(Page<AnimeInfo> objectPage, AnimeInfoQuery animeInfoQuery) {
+
+
+//        long totalCount = animeInfoService.getTotalCount(query);
+//        int totalPage = (int) Math.ceil(((double) totalCount) / ((double) pageSize));
+//        animeInfoService.listByPage(new Page<>(page, pageSize), searchParam);
+
+        SearchModel searchModel = new SearchModel();
+        LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(AnimeInfo::getName, animeInfoQuery.getKeyword());
+
+        IPage<AnimeInfo> animeInfoPage = animeInfoService.page(objectPage, queryWrapper);
+        OptionsModel animeOptionsModel = animeOptionsService.getOptions();
+        searchModel.setQuery(animeInfoQuery);
+        searchModel.setOptions(animeOptionsModel);
+        searchModel.setAnimeInfos(animeInfoPage.getRecords());
+        searchModel.setTotalCount(animeInfoPage.getTotal());
+        searchModel.setCurrentIndex(animeInfoPage.getCurrent());
+        searchModel.setPagination(new Pagination(animeInfoPage));
+        searchModel.setTotalPage(animeInfoPage.getPages());
+        return searchModel;
     }
 }

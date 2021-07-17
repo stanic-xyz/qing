@@ -49,37 +49,37 @@
     <form id="top_search_from" class="search_form" th:action="@{/search}" method="get"
           onsubmit="return on_top_search_form();">
         <label for="top_search_input"></label>
-        <input autocapitalize="on" autocomplete='on' class="search_input" id="top_search_input" name="query"
+        <input autocapitalize="on" autocomplete='on' class="search_input" id="top_search_input" name="keyword"
                placeholder="输入关键字" spellcheck="false" value="">
         <input class="search_submit" type="submit" value="">
         <input type="hidden" name="page" value="1">
     </form>
 
-    <script type="text/javascript">function on_top_search_form() {
-        const value = document.getElementById("top_search_input").value;
-        if (value == null || value === "") {
-            alert("请输入搜索关键字");
-            return false;
-        }
-    }
+    <!--    <script type="text/javascript">function on_top_search_form() {-->
+    <!--        const value = document.getElementById("top_search_input").value;-->
+    <!--        if (value == null || value === "") {-->
+    <!--            alert("请输入搜索关键字");-->
+    <!--            return false;-->
+    <!--        }-->
+    <!--    }-->
 
-    const top_search_input = document.getElementById("top_search_input");
+    <!--    const top_search_input = document.getElementById("top_search_input");-->
 
-    function onfocus() {
-        top_search_input.classList.add("search_input_ex");
-    }
+    <!--    function onfocus() {-->
+    <!--        top_search_input.classList.add("search_input_ex");-->
+    <!--    }-->
 
-    function onfocusout() {
-        top_search_input.classList.remove("search_input_ex");
-    }
+    <!--    function onfocusout() {-->
+    <!--        top_search_input.classList.remove("search_input_ex");-->
+    <!--    }-->
 
-    if (top_search_input.addEventListener) {
-        top_search_input.addEventListener('focus', onfocus);
-        top_search_input.addEventListener('focusout', onfocusout);
-    } else {
-        top_search_input.onfocus = onfocus;
-        top_search_input.onfocusout = onfocusout;
-    }</script>
+    <!--    if (top_search_input.addEventListener) {-->
+    <!--        top_search_input.addEventListener('focus', onfocus);-->
+    <!--        top_search_input.addEventListener('focusout', onfocusout);-->
+    <!--    } else {-->
+    <!--        top_search_input.onfocus = onfocus;-->
+    <!--        top_search_input.onfocusout = onfocusout;-->
+    <!--    }</script>-->
 </header>
 
 

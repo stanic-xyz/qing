@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 /**
+ * 签到服务
+ *
  * @author Stan
  */
 @RestController

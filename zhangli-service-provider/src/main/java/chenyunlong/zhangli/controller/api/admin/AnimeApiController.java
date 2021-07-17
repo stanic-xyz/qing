@@ -26,7 +26,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 @Api(tags = "anime")
 @Validated
 @RestController
-@RequestMapping("api/anime")
+@RequestMapping("api/admin/anime")
 public class AnimeApiController {
 
     private final AnimeInfoService animeInfoService;
@@ -57,12 +57,12 @@ public class AnimeApiController {
     }
 
     @GetMapping("listAnime")
-    public ApiResult<List<AnimeInfoVo>> listAnime(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-                                                  @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
-                                                  AnimeInfoQuery animeInfo) {
+    public ApiResult<IPage<AnimeInfoVo>> listAnime(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                                                   @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize,
+                                                   AnimeInfoQuery animeInfo) {
         IPage<AnimeInfo> animeInfoPage = new Page<>(page, pageSize);
         IPage<AnimeInfoVo> animeInfos = animeInfoService.listByPage(animeInfoPage, animeInfo);
-        return ApiResult.success(animeInfos.getRecords());
+        return ApiResult.success(animeInfos);
     }
 
     @GetMapping("update/page")
