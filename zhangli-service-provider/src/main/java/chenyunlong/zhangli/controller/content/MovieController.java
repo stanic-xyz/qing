@@ -118,15 +118,9 @@ public class MovieController {
             @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
             AnimeInfoQuery searchParam) {
 
-        long totalCount = animeInfoService.getTotalCount(query);
-        int totalPage = (int) Math.ceil(((double) totalCount) / ((double) pageSize));
-        IPage<AnimeInfoVo> animeInfoPage = animeInfoService.listByPage(new Page<>(page, pageSize), searchParam);
+        SearchModel searchModel = animeInfoModel.searchModel(new Page<>(page, pageSize), searchParam);
         ModelAndView modelAndView = new ModelAndView("search");
-        modelAndView.addObject("animeInfos", animeInfoPage.getRecords());
-        modelAndView.addObject("query", query);
-        modelAndView.addObject("totalCount", totalCount);
-        modelAndView.addObject("currentIndex", page);
-        modelAndView.addObject("totalPage", totalPage);
+        modelAndView.addObject("data", searchModel);
         return modelAndView;
     }
 

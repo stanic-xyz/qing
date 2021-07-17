@@ -47,7 +47,7 @@ public class FileController {
         this.cosClient = cosClient;
     }
 
-    @Log
+    @Log(title = "获取存储桶列表")
     @ApiOperation("获取存储桶列表")
     @GetMapping("bucket/list")
     public ApiResult<List<Bucket>> listBuckts() {
@@ -84,6 +84,9 @@ public class FileController {
             File file = new File(baseUploadDir + filePath);
             if (!file.exists()) {
                 boolean mkdirs = file.mkdirs();
+                if (!mkdirs) {
+                    throw new IOException("创建文件" + file.getAbsoluteFile() + "失败");
+                }
             }
             File file1 = new File(file, fileName);
             InputStream fileInputStream = multipartFile.getInputStream();

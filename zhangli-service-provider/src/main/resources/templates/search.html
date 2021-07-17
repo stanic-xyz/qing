@@ -4,29 +4,34 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title th:text="${query+'搜索结果 - AGE动漫'}"></title>
-
+    <title th:text="${data?.query?.keyword+'搜索结果 - AGE动漫'}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
-    <link type="text/css" rel="stylesheet" th:href="@{{host}/catalog.css(host=${hostname})}">
-    <script th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${hostname})}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data?.hostname})}">
+    <link type="text/css" rel="stylesheet" th:href="@{{host}/css/catalog.css(host=${data?.hostname})}">
+    <!--    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data?.hostname})}"></script>-->
+    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data?.hostname})}"></script>
 </head>
 
 <body>
 <div id="root">
     <div id="top" th:include="common/header :: top()"></div>
     <header id="nav" th:include="common/header :: commonHead('search')"></header>
+    <script>
+        console.log("查询条件信息")
+        const top_search_input = document.getElementById("top_search_input");
+        top_search_input.value = [[${data?.query?.keyword}]];
+        // top_search_input.focus();
+    </script>
     <div id="container">
         <div class="spaceblock"></div>
         <div class="baseblock">
             <div class="blockcontent">
-                <span id="result_count" th:text="${totalCount+'纪录'}"></span>
-                <div th:include="common/header::pager('/search',${totalPage},${currentIndex},${24})"></div>
+                <span id="result_count" th:text="${data?.totalCount+'纪录'}"></span>
+                <div th:include="common/header::pager('/search',${data?.totalPage},${data?.currentIndex},${24})"></div>
             </div>
 
             <div class="blockcontent1">
-                <div class="cell blockdiff2" th:each="anime,iterStat : ${animeInfos}"
+                <div class="cell blockdiff2" th:each="anime,iterStat : ${data?.animeInfos}"
                      th:class="${iterStat.index%2==0?'cell blockdiff':'cell blockdiff2'}">
                     <a th:href="${'/detail/'+anime?.id}" class="cell_poster">
                         <img referrerpolicy="no-referrer" width="150px" height="208px"
@@ -81,49 +86,36 @@
         </div>
         <div class="baseblock">
             <div class="blockcontent">
-                <span th:text="${totalCount+'纪录'}"></span>
-<!--                <div style="text-align: center; line-height: 36px;">-->
-<!--                    <ul>-->
-<!--                        <li>-->
-<!--                            <a class="pbutton pbutton_current asciifont"-->
-<!--                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'/search?query='+query+'&page=1'}">首页</a>-->
-<!--                        </li>-->
+                <span th:text="${data?.totalCount+'纪录'}"></span>
+                <!--                <div style="text-align: center; line-height: 36px;">-->
+                <!--                    <ul>-->
+                <!--                        <li>-->
+                <!--                            <a class="pbutton pbutton_current asciifont"-->
+                <!--                               th:href="${(currentIndex eq 1) ?'javascript:void(0);':'/search?query='+query+'&page=1'}">首页</a>-->
+                <!--                        </li>-->
 
-<!--                        <li>-->
-<!--                            <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>-->
+                <!--                        <li>-->
+                <!--                            <a class="pbutton pbutton_current asciifont" href="javascript:void(0);">1</a></li>-->
 
-<!--                        <li>-->
-<!--                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">2</a>-->
-<!--                        </li>-->
+                <!--                        <li>-->
+                <!--                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">2</a>-->
+                <!--                        </li>-->
 
-<!--                        <li th:if="${currentIndex != totalPage}">-->
-<!--                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">下一页</a>-->
-<!--                        </li>-->
+                <!--                        <li th:if="${currentIndex != totalPage}">-->
+                <!--                            <a class="pbutton  asciifont" th:href="${'/search?query='+query+'&page=2'}">下一页</a>-->
+                <!--                        </li>-->
 
-<!--                        <li th:if="${currentIndex != totalPage}">-->
-<!--                            <a class="pbutton  asciifont"-->
-<!--                               th:href="${'/search?query='+query+'&page='+totalPage}">尾页</a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-                <div th:include="common/header::pager('/search',${totalPage},${currentIndex},${24})"></div>
+                <!--                        <li th:if="${currentIndex != totalPage}">-->
+                <!--                            <a class="pbutton  asciifont"-->
+                <!--                               th:href="${'/search?query='+query+'&page='+totalPage}">尾页</a>-->
+                <!--                        </li>-->
+                <!--                    </ul>-->
+                <!--                </div>-->
+                <div th:include="common/header::pager('/search',${data?.totalPage},${data?.currentIndex},${24})"></div>
             </div>
         </div>
     </div>
     <footer id="footer" th:include="common/header :: footer()"></footer>
 </div>
-<script>
-    var top_search_input = document.getElementById("top_search_input");
-    top_search_input.value = "";
-    top_search_input.focus();</script>
-<script>var _hmt = _hmt || [];
-(function () {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-})();</script>
-
-
 </body>
 </html>
