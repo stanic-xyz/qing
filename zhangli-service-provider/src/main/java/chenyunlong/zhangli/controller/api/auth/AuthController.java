@@ -17,10 +17,12 @@ import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthGithubRequest;
+import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -90,15 +92,14 @@ public class AuthController {
     }
 
     @GetMapping("callback")
-    public ApiResult<String> accessToken(AuthCallback callback) throws JsonProcessingException {
+    public ApiResult<AuthResponse> accessToken(AuthCallback callback) throws JsonProcessingException {
         AuthResponse authResponse = authRequest.login(callback);
         if (authResponse.ok()) {
             AuthUser user = (AuthUser) authResponse.getData();
             List<GrantedAuthority> authorities = new LinkedList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            return ApiResult.success(tokenProvider.createJwtToken(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getToken(), authorities), false));
-        } else {
-            throw new AuthenticationException(authResponse.getMsg());
+            ApiResult.success(tokenProvider.createJwtToken(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getToken(), authorities), false));
         }
+        return ApiResult.success(authResponse);
     }
 }

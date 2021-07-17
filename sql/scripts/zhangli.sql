@@ -695,6 +695,7 @@ CREATE TABLE `wechat_images`
     `create_by`         varchar(255) not null default '' comment '创建人',
     `update_by`         varchar(255) not null default '' comment '最后更新人',
     `remark`            varchar(255) not null default '' comment '创建时间',
+    `order_no`          int                   default 0 not null comment '排序号',
     PRIMARY KEY (`id`),
     KEY `content_id_index` (`wechat_content_id`)
 ) ENGINE = MyISAM
@@ -721,10 +722,29 @@ CREATE TABLE `bilibili_anime`
     `create_by`    varchar(255) not null default '' comment '创建人',
     `update_by`    varchar(255) not null default '' comment '最后更新人',
     `remark`       varchar(255) not null default '' comment '创建时间',
+    `order_no`     int                   default 0 not null comment '排序号',
     PRIMARY KEY (`id`),
     KEY `content_id_index` (`media_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
+
+DROP TABLE IF EXISTS `bilibili_anime_score`;
+create table `bilibili_anime_score`
+(
+    `id`           bigint auto_increment,
+    `anime_id`     bigint       null comment '动漫ID',
+    `score`        double                default 0 not null,
+    `record_time`  datetime              default now() not null comment '记录时间',
+    `create_time`  datetime     not null default NOW() comment '创建时间',
+    `update_time`  datetime     not null default NOW() comment '创建时间',
+    `search_value` varchar(20)  not null default '' comment '查询参数',
+    `create_by`    varchar(255) not null default '' comment '创建人',
+    `update_by`    varchar(255) not null default '' comment '最后更新人',
+    `remark`       varchar(255) not null default '' comment '创建时间',
+    `order_no`     int                   default 0 not null comment '排序号',
+    constraint anime_score_pk primary key (id)
+
+);
 
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;

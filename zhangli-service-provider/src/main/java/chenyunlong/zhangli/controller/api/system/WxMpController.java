@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 /**
+ * 对接微信公众平台
+ *
  * @author Stan
  */
 @RestController
@@ -45,6 +47,7 @@ public class WxMpController {
         OpenUser openUser = MpOAuth2s.defaultOAuth2s().userInfo(accessToken.getAccessToken(), accessToken.getOpenId());
         //do your logic
         log.debug("这里就是相应的消息了！");
+        log.debug("登录{}", openUser.getNickName());
     }
 
 
@@ -113,7 +116,7 @@ public class WxMpController {
                 try {
                     return MpXmlMessages.toXml(xmlResponse);
                 } catch (WxRuntimeException e) {
-                    log.error("发生了议程", e);
+                    log.error("发生了异常", e);
                 }
             }
         }

@@ -11,6 +11,7 @@ import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoPlayVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author Stan
  */
 
-public interface AnimeInfoService {
+public interface AnimeInfoService extends IService<AnimeInfo> {
 
     /**
      * 获取排行榜信息

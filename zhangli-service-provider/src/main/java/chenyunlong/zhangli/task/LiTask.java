@@ -16,12 +16,12 @@ import java.util.List;
 @Component("zhangliTask")
 public class LiTask {
 
+    //数据库操作
     private final BilibiliAnimeService bilibiliAnimeService;
-    private final BiliService biliService;
 
-    public LiTask(BilibiliAnimeService bilibiliAnimeService, BiliService biliService) {
+
+    public LiTask(BilibiliAnimeService bilibiliAnimeService) {
         this.bilibiliAnimeService = bilibiliAnimeService;
-        this.biliService = biliService;
     }
 
 
@@ -38,7 +38,6 @@ public class LiTask {
     }
 
     public void syncAnimeList() {
-        List<BiliAnime> biliAnimeList = biliService.getBiliAnimeList();
-        bilibiliAnimeService.insertBatch(biliAnimeList);
+        bilibiliAnimeService.updateAnimeInfo();
     }
 }

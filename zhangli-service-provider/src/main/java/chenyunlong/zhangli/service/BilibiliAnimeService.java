@@ -1,7 +1,8 @@
 package chenyunlong.zhangli.service;
 
-import chenyunlong.zhangli.model.bilibili.BiliAnime;
+import chenyunlong.zhangli.model.entities.bilibili.BilibiliAnimeScoreEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -9,9 +10,17 @@ import java.util.List;
  */
 public interface BilibiliAnimeService {
     /**
-     * 添加bilibili上面同步的视频
-     *
-     * @param animeList 动漫列表
+     * 同步哔哩哔哩的动漫信息
      */
-    void insertBatch(List<BiliAnime> animeList);
+    void updateAnimeInfo();
+
+    /**
+     * 获取B站动漫的评分记录
+     *
+     * @param animeId   动漫ID
+     * @param startTime 开始时间
+     * @param entTime   结束时间
+     * @return 评分记录
+     */
+    List<BilibiliAnimeScoreEntity> getScoreInfoList(Long animeId, LocalDateTime startTime, LocalDateTime entTime);
 }
