@@ -1,10 +1,8 @@
 package chenyunlong.zhangli.mail;
 
 import chenyunlong.zhangli.common.exception.EmailException;
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import cn.hutool.extra.mail.Mail;
+import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.mail.MailSender;

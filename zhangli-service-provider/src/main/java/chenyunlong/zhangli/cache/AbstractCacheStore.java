@@ -1,13 +1,12 @@
 package chenyunlong.zhangli.cache;
 
-import chenyunlong.zhangli.utils.DateUtils;
+import chenyunlong.zhangli.common.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 

@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.entities;
 
-import chenyunlong.zhangli.core.domain.BaseEntity;
+import chenyunlong.zhangli.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
