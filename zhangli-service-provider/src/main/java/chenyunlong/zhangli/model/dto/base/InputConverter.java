@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model.dto.base;
 
-import chenyunlong.zhangli.utils.BeanUtils;
-import chenyunlong.zhangli.utils.ReflectionUtils;
+import chenyunlong.zhangli.common.utils.BeanUtils;
+import chenyunlong.zhangli.common.utils.ReflectionUtils;
 import org.springframework.lang.Nullable;
 
 import java.lang.reflect.ParameterizedType;

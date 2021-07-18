@@ -2,8 +2,8 @@ package chenyunlong.zhangli.cache.lock;
 
 import chenyunlong.zhangli.cache.AbstractStringCacheStore;
 import chenyunlong.zhangli.common.exception.FrequentAccessException;
-import chenyunlong.zhangli.exception.ServiceException;
-import chenyunlong.zhangli.utils.ServletUtils;
+import chenyunlong.zhangli.common.exception.ServiceException;
+import chenyunlong.zhangli.common.utils.ServletUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
