@@ -3,10 +3,10 @@ package chenyunlong.zhangli.utils;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,18 +16,21 @@ import java.util.Map;
  * @author yml
  */
 public class YamlUtil {
-    public static Map<?, ?> loadYaml(String fileName) throws FileNotFoundException {
+    public static Map<?, ?> loadYaml(String fileName) {
         InputStream in = YamlUtil.class.getClassLoader().getResourceAsStream(fileName);
         return StringUtils.isNotEmpty(fileName) ? (LinkedHashMap<?, ?>) new Yaml().load(in) : null;
     }
 
     public static void dumpYaml(String fileName, Map<?, ?> map) throws IOException {
         if (StringUtils.isNotEmpty(fileName)) {
-            FileWriter fileWriter = new FileWriter(YamlUtil.class.getResource(fileName).getFile());
-            DumperOptions options = new DumperOptions();
-            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-            Yaml yaml = new Yaml(options);
-            yaml.dump(map, fileWriter);
+            URL url = YamlUtil.class.getResource(fileName);
+            if (url != null) {
+                FileWriter fileWriter = new FileWriter(url.getFile());
+                DumperOptions options = new DumperOptions();
+                options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+                Yaml yaml = new Yaml(options);
+                yaml.dump(map, fileWriter);
+            }
         }
     }
 
@@ -38,12 +41,10 @@ public class YamlUtil {
                 if (input.contains(".")) {
                     int index = input.indexOf(".");
                     String left = input.substring(0, index);
-                    String right = input.substring(index + 1, input.length());
+                    String right = input.substring(index + 1);
                     return getProperty((Map<?, ?>) map.get(left), right);
-                } else if (map.containsKey(input)) {
-                    return map.get(input);
                 } else {
-                    return null;
+                    return map.getOrDefault(input, null);
                 }
             }
         }
@@ -58,7 +59,7 @@ public class YamlUtil {
                 if (input.contains(".")) {
                     int index = input.indexOf(".");
                     String left = input.substring(0, index);
-                    String right = input.substring(index + 1, input.length());
+                    String right = input.substring(index + 1);
                     setProperty((Map<?, ?>) map.get(left), right, value);
                 } else {
                     ((Map<Object, Object>) map).put(qualifiedKey, value);
