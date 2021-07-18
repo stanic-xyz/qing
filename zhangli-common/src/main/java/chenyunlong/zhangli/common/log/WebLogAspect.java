@@ -24,10 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 统一日志处理切面
@@ -41,16 +38,16 @@ import java.util.Map;
 public class WebLogAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebLogAspect.class);
 
-    @Pointcut("execution(public * chenyunlong.zhangli.controller.*.*(..))||execution(public * chenyunlong.zhangli.*.controller.*.*(..))")
+    @Pointcut("execution(public * chenyunlong.zhangli.core.controller(..))||execution(public * chenyunlong.zhangli.*.controller.*.*(..))")
     public void webLog() {
     }
 
     @Before("webLog()")
-    public void doBefore(JoinPoint joinPoint) throws Throwable {
+    public void doBefore(JoinPoint joinPoint) {
     }
 
     @AfterReturning(value = "webLog()", returning = "ret")
-    public void doAfterReturning(Object ret) throws Throwable {
+    public void doAfterReturning(Object ret) {
     }
 
     @Around("webLog()")
@@ -58,7 +55,7 @@ public class WebLogAspect {
         long startTime = System.currentTimeMillis();
         //获取当前请求对象
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
+        HttpServletRequest request = Objects.requireNonNull(attributes).getRequest();
         //记录请求信息(通过Logstash传入Elasticsearch)
         WebLog webLog = new WebLog();
         Object result = joinPoint.proceed();
