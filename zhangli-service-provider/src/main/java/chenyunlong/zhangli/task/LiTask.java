@@ -1,12 +1,8 @@
 package chenyunlong.zhangli.task;
 
-import chenyunlong.zhangli.model.bilibili.BiliAnime;
-import chenyunlong.zhangli.service.BilibiliAnimeService;
-import chenyunlong.zhangli.service.external.BiliService;
-import chenyunlong.zhangli.utils.StringUtils;
+import chenyunlong.zhangli.common.service.BilibiliAnimeService;
+import chenyunlong.zhangli.common.utils.StringUtils;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * 定时任务调度测试

@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.common.annotation;
 
 
-import chenyunlong.zhangli.enums.BusinessType;
-import chenyunlong.zhangli.enums.OperatorType;
+import chenyunlong.zhangli.common.enums.BusinessType;
+import chenyunlong.zhangli.common.enums.OperatorType;
 
 import java.lang.annotation.*;
 

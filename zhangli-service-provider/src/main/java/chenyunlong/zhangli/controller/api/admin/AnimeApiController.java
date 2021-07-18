@@ -1,12 +1,11 @@
 package chenyunlong.zhangli.controller.api.admin;
 
-import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoParam;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
-import chenyunlong.zhangli.core.support.ApiResult;
+import chenyunlong.zhangli.common.core.support.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
-import chenyunlong.zhangli.service.AnimeInfoService;
+import chenyunlong.zhangli.common.service.AnimeInfoService;
 import cn.hutool.core.thread.NamedThreadFactory;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 

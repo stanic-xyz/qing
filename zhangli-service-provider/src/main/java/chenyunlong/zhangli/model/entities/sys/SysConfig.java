@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model.entities.sys;
 
 import chenyunlong.zhangli.common.annotation.Excel;
-import chenyunlong.zhangli.core.domain.BaseEntity;
+import chenyunlong.zhangli.common.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;

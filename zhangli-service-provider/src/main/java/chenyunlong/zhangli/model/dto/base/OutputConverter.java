@@ -1,8 +1,6 @@
 package chenyunlong.zhangli.model.dto.base;
 
-import org.springframework.lang.NonNull;
-
-import static chenyunlong.zhangli.utils.BeanUtils.updateProperties;
+import static chenyunlong.zhangli.common.utils.BeanUtils.updateProperties;
 
 
 /**

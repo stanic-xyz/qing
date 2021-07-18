@@ -38,7 +38,7 @@ import java.util.*;
 public class WebLogAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebLogAspect.class);
 
-    @Pointcut("execution(public * chenyunlong.zhangli.core.controller(..))||execution(public * chenyunlong.zhangli.*.controller.*.*(..))")
+    @Pointcut("execution(public * chenyunlong.zhangli.common.core.controller(..))||execution(public * chenyunlong.zhangli.*.controller.*.*(..))")
     public void webLog() {
     }
 
