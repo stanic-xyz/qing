@@ -160,7 +160,7 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>${dockerfile.maven.version}</version>
                 <configuration>
-                    <dockerfile>${project.basedir}/Dockerfile</dockerfile>
+                    <dockerfile>./Dockerfile</dockerfile>
                     <repository>${docker.registry.prefix}/${project.artifactId}</repository>
                     <tag>${docker.registry.tag}</tag>
                     <username>${docker.registry.username}</username>
