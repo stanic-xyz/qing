@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.common.core.page;
 
 import chenyunlong.zhangli.common.constrant.Constants;
-import chenyunlong.zhangli.common.utils.ServletUtils;
+import chenyunlong.zhangli.utils.ServletUtils;
 
 
 /**

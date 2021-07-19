@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.common.core.text;
 
 
-import chenyunlong.zhangli.common.utils.StringUtils;
+import chenyunlong.zhangli.utils.StringUtils;
 
 /**
  * 字符串格式化
