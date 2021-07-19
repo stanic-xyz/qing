@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.dto.base;
 
-import static chenyunlong.zhangli.common.utils.BeanUtils.updateProperties;
+import static chenyunlong.zhangli.utils.BeanUtils.updateProperties;
 
 
 /**

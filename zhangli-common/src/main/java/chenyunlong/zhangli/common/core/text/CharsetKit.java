@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.common.core.text;
 
-import chenyunlong.zhangli.common.utils.StringUtils;
+import chenyunlong.zhangli.utils.StringUtils;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

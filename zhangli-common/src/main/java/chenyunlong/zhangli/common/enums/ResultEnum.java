@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.common.enums;
 
-import chenyunlong.zhangli.common.utils.StringUtils;
+import chenyunlong.zhangli.utils.StringUtils;
 
 /**
  * <p>
