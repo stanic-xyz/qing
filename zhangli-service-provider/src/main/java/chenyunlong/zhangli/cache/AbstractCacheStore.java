@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.cache;
 
-import chenyunlong.zhangli.common.utils.DateUtils;
+import chenyunlong.zhangli.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;

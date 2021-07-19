@@ -1,10 +1,9 @@
 FROM java:8-jre AS zhangli-service-provider
 USER root
-ENV ENV prod
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"
+ENV ENV prod
 EXPOSE 8080
-WORKDIR /home
 ARG JAR_FILE
-ADD target/zhangli-service-provider.jar /home/zhangli-service-provider.jar
-ENTRYPOINT ["/usr/bin/java","-jar","/home/zhangli-service-provider.jar"]
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["/usr/bin/java","-jar","/app.jar"]

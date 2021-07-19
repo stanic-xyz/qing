@@ -160,13 +160,13 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>${dockerfile.maven.version}</version>
                 <configuration>
-                    <dockerfile>./Dockerfile</dockerfile>
+                    <dockerfile>${project.basedir}/Dockerfile</dockerfile>
                     <repository>${docker.registry.prefix}/${project.artifactId}</repository>
                     <tag>${docker.registry.tag}</tag>
                     <username>${docker.registry.username}</username>
                     <password>${docker.registry.password}</password>
                     <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                 </configuration>
             </plugin>

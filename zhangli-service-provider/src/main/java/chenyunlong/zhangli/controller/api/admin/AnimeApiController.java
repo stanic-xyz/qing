@@ -5,7 +5,7 @@ import chenyunlong.zhangli.model.params.AnimeInfoParam;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.common.core.support.ApiResult;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
-import chenyunlong.zhangli.common.service.AnimeInfoService;
+import chenyunlong.zhangli.service.AnimeInfoService;
 import cn.hutool.core.thread.NamedThreadFactory;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
