@@ -226,13 +226,6 @@
 
     <build>
         <finalName>zhangli</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.5.2</version>
-            </plugin>
-        </plugins>
     </build>
     <developers>
         <developer>
