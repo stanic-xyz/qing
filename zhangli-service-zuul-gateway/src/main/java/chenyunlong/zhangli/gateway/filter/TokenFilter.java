@@ -1,8 +1,5 @@
 package chenyunlong.zhangli.gateway.filter;
 
-import com.alibaba.csp.sentinel.Entry;
-import com.alibaba.csp.sentinel.SphU;
-import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
@@ -73,19 +70,7 @@ public class TokenFilter extends ZuulFilter {
         String authHeader = "Basic " + new String(encodedAuth);
         ctx.addZuulRequestHeader("Authorization", authHeader);
         //该方法只是决定到底要不要转发请求
-        try (Entry ignored = SphU.entry("HelloWorld")) {
-            // Your business logic here.
-            ctx.setSendZuulResponse(true);
-            ctx.setResponseStatusCode(200);
-            ctx.set("isSuccess", true);
-            return null;
-        } catch (BlockException e) {
-            ctx.setSendZuulResponse(false);
-            ctx.setResponseStatusCode(500);
-            ctx.setResponseBody(e.getMessage());
-            ctx.set("isSuccess", false);
-            return null;
-        }
+        return null;
     }
 
     /**
