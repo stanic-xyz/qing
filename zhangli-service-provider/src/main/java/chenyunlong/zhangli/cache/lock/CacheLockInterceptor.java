@@ -58,7 +58,7 @@ public class CacheLockInterceptor {
             Boolean cacheResult = cacheStore.putIfAbsent(cacheLockKey, CACHE_LOCK_VALUE, cacheLock.expired(), cacheLock.timeUnit());
 
             if (cacheResult == null) {
-                throw new ServiceException("Unknown reason of cache " + cacheLockKey).setErrorData(cacheLockKey);
+                throw new ServiceException("Unknown reason of cache " + cacheLockKey);
             }
 
             if (!cacheResult) {

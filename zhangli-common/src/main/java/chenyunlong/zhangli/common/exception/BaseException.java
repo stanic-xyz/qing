@@ -16,6 +16,7 @@ public class BaseException extends RuntimeException {
      * 异常对应的错误类型
      */
     private ErrorType errorType;
+    private String errorData;
 
     /**
      * 默认是系统异常
@@ -42,4 +43,11 @@ public class BaseException extends RuntimeException {
 
     }
 
+    public void setErrorData(String errorData) {
+        this.errorData = errorData;
+    }
+
+    public String getErrorData() {
+        return errorData;
+    }
 }

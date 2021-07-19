@@ -34,7 +34,8 @@ public abstract class AbstractStringCacheStore extends AbstractCacheStore<String
         try {
             put(key, JsonUtils.objectToJson(value));
         } catch (JsonProcessingException e) {
-            throw new ServiceException("Failed to convert " + value + " to json", e);
+            log.error("Failed to convert " + value + " to json", e);
+            throw new ServiceException("Failed to convert " + value + " to json");
         }
     }
 
@@ -42,7 +43,8 @@ public abstract class AbstractStringCacheStore extends AbstractCacheStore<String
         try {
             put(key, JsonUtils.objectToJson(value), timeout, timeUnit);
         } catch (JsonProcessingException e) {
-            throw new ServiceException("Failed to convert " + value + " to json", e);
+            log.error("Failed to convert " + value + " to json", e);
+            throw new ServiceException("Failed to convert " + value + " to json");
         }
     }
 
