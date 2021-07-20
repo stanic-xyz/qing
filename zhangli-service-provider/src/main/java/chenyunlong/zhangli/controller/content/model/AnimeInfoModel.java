@@ -1,16 +1,16 @@
 package chenyunlong.zhangli.controller.content.model;
 
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.common.core.support.Pagination;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.OptionsModel;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.*;
-import chenyunlong.zhangli.service.AnimeCommentService;
-import chenyunlong.zhangli.service.AnimeEpisodeService;
-import chenyunlong.zhangli.service.AnimeInfoService;
-import chenyunlong.zhangli.service.AnimeOptionsService;
+import chenyunlong.zhangli.common.service.AnimeCommentService;
+import chenyunlong.zhangli.common.service.AnimeEpisodeService;
+import chenyunlong.zhangli.common.service.AnimeInfoService;
+import chenyunlong.zhangli.common.service.AnimeOptionsService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
