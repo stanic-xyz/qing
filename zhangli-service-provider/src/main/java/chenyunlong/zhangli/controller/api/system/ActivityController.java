@@ -2,8 +2,8 @@ package chenyunlong.zhangli.controller.api.system;
 
 import chenyunlong.zhangli.model.entities.ActivityEntity;
 import chenyunlong.zhangli.common.core.support.ApiResult;
-import chenyunlong.zhangli.service.ActivityService;
-import chenyunlong.zhangli.service.AttachementService;
+import chenyunlong.zhangli.common.service.ActivityService;
+import chenyunlong.zhangli.common.service.AttachementService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

@@ -1,9 +1,9 @@
 package chenyunlong.zhangli.security.support;
 
-import chenyunlong.zhangli.config.properties.SecurityProperties;
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.common.config.properties.SecurityProperties;
+import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.model.vo.system.UserInfoVO;
-import chenyunlong.zhangli.utils.JwtUtil;
+import chenyunlong.zhangli.common.utils.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;

@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.common.core.page;
 
-import chenyunlong.zhangli.utils.StringUtils;
+import chenyunlong.zhangli.common.utils.StringUtils;
 
 /**
  * 分页数据

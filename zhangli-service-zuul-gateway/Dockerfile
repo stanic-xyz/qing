@@ -5,5 +5,5 @@ LABEL maintainer="Stan <1576302867@qq.com>>"
 EXPOSE 9000
 WORKDIR /home
 ARG JAR_FILE
-ADD target/${JAR_FILE} /home/zhangli-zuul-gateway-service.jar
+ADD ${JAR_FILE} /home/zhangli-zuul-gateway-service.jar
 ENTRYPOINT ["/usr/bin/java","-jar","/home/zhangli-zuul-gateway-service.jar"]

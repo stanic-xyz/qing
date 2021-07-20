@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.controller.api.system;
 
-import chenyunlong.zhangli.service.WeixinMessageService;
+import chenyunlong.zhangli.common.service.WeixinMessageService;
 import com.riversoft.weixin.common.decrypt.AesException;
 import com.riversoft.weixin.common.decrypt.MessageDecryption;
 import com.riversoft.weixin.common.decrypt.SHA1;

@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.common.core.text;
 
 
-import chenyunlong.zhangli.utils.StringUtils;
+import chenyunlong.zhangli.common.utils.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

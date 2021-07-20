@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.common.core.domain;
 
-import chenyunlong.zhangli.utils.StringUtils;
+import chenyunlong.zhangli.common.utils.StringUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

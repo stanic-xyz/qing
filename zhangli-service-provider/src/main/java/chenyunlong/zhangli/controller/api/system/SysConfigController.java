@@ -7,7 +7,7 @@ import chenyunlong.zhangli.common.core.page.TableDataInfo;
 import chenyunlong.zhangli.common.exception.ServiceException;
 import chenyunlong.zhangli.model.entities.sys.SysConfig;
 import chenyunlong.zhangli.common.enums.BusinessType;
-import chenyunlong.zhangli.service.ISysConfigService;
+import chenyunlong.zhangli.common.service.ISysConfigService;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

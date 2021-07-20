@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.aspect;
 
 import chenyunlong.zhangli.common.annotation.Email;
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
