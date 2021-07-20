@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.controller.api.content;
 
 import chenyunlong.zhangli.model.entities.bilibili.BilibiliAnimeScoreEntity;
-import chenyunlong.zhangli.service.BilibiliAnimeService;
+import chenyunlong.zhangli.common.service.BilibiliAnimeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
