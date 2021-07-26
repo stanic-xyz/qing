@@ -2,8 +2,8 @@ package chenyunlong.zhangli.controller.api.admin;
 
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
-import chenyunlong.zhangli.common.core.support.ApiResult;
-import chenyunlong.zhangli.common.service.AnimeRecommendService;
+import chenyunlong.zhangli.service.AnimeRecommendService;
+import com.stan.zhangli.core.core.support.ApiResult;
 import io.swagger.annotations.Api;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.aspect;
 
-import chenyunlong.zhangli.common.annotation.Email;
-import chenyunlong.zhangli.common.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import com.stan.zhangli.core.annotation.Email;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,7 +32,7 @@ public class EmailAspect {
     }
 
 
-    @Pointcut("@annotation(chenyunlong.zhangli.common.annotation.Email)")
+    @Pointcut("@annotation(com.stan.zhangli.core.annotation.Email)")
     public void pointcut() {
         // do nothing
     }

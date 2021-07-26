@@ -115,7 +115,7 @@
                 <ul id="anime_update">
                     <li class="one_new_anime" th:each="anime : ${data.recentList}">
                         <a th:href="@{'/detail/'+${anime.id}}" href="" class="one_new_anime_name"
-                           style="width: 220px;" th:text="${anime.name}">智龙迷城 (2018)</a>
+                           style="width: 220px;" th:text="${anime.name}"></a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;"
                               th:text="${anime.premiereDate}"></span>
                     </li>
@@ -151,7 +151,7 @@
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}" loading="lazy"
-                                 alt="//sc02.alicdn.com/kf/H141a9a8836a94e79a1e0fce1413c80f38.jpg">
+                                 alt="/img/empty.png">
                             <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
                         <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
                             <div class="anime_icon1_name" th:text="${anime.name}"></div>
