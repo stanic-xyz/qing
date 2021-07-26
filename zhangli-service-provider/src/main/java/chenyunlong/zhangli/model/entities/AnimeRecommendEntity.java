@@ -1,14 +1,16 @@
 package chenyunlong.zhangli.model.entities;
 
-import chenyunlong.zhangli.common.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.stan.zhangli.core.core.domain.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
 /**
  * @author Stan
  */
+@EqualsAndHashCode(callSuper = false)
 @Data
 @TableName("anime_recommend")
 public class AnimeRecommendEntity extends BaseEntity {
