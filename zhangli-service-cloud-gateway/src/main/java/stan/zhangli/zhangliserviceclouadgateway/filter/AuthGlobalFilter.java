@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.filter;
 
-import chenyunlong.zhangli.common.constant.AuthConstant;
+import com.stan.zhangli.core.constant.AuthConstant;
 import cn.hutool.core.util.StrUtil;
 import com.nimbusds.jose.JWSObject;
 import lombok.extern.slf4j.Slf4j;

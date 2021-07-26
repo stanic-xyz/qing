@@ -26,11 +26,9 @@ spring:
     cache: false
     prefix: file:${user.dir}/zhangli-service-provider/src/main/resources/templates/
 logging:
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
   level:
-    root: info
-    person.pluto: info
+    root: debug
+    person.pluto: debug
     chenyunlong.zhangli.mapper: debug
     chenyunlong.zhangli: debug
 mp:

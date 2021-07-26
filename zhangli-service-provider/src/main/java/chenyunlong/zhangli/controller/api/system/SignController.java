@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.controller.api.system;
 
-import chenyunlong.zhangli.common.annotation.Log;
 import chenyunlong.zhangli.model.entities.Sign;
-import chenyunlong.zhangli.common.service.SignService;
+import chenyunlong.zhangli.service.SignService;
+import com.stan.zhangli.core.annotation.Log;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;

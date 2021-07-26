@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>stan</groupId>
+        <groupId>com.stan</groupId>
         <artifactId>zhangli</artifactId>
         <version>1.0.0.RELEASE</version>
     </parent>
@@ -17,7 +17,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>stan</groupId>
+            <groupId>com.stan</groupId>
             <artifactId>zhangli-common</artifactId>
             <exclusions>
                 <exclusion>
