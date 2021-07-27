@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.controller.content.model;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.OptionsModel;
@@ -83,18 +84,12 @@ public class AnimeInfoModel {
     /**
      * 最近更新界面
      *
-     * @param objectPage 分页参数
+     * @param animeInfo 分页参数
      * @return 更新界面的数据
      */
-    public UpdateModel listUpdate(Page<AnimeInfo> objectPage) {
-
-        if (log.isDebugEnabled()) {
-            log.debug("测试身份验证地址：" + zhangliProperties.getAuthenticationPrefix());
-        }
+    public UpdateModel listUpdate(Page<AnimeInfo> animeInfo) {
         UpdateModel updateModel = new UpdateModel();
-
-        IPage<AnimeInfoVo> animeInfoPage = animeInfoService.getUpdateAnimeInfo(objectPage);
-
+        IPage<AnimeInfoMinimalDTO> animeInfoPage = animeInfoService.getUpdateAnimeInfo(animeInfo);
         updateModel.setAnimeList(animeInfoPage.getRecords());
         updateModel.setPagination(new Pagination(animeInfoPage));
         return updateModel;
@@ -105,7 +100,6 @@ public class AnimeInfoModel {
         CatalogModel catalogModel = new CatalogModel();
         IPage<AnimeInfo> animeInfoPage = animeInfoService.getRankPage(objectPage, animeInfoQuery);
         OptionsModel animeOptionsModel = animeOptionsService.getOptions();
-
         catalogModel.setQuery(animeInfoQuery);
         catalogModel.setYears(animeOptionsModel.getYears());
         catalogModel.setOptions(animeOptionsModel);
@@ -115,13 +109,14 @@ public class AnimeInfoModel {
         return catalogModel;
     }
 
+    /**
+     * 搜索模块
+     *
+     * @param objectPage     分页信息
+     * @param animeInfoQuery 查询参数信息
+     * @return 查询页配置信息
+     */
     public SearchModel searchModel(Page<AnimeInfo> objectPage, AnimeInfoQuery animeInfoQuery) {
-
-
-//        long totalCount = animeInfoService.getTotalCount(query);
-//        int totalPage = (int) Math.ceil(((double) totalCount) / ((double) pageSize));
-//        animeInfoService.listByPage(new Page<>(page, pageSize), searchParam);
-
         SearchModel searchModel = new SearchModel();
         LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(AnimeInfo::getName, animeInfoQuery.getKeyword());

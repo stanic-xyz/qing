@@ -25,12 +25,6 @@ spring:
   thymeleaf:
     cache: false
     prefix: file:${user.dir}/zhangli-service-provider/src/main/resources/templates/
-logging:
-  level:
-    root: debug
-    person.pluto: debug
-    chenyunlong.zhangli.mapper: debug
-    chenyunlong.zhangli: debug
 mp:
   wx:
     appId: wx09bf7e704a150a9c

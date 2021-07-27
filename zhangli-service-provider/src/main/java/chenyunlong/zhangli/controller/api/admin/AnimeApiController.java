@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.controller.api.admin;
 
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoParam;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
@@ -64,9 +65,9 @@ public class AnimeApiController {
     }
 
     @GetMapping("update/page")
-    public ApiResult<IPage<AnimeInfoVo>> getUpdateInfo(@RequestParam(defaultValue = "1") Integer page,
-                                                       @RequestParam(defaultValue = "24") Integer pageSize) {
-        IPage<AnimeInfoVo> animeInfoPage = animeInfoService.getUpdateAnimeInfo(new Page<>(page, pageSize));
+    public ApiResult<IPage<AnimeInfoMinimalDTO>> getUpdateInfo(@RequestParam(defaultValue = "1") Integer page,
+                                                               @RequestParam(defaultValue = "24") Integer pageSize) {
+        IPage<AnimeInfoMinimalDTO> animeInfoPage = animeInfoService.getUpdateAnimeInfo(new Page<>(page, pageSize));
         return ApiResult.success(animeInfoPage);
     }
 

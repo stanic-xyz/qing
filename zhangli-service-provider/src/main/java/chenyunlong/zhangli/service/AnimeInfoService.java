@@ -48,14 +48,6 @@ public interface AnimeInfoService extends IService<AnimeInfo> {
     AnimeInfo getById(Long animeId);
 
     /**
-     * 获取查询总数
-     *
-     * @param query 查询条件
-     * @return 总数
-     */
-    long getTotalCount(String query);
-
-    /**
      * 查询动画信息
      *
      * @param pageable  分页信息
@@ -95,7 +87,7 @@ public interface AnimeInfoService extends IService<AnimeInfo> {
      * @param page 当前页
      * @return 动漫分页信息了
      */
-    IPage<AnimeInfoVo> getUpdateAnimeInfo(IPage<AnimeInfo> page);
+    IPage<AnimeInfoMinimalDTO> getUpdateAnimeInfo(IPage<AnimeInfo> page);
 
     /**
      * 获取推荐用户列表
