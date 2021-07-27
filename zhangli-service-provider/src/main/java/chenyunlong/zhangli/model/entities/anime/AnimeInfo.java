@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 /**
  * @author Stan
  */
@@ -24,7 +26,7 @@ public class AnimeInfo extends BaseEntity {
     private String otherName;
     private String author;
     private String company;
-    private String premiereDate;
+    private LocalDate premiereDate;
     private String playStatus;
     private String plotType;
     private String tags;

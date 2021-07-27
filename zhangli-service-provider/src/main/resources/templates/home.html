@@ -13,8 +13,9 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/YunlongChen/cdn/zhangli/js/history.js"></script>
     <script src="https://unpkg.com/petite-vue" defer init></script>
 </head>
-<body>
 
+
+<body>
 <div id="root" v-scope="{ count: 1 }">
     <div id="top" th:include="common/header :: top()"></div>
     <header id="nav" th:include="common/header :: commonHead('index')"></header>
@@ -47,12 +48,14 @@
                     </li>
                 </ul>
 
-                <ul id="new_anime_page" th:each="entry:${data.recentMap.entrySet()}" th:attr="data-key=${entry.key}">
+                <ul id="new_anime_page" th:each="entry:${data.recentMap.entrySet()}"
+                    th:attr="v-if=${entry.key +'== count'}">
                     <li class="one_new_anime" th:each="anime,iter : ${entry.value}">
                         <a class="one_new_anime_name" th:href="@{'/detail/'+${anime.id}}"
                            th:text="${anime.name}"></a>
                         <a class="one_new_anime_ji" th:href="@{'/detail/'+${anime.id}}"
                            th:text="${anime.premiereDate}"></a>
+                        <div class="one_anime_new" th:attr="v-if=${!anime.isNew}">new!</div>
                     </li>
                 </ul>
             </div>
