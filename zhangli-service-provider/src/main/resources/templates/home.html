@@ -15,38 +15,42 @@
 </head>
 <body>
 
-<div id="root" v-scope="{ count: 0 }">
+<div id="root" v-scope="{ count: 1 }">
     <div id="top" th:include="common/header :: top()"></div>
     <header id="nav" th:include="common/header :: commonHead('index')"></header>
     <div id="container">
-
         <div id="new_tip1" th:include="common/header :: notification('www.agefans.net')"></div>
         <div class="div_right baseblock">
             <div class="blocktitle">每周放送列表</div>
             <div class="blockcontent">
                 <ul id="new_anime_btns">
-                    <li id="new_anime_page_btn_1" class="new_anime_btn highlighttag" @click="count=1">周一
+                    <li id="new_anime_page_btn_1" class="new_anime_btn highlighttag"
+                        :class="{new_anime_btn_current: count==1}" @click="count=1">周一
                     </li>
-                    <li id="new_anime_page_btn_2" class="new_anime_btn  highlighttag" @click="count=2">周二
+                    <li id="new_anime_page_btn_2" class="new_anime_btn  highlighttag"
+                        :class="{new_anime_btn_current: count==2}" @click="count=2">周二
                     </li>
-                    <li id="new_anime_page_btn_3" class="new_anime_btn  highlighttag" @click="count=3">周三
+                    <li id="new_anime_page_btn_3" class="new_anime_btn  highlighttag"
+                        :class="{new_anime_btn_current: count==3}" @click="count=3">周三
                     </li>
-                    <li id="new_anime_page_btn_4" class="new_anime_btn  highlighttag" @click="count=4">周四
+                    <li id="new_anime_page_btn_4" class="new_anime_btn  highlighttag"
+                        :class="{new_anime_btn_current: count==4}" @click="count=4">周四
                     </li>
-                    <li id="new_anime_page_btn_5" class="new_anime_btn  highlighttag" @click="count=5">周五
+                    <li id="new_anime_page_btn_5" class="new_anime_btn  highlighttag"
+                        :class="{new_anime_btn_current: count==5}" @click="count=5">周五
                     </li>
-                    <li id="new_anime_page_btn_6" class="new_anime_btn highlighttag new_anime_btn_current"
-                        @click="count=6">周六
+                    <li id="new_anime_page_btn_6" class="new_anime_btn highlighttag"
+                        :class="{new_anime_btn_current: count==6}" @click="count=6">周六
                     </li>
-                    <li id="new_anime_page_btn_0" class="new_anime_btn  highlighttag" @click="count=7">周日
+                    <li id="new_anime_page_btn_0" class="new_anime_btn  highlighttag"
+                        :class="{new_anime_btn_current: count==7}" @click="count=7">周日
                     </li>
                 </ul>
 
-                <ul id="new_anime_page" th:each="count:${#numbers.sequence(1,7)}" th:attr="v-if='count=='+${count}">
-                    <li class="one_new_anime" th:each="anime,iter : ${data.recentList}"
-                        th:if="${(iter.index/3)==0}">
+                <ul id="new_anime_page" th:each="entry:${data.recentMap.entrySet()}" th:attr="data-key=${entry.key}">
+                    <li class="one_new_anime" th:each="anime,iter : ${entry.value}">
                         <a class="one_new_anime_name" th:href="@{'/detail/'+${anime.id}}"
-                           th:text="${anime.name}">达尔文游戏</a>
+                           th:text="${anime.name}"></a>
                         <a class="one_new_anime_ji" th:href="@{'/detail/'+${anime.id}}"
                            th:text="${anime.premiereDate}"></a>
                     </li>
@@ -107,56 +111,6 @@
     </div>
 
     <footer id="footer" th:include="common/header :: footer()"></footer>
-    <script type="text/javascript" th:inline="javascript">
-        const new_anime_list = [[${ data.updateInfoList }]];
-
-        function on_new_anime_page_btn(obj, idx) {
-            const lastNode = document.querySelector('.new_anime_btn_current');
-            lastNode.classList.remove('new_anime_btn_current');
-            const currentNode = document.getElementById('new_anime_page_btn_' + idx);
-            currentNode.classList.add('new_anime_btn_current');
-
-            //动漫列表
-            const newAnimeWd = new_anime_list.filter(function (x) {
-                return x.wd === idx;
-            });
-            // the list page
-            const newAnimePage = document.getElementById('new_anime_page');
-
-            let firstElementChild = newAnimePage.firstElementChild;
-            let delta = newAnimeWd.length - newAnimePage.children.length;
-            if (delta < 0) {
-                for (let i = 0; i < -delta; i++) {
-                    newAnimePage.removeChild(newAnimePage.firstElementChild);
-                }
-            }
-            if (delta > 0) {
-                for (let i = 0; i < delta; i++) {
-                    newAnimePage.appendChild(firstElementChild.cloneNode(true));
-                }
-            }
-            for (let i = 0; i < newAnimeWd.length; i++) {
-                let data = newAnimeWd[i];
-                let node = newAnimePage.children[i];
-                let nodeName = node.children[0];
-                let nodeName1 = node.children[1];
-                nodeName.text = data.name;
-                nodeName.setAttribute('href', 'detail/' + data.id);
-                nodeName1.text = data.namefornew;
-                nodeName1.setAttribute('href', 'detail/' + data.id);
-                let nodeNew = node.children[2];
-                if (data.isnew && !nodeNew) {
-                    nodeNew = document.createElement('div');
-                    nodeNew.setAttribute('class', 'one_anime_new');
-                    nodeNew.innerText = 'new!';
-                    node.appendChild(nodeNew);
-                } else if (!data.isnew && nodeNew) {
-                    node.removeChild(nodeNew);
-                }
-            }
-            newAnimePage.removeAttribute('hidden');
-        }
-    </script>
 </div>
 </body>
 

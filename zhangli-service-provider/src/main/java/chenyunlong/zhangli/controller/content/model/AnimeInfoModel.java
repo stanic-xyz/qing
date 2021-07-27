@@ -19,6 +19,10 @@ import com.stan.zhangli.core.core.support.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * @author Stan
  */
@@ -51,7 +55,11 @@ public class AnimeInfoModel {
      */
     public IndexModel listIndex() throws JsonProcessingException {
         IndexModel indexModel = new IndexModel();
-        indexModel.setRecentList(animeInfoService.getRecentUpdate(optionService.getRecentPageSize()));
+        List<AnimeInfoMinimalDTO> recentUpdate = animeInfoService.getRecentUpdate(optionService.getRecentPageSize());
+        Map<String, List<AnimeInfoMinimalDTO>> collect = recentUpdate.stream().collect(Collectors.groupingBy(AnimeInfoMinimalDTO::getPremiereDate));
+        indexModel.setRecentList(recentUpdate);
+        indexModel.setRecentMap(collect);
+        //按照每周进行分组
         indexModel.setDalyUpdateList(animeInfoService.getRecommendAnimeInfoList());
         indexModel.setRecommendList(animeInfoService.getRecommendAnimeInfoList());
         indexModel.setUpdateInfoList(animeInfoService.getUpdateInfo());
