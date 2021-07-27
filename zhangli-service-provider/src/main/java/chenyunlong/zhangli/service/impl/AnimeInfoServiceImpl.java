@@ -46,29 +46,24 @@ import java.util.stream.Collectors;
 public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo> implements AnimeInfoService {
     private final AnimeInfoMapper animeInfoMapper;
     private final AnimeEpisodeService episodeService;
-    private final AnimeTypeMapper animeTypeMapper;
     private final PlaylistService playlistService;
     private final AnimeCommentMapper commentMapper;
     private final String domainName = "anime";
 
 
     public AnimeInfoServiceImpl(AnimeInfoMapper animeInfoMapper,
-                                RestTemplate restTemplate,
                                 AnimeEpisodeService episodeService,
-                                AnimeTypeMapper animeTypeMapper,
                                 PlaylistService playlistService,
                                 AnimeCommentMapper commentMapper) {
         this.animeInfoMapper = animeInfoMapper;
         this.episodeService = episodeService;
-        this.animeTypeMapper = animeTypeMapper;
         this.playlistService = playlistService;
         this.commentMapper = commentMapper;
     }
 
     @Override
     public IPage<AnimeInfo> getRankPage(IPage<AnimeInfo> pageInfo, AnimeInfoQuery animeInfoQuery) {
-        Wrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
-        return animeInfoMapper.selectPage(pageInfo, queryWrapper);
+        return page(pageInfo, buildQueryWrapper(animeInfoQuery));
     }
 
     @Override
@@ -84,11 +79,6 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
             throw new NotFoundException(domainName + "was not found or has been deleted");
         }
         return animeInfo;
-    }
-
-    @Override
-    public long getTotalCount(String query) {
-        return animeInfoMapper.countByNameLike(query);
     }
 
     @Override
@@ -181,12 +171,8 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
 
     @Override
-    public IPage<AnimeInfoVo> getUpdateAnimeInfo(IPage<AnimeInfo> animeInfoPage) {
-        QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
-        IPage<AnimeInfo> page = animeInfoMapper.selectPage(animeInfoPage, queryWrapper);
-        Page<AnimeInfoVo> animeInfoVoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal(), page.isSearchCount());
-        animeInfoVoPage.setRecords(page.getRecords().stream().map(this::convertToDetail).collect(Collectors.toList()));
-        return animeInfoVoPage;
+    public IPage<AnimeInfoMinimalDTO> getUpdateAnimeInfo(IPage<AnimeInfo> animeInfoPage) {
+        return page(animeInfoPage).convert(animeInfo -> new AnimeInfoMinimalDTO().convertFrom(animeInfo));
     }
 
     /**
