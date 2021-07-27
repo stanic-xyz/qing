@@ -5,6 +5,7 @@ import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class IndexModel extends BaseModel {
 
     private List<AnimeInfoMinimalDTO> recommendList;
     private List<AnimeInfoMinimalDTO> recentList;
-    private Map<String, List<AnimeInfoMinimalDTO>> recentMap;
+    private Map<Integer, List<AnimeInfoMinimalDTO>> recentMap;
     private List<AnimeInfoMinimalDTO> dalyUpdateList;
     private List<AnimeInfoUpdateDTO> updateInfoList;
 }

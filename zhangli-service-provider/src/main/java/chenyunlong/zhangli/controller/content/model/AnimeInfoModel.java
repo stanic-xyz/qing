@@ -19,6 +19,9 @@ import com.stan.zhangli.core.core.support.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAdjuster;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,10 +56,10 @@ public class AnimeInfoModel {
     /**
      * 首页数据展示结构
      */
-    public IndexModel listIndex() throws JsonProcessingException {
+    public IndexModel listIndex() {
         IndexModel indexModel = new IndexModel();
         List<AnimeInfoMinimalDTO> recentUpdate = animeInfoService.getRecentUpdate(optionService.getRecentPageSize());
-        Map<String, List<AnimeInfoMinimalDTO>> collect = recentUpdate.stream().collect(Collectors.groupingBy(AnimeInfoMinimalDTO::getPremiereDate));
+        Map<Integer, List<AnimeInfoMinimalDTO>> collect = recentUpdate.stream().collect(Collectors.groupingBy(animeInfoMinimalDTO -> animeInfoMinimalDTO.getPremiereDate().getDayOfWeek().getValue()));
         indexModel.setRecentList(recentUpdate);
         indexModel.setRecentMap(collect);
         //按照每周进行分组
