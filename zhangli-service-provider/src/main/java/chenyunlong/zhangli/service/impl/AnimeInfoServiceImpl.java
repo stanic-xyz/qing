@@ -220,8 +220,9 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
     @Override
     public List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize) {
-        QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("premiere_date").last("limit 0," + recentPageSize);
+        LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.isNotNull(AnimeInfo::getPremiereDate);
+        queryWrapper.orderByDesc(AnimeInfo::getPremiereDate).last("limit 0," + recentPageSize);
         List<AnimeInfo> animeInfoList = animeInfoMapper.selectList(queryWrapper);
         return animeInfoList.stream().map(animeInfo -> (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo)).collect(Collectors.toList());
     }

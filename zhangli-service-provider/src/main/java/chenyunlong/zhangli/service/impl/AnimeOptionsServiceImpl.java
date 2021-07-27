@@ -74,6 +74,6 @@ public class AnimeOptionsServiceImpl implements AnimeOptionsService {
 
     @Override
     public int getRecentPageSize() {
-        return 25;
+        return 50;
     }
 }
