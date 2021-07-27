@@ -2,7 +2,6 @@ package chenyunlong.zhangli.service.impl;
 
 import chenyunlong.zhangli.mapper.AnimeCommentMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
-import chenyunlong.zhangli.mapper.AnimeTypeMapper;
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
@@ -16,7 +15,6 @@ import chenyunlong.zhangli.service.AnimeEpisodeService;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.PlaylistService;
 import cn.hutool.http.HttpUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -28,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
