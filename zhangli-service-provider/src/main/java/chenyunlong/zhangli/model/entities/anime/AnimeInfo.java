@@ -19,9 +19,11 @@ public class AnimeInfo extends BaseEntity {
     private Long id;
     private String name;
     private String instruction;
-    private String district;
+    private Integer districtId;
+    private String districtName;
     private String coverUrl;
-    private String type;
+    private Integer typeId;
+    private String typeName;
     private String originalName;
     private String otherName;
     private String author;

@@ -16,9 +16,9 @@ public class AnimeInfoMinimalDTO implements OutputConverter<AnimeInfoMinimalDTO,
     private Long id;
     private String name;
     private String instruction;
-    private String district;
+    private String districtName;
     private String coverUrl;
-    private String type;
+    private String typeName;
     private String originalName;
     private String otherName;
     private String author;
