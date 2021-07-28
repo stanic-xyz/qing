@@ -92,22 +92,15 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     private LambdaQueryWrapper<AnimeInfo> buildQueryWrapper(AnimeInfoQuery animeInfo) {
         LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.hasText(animeInfo.getKeyword()), AnimeInfo::getName, animeInfo.getKeyword());
-        queryWrapper.eq(StringUtils.hasText(animeInfo.getDistrict()) && !"all".equals(animeInfo.getDistrict()), AnimeInfo::getDistrict, animeInfo.getDistrict());
+        queryWrapper.eq(StringUtils.hasText(animeInfo.getDistrict()) && !"all".equals(animeInfo.getDistrict()), AnimeInfo::getDistrictName, animeInfo.getDistrict());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getName()), AnimeInfo::getName, animeInfo.getName());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getVersion()) && !"all".equals(animeInfo.getVersion()), AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
-        queryWrapper.eq(StringUtils.hasText(animeInfo.getResourceType()) && !"all".equals(animeInfo.getResourceType()), AnimeInfo::getType, animeInfo.getResourceType());
+        queryWrapper.eq(StringUtils.hasText(animeInfo.getResourceType()) && !"all".equals(animeInfo.getResourceType()), AnimeInfo::getTypeName, animeInfo.getResourceType());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getYear()) && !"all".equals(animeInfo.getYear()), AnimeInfo::getPremiereDate, animeInfo.getYear());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
-        queryWrapper.orderBy(StringUtils.hasText(animeInfo.getSort()), false, AnimeInfo::getPremiereDate);
-//        private String year = "all";
-//        private String status = "all";
-//        private String type = "all";
-//        private Integer seasonMonth = -1;
-//        private String resourceType = "all";
-//        private String sort = "premiere_date";
         return queryWrapper;
     }
 
