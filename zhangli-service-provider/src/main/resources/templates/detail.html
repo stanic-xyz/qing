@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title th:text="${data.animeInfo.getName()+'- 傻瓜动漫网站'}"></title>
+    <title th:text="${data.animeInfo.getName()+'- WAGGA动漫'}"></title>
     <meta name="keywords" th:content="${data.animeInfo.getName()+'动漫分享'}">
     <meta name="description" th:content="${data.animeInfo.getName()+'！在线观看'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -33,10 +33,11 @@
     <script type="text/javascript" th:src="@{{host}/js/snowfall.min.js(host=${data.hostname})}"></script>
     <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.1.1/dist/echarts.min.js"></script>
+    <script src="https://unpkg.com/petite-vue" defer init></script>
 </head>
 
 <body>
-<div id="root" style="z-index: 1">
+<div id="root" style="z-index: 1" v-scope="{}">
     <div id="top" th:include="common/header :: top()"></div>
     <header id="nav" th:include="common/header :: commonHead('detail')"></header>
     <div id="container">
@@ -58,19 +59,19 @@
                         <ul class="blockcontent">
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">地区：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.district}">日本</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.getDistrictName}">日本</span>
                                 <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
                             </li>
                             <li class="detail_imform_kv">
-                                <span class="detail_imform_tag"></span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.type}">TV</span>
+                                <span class="detail_imform_tag">动画种类：</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.getTypeName}">TV</span>
                             </li>
                             <li class="detail_imform_kv">
-                                <span class="detail_imform_tag"></span>
+                                <span class="detail_imform_tag">动画名称：</span>
                                 <span class="detail_imform_value" th:text="${data.animeInfo.getName()}"></span>
                             </li>
                             <li class="detail_imform_kv">
-                                <span class="detail_imform_tag">其它名称：</span>
+                                <span class="detail_imform_tag">原版名称：</span>
                                 <span class="detail_imform_value" th:text="${data.animeInfo.originalName}"></span>
                             </li>
                             <li class="detail_imform_kv">
@@ -106,7 +107,6 @@
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </div>
             <div class="baseblock">

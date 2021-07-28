@@ -9,9 +9,9 @@
     <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.anime.AnimeInfo">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
-        <result column="district" property="district"/>
+        <result column="district_name" property="districtName"/>
         <result column="cover_url" property="coverUrl"/>
-        <result column="type" property="type"/>
+        <result column="type_name" property="typeName"/>
         <result column="instruction" property="instruction"/>
         <result column="other_name" property="otherName"/>
         <result column="author" property="author"/>
@@ -33,9 +33,9 @@
     <select id="listAnime" resultMap="BaseResultMap" parameterType="chenyunlong.zhangli.model.params.AnimeInfoQuery">
         SELECT `id`,
         `name`,
-        `district`,
+        district_name,
         `cover_url`,
-        `type`,
+        type_name,
         `instruction`,
         `other_name`,
         `author`,
@@ -77,9 +77,9 @@
     <select id="selectAnimationDetail" resultMap="BaseResultMap">
         SELECT `id`,
                `name`,
-               `district`,
+               district_name,
                `cover_url`,
-               `type`,
+               type_name,
                `instruction`,
                `other_name`,
                `author`,
@@ -122,9 +122,9 @@
     <select id="selectAnimationW" resultMap="BaseResultMap">
         SELECT `id`,
         `name`,
-        `district`,
+        district_name,
         `cover_url`,
-        `type`,
+        type_name,
         `instruction`,
         `other_name`,
         `author`,
@@ -161,9 +161,9 @@
     <select id="selectAnimeByUpdateTime" resultMap="BaseResultMap">
         SELECT `id`,
                `name`,
-               `district`,
+               district_name,
                `cover_url`,
-               `type`,
+               type_name,
                `instruction`,
                `other_name`,
                `author`,
@@ -189,9 +189,9 @@
     <select id="listRecommendAnimeInfo" resultMap="BaseResultMap">
         SELECT anime.id,
                `name`,
-               `district`,
+               `district_name`,
                `cover_url`,
-               `type`,
+               `type_name`,
                `instruction`,
                `other_name`,
                `author`,
@@ -212,9 +212,9 @@
         INSERT INTO `zhangli`.`anime_info`
         (`id`,
          `name`,
-         `district`,
+         district_name,
          `cover_url`,
-         `type`,
+         type_name,
          `instruction`,
          `other_name`,
          `author`,
