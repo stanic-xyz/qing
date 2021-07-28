@@ -4,7 +4,7 @@ spring:
   application:
     name: zhangli-eureka-service
   profiles:
-    active: ${ENV:dev}
+    active: prod
   cloud:
     inetutils:
       ignored-interfaces[0]: eth0
