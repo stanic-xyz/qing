@@ -59,16 +59,16 @@
                         <ul class="blockcontent">
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">地区：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.getDistrictName}">日本</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.districtName}">日本</span>
                                 <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">动画种类：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.getTypeName}">TV</span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.typeName}">TV</span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">动画名称：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.getName()}"></span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.name}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">原版名称：</span>
@@ -80,11 +80,11 @@
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">制作公司：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.getCompany()}"></span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.company}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">首播时间：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.getPremiereDate()}"></span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.premiereDate}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">播放状态：</span>
@@ -92,7 +92,7 @@
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">剧情类型：</span>
-                                <span class="detail_imform_value" th:text="${data.animeInfo.getPlotType()}"></span>
+                                <span class="detail_imform_value" th:text="${data.animeInfo.plotType}"></span>
                             </li>
                             <li class="detail_imform_kv">
                                 <span class="detail_imform_tag">标签：</span>

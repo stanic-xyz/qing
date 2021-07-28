@@ -40,10 +40,8 @@ spring:
     password:
 eureka:
   instance:
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
-    hostname: cloud-gateway
+    instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
-    ip-address: 121.36.163.95
   client:
     use-dns-for-fetching-service-urls: true
     eureka-server-d-n-s-name: chenyunlong.cn
@@ -65,6 +63,7 @@ secure:
       - "/webjars/springfox-swagger-ui/**"
       - "/actuator/**"
       - "/anime/**"
+      - "/actuator/**"
 #开启SpringBoot Admin的监控
 management:
   endpoints:

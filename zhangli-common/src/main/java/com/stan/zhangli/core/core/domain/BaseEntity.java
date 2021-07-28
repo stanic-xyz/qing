@@ -48,10 +48,6 @@ public class BaseEntity {
      */
     private String remark;
 
-    /**
-     * 排序号
-     */
-    private Integer orderNo;
 
     /**
      * 数据检查
@@ -71,10 +67,6 @@ public class BaseEntity {
         }
         if (StringUtils.isEmpty(updateBy)) {
             updateBy = "";
-        }
-        if (orderNo == null) {
-            //不进行排序
-            orderNo = 0;
         }
     }
 }
