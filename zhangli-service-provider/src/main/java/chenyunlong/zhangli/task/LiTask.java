@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.task;
 
 import chenyunlong.zhangli.service.BilibiliAnimeService;
-import chenyunlong.zhangli.utils.StringUtils;
+import com.stan.zhangli.core.utils.StringUtils;
 import org.springframework.stereotype.Component;
 
 /**

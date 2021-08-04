@@ -1,10 +1,12 @@
 package chenyunlong.zhangli.model.entities.anime;
 
-import chenyunlong.zhangli.common.core.domain.BaseEntity;
+import com.stan.zhangli.core.core.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 /**
  * @author Stan
@@ -17,14 +19,16 @@ public class AnimeInfo extends BaseEntity {
     private Long id;
     private String name;
     private String instruction;
-    private String district;
+    private Integer districtId;
+    private String districtName;
     private String coverUrl;
-    private String type;
+    private Integer typeId;
+    private String typeName;
     private String originalName;
     private String otherName;
     private String author;
     private String company;
-    private String premiereDate;
+    private LocalDate premiereDate;
     private String playStatus;
     private String plotType;
     private String tags;

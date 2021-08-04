@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.component;
 
-import chenyunlong.zhangli.common.api.Result;
+import com.stan.zhangli.core.api.Result;
 import cn.hutool.json.JSONUtil;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;

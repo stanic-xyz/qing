@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.controller.content.model;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
-import chenyunlong.zhangli.common.core.support.Pagination;
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.OptionsModel;
@@ -15,8 +15,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.stan.zhangli.core.core.support.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAdjuster;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Stan
@@ -31,7 +39,12 @@ public class AnimeInfoModel {
     private final AnimeCommentService animeCommentService;
     private final AnimeEpisodeService episodeService;
 
-    public AnimeInfoModel(AnimeInfoService animeInfoService, AnimeOptionsService optionService, AnimeOptionsService animeOptionsService, ZhangliProperties zhangliProperties, AnimeCommentService animeCommentService, AnimeEpisodeService episodeService) {
+    public AnimeInfoModel(AnimeInfoService animeInfoService,
+                          AnimeOptionsService optionService,
+                          AnimeOptionsService animeOptionsService,
+                          ZhangliProperties zhangliProperties,
+                          AnimeCommentService animeCommentService,
+                          AnimeEpisodeService episodeService) {
         this.animeInfoService = animeInfoService;
         this.optionService = optionService;
         this.animeOptionsService = animeOptionsService;
@@ -43,9 +56,13 @@ public class AnimeInfoModel {
     /**
      * 首页数据展示结构
      */
-    public IndexModel listIndex() throws JsonProcessingException {
+    public IndexModel listIndex() {
         IndexModel indexModel = new IndexModel();
-        indexModel.setRecentList(animeInfoService.getRecentUpdate(optionService.getRecentPageSize()));
+        List<AnimeInfoMinimalDTO> recentUpdate = animeInfoService.getRecentUpdate(optionService.getRecentPageSize());
+        Map<Integer, List<AnimeInfoMinimalDTO>> collect = recentUpdate.stream().collect(Collectors.groupingBy(animeInfoMinimalDTO -> animeInfoMinimalDTO.getPremiereDate().getDayOfWeek().getValue()));
+        indexModel.setRecentList(recentUpdate);
+        indexModel.setRecentMap(collect);
+        //按照每周进行分组
         indexModel.setDalyUpdateList(animeInfoService.getRecommendAnimeInfoList());
         indexModel.setRecommendList(animeInfoService.getRecommendAnimeInfoList());
         indexModel.setUpdateInfoList(animeInfoService.getUpdateInfo());
@@ -78,18 +95,12 @@ public class AnimeInfoModel {
     /**
      * 最近更新界面
      *
-     * @param objectPage 分页参数
+     * @param animeInfo 分页参数
      * @return 更新界面的数据
      */
-    public UpdateModel listUpdate(Page<AnimeInfo> objectPage) {
-
-        if (log.isDebugEnabled()) {
-            log.debug("测试身份验证地址：" + zhangliProperties.getAuthenticationPrefix());
-        }
+    public UpdateModel listUpdate(Page<AnimeInfo> animeInfo) {
         UpdateModel updateModel = new UpdateModel();
-
-        IPage<AnimeInfoVo> animeInfoPage = animeInfoService.getUpdateAnimeInfo(objectPage);
-
+        IPage<AnimeInfoMinimalDTO> animeInfoPage = animeInfoService.getUpdateAnimeInfo(animeInfo);
         updateModel.setAnimeList(animeInfoPage.getRecords());
         updateModel.setPagination(new Pagination(animeInfoPage));
         return updateModel;
@@ -100,7 +111,6 @@ public class AnimeInfoModel {
         CatalogModel catalogModel = new CatalogModel();
         IPage<AnimeInfo> animeInfoPage = animeInfoService.getRankPage(objectPage, animeInfoQuery);
         OptionsModel animeOptionsModel = animeOptionsService.getOptions();
-
         catalogModel.setQuery(animeInfoQuery);
         catalogModel.setYears(animeOptionsModel.getYears());
         catalogModel.setOptions(animeOptionsModel);
@@ -110,13 +120,14 @@ public class AnimeInfoModel {
         return catalogModel;
     }
 
+    /**
+     * 搜索模块
+     *
+     * @param objectPage     分页信息
+     * @param animeInfoQuery 查询参数信息
+     * @return 查询页配置信息
+     */
     public SearchModel searchModel(Page<AnimeInfo> objectPage, AnimeInfoQuery animeInfoQuery) {
-
-
-//        long totalCount = animeInfoService.getTotalCount(query);
-//        int totalPage = (int) Math.ceil(((double) totalCount) / ((double) pageSize));
-//        animeInfoService.listByPage(new Page<>(page, pageSize), searchParam);
-
         SearchModel searchModel = new SearchModel();
         LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(AnimeInfo::getName, animeInfoQuery.getKeyword());

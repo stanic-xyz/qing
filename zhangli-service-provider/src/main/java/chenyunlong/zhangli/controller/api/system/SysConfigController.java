@@ -1,13 +1,13 @@
 package chenyunlong.zhangli.controller.api.system;
 
-import chenyunlong.zhangli.common.annotation.Log;
-import chenyunlong.zhangli.common.constant.UserConstants;
-import chenyunlong.zhangli.common.core.controller.BaseController;
-import chenyunlong.zhangli.common.core.page.TableDataInfo;
-import chenyunlong.zhangli.common.exception.ServiceException;
 import chenyunlong.zhangli.model.entities.sys.SysConfig;
-import chenyunlong.zhangli.common.enums.BusinessType;
 import chenyunlong.zhangli.service.ISysConfigService;
+import com.stan.zhangli.core.annotation.Log;
+import com.stan.zhangli.core.constant.UserConstants;
+import com.stan.zhangli.core.core.controller.BaseController;
+import com.stan.zhangli.core.core.page.TableDataInfo;
+import com.stan.zhangli.core.enums.BusinessType;
+import com.stan.zhangli.core.exception.ServiceException;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

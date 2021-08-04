@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.utils;
 
-import chenyunlong.zhangli.common.exception.BeanUtilsException;
+import com.stan.zhangli.core.exception.BeanUtilsException;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.lang.NonNull;

@@ -1,9 +1,9 @@
 package chenyunlong.zhangli.controller.api.admin;
 
-import chenyunlong.zhangli.common.core.support.ApiResult;
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.params.AddEpisodeParam;
 import chenyunlong.zhangli.service.AnimeEpisodeService;
+import com.stan.zhangli.core.core.support.ApiResult;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

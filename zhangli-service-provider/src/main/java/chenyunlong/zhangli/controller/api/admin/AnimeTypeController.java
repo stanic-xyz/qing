@@ -1,10 +1,10 @@
 package chenyunlong.zhangli.controller.api.admin;
 
-import chenyunlong.zhangli.common.core.support.ApiResult;
 import chenyunlong.zhangli.model.entities.AnimeType;
 import chenyunlong.zhangli.model.params.AnimeTypeParam;
 import chenyunlong.zhangli.service.AnimeTypeService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.stan.zhangli.core.core.support.ApiResult;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;

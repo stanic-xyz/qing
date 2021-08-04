@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.utils.quartz;
 
-import chenyunlong.zhangli.common.constrant.ScheduleConstants;
-import chenyunlong.zhangli.common.exception.job.TaskException;
 import chenyunlong.zhangli.model.entities.sys.SysJob;
+import com.stan.zhangli.core.constrant.ScheduleConstants;
+import com.stan.zhangli.core.exception.job.TaskException;
 import org.quartz.*;
 
 /**
@@ -19,7 +19,7 @@ public class ScheduleUtils {
      */
     private static Class<? extends Job> getQuartzJobClass(SysJob sysJob) {
         boolean isConcurrent = "0".equals(sysJob.getConcurrent());
-        return isConcurrent ? QuartzJobExecution.class : chenyunlong.zhangli.utils.quartz.QuartzDisallowConcurrentExecution.class;
+        return isConcurrent ? QuartzJobExecution.class : QuartzDisallowConcurrentExecution.class;
     }
 
     /**
