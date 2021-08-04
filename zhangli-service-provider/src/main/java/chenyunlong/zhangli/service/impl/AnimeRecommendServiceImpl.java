@@ -9,7 +9,7 @@ import chenyunlong.zhangli.model.params.AnimeRecommendParam;
 import chenyunlong.zhangli.service.AnimeRecommendService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.stan.zhangli.core.exception.ServiceException;
+import chenyunlong.zhangli.core.exception.ServiceException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

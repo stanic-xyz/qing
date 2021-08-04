@@ -3,7 +3,7 @@ package chenyunlong.zhangli.service.impl;
 import chenyunlong.zhangli.service.ISysJobLogService;
 import chenyunlong.zhangli.mapper.SysJobLogMapper;
 import chenyunlong.zhangli.model.entities.sys.SysJobLog;
-import com.stan.zhangli.core.core.text.Convert;
+import chenyunlong.zhangli.utils.text.Convert;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

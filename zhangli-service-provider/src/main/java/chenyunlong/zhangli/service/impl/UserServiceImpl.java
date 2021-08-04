@@ -8,7 +8,7 @@ import chenyunlong.zhangli.mapper.UserMapper;
 import chenyunlong.zhangli.model.params.LoginParam;
 import chenyunlong.zhangli.service.UserService;
 import cn.hutool.core.lang.Validator;
-import com.stan.zhangli.core.exception.*;
+import chenyunlong.zhangli.core.exception.*;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,6 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.config;
 
-import com.stan.zhangli.core.constant.AuthConstant;
+import chenyunlong.zhangli.core.constant.AuthConstant;
 import cn.hutool.core.util.ArrayUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -22,6 +22,4 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
     - name: Build with Maven
-      run: mvn -B install -pl zhangli-common -X --file pom.xml
-    - name: Build with Maven
       run: mvn -B package -pl zhangli-service-provider -X --file pom.xml

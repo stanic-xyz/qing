@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.security;
 
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.core.ApiResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stan.zhangli.core.core.support.ApiResult;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

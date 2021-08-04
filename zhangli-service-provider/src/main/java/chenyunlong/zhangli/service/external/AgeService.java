@@ -3,7 +3,7 @@ package chenyunlong.zhangli.service.external;
 import chenyunlong.zhangli.model.agefans.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stan.zhangli.core.utils.StringUtils;
+import chenyunlong.zhangli.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
