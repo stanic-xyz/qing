@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.utils.quartz;
 
 import chenyunlong.zhangli.model.entities.sys.SysJob;
-import chenyunlong.zhangli.utils.StringUtils;
-import chenyunlong.zhangli.utils.spring.SpringUtils;
+import com.stan.zhangli.core.utils.StringUtils;
+import com.stan.zhangli.core.utils.spring.SpringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

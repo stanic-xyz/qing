@@ -1,12 +1,12 @@
 package chenyunlong.zhangli.model.entities.sys;
 
-import chenyunlong.zhangli.common.annotation.Excel;
-import chenyunlong.zhangli.common.constrant.ScheduleConstants;
-import chenyunlong.zhangli.common.core.domain.BaseEntity;
 import chenyunlong.zhangli.utils.quartz.CronUtils;
-import chenyunlong.zhangli.utils.StringUtils;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.stan.zhangli.core.annotation.Excel;
+import com.stan.zhangli.core.constrant.ScheduleConstants;
+import com.stan.zhangli.core.core.domain.BaseEntity;
+import com.stan.zhangli.core.utils.StringUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

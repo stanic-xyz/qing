@@ -3,10 +3,18 @@ server:
 spring:
   application:
     name: bus
-  cloud:
-    nacos:
-      discovery:
-        server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
-      config:
-        server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
-        file-extension: yml
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}:@project.version@
+    prefer-ip-address: true
+  client:
+    use-dns-for-fetching-service-urls: true
+    eureka-server-d-n-s-name: chenyunlong.cn
+    eureka-server-u-r-l-context: eureka
+    eureka-server-port: 8761
+    prefer-same-zone-eureka: true
+    region: zhangli
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: https://eureka.chenyunlong.cn/eureka/

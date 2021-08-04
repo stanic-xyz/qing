@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.security;
 
-import chenyunlong.zhangli.common.core.support.ApiResult;
 import cn.hutool.json.JSONUtil;
+import com.stan.zhangli.core.core.support.ApiResult;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

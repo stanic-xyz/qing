@@ -1,9 +1,7 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.common.exception.NotFoundException;
 import chenyunlong.zhangli.mapper.AnimeCommentMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
-import chenyunlong.zhangli.mapper.AnimeTypeMapper;
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
@@ -17,18 +15,17 @@ import chenyunlong.zhangli.service.AnimeEpisodeService;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.PlaylistService;
 import cn.hutool.http.HttpUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stan.zhangli.core.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,28 +43,24 @@ import java.util.stream.Collectors;
 public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo> implements AnimeInfoService {
     private final AnimeInfoMapper animeInfoMapper;
     private final AnimeEpisodeService episodeService;
-    private final AnimeTypeMapper animeTypeMapper;
     private final PlaylistService playlistService;
     private final AnimeCommentMapper commentMapper;
     private final String domainName = "anime";
 
 
     public AnimeInfoServiceImpl(AnimeInfoMapper animeInfoMapper,
-                                RestTemplate restTemplate,
                                 AnimeEpisodeService episodeService,
-                                AnimeTypeMapper animeTypeMapper,
-                                PlaylistService playlistService, AnimeCommentMapper commentMapper) {
+                                PlaylistService playlistService,
+                                AnimeCommentMapper commentMapper) {
         this.animeInfoMapper = animeInfoMapper;
         this.episodeService = episodeService;
-        this.animeTypeMapper = animeTypeMapper;
         this.playlistService = playlistService;
         this.commentMapper = commentMapper;
     }
 
     @Override
     public IPage<AnimeInfo> getRankPage(IPage<AnimeInfo> pageInfo, AnimeInfoQuery animeInfoQuery) {
-        Wrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
-        return animeInfoMapper.selectPage(pageInfo, queryWrapper);
+        return page(pageInfo, buildQueryWrapper(animeInfoQuery));
     }
 
     @Override
@@ -86,11 +79,6 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     }
 
     @Override
-    public long getTotalCount(String query) {
-        return animeInfoMapper.countByNameLike(query);
-    }
-
-    @Override
     public IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> page, AnimeInfoQuery animeInfo) {
         return convertToDetail(animeInfoMapper.selectPage(page, buildQueryWrapper(animeInfo)));
     }
@@ -104,22 +92,15 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     private LambdaQueryWrapper<AnimeInfo> buildQueryWrapper(AnimeInfoQuery animeInfo) {
         LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.hasText(animeInfo.getKeyword()), AnimeInfo::getName, animeInfo.getKeyword());
-        queryWrapper.eq(StringUtils.hasText(animeInfo.getDistrict()) && !"all".equals(animeInfo.getDistrict()), AnimeInfo::getDistrict, animeInfo.getDistrict());
+        queryWrapper.eq(StringUtils.hasText(animeInfo.getDistrict()) && !"all".equals(animeInfo.getDistrict()), AnimeInfo::getDistrictName, animeInfo.getDistrict());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getName()), AnimeInfo::getName, animeInfo.getName());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getVersion()) && !"all".equals(animeInfo.getVersion()), AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
-        queryWrapper.eq(StringUtils.hasText(animeInfo.getResourceType()) && !"all".equals(animeInfo.getResourceType()), AnimeInfo::getType, animeInfo.getResourceType());
+        queryWrapper.eq(StringUtils.hasText(animeInfo.getResourceType()) && !"all".equals(animeInfo.getResourceType()), AnimeInfo::getTypeName, animeInfo.getResourceType());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getYear()) && !"all".equals(animeInfo.getYear()), AnimeInfo::getPremiereDate, animeInfo.getYear());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
-        queryWrapper.orderBy(StringUtils.hasText(animeInfo.getSort()), false, AnimeInfo::getPremiereDate);
-//        private String year = "all";
-//        private String status = "all";
-//        private String type = "all";
-//        private Integer seasonMonth = -1;
-//        private String resourceType = "all";
-//        private String sort = "premiere_date";
         return queryWrapper;
     }
 
@@ -180,12 +161,8 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
 
     @Override
-    public IPage<AnimeInfoVo> getUpdateAnimeInfo(IPage<AnimeInfo> animeInfoPage) {
-        QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
-        IPage<AnimeInfo> page = animeInfoMapper.selectPage(animeInfoPage, queryWrapper);
-        Page<AnimeInfoVo> animeInfoVoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal(), page.isSearchCount());
-        animeInfoVoPage.setRecords(page.getRecords().stream().map(this::convertToDetail).collect(Collectors.toList()));
-        return animeInfoVoPage;
+    public IPage<AnimeInfoMinimalDTO> getUpdateAnimeInfo(IPage<AnimeInfo> animeInfoPage) {
+        return page(animeInfoPage).convert(animeInfo -> new AnimeInfoMinimalDTO().convertFrom(animeInfo));
     }
 
     /**
@@ -236,8 +213,9 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
     @Override
     public List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize) {
-        QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("premiere_date").last("limit 0," + recentPageSize);
+        LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.isNotNull(AnimeInfo::getPremiereDate);
+        queryWrapper.orderByDesc(AnimeInfo::getPremiereDate).last("limit 0," + recentPageSize);
         List<AnimeInfo> animeInfoList = animeInfoMapper.selectList(queryWrapper);
         return animeInfoList.stream().map(animeInfo -> (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo)).collect(Collectors.toList());
     }

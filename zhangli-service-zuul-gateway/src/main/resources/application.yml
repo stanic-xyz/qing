@@ -3,8 +3,6 @@ server:
 spring:
   application:
     name: zhangli-zuul-client
-  profiles:
-    active: ${ENV:dev}
 eureka:
   instance:
     instance-id: ${spring.application.name}

@@ -1,14 +1,14 @@
 package chenyunlong.zhangli.utils.quartz;
 
-import chenyunlong.zhangli.common.constrant.Constants;
-import chenyunlong.zhangli.common.constrant.ScheduleConstants;
 import chenyunlong.zhangli.model.entities.sys.SysJob;
 import chenyunlong.zhangli.model.entities.sys.SysJobLog;
 import chenyunlong.zhangli.service.ISysJobLogService;
 import chenyunlong.zhangli.utils.BeanUtils;
-import chenyunlong.zhangli.utils.ExceptionUtil;
-import chenyunlong.zhangli.utils.StringUtils;
-import chenyunlong.zhangli.utils.spring.SpringUtils;
+import com.stan.zhangli.core.constrant.Constants;
+import com.stan.zhangli.core.constrant.ScheduleConstants;
+import com.stan.zhangli.core.utils.ExceptionUtil;
+import com.stan.zhangli.core.utils.StringUtils;
+import com.stan.zhangli.core.utils.spring.SpringUtils;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -59,8 +59,8 @@ public abstract class AbstractQuartzJob implements Job {
     /**
      * 执行后
      *
-     * @param context        工作执行上下文对象
-     * @param sysScheduleJob 系统计划任务
+     * @param context 工作执行上下文对象
+     * @param sysJob  系统计划任务
      */
     protected void after(JobExecutionContext context, SysJob sysJob, Exception e) {
         Date startTime = threadLocal.get();
