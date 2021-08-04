@@ -14,4 +14,4 @@ eureka:
     prefer-same-zone-eureka: true
     region: zhangli
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: https://eureka.chenyunlong.cn/eureka/

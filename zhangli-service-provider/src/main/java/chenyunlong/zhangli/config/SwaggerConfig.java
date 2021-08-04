@@ -1,9 +1,9 @@
 package chenyunlong.zhangli.config;
 
-import chenyunlong.zhangli.model.vo.system.UserInfoVO;
-import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.config.properties.SwaggerProperties;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.model.vo.system.UserInfoVO;
+import chenyunlong.zhangli.security.support.TokenProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;

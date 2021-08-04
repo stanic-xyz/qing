@@ -2,9 +2,9 @@ package chenyunlong.zhangli.controller.api.admin;
 
 import chenyunlong.zhangli.model.entities.District;
 import chenyunlong.zhangli.model.entities.Version;
-import chenyunlong.zhangli.common.core.support.ApiResult;
 import chenyunlong.zhangli.service.DistrictService;
 import chenyunlong.zhangli.service.VersionService;
+import com.stan.zhangli.core.core.support.ApiResult;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

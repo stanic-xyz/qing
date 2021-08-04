@@ -1,7 +1,6 @@
 eureka:
   instance:
-    ip-address: 121.36.163.95
-    hostname: config.chenyunlong.cn
+    instance-id: ${spring.application.name}:${server.port}:@project.version@
     prefer-ip-address: true
   client:
     use-dns-for-fetching-service-urls: true
@@ -11,4 +10,4 @@ eureka:
     prefer-same-zone-eureka: true
     region: zhangli
     service-url:
-      defaultZone: http://121.36.163.95:8761/eureka/
+      defaultZone: https://eureka.chenyunlong.cn/eureka/

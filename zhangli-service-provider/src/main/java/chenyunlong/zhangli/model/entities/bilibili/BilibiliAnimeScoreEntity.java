@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.model.entities.bilibili;
 
-import chenyunlong.zhangli.common.core.domain.BaseEntity;
+import com.stan.zhangli.core.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.time.LocalDateTime;

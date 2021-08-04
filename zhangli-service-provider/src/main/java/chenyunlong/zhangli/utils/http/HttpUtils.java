@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.utils.http;
 
-import chenyunlong.zhangli.common.constrant.Constants;
+import com.stan.zhangli.core.constrant.Constants;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.net.ssl.*;

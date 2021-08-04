@@ -8,10 +8,8 @@ ribbon:
     enabled: true
 eureka:
   instance:
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}:@project.version@
-    hostname: feignclient
+    instance-id: ${spring.application.name}:${server.port}:@project.version@
     prefer-ip-address: true
-    ip-address: 121.36.163.95
   client:
     use-dns-for-fetching-service-urls: true
     eureka-server-d-n-s-name: chenyunlong.cn

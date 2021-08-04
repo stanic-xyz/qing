@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.config;
 
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.cache.AbstractStringCacheStore;
 import chenyunlong.zhangli.cache.InMemoryCacheStore;
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.intercepter.HostInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
