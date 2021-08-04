@@ -19,4 +19,5 @@ public class SwaggerProperties {
     private String license;
     private String licenseUrl;
     private boolean docDisabled;
+    private String contactName;
 }

@@ -1,19 +1,19 @@
 package chenyunlong.zhangli.controller.api.auth;
 
-import chenyunlong.zhangli.model.vo.system.UserInfoVO;
-import chenyunlong.zhangli.security.support.TokenProvider;
+import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.cache.lock.CacheLock;
+import chenyunlong.zhangli.core.ApiResult;
+import chenyunlong.zhangli.core.enums.MFAType;
+import chenyunlong.zhangli.core.exception.AbstractException;
+import chenyunlong.zhangli.core.exception.LoginErrorException;
 import chenyunlong.zhangli.model.dto.LoginPreCheckDTO;
 import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.model.params.LoginParam;
 import chenyunlong.zhangli.model.params.UserParam;
+import chenyunlong.zhangli.model.vo.system.UserInfoVO;
+import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.stan.zhangli.core.annotation.Log;
-import com.stan.zhangli.core.core.support.ApiResult;
-import com.stan.zhangli.core.enums.MFAType;
-import com.stan.zhangli.core.exception.AbstractException;
-import com.stan.zhangli.core.exception.LoginErrorException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.zhyd.oauth.model.AuthCallback;
@@ -50,9 +50,9 @@ public class AuthController {
         this.tokenProvider = tokenProvider;
     }
 
-    @PostMapping("login/precheck")
+    @PostMapping("login/preCheck")
     @ApiOperation("Login")
-    @CacheLock(autoDelete = false, prefix = "login_precheck")
+    @CacheLock(autoDelete = false, prefix = "login_pre_check")
     public LoginPreCheckDTO authPreCheck(@RequestBody @Valid LoginParam loginParam) {
         final User user = userService.authenticate(loginParam);
         return new LoginPreCheckDTO(MFAType.useMFA(user.getMfaType()));

@@ -5,8 +5,8 @@ import chenyunlong.zhangli.utils.HttpContextUtil;
 import chenyunlong.zhangli.utils.IpUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.PropertyPreFilters;
-import com.stan.zhangli.core.annotation.Log;
-import com.stan.zhangli.core.enums.BusinessStatus;
+import chenyunlong.zhangli.annotation.Log;
+import chenyunlong.zhangli.core.enums.BusinessStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -39,7 +39,7 @@ public class LogAspect {
      */
     public static final String[] EXCLUDE_PROPERTIES = {"password", "oldPassword", "newPassword", "confirmPassword"};
 
-    @Pointcut("@annotation(com.stan.zhangli.core.annotation.Log)")
+    @Pointcut("@annotation(chenyunlong.zhangli.annotation.Log)")
     public void pointcut() {
         // do nothing
     }

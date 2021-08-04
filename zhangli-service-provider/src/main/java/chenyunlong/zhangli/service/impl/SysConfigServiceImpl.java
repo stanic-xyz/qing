@@ -1,14 +1,14 @@
 package chenyunlong.zhangli.service.impl;
 
+import chenyunlong.zhangli.core.constant.Constants;
+import chenyunlong.zhangli.core.constant.UserConstants;
+import chenyunlong.zhangli.core.exception.BusinessException;
 import chenyunlong.zhangli.mapper.SysConfigMapper;
 import chenyunlong.zhangli.model.entities.sys.SysConfig;
 import chenyunlong.zhangli.service.ISysConfigService;
 import chenyunlong.zhangli.utils.CacheUtils;
-import com.stan.zhangli.core.constant.UserConstants;
-import com.stan.zhangli.core.constrant.Constants;
-import com.stan.zhangli.core.core.text.Convert;
-import com.stan.zhangli.core.exception.BusinessException;
-import com.stan.zhangli.core.utils.StringUtils;
+import chenyunlong.zhangli.utils.StringUtils;
+import chenyunlong.zhangli.utils.text.Convert;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +34,7 @@ public class SysConfigServiceImpl implements ISysConfigService {
     public void init() {
         List<SysConfig> configsList = configMapper.selectConfigList(new SysConfig());
         for (SysConfig config : configsList) {
-//            CacheUtils.put(getCacheName(), getCacheKey(config.getConfigKey()), config.getConfigValue());
+            CacheUtils.put(getCacheName(), getCacheKey(config.getConfigKey()), config.getConfigValue());
         }
     }
 

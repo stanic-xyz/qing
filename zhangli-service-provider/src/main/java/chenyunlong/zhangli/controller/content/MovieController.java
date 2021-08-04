@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.controller.content;
 
 import chenyunlong.zhangli.controller.content.model.AnimeInfoModel;
+import chenyunlong.zhangli.core.ApiResult;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
@@ -8,13 +9,15 @@ import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.page.*;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.ReportService;
+import chenyunlong.zhangli.utils.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.stan.zhangli.core.core.support.ApiResult;
-import com.stan.zhangli.core.utils.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;

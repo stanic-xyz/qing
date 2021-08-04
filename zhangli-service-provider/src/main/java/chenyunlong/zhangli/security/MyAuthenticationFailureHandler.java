@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.security;
 
+import chenyunlong.zhangli.core.ApiResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stan.zhangli.core.core.support.ApiResult;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

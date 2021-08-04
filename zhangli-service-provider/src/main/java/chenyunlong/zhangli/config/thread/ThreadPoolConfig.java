@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.config.thread;
 
-import com.stan.zhangli.core.utils.Threads;
+import chenyunlong.zhangli.utils.Threads;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.context.annotation.Bean;

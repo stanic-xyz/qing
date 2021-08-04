@@ -1,12 +1,12 @@
 package chenyunlong.zhangli.model.entities.sys;
 
+import chenyunlong.zhangli.annotation.Excel;
+import chenyunlong.zhangli.core.constant.ScheduleConstants;
+import chenyunlong.zhangli.core.domain.BaseEntity;
+import chenyunlong.zhangli.utils.StringUtils;
 import chenyunlong.zhangli.utils.quartz.CronUtils;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.stan.zhangli.core.annotation.Excel;
-import com.stan.zhangli.core.constrant.ScheduleConstants;
-import com.stan.zhangli.core.core.domain.BaseEntity;
-import com.stan.zhangli.core.utils.StringUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -81,6 +81,7 @@ public class SysJob extends BaseEntity implements Serializable {
     @Excel(name = "任务状态", readConverterExp = "0=正常,1=暂停")
     private String status;
 
+    @SuppressWarnings("unused")
     public Date getNextValidTime() {
         if (StringUtils.isNotEmpty(cronExpression)) {
             return CronUtils.getNextExecution(cronExpression);

@@ -1,7 +1,8 @@
 package chenyunlong.zhangli.security;
 
+import chenyunlong.zhangli.core.ApiResult;
 import cn.hutool.json.JSONUtil;
-import com.stan.zhangli.core.core.support.ApiResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -17,11 +18,17 @@ import java.nio.charset.StandardCharsets;
  * @author Stan
  * @date 2020-09-27
  */
+@Slf4j
 @Component
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException authException) throws IOException, ServletException {
-        ApiResult success = ApiResult.fail("没有登录");
+
+        if (isAjaxRequest(httpServletRequest)) {
+            log.debug("临时申请");
+        }
+
+        ApiResult<String> success = ApiResult.fail("没有登录");
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());

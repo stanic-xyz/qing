@@ -1,11 +1,10 @@
 package chenyunlong.zhangli.controller.content.model;
 
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.core.Pagination;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.OptionsModel;
-import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.*;
 import chenyunlong.zhangli.service.AnimeCommentService;
 import chenyunlong.zhangli.service.AnimeEpisodeService;
@@ -14,14 +13,9 @@ import chenyunlong.zhangli.service.AnimeOptionsService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.stan.zhangli.core.core.support.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAdjuster;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,20 +29,17 @@ public class AnimeInfoModel {
     private final AnimeInfoService animeInfoService;
     private final AnimeOptionsService optionService;
     private final AnimeOptionsService animeOptionsService;
-    private final ZhangliProperties zhangliProperties;
     private final AnimeCommentService animeCommentService;
     private final AnimeEpisodeService episodeService;
 
     public AnimeInfoModel(AnimeInfoService animeInfoService,
                           AnimeOptionsService optionService,
                           AnimeOptionsService animeOptionsService,
-                          ZhangliProperties zhangliProperties,
                           AnimeCommentService animeCommentService,
                           AnimeEpisodeService episodeService) {
         this.animeInfoService = animeInfoService;
         this.optionService = optionService;
         this.animeOptionsService = animeOptionsService;
-        this.zhangliProperties = zhangliProperties;
         this.animeCommentService = animeCommentService;
         this.episodeService = episodeService;
     }

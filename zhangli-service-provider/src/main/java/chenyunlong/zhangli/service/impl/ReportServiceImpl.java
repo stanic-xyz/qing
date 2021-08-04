@@ -5,8 +5,8 @@ import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.model.entities.AnimeFeedbackEntity;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.service.ReportService;
-import com.stan.zhangli.core.exception.ServiceException;
-import com.stan.zhangli.core.utils.StringUtils;
+import chenyunlong.zhangli.core.exception.ServiceException;
+import chenyunlong.zhangli.utils.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service

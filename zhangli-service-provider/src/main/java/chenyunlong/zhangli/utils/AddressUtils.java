@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.utils;
 
+import chenyunlong.zhangli.core.constant.Constants;
 import chenyunlong.zhangli.utils.http.HttpUtils;
 import com.alibaba.fastjson.JSONObject;
-import com.stan.zhangli.core.constrant.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
