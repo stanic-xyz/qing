@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.utils.http;
 
-import com.stan.zhangli.core.constrant.Constants;
+import chenyunlong.zhangli.core.constant.Constants;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.net.ssl.*;
@@ -18,6 +18,7 @@ import java.security.cert.X509Certificate;
  * @author ruoyi
  */
 @Slf4j
+@SuppressWarnings("unused")
 public class HttpUtils {
 
     /**

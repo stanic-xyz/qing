@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.service;
 
 import chenyunlong.zhangli.model.entities.sys.SysJob;
-import com.stan.zhangli.core.exception.job.TaskException;
+import chenyunlong.zhangli.core.exception.job.TaskException;
 import org.quartz.SchedulerException;
 
 import java.util.List;

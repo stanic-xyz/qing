@@ -1,13 +1,15 @@
 package chenyunlong.zhangli.controller.api.admin;
 
+import chenyunlong.zhangli.core.ApiResult;
 import chenyunlong.zhangli.model.entities.District;
 import chenyunlong.zhangli.model.entities.Version;
 import chenyunlong.zhangli.service.DistrictService;
 import chenyunlong.zhangli.service.VersionService;
-import com.stan.zhangli.core.core.support.ApiResult;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

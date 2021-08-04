@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.controller.api.admin;
 
+import chenyunlong.zhangli.core.ApiResult;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoParam;
@@ -9,7 +10,6 @@ import chenyunlong.zhangli.service.AnimeInfoService;
 import cn.hutool.core.thread.NamedThreadFactory;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.stan.zhangli.core.core.support.ApiResult;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

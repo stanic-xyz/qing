@@ -1,6 +1,8 @@
 package chenyunlong.zhangli.controller.api.system;
 
+import chenyunlong.zhangli.annotation.Log;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.core.ApiResult;
 import chenyunlong.zhangli.model.entities.UploadFile;
 import chenyunlong.zhangli.service.FileUploadService;
 import com.qcloud.cos.COSClient;
@@ -9,8 +11,6 @@ import com.qcloud.cos.model.Bucket;
 import com.qcloud.cos.model.COSObjectSummary;
 import com.qcloud.cos.model.ListObjectsRequest;
 import com.qcloud.cos.model.ObjectListing;
-import com.stan.zhangli.core.annotation.Log;
-import com.stan.zhangli.core.core.support.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

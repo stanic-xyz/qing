@@ -2,7 +2,7 @@ package chenyunlong.zhangli.cache;
 
 import chenyunlong.zhangli.utils.JsonUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.stan.zhangli.core.exception.ServiceException;
+import chenyunlong.zhangli.core.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;

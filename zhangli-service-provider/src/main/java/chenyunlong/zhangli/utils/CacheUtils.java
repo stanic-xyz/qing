@@ -1,6 +1,6 @@
 package chenyunlong.zhangli.utils;
 
-import com.stan.zhangli.core.utils.spring.SpringUtils;
+import chenyunlong.zhangli.utils.spring.SpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;

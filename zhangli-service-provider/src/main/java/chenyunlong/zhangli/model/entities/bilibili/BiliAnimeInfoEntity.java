@@ -2,7 +2,7 @@ package chenyunlong.zhangli.model.entities.bilibili;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.stan.zhangli.core.core.domain.BaseEntity;
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

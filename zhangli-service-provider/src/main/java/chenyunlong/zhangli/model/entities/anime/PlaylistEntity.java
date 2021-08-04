@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model.entities.anime;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.stan.zhangli.core.core.domain.BaseEntity;
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
