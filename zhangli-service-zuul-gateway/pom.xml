@@ -14,10 +14,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.stan</groupId>
-            <artifactId>zhangli-common</artifactId>
-        </dependency>
-        <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>

@@ -1,6 +1,5 @@
 package stan.zhangli.zhangliserviceclouadgateway.config;
 
-import chenyunlong.zhangli.config.BaseRedisConfig;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -10,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020/6/19
  */
 @Configuration
-public class RedisConfig extends BaseRedisConfig {
+public class RedisConfig {
 
 }

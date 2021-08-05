@@ -1,10 +1,6 @@
 package stan.zhangli.zhangliserviceclouadgateway.authorization;
 
-import chenyunlong.zhangli.core.constant.AuthConstant;
-import com.stan.zhangli.core.core.UserDto;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JWSObject;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
@@ -17,8 +13,11 @@ import org.springframework.security.web.server.authorization.AuthorizationContex
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 import stan.zhangli.zhangliserviceclouadgateway.config.IgnoreUrlsConfig;
+import stan.zhangli.zhangliserviceclouadgateway.constrant.AuthConstant;
+import stan.zhangli.zhangliserviceclouadgateway.model.UserDto;
 
 import java.net.URI;
 import java.text.ParseException;
@@ -63,13 +62,13 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         //不同用户体系登录不允许互相访问
         try {
             String token = request.getHeaders().getFirst(AuthConstant.JWT_TOKEN_HEADER);
-            if (StrUtil.isEmpty(token)) {
+            if (StringUtils.isEmpty(token)) {
                 return Mono.just(new AuthorizationDecision(false));
             }
             String realToken = token.replace(AuthConstant.JWT_TOKEN_PREFIX, "");
             JWSObject jwsObject = JWSObject.parse(realToken);
             String userStr = jwsObject.getPayload().toString();
-            UserDto userDto = JSONUtil.toBean(userStr, UserDto.class);
+            UserDto userDto = new ObjectMapper().convertValue(userStr, UserDto.class);
             if (AuthConstant.ADMIN_CLIENT_ID.equals(userDto.getClientId()) && !pathMatcher.match(AuthConstant.ADMIN_URL_PATTERN, uri.getPath())) {
                 return Mono.just(new AuthorizationDecision(false));
             }
@@ -91,7 +90,8 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         while (iterator.hasNext()) {
             String pattern = (String) iterator.next();
             if (pathMatcher.match(pattern, uri.getPath())) {
-                authorities.addAll(Convert.toList(String.class, resourceRolesMap.get(pattern)));
+                //TODO 这里有问题
+//                authorities.addAll(resourceRolesMap.get(pattern)));
             }
         }
         authorities = authorities.stream().map(i -> i = AuthConstant.AUTHORITY_PREFIX + i).collect(Collectors.toList());

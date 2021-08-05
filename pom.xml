@@ -44,7 +44,6 @@
         <admin-starter-server.version>2.2.3</admin-starter-server.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <poi.version>4.1.2</poi.version>
-        <commons.io.version>2.5</commons.io.version>
     </properties>
     <modules>
         <module>zhangli-eureka-service</module>
@@ -80,11 +79,6 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.stan</groupId>
-                <artifactId>zhangli-common</artifactId>
-                <version>1.0.0.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>me.zhyd.oauth</groupId>
@@ -188,12 +182,6 @@
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi.version}</version>
-            </dependency>
-            <!--io常用工具类 -->
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons.io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
