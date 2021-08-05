@@ -7,7 +7,6 @@ import chenyunlong.zhangli.core.exception.file.InvalidExtensionException;
 import chenyunlong.zhangli.utils.DateUtils;
 import chenyunlong.zhangli.utils.StringUtils;
 import chenyunlong.zhangli.utils.uuid.IdUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -181,7 +180,7 @@ public class FileUploadUtils {
      * @param extension        扩展名
      * @param allowedExtension 允许的后缀
      */
-    public static final boolean isAllowedExtension(String extension, String[] allowedExtension) {
+    public static boolean isAllowedExtension(String extension, String[] allowedExtension) {
         for (String str : allowedExtension) {
             if (str.equalsIgnoreCase(extension)) {
                 return true;
@@ -196,8 +195,8 @@ public class FileUploadUtils {
      * @param file 表单文件
      * @return 后缀名
      */
-    public static final String getExtension(MultipartFile file) {
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+    public static String getExtension(MultipartFile file) {
+        String extension = FileUtils.getFileType(file.getOriginalFilename());
         if (StringUtils.isEmpty(extension)) {
             extension = MimeTypeUtils.getExtension(file.getContentType());
         }
