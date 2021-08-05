@@ -1,7 +1,5 @@
 package stan.zhangli.zhangliserviceclouadgateway.filter;
 
-import chenyunlong.zhangli.core.constant.AuthConstant;
-import cn.hutool.core.util.StrUtil;
 import com.nimbusds.jose.JWSObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -9,8 +7,10 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import stan.zhangli.zhangliserviceclouadgateway.constrant.AuthConstant;
 
 import java.text.ParseException;
 
@@ -27,7 +27,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst(AuthConstant.JWT_TOKEN_HEADER);
-        if (StrUtil.isEmpty(token)) {
+        if (StringUtils.isEmpty(token)) {
             return chain.filter(exchange);
         }
         try {

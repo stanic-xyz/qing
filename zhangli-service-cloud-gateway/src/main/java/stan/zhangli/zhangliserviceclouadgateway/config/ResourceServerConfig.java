@@ -1,7 +1,5 @@
 package stan.zhangli.zhangliserviceclouadgateway.config;
 
-import chenyunlong.zhangli.core.constant.AuthConstant;
-import cn.hutool.core.util.ArrayUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +17,10 @@ import reactor.core.publisher.Mono;
 import stan.zhangli.zhangliserviceclouadgateway.authorization.AuthorizationManager;
 import stan.zhangli.zhangliserviceclouadgateway.component.RestAuthenticationEntryPoint;
 import stan.zhangli.zhangliserviceclouadgateway.component.RestfulAccessDeniedHandler;
+import stan.zhangli.zhangliserviceclouadgateway.constrant.AuthConstant;
 import stan.zhangli.zhangliserviceclouadgateway.filter.IgnoreUrlsRemoveJwtFilter;
+
+import java.util.ArrayList;
 
 /**
  * 资源服务器配置
@@ -45,9 +46,10 @@ public class ResourceServerConfig {
         http.oauth2ResourceServer().authenticationEntryPoint(restAuthenticationEntryPoint);
         //对白名单路径，直接移除JWT请求头
         http.addFilterBefore(ignoreUrlsRemoveJwtFilter, SecurityWebFiltersOrder.AUTHENTICATION);
+        String[] objects = (String[]) new ArrayList<>(ignoreUrlsConfig.getUrls()).toArray();
         http.authorizeExchange()
                 //白名单配置
-                .pathMatchers(ArrayUtil.toArray(ignoreUrlsConfig.getUrls(), String.class)).permitAll()
+                .pathMatchers(objects).permitAll()
                 //鉴权管理器配置
                 .anyExchange().access(authorizationManager)
                 .and()
