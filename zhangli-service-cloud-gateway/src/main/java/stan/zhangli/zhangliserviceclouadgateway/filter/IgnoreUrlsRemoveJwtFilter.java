@@ -1,6 +1,5 @@
 package stan.zhangli.zhangliserviceclouadgateway.filter;
 
-import chenyunlong.zhangli.core.constant.AuthConstant;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -10,6 +9,7 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 import stan.zhangli.zhangliserviceclouadgateway.config.IgnoreUrlsConfig;
+import stan.zhangli.zhangliserviceclouadgateway.constrant.AuthConstant;
 
 import java.net.URI;
 import java.util.List;
