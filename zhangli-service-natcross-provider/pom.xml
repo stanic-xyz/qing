@@ -9,6 +9,7 @@
     </parent>
     <artifactId>zhangli-service-natcross-provider</artifactId>
     <name>zhangli-service-natcross-provider</name>
+    <version>1.0.0.RELEASE</version>
     <description>Natcross Service project for ZhangliApplication</description>
     <properties>
         <grpc.version>1.6.1</grpc.version>
@@ -51,17 +52,8 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -110,6 +102,11 @@
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>${protobuf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
