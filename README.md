@@ -1,5 +1,7 @@
 # 留住TA的朋友圈
 
+[![Java CI with Maven](https://github.com/YunlongChen/zhangli/actions/workflows/maven.yml/badge.svg?branch=master)](https://github.com/YunlongChen/zhangli/actions/workflows/maven.yml)
+
 #### 介绍
 
 该项目是我关于SpringCloud的一次实践 通过该项目我希望能够对SpringCloud更加了解的同时 不光是对我们本人技术的一点锻炼
