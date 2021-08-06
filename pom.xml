@@ -33,7 +33,6 @@
         <docker.registry.tag>${project.version}</docker.registry.tag>
         <sentinel.version>1.7.2</sentinel.version>
         <swagger.version>2.9.2</swagger.version>
-        <jjwt.version>0.9.0</jjwt.version>
         <nimbus-jose-jwt.version>8.16</nimbus-jose-jwt.version>
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
         <logstash-logback.version>5.3</logstash-logback.version>
@@ -135,13 +134,7 @@
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
-                <version>${jjwt.version}</version>
-            </dependency>
-            <!--JWT(Json Web Token)登录支持-->
-            <dependency>
-                <groupId>com.nimbusds</groupId>
-                <artifactId>nimbus-jose-jwt</artifactId>
-                <version>${nimbus-jose-jwt.version}</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
