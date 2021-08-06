@@ -75,7 +75,6 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -158,6 +157,10 @@
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>8.9</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
         </dependency>
     </dependencies>
     <build>
