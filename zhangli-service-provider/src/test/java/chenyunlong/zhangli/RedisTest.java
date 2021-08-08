@@ -1,19 +1,18 @@
 package chenyunlong.zhangli;
 
 import ai.grakn.redismock.RedisServer;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 
-@RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 @SpringBootTest
 public class RedisTest {
 
@@ -22,7 +21,7 @@ public class RedisTest {
 
     private static RedisServer redisServer;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         try {
             redisServer = RedisServer.newRedisServer();
@@ -34,7 +33,7 @@ public class RedisTest {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void close() {
         if (redisServer != null) {
             redisServer.stop();
@@ -45,6 +44,6 @@ public class RedisTest {
     public void testRedis() {
         stringRedisTemplate.opsForValue().set("name", "team");
         String name = stringRedisTemplate.opsForValue().get("name");
-        Assert.assertEquals("team", name);
+        Assert.isTrue("team".equalsIgnoreCase(name), "不符合匹配");
     }
 }

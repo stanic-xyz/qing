@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.security;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.Assert;
 
 public class SecurityConfigTest {
 
@@ -14,7 +14,7 @@ public class SecurityConfigTest {
         String encoded = new BCryptPasswordEncoder().encode(username);
 
         System.out.println("encoded：" + encoded);
-        Assert.assertTrue(encoder.matches(username, encoded));
+        Assert.isTrue(encoder.matches(username, encoded), "消息不符合");
 
     }
 }

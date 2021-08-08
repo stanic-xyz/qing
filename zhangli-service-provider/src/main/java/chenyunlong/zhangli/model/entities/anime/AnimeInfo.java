@@ -1,10 +1,8 @@
 package chenyunlong.zhangli.model.entities.anime;
 
 import chenyunlong.zhangli.core.domain.BaseEntity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -13,8 +11,6 @@ import java.time.LocalDate;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class AnimeInfo extends BaseEntity {
     private Long id;
     private String name;

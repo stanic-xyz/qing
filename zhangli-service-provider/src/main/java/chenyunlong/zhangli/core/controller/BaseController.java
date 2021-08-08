@@ -7,8 +7,6 @@ import chenyunlong.zhangli.utils.DateUtils;
 import chenyunlong.zhangli.utils.ServletUtils;
 import chenyunlong.zhangli.utils.StringUtils;
 import chenyunlong.zhangli.utils.sql.SqlUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.WebDataBinder;
@@ -52,7 +50,6 @@ public class BaseController {
         Integer pageSize = pageDomain.getPageSize();
         if (StringUtils.isNotNull(pageNum) && StringUtils.isNotNull(pageSize)) {
             String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
-            PageHelper.startPage(pageNum, pageSize, orderBy);
         }
     }
 
@@ -63,7 +60,6 @@ public class BaseController {
         PageDomain pageDomain = TableSupport.buildPageRequest();
         if (StringUtils.isNotEmpty(pageDomain.getOrderBy())) {
             String orderBy = SqlUtil.escapeOrderBySql(pageDomain.getOrderBy());
-            PageHelper.orderBy(orderBy);
         }
     }
 
@@ -96,7 +92,6 @@ public class BaseController {
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(0);
         rspData.setRows(list);
-        rspData.setTotal(new PageInfo(list).getTotal());
         return rspData;
     }
 

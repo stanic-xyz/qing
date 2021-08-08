@@ -67,7 +67,7 @@ public class AnimeApiController {
     @GetMapping("update/page")
     public ApiResult<IPage<AnimeInfoMinimalDTO>> getUpdateInfo(@RequestParam(defaultValue = "1") Integer page,
                                                                @RequestParam(defaultValue = "24") Integer pageSize) {
-        IPage<AnimeInfoMinimalDTO> animeInfoPage = animeInfoService.getUpdateAnimeInfo(new Page<>(page, pageSize));
+        IPage<AnimeInfoMinimalDTO> animeInfoPage = animeInfoService.getUpdateAnimeInfo(page, pageSize);
         return ApiResult.success(animeInfoPage);
     }
 
