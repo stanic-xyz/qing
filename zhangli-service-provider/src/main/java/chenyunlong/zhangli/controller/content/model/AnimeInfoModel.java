@@ -86,12 +86,13 @@ public class AnimeInfoModel {
     /**
      * 最近更新界面
      *
-     * @param animeInfo 分页参数
+     * @param page     分页参数
+     * @param pageSize 分页大小
      * @return 更新界面的数据
      */
-    public UpdateModel listUpdate(Page<AnimeInfo> animeInfo) {
+    public UpdateModel listUpdate(Integer page, Integer pageSize) {
         UpdateModel updateModel = new UpdateModel();
-        IPage<AnimeInfoMinimalDTO> animeInfoPage = animeInfoService.getUpdateAnimeInfo(animeInfo);
+        IPage<AnimeInfoMinimalDTO> animeInfoPage = animeInfoService.getUpdateAnimeInfo(page, pageSize);
         updateModel.setAnimeList(animeInfoPage.getRecords());
         updateModel.setPagination(new Pagination(animeInfoPage));
         return updateModel;

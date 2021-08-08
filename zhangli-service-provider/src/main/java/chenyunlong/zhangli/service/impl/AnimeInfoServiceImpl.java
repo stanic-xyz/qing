@@ -149,7 +149,7 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     }
 
     private IPage<AnimeInfoVo> convertToDetail(IPage<AnimeInfo> animeInfo) {
-        Page<AnimeInfoVo> animeInfoPage = new Page<>(animeInfo.getCurrent(), animeInfo.getSize(), animeInfo.getTotal(), animeInfo.isSearchCount());
+        Page<AnimeInfoVo> animeInfoPage = new Page<>(animeInfo.getCurrent(), animeInfo.getSize(), animeInfo.getTotal());
         animeInfoPage.setRecords(animeInfo.getRecords().stream().map(this::convertToDetail).collect(Collectors.toList()));
         return animeInfoPage;
     }
@@ -161,8 +161,10 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
 
     @Override
-    public IPage<AnimeInfoMinimalDTO> getUpdateAnimeInfo(IPage<AnimeInfo> animeInfoPage) {
-        return page(animeInfoPage).convert(animeInfo -> new AnimeInfoMinimalDTO().convertFrom(animeInfo));
+    public IPage<AnimeInfoMinimalDTO> getUpdateAnimeInfo(Integer page, Integer pageSize) {
+        LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
+        return page(new Page<>(page, pageSize), queryWrapper)
+                .convert(animeInfo -> new AnimeInfoMinimalDTO().convertFrom(animeInfo));
     }
 
     /**
@@ -213,11 +215,10 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
     @Override
     public List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize) {
-        LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.isNotNull(AnimeInfo::getPremiereDate);
-        queryWrapper.orderByDesc(AnimeInfo::getPremiereDate).last("limit 0," + recentPageSize);
-        List<AnimeInfo> animeInfoList = animeInfoMapper.selectList(queryWrapper);
-        return animeInfoList.stream().map(animeInfo -> (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo)).collect(Collectors.toList());
+        return page(new Page<>(1, 50), new LambdaQueryWrapper<>()).
+                getRecords().stream().map(animeInfo
+                        -> (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo))
+                .collect(Collectors.toList());
     }
 
     @Override

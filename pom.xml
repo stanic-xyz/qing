@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.0.RELEASE</version>
+        <version>2.5.3</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,7 +18,6 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
         <maven.test.skip>true</maven.test.skip>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -32,22 +31,12 @@
         <docker.registry.password>d120bcc800ffcb7f527ad9429f81cc50ac3e5542</docker.registry.password>
         <docker.registry.tag>${project.version}</docker.registry.tag>
         <sentinel.version>1.7.2</sentinel.version>
-        <swagger.version>2.9.2</swagger.version>
-        <nimbus-jose-jwt.version>8.16</nimbus-jose-jwt.version>
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
-        <logstash-logback.version>5.3</logstash-logback.version>
-        <hutool.version>5.2.0</hutool.version>
-        <justauth.version>1.15.9</justauth.version>
-        <spring-cloud-alibaba.version>2.2.0.RELEASE</spring-cloud-alibaba.version>
-        <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
-        <admin-starter-server.version>2.2.3</admin-starter-server.version>
-        <mybatis-plus.version>3.4.2</mybatis-plus.version>
-        <poi.version>4.1.2</poi.version>
+
     </properties>
     <modules>
         <module>zhangli-eureka-service</module>
         <module>zhangli-feign-client</module>
-        <module>zhangli-service-zuul-gateway</module>
         <module>zhangli-config-git</module>
         <module>zhangli-common</module>
         <module>zhangli-service-cloud-gateway</module>
@@ -70,106 +59,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>me.zhyd.oauth</groupId>
-                <artifactId>JustAuth</artifactId>
-                <version>${justauth.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
+                <version>2020.0.2</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <!--Spring Cloud Alibaba 相关依赖-->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-cloud-alibaba.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjweaver</artifactId>
-                <version>1.9.6</version>
-            </dependency>
-            <!--集成logstash-->
-            <dependency>
-                <groupId>net.logstash.logback</groupId>
-                <artifactId>logstash-logback-encoder</artifactId>
-                <version>${logstash-logback.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper</artifactId>
-                <version>5.2.0</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>1.5.9</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-common</artifactId>
-                <version>2.9.2</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-spring-web</artifactId>
-                <version>2.9.2</version>
-            </dependency>
-            <!--JWT(Json Web Token)登录支持-->
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>0.9.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.8</version>
-                <scope>provided</scope>
-                <optional>true</optional>
-            </dependency>
-            <!-- swagger -->
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-spi</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <!-- swagger-ui -->
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>3.2.0</version>
-            </dependency>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-starter-server</artifactId>
-                <version>${admin-starter-server.version}</version>
-            </dependency>
-            <!-- excel工具 -->
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi-ooxml</artifactId>
-                <version>${poi.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

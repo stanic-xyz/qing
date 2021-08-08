@@ -98,7 +98,7 @@ public class MovieController {
     public ModelAndView update(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "24") Integer pageSize) {
         ModelAndView modelAndView = new ModelAndView("update");
-        UpdateModel updateModel = animeInfoModel.listUpdate(new Page<>(page, pageSize));
+        UpdateModel updateModel = animeInfoModel.listUpdate(page, pageSize);
         modelAndView.addObject("data", updateModel);
         return modelAndView;
     }

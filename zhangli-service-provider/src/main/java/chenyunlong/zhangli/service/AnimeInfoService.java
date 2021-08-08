@@ -84,10 +84,11 @@ public interface AnimeInfoService extends IService<AnimeInfo> {
     /**
      * 获取更新信息
      *
-     * @param page 当前页
+     * @param page     当前页
+     * @param pageSize 分页大小
      * @return 动漫分页信息了
      */
-    IPage<AnimeInfoMinimalDTO> getUpdateAnimeInfo(IPage<AnimeInfo> page);
+    IPage<AnimeInfoMinimalDTO> getUpdateAnimeInfo(Integer page, Integer pageSize);
 
     /**
      * 获取推荐用户列表
