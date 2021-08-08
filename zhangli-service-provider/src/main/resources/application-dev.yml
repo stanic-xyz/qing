@@ -10,14 +10,6 @@ spring:
     hikari:
       username: root
       password: 123456
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
-        enabled: false
-      config:
-        server-addr: localhost:8848
-        enabled: false
   rabbitmq:
     username: guest
     password: guest
@@ -25,6 +17,19 @@ spring:
   thymeleaf:
     cache: false
     prefix: file:${user.dir}/zhangli-service-provider/src/main/resources/templates/
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}:@project.version@
+    prefer-ip-address: true
+  client:
+    use-dns-for-fetching-service-urls: true
+    eureka-server-d-n-s-name: chenyunlong.cn
+    eureka-server-u-r-l-context: eureka
+    eureka-server-port: 8761
+    prefer-same-zone-eureka: true
+    region: zhangli
+    fetch-registry: true
+    register-with-eureka: true
 mp:
   wx:
     appId: wx09bf7e704a150a9c
@@ -38,3 +43,6 @@ zhangli:
   swagger:
     doc-disabled: false
   index-size: 26
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
