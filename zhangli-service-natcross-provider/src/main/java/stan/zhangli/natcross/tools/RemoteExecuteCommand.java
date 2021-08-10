@@ -4,7 +4,7 @@ import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
 import ch.ethz.ssh2.StreamGobbler;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 
@@ -16,8 +16,8 @@ import java.io.*;
  */
 @Slf4j
 public class RemoteExecuteCommand {
-    /* 字符编码默认是utf-8 */
-    private static String DEFAULTCHART = "UTF-8";
+    // 字符编码默认是utf-8
+    private static String DEFAULT_CHARSET = "UTF-8";
     private Connection conn;
     private String ip;
     private String userName;
@@ -29,10 +29,6 @@ public class RemoteExecuteCommand {
         this.userPwd = userPwd;
     }
 
-
-    public RemoteExecuteCommand() {
-
-    }
 
     /**
      * 远程登录linux的主机
@@ -71,10 +67,10 @@ public class RemoteExecuteCommand {
                 Session session = conn.openSession();
                 //执行命令
                 session.execCommand(cmd);
-                result = processStdout(session.getStdout(), DEFAULTCHART);
+                result = processStdout(session.getStdout(), DEFAULT_CHARSET);
                 //如果为得到标准输出为空，说明脚本执行出错了  
-                if (StringUtils.isBlank(result)) {
-                    result = processStdout(session.getStderr(), DEFAULTCHART);
+                if (!StringUtils.hasLength(result)) {
+                    result = processStdout(session.getStderr(), DEFAULT_CHARSET);
                 }
                 conn.close();
                 session.close();
@@ -101,7 +97,7 @@ public class RemoteExecuteCommand {
                 Session session = conn.openSession();
                 //执行命令
                 session.execCommand(cmd);
-                result = processStdout(session.getStdout(), DEFAULTCHART);
+                result = processStdout(session.getStdout(), DEFAULT_CHARSET);
                 conn.close();
                 session.close();
             }
@@ -125,21 +121,21 @@ public class RemoteExecuteCommand {
         StringBuilder buffer = new StringBuilder();
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(stdout, charset));
-            String line = null;
+            String line;
             while ((line = br.readLine()) != null) {
                 buffer.append(line).append("\n");
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.printf("不一样了吧{0}%n", e.getLocalizedMessage());
+            log.error("不支持的输出：{}\n", e.getLocalizedMessage());
             e.printStackTrace();
         }
         return buffer.toString();
     }
 
     public static void setCharset(String charset) {
-        DEFAULTCHART = charset;
+        DEFAULT_CHARSET = charset;
     }
 
     public Connection getConn() {

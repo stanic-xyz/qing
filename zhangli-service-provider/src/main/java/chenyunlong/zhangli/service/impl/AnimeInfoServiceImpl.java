@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.service.impl;
 
+import chenyunlong.zhangli.core.exception.NotFoundException;
 import chenyunlong.zhangli.mapper.AnimeCommentMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
@@ -18,10 +19,10 @@ import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import chenyunlong.zhangli.core.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -215,7 +216,14 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
     @Override
     public List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize) {
-        return page(new Page<>(1, 50), new LambdaQueryWrapper<>()).
+        LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
+
+        Page<AnimeInfo> infoPage = new Page<>(1, 50);
+        OrderItem orderItem = new OrderItem();
+        orderItem.setColumn("premiere_date");
+        orderItem.setAsc(false);
+        infoPage.addOrder(orderItem);
+        return page(infoPage, queryWrapper).
                 getRecords().stream().map(animeInfo
                         -> (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo))
                 .collect(Collectors.toList());

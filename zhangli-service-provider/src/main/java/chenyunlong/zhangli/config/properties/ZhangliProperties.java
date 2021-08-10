@@ -30,5 +30,6 @@ public class ZhangliProperties {
     private int yearCount = 10;
 
     private boolean isMailEnabled = false;
+    private long logTimeoutMs = 1000;
 }
 
