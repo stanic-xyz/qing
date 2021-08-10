@@ -2,6 +2,7 @@ package chenyunlong.zhangli.config;
 
 import chenyunlong.zhangli.config.properties.SwaggerProperties;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
+import chenyunlong.zhangli.intercepter.LoggingRequestInterceptor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -18,6 +19,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
 import java.security.KeyPair;
+import java.util.Collections;
 
 /**
  * 全局配置
@@ -37,6 +40,12 @@ import java.security.KeyPair;
 @Configuration
 @EnableConfigurationProperties({ZhangliProperties.class, SwaggerProperties.class})
 public class ZhangliConfiguration {
+
+    private ZhangliProperties zhangliProperties;
+
+    public ZhangliConfiguration(ZhangliProperties zhangliProperties) {
+        this.zhangliProperties = zhangliProperties;
+    }
 
     @Bean
     public ObjectMapper getObjectMapper() {
@@ -78,8 +87,10 @@ public class ZhangliConfiguration {
                 .setSSLSocketFactory(csf)
                 .build();
         factory.setHttpClient(httpClient);
-        restTemplate.setRequestFactory(factory);
-
+        //通过BufferingClientHttpRequestFactory对象包装现有的RequestFactory，用来支持多次调用getBody()方法
+        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(factory));
+        // 打印记录
+        restTemplate.setInterceptors(Collections.singletonList(new LoggingRequestInterceptor(zhangliProperties.getLogTimeoutMs())));
         return restTemplate;
     }
 

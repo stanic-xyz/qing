@@ -14,14 +14,15 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-timeout: 6000
-      validation-timeout: 3000
+      validation-timeout: 1000
       idle-timeout: 60000
-      login-timeout: 5
+      login-timeout: 500
       max-lifetime: 60000
-      maximum-pool-size: 5
-      minimum-idle: 10
+      maximum-pool-size: 2
+      minimum-idle: 1
       read-only: false
       connection-test-query: select 1
+      initialization-fail-timeout: 1000
   servlet:
     multipart:
       max-file-size: 4MB
@@ -40,6 +41,8 @@ spring:
     type: simple
 
 mybatis-plus:
+  configuration:
+    cache-enabled: off
   global-config:
     banner: false
   type-aliases-package: chenyunlong.zhangli.**.domain,chenyunlong.zhangli.**.entities
