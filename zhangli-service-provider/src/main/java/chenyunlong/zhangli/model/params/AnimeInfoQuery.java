@@ -2,6 +2,7 @@ package chenyunlong.zhangli.model.params;
 
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.dto.base.InputConverter;
+import chenyunlong.zhangli.utils.StringUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,10 +27,18 @@ public class AnimeInfoQuery implements InputConverter<AnimeInfo> {
     private String sort = "premiere_date";
 
     public LocalDate getStartYear() {
+        if (StringUtils.isNotBlank(getYear()) && !"all".equals(getYear())) {
+            String[] strings = getYear().split(",");
+            return LocalDate.of(Integer.parseInt(strings[0].replace("[", "")), 1, 1);
+        }
         return LocalDate.now().plusYears(-100);
     }
 
     public LocalDate getEndYear() {
+        if (StringUtils.isNotBlank(getYear()) && !"all".equals(getYear())) {
+            String[] strings = getYear().split(",");
+            return LocalDate.of(Integer.parseInt(strings[1].replace(")", "")), 12, 31);
+        }
         return LocalDate.now();
     }
 }

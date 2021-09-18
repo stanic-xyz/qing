@@ -1,7 +1,6 @@
 package chenyunlong.zhangli.model.dto.anime;
 
 import chenyunlong.zhangli.model.dto.base.OutputConverter;
-import chenyunlong.zhangli.model.dto.bilibili.AnimeInfoDTO;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**

@@ -1,0 +1,14 @@
+# yaml 配置实例
+version: '3'
+services:
+  redis:
+    image: redis:latest
+  web:
+    image: registry.cn-hangzhou.aliyuncs.com/seven-tao/simple-docker:0.0.7
+    ports:
+      - "9091:4050"
+    volumes:
+      - /tmp/simple-docker/back:/tmp/back
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - redis

@@ -1,6 +1,5 @@
 package chenyunlong.zhangli.service.impl;
 
-import chenyunlong.zhangli.core.exception.NotFoundException;
 import chenyunlong.zhangli.mapper.AnimeCommentMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
@@ -19,11 +18,10 @@ import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
@@ -67,21 +65,12 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     @Override
     public AnimeInfoVo create(AnimeInfo animeInfo) {
         animeInfoMapper.insert(animeInfo);
-        return convertToDetail(animeInfo);
-    }
-
-    @Override
-    public AnimeInfo getById(Long animeId) {
-        AnimeInfo animeInfo = animeInfoMapper.selectAnimationDetail(animeId);
-        if (animeInfo == null) {
-            throw new NotFoundException(domainName + "was not found or has been deleted");
-        }
-        return animeInfo;
+        return new AnimeInfoVo().convertFrom(animeInfo);
     }
 
     @Override
     public IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> page, AnimeInfoQuery animeInfo) {
-        return convertToDetail(animeInfoMapper.selectPage(page, buildQueryWrapper(animeInfo)));
+        return getDetailById(animeInfoMapper.selectPage(page, buildQueryWrapper(animeInfo)));
     }
 
     /**
@@ -92,37 +81,23 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
      */
     private LambdaQueryWrapper<AnimeInfo> buildQueryWrapper(AnimeInfoQuery animeInfo) {
         LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(StringUtils.hasText(animeInfo.getKeyword()), AnimeInfo::getName, animeInfo.getKeyword());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getDistrict()) && !"all".equals(animeInfo.getDistrict()), AnimeInfo::getDistrictName, animeInfo.getDistrict());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getName()), AnimeInfo::getName, animeInfo.getName());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getVersion()) && !"all".equals(animeInfo.getVersion()), AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(StringUtils.hasText(animeInfo.getResourceType()) && !"all".equals(animeInfo.getResourceType()), AnimeInfo::getTypeName, animeInfo.getResourceType());
-        queryWrapper.eq(StringUtils.hasText(animeInfo.getYear()) && !"all".equals(animeInfo.getYear()), AnimeInfo::getPremiereDate, animeInfo.getYear());
+        queryWrapper.ge(StringUtils.hasText(animeInfo.getYear()) && !"all".equals(animeInfo.getYear()), AnimeInfo::getPremiereDate, animeInfo.getStartYear());
+        queryWrapper.lt(StringUtils.hasText(animeInfo.getYear()) && !"all".equals(animeInfo.getYear()), AnimeInfo::getPremiereDate, animeInfo.getEndYear());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
         queryWrapper.eq(animeInfo.getSeasonMonth() != -1, AnimeInfo::getPlotType, animeInfo.getVersion());
         return queryWrapper;
     }
 
-    /**
-     * 获取播放页数据
-     *
-     * @param animeId    动漫ID
-     * @param sourceType 播放分类
-     * @param ep         片段
-     * @return 动漫播放页参数信息
-     */
-    @Override
-    public AnimeInfoVo getPlayDetail(Long animeId, int sourceType, int ep) {
-        AnimeInfo animeInfo = animeInfoMapper.selectAnimationDetail(animeId);
-        return new ObjectMapper().convertValue(animeInfo, AnimeInfoVo.class);
-    }
-
     @Override
     public AnimeInfoVo updateBy(AnimeInfo animeInfo) {
         animeInfoMapper.update(animeInfo);
-        return convertToDetail(animeInfo);
+        return new AnimeInfoVo().convertFrom(animeInfo);
     }
 
     /**
@@ -131,9 +106,8 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
      * @param animeInfo 动漫信息
      * @return 可以用于界面展示的数据
      */
-    private AnimeInfoVo convertToDetail(AnimeInfo animeInfo) {
+    private AnimeInfoVo getDetailById(AnimeInfo animeInfo) {
         AnimeInfoVo animeInfoVo = new AnimeInfoVo().convertFrom(animeInfo);
-        animeInfoVo.setPlayList(playlistService.listPlayListBy(animeInfo.getId()));
         return animeInfoVo;
     }
 
@@ -149,9 +123,9 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
         return animeInfoVo;
     }
 
-    private IPage<AnimeInfoVo> convertToDetail(IPage<AnimeInfo> animeInfo) {
+    private IPage<AnimeInfoVo> getDetailById(IPage<AnimeInfo> animeInfo) {
         Page<AnimeInfoVo> animeInfoPage = new Page<>(animeInfo.getCurrent(), animeInfo.getSize(), animeInfo.getTotal());
-        animeInfoPage.setRecords(animeInfo.getRecords().stream().map(this::convertToDetail).collect(Collectors.toList()));
+        animeInfoPage.setRecords(animeInfo.getRecords().stream().map(this::getDetailById).collect(Collectors.toList()));
         return animeInfoPage;
     }
 
@@ -173,6 +147,7 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
      *
      * @return 推荐动漫列表
      */
+    @Cacheable("index:recommend")
     @Override
     public List<AnimeInfoMinimalDTO> getRecommendAnimeInfoList() {
         List<AnimeInfo> animeInfoList = animeInfoMapper.listRecommendAnimeInfo();
@@ -197,7 +172,7 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
     @Override
     public AnimeInfoVo convertToDetailVo(AnimeInfo animeInfo) {
-        return convertToDetail(animeInfo);
+        return getDetailById(animeInfo);
     }
 
     @Override
@@ -205,27 +180,16 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
         return convertToPlayInfo(animeInfo);
     }
 
-    @Override
-    public AnimeInfo getById(Integer animeId) {
-        AnimeInfo animeInfo = animeInfoMapper.selectById(animeId);
-        if (animeInfo == null) {
-            throw new NotFoundException(domainName + "was not found or has been deleted");
-        }
-        return animeInfo;
-    }
 
+    @Cacheable("index:recent")
     @Override
     public List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize) {
+        Page<AnimeInfo> infoPage = new Page<>(1, recentPageSize);
         LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
-
-        Page<AnimeInfo> infoPage = new Page<>(1, 50);
-        OrderItem orderItem = new OrderItem();
-        orderItem.setColumn("premiere_date");
-        orderItem.setAsc(false);
-        infoPage.addOrder(orderItem);
+        queryWrapper.orderByDesc(AnimeInfo::getPremiereDate);
         return page(infoPage, queryWrapper).
-                getRecords().stream().map(animeInfo
-                        -> (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo))
+                getRecords().stream().map(animeInfo ->
+                        (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo))
                 .collect(Collectors.toList());
     }
 

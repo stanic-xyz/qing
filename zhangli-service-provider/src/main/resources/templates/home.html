@@ -9,18 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data.hostname})}">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/index.css(host=${data.hostname})}">
-    <!-- <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script> -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/YunlongChen/cdn/zhangli/js/history.js"></script>
-    <script src="https://unpkg.com/petite-vue" defer init></script>
+    <script type="text/javascript" th:src="@{{host}/js/petite-vue.js(host=${data.hostname})}" defer init></script>
+    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
 </head>
-
 
 <body>
 <div id="root" v-scope="{ count: 1 }">
     <div id="top" th:include="common/header :: top()"></div>
     <header id="nav" th:include="common/header :: commonHead('index')"></header>
     <div id="container">
-        <div id="new_tip1" th:include="common/header :: notification('www.agefans.net')"></div>
+        <div id="new_tip1" th:include="common/header :: notification('www.chenyunlong.cn')"></div>
         <div class="div_right baseblock">
             <div class="blocktitle">每周放送列表</div>
             <div class="blockcontent">
@@ -51,9 +49,9 @@
                 <ul id="new_anime_page" th:each="entry:${data.recentMap.entrySet()}"
                     th:attr="v-if=${entry.key +'== count'}">
                     <li class="one_new_anime" th:each="anime,iter : ${entry.value}">
-                        <a class="one_new_anime_name" th:href="@{'/detail/'+${anime.id}}"
+                        <a class="one_new_anime_name" th:href="@{'/detail/'+${anime.id}+'/index.html'}"
                            th:text="${anime.name}"></a>
-                        <a class="one_new_anime_ji" th:href="@{'/detail/'+${anime.id}}"
+                        <a class="one_new_anime_ji" th:href="@{'/detail/'+${anime.id}+'/index.html'}"
                            th:text="${anime.premiereDate}"></a>
                         <div class="one_anime_new" th:attr="v-if=${!anime.isNew}">new!</div>
                     </li>
@@ -65,7 +63,7 @@
             <div class="blockcontent">
                 <ul id="anime_update">
                     <li class="one_new_anime" th:each="anime : ${data.recentList}">
-                        <a th:href="@{'/detail/'+${anime.id}}" href="" class="one_new_anime_name"
+                        <a th:href="@{'/detail/'+${anime.id}+'/index.html'}" href="" class="one_new_anime_name"
                            style="width: 220px;" th:text="${anime.name}"></a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;"
                               th:text="${anime.premiereDate}"></span>
@@ -80,12 +78,12 @@
             <div class="blockcontent">
                 <ul class="ul_li_a5">
                     <li class="anime_icon1" th:each="anime:${data.recommendList}">
-                        <a th:href="@{'/detail/'+${anime.id}}">
+                        <a th:href="@{'/detail/'+${anime.id}+'/index.html'}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}" th:alt-title="${anime.name}" loading="lazy" alt="">
                             <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
+                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}+'/index.html'}">
                             <div class="anime_icon1_name" th:text="${anime.name}"></div>
                         </a>
                     </li>
@@ -98,12 +96,12 @@
             <div class="blockcontent">
                 <ul class="ul_li_a5">
                     <li class="anime_icon1" th:each="anime:${data.recentList}">
-                        <a th:href="@{'/detail/'+${anime.id}}">
+                        <a th:href="@{'/detail/'+${anime.id}+'/index.html'}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}" loading="lazy" alt="/img/empty.png">
                             <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}}">
+                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}+'/index.html'}">
                             <div class="anime_icon1_name" th:text="${anime.name}"></div>
                         </a>
                     </li>
