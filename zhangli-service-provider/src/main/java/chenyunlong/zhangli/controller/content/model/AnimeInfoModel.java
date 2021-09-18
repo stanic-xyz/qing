@@ -1,15 +1,24 @@
 package chenyunlong.zhangli.controller.content.model;
 
 import chenyunlong.zhangli.core.Pagination;
+import chenyunlong.zhangli.model.dto.AnimeCommentDTO;
+import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
+import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
+import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
+import chenyunlong.zhangli.model.entities.anime.PlaylistEntity;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.OptionsModel;
+import chenyunlong.zhangli.model.vo.anime.AnimeInfoPlayVo;
+import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import chenyunlong.zhangli.model.vo.page.*;
 import chenyunlong.zhangli.service.AnimeCommentService;
 import chenyunlong.zhangli.service.AnimeEpisodeService;
 import chenyunlong.zhangli.service.AnimeInfoService;
 import chenyunlong.zhangli.service.AnimeOptionsService;
+import chenyunlong.zhangli.service.dao.AnimeListService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -18,6 +27,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
@@ -31,55 +45,109 @@ public class AnimeInfoModel {
     private final AnimeOptionsService animeOptionsService;
     private final AnimeCommentService animeCommentService;
     private final AnimeEpisodeService episodeService;
+    private final AnimeListService animeListService;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     public AnimeInfoModel(AnimeInfoService animeInfoService,
                           AnimeOptionsService optionService,
                           AnimeOptionsService animeOptionsService,
                           AnimeCommentService animeCommentService,
-                          AnimeEpisodeService episodeService) {
+                          AnimeEpisodeService episodeService, AnimeListService animeListService) {
         this.animeInfoService = animeInfoService;
         this.optionService = optionService;
         this.animeOptionsService = animeOptionsService;
         this.animeCommentService = animeCommentService;
         this.episodeService = episodeService;
+        this.animeListService = animeListService;
     }
 
     /**
      * 首页数据展示结构
      */
-    public IndexModel listIndex() {
+    public IndexModel getIndex() {
         IndexModel indexModel = new IndexModel();
-        List<AnimeInfoMinimalDTO> recentUpdate = animeInfoService.getRecentUpdate(optionService.getRecentPageSize());
-        Map<Integer, List<AnimeInfoMinimalDTO>> collect = recentUpdate.stream().collect(Collectors.groupingBy(animeInfoMinimalDTO -> animeInfoMinimalDTO.getPremiereDate().getDayOfWeek().getValue()));
-        indexModel.setRecentList(recentUpdate);
-        indexModel.setRecentMap(collect);
-        //按照每周进行分组
-        indexModel.setDalyUpdateList(animeInfoService.getRecommendAnimeInfoList());
-        indexModel.setRecommendList(animeInfoService.getRecommendAnimeInfoList());
-        indexModel.setUpdateInfoList(animeInfoService.getUpdateInfo());
+
+        //获取更新
+        Future<List<AnimeInfoMinimalDTO>> recentUpdate = executorService.submit(() -> animeInfoService.getRecentUpdate(optionService.getRecentPageSize()));
+        //获取推荐
+        Future<List<AnimeInfoMinimalDTO>> listUpdate = executorService.submit(animeInfoService::getRecommendAnimeInfoList);
+        //获取更新
+        Future<List<AnimeInfoMinimalDTO>> listRecommend = executorService.submit(animeInfoService::getRecommendAnimeInfoList);
+        //获取更新
+        Future<List<AnimeInfoUpdateDTO>> update = executorService.submit(animeInfoService::getUpdateInfo);
+
+        try {
+            List<AnimeInfoMinimalDTO> dads = recentUpdate.get();
+            Map<Integer, List<AnimeInfoMinimalDTO>> collect = dads.stream().collect(Collectors.groupingBy(animeInfoMinimalDTO -> animeInfoMinimalDTO.getPremiereDate().getDayOfWeek().getValue()));
+            indexModel.setRecentList(dads);
+            indexModel.setRecentMap(collect);
+
+            indexModel.setUpdateInfoList(update.get());
+            indexModel.setDalyUpdateList(listUpdate.get());
+            indexModel.setRecommendList(listRecommend.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
         return indexModel;
     }
 
     public DetailModel detail(Long animeId) {
         DetailModel detailModel = new DetailModel();
-        detailModel.setAnimeInfo(animeInfoService.convertToDetailVo(animeInfoService.getById(animeId)));
-        detailModel.setRelevant(animeInfoService.getRecommendAnimeInfoList());
-        detailModel.setRecommendation(animeInfoService.getRecommendAnimeInfoList());
-        //获取前十条评论信息
-        detailModel.setComments(animeCommentService.getCommentsByAnimeId(animeId, 1, 10));
+        AnimeInfo animeInfo = animeInfoService.getById(animeId);
+        if (animeInfo != null) {
+            AnimeInfoVo animeInfoVo = new AnimeInfoVo().convertFrom(animeInfo);
+            List<PlaylistEntity> animePlayList = animeListService.getAnimePlayList(animeId);
+            List<AnimeInfoMinimalDTO> recommendAnimeInfoList = animeInfoService.getRecommendAnimeInfoList();
+            //获取前十条评论信息
+            IPage<AnimeCommentDTO> commentsByAnimeId = animeCommentService.getCommentsByAnimeId(animeId, 1, 10);
+            List<AnimeEpisodeEntity> episodeEntities = episodeService.getByAnimeId(animeId);
+
+            List<PlayListDTO> playListList = animePlayList.stream().map(playlistEntity -> {
+                PlayListDTO playListDTO = new PlayListDTO().convertFrom(playlistEntity);
+                List<AnimeEpisodeDTO> animeEpisodeEntityStream = episodeEntities.stream()
+                        .filter(animeEpisodeEntity -> Objects.equals(animeEpisodeEntity.getListId(), playlistEntity.getId()))
+                        .map(animeEpisodeEntity -> (AnimeEpisodeDTO) new AnimeEpisodeDTO().convertFrom(animeEpisodeEntity))
+                        .collect(Collectors.toList());
+                playListDTO.setEpisodeList(animeEpisodeEntityStream);
+                return playListDTO;
+            }).collect(Collectors.toList());
+            animeInfoVo.setPlayList(playListList);
+            detailModel.setAnimeInfo(animeInfoVo);
+            detailModel.setRelevant(recommendAnimeInfoList);
+            detailModel.setRecommendation(recommendAnimeInfoList);
+            detailModel.setComments(commentsByAnimeId);
+        }
         return detailModel;
     }
 
     public PlayModel play(Long animeId, Long playId) {
         PlayModel playModel = new PlayModel();
-        playModel.setAnimeInfo(animeInfoService.convertToPlayVo(animeInfoService.getById(animeId)));
+        AnimeInfo animeInfo = animeInfoService.getById(animeId);
+
+        if (animeInfo != null) {
+            AnimeInfoVo animeInfoVo = new AnimeInfoVo().convertFrom(animeInfo);
+            List<PlayListDTO> objectList = animeListService.getAnimePlayList(animeId).stream().map(playlistEntity -> (PlayListDTO) new PlayListDTO().convertFrom(playlistEntity)).collect(Collectors.toList());
+            animeInfoVo.setPlayList(objectList);
+            playModel.setAnimeInfo(new AnimeInfoPlayVo().convertFrom(animeInfo));
+            playModel.setRelevant(animeInfoService.getRecommendAnimeInfoList());
+            playModel.setRecommendation(animeInfoService.getRecommendAnimeInfoList());
+            //获取前十条评论信息
+            playModel.setComments(animeCommentService.getCommentsByAnimeId(animeId, 1, 10));
+        }
+
         playModel.setRelevant(animeInfoService.getRecommendAnimeInfoList());
         playModel.setRecommendation(animeInfoService.getRecommendAnimeInfoList());
         //获取前十条评论信息
         playModel.setComments(animeCommentService.getCommentsByAnimeId(animeId, 1, 10));
         if (playId != null) {
-            playModel.setEpisodeInfo(episodeService.getById(playId));
+            AnimeEpisodeEntity episodeEntity = episodeService.getById(playId);
+            if (episodeEntity != null) {
+                playModel.setEpisodeInfo(new AnimeEpisodeDTO().convertFrom(episodeEntity));
+            }
         }
+
+
         return playModel;
     }
 

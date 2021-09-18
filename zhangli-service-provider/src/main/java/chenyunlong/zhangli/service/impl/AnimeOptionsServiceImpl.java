@@ -8,8 +8,9 @@ import chenyunlong.zhangli.mapper.VersionMapper;
 import chenyunlong.zhangli.model.vo.OptionsModel;
 import chenyunlong.zhangli.model.vo.YearInfo;
 import chenyunlong.zhangli.service.AnimeOptionsService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import springfox.documentation.annotations.Cacheable;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -38,7 +39,7 @@ public class AnimeOptionsServiceImpl implements AnimeOptionsService {
         this.zhangliProperties = zhangliProperties;
     }
 
-    @Cacheable("options")
+    @Cacheable(value = "options:option")
     @Override
     public OptionsModel getOptions() {
         LocalDate earliestAnime = animeInfoMapper.selectEarliestyear();
@@ -64,6 +65,7 @@ public class AnimeOptionsServiceImpl implements AnimeOptionsService {
             now = now.plusYears(-1);
             years.add(yearInfo);
         }
+
         YearInfo yearInfo = new YearInfo();
         yearInfo.setQueryValue("[" + now.getYear() + "," + (earliestAnime != null ? earliestAnime.getYear() : "1980") + "]");
         yearInfo.setName(now.getYear() + "及以前");
@@ -72,8 +74,16 @@ public class AnimeOptionsServiceImpl implements AnimeOptionsService {
         return optionsModel;
     }
 
+    @Cacheable(value = "options:pageInfo")
     @Override
     public int getRecentPageSize() {
-        return 50;
+        return zhangliProperties.getIndexSize();
     }
+
+
+    @CacheEvict(value = "options:pageInfo")
+    @Override
+    public void updateOptions() {
+    }
+
 }

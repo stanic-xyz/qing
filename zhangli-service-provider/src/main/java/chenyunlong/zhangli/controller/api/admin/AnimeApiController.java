@@ -41,10 +41,9 @@ public class AnimeApiController {
     }
 
     @GetMapping("detail/{aid}")
-    public ApiResult<AnimeInfoVo> movie(@PathVariable(value = "aid") Long animeId) {
-        AnimeInfoVo animeInfoVo = animeInfoService.convertToDetailVo(animeInfoService.getById(animeId));
+    public ApiResult<AnimeInfo> movie(@PathVariable(value = "aid") Long animeId) {
         //可以修改查看数据了
-        return ApiResult.success(animeInfoVo);
+        return ApiResult.success(animeInfoService.getById(animeId));
     }
 
     @PutMapping("{animeId:\\d+}")

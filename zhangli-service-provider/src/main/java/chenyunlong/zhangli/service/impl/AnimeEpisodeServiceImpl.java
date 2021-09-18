@@ -6,13 +6,13 @@ import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.model.params.AddEpisodeParam;
 import chenyunlong.zhangli.service.AnimeEpisodeService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class AnimeEpisodeServiceImpl implements AnimeEpisodeService {
+public class AnimeEpisodeServiceImpl extends ServiceImpl<AnimeEpisodeMapper, AnimeEpisodeEntity> implements AnimeEpisodeService {
 
     private final AnimeEpisodeMapper episodeMapper;
 
@@ -37,12 +37,11 @@ public class AnimeEpisodeServiceImpl implements AnimeEpisodeService {
     }
 
     @Override
-    public AnimeEpisodeDTO getById(Long playId) {
-        return new AnimeEpisodeDTO().convertFrom(episodeMapper.selectById(playId));
+    public List<AnimeEpisodeEntity> getByAnimeId(Long animeId) {
+        return lambdaQuery()
+                .eq(AnimeEpisodeEntity::getAnimeId, animeId)
+                .list();
+
     }
 
-    public List<AnimeEpisodeDTO> convertToListVo(List<AnimeEpisodeEntity> episodeEntities) {
-        return episodeEntities.stream().map(episode
-                -> (AnimeEpisodeDTO) new AnimeEpisodeDTO().convertFrom(episode)).collect(Collectors.toList());
-    }
 }

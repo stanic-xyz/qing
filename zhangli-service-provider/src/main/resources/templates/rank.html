@@ -1,13 +1,14 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <!-- saved from url=(0038)@{/detail/20160083 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" lang="cn_zh">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>全部动画排行榜 - AGE动漫</title>
 
     <meta name="keywords" content="动漫排行,AGE动漫">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!--/*@thymesVar id="hostname" type=""*/-->
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${hostname})}">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/rank.css(host=${hostname})}">
     <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${hostname})}"></script>
@@ -24,13 +25,13 @@
             <div class="blockcontent">
                 <div class="baseblock2">
                     <div class="blocktitle" style="">排行分类</div>
-                    <div class="blockcontent" style="padding: 0px;">
+                    <div class="blockcontent" style="padding: 0;">
                         <div class="baseblock">
                             <div class="blocktitlexx" style="">
                                 <a class="rank_tag rank_tag_current " th:href="@{/rank(tag='all')}">所有动画播放排行</a>
                             </div>
                             <div class="blocktitlexx" style="">
-                                <a id="tagyears" href="javascript:;" onclick="oncatsw(this);">
+                                <a id="tagyears" href="javascript:" onclick="oncatsw(this);">
                                     <span class="openorclose">-</span>
                                     <span class="rank_tag">分类动画播放排行</span></a>
                             </div>
@@ -100,13 +101,13 @@
     </div>
     <footer id="footer" th:include="common/header :: footer()"></footer>
     <script type="text/javascript">function oncatsw(obj) {
-        var cats = document.getElementById('cats');
+        const cats = document.getElementById('cats');
         cats.isopen = !cats.isopen;
         if (cats.isopen) {
             cats.hidden = null;
             obj.querySelector('.openorclose').innerText = '-';
         } else {
-            cats.hidden = 'hidden';
+            cats.hidden = true;
             obj.querySelector('.openorclose').innerText = '+';
         }
     }

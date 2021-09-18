@@ -8,6 +8,9 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
+/**
+ * @author Stan
+ */
 @Data
 @ToString
 @EqualsAndHashCode
@@ -15,8 +18,6 @@ public class AnimeInfoMinimalDTO implements OutputConverter<AnimeInfoMinimalDTO,
 
     private Long id;
     private String name;
-    private String instruction;
-    private String districtName;
     private String coverUrl;
     private String typeName;
     private String originalName;
@@ -26,8 +27,5 @@ public class AnimeInfoMinimalDTO implements OutputConverter<AnimeInfoMinimalDTO,
     private LocalDate premiereDate;
     private String playStatus;
     private String plotType;
-    private String tags;
-    private String officialWebsite;
-    private String playHeat;
     private Boolean isNew = false;
 }

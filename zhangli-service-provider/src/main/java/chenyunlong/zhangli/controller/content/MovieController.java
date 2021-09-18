@@ -39,15 +39,15 @@ public class MovieController {
         this.reportService = reportService;
     }
 
-    @GetMapping("")
+    @GetMapping(path = {"", "/index.html"})
     public ModelAndView index(ModelAndView modelAndView) throws JsonProcessingException {
-        IndexModel indexModel = animeInfoModel.listIndex();
+        IndexModel indexModel = animeInfoModel.getIndex();
         modelAndView.setViewName("home");
         modelAndView.addObject("data", indexModel);
         return modelAndView;
     }
 
-    @GetMapping("detail/{movieId}")
+    @GetMapping({"detail/{movieId}", "detail/{movieId}/index.html"})
     public ModelAndView movie(@PathVariable(value = "movieId") Long animeId) {
         DetailModel detailModel = animeInfoModel.detail(animeId);
         ModelAndView modelAndView = new ModelAndView("detail");
@@ -55,7 +55,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping("catalog")
+    @GetMapping({"catalog", "catalog.html"})
     public ModelAndView catalog(AnimeInfoQuery animeInfoQuery,
                                 @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "24") Integer pageSize) {
@@ -67,7 +67,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping("play/{movieId}")
+    @GetMapping({"play/{movieId}", "play/{movieId}/index.html"})
     public ModelAndView play(
             @PathVariable(value = "movieId") Long animeId,
             @RequestParam(value = "playid", required = false) Long playId) {
@@ -78,7 +78,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping("rank")
+    @GetMapping({"rank", "rank.html"})
     public ModelAndView rank(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "75") Integer size,
@@ -94,7 +94,7 @@ public class MovieController {
     }
 
 
-    @GetMapping("update")
+    @GetMapping({"update", "update.html"})
     public ModelAndView update(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "24") Integer pageSize) {
         ModelAndView modelAndView = new ModelAndView("update");
@@ -104,7 +104,7 @@ public class MovieController {
     }
 
 
-    @GetMapping("recommend")
+    @GetMapping({"recommend", "recommend.html"})
     public ModelAndView recommend(ModelAndView modelAndView) {
         List<AnimeInfoMinimalDTO> animeInfoList = animeInfoService.getRecommendAnimeInfoList();
         modelAndView.setViewName("recommend");
@@ -112,7 +112,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping("search")
+    @GetMapping({"search", "search.html"})
     public ModelAndView search(
             @RequestParam(value = "query", required = false, defaultValue = "") String query,
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
@@ -159,22 +159,22 @@ public class MovieController {
         return ApiResult.success();
     }
 
-    @GetMapping("login")
+    @GetMapping({"login", "login.html"})
     public ModelAndView login() {
         return new ModelAndView("login");
     }
 
-    @GetMapping("profile")
+    @GetMapping({"profile", "profile.html"})
     public ModelAndView profile() {
         return new ModelAndView("profile");
     }
 
-    @GetMapping("404")
+    @GetMapping({"404", "404.html"})
     public ModelAndView nul() {
         return new ModelAndView("404");
     }
 
-    @GetMapping("link/{animeId}/{epsodeId}")
+    @GetMapping({"link/{animeId}/{epsodeId}", "link/{animeId}/{epsodeId}/index.html"})
     public ModelAndView link(@PathVariable(value = "animeId") Long animeId,
                              @PathVariable(value = "epsodeId") Long epsodeId) {
         return new ModelAndView("redirect:https://pan.baidu.com/share/init?surl=Vjn9aJ2IY3bJlpO4X8H9kg");

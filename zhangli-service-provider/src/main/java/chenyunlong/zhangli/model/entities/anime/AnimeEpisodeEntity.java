@@ -20,6 +20,10 @@ public class AnimeEpisodeEntity extends BaseEntity {
      */
     private Long id;
 
+    private Long animeId;
+
+    private Long listId;
+
     /**
      * 视频标题名称
      */

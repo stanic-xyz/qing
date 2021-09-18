@@ -21,4 +21,10 @@ public interface AnimeOptionsService {
      * @return 最新记录的分页大小
      */
     int getRecentPageSize();
+
+
+    /**
+     * 更新配置信息
+     */
+    void updateOptions();
 }
