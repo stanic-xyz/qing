@@ -5,6 +5,13 @@ spring:
     name: zhangli-config-git
   profiles:
     active: ${ENV:dev}
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/stanChen/zhangli-config
+          username: stanChen
+          password: 4745701816long
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10

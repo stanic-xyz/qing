@@ -40,14 +40,6 @@ public interface AnimeInfoService extends IService<AnimeInfo> {
     AnimeInfoVo create(AnimeInfo animeInfo);
 
     /**
-     * 获取动漫详情
-     *
-     * @param animeId 动漫ID
-     * @return 动漫详情
-     */
-    AnimeInfo getById(Long animeId);
-
-    /**
      * 查询动画信息
      *
      * @param pageable  分页信息
@@ -55,16 +47,6 @@ public interface AnimeInfoService extends IService<AnimeInfo> {
      * @return 满足条件的动画信息
      */
     IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> pageable, AnimeInfoQuery animeInfo);
-
-    /**
-     * 获取播放页数据
-     *
-     * @param animeId 动漫ID
-     * @param type    播放类型
-     * @param ep      分级序号
-     * @return 动漫播放页视图
-     */
-    AnimeInfoVo getPlayDetail(Long animeId, int type, int ep);
 
     /**
      * 更新动漫信息
@@ -129,14 +111,6 @@ public interface AnimeInfoService extends IService<AnimeInfo> {
      * @return post detail vo
      */
     AnimeInfoPlayVo convertToPlayVo(AnimeInfo animeInfoDetail);
-
-    /**
-     * 获取动漫信息
-     *
-     * @param animeId 动漫ID
-     * @return 动漫详情
-     */
-    AnimeInfo getById(Integer animeId);
 
     /**
      * 获取最近更新的动漫列表

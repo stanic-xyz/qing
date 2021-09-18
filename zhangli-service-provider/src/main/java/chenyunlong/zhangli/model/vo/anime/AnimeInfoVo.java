@@ -1,11 +1,11 @@
 package chenyunlong.zhangli.model.vo.anime;
 
 import chenyunlong.zhangli.model.dto.PlayListDTO;
-import chenyunlong.zhangli.model.dto.anime.AnimeInfoDetailDTO;
+import chenyunlong.zhangli.model.dto.base.OutputConverter;
+import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -13,9 +13,25 @@ import java.util.List;
  */
 
 @Data
-@ToString
-@EqualsAndHashCode(callSuper = true)
-public class AnimeInfoVo extends AnimeInfoDetailDTO {
+public class AnimeInfoVo implements OutputConverter<AnimeInfoVo, AnimeInfo> {
 
+    private Long id;
+    private String name;
+    private String instruction;
+    private Integer districtId;
+    private String districtName;
+    private String coverUrl;
+    private Integer typeId;
+    private String typeName;
+    private String originalName;
+    private String otherName;
+    private String author;
+    private String company;
+    private LocalDate premiereDate;
+    private String playStatus;
+    private String plotType;
+    private String tags;
+    private String officialWebsite;
+    private String playHeat;
     private List<PlayListDTO> playList;
 }

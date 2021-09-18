@@ -1,11 +1,16 @@
 package chenyunlong.zhangli.service;
 
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
+import chenyunlong.zhangli.model.entities.anime.AnimeEpisodeEntity;
 import chenyunlong.zhangli.model.params.AddEpisodeParam;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
-public interface AnimeEpisodeService {
+/**
+ * @author Stan
+ */
+public interface AnimeEpisodeService extends IService<AnimeEpisodeEntity> {
 
     /**
      * 通过动漫ID查询动漫内部的所有播放信息
@@ -24,10 +29,10 @@ public interface AnimeEpisodeService {
     AnimeEpisodeDTO add(AddEpisodeParam episodeParam);
 
     /**
-     * 获取视频播放详情
+     * 根据动漫ID获取播放视频列表
      *
-     * @param playId 播放视频ID
-     * @return 视频播放详情
+     * @param animeId 动漫ID
+     * @return 播放列表
      */
-    AnimeEpisodeDTO getById(Long playId);
+    List<AnimeEpisodeEntity> getByAnimeId(Long animeId);
 }
