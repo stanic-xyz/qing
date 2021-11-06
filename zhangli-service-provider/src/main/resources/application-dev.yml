@@ -17,19 +17,16 @@ spring:
   thymeleaf:
     cache: false
     prefix: file:${user.dir}/zhangli-service-provider/src/main/resources/templates/
+  redis:
+    host: 127.0.0.1
+    port: 6379
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}:@project.version@
     prefer-ip-address: true
   client:
-    use-dns-for-fetching-service-urls: true
-    eureka-server-d-n-s-name: chenyunlong.cn
-    eureka-server-u-r-l-context: eureka
-    eureka-server-port: 8761
-    prefer-same-zone-eureka: true
-    region: zhangli
-    fetch-registry: true
-    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 mp:
   wx:
     appId: wx09bf7e704a150a9c

@@ -44,11 +44,9 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     private final AnimeEpisodeService episodeService;
     private final PlaylistService playlistService;
     private final AnimeCommentMapper commentMapper;
-    private final String domainName = "anime";
 
 
-    public AnimeInfoServiceImpl(AnimeInfoMapper animeInfoMapper,
-                                AnimeEpisodeService episodeService,
+    public AnimeInfoServiceImpl(AnimeInfoMapper animeInfoMapper, AnimeEpisodeService episodeService,
                                 PlaylistService playlistService,
                                 AnimeCommentMapper commentMapper) {
         this.animeInfoMapper = animeInfoMapper;
@@ -64,13 +62,13 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
     @Override
     public AnimeInfoVo create(AnimeInfo animeInfo) {
-        animeInfoMapper.insert(animeInfo);
+        save(animeInfo);
         return new AnimeInfoVo().convertFrom(animeInfo);
     }
 
     @Override
     public IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> page, AnimeInfoQuery animeInfo) {
-        return getDetailById(animeInfoMapper.selectPage(page, buildQueryWrapper(animeInfo)));
+        return getDetailById(page(page, buildQueryWrapper(animeInfo)));
     }
 
     /**
@@ -96,7 +94,7 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
     @Override
     public AnimeInfoVo updateBy(AnimeInfo animeInfo) {
-        animeInfoMapper.update(animeInfo);
+        updateById(animeInfo);
         return new AnimeInfoVo().convertFrom(animeInfo);
     }
 
@@ -107,8 +105,7 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
      * @return 可以用于界面展示的数据
      */
     private AnimeInfoVo getDetailById(AnimeInfo animeInfo) {
-        AnimeInfoVo animeInfoVo = new AnimeInfoVo().convertFrom(animeInfo);
-        return animeInfoVo;
+        return new AnimeInfoVo().convertFrom(animeInfo);
     }
 
     /**
@@ -131,7 +128,7 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
     @Override
     public void deleteAnime(Long animeId) {
-        animeInfoMapper.deleteById(animeId);
+        removeById(animeId);
     }
 
 
@@ -150,8 +147,10 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     @Cacheable("index:recommend")
     @Override
     public List<AnimeInfoMinimalDTO> getRecommendAnimeInfoList() {
-        List<AnimeInfo> animeInfoList = animeInfoMapper.listRecommendAnimeInfo();
-        return animeInfoList.stream().map(animeInfo -> (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo)).collect(Collectors.toList());
+        return animeInfoMapper.listRecommendAnimeInfo().stream()
+                .map(animeInfo ->
+                        (AnimeInfoMinimalDTO) new AnimeInfoMinimalDTO().convertFrom(animeInfo))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -195,7 +194,7 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
 
     @Override
     public void downloadImages() throws IOException {
-        List<AnimeInfo> animeInfos = animeInfoMapper.selectList(new QueryWrapper<>());
+        List<AnimeInfo> animeInfos = list(new QueryWrapper<>());
         final File[] listFiles;
         File exsitsFile = ResourceUtils.getFile("E:\\GitHub\\cdn\\age");
         if (exsitsFile.isDirectory()) {
@@ -237,7 +236,7 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
         QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("premiere_date");
         queryWrapper.last("limit 100");
-        return animeInfoMapper.selectList(queryWrapper).stream().map(animeInfo
+        return list(queryWrapper).stream().map(animeInfo
                 -> {
             AnimeInfoUpdateDTO updateDTO = new AnimeInfoUpdateDTO().convertFrom(animeInfo);
             updateDTO.setIsNew(true);
