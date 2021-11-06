@@ -1,0 +1,16 @@
+server:
+  port: 8985
+spring:
+  rabbitmq:
+    host: 192.168.129.77
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}:@project.version@
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: https://eureka.chenyunlong.cn/eureka/
