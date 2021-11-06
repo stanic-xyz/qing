@@ -1,11 +1,16 @@
+server:
+  port: ${BUS_SERVER_PORT:8071}
 spring:
+  application:
+    name: zhangli-bus-server
+  profiles:
+    active: prod
   rabbitmq:
-    host: ${RABBIT_MQ_HOST:localhost}
+    host: 192.168.129.77
     port: ${RABBIT_MQ_PORT:5672}
     username: ${RABBIT_MQ_USERNAME:guest}
     password: ${RABBIT_MQ_PASSWORD:guest}
     virtual-host: /
-
 management:
   endpoints:
     web:

@@ -1,12 +1,12 @@
 package chenyunlong.zhangli.aspect;
 
+import chenyunlong.zhangli.annotation.Log;
+import chenyunlong.zhangli.core.enums.BusinessStatus;
 import chenyunlong.zhangli.model.entities.sys.SysOperLog;
 import chenyunlong.zhangli.utils.HttpContextUtil;
 import chenyunlong.zhangli.utils.IpUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.PropertyPreFilters;
-import chenyunlong.zhangli.annotation.Log;
-import chenyunlong.zhangli.core.enums.BusinessStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -14,7 +14,7 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -106,7 +106,7 @@ public class LogAspect {
 
             operaLog.setOperIp(ip);
             // 返回参数
-            if (!StringUtils.isEmpty(jsonResult)) {
+            if (!ObjectUtils.isEmpty(jsonResult)) {
                 operaLog.setJsonResult(JSONObject.toJSONString(jsonResult));
             }
 
