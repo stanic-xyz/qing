@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.3</version>
+        <version>2.4.6</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -32,7 +32,7 @@
         <docker.registry.tag>${project.version}</docker.registry.tag>
         <sentinel.version>1.7.2</sentinel.version>
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
-
+        <spring-cloud-version>2020.0.3</spring-cloud-version>
     </properties>
     <modules>
         <module>zhangli-eureka-service</module>
@@ -61,7 +61,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2020.0.2</version>
+                <version>${spring-cloud-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

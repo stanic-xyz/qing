@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8071}
+  port: ${BUS_SERVER_PORT:8071}
 spring:
   application:
     name: bus
