@@ -7,3 +7,7 @@ spring:
       config:
         server-addr: http://localhost:8848
         enabled: false
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

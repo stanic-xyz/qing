@@ -11,3 +11,11 @@ eureka:
     region: zhangli
     service-url:
       defaultZone: https://eureka.chenyunlong.cn/eureka/
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/stanChen/zhangli-config.git
+          username: stanChen
+          password: 4745701816long

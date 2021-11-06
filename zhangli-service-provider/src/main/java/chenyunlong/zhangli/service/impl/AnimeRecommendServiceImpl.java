@@ -49,7 +49,7 @@ public class AnimeRecommendServiceImpl extends ServiceImpl<AnimeRecommendMapper,
             throw new ServiceException("动漫信息不存在");
         }
         //已经添加到推荐列表了
-        Integer count = lambdaQuery().eq(AnimeRecommendEntity::getAid, recommendEntity.getAid()).count();
+        Long count = lambdaQuery().eq(AnimeRecommendEntity::getAid, recommendEntity.getAid()).count();
         if (count != 0) {
             throw new ServiceException("已经添加到推荐列表");
         }

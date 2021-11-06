@@ -38,17 +38,6 @@ spring:
     port: 6379
     host: localhost
     password:
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${server.port}
-    prefer-ip-address: true
-  client:
-    use-dns-for-fetching-service-urls: true
-    eureka-server-d-n-s-name: chenyunlong.cn
-    eureka-server-u-r-l-context: eureka
-    eureka-server-port: 8761
-    prefer-same-zone-eureka: true
-    region: zhangli
 secure:
   ignore:
     urls: #配置白名单路径

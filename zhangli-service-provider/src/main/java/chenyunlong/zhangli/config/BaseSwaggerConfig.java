@@ -44,10 +44,10 @@ public abstract class BaseSwaggerConfig {
                 .build();
     }
 
-    private List<ApiKey> securitySchemes() {
+    private List<SecurityScheme> securitySchemes() {
         //设置请求头信息
-        List<ApiKey> result = new ArrayList<>();
-        ApiKey apiKey = new ApiKey("Authorization", "Authorization", "header");
+        List<SecurityScheme> result = new ArrayList<>();
+        SecurityScheme apiKey = new ApiKey("Authorization", "Authorization", "header");
         result.add(apiKey);
         return result;
     }
