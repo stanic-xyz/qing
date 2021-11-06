@@ -28,7 +28,7 @@ public class AddressUtils {
         }
         try {
             String rspStr = HttpUtils.sendGet(IP_URL, "ip=" + ip + "&json=true", Constants.GBK);
-            if (StringUtils.isEmpty(rspStr)) {
+            if (!StringUtils.hasText(rspStr)) {
                 log.error("获取地理位置异常 {}", ip);
                 return UNKNOWN;
             }
