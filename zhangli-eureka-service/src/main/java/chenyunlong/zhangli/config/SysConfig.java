@@ -1,10 +1,12 @@
 package chenyunlong.zhangli.config;
 
-import com.netflix.appinfo.*;
+import com.netflix.appinfo.ApplicationInfoManager;
+import com.netflix.appinfo.DataCenterInfo;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.appinfo.MyDataCenterInfo;
 import com.netflix.eureka.EurekaServerConfig;
 import com.netflix.eureka.EurekaServerContext;
 import com.netflix.eureka.registry.PeerAwareInstanceRegistry;
-import org.springframework.cloud.netflix.eureka.InstanceInfoFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,14 +44,14 @@ public class SysConfig {
                 .setDataCenterInfo(new MyDataCenterInfo(DataCenterInfo.Name.MyOwn))
                 .setAppName("account2") // 大小写无所谓
                 .setHomePageUrl("http", "123123")
-                .setStatus(InstanceInfo.InstanceStatus.DOWN)
+                .setStatus(InstanceInfo.InstanceStatus.UP)
                 .setStatusPageUrl("", "")
                 .build();
 
         instanceRegistry.register(instanceInfo2, false);
         instanceRegistry.register(instanceInfo, false);
 
-        return new String("test");
+        return "test";
     }
 
 }

@@ -1,6 +1,7 @@
 package chenyunlong.zhangli.utils;
 
-import org.springframework.util.StringUtils;
+import cn.hutool.core.net.NetUtil;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -11,7 +12,7 @@ import java.net.UnknownHostException;
  *
  * @author ruoyi
  */
-public class IpUtils {
+public class IpUtils extends NetUtil {
     public static String getIpAddr(HttpServletRequest request) {
         if (request == null) {
             return "unknown";
@@ -43,7 +44,7 @@ public class IpUtils {
     }
 
     private static boolean internalIp(byte[] addr) {
-        if (StringUtils.isEmpty(addr) || addr.length < 2) {
+        if (ObjectUtils.isEmpty(addr) || addr.length < 2) {
             return true;
         }
         final byte b0 = addr[0];

@@ -17,6 +17,8 @@ eureka:
   instance:
     lease-renewal-interval-in-seconds: 30
     instance-id: ${spring.application.name}
+  dashboard:
+    path: /dashboard
 management:
   endpoints:
     web:
