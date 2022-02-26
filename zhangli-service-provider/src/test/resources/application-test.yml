@@ -1,23 +1,13 @@
-debug: true
 spring:
   devtools:
     livereload:
-      enabled: true
+      enabled: false
     restart:
-      enabled: true
+      enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=GMT%2B8
-    hikari:
-      username: root
-      password: 123456
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
-        enabled: false
-      config:
-        server-addr: localhost:8848
-        enabled: false
+    url: jdbc:h2:mem:zhangli;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    data: classpath:zhangli.sql,classpath:sys.sql,classpath:quartz.sql
   rabbitmq:
     username: guest
     password: guest
@@ -25,14 +15,14 @@ spring:
   thymeleaf:
     cache: false
     prefix: file:${user.dir}/zhangli-service-provider/src/main/resources/templates/
+eureka:
+  client:
+    enabled: false
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] --- [%-24t] [%-50C{50}][%-6L]: %m%n"
   level:
     root: info
-    person.pluto: info
-    chenyunlong.zhangli.mapper: debug
-    chenyunlong.zhangli: debug
 mp:
   wx:
     appId: wx09bf7e704a150a9c

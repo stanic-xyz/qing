@@ -7,6 +7,7 @@ import chenyunlong.zhangli.core.enums.MFAType;
 import chenyunlong.zhangli.core.exception.AbstractException;
 import chenyunlong.zhangli.core.exception.LoginErrorException;
 import chenyunlong.zhangli.model.dto.LoginPreCheckDTO;
+import chenyunlong.zhangli.model.entities.Permission;
 import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.model.params.LoginParam;
 import chenyunlong.zhangli.model.params.UserParam;
@@ -41,8 +42,8 @@ import java.util.List;
 public class AuthController {
 
     private final AuthGithubRequest authRequest;
-    private final UserService userService;
-    private final TokenProvider tokenProvider;
+    private final UserService       userService;
+    private final TokenProvider     tokenProvider;
 
     public AuthController(AuthGithubRequest authRequest, UserService userService, TokenProvider tokenProvider) {
         this.authRequest = authRequest;
@@ -92,10 +93,20 @@ public class AuthController {
     public ApiResult<AuthResponse> accessToken(AuthCallback callback) throws JsonProcessingException {
         AuthResponse authResponse = authRequest.login(callback);
         if (authResponse.ok()) {
-            AuthUser user = (AuthUser) authResponse.getData();
+            AuthUser authUser = (AuthUser) authResponse.getData();
+            User user = userService.getUserInfoByThird(authUser);
+
+            if (user == null) {
+                return ApiResult.fail("未绑定！");
+            }
+
+            List<Permission> permissionList = userService.getPermissionByUsername(user.getUsername());
+
             List<GrantedAuthority> authorities = new LinkedList<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            ApiResult.success(tokenProvider.createJwtToken(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getToken(), authorities), false));
+            permissionList.stream().map(permission ->
+                            new SimpleGrantedAuthority("ROLE_" + permission.getName()))
+                    .forEach(authorities::add);
+            ApiResult.success(tokenProvider.createJwtToken(new UsernamePasswordAuthenticationToken(authUser.getUsername(), authUser.getToken(), authorities), false));
         }
         return ApiResult.success(authResponse);
     }

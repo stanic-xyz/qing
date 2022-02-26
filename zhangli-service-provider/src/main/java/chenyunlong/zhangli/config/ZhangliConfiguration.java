@@ -41,7 +41,7 @@ import java.util.Collections;
 @EnableConfigurationProperties({ZhangliProperties.class, SwaggerProperties.class})
 public class ZhangliConfiguration {
 
-    private ZhangliProperties zhangliProperties;
+    private final ZhangliProperties zhangliProperties;
 
     public ZhangliConfiguration(ZhangliProperties zhangliProperties) {
         this.zhangliProperties = zhangliProperties;

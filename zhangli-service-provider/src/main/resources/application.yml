@@ -11,7 +11,6 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-timeout: 6000
       validation-timeout: 1000
@@ -39,7 +38,6 @@ spring:
     port: 6379
   cache:
     type: simple
-
 mybatis-plus:
   configuration:
     cache-enabled: off
@@ -66,6 +64,7 @@ zhangli:
     doc-disabled: false
   security:
     authenticationPrefix: authentication_
+  index-size: 26
 management:
   endpoints:
     web:

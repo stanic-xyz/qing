@@ -5,6 +5,7 @@ import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
 import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoRankDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
 import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
@@ -40,10 +41,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo> implements AnimeInfoService {
-    private final AnimeInfoMapper animeInfoMapper;
+    private final AnimeInfoMapper     animeInfoMapper;
     private final AnimeEpisodeService episodeService;
-    private final PlaylistService playlistService;
-    private final AnimeCommentMapper commentMapper;
+    private final PlaylistService     playlistService;
+    private final AnimeCommentMapper  commentMapper;
 
 
     public AnimeInfoServiceImpl(AnimeInfoMapper animeInfoMapper, AnimeEpisodeService episodeService,
@@ -56,8 +57,9 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     }
 
     @Override
-    public IPage<AnimeInfo> getRankPage(IPage<AnimeInfo> pageInfo, AnimeInfoQuery animeInfoQuery) {
-        return page(pageInfo, buildQueryWrapper(animeInfoQuery));
+    public IPage<AnimeInfoRankDTO> getRankPage(IPage<AnimeInfo> pageInfo, AnimeInfoQuery animeInfoQuery) {
+        return page(pageInfo, buildQueryWrapper(animeInfoQuery))
+                .convert(animeInfo -> new AnimeInfoRankDTO().convertFrom(animeInfo));
     }
 
     @Override
@@ -67,8 +69,8 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     }
 
     @Override
-    public IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> page, AnimeInfoQuery animeInfo) {
-        return getDetailById(page(page, buildQueryWrapper(animeInfo)));
+    public IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> page, AnimeInfoQuery query) {
+        return page(page, buildQueryWrapper(query)).convert(animeInfo -> new AnimeInfoVo().convertFrom(animeInfo));
     }
 
     /**
@@ -104,26 +106,10 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
      * @param animeInfo 动漫信息
      * @return 可以用于界面展示的数据
      */
-    private AnimeInfoVo getDetailById(AnimeInfo animeInfo) {
-        return new AnimeInfoVo().convertFrom(animeInfo);
-    }
-
-    /**
-     * 从持久化对象转化为砖石对象
-     *
-     * @param animeInfo 动漫信息
-     * @return 可以用于界面展示的数据
-     */
     private AnimeInfoPlayVo convertToPlayInfo(AnimeInfo animeInfo) {
         AnimeInfoPlayVo animeInfoVo = new AnimeInfoPlayVo().convertFrom(animeInfo);
         animeInfoVo.setPlayList(playlistService.listPlayListBy(animeInfo.getId()));
         return animeInfoVo;
-    }
-
-    private IPage<AnimeInfoVo> getDetailById(IPage<AnimeInfo> animeInfo) {
-        Page<AnimeInfoVo> animeInfoPage = new Page<>(animeInfo.getCurrent(), animeInfo.getSize(), animeInfo.getTotal());
-        animeInfoPage.setRecords(animeInfo.getRecords().stream().map(this::getDetailById).collect(Collectors.toList()));
-        return animeInfoPage;
     }
 
     @Override
@@ -159,22 +145,15 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
      * @param animeId 动漫ID
      * @return 动漫的所有集数
      */
-    @Override
     public List<AnimeEpisodeDTO> getAnimeEpisodes(Long animeId) {
         return episodeService.listEpisodeByAnimeId(animeId);
     }
 
-    @Override
     public List<PlayListDTO> getAnimePlayList(Long animeId) {
         return playlistService.listPlayListBy(animeId);
     }
 
-    @Override
-    public AnimeInfoVo convertToDetailVo(AnimeInfo animeInfo) {
-        return getDetailById(animeInfo);
-    }
 
-    @Override
     public AnimeInfoPlayVo convertToPlayVo(AnimeInfo animeInfo) {
         return convertToPlayInfo(animeInfo);
     }
@@ -227,17 +206,20 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     @Override
     public IPage<AnimeComment> getComment(Long animeId, Integer pageIndex, Integer pageSize) {
         QueryWrapper<AnimeComment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("cid", animeId);
+        queryWrapper.lambda()
+                .eq(AnimeComment::getCid, animeId);
         return commentMapper.selectPage(new Page<>(pageIndex, pageSize), queryWrapper);
     }
 
     @Override
     public List<AnimeInfoUpdateDTO> getUpdateInfo() {
         QueryWrapper<AnimeInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("premiere_date");
+        queryWrapper.lambda()
+                .select(AnimeInfo::getId, AnimeInfo::getPremiereDate, AnimeInfo::getName)
+                .orderByDesc(AnimeInfo::getPremiereDate);
         queryWrapper.last("limit 100");
-        return list(queryWrapper).stream().map(animeInfo
-                -> {
+        return list(queryWrapper).stream().map(animeInfo ->
+        {
             AnimeInfoUpdateDTO updateDTO = new AnimeInfoUpdateDTO().convertFrom(animeInfo);
             updateDTO.setIsNew(true);
             updateDTO.setNameForNew("最新一集");

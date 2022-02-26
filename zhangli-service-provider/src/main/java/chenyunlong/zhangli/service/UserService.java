@@ -4,6 +4,7 @@ import chenyunlong.zhangli.model.entities.Permission;
 import chenyunlong.zhangli.model.entities.User;
 import chenyunlong.zhangli.model.params.LoginParam;
 import chenyunlong.zhangli.core.exception.AbstractException;
+import me.zhyd.oauth.model.AuthUser;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -107,4 +108,12 @@ public interface UserService {
      * @return 取消操作了
      */
     User authenticate(LoginParam loginParam);
+
+    /**
+     * 根据第三方ID进行登录
+     *
+     * @param authUser 第三方唯一ID
+     * @return 本地用户
+     */
+    User getUserInfoByThird(AuthUser authUser);
 }

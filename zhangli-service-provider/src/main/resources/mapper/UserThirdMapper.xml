@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chenyunlong.zhangli.mapper.UserThirdMapper">
+
+    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.UserThird">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userid" column="user_id" jdbcType="BIGINT"/>
+            <result property="uid" column="uid" jdbcType="VARCHAR"/>
+            <result property="appType" column="app_type" jdbcType="VARCHAR"/>
+            <result property="accessToken" column="access_token" jdbcType="VARCHAR"/>
+            <result property="accessExpire" column="access_expire" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="searchValue" column="search_value" jdbcType="VARCHAR"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,userid,uid,
+        app_type,access_token,access_expire,
+        create_time,update_time,search_value,
+        create_by,update_by,remark
+    </sql>
+</mapper>

@@ -3,8 +3,8 @@ package chenyunlong.zhangli.controller.content;
 import chenyunlong.zhangli.controller.content.model.AnimeInfoModel;
 import chenyunlong.zhangli.core.ApiResult;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoRankDTO;
 import chenyunlong.zhangli.model.entities.AnimeComment;
-import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
 import chenyunlong.zhangli.model.vo.page.*;
 import chenyunlong.zhangli.service.AnimeInfoService;
@@ -29,8 +29,8 @@ import java.util.List;
 public class MovieController {
 
     private final AnimeInfoService animeInfoService;
-    private final AnimeInfoModel animeInfoModel;
-    private final ReportService reportService;
+    private final AnimeInfoModel   animeInfoModel;
+    private final ReportService    reportService;
 
     public MovieController(AnimeInfoService animeInfoService,
                            AnimeInfoModel animeInfoModel, ReportService reportService) {
@@ -82,10 +82,9 @@ public class MovieController {
     public ModelAndView rank(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "75") Integer size,
-            @RequestParam(value = "tag", required = false) String tag,
-            @RequestParam(value = "year", required = false) String catyear,
+            @RequestParam(value = "year", required = false) String catYear,
             AnimeInfoQuery animeInfoQuery) {
-        IPage<AnimeInfo> rankPage = animeInfoService.getRankPage(new Page<>(page, size), animeInfoQuery);
+        IPage<AnimeInfoRankDTO> rankPage = animeInfoService.getRankPage(new Page<>(page, size), animeInfoQuery);
         ModelAndView modelAndView = new ModelAndView("rank");
         modelAndView.addObject("animeList", rankPage.getRecords());
         modelAndView.addObject("total", rankPage.getTotal());

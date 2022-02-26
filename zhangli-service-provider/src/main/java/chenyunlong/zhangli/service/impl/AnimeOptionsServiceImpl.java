@@ -25,10 +25,10 @@ import java.util.List;
 public class AnimeOptionsServiceImpl implements AnimeOptionsService {
 
 
-    private final AnimeInfoMapper animeInfoMapper;
-    private final AnimeTypeMapper animeTypeMapper;
-    private final VersionMapper versionMapper;
-    private final DistrictMapper districtMapper;
+    private final AnimeInfoMapper   animeInfoMapper;
+    private final AnimeTypeMapper   animeTypeMapper;
+    private final VersionMapper     versionMapper;
+    private final DistrictMapper    districtMapper;
     private final ZhangliProperties zhangliProperties;
 
     public AnimeOptionsServiceImpl(AnimeInfoMapper animeInfoMapper, AnimeTypeMapper animeTypeMapper, VersionMapper versionMapper, DistrictMapper districtMapper, ZhangliProperties zhangliProperties) {

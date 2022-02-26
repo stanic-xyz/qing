@@ -26,11 +26,11 @@ import java.util.stream.Collectors;
 @Component
 public class TokenProvider {
 
-    private static final String AUTHORITIES_HEADER = "auth";
-    private static final String FIELD_USER_ID = "userId";
-    private static final String USER_INFO = "userInfo";
-    private final ZhangliProperties zhangliProperties;
-    private final ObjectMapper objectMapper;
+    private static final String            AUTHORITIES_HEADER = "auth";
+    private static final String            FIELD_USER_ID      = "userId";
+    private static final String            USER_INFO          = "userInfo";
+    private final        ZhangliProperties zhangliProperties;
+    private final        ObjectMapper      objectMapper;
 
     public TokenProvider(ZhangliProperties zhangliProperties, ObjectMapper objectMapper) {
         this.zhangliProperties = zhangliProperties;

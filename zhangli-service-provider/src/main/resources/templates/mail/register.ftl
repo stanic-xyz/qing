@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<img src="http://www.baidu.cn/favicon.ico" width="200px" height="200px">
+<img src="http://www.baidu.cn/favicon.ico" width="200px" height="200px" alt="兰州拉面">
 <h1>￥${from}</h1>
 <div>
     恭喜你注册人类记忆博物馆成功了！
