@@ -1,14 +1,12 @@
 package chenyunlong.zhangli.service;
 
 
-import chenyunlong.zhangli.model.dto.AnimeEpisodeDTO;
-import chenyunlong.zhangli.model.dto.PlayListDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoMinimalDTO;
+import chenyunlong.zhangli.model.dto.anime.AnimeInfoRankDTO;
 import chenyunlong.zhangli.model.dto.anime.AnimeInfoUpdateDTO;
 import chenyunlong.zhangli.model.entities.AnimeComment;
 import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.params.AnimeInfoQuery;
-import chenyunlong.zhangli.model.vo.anime.AnimeInfoPlayVo;
 import chenyunlong.zhangli.model.vo.anime.AnimeInfoVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -29,7 +27,7 @@ public interface AnimeInfoService extends IService<AnimeInfo> {
      * @param animeInfoQuery 查询条件
      * @return 动漫信息
      */
-    IPage<AnimeInfo> getRankPage(IPage<AnimeInfo> pageInfo, AnimeInfoQuery animeInfoQuery);
+    IPage<AnimeInfoRankDTO> getRankPage(IPage<AnimeInfo> pageInfo, AnimeInfoQuery animeInfoQuery);
 
     /**
      * 添加动漫信息
@@ -42,11 +40,11 @@ public interface AnimeInfoService extends IService<AnimeInfo> {
     /**
      * 查询动画信息
      *
-     * @param pageable  分页信息
-     * @param animeInfo 查询参数（名称)
+     * @param pageable 分页信息
+     * @param query    查询参数（名称)
      * @return 满足条件的动画信息
      */
-    IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> pageable, AnimeInfoQuery animeInfo);
+    IPage<AnimeInfoVo> listByPage(IPage<AnimeInfo> pageable, AnimeInfoQuery query);
 
     /**
      * 更新动漫信息
@@ -79,38 +77,6 @@ public interface AnimeInfoService extends IService<AnimeInfo> {
      */
     List<AnimeInfoMinimalDTO> getRecommendAnimeInfoList();
 
-    /**
-     * 获取动漫的播放信息
-     *
-     * @param animeId 动漫ID
-     * @return 动漫的所有集数
-     */
-    List<AnimeEpisodeDTO> getAnimeEpisodes(Long animeId);
-
-    /**
-     * 获取动漫的播放列表
-     *
-     * @param animeId 动漫ID
-     * @return 动漫播放列表
-     */
-    List<PlayListDTO> getAnimePlayList(Long animeId);
-
-    /**
-     * Converts to detail vo.
-     *
-     * @param animeInfoDetail post must not be null
-     * @return post detail vo
-     */
-    AnimeInfoVo convertToDetailVo(AnimeInfo animeInfoDetail);
-
-
-    /**
-     * Converts to play vo.
-     *
-     * @param animeInfoDetail post must not be null
-     * @return post detail vo
-     */
-    AnimeInfoPlayVo convertToPlayVo(AnimeInfo animeInfoDetail);
 
     /**
      * 获取最近更新的动漫列表

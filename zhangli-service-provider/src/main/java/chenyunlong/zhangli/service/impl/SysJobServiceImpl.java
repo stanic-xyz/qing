@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,8 +41,9 @@ public class SysJobServiceImpl implements ISysJobService {
      */
     @PostConstruct
     public void init() throws SchedulerException, TaskException {
-        scheduler.clear();
-        List<SysJob> jobList = jobMapper.selectJobAll();
+//        scheduler.clear();
+//        List<SysJob> jobList = jobMapper.selectJobAll();
+        List<SysJob> jobList = Collections.emptyList();
         for (SysJob job : jobList) {
             ScheduleUtils.createScheduleJob(scheduler, job);
         }

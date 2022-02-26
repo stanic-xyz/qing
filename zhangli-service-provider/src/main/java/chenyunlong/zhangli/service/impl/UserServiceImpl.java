@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.service.impl;
 
+import chenyunlong.zhangli.model.entities.UserThird;
 import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.model.entities.Permission;
 import chenyunlong.zhangli.model.entities.User;
@@ -7,8 +8,11 @@ import chenyunlong.zhangli.mapper.PermissionMapper;
 import chenyunlong.zhangli.mapper.UserMapper;
 import chenyunlong.zhangli.model.params.LoginParam;
 import chenyunlong.zhangli.service.UserService;
+import chenyunlong.zhangli.service.UserThirdService;
 import cn.hutool.core.lang.Validator;
 import chenyunlong.zhangli.core.exception.*;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import me.zhyd.oauth.model.AuthUser;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,19 +34,23 @@ public class UserServiceImpl implements UserService {
     int ACCESS_TOKEN_EXPIRED_SECONDS = 24 * 3600;
 
 
-    private final UserMapper userMapper;
+    private final UserMapper       userMapper;
     private final PermissionMapper permissionMapper;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
+    private final PasswordEncoder  passwordEncoder;
+    private final TokenProvider    tokenProvider;
+    private final UserThirdService thirdService;
 
 
     public UserServiceImpl(UserMapper userMapper,
                            PermissionMapper permissionMapper,
-                           PasswordEncoder passwordEncoder, TokenProvider tokenProvider) {
+                           PasswordEncoder passwordEncoder,
+                           TokenProvider tokenProvider,
+                           UserThirdService thirdService) {
         this.userMapper = userMapper;
         this.permissionMapper = permissionMapper;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
+        this.thirdService = thirdService;
     }
 
     @Override
@@ -168,6 +176,23 @@ public class UserServiceImpl implements UserService {
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
         return userInfo;
+    }
+
+    @Override
+    public User getUserInfoByThird(AuthUser authUser) {
+        UserThird userThird = thirdService.lambdaQuery()
+                .eq(UserThird::getUid, authUser.getUuid())
+                .eq(UserThird::getAppType, authUser.getSource())
+                .one();
+        if (userThird == null) {
+            return null;
+        }
+        userThird.setAccessToken(authUser.getToken().getAccessToken());
+        userThird.setAccessExpire(authUser.getToken().getExpireIn());
+        thirdService.updateById(userThird);
+
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>().eq(User::getUid, userThird.getUserId());
+        return userMapper.selectOne(lambdaQueryWrapper);
     }
 
 }

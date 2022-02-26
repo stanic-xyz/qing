@@ -22,15 +22,15 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
     @TableId
-    private Long userId;
-    private String username;
-    private String nickname;
-    private String password;
-    private String phone;
-    private String email;
-    private String avatar;
-    private String description;
+    private Long          uid;
+    private String        username;
+    private String        nickname;
+    private String        password;
+    private String        phone;
+    private String        email;
+    private String        avatar;
+    private String        description;
     private LocalDateTime expireTime;
-    private MFAType mfaType;
-    private String mfaKey;
+    private MFAType       mfaType;
+    private String        mfaKey;
 }

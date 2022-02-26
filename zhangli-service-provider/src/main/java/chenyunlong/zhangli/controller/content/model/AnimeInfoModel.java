@@ -40,13 +40,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class AnimeInfoModel {
-    private final AnimeInfoService animeInfoService;
+    private final AnimeInfoService    animeInfoService;
     private final AnimeOptionsService optionService;
     private final AnimeOptionsService animeOptionsService;
     private final AnimeCommentService animeCommentService;
     private final AnimeEpisodeService episodeService;
-    private final AnimeListService animeListService;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private final AnimeListService    animeListService;
+    private final ExecutorService     executorService = Executors.newFixedThreadPool(4);
 
     public AnimeInfoModel(AnimeInfoService animeInfoService,
                           AnimeOptionsService optionService,
@@ -66,7 +66,6 @@ public class AnimeInfoModel {
      */
     public IndexModel getIndex() {
         IndexModel indexModel = new IndexModel();
-
         //获取更新
         Future<List<AnimeInfoMinimalDTO>> recentUpdate = executorService.submit(() -> animeInfoService.getRecentUpdate(optionService.getRecentPageSize()));
         //获取推荐
@@ -81,7 +80,6 @@ public class AnimeInfoModel {
             Map<Integer, List<AnimeInfoMinimalDTO>> collect = dads.stream().collect(Collectors.groupingBy(animeInfoMinimalDTO -> animeInfoMinimalDTO.getPremiereDate().getDayOfWeek().getValue()));
             indexModel.setRecentList(dads);
             indexModel.setRecentMap(collect);
-
             indexModel.setUpdateInfoList(update.get());
             indexModel.setDalyUpdateList(listUpdate.get());
             indexModel.setRecommendList(listRecommend.get());
@@ -103,7 +101,8 @@ public class AnimeInfoModel {
             IPage<AnimeCommentDTO> commentsByAnimeId = animeCommentService.getCommentsByAnimeId(animeId, 1, 10);
             List<AnimeEpisodeEntity> episodeEntities = episodeService.getByAnimeId(animeId);
 
-            List<PlayListDTO> playListList = animePlayList.stream().map(playlistEntity -> {
+            List<PlayListDTO> playListList = animePlayList.stream().map(playlistEntity ->
+            {
                 PlayListDTO playListDTO = new PlayListDTO().convertFrom(playlistEntity);
                 List<AnimeEpisodeDTO> animeEpisodeEntityStream = episodeEntities.stream()
                         .filter(animeEpisodeEntity -> Objects.equals(animeEpisodeEntity.getListId(), playlistEntity.getId()))
@@ -167,9 +166,8 @@ public class AnimeInfoModel {
     }
 
     public CatalogModel listCatalog(Page<AnimeInfo> objectPage, AnimeInfoQuery animeInfoQuery) {
-
         CatalogModel catalogModel = new CatalogModel();
-        IPage<AnimeInfo> animeInfoPage = animeInfoService.getRankPage(objectPage, animeInfoQuery);
+        IPage<AnimeInfoVo> animeInfoPage = animeInfoService.listByPage(objectPage, animeInfoQuery);
         OptionsModel animeOptionsModel = animeOptionsService.getOptions();
         catalogModel.setQuery(animeInfoQuery);
         catalogModel.setYears(animeOptionsModel.getYears());

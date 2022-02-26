@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.controller.api.admin;
 
+import chenyunlong.zhangli.controller.BaseApiTest;
 import chenyunlong.zhangli.mapper.AnimeEpisodeMapper;
 import chenyunlong.zhangli.mapper.AnimeInfoMapper;
 import chenyunlong.zhangli.mapper.AnimeListEpisodeMapper;
@@ -9,16 +10,13 @@ import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.entities.anime.ListEpisodeEntity;
 import chenyunlong.zhangli.model.entities.anime.PlaylistEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("dev")
-class EpisodeControllerTest {
+class EpisodeControllerTest extends BaseApiTest {
 
     @Autowired
     private AnimeEpisodeMapper animeEpisodeMapper;
@@ -33,6 +31,7 @@ class EpisodeControllerTest {
     private AnimeListEpisodeMapper listEpisodeMapper;
 
     @Test
+    @Disabled
     void add() {
         List<AnimeInfo> animeInfoList = animeInfoMapper.selectList(new QueryWrapper<>());
         QueryWrapper<AnimeEpisodeEntity> queryWrapper = new QueryWrapper<>();

@@ -20,8 +20,9 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class AnimeInfoUpdateDTO implements OutputConverter<AnimeInfoUpdateDTO, AnimeInfo> {
 
-    private Long id;
+    private Long   id;
     private String name;
+
     @JsonProperty("isnew")
     private Boolean isNew = true;
 
@@ -34,6 +35,7 @@ public class AnimeInfoUpdateDTO implements OutputConverter<AnimeInfoUpdateDTO, A
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime premiereDate = LocalDateTime.now();
+
     @JsonProperty("namefornew")
     private String nameForNew;
 }

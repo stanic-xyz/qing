@@ -12,6 +12,7 @@ import chenyunlong.zhangli.utils.text.Convert;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,7 +33,8 @@ public class SysConfigServiceImpl implements ISysConfigService {
      */
     @PostConstruct
     public void init() {
-        List<SysConfig> configsList = configMapper.selectConfigList(new SysConfig());
+//        List<SysConfig> configsList = configMapper.selectConfigList(new SysConfig());
+        List<SysConfig> configsList = Collections.emptyList();
         for (SysConfig config : configsList) {
             CacheUtils.put(getCacheName(), getCacheKey(config.getConfigKey()), config.getConfigValue());
         }

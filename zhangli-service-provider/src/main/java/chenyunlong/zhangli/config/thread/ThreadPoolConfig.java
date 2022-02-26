@@ -19,18 +19,29 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Slf4j
 @Configuration
 public class ThreadPoolConfig {
-    // 核心线程池大小
+    /**
+     * 核心线程池大小
+     */
     private final static int CORE_POOL_SIZE = 50;
 
-    // 最大可创建的线程数
+    /**
+     * 最大可创建的线程数
+     */
     private final static int MAX_POOL_SIZE = 200;
 
-    // 队列最大长度
+    /**
+     * 队列最大长度
+     */
     private final static int QUEUE_CAPACITY = 1000;
 
-    // 线程池维护线程所允许的空闲时间
+    /**
+     * 线程池维护线程所允许的空闲时间
+     */
     private final static int KEEP_ALIVE_SECONDS = 300;
 
+    /**
+     * 配置线程池
+     */
     @Bean(name = "threadPoolTaskExecutor")
     public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

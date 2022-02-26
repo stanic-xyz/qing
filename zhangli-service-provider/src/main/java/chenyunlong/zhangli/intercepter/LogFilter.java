@@ -30,8 +30,10 @@ public class LogFilter extends OncePerRequestFilter {
     /**
      * 排除敏感属性字段
      */
-    public static final String[] EXCLUDE_PATH_PATTERS = {"/js/**", "/css/**", "/img/**", "/actuator/**", "/file/**",
-            "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/favicon.ico"};
+    public static final String[] EXCLUDE_PATH_PATTERS = new String[]{
+            "/actuator/**", "/css/**", "/favicon.ico", "/file/**", "/img/**",
+            "/js/**", "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"
+    };
 
     /**
      * 执行控制器了
