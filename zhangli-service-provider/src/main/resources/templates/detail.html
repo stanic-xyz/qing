@@ -9,6 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data.hostname})}">
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/detail.css(host=${data.hostname})}">
+    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/detail.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" th:src="@{{host}/js/snowfall.min.js(host=${data.hostname})}"></script>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.1.1/dist/echarts.min.js"></script>
+    <script src="https://unpkg.com/petite-vue" defer init></script>
     <!-- overload -->
     <style type="text/css">
         .anime_icon1 {
@@ -24,16 +33,6 @@
             height: 205px;
         }
     </style>
-
-    <script type="text/javascript" th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/detail.js(host=${data.hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${data.hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${data.hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/snowfall.min.js(host=${data.hostname})}"></script>
-    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.1.1/dist/echarts.min.js"></script>
-    <script src="https://unpkg.com/petite-vue" defer init></script>
 </head>
 
 <body>

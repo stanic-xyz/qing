@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -50,8 +51,8 @@ public class AgeService {
         requestFactory.setReadTimeout(60 * 1000);
 
 
-        String url = String.format("https://www.agefans.cc/_getplay?aid=%d&playindex=%d&epindex=%d", animeId, playlistId, episodeId);
-        String referUrl = "https://www.agefans.cc";
+        String url = String.format("https://www.agemys.com/_getplay?aid=%d&playindex=%d&epindex=%d", animeId, playlistId, episodeId);
+        String referUrl = "https://www.agemys.com";
         StringBuilder cookie = new StringBuilder();
         String playUrl = "https://play.agefans.cc/_getplay2?kp=4zPeWaqNhi20IUkB6rXFO2pAJ1otsSb%2FIzpjyjuYSXKly9zoxWCaSFno%2FSoM8yFblxl8IVjeTJ5eIaCbwj%2BgpYDwjV02ZDL8dxaEsoxzUR9hzjeC4pd38w%3D%3D";
 
@@ -99,8 +100,7 @@ public class AgeService {
      * @return 动漫信息
      */
     public AgeAnimeInfo getDetail(long animeId) {
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity("https://www.agefans.cc/detail/" + animeId, String.class);
-
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity("https://www.agemys.com/detail/" + animeId, String.class);
         AgeAnimeInfo animeInfo = new AgeAnimeInfo();
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             String responseStr = responseEntity.getBody();
@@ -139,11 +139,11 @@ public class AgeService {
 
                 List<AgeRecommendInfo> recommendInfos = recommendList.stream().map(element -> {
                     AgeRecommendInfo recommend = new AgeRecommendInfo();
-                    recommend.setHref(element.select("a").first().attr("href"));
-                    recommend.setHeight(Integer.valueOf(element.select(".anime_icon1_img").first().attr("height")));
-                    recommend.setWidth(Integer.valueOf(element.select(".anime_icon1_img").first().attr("width")));
-                    recommend.setImgUrl(element.select(".anime_icon1_img").first().attr("data-src"));
-                    recommend.setAnimeName(element.select(".anime_icon1_name").first().text());
+                    recommend.setHref(Objects.requireNonNull(element.select("a").first()).attr("href"));
+                    recommend.setHeight(Integer.valueOf(Objects.requireNonNull(element.select(".anime_icon1_img").first()).attr("height")));
+                    recommend.setWidth(Integer.valueOf(Objects.requireNonNull(element.select(".anime_icon1_img").first()).attr("width")));
+                    recommend.setImgUrl(Objects.requireNonNull(element.select(".anime_icon1_img").first()).attr("data-src"));
+                    recommend.setAnimeName(Objects.requireNonNull(element.select(".anime_icon1_name").first()).text());
                     return recommend;
                 }).collect(Collectors.toList());
 

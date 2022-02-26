@@ -30,7 +30,6 @@ public abstract class BaseSwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
                 .paths(PathSelectors.any())
                 .build();
-
         docket.securitySchemes(securitySchemes()).securityContexts(securityContexts());
         return docket;
     }

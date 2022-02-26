@@ -20,7 +20,18 @@ public interface PermissionMapper extends BaseMapper<Permission> {
      * @param username 用户名称
      * @return 遍历
      */
-    @Select("SELECT DISTINCT permission.name AS NAME FROM USER,user_role,role_permission,permission,role WHERE user.userid=user_role.user_id AND user_role.role_id AND role.role_id AND role_permission.role_id=role.role_id AND role_permission.permission_id = permission.id AND user.username=#{username}")
+    @Select("SELECT DISTINCT permission.name AS NAME\n" +
+            "FROM USER,\n" +
+            "     user_role,\n" +
+            "     role_permission,\n" +
+            "     permission,\n" +
+            "     role\n" +
+            "WHERE user.uid = user_role.user_id\n" +
+            "  AND user_role.role_id\n" +
+            "  AND role.role_id\n" +
+            "  AND role_permission.role_id = role.role_id\n" +
+            "  AND role_permission.permission_id = permission.id\n" +
+            "  AND user.username=#{username}")
     List<Permission> getPermissionByUsername(String username);
 
 }

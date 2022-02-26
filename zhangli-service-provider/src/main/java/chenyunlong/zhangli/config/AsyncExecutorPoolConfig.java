@@ -14,6 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Configuration
 public class AsyncExecutorPoolConfig extends AsyncConfigurerSupport {
+
     @Bean
     @Primary
     public Executor taskExecutor() {

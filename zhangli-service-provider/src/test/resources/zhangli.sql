@@ -102,9 +102,7 @@ CREATE TABLE `anime_feedback`
     `remark`            varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-COMMENT
-='反馈信息';
+  DEFAULT CHARSET = utf8 COMMENT ='反馈信息';
 
 DROP TABLE IF EXISTS `anime_info`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -138,8 +136,7 @@ create table anime_info
     remark           varchar(255) default ''                not null comment '创建时间',
     order_no         int          default 0                 not null
 )
-comment
-'番剧信息' charset = utf8;
+comment '番剧信息' charset = utf8;
 
 create index anime_info_premiere_date_index
     on anime_info (premiere_date);
@@ -201,9 +198,7 @@ CREATE TABLE `anime_episode`
     `remark`        varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-COMMENT
-='播放视频';
+  DEFAULT CHARSET = utf8 COMMENT ='播放视频';
 
 DROP TABLE IF EXISTS `anime_list_episode`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -222,9 +217,7 @@ CREATE TABLE `anime_list_episode`
     `order_no`     int          default 0     not null comment '排序号',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-COMMENT
-='播放列表，视频中间表';
+  DEFAULT CHARSET = utf8 COMMENT ='播放列表，视频中间表';
 
 DROP TABLE IF EXISTS `anime_resource`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -242,9 +235,7 @@ CREATE TABLE `anime_resource`
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-COMMENT
-='番剧播放资源';
+  DEFAULT CHARSET = utf8 COMMENT ='番剧播放资源';
 
 DROP TABLE IF EXISTS `anime_recommend`;
 
@@ -262,9 +253,7 @@ CREATE TABLE `anime_recommend`
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-COMMENT
-='番剧播放资源';
+  DEFAULT CHARSET = utf8 COMMENT ='番剧播放资源';
 
 DROP TABLE IF EXISTS `anime_type`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -405,7 +394,7 @@ CREATE TABLE `car`
     `update_by`    varchar(255) not null default '' comment '最后更新人',
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`),
-    KEY            `username_index` (`user_userid`)
+    KEY `username_index` (`user_userid`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
@@ -426,7 +415,7 @@ CREATE TABLE `course`
     `update_by`    varchar(255) not null default '' comment '最后更新人',
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`),
-    KEY            `car_index` (`car_id`)
+    KEY `car_index` (`car_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
@@ -714,7 +703,7 @@ CREATE TABLE `wechat_content_wechat_images`
     `update_by`         varchar(255) not null default '' comment '最后更新人',
     `remark`            varchar(255) not null default '' comment '创建时间',
     UNIQUE KEY message_index (`wechat_images_id`),
-    KEY                 `content_id_index` (`wechat_content_id`)
+    KEY `content_id_index` (`wechat_content_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
@@ -739,7 +728,7 @@ CREATE TABLE `wechat_images`
     `remark`            varchar(255) not null default '' comment '创建时间',
     `order_no`          int                   default 0 not null comment '排序号',
     PRIMARY KEY (`id`),
-    KEY                 `content_id_index` (`wechat_content_id`)
+    KEY `content_id_index` (`wechat_content_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
@@ -766,7 +755,7 @@ CREATE TABLE `bilibili_anime`
     `remark`       varchar(255) not null default '' comment '创建时间',
     `order_no`     int                   default 0 not null comment '排序号',
     PRIMARY KEY (`id`),
-    KEY            `content_id_index` (`media_id`)
+    KEY `content_id_index` (`media_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
