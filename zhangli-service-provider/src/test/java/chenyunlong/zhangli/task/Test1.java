@@ -51,9 +51,9 @@ public class Test1 {
 class TestThread implements Runnable {
 
     private final Map<String, Integer> map;
-    private final String type;
-    private final CyclicBarrier cb;
-    private final int n;
+    private final String               type;
+    private final CyclicBarrier        cb;
+    private final int                  n;
 
     public TestThread(Map<String, Integer> map, String type, CyclicBarrier cyclicBarrier, int n) {
         this.map = map;

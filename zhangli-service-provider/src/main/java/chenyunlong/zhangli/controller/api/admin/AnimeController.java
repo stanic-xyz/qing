@@ -17,12 +17,12 @@ import java.util.List;
  * @author Stan
  */
 @Validated
-@Api(tags = "anime")
+@Api(tags = "动漫")
 @RestController
 @RequestMapping("api/district")
 public class AnimeController {
     private final DistrictService districtService;
-    private final VersionService versionService;
+    private final VersionService  versionService;
 
     public AnimeController(DistrictService districtService, VersionService versionService) {
         this.districtService = districtService;

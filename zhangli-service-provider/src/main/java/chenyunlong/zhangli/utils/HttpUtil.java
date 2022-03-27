@@ -27,9 +27,9 @@ public class HttpUtil {
     /**
      * 使用RestTemplate作为Http请求的工具
      */
-    private final static RestTemplate REST_TEMPLATE = new RestTemplate();
-    private static final int READ_TIMEOUT = 10000;
-    private static final int CONNECTION_TIMEOUT = 5000;
+    private final static RestTemplate REST_TEMPLATE      = new RestTemplate();
+    private static final int          READ_TIMEOUT       = 10000;
+    private static final int          CONNECTION_TIMEOUT = 5000;
 
     static {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();

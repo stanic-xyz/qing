@@ -10,11 +10,11 @@ import chenyunlong.zhangli.model.entities.anime.AnimeInfo;
 import chenyunlong.zhangli.model.entities.anime.ListEpisodeEntity;
 import chenyunlong.zhangli.model.entities.anime.PlaylistEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 class EpisodeControllerTest extends BaseApiTest {
 
@@ -31,7 +31,6 @@ class EpisodeControllerTest extends BaseApiTest {
     private AnimeListEpisodeMapper listEpisodeMapper;
 
     @Test
-    @Disabled
     void add() {
         List<AnimeInfo> animeInfoList = animeInfoMapper.selectList(new QueryWrapper<>());
         QueryWrapper<AnimeEpisodeEntity> queryWrapper = new QueryWrapper<>();
@@ -48,7 +47,10 @@ class EpisodeControllerTest extends BaseApiTest {
             animeEpisodeMapper.insert(episodeEntity);
         }
 
-        for (AnimeInfo animeInfo : animeInfoList) {
+        Optional<AnimeInfo> optionalAnimeInfo = animeInfoList.stream().findFirst();
+
+        if (optionalAnimeInfo.isPresent()) {
+            AnimeInfo animeInfo = optionalAnimeInfo.get();
             //添加三个测试目录
             for (int i = 0; i < 3; i++) {
                 PlaylistEntity playList = new PlaylistEntity();
