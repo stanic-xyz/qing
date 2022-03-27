@@ -42,7 +42,7 @@ public class BaseApiTest {
 
 
     @BeforeAll
-    public static void init() {
+    protected static void init() {
         try {
             ServerSocket serverSocket = new ServerSocket(0);
             int localPort = serverSocket.getLocalPort();

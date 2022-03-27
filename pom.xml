@@ -45,6 +45,7 @@
         <module>zhangli-admin-server</module>
         <module>zhangli-bus-server</module>
     </modules>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

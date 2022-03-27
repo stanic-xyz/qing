@@ -16,6 +16,6 @@ public class RedisTest extends BaseApiTest {
     public void testRedis() {
         stringRedisTemplate.opsForValue().set("name", "team");
         String name = stringRedisTemplate.opsForValue().get("name");
-        Assert.isTrue("team".equalsIgnoreCase(name), "不符合匹配");
+        Assert.isTrue("team".equalsIgnoreCase(name));
     }
 }

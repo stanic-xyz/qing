@@ -9,8 +9,7 @@
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
-create schema if not exists zhangli;
-
+create database if not exists zhangli;
 use zhangli;
 
 DROP TABLE IF EXISTS `activity`;
@@ -102,7 +101,9 @@ CREATE TABLE `anime_feedback`
     `remark`            varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='反馈信息';
+  DEFAULT CHARSET = utf8
+    COMMENT
+        ='反馈信息';
 
 DROP TABLE IF EXISTS `anime_info`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -136,7 +137,8 @@ create table anime_info
     remark           varchar(255) default ''                not null comment '创建时间',
     order_no         int          default 0                 not null
 )
-comment '番剧信息' charset = utf8;
+    comment
+        '番剧信息' charset = utf8;
 
 create index anime_info_premiere_date_index
     on anime_info (premiere_date);
@@ -184,6 +186,7 @@ DROP TABLE IF EXISTS `anime_episode`;
 CREATE TABLE `anime_episode`
 (
     `id`            bigint(20)   not null AUTO_INCREMENT COMMENT '视频ID',
+    `anime_id`      bigint       not null comment '所属动漫主键ID',
     `name`          varchar(255) not null COMMENT '视频标题名称',
     `status`        int(11)               DEFAULT '0' COMMENT '视频状态，0正常',
     `uploader_name` varchar(100)          DEFAULT NULL COMMENT '上传者名称',
@@ -198,7 +201,9 @@ CREATE TABLE `anime_episode`
     `remark`        varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='播放视频';
+  DEFAULT CHARSET = utf8
+    COMMENT
+        ='播放视频';
 
 DROP TABLE IF EXISTS `anime_list_episode`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -217,7 +222,9 @@ CREATE TABLE `anime_list_episode`
     `order_no`     int          default 0     not null comment '排序号',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='播放列表，视频中间表';
+  DEFAULT CHARSET = utf8
+    COMMENT
+        ='播放列表，视频中间表';
 
 DROP TABLE IF EXISTS `anime_resource`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -235,7 +242,9 @@ CREATE TABLE `anime_resource`
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='番剧播放资源';
+  DEFAULT CHARSET = utf8
+    COMMENT
+        ='番剧播放资源';
 
 DROP TABLE IF EXISTS `anime_recommend`;
 
@@ -253,7 +262,9 @@ CREATE TABLE `anime_recommend`
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='番剧播放资源';
+  DEFAULT CHARSET = utf8
+    COMMENT
+        ='番剧播放资源';
 
 DROP TABLE IF EXISTS `anime_type`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;

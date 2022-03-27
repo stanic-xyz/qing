@@ -1,13 +1,10 @@
 spring:
-  devtools:
-    livereload:
-      enabled: false
-    restart:
-      enabled: false
   datasource:
-    url: jdbc:h2:mem:zhangli;MODE=MySQL
-    driver-class-name: org.h2.Driver
-    data: classpath:zhangli.sql,classpath:sys.sql,classpath:quartz.sql
+    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=GMT%2B8
+    hikari:
+      connection-init-sql: select 1
+      username: root
+      password: 123456
   rabbitmq:
     username: guest
     password: guest
@@ -15,6 +12,11 @@ spring:
   thymeleaf:
     cache: false
     prefix: file:${user.dir}/zhangli-service-provider/src/main/resources/templates/
+  data:
+    elasticsearch:
+      client:
+        reactive:
+          endpoints: 127.0.0.1:9200
 eureka:
   client:
     enabled: false
