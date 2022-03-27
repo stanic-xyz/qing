@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 public class ImageCheckerTest {
@@ -54,13 +55,13 @@ public class ImageCheckerTest {
         HttpEntity<String> httpEntity = new HttpEntity<>("", httpHeaders);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(httpRequestFactory);
-        ResponseEntity<String> gks = restTemplate.exchange(
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 httpEntity,
                 String.class);
-        if (gks.getStatusCode().is2xxSuccessful()) {
-            String gksBody = gks.getBody();
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            String gksBody = responseEntity.getBody();
             if (StringUtils.hasText(gksBody)) {
                 Document document = Jsoup.parse(gksBody);
                 //获取手办列表
@@ -69,18 +70,17 @@ public class ImageCheckerTest {
                 for (Element element : elements) {
                     FigureEntity figureEntity = new FigureEntity();
                     //像jquery选择器一样，获取文章标题元素
-                    element.select(".gk-img")
-                            .first().getElementsByTag("picture")
-                            .first().getElementsByTag("img")
+                    Objects.requireNonNull(Objects.requireNonNull(element.select(".gk-img")
+                                            .first()).getElementsByTag("picture")
+                                    .first()).getElementsByTag("img")
                             .stream().findFirst().ifPresent(img -> {
-                        String coverUrl = img.attr("src");
-                        System.out.println("https://diygod.me/" + coverUrl);
-                        figureEntity.setCoverImg("https://diygod.me/" + coverUrl);
-                    });
+                                String coverUrl = img.attr("src");
+                                System.out.println("https://diygod.me/" + coverUrl);
+                                figureEntity.setCoverImg("https://diygod.me/" + coverUrl);
+                            });
 
-                    element.select(".gk-desc")
-                            .first().children().forEach(p -> {
-
+                    Objects.requireNonNull(element.select(".gk-desc")
+                            .first()).children().forEach(p -> {
                         String key = ((TextNode) p.childNodes().get(0).childNode(0)).text();
 
                         String value;

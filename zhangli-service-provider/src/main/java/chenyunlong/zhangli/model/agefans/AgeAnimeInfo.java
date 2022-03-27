@@ -9,10 +9,12 @@ public class AgeAnimeInfo {
     private List<AgePlayList> agePlayListList;
     private List<AgeRecommendInfo> recommendList;
     private AgeBaiduNet baiduNet;
+    private Long animeId;
     private String name;
     private String district;
     private String instruction;
     private String coverUrl;
+    private String detailCoverUrl;
     private String type;
     private String originalName;
     private String otherName;

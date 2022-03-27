@@ -3,7 +3,6 @@ package chenyunlong.zhangli.controller.api.auth;
 import chenyunlong.zhangli.controller.BaseApiTest;
 import chenyunlong.zhangli.model.params.LoginParam;
 import com.alibaba.fastjson.JSONObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -13,7 +12,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 class AuthControllerTest extends BaseApiTest {
 
-    @Disabled
     @Test
     void formLoin() throws Exception {
 
@@ -28,7 +26,8 @@ class AuthControllerTest extends BaseApiTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(content);
         mockMvc.perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 }
