@@ -3,10 +3,8 @@ pipeline {
     stages {
         stage('阶段-1 拉取代码') {
             steps {
-                checkout([
-                        $class           : "GitSCM",
-                        branches         : [[name: env.GIT_BUILD_REF]],
-                        userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
+                // Get some code from a GitHub repository
+                git credentialsId: 'GITEE_ACCESS_USERNAME', url: 'https://gitee.com/stanChen/zhangli.git'
             }
         }
         stage('阶段-2 单元测试') {
