@@ -41,10 +41,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo> implements AnimeInfoService {
-    private final AnimeInfoMapper     animeInfoMapper;
+    private final AnimeInfoMapper animeInfoMapper;
     private final AnimeEpisodeService episodeService;
-    private final PlaylistService     playlistService;
-    private final AnimeCommentMapper  commentMapper;
+    private final PlaylistService playlistService;
+    private final AnimeCommentMapper commentMapper;
 
 
     public AnimeInfoServiceImpl(AnimeInfoMapper animeInfoMapper, AnimeEpisodeService episodeService,
@@ -159,7 +159,6 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     }
 
 
-    @Cacheable("index:recent")
     @Override
     public List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize) {
         Page<AnimeInfo> infoPage = new Page<>(1, recentPageSize);

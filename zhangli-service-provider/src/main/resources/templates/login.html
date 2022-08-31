@@ -15,13 +15,13 @@
 <div class="bg bg-cover"></div>
 <main>
     <div class="icon" th:style="'background-image:url(/img/logo.jpg)'"></div>
-
     <input id="username" name="username" type="text" placeholder="电子邮箱/手机号/用户名">
     <input id="password" name="password" type="password" autocomplete="current-password" placeholder="密码">
     <input id="ConfirmPassword" type="password" autocomplete="new-password" placeholder="确认密码" class="hidden">
     <button onclick="handleBtn()">登录</button>
 
     <div class="switch">
+        <a id="LoginWithGithub" tabindex="0" role="checkbox" aria-checked="true" href="/authorize/login">Github</a>|
         <a id="Login" tabindex="0" role="checkbox" aria-checked="true">登录</a> |
         <a id="SignUp" tabindex="0" role="checkbox" aria-checked="false">注册</a> |
         <a id="ResetPassword" tabindex="0" role="checkbox" aria-checked="false">重置密码</a>

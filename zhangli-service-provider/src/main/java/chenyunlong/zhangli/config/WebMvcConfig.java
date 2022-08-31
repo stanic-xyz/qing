@@ -1,8 +1,8 @@
 package chenyunlong.zhangli.config;
 
-import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.cache.AbstractStringCacheStore;
 import chenyunlong.zhangli.cache.InMemoryCacheStore;
+import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import chenyunlong.zhangli.intercepter.HostInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -54,10 +54,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        /**
-         * SpringBoot自动配置本身并不会把/swagger-ui.html
-         * 这个路径映射到对应的目录META-INF/resources/下面
-         * 采用WebMvcConfigurerAdapter将swagger的静态文件进行发布;
+        /*
+          SpringBoot自动配置本身并不会把/swagger-ui.html
+          这个路径映射到对应的目录META-INF/resources/下面
+          采用WebMvcConfigurerAdapter将swagger的静态文件进行发布;
          */
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");

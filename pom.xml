@@ -89,6 +89,16 @@
             <name>StanChen</name>
         </developer>
     </developers>
+
+    <!-- omitted xml -->
+    <distributionManagement>
+        <repository>
+            <!--必须与 settings.xml 的 id 一致-->
+            <id>stanic-zhangli-stanic</id>
+            <name>stanic</name>
+            <url>https://stanic-maven.pkg.coding.net/repository/zhangli/stanic/</url>
+        </repository>
+    </distributionManagement>
 </project>
 
 

@@ -110,12 +110,11 @@ DROP TABLE IF EXISTS `anime_info`;
 
 create table anime_info
 (
-    id               bigint auto_increment
-        primary key,
+    id               bigint auto_increment primary key,
     name             varchar(255)                           not null,
     district_id      int                                    null,
     district_name    varchar(255)                           null comment '地区(日本、中国、欧美）',
-    cover_url        varchar(255)                           not null comment '封面地址',
+    cover_url        varchar(255) default ''                not null comment '封面地址',
     type_id          int(10)                                null comment '类型信息',
     type_name        varchar(255)                           null comment 'OVA TV 剧场版(theater_version)',
     instruction      text                                   null comment '番剧介绍',

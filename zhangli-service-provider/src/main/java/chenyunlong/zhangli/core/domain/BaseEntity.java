@@ -1,8 +1,13 @@
 package chenyunlong.zhangli.core.domain;
 
 import chenyunlong.zhangli.utils.StringUtils;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -12,7 +17,10 @@ import java.time.LocalDateTime;
  * @date 2021/05/22
  */
 @Data
-public class BaseEntity {
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@NoArgsConstructor
+public class BaseEntity<DOMAIN extends BaseEntity<DOMAIN>> extends Model<DOMAIN> implements Serializable {
 
     /**
      * Create time.
@@ -43,9 +51,6 @@ public class BaseEntity {
      * 备注
      */
     private String remark;
-
-    public BaseEntity() {
-    }
 
 
     /**

@@ -1,15 +1,15 @@
 package chenyunlong.zhangli.model.entities;
 
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @TableName("anime_feedback")
 @EqualsAndHashCode(callSuper = true)
-public class AnimeFeedbackEntity extends BaseEntity {
+public class AnimeFeedbackEntity extends BaseEntity<AnimeFeedbackEntity> {
 
     @TableId
     private Long id;

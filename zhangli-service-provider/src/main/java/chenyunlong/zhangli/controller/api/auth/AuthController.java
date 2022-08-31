@@ -14,7 +14,6 @@ import chenyunlong.zhangli.model.params.UserParam;
 import chenyunlong.zhangli.model.vo.system.UserInfoVO;
 import chenyunlong.zhangli.security.support.TokenProvider;
 import chenyunlong.zhangli.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.zhyd.oauth.model.AuthCallback;
@@ -42,8 +41,8 @@ import java.util.List;
 public class AuthController {
 
     private final AuthGithubRequest authRequest;
-    private final UserService       userService;
-    private final TokenProvider     tokenProvider;
+    private final UserService userService;
+    private final TokenProvider tokenProvider;
 
     public AuthController(AuthGithubRequest authRequest, UserService userService, TokenProvider tokenProvider) {
         this.authRequest = authRequest;
@@ -90,18 +89,16 @@ public class AuthController {
     }
 
     @GetMapping("callback")
-    public ApiResult<AuthResponse> accessToken(AuthCallback callback) throws JsonProcessingException {
+    public ApiResult<AuthResponse> accessToken(AuthCallback callback) {
         AuthResponse authResponse = authRequest.login(callback);
         if (authResponse.ok()) {
             AuthUser authUser = (AuthUser) authResponse.getData();
             User user = userService.getUserInfoByThird(authUser);
-
             if (user == null) {
                 return ApiResult.fail("未绑定！");
             }
 
             List<Permission> permissionList = userService.getPermissionByUsername(user.getUsername());
-
             List<GrantedAuthority> authorities = new LinkedList<>();
             permissionList.stream().map(permission ->
                             new SimpleGrantedAuthority("ROLE_" + permission.getName()))

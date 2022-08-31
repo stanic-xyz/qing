@@ -26,9 +26,7 @@ public interface OutputConverter<DTO extends OutputConverter<DTO, DOMAIN>, DOMAI
         if (domain == null) {
             return null;
         }
-
         updateProperties(domain, this);
-
         return (T) this;
     }
 }

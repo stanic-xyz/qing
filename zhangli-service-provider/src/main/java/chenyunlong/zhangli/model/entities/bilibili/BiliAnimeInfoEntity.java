@@ -1,15 +1,15 @@
 package chenyunlong.zhangli.model.entities.bilibili;
 
+import chenyunlong.zhangli.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import chenyunlong.zhangli.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("bilibili_anime")
-public class BiliAnimeInfoEntity extends BaseEntity {
+public class BiliAnimeInfoEntity extends BaseEntity<BiliAnimeInfoEntity> {
     @TableId
     private Long id;
     private Long mediaId;
