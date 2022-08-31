@@ -22,4 +22,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Build with Maven
-        run: mvn -B clean package -pl zhangli-service-provider --file pom.xml dockerfile:build dockerfile:tag dockerfile:push
+        run: mvn clean install -DMaven.test.skip=true
+      - name: Build package
+        run: mvn clean package -pl zhangli-service-provider --file pom.xml -B

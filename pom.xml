@@ -3,42 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.6</version>
-    </parent>
-
-    <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
     <groupId>com.stan</groupId>
     <artifactId>zhangli</artifactId>
     <version>1.0.0.RELEASE</version>
     <description>留住张丽的朋友圈</description>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <maven.test.skip>true</maven.test.skip>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
-        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <dockerfile.maven.version>1.4.13</dockerfile.maven.version>
-        <docker.registry.prefix>stanic-docker.pkg.coding.net/zhangli/zhangli</docker.registry.prefix>
-        <docker.registry.username>zhangli-1615218686182</docker.registry.username>
-        <docker.registry.password>d120bcc800ffcb7f527ad9429f81cc50ac3e5542</docker.registry.password>
-        <docker.registry.tag>${project.version}</docker.registry.tag>
-        <sentinel.version>1.7.2</sentinel.version>
-        <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
-        <spring-cloud-version>2020.0.3</spring-cloud-version>
-    </properties>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
     <modules>
+        <module>zhangli-bom</module>
         <module>zhangli-eureka-service</module>
         <module>zhangli-feign-client</module>
         <module>zhangli-config-git</module>
-        <module>zhangli-common</module>
         <module>zhangli-service-cloud-gateway</module>
         <module>zhangli-service-provider</module>
         <module>zhangli-service-natcross-provider</module>
@@ -46,42 +23,6 @@
         <module>zhangli-bus-server</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-    </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <finalName>zhangli</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>false</skipTests>
-                    <skip>false</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <developers>
         <developer>
             <id>stan</id>
