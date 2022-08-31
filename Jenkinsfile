@@ -10,7 +10,8 @@ pipeline {
         stage('阶段-3 打包') {
             steps {
                 script {
-                    sh "mvn  -pl zhangli-common,zhangli-service-provider clean package dockerfile:build dockerfile:tag dockerfile:push -DskipTests=true"
+                    sh "mvn -pl zhangli-common,zhangli-service-provider clean package dockerfile:build dockerfile:tag dockerfile:push -DskipTests=true"
+                    sh "mvn -pl zhangli-common,zhangli-service-provider clean package dockerfile:build dockerfile:tag dockerfile:push -DskipTests=true"
                 }
             }
         }
