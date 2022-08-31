@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model.entities;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import chenyunlong.zhangli.core.domain.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("figure")
-public class FigureEntity extends BaseEntity {
+public class FigureEntity extends BaseEntity<FigureEntity> {
     private String name;
     private String otherNames;
     private LocalDate releaseDate;

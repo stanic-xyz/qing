@@ -48,18 +48,13 @@ BEGIN
         FROM INFORMATION_SCHEMA.TABLES
              -- test = 数据库名称
         WHERE table_schema = 'zhangli'
-          AND table_name NOT IN (
-            SELECT t.table_name
-            FROM (
-                     SELECT table_name, column_name
-                     FROM information_schema.columns
-                     WHERE table_name IN (
-                         SELECT table_name
-                         FROM INFORMATION_SCHEMA.TABLES
-                         WHERE table_schema = 'zhangli')
-                 ) t
-            WHERE t.column_name = 'object_name'
-        );
+          AND table_name NOT IN (SELECT t.table_name
+                                 FROM (SELECT table_name, column_name
+                                       FROM information_schema.columns
+                                       WHERE table_name IN (SELECT table_name
+                                                            FROM INFORMATION_SCHEMA.TABLES
+                                                            WHERE table_schema = 'zhangli')) t
+                                 WHERE t.column_name = 'object_name');
 
     DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET s_tablename = NULL;
 

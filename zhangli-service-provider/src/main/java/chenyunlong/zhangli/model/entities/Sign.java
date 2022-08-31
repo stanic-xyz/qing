@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class Sign extends BaseEntity {
+public class Sign extends BaseEntity<Sign> {
 
     private Long id;
     private Long userId;

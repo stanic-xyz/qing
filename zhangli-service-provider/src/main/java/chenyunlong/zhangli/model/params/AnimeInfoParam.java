@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class AnimeInfoParam implements InputConverter<AnimeInfo> {
@@ -27,7 +27,7 @@ public class AnimeInfoParam implements InputConverter<AnimeInfo> {
     @NotBlank(message = "公司名称不能为空")
     private String company;
     @NotEmpty(message = "出版日期不能为空")
-    private Date premiereDate;
+    private LocalDate premiereDate;
     @NotEmpty(message = "播放状态不能为空")
     private String playStatus;
     private String plotType;

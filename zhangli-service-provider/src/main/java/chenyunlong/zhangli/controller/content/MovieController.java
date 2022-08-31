@@ -29,8 +29,8 @@ import java.util.List;
 public class MovieController {
 
     private final AnimeInfoService animeInfoService;
-    private final AnimeInfoModel   animeInfoModel;
-    private final ReportService    reportService;
+    private final AnimeInfoModel animeInfoModel;
+    private final ReportService reportService;
 
     public MovieController(AnimeInfoService animeInfoService,
                            AnimeInfoModel animeInfoModel, ReportService reportService) {

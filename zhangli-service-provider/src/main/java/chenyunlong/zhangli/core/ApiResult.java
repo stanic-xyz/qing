@@ -1,5 +1,6 @@
 package chenyunlong.zhangli.core;
 
+import chenyunlong.zhangli.core.exception.SystemErrorType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -41,7 +42,7 @@ public class ApiResult<T> {
      * @return base response with data
      */
     public static <T> ApiResult<T> success(T data) {
-        return new ApiResult<T>(0, "success", data);
+        return new ApiResult<T>(0, SystemErrorType.SUCCESS.getMsg(), data);
     }
 
     /**

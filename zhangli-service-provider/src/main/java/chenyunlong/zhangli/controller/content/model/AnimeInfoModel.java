@@ -40,13 +40,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class AnimeInfoModel {
-    private final AnimeInfoService    animeInfoService;
+    private final AnimeInfoService animeInfoService;
     private final AnimeOptionsService optionService;
     private final AnimeOptionsService animeOptionsService;
     private final AnimeCommentService animeCommentService;
     private final AnimeEpisodeService episodeService;
-    private final AnimeListService    animeListService;
-    private final ExecutorService     executorService = Executors.newFixedThreadPool(4);
+    private final AnimeListService animeListService;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     public AnimeInfoModel(AnimeInfoService animeInfoService,
                           AnimeOptionsService optionService,
