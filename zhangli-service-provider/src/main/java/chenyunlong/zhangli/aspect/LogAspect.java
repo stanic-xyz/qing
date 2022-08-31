@@ -6,7 +6,6 @@ import chenyunlong.zhangli.model.entities.sys.SysOperLog;
 import chenyunlong.zhangli.utils.HttpContextUtil;
 import chenyunlong.zhangli.utils.IpUtils;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.support.spring.PropertyPreFilters;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -33,11 +32,6 @@ import java.util.Map;
 @Aspect
 @Component
 public class LogAspect {
-
-    /**
-     * 排除敏感属性字段
-     */
-    public static final String[] EXCLUDE_PROPERTIES = {"password", "oldPassword", "newPassword", "confirmPassword"};
 
     @Pointcut("@annotation(chenyunlong.zhangli.annotation.Log)")
     public void pointcut() {
@@ -165,7 +159,7 @@ public class LogAspect {
     private void setRequestValue(JoinPoint joinPoint, SysOperLog operLog) {
         Map<String, String[]> map = HttpContextUtil.getHttpServletRequest().getParameterMap();
         if (!map.isEmpty()) {
-            String params = JSONObject.toJSONString(map, excludePropertyPreFilter());
+            String params = JSONObject.toJSONString(map);
             operLog.setOperParam(params);
         } else {
             Object args = joinPoint.getArgs();
@@ -191,13 +185,6 @@ public class LogAspect {
     }
 
     /**
-     * 忽略敏感属性
-     */
-    public PropertyPreFilters.MySimplePropertyPreFilter excludePropertyPreFilter() {
-        return new PropertyPreFilters().addFilter().addExcludes(EXCLUDE_PROPERTIES);
-    }
-
-    /**
      * 参数拼装
      */
     private String argsArrayToString(Object[] paramsArray) {
@@ -205,7 +192,7 @@ public class LogAspect {
         if (paramsArray != null && paramsArray.length > 0) {
             for (Object o : paramsArray) {
                 if (!isFilterObject(o)) {
-                    Object jsonObj = JSONObject.toJSONString(o, excludePropertyPreFilter());
+                    Object jsonObj = JSONObject.toJSONString(o);
                     params.append(jsonObj).append(" ");
                 }
             }

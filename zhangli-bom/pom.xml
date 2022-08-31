@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.3</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.stan</groupId>
+    <artifactId>zhangli-bom</artifactId>
+    <version>1.0.0.RELEASE</version>
+
+    <name>zhangli-bom</name>
+    <packaging>pom</packaging>
+    <url>https://www.chenyunlong.cn</url>
+
+    <properties>
+        <maven.test.skip>true</maven.test.skip>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.compilerVersion>17</maven.compiler.compilerVersion>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <dockerfile.maven.version>1.4.13</dockerfile.maven.version>
+        <docker.registry.prefix>stanic-docker.pkg.coding.net/zhangli/zhangli</docker.registry.prefix>
+        <docker.registry.username>zhangli-1615218686182</docker.registry.username>
+        <docker.registry.password>d120bcc800ffcb7f527ad9429f81cc50ac3e5542</docker.registry.password>
+        <docker.registry.tag>${project.version}</docker.registry.tag>
+        <sentinel.version>1.7.2</sentinel.version>
+        <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
+        <spring-cloud-version>2021.0.3</spring-cloud-version>
+        <spring-cloud-alibaba-version>2021.0.1.0</spring-cloud-alibaba-version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
