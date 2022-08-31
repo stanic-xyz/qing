@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class AnimeComment extends BaseEntity {
+public class AnimeComment extends BaseEntity<AnimeComment> {
     private Long id;
     private Long cid;
     private String username;

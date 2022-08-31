@@ -12,7 +12,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-public class Link extends BaseEntity {
+public class Link extends BaseEntity<Link> {
     private Integer id;
 
     /**

@@ -18,6 +18,6 @@ public interface FileMapper extends BaseMapper<UploadFile> {
      *
      * @param uploadFile 文件信息
      */
-    @Insert("INSERT INTO `upload_file` (`fileid`, `file_name`, `file_size`, `mime_type`, `url`) VALUES (#{fileId}, #{fileName}, #{fileSize}, #{mimeType}, #{url})")
+    @Insert("INSERT INTO `upload_file` (`file_id`, `file_name`, `file_size`, `mime_type`, `url`) VALUES (#{fileId}, #{fileName}, #{fileSize}, #{mimeType}, #{url})")
     void save(UploadFile uploadFile);
 }

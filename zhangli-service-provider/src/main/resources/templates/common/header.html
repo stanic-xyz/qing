@@ -20,7 +20,7 @@
 
 <div id="top" th:fragment="top()">
     <div id="logo">
-        <a th:href="@{/}" title="AGE动漫">AGE动漫</a>
+        <a th:href="@{/index.html}" title="AGE动漫">AGE动漫</a>
     </div>
     <div class="loginout">
         <span class="svg_title svg_title_user"></span>
@@ -55,32 +55,6 @@
         <input class="search_submit" type="submit" value="">
         <input type="hidden" name="page" value="1">
     </form>
-
-    <!--    <script type="text/javascript">function on_top_search_form() {-->
-    <!--        const value = document.getElementById("top_search_input").value;-->
-    <!--        if (value == null || value === "") {-->
-    <!--            alert("请输入搜索关键字");-->
-    <!--            return false;-->
-    <!--        }-->
-    <!--    }-->
-
-    <!--    const top_search_input = document.getElementById("top_search_input");-->
-
-    <!--    function onfocus() {-->
-    <!--        top_search_input.classList.add("search_input_ex");-->
-    <!--    }-->
-
-    <!--    function onfocusout() {-->
-    <!--        top_search_input.classList.remove("search_input_ex");-->
-    <!--    }-->
-
-    <!--    if (top_search_input.addEventListener) {-->
-    <!--        top_search_input.addEventListener('focus', onfocus);-->
-    <!--        top_search_input.addEventListener('focusout', onfocusout);-->
-    <!--    } else {-->
-    <!--        top_search_input.onfocus = onfocus;-->
-    <!--        top_search_input.onfocusout = onfocusout;-->
-    <!--    }</script>-->
 </header>
 
 

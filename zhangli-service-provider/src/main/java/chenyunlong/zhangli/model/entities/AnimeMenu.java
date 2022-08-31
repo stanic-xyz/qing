@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class AnimeMenu extends BaseEntity {
+public class AnimeMenu extends BaseEntity<AnimeMenu> {
     private String id;
     private String name;
     private String path;

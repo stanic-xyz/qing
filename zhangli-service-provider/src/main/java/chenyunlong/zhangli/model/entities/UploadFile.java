@@ -1,15 +1,16 @@
 package chenyunlong.zhangli.model.entities;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import chenyunlong.zhangli.core.domain.BaseEntity;
-import lombok.*;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Stan
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class UploadFile extends BaseEntity {
+public class UploadFile extends BaseEntity<UploadFile> {
 
     @TableId
     private Long fileId;

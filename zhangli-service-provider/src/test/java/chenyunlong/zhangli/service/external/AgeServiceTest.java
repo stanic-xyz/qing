@@ -8,10 +8,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,11 +27,14 @@ class AgeServiceTest {
     @Test
     void testGetPlayDetail() throws IOException {
         int count = 0;
-        String read = IoUtil.read(new FileInputStream("test.json"), StandardCharsets.UTF_8);
+        String read = IoUtil.read(Files.newInputStream(Paths.get("test.json")), StandardCharsets.UTF_8);
         final List<AgeAnimeInfo> finalAnimeInfoList = new LinkedList<>();
         List<AgeAnimeInfo> animeInfoList = JSONObject.parseArray(read).toJavaList(AgeAnimeInfo.class);
         for (AgeAnimeInfo ageAnimeInfo : animeInfoList) {
             AgeAnimeInfo detail = ageService.getDetail(ageAnimeInfo.getAnimeId());
+            if (detail == null) {
+                continue;
+            }
             detail.setDetailCoverUrl(ageAnimeInfo.getCoverUrl());
             detail.setAnimeId(ageAnimeInfo.getAnimeId());
             finalAnimeInfoList.add(detail);
@@ -58,7 +62,9 @@ class AgeServiceTest {
     void getAnimeList() throws IOException {
         List<AgeAnimeInfo> animeList = ageService.getAnimeList();
         String jsonString = JSONObject.toJSONString(animeList);
-        FileWriter fileWriter = new FileWriter("test.json");
-        fileWriter.append(jsonString);
+        try (FileWriter fileWriter = new FileWriter("test.json")) {
+            fileWriter.append(jsonString);
+            fileWriter.flush();
+        }
     }
 }

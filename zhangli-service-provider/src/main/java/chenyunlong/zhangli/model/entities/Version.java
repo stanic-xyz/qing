@@ -1,7 +1,8 @@
 package chenyunlong.zhangli.model.entities;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import chenyunlong.zhangli.core.domain.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,7 +11,8 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class Version extends BaseEntity {
+@TableName("anime_version")
+public class Version extends BaseEntity<Version> {
     @TableId
     private Long vid;
     private String code;

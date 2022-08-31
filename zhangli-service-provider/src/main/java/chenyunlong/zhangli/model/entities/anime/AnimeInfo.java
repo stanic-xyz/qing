@@ -11,23 +11,23 @@ import java.time.LocalDate;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AnimeInfo extends BaseEntity {
-    private Long      id;
-    private String    name;
-    private String    instruction;
-    private Integer   districtId;
-    private String    districtName;
-    private String    coverUrl;
-    private Integer   typeId;
-    private String    typeName;
-    private String    originalName;
-    private String    otherName;
-    private String    author;
-    private String    company;
+public class AnimeInfo extends BaseEntity<AnimeInfo> {
+    private Long id;
+    private String name;
+    private String instruction;
+    private Integer districtId;
+    private String districtName;
+    private String coverUrl;
+    private Integer typeId;
+    private String typeName;
+    private String originalName;
+    private String otherName;
+    private String author;
+    private String company;
     private LocalDate premiereDate;
-    private String    playStatus;
-    private String    plotType;
-    private String    tags;
-    private String    officialWebsite;
-    private String    playHeat;
+    private String playStatus;
+    private String plotType;
+    private String tags;
+    private String officialWebsite;
+    private String playHeat;
 }

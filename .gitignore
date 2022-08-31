@@ -50,3 +50,4 @@ build/
 .vscode/
 /logs/
 /zhangli-service-provider/src/main/resources/static/img/kf/
+/docker/minio/minio/

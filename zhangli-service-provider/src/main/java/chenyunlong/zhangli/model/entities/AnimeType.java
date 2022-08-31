@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model.entities;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import chenyunlong.zhangli.core.domain.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @TableName("anime_type")
 @EqualsAndHashCode(callSuper = false)
-public class AnimeType extends BaseEntity {
+public class AnimeType extends BaseEntity<AnimeType> {
     private Long id;
     @ApiModelProperty("类型名称")
     private String name;

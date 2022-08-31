@@ -3,7 +3,7 @@ package chenyunlong.zhangli.config;
 import chenyunlong.zhangli.config.properties.SwaggerProperties;
 import chenyunlong.zhangli.config.properties.ZhangliProperties;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 /**
  * Swagger配置信息
@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author Stan
  */
 @Configuration
-@EnableSwagger2
+@EnableSwagger2WebMvc
 public class SwaggerConfig extends BaseSwaggerConfig {
 
     private final ZhangliProperties zhangliProperties;

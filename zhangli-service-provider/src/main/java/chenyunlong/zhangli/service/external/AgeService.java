@@ -103,12 +103,18 @@ public class AgeService {
     public AgeAnimeInfo getDetail(long animeId) {
         String url = "https://www.agemys.com/detail/" + animeId;
         AgeAnimeInfo animeInfo = new AgeAnimeInfo();
-        Document document;
-        try {
-            document = Jsoup.parse(new URL(url), 5000);
-        } catch (IOException e) {
-            log.error("获取动漫详情信息失败了", e);
-            return null;
+        Document document = null;
+        while (document == null) {
+            try {
+                document = Jsoup.parse(new URL(url), 5000);
+            } catch (IOException e) {
+                log.error("获取动漫详情信息失败了,错误原因：{}，即将发起重试:", e.getMessage());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         }
         Elements playLists = document.body().select(".movurl > ul");
         List<AgePlayList> agePlayList = new LinkedList<>();
@@ -116,7 +122,6 @@ public class AgeService {
         int index = 1;
         for (Element playList : playLists) {
             Elements items = playList.select("a");
-
             if (!items.isEmpty()) {
                 List<AgeAnimeEpisode> episodeList = new LinkedList<>();
 
@@ -210,48 +215,52 @@ public class AgeService {
 
     /**
      * 获取所有动漫列表
-     * @return
+     *
+     * @return 动漫信息
      */
     public List<AgeAnimeInfo> getAnimeList() {
         final List<AgeAnimeInfo> elements = new LinkedList<>();
-        for (int i = 0; i < 146; i++) {
+        for (int i = 0; i < 149; i++) {
             elements.addAll(getAnimeListByIndex(i));
         }
         return elements;
     }
 
     public List<AgeAnimeInfo> getAnimeListByIndex(int page) {
-
         List<AgeAnimeInfo> animeList = new LinkedList<>();
-
         String url = "https://www.agemys.com/catalog/all-all-all-all-all-time-" + page;
         AgeAnimeInfo animeInfo = new AgeAnimeInfo();
         Document document;
         try {
+            Thread.sleep(1000);
             document = Jsoup.parse(new URL(url), 5000);
             Element body = document.body();
+            Elements elementsByClass = body.getElementsByClass("blockcontent1");
+            Element first = elementsByClass.first();
+            if (first != null) {
+                Elements animeInfoList = Objects.requireNonNull(first).getElementsByClass("cell");
+                for (Element element : animeInfoList) {
+                    Element headElement = element.getElementsByTag("a").first();
+                    assert headElement != null;
+                    //获取链接地址
+                    String href = headElement.attr("href");
+                    String animeId = href.substring(href.lastIndexOf("/") + 1);
+                    //获取图片地址
+                    String img = Objects.requireNonNull(headElement.getElementsByTag("img").first()).attr("src");
 
-            Elements blockcontent1 = body.getElementsByClass("blockcontent1");
-            Elements animeInfoList = Objects.requireNonNull(blockcontent1.first()).getElementsByClass("cell");
-            for (Element element : animeInfoList) {
-                Element headElement = element.getElementsByTag("a").first();
-                assert headElement != null;
-                //获取链接地址
-                String href = headElement.attr("href");
-                String animeId = href.substring(href.lastIndexOf("/") + 1);
-                //获取图片地址
-                String img = Objects.requireNonNull(headElement.getElementsByTag("img").first()).attr("src");
-
-                System.out.println("animeId：" + animeId);
-                System.out.println(href);
-                System.out.println(img);
-                AgeAnimeInfo ageAnimeInfo = new AgeAnimeInfo();
-                ageAnimeInfo.setAnimeId(Long.parseLong(animeId));
-                ageAnimeInfo.setCoverUrl(img);
-                animeList.add(ageAnimeInfo);
+                    System.out.println("animeId：" + animeId);
+                    System.out.println(href);
+                    System.out.println(img);
+                    AgeAnimeInfo ageAnimeInfo = new AgeAnimeInfo();
+                    ageAnimeInfo.setAnimeId(Long.parseLong(animeId));
+                    ageAnimeInfo.setCoverUrl(img);
+                    animeList.add(ageAnimeInfo);
+                }
             }
         } catch (IOException e) {
             log.error("获取动漫详情信息失败了", e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         return animeList;
     }

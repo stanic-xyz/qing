@@ -22,12 +22,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 @Slf4j
 public class ImageCheckerTest {
+
 
     public static void main(String[] args) throws FileNotFoundException {
         File file = ResourceUtils.getFile("E:\\GitHub\\cdn\\age");
@@ -37,6 +40,18 @@ public class ImageCheckerTest {
             for (File listFile : listFiles) {
                 System.out.println(listFile.getName());
             }
+        }
+    }
+
+    @Test
+    void generateDate() {
+        LocalDateTime localDateTime = LocalDateTime.of(2005, 12, 30, 0, 0, 0);
+        for (int i = 0; i < 100; i++) {
+            String idCard = "51130319961002" + "5142";
+            localDateTime = localDateTime.plusDays(1);
+            String str = localDateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String format = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            System.out.println("511303" + str + "5142 \t " + format);
         }
     }
 

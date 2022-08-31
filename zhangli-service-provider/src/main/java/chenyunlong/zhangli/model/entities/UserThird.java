@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UserThird extends BaseEntity {
+public class UserThird extends BaseEntity<UserThird> {
 
     @TableId(type = IdType.AUTO)
     private Long id;

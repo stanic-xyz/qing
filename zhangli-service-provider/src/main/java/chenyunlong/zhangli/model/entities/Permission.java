@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class Permission extends BaseEntity {
+public class Permission extends BaseEntity<Permission> {
 
     private String name;
     private String id;

@@ -1,9 +1,9 @@
 package chenyunlong.zhangli.model.entities;
 
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import chenyunlong.zhangli.core.domain.BaseEntity;
 import chenyunlong.zhangli.core.enums.MFAType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,17 +20,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity {
+public class User extends BaseEntity<User> {
     @TableId
-    private Long          uid;
-    private String        username;
-    private String        nickname;
-    private String        password;
-    private String        phone;
-    private String        email;
-    private String        avatar;
-    private String        description;
+    private Long uid;
+    private String username;
+    private String nickname;
+    private String password;
+    private String phone;
+    private String email;
+    private String avatar;
+    private String description;
     private LocalDateTime expireTime;
-    private MFAType       mfaType;
-    private String        mfaKey;
+    private MFAType mfaType;
+    private String mfaKey;
 }

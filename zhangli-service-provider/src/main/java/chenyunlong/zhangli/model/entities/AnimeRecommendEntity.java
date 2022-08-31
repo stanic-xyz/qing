@@ -1,7 +1,7 @@
 package chenyunlong.zhangli.model.entities;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import chenyunlong.zhangli.core.domain.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @TableName("anime_recommend")
-public class AnimeRecommendEntity extends BaseEntity {
+public class AnimeRecommendEntity extends BaseEntity<AnimeRecommendEntity> {
     /**
      * 主键ID
      */
