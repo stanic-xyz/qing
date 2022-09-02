@@ -11,9 +11,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -23,6 +21,6 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
       - name: Build with Maven
-        run: mvn clean install -projects zhangli-bom -DskipTests
+        run: cd zhangli-bom && mvn install
       - name: Build package
-        run: mvn clean install -projects zhangli-service-provider --file pom.xml -B
+        run: cd .. && mvn clean install --file pom.xml -B
