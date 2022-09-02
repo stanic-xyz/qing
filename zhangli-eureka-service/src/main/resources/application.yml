@@ -13,7 +13,7 @@ eureka:
     enable-self-preservation: true
   client:
     fetch-registry: false
-    register-with-eureka: true
+    register-with-eureka: false
   instance:
     lease-renewal-interval-in-seconds: 30
     instance-id: ${spring.application.name}

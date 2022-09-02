@@ -4,9 +4,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="chenyunlong.zhangli.mapper.AnimeInfoMapper">
+<mapper namespace="cn.chenyunlong.zhangli.mapper.AnimeInfoMapper">
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.anime.AnimeInfo">
+    <resultMap id="BaseResultMap" type="cn.chenyunlong.zhangli.model.entities.anime.AnimeInfo">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="district_name" property="districtName"/>
@@ -31,7 +31,7 @@
         where anime_info.id = #{id}
     </update>
 
-    <select id="listAnime" resultMap="BaseResultMap" parameterType="chenyunlong.zhangli.model.params.AnimeInfoQuery">
+    <select id="listAnime" resultMap="BaseResultMap" parameterType="cn.chenyunlong.zhangli.model.params.AnimeInfoQuery">
         SELECT `id`,
         `name`,
         `district_name`,
@@ -97,7 +97,7 @@
         where id = #{movieId}
     </select>
 
-    <select id="count" resultType="long" parameterType="chenyunlong.zhangli.model.params.AnimeInfoQuery">
+    <select id="count" resultType="long" parameterType="cn.chenyunlong.zhangli.model.params.AnimeInfoQuery">
         select count(1)
         FROM anime_info
         <where>

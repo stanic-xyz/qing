@@ -40,12 +40,15 @@ spring:
     type: simple
   quartz:
     scheduler-name: testName
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 mybatis-plus:
   configuration:
     cache-enabled: off
   global-config:
     banner: false
-  type-aliases-package: chenyunlong.zhangli.**.domain,chenyunlong.zhangli.**.entities
+  type-aliases-package: cn.chenyunlong.zhangli.**.domain,cn.chenyunlong.zhangli.**.entities
   mapper-locations: classpath*:mapper/**/*Mapper.xml
 zhangli:
   file:
@@ -55,7 +58,7 @@ zhangli:
   openAopLog: true
   swagger:
     author: Stan
-    basePackage: chenyunlong.zhangli
+    basePackage: cn.chenyunlong.zhangli
     description: Zhangli's Rear Gargen  API Documentation.
     email: 1576302867@qq.com
     license: Apache 2.0
@@ -80,3 +83,5 @@ mp:
   wx:
     app-id: wx09bf7e704a150a9c
     secret: 9fdb9fa846356d32247a9aa68d758791
+
+

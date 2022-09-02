@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <groupId>com.stan</groupId>
+    <groupId>cn.chenyunlong</groupId>
     <artifactId>zhangli</artifactId>
-    <version>1.0.0.RELEASE</version>
+    <version>${my-version}</version>
     <description>留住张丽的朋友圈</description>
 
     <modelVersion>4.0.0</modelVersion>
@@ -31,6 +31,60 @@
         </developer>
     </developers>
 
+    <properties>
+        <my-version>1.0.0.RELEASE</my-version>
+
+        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven-source-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven-javadoc-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <!-- omitted xml -->
+            <distributionManagement>
+                <repository>
+                    <!--必须与 settings.xml 的 id 一致-->
+                    <id>stanic-zhangli-stanic</id>
+                    <name>stanic</name>
+                    <url>https://stanic-maven.pkg.coding.net/repository/zhangli/stanic/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
     <!-- omitted xml -->
     <distributionManagement>
         <repository>
@@ -40,6 +94,7 @@
             <url>https://stanic-maven.pkg.coding.net/repository/zhangli/stanic/</url>
         </repository>
     </distributionManagement>
+
 </project>
 
 
