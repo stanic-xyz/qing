@@ -31,8 +31,8 @@
 
         <dockerfile.maven.version>1.4.13</dockerfile.maven.version>
         <docker.registry.prefix>stanic-docker.pkg.coding.net/zhangli/zhangli</docker.registry.prefix>
-        <docker.registry.username>zhangli-XXX</docker.registry.username>
-        <docker.registry.password>XXX</docker.registry.password>
+        <registry_username>zhangli-XXX</registry_username>
+        <registry_password>XXX</registry_password>
         <docker.registry.tag>${project.version}</docker.registry.tag>
         <sentinel.version>1.7.2</sentinel.version>
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
