@@ -23,4 +23,4 @@ jobs:
       - name: Build with Maven
         run: cd zhangli-bom && mvn install
       - name: Build package
-        run: cd .. && mvn clean install --file pom.xml -B
+        run: mvn clean package --file pom.xml -B
