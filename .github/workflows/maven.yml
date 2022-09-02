@@ -23,4 +23,7 @@ jobs:
       - name: Build with Maven
         run: cd zhangli-bom && mvn install
       - name: Build package
-        run: cd zhangli-service-provider && mvn clean package dockerfile:build dockerfile:tag dockerfile:push -D docker.registry.username=$REGISTRY_USERNAME -D docker.registry.password=$REGISTRY_PASSWORD --file pom.xml -B
+        env:
+          USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+        run: cd zhangli-service-provider && mvn clean package dockerfile:build dockerfile:tag dockerfile:push -Dregistry_username=${USERNAME} -Dregistry_password=${PASSWORD} --file pom.xml -B
