@@ -4,9 +4,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="chenyunlong.zhangli.mapper.AnimeMenuMapper">
+<mapper namespace="cn.chenyunlong.zhangli.mapper.AnimeMenuMapper">
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.AnimeMenu">
+    <resultMap id="BaseResultMap" type="cn.chenyunlong.zhangli.model.entities.AnimeMenu">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="path" property="path"/>
