@@ -4,10 +4,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="chenyunlong.zhangli.mapper.ActivityMapper">
+<mapper namespace="cn.chenyunlong.zhangli.mapper.ActivityMapper">
 
 
-    <resultMap id="BaseResultMap" type="chenyunlong.zhangli.model.entities.ActivityEntity">
+    <resultMap id="BaseResultMap" type="cn.chenyunlong.zhangli.model.entities.ActivityEntity">
         <id column="activity_id" property="activityId"/>
         <result column="activity_name" property="activityName"/>
     </resultMap>
@@ -24,7 +24,7 @@
         where activity_id = #{activityId}
     </select>
 
-    <insert id="insert" parameterType="chenyunlong.zhangli.model.entities.ActivityEntity">
+    <insert id="insert" parameterType="cn.chenyunlong.zhangli.model.entities.ActivityEntity">
         insert into activity(activity_name)
         values (#{activityName})
     </insert>

@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.stan</groupId>
+        <groupId>cn.chenyunlong</groupId>
         <artifactId>zhangli-bom</artifactId>
         <version>1.0.0.RELEASE</version>
         <relativePath/>
@@ -15,8 +15,8 @@
     <description>Natcross Service project for ZhangliApplication</description>
 
     <properties>
-        <grpc.version>1.44.0</grpc.version>
-        <protobuf.version>3.19.4</protobuf.version>
+        <grpc.version>1.49.0</grpc.version>
+        <protobuf.version>3.21.5</protobuf.version>
         <flowable.version>6.6.0</flowable.version>
     </properties>
 
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.4.3.1</version>
+            <version>3.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.79</version>
+            <version>2.0.12</version>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
