@@ -11,6 +11,10 @@ spring:
     username: ${RABBIT_MQ_USERNAME:guest}
     password: ${RABBIT_MQ_PASSWORD:guest}
     virtual-host: /
+  cloud:
+    bus:
+      trace:
+        enabled: true
 management:
   endpoints:
     web:
