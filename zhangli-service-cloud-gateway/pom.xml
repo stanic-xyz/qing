@@ -6,6 +6,7 @@
         <groupId>cn.chenyunlong</groupId>
         <artifactId>zhangli-bom</artifactId>
         <version>1.0.0.RELEASE</version>
+        <relativePath/>
     </parent>
     <artifactId>zhangli-service-cloud-gateway</artifactId>
     <name>zhangli-service-cloud-gateway</name>
