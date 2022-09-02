@@ -188,8 +188,8 @@
                     <dockerfile>${project.basedir}/Dockerfile</dockerfile>
                     <repository>${docker.registry.prefix}/${project.artifactId}</repository>
                     <tag>${docker.registry.tag}</tag>
-                    <username>${docker.registry.username}</username>
-                    <password>${docker.registry.password}</password>
+                    <username>${registry_username}</username>
+                    <password>${registry_password}</password>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}</JAR_FILE>
                     </buildArgs>
