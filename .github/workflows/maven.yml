@@ -9,8 +9,8 @@ on:
   pull_request:
     branches: [ master ]
 env:
-  USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-  PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+  USERNAME: zhangli-1615218686182
+  PASSWORD: d120bcc800ffcb7f527ad9429f81cc50ac3e5542
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,6 +23,8 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
       - name: Build with Maven
-        run: echo "打印 username:$USERNAME  password:$PASSWORD $env"
-      - name: Build Package with Maven Dockerfile
-        run: cd zhangli-bom && mvn install  -Dregistry_username=${USERNAME} -Dregistry_password=${PASSWORD} 
+        run: echo "打印 ${{ env.USERNAME }}${{ env.PASSWORD }}"
+      - name: Build with Maven
+        run: cd zhangli-bom && mvn install
+      - name: Build package
+        run: cd zhangli-service-provider && mvn clean package dockerfile:build dockerfile:tag dockerfile:push -Dregistry_username=${USERNAME} -Dregistry_password=${PASSWORD} --file pom.xml -B
