@@ -45,7 +45,8 @@ spring:
       matching-strategy: ant_path_matcher
 mybatis-plus:
   configuration:
-    cache-enabled: off
+    cache-enabled: true
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
   global-config:
     banner: false
   type-aliases-package: cn.chenyunlong.zhangli.**.domain,cn.chenyunlong.zhangli.**.entities
