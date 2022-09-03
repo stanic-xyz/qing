@@ -5,5 +5,5 @@ LABEL maintainer="Stan <1576302867@qq.com>>"
 ENV ENV prod
 EXPOSE 8080
 ARG JAR_FILE
-COPY target/${JAR_FILE}.jar app.jar
-ENTRYPOINT ["/usr/bin/java","-jar","/app.jar"]
+COPY target/${JAR_FILE}.jar /app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]

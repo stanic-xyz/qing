@@ -9,7 +9,7 @@ services:
     environment:
       - REDIS_PASSWORD=123456
     networks:
-      - sc-net
+      - zhangli
     ports:
       - 6379:6379
     env_file: .env
