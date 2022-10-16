@@ -1,5 +1,6 @@
 # Project
-upload/
+/docker/minio/minio/
+/docker/data/*
 
 # Eclipse
 .classpath
@@ -19,35 +20,16 @@ out/
 target/
 release.properties
 
-# Node.js
-node_modules/
-
-
 HELP.md
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
 
-### STS ###
-.apt_generated
-.factorypath
-.springBeans
-.sts4-cache
-
 ### IntelliJ IDEA ###
 .idea
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
 
 ### VS Code ###
 .vscode/
 /logs/
-/zhangli-service-provider/src/main/resources/static/img/kf/
-/docker/minio/minio/

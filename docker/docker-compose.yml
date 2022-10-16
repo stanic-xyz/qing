@@ -1,34 +1,31 @@
 version: '2'
 
 services:
-  apollo-quick-start:
-    image: nobodyiam/apollo-quick-start
-    container_name: apollo-quick-start
-    depends_on:
-      - apollo-db
+  redis:
+    image: redis:alpine
+    container_name: redis-service
+    environment:
+      TZ: Asia/Shanghai
     ports:
-      - "8080:8080"
-      - "8090:8090"
-      - "8070:8070"
-    links:
-      - apollo-db
+      - "6379:6379"
+    restart: always
   apollo-db:
     image: mysql:5.7
-    container_name: apollo-db
+    container_name: mysql-service
     environment:
       TZ: Asia/Shanghai
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_ROOT_PASSWORD: 123456
     depends_on:
-      - apollo-dbdata
+      - service-dbdata
     ports:
       - "3306:3306"
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
     volumes_from:
-      - apollo-dbdata
-
-  apollo-dbdata:
+      - service-dbdata
+    restart: always
+  service-dbdata:
     image: alpine:latest
     container_name: apollo-dbdata
     volumes:

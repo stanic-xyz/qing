@@ -22,8 +22,6 @@ jobs:
           java-version: '17'
           distribution: 'adopt-hotspot'
           cache: maven
-      - name: Print environment variables
-        run: echo "打印 ${{ env.USERNAME }}${{ env.PASSWORD }}"
       - name: Build with Maven
         run: cd zhangli-bom && mvn install
       - name: Build Docker Image and Push to Docker Hub

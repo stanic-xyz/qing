@@ -1,18 +1,36 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3-alpine'
+            args '-v /root/.m2:/root/.m2'
+            reuseNode true
+        }
+    }
     stages {
         stage('阶段-1 拉取代码') {
             steps {
-                // Get some code from a GitHub repository
-                git credentialsId: 'GITEE_ACCESS_USERNAME', url: 'https://gitee.com/stanChen/zhangli.git'
+                checkout([
+                        $class           : "GitSCM",
+                        branches         : [[name: env.GIT_BUILD_REF]],
+                        userRemoteConfigs: [[url: env.GIT_REPO_URL, credentialsId: env.CREDENTIALS_ID]]])
             }
         }
-        stage('阶段-3 打包') {
+        stage('阶段-2 打包') {
             steps {
                 script {
-                    sh "mvn -pl zhangli-common,zhangli-service-provider clean package dockerfile:build dockerfile:tag dockerfile:push -DskipTests=true"
-                    sh "mvn -pl zhangli-common,zhangli-service-provider clean package dockerfile:build dockerfile:tag dockerfile:push -DskipTests=true"
+                    if (isUnix() == true) {
+                        sh "cd ${WORKSPACE}"
+                        sh "mvn clean -pl 'zhangli-service-provider' package"
+                    } else {
+                        bat "cd ${WORKSPACE}"
+                        bat "mvn clean package"
+                    }
                 }
+            }
+        }
+        stage('阶段-4 收集构建物') {
+            steps {
+                archiveArtifacts(artifacts: '**/target/*.jar', onlyIfSuccessful: true, defaultExcludes: true)
             }
         }
     }
