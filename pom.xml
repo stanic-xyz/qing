@@ -4,30 +4,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <groupId>cn.chenyunlong</groupId>
-    <artifactId>zhangli</artifactId>
+    <artifactId>qing-project</artifactId>
     <version>1.0.0.RELEASE</version>
-    <description>留住张丽的朋友圈</description>
+    <description>留住TA的朋友圈</description>
 
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
     <modules>
-        <module>zhangli-bom</module>
-        <module>zhangli-eureka-service</module>
-        <module>zhangli-feign-client</module>
-        <module>zhangli-config-git</module>
-        <module>zhangli-service-cloud-gateway</module>
-        <module>zhangli-service-provider</module>
-        <module>zhangli-service-natcross-provider</module>
-        <module>zhangli-admin-server</module>
-        <module>zhangli-bus-server</module>
+        <module>qing-bom</module>
+        <module>qing-eureka-service</module>
+        <module>qing-feign-client</module>
+        <module>qing-config-git</module>
+        <module>qing-service-cloud-gateway</module>
+        <module>qing-service-natcross</module>
+        <module>qing-service-anime</module>
+        <module>qing-admin-server</module>
+        <module>qing-bus-server</module>
     </modules>
 
     <developers>
         <developer>
             <id>stan</id>
             <email>1576302867@qq.com</email>
-            <name>StanChen</name>
+            <name>陈云龙</name>
         </developer>
     </developers>
 
@@ -39,6 +39,13 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     </properties>
 
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
     <profiles>
         <profile>
             <id>release</id>
