@@ -9,7 +9,9 @@
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
-create database if not exists zhangli;
+drop database if exists zhangli;
+create database zhangli;
+
 use zhangli;
 
 DROP TABLE IF EXISTS `activity`;
@@ -100,10 +102,8 @@ CREATE TABLE `anime_feedback`
     `update_by`         varchar(255) not null default '' comment '最后更新人',
     `remark`            varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-    COMMENT
-        ='反馈信息';
+) engine = InnoDB comment ='反馈信息'
+  charset utf8mb4;
 
 DROP TABLE IF EXISTS `anime_info`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -135,9 +135,7 @@ create table anime_info
     update_by        varchar(255) default ''                not null comment '最后更新人',
     remark           varchar(255) default ''                not null comment '创建时间',
     order_no         int          default 0                 not null
-)
-    comment
-        '番剧信息' charset = utf8;
+) comment '番剧信息' charset = utf8mb4;
 
 create index anime_info_premiere_date_index
     on anime_info (premiere_date);
@@ -786,6 +784,286 @@ create table `bilibili_anime_score`
     constraint anime_score_pk primary key (id)
 
 );
+
+-- ----------------------------
+-- 13、参数配置表
+-- ----------------------------
+drop table if exists sys_config;
+CREATE TABLE sys_config
+(
+    config_id    INT(5) NOT NULL AUTO_INCREMENT COMMENT '参数主键',
+    config_name  VARCHAR(100) DEFAULT '' COMMENT '参数名称',
+    config_key   VARCHAR(100) DEFAULT '' COMMENT '参数键名',
+    config_value VARCHAR(500) DEFAULT '' COMMENT '参数键值',
+    config_type  CHAR(1)      DEFAULT 'N' COMMENT '系统内置（Y是 N否）',
+    create_by    VARCHAR(64)  DEFAULT '' COMMENT '创建者',
+    create_time  DATETIME COMMENT '创建时间',
+    update_by    VARCHAR(64)  DEFAULT '' COMMENT '更新者',
+    update_time  DATETIME COMMENT '更新时间',
+    remark       VARCHAR(500) DEFAULT NULL COMMENT '备注',
+    PRIMARY KEY (config_id)
+) ENGINE = INNODB
+  char set utf8mb4
+  AUTO_INCREMENT = 100 COMMENT ='参数配置表';
+
+
+insert into sys_config
+values (1, '主框架页-默认皮肤样式名称', 'sys.index.skinName', 'skin-blue', 'Y', 'admin', sysdate(), '', null,
+        '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow');
+insert into sys_config
+values (2, '用户管理-账号初始密码', 'sys.user.initPassword', '123456', 'Y', 'admin', sysdate(), '', null,
+        '初始化密码 123456');
+insert into sys_config
+values (3, '主框架页-侧边栏主题', 'sys.index.sideTheme', 'theme-dark', 'Y', 'admin', sysdate(), '', null,
+        '深黑主题theme-dark，浅色主题theme-light，深蓝主题theme-blue');
+insert into sys_config
+values (4, '账号自助-是否开启用户注册功能', 'sys.account.registerUser', 'false', 'Y', 'admin', sysdate(), '', null,
+        '是否开启注册用户功能（true开启，false关闭）');
+insert into sys_config
+values (5, '用户管理-密码字符范围', 'sys.account.chrtype', '0', 'Y', 'admin', sysdate(), '', null,
+        '默认任意字符范围，0任意（密码可以输入任意字符），1数字（密码只能为0-9数字），2英文字母（密码只能为a-z和A-Z字母），3字母和数字（密码必须包含字母，数字）,4字母数字和特殊字符（目前支持的特殊字符包括：~!@#$%^&*()-=_+）');
+insert into sys_config
+values (6, '用户管理-初始密码修改策略', 'sys.account.initPasswordModify', '0', 'Y', 'admin', sysdate(), '', null,
+        '0：初始密码修改策略关闭，没有任何提示，1：提醒用户，如果未修改初始密码，则在登录时就会提醒修改密码对话框');
+insert into sys_config
+values (7, '用户管理-账号密码更新周期', 'sys.account.passwordValidateDays', '0', 'Y', 'admin', sysdate(), '', null,
+        '密码更新周期（填写数字，数据初始化值为0不限制，若修改必须为大于0小于365的正整数），如果超过这个周期登录系统时，则在登录时就会提醒修改密码对话框');
+insert into sys_config
+values (8, '主框架页-菜单导航显示风格', 'sys.index.menuStyle', 'default', 'Y', 'admin', sysdate(), '', null,
+        '菜单导航显示风格（default为左侧导航菜单，topnav为顶部导航菜单）');
+insert into sys_config
+values (9, '主框架页-是否开启页脚', 'sys.index.ignoreFooter', 'true', 'Y', 'admin', sysdate(), '', null,
+        '是否开启底部页脚显示（true显示，false隐藏）');
+insert into sys_config
+values (10, '主框架页-是否使用cdn加速', 'sys.content.cdn', 'true', 'Y', 'admin', sysdate(), '', null,
+        'cdn地址');
+
+
+-- ----------------------------
+-- 16、定时任务调度表
+-- ----------------------------
+drop table if exists sys_job;
+create table sys_job
+(
+    job_id          bigint(20)   not null auto_increment comment '任务ID',
+    job_name        varchar(64)  default '' comment '任务名称',
+    job_group       varchar(64)  default 'DEFAULT' comment '任务组名',
+    invoke_target   varchar(500) not null comment '调用目标字符串',
+    cron_expression varchar(255) default '' comment 'cron执行表达式',
+    misfire_policy  varchar(20)  default '3' comment '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
+    concurrent      char(1)      default '1' comment '是否并发执行（0允许 1禁止）',
+    status          char(1)      default '0' comment '状态（0正常 1暂停）',
+    create_by       varchar(64)  default '' comment '创建者',
+    create_time     datetime comment '创建时间',
+    update_by       varchar(64)  default '' comment '更新者',
+    update_time     datetime comment '更新时间',
+    remark          varchar(500) default '' comment '备注信息',
+    primary key (job_id, job_name, job_group)
+) engine = innodb
+  char set utf8mb4
+  auto_increment = 100 comment = '定时任务调度表';
+
+
+-- ----------------------------
+-- 17、定时任务调度日志表
+-- ----------------------------
+drop table if exists sys_job_log;
+create table sys_job_log
+(
+    job_log_id     bigint(20)   not null auto_increment comment '任务日志ID',
+    job_name       varchar(64)  not null comment '任务名称',
+    job_group      varchar(64)  not null comment '任务组名',
+    invoke_target  varchar(500) not null comment '调用目标字符串',
+    job_message    varchar(500) comment '日志信息',
+    status         char(1)       default '0' comment '执行状态（0正常 1失败）',
+    exception_info varchar(2000) default '' comment '异常信息',
+    create_time    datetime comment '创建时间',
+    primary key (job_log_id)
+) engine = innodb comment = '定时任务调度日志表'
+  char set utf8mb4
+  collate utf8mb4_general_ci;
+
+
+-- ----------------------------
+-- 1、存储每一个已配置的 jobDetail 的详细信息
+-- ----------------------------
+drop table if exists QRTZ_JOB_DETAILS;
+create table QRTZ_JOB_DETAILS
+(
+    sched_name        varchar(120) not null,
+    job_name          varchar(200) not null,
+    job_group         varchar(200) not null,
+    `description`     varchar(250) null,
+    job_class_name    varchar(250) not null,
+    is_durable        varchar(1)   not null,
+    is_nonconcurrent  varchar(1)   not null,
+    is_update_data    varchar(1)   not null,
+    requests_recovery varchar(1)   not null,
+    job_data          blob         null,
+    primary key (sched_name, job_name, job_group)
+) engine = innodb;
+
+-- ----------------------------
+-- 2、 存储已配置的 Trigger 的信息
+-- ----------------------------
+drop table if exists QRTZ_TRIGGERS;
+create table QRTZ_TRIGGERS
+(
+    sched_name     varchar(120) not null,
+    trigger_name   varchar(200) not null,
+    trigger_group  varchar(200) not null,
+    job_name       varchar(200) not null,
+    job_group      varchar(200) not null,
+    description    varchar(250) null,
+    next_fire_time bigint(13)   null,
+    prev_fire_time bigint(13)   null,
+    priority       integer      null,
+    trigger_state  varchar(16)  not null,
+    trigger_type   varchar(8)   not null,
+    start_time     bigint(13)   not null,
+    end_time       bigint(13)   null,
+    calendar_name  varchar(200) null,
+    misfire_instr  smallint(2)  null,
+    job_data       blob         null,
+    primary key (sched_name, trigger_name, trigger_group),
+    foreign key (sched_name, job_name, job_group) references QRTZ_JOB_DETAILS (sched_name, job_name, job_group)
+) engine = innodb;
+
+-- ----------------------------
+-- 3、 存储简单的 Trigger，包括重复次数，间隔，以及已触发的次数
+-- ----------------------------
+drop table if exists QRTZ_SIMPLE_TRIGGERS;
+create table QRTZ_SIMPLE_TRIGGERS
+(
+    sched_name      varchar(120) not null,
+    trigger_name    varchar(200) not null,
+    trigger_group   varchar(200) not null,
+    repeat_count    bigint(7)    not null,
+    repeat_interval bigint(12)   not null,
+    times_triggered bigint(10)   not null,
+    primary key (sched_name, trigger_name, trigger_group),
+    foreign key (sched_name, trigger_name, trigger_group) references QRTZ_TRIGGERS (sched_name, trigger_name, trigger_group)
+) engine = innodb;
+
+-- ----------------------------
+-- 4、 存储 Cron Trigger，包括 Cron 表达式和时区信息
+-- ----------------------------
+drop table if exists QRTZ_CRON_TRIGGERS;
+create table QRTZ_CRON_TRIGGERS
+(
+    sched_name      varchar(120) not null,
+    trigger_name    varchar(200) not null,
+    trigger_group   varchar(200) not null,
+    cron_expression varchar(200) not null,
+    time_zone_id    varchar(80),
+    primary key (sched_name, trigger_name, trigger_group),
+    foreign key (sched_name, trigger_name, trigger_group) references QRTZ_TRIGGERS (sched_name, trigger_name, trigger_group)
+) engine = innodb;
+
+-- ----------------------------
+-- 5、 Trigger 作为 Blob 类型存储(用于 Quartz 用户用 JDBC 创建他们自己定制的 Trigger 类型，JobStore 并不知道如何存储实例的时候)
+-- ----------------------------
+drop table if exists QRTZ_BLOB_TRIGGERS;
+create table QRTZ_BLOB_TRIGGERS
+(
+    sched_name    varchar(120) not null,
+    trigger_name  varchar(200) not null,
+    trigger_group varchar(200) not null,
+    blob_data     blob         null,
+    primary key (sched_name, trigger_name, trigger_group),
+    foreign key (sched_name, trigger_name, trigger_group) references QRTZ_TRIGGERS (sched_name, trigger_name, trigger_group)
+) engine = innodb;
+
+-- ----------------------------
+-- 6、 以 Blob 类型存储存放日历信息， quartz可配置一个日历来指定一个时间范围
+-- ----------------------------
+drop table if exists QRTZ_CALENDARS;
+create table QRTZ_CALENDARS
+(
+    sched_name    varchar(120) not null,
+    calendar_name varchar(200) not null,
+    calendar      blob         not null,
+    primary key (sched_name, calendar_name)
+) engine = innodb;
+
+-- ----------------------------
+-- 7、 存储已暂停的 Trigger 组的信息
+-- ----------------------------
+drop table if exists QRTZ_PAUSED_TRIGGER_GRPS;
+create table QRTZ_PAUSED_TRIGGER_GRPS
+(
+    sched_name    varchar(120) not null,
+    trigger_group varchar(200) not null,
+    primary key (sched_name, trigger_group)
+) engine = innodb;
+
+-- ----------------------------
+-- 8、 存储与已触发的 Trigger 相关的状态信息，以及相联 Job 的执行信息
+-- ----------------------------
+drop table if exists QRTZ_FIRED_TRIGGERS;
+create table QRTZ_FIRED_TRIGGERS
+(
+    sched_name        varchar(120) not null,
+    entry_id          varchar(95)  not null,
+    trigger_name      varchar(200) not null,
+    trigger_group     varchar(200) not null,
+    instance_name     varchar(200) not null,
+    fired_time        bigint(13)   not null,
+    sched_time        bigint(13)   not null,
+    priority          integer      not null,
+    state             varchar(16)  not null,
+    job_name          varchar(200) null,
+    job_group         varchar(200) null,
+    is_nonconcurrent  varchar(1)   null,
+    requests_recovery varchar(1)   null,
+    primary key (sched_name, entry_id)
+) engine = innodb;
+
+-- ----------------------------
+-- 9、 存储少量的有关 Scheduler 的状态信息，假如是用于集群中，可以看到其他的 Scheduler 实例
+-- ----------------------------
+drop table if exists QRTZ_SCHEDULER_STATE;
+create table QRTZ_SCHEDULER_STATE
+(
+    sched_name        varchar(120) not null,
+    instance_name     varchar(200) not null,
+    last_checkin_time bigint(13)   not null,
+    checkin_interval  bigint(13)   not null,
+    primary key (sched_name, instance_name)
+) engine = innodb;
+
+-- ----------------------------
+-- 10、 存储程序的悲观锁的信息(假如使用了悲观锁)
+-- ----------------------------
+drop table if exists QRTZ_LOCKS;
+create table QRTZ_LOCKS
+(
+    sched_name varchar(120) not null,
+    lock_name  varchar(40)  not null,
+    primary key (sched_name, lock_name)
+) engine = innodb;
+
+drop table if exists QRTZ_SIMPROP_TRIGGERS;
+create table QRTZ_SIMPROP_TRIGGERS
+(
+    sched_name    varchar(120)   not null,
+    trigger_name  varchar(200)   not null,
+    trigger_group varchar(200)   not null,
+    str_prop_1    varchar(512)   null,
+    str_prop_2    varchar(512)   null,
+    str_prop_3    varchar(512)   null,
+    int_prop_1    int            null,
+    int_prop_2    int            null,
+    long_prop_1   bigint         null,
+    long_prop_2   bigint         null,
+    dec_prop_1    numeric(13, 4) null,
+    dec_prop_2    numeric(13, 4) null,
+    bool_prop_1   varchar(1)     null,
+    bool_prop_2   varchar(1)     null,
+    primary key (sched_name, trigger_name, trigger_group),
+    foreign key (sched_name, trigger_name, trigger_group) references QRTZ_TRIGGERS (sched_name, trigger_name, trigger_group)
+) engine = innodb;
+
 
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;

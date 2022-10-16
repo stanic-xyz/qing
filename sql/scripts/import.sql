@@ -1,6 +1,6 @@
 use zhangli;
 
-INSERT INTO `anime_info`(`id`,  `name`,  `district`,  `cover_url`,  `type`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
+INSERT INTO `anime_info`(`id`,  `name`,  `district_name`,  `cover_url`,  `type_name`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
   `play_status`,  `plot_type`,  `tags`,  `official_website`,  `play_heat`,  `original_name`)
 VALUES (20000001, '海贼王', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/H6eec4b52f5ed449b8583e5ab518e7849p.jpg', 'TV',
         '电视动画《航海王》改编自尾田荣一郎创作的同名长篇少年漫画，动画由东映动画制作。\n\n海贼王哥尔·D·罗杰在临死前曾留下了关于其毕生的财富“One Piece”的消息，由此引得群雄并起，众海盗们为了这笔传说中的巨额财富展开争夺，各种势力、政权不断交替，整个世界进入了动荡混乱的“大海贼时代”。\n\n生长在东海某小村庄的路飞受到海贼香克斯的精神指引，决定成为一名出色的海盗。为了达成这个目标，并找到万众瞩目的One Piece，路飞踏上艰苦的旅程。一路上他遇到了无数磨难，也结识了索隆、娜美、山治、乌索普、罗宾等一众性格各异的好友。他们携手一同展开充满传奇色彩的大冒险。',
@@ -20,7 +20,7 @@ VALUES (20000001, '海贼王', NULL, 'https://anime-1255705827.cos.ap-guangzhou.
         '暂无', NULL, '1996-01-08', 'TMS Entertainment', '连载', '悬疑 推理 犯罪', '悬疑 推理 犯罪', NULL, '10000', '名探偵コナン'),
        (20000006, '海贼王特别篇 打倒海贼强萨克！', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/Ha5fdb57f05e44b8c8d037af673d93a5cZ.jpg', 'OVA',
         '在某个海岛小渔村长大。和暂驻在渔村的大海盗红发撒古斯感情很好，于是一心想成为海盗。眼下的疤痕就是为了显示自己够狠自己用刀划的（果然够狠，汗）。可是路飞7岁时糊里糊涂的吃了海盗们抢来的恶魔果实——橡皮果实，从此再也学不会游泳。这样还能成为海盗吗？路飞的答案是——只要不掉到海里就可以了（听上去好像很有道理，可是……我真的给这个单细胞的家伙打败了）。',
-        '海贼王SP 打倒海贼强萨克', NULL, '1998-07', 'Production I.G', '完结', '搞笑 冒险 热血 励志', '搞笑 冒险 热血 励志', NULL, '10000',
+        '海贼王SP 打倒海贼强萨克', NULL, '1998-07-01', 'Production I.G', '完结', '搞笑 冒险 热血 励志', '搞笑 冒险 热血 励志', NULL, '10000',
         'ONE PIECE 倒せ!海賊ギャンザック'),
        (20000007, '海贼王TV版特别篇 路飞落下！秘境 海肚脐的大冒险', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/Ha7c40d5c87c94397b132eedc796aa288u.jpg',
         'TV', '《海贼王SP：路飞落下 秘境 海肚脐的大冒险》是尾田荣一郎导演的一部剧情电影。\n\n寻找秘宝的路飞一行，进入海肚脐的大冒险。', '暂无', NULL, '2000-12-20', '暂无', '完结',
@@ -30,7 +30,7 @@ VALUES (20000001, '海贼王', NULL, 'https://anime-1255705827.cos.ap-guangzhou.
         '海贼王剧场版1', NULL, '2000-03-04', '暂无', '完结', '搞笑 冒险 热血 励志', '搞笑 冒险 热血 励志', NULL, '10000', 'ONE PIECE the movie'),
        (20000009, '海贼王SP合集', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/H6c7f207c497e4965b144c7f79ebef8217.jpg', 'OVA',
         'TVSP&OVASP：\n\nSP01-1998-打倒海贼强萨克!\n\nSP02-1999-路飞的绝技\n\nSP03-1999-索隆的剑技\n\nSP04-2000-路飞落下 秘境 海肚脐的大冒险\n\nSP05-2001-剧场版2首映会\n\nSP06-2001-赞高的狂欢舞会\n\nSP07-2002-剧场版3首映会\n\nSP08-2002-剧场版3声优访谈\n\nSP09-2002-梦幻足球王\n\nSP10-2003-剧场版4首映会\n\nSP11-2003-在辽阔的海洋上驰骋!父亲伟大的梦想!\n\nSP12-2003-守卫!最后的大舞台\n\nSP13-2004-目标-海贼棒球王\n\nSP14-2005-海贼王的轨迹\n\nSP15-2005-年底特别企画!草帽小子路飞的捕头传\n\nSP16-2005-简单易懂 路飞大百科\n\nSP17-2006-草帽小子海贼团的秘密!\n\nSP18-2007-乔巴超人\n\nSP19-2008-ROMANCE DAWN\n\nSP20-2010-强者世界前传\n\nSP21-2012-娜美篇-航海士的眼泪与牵绊\n\nSP22-2012-路飞篇-路飞手掌岛的冒险\n\nSP23-2013-梅丽篇-另一位同伴的故事\n\nSP24-2014-薇薇回忆录-阿拉巴斯坦前奏\n\nSP25-2014-3D2Y-跨越艾斯之死!路飞与伙伴的誓言\n\nSP26-2015-萨博的故事\n\nSP27-2015-迷雾岛大冒险\n\nSP28-2013 剧场版Z特别篇 Glorious Island\n\nSP29-2013 梅丽篇—另一名伙伴的故事\n\nSP30-2014 薇薇回忆录—阿拉巴斯坦前奏\n\nSP31-2014 3D2Y 跨越艾斯之死！与路飞伙伴的誓言、\n\nSP32-2014无字幕 乔巴篇-冬季盛开的奇迹之樱\n\nSP33-2015 3D陷阱过山车\n\nSP34-2015 三兄弟的羁绊 萨博的故事',
-        '海贼王特别篇合集', NULL, '1998-07', '暂无', '完结', '搞笑 冒险 热血 励志', '搞笑 冒险 热血 励志', NULL, '10000', '暂无'),
+        '海贼王特别篇合集', NULL, '1998-07-01', '暂无', '完结', '搞笑 冒险 热血 励志', '搞笑 冒险 热血 励志', NULL, '10000', '暂无'),
        (20000010, '咕噜咕噜魔法阵剧场版', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/Hc837075d77fe4db5b729239a2b2830e1t.jpg', '剧场版',
         '传说中有个吃了后无论什么愿望都能实现的道具，名为幸福的咸菜，巨大龙在巨大山等待着勇者的愿望，只要是巨大龙认可的愿望，谁都能得到幸福的咸菜。得知此传闻的勇者仁傑和魔女歌莉决定出发寻找幸福的咸菜……', '暂无', NULL,
         '1996-04-20', 'Nippon Animation', '完结', '奇幻 搞笑 亲子 冒险', '奇幻 搞笑 亲子 冒险', NULL, '10000', '劇場版 魔法陣グルグル'),
@@ -616,7 +616,7 @@ VALUES (20000001, '海贼王', NULL, 'https://anime-1255705827.cos.ap-guangzhou.
         'タユタマ -Kiss on my Deity-'),
        (20090018, '七鬼神', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/H006f6e1c843a40cd918ece4d5ac9bb4c9.jpg', 'TV',
         '《07-GHOST～神幻拍档～》是根据雨宫由树、市原雪乃创作的同名漫画改编的动画，由Studio DEEN制作。于2009年4月6日至2009年9月22日在日本播出。\n\n千年以前，世界上存在着两个有着相同实力的强大的国家。一个是由被称为“拉法艾尔之瞳”的神所加护的巴尔斯布鲁克帝国，以及由名为“弥卡艾尔之眼”的神所加护的拉古斯王国。两国之间为了维护世界和平而订立协定，长期以来互相合作。不过就在十 年前，传言恶之死神“费亚罗廉”的身体将继续沉眠。围绕着装有费亚罗廉沉睡千年肉体的“潘多拉之盒”引发了激战，导致了拉古斯王国的毁灭。据巴尔斯布鲁克帝国的史书所记载的历史称，是因为拉古斯王国打算取得两块圣石——“拉法艾尔之眼”和“弥卡艾尔之眼”，而破坏了双方的协定。最后和巴尔斯布鲁克帝国对立而走向毁灭。\n\n10年后，在拉古斯王国的城池陷落前，曾有一个戴着誓言颈环的男子出现在泰德的梦中，并告诉他：“泰德，总有一天你会知道自己真正的使命是什么的。”而这个梦反复出现在他的梦中，使泰德困惑不已。此时的他和好友米卡杰已经成为了巴尔斯布鲁克帝国陆军士官学校的优秀学生。他们为了能进入梦想已久的霍普鲁克要塞而向毕业考试发起了挑战。对于毕业后的生活充满了期待。\n\n可是，当泰德遇到了率领着战斗部队的阿亚纳米参谋长时，他的记忆恢复了。\n\n“梦中见到的男人。”\n\n在旁边站着的是拿着染满鲜血的宝剑的阿亚纳米.而那个静静地躺卧在血海中的男人，“那是……我的父亲！”泰德终于想起来自己是拉古斯的亡国王子。于是，泰德逃离了军队。',
-        '神幻拍档', NULL, '2009-04-206', 'Studio DEEN', '完结', '奇幻 冒险 战斗', '奇幻 冒险 战斗', NULL, '10000', '07-GHOST'),
+        '神幻拍档', NULL, '2009-04-20', 'Studio DEEN', '完结', '奇幻 冒险 战斗', '奇幻 冒险 战斗', NULL, '10000', '07-GHOST'),
        (20090019, '魔法老师！～另一个世界～', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/H5b836e09b04447588300cc19ca8f4809j.jpg', 'OVA',
         '在涅吉的带领下，全班同学都跟随依文进行着严酷的修行。当修行结束后，为了寻找涅吉的父亲纳吉，大家来到了涅吉的故乡威尔士！\n\n往魔法世界的大门开启，涅吉和同学们抱着轻松旅行的心情踏上了旅程。可是等待着他们的，却是涅吉宿命的对手菲特的身影…！\n\n赤松健所作的《魔法老师》，作品中出身英国魔法世界的10岁天才少年“涅吉”，为了完成魔法学校的任务而来到日本担任中学导师，\n\n故事描述他在巨大的学园中与全部都是女生的班级一同经历的各种冒险和事件。\n\n《魔法老师～另一个世界～》为讲谈社魔法老师系列OAD第二期，预定制作四集，并将在今年9月开始陆续附赠于该作的日文版漫画单行本发售。\n\n除此之外，现已确定2011年的“Negima Saga Final长篇动画化决定”会先上映剧场版，至于之后会不会有长篇TV连载则还是未知数。',
         '魔法老师OVA ～另一个世界～', NULL, '2009-09-17', 'Studio Pastoral', '完结', '搞笑 校园 后宫 奇幻', '搞笑 校园 后宫 奇幻', NULL, '10000',
@@ -3138,7 +3138,7 @@ VALUES (20000001, '海贼王', NULL, 'https://anime-1255705827.cos.ap-guangzhou.
         '《魔法少女奈叶ViVid》是《魔法少女奈叶》系列的第四期动画，根据都筑真纪原作、藤真拓哉作画的同名漫画改编。在2014年8月举办的夏Comiket（C86）会场上，公布了其TV动画化的决定。\n\n《魔法少女奈叶ViVid》以奈叶收养的女孩薇薇欧为主人公。故事讲述了“JS事件”之后，曾经的空中王牌奈叶收起羽翼暂作休息，而刚进入魔法学校初等科的薇薇欧在掌握了魔法基本知识后，收到了奈叶和菲特赠送的专用法器“神圣之心”；而另一边，自称为“霸王”的神秘人物英格威特，正准备掀起一股新的波澜……',
         '暂无', NULL, '2015-04-03', 'A-1 Pictures', '完结', '百合 战斗 魔法 奇幻', '百合 战斗 魔法 奇幻', NULL, '10000',
         '魔法少女リリカルなのはViVid');
-INSERT INTO `anime_info`(`id`,  `name`,  `district`,  `cover_url`,  `type`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
+INSERT INTO `anime_info`(`id`,  `name`,  `district_name`,  `cover_url`,  `type_name`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
   `play_status`,  `plot_type`,  `tags`,  `official_website`,  `play_heat`,  `original_name`)
 VALUES (20150144, 'Love Live! The School Idol Movie', NULL,
         'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/Hd6746e8b8a024802abb7838e9094d8c2Y.jpg', '剧场版',
@@ -6712,7 +6712,7 @@ VALUES (20150144, 'Love Live! The School Idol Movie', NULL,
        (20190149, 'HELLO WORLD', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/Hde8767a63432487697a131d894b7ebd4j.jpg', '剧场版',
         '《HELLO WORLD》是伊藤智彦执导，野崎窗编剧，堀口悠纪子角色设计，Graphinica制作的原创动画电影。作品是以2027年的日本京都为舞台的SF爱情故事。\n\n不论世界如何崩坏，我想再见你一面－－\n\n本片以2027年的京都为舞台，描述一名高中生直实的面前，突然出现一位自称是来自10年后的自己的青年，希望直实和他一起改变未来，只为了拯救在3个月后会开始交往的同学一行瑠璃。然而，其背后真正的目的究竟为何？这个现实世界背后又隐藏着怎样惊人的秘密？',
         '你好世界', NULL, '2019-09-20', 'Graphinica', '完结', '科幻 爱情', '科幻 爱情', NULL, '10000', 'HELLO WORLD');
-INSERT INTO `anime_info`(`id`,  `name`,  `district`,  `cover_url`,  `type`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
+INSERT INTO `anime_info`(`id`,  `name`,  `district_name`,  `cover_url`,  `type_name`,  `instruction`,  `other_name`,  `author`,  `premiere_date`,  `company`,
   `play_status`,  `plot_type`,  `tags`,  `official_website`,  `play_heat`,  `original_name`)
 VALUES (20190150, '荒野的寿飞行队外传 天空的春风飞行队', NULL, 'https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/H28b3f557901a46f593869fa24e672f0ce.jpg', 'WEB',
         '在2019年3月下旬举行的AnimeJapan2019上，短动画片的外传作品“大空的halkase飞行队”发表了。同年4月“荒野上的kotobuki飞行队大天空的起飞女孩!”预定在内及Youtube上公开，第一集将于4月10日播出，第二集预定在4月末播出，之后基本上都在月末发表。',
