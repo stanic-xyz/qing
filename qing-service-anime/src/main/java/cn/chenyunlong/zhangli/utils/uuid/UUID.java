@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+
 package cn.chenyunlong.zhangli.utils.uuid;
 
 import cn.chenyunlong.zhangli.core.exception.UtilException;
@@ -109,7 +121,7 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException nsae) {
+        } catch (NoSuchAlgorithmException nsa) {
             throw new InternalError("MD5 not supported");
         }
         byte[] md5Bytes = md.digest(name);
@@ -136,15 +148,15 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
             components[i] = "0x" + components[i];
         }
 
-        long mostSigBits = Long.decode(components[0]).longValue();
+        long mostSigBits = Long.decode(components[0]);
         mostSigBits <<= 16;
-        mostSigBits |= Long.decode(components[1]).longValue();
+        mostSigBits |= Long.decode(components[1]);
         mostSigBits <<= 16;
-        mostSigBits |= Long.decode(components[2]).longValue();
+        mostSigBits |= Long.decode(components[2]);
 
-        long leastSigBits = Long.decode(components[3]).longValue();
+        long leastSigBits = Long.decode(components[3]);
         leastSigBits <<= 48;
-        leastSigBits |= Long.decode(components[4]).longValue();
+        leastSigBits |= Long.decode(components[4]);
 
         return new UUID(mostSigBits, leastSigBits);
     }
@@ -318,22 +330,22 @@ public final class UUID implements java.io.Serializable, Comparable<UUID> {
         final StringBuilder builder = new StringBuilder(isSimple ? 32 : 36);
         // time_low
         builder.append(digits(mostSigBits >> 32, 8));
-        if (false == isSimple) {
+        if (!isSimple) {
             builder.append('-');
         }
         // time_mid
         builder.append(digits(mostSigBits >> 16, 4));
-        if (false == isSimple) {
+        if (!isSimple) {
             builder.append('-');
         }
         // time_high_and_version
         builder.append(digits(mostSigBits, 4));
-        if (false == isSimple) {
+        if (!isSimple) {
             builder.append('-');
         }
         // variant_and_sequence
         builder.append(digits(leastSigBits >> 48, 4));
-        if (false == isSimple) {
+        if (!isSimple) {
             builder.append('-');
         }
         // node
