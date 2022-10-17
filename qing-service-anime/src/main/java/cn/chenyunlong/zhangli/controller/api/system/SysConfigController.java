@@ -1,13 +1,25 @@
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+
 package cn.chenyunlong.zhangli.controller.api.system;
 
-import cn.chenyunlong.zhangli.model.entities.sys.SysConfig;
-import cn.chenyunlong.zhangli.service.ISysConfigService;
 import cn.chenyunlong.zhangli.annotation.Log;
 import cn.chenyunlong.zhangli.core.constant.UserConstants;
 import cn.chenyunlong.zhangli.core.controller.BaseController;
-import cn.chenyunlong.zhangli.core.page.TableDataInfo;
 import cn.chenyunlong.zhangli.core.enums.BusinessType;
 import cn.chenyunlong.zhangli.core.exception.ServiceException;
+import cn.chenyunlong.zhangli.core.page.TableDataInfo;
+import cn.chenyunlong.zhangli.model.entities.sys.SysConfig;
+import cn.chenyunlong.zhangli.service.ISysConfigService;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

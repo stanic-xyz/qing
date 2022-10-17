@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+
 package cn.chenyunlong.zhangli.security.support;
 
 import cn.chenyunlong.zhangli.config.properties.SecurityProperties;
@@ -26,11 +38,11 @@ import java.util.stream.Collectors;
 @Component
 public class TokenProvider {
 
-    private static final String            AUTHORITIES_HEADER = "auth";
-    private static final String            FIELD_USER_ID      = "userId";
-    private static final String            USER_INFO          = "userInfo";
+    private static final String AUTHORITIES_HEADER = "auth";
+    private static final String FIELD_USER_ID = "userId";
+    private static final String USER_INFO = "userInfo";
     private final ZhangliProperties zhangliProperties;
-    private final        ObjectMapper      objectMapper;
+    private final ObjectMapper objectMapper;
 
     public TokenProvider(ZhangliProperties zhangliProperties, ObjectMapper objectMapper) {
         this.zhangliProperties = zhangliProperties;
@@ -160,7 +172,8 @@ public class TokenProvider {
         try {
             Jwts.parser().setSigningKey(zhangliProperties.getSecurity().getSecretKey()).parseClaimsJws(jwtToken);
             return true;
-        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | ExpiredJwtException | IllegalArgumentException ignore) {
+        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | ExpiredJwtException |
+                 IllegalArgumentException ignore) {
             return false;
         }
     }
