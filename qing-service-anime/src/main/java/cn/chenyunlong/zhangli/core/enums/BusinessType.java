@@ -1,12 +1,23 @@
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+
 package cn.chenyunlong.zhangli.core.enums;
 
 /**
  * 业务操作类型
- * 
+ *
  * @author ruoyi
  */
-public enum BusinessType
-{
+public enum BusinessType {
     /**
      * 其它
      */
@@ -51,7 +62,7 @@ public enum BusinessType
      * 生成代码
      */
     GENCODE,
-    
+
     /**
      * 清空
      */
