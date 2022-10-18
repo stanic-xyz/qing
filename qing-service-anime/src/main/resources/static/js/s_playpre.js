@@ -1,6 +1,20 @@
 
 
 
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ *
+ */
+
+
 ///////////////////////////////
 
 var __g_qlive_loadcnt = 0;
@@ -16,7 +30,7 @@ function __qlive_play_callbak(status, _in_id, _json_obj, cb_getplay_url){
   //
   __g_qlive_loadcnt += 1;
 
-  
+
   //for AGE --
   if(false){
     if(_vurl.match(/^1098_/)){
@@ -73,7 +87,7 @@ function __qlive_play(_in_playid, lhf, cb, _in_id, _json_obj, cb_getplay_url) {
 
   //
   testvideo.setAttribute('src', url);
-  
+
   //
   return true;
 
@@ -191,7 +205,7 @@ function __getset_play(_in_id, cb_getplay_url, cb_cnt){
           const _vurl = _json_obj['vurl'];
           const _play_ex = _json_obj['ex'];
           const vlt_lr = __get_vlt_lr(_play_ex);
-  
+
           //
           if(__qpic_chkvurl_converting(_vurl)){
             return false;
@@ -292,7 +306,7 @@ function __play_hide_emptyplay(){
     _zx_text = _zx_text.replace(/[\r\n ]*/, '');
     var _sel_li_zx = $('li#zx_' + (i + 1));
     if(_iPlay != i){
-      _sel_li_zx.attr('class', 'normalxz');  
+      _sel_li_zx.attr('class', 'normalxz');
       _sel_div_tzx.attr('class', 'down-content xzundis');
       if(!_zx_text.length){
         _sel_li_zx.hide();
@@ -321,14 +335,14 @@ function __play_ep_scroll(){
   const _ep0_pos = _sel_lis[0].offsetTop;
   const _ep_pos = _sel_lis[_iEP].offsetTop;
   $("div.xzdis ul").scrollTop(_ep_pos - _ep0_pos);
-  
+
   //
   const __t_sel_ep = 'div.xzdis ul li:nth-child(' + (_iEP + 1) + ')';
   $(__t_sel_ep).css('border', '1px solid #F00');
   $(__t_sel_ep + ' a span').css('color', '#F00');
   $(__t_sel_ep + ' p').css('color', '#F00');
 
-  
+
 }
 
 
@@ -341,7 +355,7 @@ var __g_new_playleft_id = null;
 function __playfull_set(_in_title_on, _in_exXP){
   if (!navigator.userAgent.match(/(iPhone|iPod|Android|mobile|blackberry|webos|incognito|webmate|bada|nokia|lg|ucweb|skyfire)/i)) {
     $(".playerbox").append('<a class="fullscn' + _in_exXP + '">' + _in_title_on + '</a>');
-    
+
     //
     if(!__g_isfullscn || !_in_exXP){
       $((".fullscn" + _in_exXP)).show();

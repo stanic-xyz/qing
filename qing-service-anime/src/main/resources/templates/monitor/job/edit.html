@@ -1,3 +1,16 @@
+<!--
+  ~ Copyright (c) 2019-2022 YunLong Chen
+  ~ Project Qing is licensed under Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~          http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+  ~ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+  ~ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  ~
+  -->
+
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
@@ -40,16 +53,16 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">执行策略：</label>
 				<div class="col-sm-8">
-					<label class="radio-box"> <input type="radio" th:field="*{misfirePolicy}" name="misfirePolicy" value="1" /> 立即执行 </label> 
-					<label class="radio-box"> <input type="radio" th:field="*{misfirePolicy}" name="misfirePolicy" value="2" /> 执行一次 </label> 
+					<label class="radio-box"> <input type="radio" th:field="*{misfirePolicy}" name="misfirePolicy" value="1" /> 立即执行 </label>
+					<label class="radio-box"> <input type="radio" th:field="*{misfirePolicy}" name="misfirePolicy" value="2" /> 执行一次 </label>
 					<label class="radio-box"> <input type="radio" th:field="*{misfirePolicy}" name="misfirePolicy" value="3" /> 放弃执行 </label>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">并发执行：</label>
 				<div class="col-sm-8">
-					<label class="radio-box"> <input type="radio" th:field="*{concurrent}" name="concurrent" value="0"/> 允许 </label> 
-					<label class="radio-box"> <input type="radio" th:field="*{concurrent}" name="concurrent" value="1"/> 禁止 </label> 
+					<label class="radio-box"> <input type="radio" th:field="*{concurrent}" name="concurrent" value="0"/> 允许 </label>
+					<label class="radio-box"> <input type="radio" th:field="*{concurrent}" name="concurrent" value="1"/> 禁止 </label>
 				</div>
 			</div>
 			<div class="form-group">
@@ -72,7 +85,7 @@
 	<th:block th:include="include :: footer" />
 	<script type="text/javascript">
 		var prefix = ctx + "monitor/job";
-	
+
 		$("#form-job-edit").validate({
 			onkeyup: false,
 			rules:{
@@ -100,7 +113,7 @@
 	        },
 	        focusCleanup: true
 		});
-		
+
 		function submitHandler() {
 	        if ($.validate.form()) {
 	        	$.operate.save(prefix + "/edit", $('#form-job-edit').serialize());

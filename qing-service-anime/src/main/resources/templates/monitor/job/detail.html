@@ -1,3 +1,16 @@
+<!--
+  ~ Copyright (c) 2019-2022 YunLong Chen
+  ~ Project Qing is licensed under Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~          http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+  ~ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+  ~ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  ~
+  -->
+
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
@@ -5,7 +18,7 @@
 </head>
 <body class="white-bg">
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
-	
+
 	<form class="form-horizontal m-t" id="jobLogForm" th:if="${name == 'jobLog'}">
 	    <div class="form-group">
 			<label class="col-sm-3 control-label">日志序号：</label>
@@ -43,7 +56,7 @@
 			</div>
 		</div>
 	</form>
-	
+
 	<form class="form-horizontal m-t" id="jobForm" th:if="${name == 'job'}">
 	    <div class="form-group">
 			<label class="col-sm-3 control-label">任务序号：</label>
@@ -93,7 +106,7 @@
 			</div>
 		</div>
 	</form>
-	
+
     </div>
 </body>
 </html>

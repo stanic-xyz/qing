@@ -8,15 +8,19 @@
  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
  * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
+ *
  */
 
 package cn.chenyunlong.natcross.tools;
 
+import cn.chenyunlong.nat.tools.RSA2Utils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 /**
+ * rsa2工具包测试
+ *
  * @author 陈云龙
  * @date 2020/11/18
  **/
@@ -28,21 +32,27 @@ public class RSA2UtilsTest {
         keys.keySet().forEach(key -> System.out.println(key + "\t:" + keys.get(key)));
     }
 
+    @Test
     public void testGetPublicKey() {
     }
 
+    @Test
     public void testGetPrivateKey() {
     }
 
+    @Test
     public void testPublicEncrypt() {
     }
 
+    @Test
     public void testPrivateDecrypt() {
     }
 
+    @Test
     public void testPrivateEncrypt() {
     }
 
+    @Test
     public void testPublicDecrypt() {
     }
 }

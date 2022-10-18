@@ -2,7 +2,7 @@ server:
   port: 8888
 spring:
   application:
-    name: zhangli-config-git
+    name: qing-config-git
   profiles:
     active: prod
 eureka:

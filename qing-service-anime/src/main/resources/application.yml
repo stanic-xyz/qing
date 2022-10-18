@@ -4,7 +4,7 @@ spring:
   profiles:
     active: prod
   application:
-    name: zhangli-service-provider
+    name: qing-service-anime
   messages:
     encoding: UTF-8
   jackson:
@@ -49,7 +49,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
   global-config:
     banner: false
-  type-aliases-package: cn.chenyunlong.zhangli.**.domain,cn.chenyunlong.zhangli.**.entities
+  type-aliases-package: cn.chenyunlong.qing.**.domain,cn.chenyunlong.qing.**.entities
   mapper-locations: classpath*:mapper/**/*Mapper.xml
 zhangli:
   file:

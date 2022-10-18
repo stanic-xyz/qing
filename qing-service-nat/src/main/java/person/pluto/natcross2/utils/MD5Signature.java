@@ -8,6 +8,7 @@
  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
  * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
+ *
  */
 
 package person.pluto.natcross2.utils;
@@ -24,32 +25,39 @@ import java.util.Random;
  * MD5散列签名
  * </p>
  *
- * @author Pluto
+ * @author Stan
  * @since 2020-01-08 10:13:50
  */
 public final class MD5Signature {
 
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
-    private static final String RANDOMBASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String RANDOM_BASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final Random RANDOM = new Random();
 
-    private static final String HEXBASE = "0123456789abcdef";
+    private static final String HEX_BASE = "0123456789abcdef";
+
+
+    /**
+     * 隐藏public构造器
+     */
+    private MD5Signature() {
+
+    }
 
     /**
      * 转换为16进制字符
      *
-     * @param bytes
-     * @return
-     * @author Pluto
+     * @param bytes 字节
+     * @return {@link String}
+     * @author Stan
      * @since 2019-12-05 12:34:48
      */
     public static String toHexString(byte[] bytes) {
-        StringBuffer stringBuffer = new StringBuffer(bytes.length << 1);
-
+        StringBuilder stringBuffer = new StringBuilder(bytes.length << 1);
         for (byte tmp : bytes) {
-            stringBuffer.append(HEXBASE.charAt(tmp >> 4 & 0xf));
-            stringBuffer.append(HEXBASE.charAt(tmp & 0xf));
+            stringBuffer.append(HEX_BASE.charAt(tmp >> 4 & 0xf));
+            stringBuffer.append(HEX_BASE.charAt(tmp & 0xf));
         }
         return stringBuffer.toString();
     }
@@ -57,25 +65,26 @@ public final class MD5Signature {
     /**
      * 获取随机数
      *
-     * @param count
-     * @return
-     * @author Pluto
+     * @param count 字符长度
+     * @return {@link String}
+     * @author Stan
      * @since 2019-12-05 11:20:35
      */
     public static String getRandomStr(int count) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < count; ++i) {
-            sb.append(RANDOMBASE.charAt(RANDOM.nextInt(RANDOMBASE.length())));
+            sb.append(RANDOM_BASE.charAt(RANDOM.nextInt(RANDOM_BASE.length())));
         }
         return sb.toString();
     }
 
     /**
+     * int,字节
      * integer 转换为 byte[]
      *
-     * @param source
-     * @return
-     * @author Pluto
+     * @param source 需要转化的int类型对象
+     * @return {@link byte[]}
+     * @author Stan
      * @since 2019-12-05 11:20:53
      */
     public static byte[] intToBytes(int source) {
@@ -84,11 +93,12 @@ public final class MD5Signature {
     }
 
     /**
+     * bytes2int
      * byte[] 转 integer
      *
-     * @param byteArr
-     * @return
-     * @author Pluto
+     * @param byteArr 需要转化的byte数组
+     * @return int
+     * @author Stan
      * @since 2019-12-05 11:21:07
      */
     public static int bytes2int(byte[] byteArr) {
@@ -102,22 +112,28 @@ public final class MD5Signature {
         return count;
     }
 
+    /**
+     * 对参数进行签名
+     *
+     * @param params 参数个数
+     * @return {@link String}
+     */
     public static String getSignature(String... params) {
         return getSignature(CHARSET, params);
     }
 
     /**
-     * 对参数进行MD5散列
+     * 对参数进行MD5散列签名
      *
-     * @param params
-     * @return
-     * @throws NoSuchAlgorithmException
-     * @author Pluto
+     * @param charset 字符集
+     * @param params  参数个数
+     * @return {@link String}
+     * @author Stan
      * @since 2019-12-05 12:35:52
      */
     public static String getSignature(Charset charset, String... params) {
         Arrays.sort(params);
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
 
         for (int i = 0; i < 4; ++i) {
             stringBuffer.append(params[i]);
