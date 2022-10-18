@@ -8,20 +8,29 @@
  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
  * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
+ *
  */
 
 package cn.chenyunlong.natcross.tools;
 
+import cn.chenyunlong.nat.tools.RSAEncrypt;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
+ * RSA加密工具测试
+ *
  * @author 陈云龙
  * @date 2020/11/18
  **/
 public class RSAEncryptTest {
 
+    /**
+     * 测试rsa
+     *
+     * @throws Exception 异常
+     */
     @Test
     public void testRSA() throws Exception {
         String publicPath = "src/test/resources/ssl"; //公匙存放位置

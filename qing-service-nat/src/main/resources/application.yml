@@ -8,7 +8,7 @@ server:
     key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
 spring:
   application:
-    name: zhangli-service-natcross-provider
+    name: qing-service-nat-provider
   profiles:
     active: dev
   datasource:

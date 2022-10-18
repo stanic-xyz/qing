@@ -10,15 +10,16 @@
   ~ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
   ~ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
   ~ See the Mulan PSL v2 for more details.
+  ~
   -->
 
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.chenyunlong.natcross.mapper.ListenPortMapper">
+<mapper namespace="cn.chenyunlong.nat.mapper.ListenPortMapper">
     <!--   映射关系 -->
-    <resultMap id="BaseResult" type="cn.chenyunlong.natcross.entity.ListenPort">
+    <resultMap id="BaseResult" type="cn.chenyunlong.nat.entity.ListenPort">
         <result column="listen_port" property="listenPort"/>
         <result column="port_describe" property="portDescribe"/>
         <result column="dest_ip" property="destIp"/>
@@ -54,7 +55,7 @@
         `zhangli`.`t_listen_port`
     </select>
 
-    <insert id="save" parameterType="cn.chenyunlong.natcross.entity.ListenPort">
+    <insert id="save" parameterType="cn.chenyunlong.nat.entity.ListenPort">
         INSERT INTO `zhangli`.`t_listen_port` (
           `listen_port`,
           `port_describe`,

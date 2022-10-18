@@ -5,7 +5,7 @@ spring:
     restart:
       enabled: true
   datasource:
-    url: jdbc:mysql://db:3306/zhangli?serverTimezone=GMT%2B8
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:3306/qing?serverTimezone=GMT%2B8
     hikari:
       username: root
       password: 123456
@@ -13,7 +13,7 @@ spring:
     cache: false
     prefix: file:${user.dir}/qing-service-anime/src/main/resources/templates/
   redis:
-    host: 127.0.0.1
+    host: ${REDIS_HOST:127.0.0.1}
     port: 6379
 eureka:
   instance:

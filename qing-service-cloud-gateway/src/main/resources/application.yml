@@ -11,15 +11,15 @@ spring:
         enabled: false
     gateway:
       routes:
-        - id: zhangli-service-provider
-          uri: lb://zhangli-service-provider
+        - id: qing-service-anime
+          uri: lb://qing-service-anime
           filters:
             - StripPrefix=1
           predicates:
             - After=2019-09-24T16:30:00+08:00[Asia/Shanghai]
             - Path=/anime/**
-        - id: zhangli-service-natcross-provider
-          uri: lb://zhangli-service-natcross-provider
+        - id: qing-service-nat
+          uri: lb://qing-service-nat-provider
           filters:
             - StripPrefix=1
           predicates:

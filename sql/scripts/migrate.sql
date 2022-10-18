@@ -9,9 +9,9 @@ create unique index user_username_index on user (username);
 SELECT concat('ALTER TABLE ', table_schema, '.', table_name,
               ' add column create_time  int, add column update_time  datetime,add column search_value varchar(255),add column create_by    varchar(255), add column update_by    varchar(255),add column remark      varchar(255);')
 FROM information_schema.TABLES t
-WHERE table_schema = 'zhangli';
+WHERE table_schema = 'qing';
 
-ALTER TABLE zhangli.anime_info
+ALTER TABLE qing.anime_info
     add column create_time  int,
     add column update_time  datetime,
     add column search_value varchar(255),
@@ -47,13 +47,13 @@ BEGIN
         SELECT table_name
         FROM INFORMATION_SCHEMA.TABLES
              -- test = 数据库名称
-        WHERE table_schema = 'zhangli'
+        WHERE table_schema = 'qing'
           AND table_name NOT IN (SELECT t.table_name
                                  FROM (SELECT table_name, column_name
                                        FROM information_schema.columns
                                        WHERE table_name IN (SELECT table_name
                                                             FROM INFORMATION_SCHEMA.TABLES
-                                                            WHERE table_schema = 'zhangli')) t
+                                                            WHERE table_schema = 'qing')) t
                                  WHERE t.column_name = 'object_name');
 
     DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET s_tablename = NULL;
@@ -77,6 +77,19 @@ BEGIN
 
 END;
 $$
+
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ *
+ */
 
 #执行存储过程
 CALL addColumn();

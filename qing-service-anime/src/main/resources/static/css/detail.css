@@ -1,13 +1,26 @@
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ *
+ */
+
 
 .div_left {
 	width: 272px;
 	display: inline-block;
-	vertical-align: top; 
+	vertical-align: top;
 }
 .div_right {
 	width: 738px;
 	display: inline-block;
-	vertical-align: top; 
+	vertical-align: top;
 	margin-left: 0px;
 	margin-right: -8px;
 }
@@ -36,7 +49,7 @@
 	display: inline-block;
 	margin: 3px 0px;
 	word-break:break-all;
-	word-wrap:break-word; 
+	word-wrap:break-word;
 }
 
 .relates_series {
@@ -289,11 +302,11 @@
 		min-width: 90%;
 		max-width: unset;
 	}
-	
+
 	.detail_imform_show_full{
 		display: inline-block;
 	}
-	
+
 	.baseblock:nth-child(2) .blockcontent .baseblock2 .detail_title1,
 	.detail_imform_kv:nth-child(4),
 	.detail_imform_kv:nth-child(6),
@@ -303,7 +316,7 @@
 	}
 	.baseblock:nth-child(2) div.blockcontent {
 		padding: 2px 4px 0px 0px;
-	
+
 	}
 	.baseblock2 .blocktitle {
 		padding: 4px 4px 0px 4px;
