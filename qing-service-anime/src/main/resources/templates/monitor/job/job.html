@@ -1,3 +1,16 @@
+<!--
+  ~ Copyright (c) 2019-2022 YunLong Chen
+  ~ Project Qing is licensed under Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~          http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+  ~ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+  ~ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  ~
+  -->
+
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
@@ -33,7 +46,7 @@
 					</div>
 				</form>
 			</div>
-			
+
 			<div class="btn-group-sm" id="toolbar" role="group">
 				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="monitor:job:add">
 	                <i class="fa fa-plus"></i> 新增
@@ -51,7 +64,7 @@
 		            <i class="fa fa-list"></i> 日志
 		        </a>
 	        </div>
-        
+
 	        <div class="col-sm-12 select-table table-striped">
 			    <table id="bootstrap-table"></table>
 			</div>
@@ -137,7 +150,7 @@
 		    };
 		    $.table.init(options);
 		});
-        
+
 		/* 调度任务状态显示 */
 		function statusTools(row) {
 		    if (row.status == 1) {
@@ -146,7 +159,7 @@
     			return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="stop(\'' + row.jobId + '\', \'' + row.jobGroup + '\')"></i> ';
     		}
 		}
-		
+
 		/* 立即执行一次 */
 		function run(jobId) {
 			$.modal.confirm("确认要立即执行一次任务吗？", function() {
