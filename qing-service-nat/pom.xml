@@ -22,14 +22,12 @@
         <relativePath/>
     </parent>
 
-    <artifactId>qing-service-natcross</artifactId>
-    <name>qing-service-natcross</name>
+    <artifactId>qing-service-nat</artifactId>
+    <name>qing-service-nat</name>
     <version>1.0.0.RELEASE</version>
-    <description>Natcross Service project for qingApplication</description>
+    <description>NAT Service project for qingApplication</description>
 
     <properties>
-        <grpc.version>1.49.0</grpc.version>
-        <protobuf.version>3.21.5</protobuf.version>
         <flowable.version>6.6.0</flowable.version>
     </properties>
 
@@ -81,7 +79,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.9</version>
+            <version>1.10.0</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -90,30 +88,12 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>2.0.12</version>
-        </dependency>
-        <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-netty</artifactId>
-            <version>${grpc.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-protobuf</artifactId>
-            <version>${grpc.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-stub</artifactId>
-            <version>${grpc.version}</version>
-            <scope>provided</scope>
+            <version>2.0.15</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>${protobuf.version}</version>
+            <version>3.21.7</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -146,32 +126,12 @@
                 <configuration>
                     <repository>${docker.registry.prefix}/${project.artifactId}</repository>
                     <tag>${docker.registry.tag}</tag>
-                    <username>${docker.registry.username}</username>
-                    <password>${docker.registry.password}</password>
+                    <username>${registry_username}</username>
+                    <password>${registry_password}</password>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.xolstice.maven.plugins</groupId>
-                <artifactId>protobuf-maven-plugin</artifactId>
-                <version>0.5.0</version>
-                <configuration>
-                    <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
-                    </protocArtifact>
-                    <pluginId>grpc-java</pluginId>
-                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
-                    </pluginArtifact>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>compile-custom</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

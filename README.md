@@ -14,10 +14,9 @@
 
 #### 以下是关于项目的运行
 
+目前的计划是集成到自动构建自动部署中，使用的工具是coding的devops平台[CODING项目协同管理平台](https://stanic.coding.net/)
 
-目前的计划是集成到自动构建自动部署中，使用的工具是coding的devops平台[https://stanic.coding.net/](CODING项目协同管理平台)
-
-项目演示地址： [http://www.zlllll.我爱你/index.html](http://www.zlllll.我爱你/index.html)  暂时还没有做好部署，以后有机会会传上去让大家看看的
+项目演示地址： [http://www.chenyunlong.cn/index.html](http://www.chenyunlong.cn/index.html)  暂时还没有做好部署，以后有机会会传上去让大家看看的
 
 该项目是本人在学习微服务中的一些实践，可以简单的作为参考（目前还没有完全实现，所以参考意义不大）
 
@@ -48,7 +47,7 @@
 
 1. 先安装MySQL数据库
 2. mvn install
-3. java -jar zhangli-eureka-service.jar
+3. java -jar qing-eureka-service.jar
 4. 数据库使用MySQL数据库，数据库连接
 
 #### 使用说明
@@ -61,6 +60,8 @@
         - txt.defaultZone.chenyunlong.cn
     - 使用自建DNS服务器
 - 使用NACOS作为注册中心
+    - 设置注册中心地址：http://nacos.chenyunlong.cn/nacos/
+    - 域名解析设置了：
 
 #### 参与贡献
 
