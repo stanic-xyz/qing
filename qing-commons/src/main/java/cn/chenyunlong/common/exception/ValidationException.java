@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class ValidationException extends RuntimeException {
     @Getter
-    private List<ValidateResult> result;
+    private final List<ValidateResult> result;
 
     public ValidationException(List<ValidateResult> list) {
         super();
