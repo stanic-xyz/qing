@@ -1,5 +1,3 @@
-
-
 /*
  * Copyright (c) 2019-2022 YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
@@ -15,10 +13,10 @@
 
 ///////////
 
-function __trim_right(_in_str, _in_cch){
+function __trim_right(_in_str, _in_cch) {
     var _hf_i_end = undefined;
-    for (var i = (_in_str.length-1); i > 0; i--){
-        if(_in_cch != _in_str[i]){
+    for (var i = (_in_str.length - 1); i > 0; i--) {
+        if (_in_cch != _in_str[i]) {
             break;
         }
         _hf_i_end = i;
@@ -26,7 +24,7 @@ function __trim_right(_in_str, _in_cch){
 
     //
     var _hf_str = _in_str;
-    if(_hf_i_end != undefined){
+    if (_hf_i_end != undefined) {
         _hf_str = _hf_str.slice(0, _hf_i_end);
     }
 
@@ -37,15 +35,15 @@ function __trim_right(_in_str, _in_cch){
 
 ////////
 
-function __get_url_param(_in_url, _in_name){
+function __get_url_param(_in_url, _in_name) {
     var _findex = _in_url.indexOf('?');
-    if(_findex >= 0){
+    if (_findex >= 0) {
         var _urlpath = _in_url.slice(_findex + 1);
         var _params = _urlpath.split('&');
-        for (var i = 0; i < _params.length; i++){
+        for (var i = 0; i < _params.length; i++) {
             var _s_par = _params[i].split('=');
-            if(_s_par.length > 1){
-                if(_in_name == _s_par[0]){
+            if (_s_par.length > 1) {
+                if (_in_name == _s_par[0]) {
                     return _s_par[1];
                 }
             }
@@ -59,18 +57,18 @@ function __get_url_param(_in_url, _in_name){
 
 /////////////////
 
-function __del_url_param(_in_url, _in_name){
+function __del_url_param(_in_url, _in_name) {
     var _hf_url = _in_url;
     var _findex = _in_url.indexOf('?');
-    if(_findex >= 0){
+    if (_findex >= 0) {
         _hf_url = _in_url.slice(0, _findex + 1);
         var _urlpath = _in_url.slice(_findex + 1);
         var _params = _urlpath.split('&');
-        for (var i = 0; i < _params.length; i++){
+        for (var i = 0; i < _params.length; i++) {
             var _s_par = _params[i].split('=');
-            if(_in_name != _s_par[0]){
+            if (_in_name != _s_par[0]) {
                 _hf_url += ('&' + _s_par[0] + '=');
-                if(_s_par.length > 1){
+                if (_s_par.length > 1) {
                     _hf_url += _s_par[1];
                 }
             }
@@ -88,9 +86,9 @@ function __del_url_param(_in_url, _in_name){
 
 /////////////////////
 
-function __set_url_param(_in_url, _in_name, _in_value){
+function __set_url_param(_in_url, _in_name, _in_value) {
     var _hf_url = __del_url_param(_in_url, _in_name);
-    if(String(_in_value)){
+    if (String(_in_value)) {
         const _XX = (_hf_url.indexOf('?') > 0 ? '&' : '?');
         _hf_url += (_XX + _in_name + '=' + _in_value);
     }
@@ -102,14 +100,14 @@ function __set_url_param(_in_url, _in_name, _in_value){
 
 //////////////////
 
-function __s_get_href(_in_name, _in_pval, _in_curr_url){
+function __s_get_href(_in_name, _in_pval, _in_curr_url) {
     //
     var hf_url = _in_curr_url.replace(/-AGE-RIP-/g, '-AGERIP-');
 
     //
-    const names = [null,'genre','year','letter','label','resource','order',null,'region','season','status'];
+    const names = [null, 'genre', 'year', 'letter', 'label', 'resource', 'order', null, 'region', 'season', 'status'];
     var re_resl = hf_url.match(/\/catalog\/([^?-]+)-([^?-]+)-([^?-]+)-([^?-]+)-([^?-]+)-([^?-]+)-([^?-]+)-*([^?-]*)-*([^?-]*)-*([^?-]*)/);
-    if(names.length != re_resl.length){
+    if (names.length != re_resl.length) {
         alert('if(names.length != re_resl.length){');
     }
 
@@ -124,31 +122,37 @@ function __s_get_href(_in_name, _in_pval, _in_curr_url){
     var end_index = 8;
     var set_index = 0;
     var is_li_on = false;
-    for (var i = 1; i < names.length; i++){
+    for (var i = 1; i < names.length; i++) {
         //
-        if('' == re_resl[i]){
+        if ('' == re_resl[i]) {
             re_resl[i] = 'all';
         }
         //
-        if(names[i] == _in_name){
+        if (names[i] == _in_name) {
             var new_pval = _in_pval;
-            if('全部' == new_pval){ new_pval = 'all'; }
-            if('更新时间' == new_pval){ new_pval = 'time'; }
-            if('名称' == new_pval){ new_pval = 'name'; }
+            if ('全部' == new_pval) {
+                new_pval = 'all';
+            }
+            if ('更新时间' == new_pval) {
+                new_pval = 'time';
+            }
+            if ('名称' == new_pval) {
+                new_pval = 'name';
+            }
             is_li_on = (decodeURI(re_resl[i]) == new_pval);
             re_resl[i] = new_pval;
             set_index = i;
         }
         //
-        if(i >= old_len){
-            if('all' != re_resl[i]){
+        if (i >= old_len) {
+            if ('all' != re_resl[i]) {
                 end_index = 11;
             }
         }
     }
 
     //
-    if(!set_index){
+    if (!set_index) {
         alert('if(!set_index){');
         return null;
     }
@@ -159,13 +163,13 @@ function __s_get_href(_in_name, _in_pval, _in_curr_url){
 }
 
 
-function __yx_write_catalog_sub(_in_labels, _in_curr_url){
+function __yx_write_catalog_sub(_in_labels, _in_curr_url) {
     var _html_li = '<li>{1}</li>';
     var _html_li_span = '<span>{1}：</span>'.replace('{1}', _in_labels[1]);
     var _html_li_ul = '<ul class=\"search-tag\">{1}</ul>';
     var _html_li_ul_li = '';
     const _hf_iLabel = 2;
-    for (var i = _hf_iLabel; i < _in_labels.length; i++){
+    for (var i = _hf_iLabel; i < _in_labels.length; i++) {
         var _li = '<li {3}><a href=\"{1}\">{2}{4}</a></li>\r\n';
 
         //
@@ -175,23 +179,20 @@ function __yx_write_catalog_sub(_in_labels, _in_curr_url){
         _li = _li.replace('{2}', _in_labels[i]);
 
         //
-        if(hf_resl[1]){
+        if (hf_resl[1]) {
             _li = _li.replace('{3}', 'class=on');
-        }
-        else {
+        } else {
             _li = _li.replace('{3}', '');
         }
 
 
         //
         // 特殊修正 -----------
-        if('year' == _in_labels[0] && (2000 == _in_labels[i])){
+        if ('year' == _in_labels[0] && (2000 == _in_labels[i])) {
             _li = _li.replace('{4}', '以前');
-        }
-        else if('season' == _in_labels[0] && (i > _hf_iLabel)){
+        } else if ('season' == _in_labels[0] && (i > _hf_iLabel)) {
             _li = _li.replace('{4}', '月');
-        }
-        else {
+        } else {
             _li = _li.replace('{4}', '');
         }
 
@@ -210,7 +211,7 @@ function __yx_write_catalog_sub(_in_labels, _in_curr_url){
 
 //////////
 
-(function __yx_write_catalog_table(){
+(function __yx_write_catalog_table() {
     const _curr_url = window.location.href;
 
     //

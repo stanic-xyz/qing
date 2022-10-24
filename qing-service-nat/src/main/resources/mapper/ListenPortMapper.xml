@@ -33,75 +33,66 @@
     </resultMap>
     <!--   统计所有的监听端口信息 -->
     <select id="count" resultType="int">
-        select
-        count(*)
-        FROM
-        `zhangli`.`t_listen_port`
+        select count(*)
+        FROM `zhangli`.`t_listen_port`
     </select>
     <!--查询所有的监听端口信息-->
     <select id="list" resultMap="BaseResult">
-        SELECT
-        `listen_port`,
-        `port_describe`,
-        `dest_ip`,
-        `dest_port`,
-        `on_start`,
-        `port_type`,
-        `cert_path`,
-        `cert_password`,
-        `gmt_create`,
-        `gmt_modify`
-        FROM
-        `zhangli`.`t_listen_port`
+        SELECT `listen_port`,
+               `port_describe`,
+               `dest_ip`,
+               `dest_port`,
+               `on_start`,
+               `port_type`,
+               `cert_path`,
+               `cert_password`,
+               `gmt_create`,
+               `gmt_modify`
+        FROM `zhangli`.`t_listen_port`
     </select>
 
     <insert id="save" parameterType="cn.chenyunlong.nat.entity.ListenPort">
-        INSERT INTO `zhangli`.`t_listen_port` (
-          `listen_port`,
-          `port_describe`,
-          `dest_ip`,
-          `dest_port`,
-          `on_start`,
-          `port_type`,
-          `cert_path`,
-          `cert_password`,
-          `gmt_create`,
-          `gmt_modify`
-        )
-        VALUES
-          (
-            #{listenPort},
-            #{portDescribe},
-            #{destIp},
-            #{destPort},
-            #{onStart},
-            #{portType},
-            #{certPath},
-            #{certPassword},
-            #{gmtCreate},
-            #{gmtModify}
-          );
+        INSERT INTO `zhangli`.`t_listen_port` (`listen_port`,
+                                               `port_describe`,
+                                               `dest_ip`,
+                                               `dest_port`,
+                                               `on_start`,
+                                               `port_type`,
+                                               `cert_path`,
+                                               `cert_password`,
+                                               `gmt_create`,
+                                               `gmt_modify`)
+        VALUES (#{listenPort},
+                #{portDescribe},
+                #{destIp},
+                #{destPort},
+                #{onStart},
+                #{portType},
+                #{certPath},
+                #{certPassword},
+                #{gmtCreate},
+                #{gmtModify});
 
     </insert>
 
     <select id="getByListenPort" parameterType="int" resultMap="BaseResult">
-        SELECT
-          `listen_port`,
-          `port_describe`,
-          `dest_ip`,
-          `dest_port`,
-          `on_start`,
-          `port_type`,
-          `cert_path`,
-          `cert_password`,
-          `gmt_create`,
-          `gmt_modify`
-        FROM
-          `zhangli`.`t_listen_port`
-        WHERE `listen_port`=#{listenPort}
+        SELECT `listen_port`,
+               `port_describe`,
+               `dest_ip`,
+               `dest_port`,
+               `on_start`,
+               `port_type`,
+               `cert_path`,
+               `cert_password`,
+               `gmt_create`,
+               `gmt_modify`
+        FROM `zhangli`.`t_listen_port`
+        WHERE `listen_port` = #{listenPort}
     </select>
 
     <delete id="removeById" parameterType="int">
-        DELETE FROM t_listen_port WHERE listen_port =#{listenPort}
+        DELETE
+        FROM t_listen_port
+        WHERE listen_port = #{listenPort}
     </delete>
 </mapper>
