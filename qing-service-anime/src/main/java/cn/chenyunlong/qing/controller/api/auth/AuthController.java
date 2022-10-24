@@ -13,12 +13,12 @@
 
 package cn.chenyunlong.qing.controller.api.auth;
 
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.core.enums.MFAType;
-import cn.chenyunlong.qing.core.exception.LoginErrorException;
 import cn.chenyunlong.qing.annotation.Log;
 import cn.chenyunlong.qing.cache.lock.CacheLock;
+import cn.chenyunlong.qing.core.ApiResult;
+import cn.chenyunlong.qing.core.enums.MFAType;
 import cn.chenyunlong.qing.core.exception.AbstractException;
+import cn.chenyunlong.qing.core.exception.LoginErrorException;
 import cn.chenyunlong.qing.model.dto.LoginPreCheckDTO;
 import cn.chenyunlong.qing.model.entities.Permission;
 import cn.chenyunlong.qing.model.entities.User;

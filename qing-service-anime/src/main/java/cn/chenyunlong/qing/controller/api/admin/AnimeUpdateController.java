@@ -18,6 +18,7 @@ import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
 import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.service.AnimeRecommendService;
 import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
@@ -32,12 +33,9 @@ import java.util.List;
 @Validated
 @Api(tags = "api/anime/update")
 @RestController
+@RequiredArgsConstructor
 public class AnimeUpdateController {
     private final AnimeRecommendService animeRecommendService;
-
-    public AnimeUpdateController(AnimeRecommendService animeRecommendService) {
-        this.animeRecommendService = animeRecommendService;
-    }
 
 
     @GetMapping("list")
