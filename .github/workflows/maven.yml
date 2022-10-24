@@ -26,7 +26,5 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: cd qing-bom && mvn install
-      - name: Print Env
-        run: echo "打印 ${{ REGISTRY_USERNAME }}${{ REGISTRY_PASSWORD }}"
       - name: Build Docker Image and Push to Docker Hub
         run: cd qing-service-anime && mvn clean package dockerfile:build dockerfile:tag dockerfile:push -Dregistry_username=$REGISTRY_USERNAME -Dregistry_password=$REGISTRY_PASSWORD -B
