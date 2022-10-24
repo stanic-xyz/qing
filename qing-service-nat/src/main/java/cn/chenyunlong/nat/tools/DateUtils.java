@@ -41,10 +41,10 @@ public final class DateUtils {
     /**
      * yyyy-MM-dd HH:mm:ss
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:06:46
      * @param value
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:06:46
      */
     public static LocalDateTime getDateTimeFormatByString(String value) {
         return LocalDateTime.parse(value, DATETIME_FORMAT);
@@ -53,10 +53,10 @@ public final class DateUtils {
     /**
      * yyyy-MM-dd HH:mm:ss
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:08:22
      * @param dateTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:08:22
      */
     public static String getDateTimeFormatToString(LocalDateTime dateTime) {
         return dateTime.format(DATETIME_FORMAT);
@@ -65,10 +65,10 @@ public final class DateUtils {
     /**
      * yyyyMMddHHmmss
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:07:40
      * @param value
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:07:40
      */
     public static LocalDateTime getDateTimeByString(String value) {
         return LocalDateTime.parse(value, DATETIME);
@@ -77,10 +77,10 @@ public final class DateUtils {
     /**
      * yyyyMMddHHmmssSSS
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:10:03
      * @param dateTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:10:03
      */
     public static String getDateTimeMillisToString(LocalDateTime dateTime) {
         return dateTime.format(DATETIMEMILLIS);
@@ -89,10 +89,10 @@ public final class DateUtils {
     /**
      * yyyyMMddHHmmssSSS
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:07:40
      * @param value
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:07:40
      */
     public static LocalDateTime getDateTimeMillisByString(String value) {
         return LocalDateTime.parse(value, DATETIMEMILLIS);
@@ -101,10 +101,10 @@ public final class DateUtils {
     /**
      * yyyyMMddHHmmss
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:10:03
      * @param dateTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:10:03
      */
     public static String getDateTimeToString(LocalDateTime dateTime) {
         return dateTime.format(DATETIME);
@@ -113,10 +113,10 @@ public final class DateUtils {
     /**
      * yyyy-M-d+HH:mm:ss
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:06:55
      * @param value
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:06:55
      */
     public static LocalDateTime getDateTimeFormatAddByStringAdd(String value) {
         return LocalDateTime.parse(value, DATETIME_FORMAT_Add);
@@ -125,10 +125,10 @@ public final class DateUtils {
     /**
      * yyyy-M-d+HH:mm:ss
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:10:03
      * @param dateTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:10:03
      */
     public static String getDateTimeFormatAddToString(LocalDateTime dateTime) {
         return dateTime.format(DATETIME_FORMAT_Add);
@@ -137,10 +137,10 @@ public final class DateUtils {
     /**
      * yyyy-MM-dd HH:mm
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:08:02
      * @param value
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:08:02
      */
     public static LocalDateTime getDateMinuteByString(String value) {
         return LocalDateTime.parse(value, DATETIME_MINUTE);
@@ -149,10 +149,10 @@ public final class DateUtils {
     /**
      * yyyy-MM-dd HH:mm
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:10:38
      * @param dateTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:10:38
      */
     public static String getDateMinuteToString(LocalDateTime dateTime) {
         return dateTime.format(DATETIME_MINUTE);
@@ -161,10 +161,10 @@ public final class DateUtils {
     /**
      * yyyy年MM月dd日
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:08:02
      * @param value
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:08:02
      */
     public static LocalDateTime getDateChinaByString(String value) {
         return LocalDateTime.parse(value, DATE_CHINA);
@@ -173,10 +173,10 @@ public final class DateUtils {
     /**
      * yyyy年MM月dd日
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:10:50
      * @param dateTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:10:50
      */
     public static String getDateChinaToString(LocalDateTime dateTime) {
         return dateTime.format(DATE_CHINA);
@@ -185,10 +185,10 @@ public final class DateUtils {
     /**
      * yyyyMMdd
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:08:02
      * @param value
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:08:02
      */
     public static LocalDateTime getDateFormatByString(String value) {
         return LocalDateTime.parse(value, DATE_FORMAT);
@@ -197,10 +197,10 @@ public final class DateUtils {
     /**
      * yyyyMMdd
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:12:54
      * @param dateTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:12:54
      */
     public static String getDateFormatToString(LocalDateTime dateTime) {
         return dateTime.format(DATE_FORMAT);

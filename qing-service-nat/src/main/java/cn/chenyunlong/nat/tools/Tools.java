@@ -58,11 +58,11 @@ public final class Tools {
     /**
      * 输入流转输出流
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-17 16:01:41
      * @param inputStream
      * @param outputStream
      * @throws IOException
+     * @author wangmin1994@qq.com
+     * @since 2019-06-17 16:01:41
      */
     public static void inputToOutput(InputStream inputStream, OutputStream outputStream) throws IOException {
         byte[] temp = new byte[4096];
