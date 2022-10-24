@@ -19,9 +19,9 @@ import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.model.dto.VersionDTO;
 import cn.chenyunlong.qing.model.params.VersionParam;
 import cn.chenyunlong.qing.service.VersionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
@@ -34,12 +34,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("api/versions")
+@RequiredArgsConstructor
 public class VersionController extends ApiController {
     /**
      * 服务对象
      */
-    @Resource
-    private VersionService versionService;
+    private final VersionService versionService;
 
     /**
      * 分页查询所有数据

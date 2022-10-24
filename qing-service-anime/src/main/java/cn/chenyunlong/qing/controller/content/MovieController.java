@@ -26,11 +26,9 @@ import cn.chenyunlong.qing.utils.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -39,18 +37,13 @@ import java.util.List;
  * @author Stan
  */
 @Controller
+@RequestMapping("/")
+@RequiredArgsConstructor
 public class MovieController {
 
     private final AnimeInfoService animeInfoService;
     private final AnimeInfoModel animeInfoModel;
     private final ReportService reportService;
-
-    public MovieController(AnimeInfoService animeInfoService,
-                           AnimeInfoModel animeInfoModel, ReportService reportService) {
-        this.animeInfoService = animeInfoService;
-        this.animeInfoModel = animeInfoModel;
-        this.reportService = reportService;
-    }
 
     @GetMapping(path = {"", "/index.html"})
     public ModelAndView index(ModelAndView modelAndView) throws JsonProcessingException {
