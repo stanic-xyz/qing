@@ -33,9 +33,9 @@ import java.util.regex.Pattern;
  * @since 2019-03-28 11:18:24
  */
 public final class ValidatorUtils {
-    public static final String[] constellationArr = { "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座",
-            "天蝎座", "射手座", "魔羯座" };
-    public static final int[] constellationEdgeDay = { 20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22 };
+    public static final String[] constellationArr = {"水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座",
+            "天蝎座", "射手座", "魔羯座"};
+    public static final int[] constellationEdgeDay = {20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22};
 
     public static void main(String[] args) {
         System.out.println(isUserId("1000000"));
@@ -44,10 +44,10 @@ public final class ValidatorUtils {
     /**
      * 手机号码判断
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:55:46
      * @param mobiles
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:55:46
      */
     public static boolean isMobileNO(String mobiles) {
         if (mobiles == null) {
@@ -59,10 +59,10 @@ public final class ValidatorUtils {
     /**
      * 邮箱格式判断
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:55:40
      * @param email
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:55:40
      */
     public static boolean isEmail(String email) {
         String str = "^[0-9a-zA-Z_][-_.0-9a-zA-Z]{0,63}@([0-9a-zA-Z][0-9a-zA-Z-]*\\.)+[a-zA-Z]{2,4}$";
@@ -74,10 +74,10 @@ public final class ValidatorUtils {
     /**
      * 用户ID判断
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:55:28
      * @param string
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:55:28
      */
     public static boolean isUserId(String string) {
         if (string == null) {
@@ -89,10 +89,10 @@ public final class ValidatorUtils {
     /**
      * 用户账号格式判断
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:55:58
      * @param userAccount
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:55:58
      */
     public static boolean isUserAccount(String userAccount) {
         String str = "^[a-zA-Z]{1}[a-zA-Z0-9_]{5,15}$";
@@ -104,10 +104,10 @@ public final class ValidatorUtils {
     /**
      * 用户密码判断
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:07
      * @param userpwd
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:56:07
      */
     public static boolean isUserPwd(String userpwd) {
         if (userpwd == null) {
@@ -119,10 +119,10 @@ public final class ValidatorUtils {
     /**
      * 护照格式判断
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:14
      * @param passport
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:56:14
      */
     public static boolean isPassport(String passport) {
         passport = passport.replaceAll(" ", "");
@@ -135,10 +135,10 @@ public final class ValidatorUtils {
     /**
      * 邮编格式判断
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:19
      * @param zipCode
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:56:19
      */
     public static boolean isZipCode(String zipCode) {
         String str = "^\\d{6}$";
@@ -150,10 +150,10 @@ public final class ValidatorUtils {
     /**
      * 组织机构代码
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:25
      * @param organizeCode
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:56:25
      */
     public static boolean isOrganizeCode(String organizeCode) {
         String str = "^([0-9A-Z]){8}[-]?[0-9|X]$";
@@ -165,10 +165,10 @@ public final class ValidatorUtils {
     /**
      * 座机电话
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:31
      * @param officePhone
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:56:31
      */
     public static boolean isOfficePhone(String officePhone) {
         String str = "(^(\\d{11})$|^((\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d)|(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d))$)";
@@ -180,10 +180,10 @@ public final class ValidatorUtils {
     /**
      * 金额格式
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:37
      * @param registeredCapital
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:56:37
      */
     public static boolean isRegisteredCapital(String registeredCapital) {
         String str = "^(([1-9]\\d{0,11})|0)(\\.\\d{1,2})?$";
@@ -195,10 +195,10 @@ public final class ValidatorUtils {
     /**
      * 验证字符串是否是BigDecimal
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:57:02
      * @param str
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:57:02
      */
     public static boolean isBigDecimal(String str) {
         Matcher match = null;
@@ -220,10 +220,10 @@ public final class ValidatorUtils {
     /**
      * 银行账号校验
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:57:11
      * @param str
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 08:57:11
      */
     public static boolean isBankAccNo(String str) {
         if (!isNumeric(str)) {
@@ -250,16 +250,14 @@ public final class ValidatorUtils {
      * 功能：身份证的有效验证
      *
      * @param IDStr 身份证号
-     *
      * @return 有效：返回"" 无效：返回String信息
-     *
      * @throws ParseException
      */
     public static String IDCardValidate(String IDStr, Date birthday, String sex)
             throws NumberFormatException, ParseException {
         String errorInfo = "";// 记录错误信息
-        String[] ValCodeArr = { "1", "0", "x", "9", "8", "7", "6", "5", "4", "3", "2" };
-        String[] Wi = { "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2" };
+        String[] ValCodeArr = {"1", "0", "x", "9", "8", "7", "6", "5", "4", "3", "2"};
+        String[] Wi = {"7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2"};
         String Ai = "";
         // ================ 号码的长度 15位或18位 ================
         if (IDStr.length() != 15 && IDStr.length() != 18) {

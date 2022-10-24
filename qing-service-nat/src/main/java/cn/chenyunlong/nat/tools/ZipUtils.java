@@ -36,11 +36,11 @@ public final class ZipUtils {
     /**
      * 压缩方法zip
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-05 10:06:39
      * @param sourcePairList 源流对（主要针对网络流环境，避免了先存目录再压缩的尬境），左键为文件名，右键为输入流
      * @param outputStream   输出流，依然可以使用网络输出流，避免先存再发
      * @throws RuntimeException
+     * @author wangmin1994@qq.com
+     * @since 2019-06-05 10:06:39
      */
     public static void toZip(List<Pair<String, InputStream>> sourcePairList, OutputStream outputStream)
             throws RuntimeException {

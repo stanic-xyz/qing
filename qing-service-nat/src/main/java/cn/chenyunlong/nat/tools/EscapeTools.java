@@ -36,9 +36,9 @@ public class EscapeTools {
     /**
      * 过滤所有字段
      *
+     * @param object
      * @author wangmin1994@qq.com
      * @since 2019-06-27 15:08:35
-     * @param object
      */
     public static void escapeHtml4All(Object object) {
         escapeHtml4IgnoreSet(object, null);
@@ -47,10 +47,10 @@ public class EscapeTools {
     /**
      * 过滤html标签，指定字段
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-27 14:45:09
      * @param object
      * @param names
+     * @author wangmin1994@qq.com
+     * @since 2019-06-27 14:45:09
      */
     public static void escapeHtml4Aggregation(Object object, Object... names) {
         for (Object name : names) {
@@ -61,10 +61,10 @@ public class EscapeTools {
     /**
      * 忽略指定字段
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-27 15:08:54
      * @param object
      * @param names
+     * @author wangmin1994@qq.com
+     * @since 2019-06-27 15:08:54
      */
     public static void escapeHtml4Ignore(Object object, Object... names) {
         Set<Object> nameSet = new HashSet<>();
@@ -77,10 +77,10 @@ public class EscapeTools {
     /**
      * 忽略执行字段set方式
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-27 15:09:07
      * @param object
      * @param nameSet
+     * @author wangmin1994@qq.com
+     * @since 2019-06-27 15:09:07
      */
     public static void escapeHtml4IgnoreSet(Object object, Set<Object> nameSet) {
         if (object instanceof Map) {
@@ -107,10 +107,10 @@ public class EscapeTools {
     /**
      * 处理过滤指定字段
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-27 15:09:17
      * @param object
      * @param name
+     * @author wangmin1994@qq.com
+     * @since 2019-06-27 15:09:17
      */
     public static void escapeHtml4One(Object object, Object name) {
         if (object == null || name == null) {

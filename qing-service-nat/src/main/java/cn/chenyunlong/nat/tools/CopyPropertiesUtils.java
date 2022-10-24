@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * <p>
  * 类拷贝，解放深度克隆
  * </p>
@@ -35,10 +34,10 @@ public class CopyPropertiesUtils {
     /**
      * 获取为null的参数，进行忽略
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-29 15:33:35
      * @param source
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-29 15:33:35
      */
     public static String[] getNullPropertyNames(Object source) {
         BeanWrapper beanWrapper = new BeanWrapperImpl(source);
@@ -57,10 +56,10 @@ public class CopyPropertiesUtils {
     /**
      * 拷贝属性
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-29 15:33:55
      * @param source
      * @param target
+     * @author wangmin1994@qq.com
+     * @since 2019-06-29 15:33:55
      */
     public static void copyPropertiesIgnoreNull(Object source, Object target) {
         BeanUtils.copyProperties(source, target, getNullPropertyNames(source));

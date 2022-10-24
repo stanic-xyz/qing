@@ -51,13 +51,13 @@ public class SignTools {
     /**
      * 针对单文件封装的快速调用
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-07-02 13:55:55
      * @param data
      * @param signKey
      * @param maxDiffTime
      * @param fileObject
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-07-02 13:55:55
      */
     public static boolean isSignatureValid(final Map<String, String> data, String signKey, Long maxDiffTime,
                                            Object fileObject) {
@@ -67,13 +67,13 @@ public class SignTools {
     /**
      * 验签，最全面的验证，包含时间戳验证、常规参数签名验证、多文件contentMd5验证
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-07-02 13:53:16
      * @param data
      * @param signKey
      * @param maxDiffTime
      * @param objectList
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-07-02 13:53:16
      */
     public static boolean isSignatureValid(final Map<String, String> data, String signKey, Long maxDiffTime,
                                            List<?> objectList) {
@@ -96,12 +96,12 @@ public class SignTools {
     /**
      * 验签，并验证时间戳的有效性
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 09:31:26
      * @param data
      * @param signKey
      * @param maxDiffTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 09:31:26
      */
     public static boolean isSignatureTimeOutValid(final Map<String, String> data, String signKey, Long maxDiffTime) {
         if (!isTimeOutValid(data.get(FIELD_TIMESTAMP), maxDiffTime)) {
@@ -113,11 +113,11 @@ public class SignTools {
     /**
      * 检查是否超时
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-07-02 13:47:35
      * @param timestamp
      * @param maxDiffTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-07-02 13:47:35
      */
     public static boolean isTimeOutValid(String timestamp, Long maxDiffTime) {
         LocalDateTime sendTime = null;
@@ -139,11 +139,11 @@ public class SignTools {
     /**
      * 验签
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-05-20 18:17:38
      * @param data
      * @param signKey
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-05-20 18:17:38
      */
     public static boolean isSignatureValid(final Map<String, String> data, String signKey) {
         if (!data.containsKey(FIELD_SIGN)) {
@@ -156,12 +156,12 @@ public class SignTools {
     /**
      * 对data填充必备设定字段，带文件，针对单文件进行的快速封装方法
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-07-02 14:01:51
      * @param data
      * @param signKey
      * @param fileObject
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-07-02 14:01:51
      */
     public static Map<String, String> fullSignature(Map<String, String> data, String signKey, Object fileObject) {
         return fullSignature(data, signKey, fileObject == null ? null : Arrays.asList(fileObject));
@@ -170,12 +170,12 @@ public class SignTools {
     /**
      * 对data填充必备设定字段，带文件
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-07-02 13:40:44
      * @param data
      * @param signKey
      * @param objectList
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-07-02 13:40:44
      */
     public static Map<String, String> fullSignature(Map<String, String> data, String signKey, List<?> objectList) {
         if (objectList != null && objectList.size() > 0) {
@@ -187,11 +187,11 @@ public class SignTools {
     /**
      * 对data填充必备设定字段
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 09:16:43
      * @param data
      * @param signKey
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 09:16:43
      */
     public static Map<String, String> fullSignature(Map<String, String> data, String signKey) {
         data.put(FIELD_TIMESTAMP, getDateTimeMillisToString(LocalDateTime.now()));
@@ -203,11 +203,11 @@ public class SignTools {
     /**
      * 获取签名
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-05-20 18:11:53
      * @param data
      * @param signKey
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-05-20 18:11:53
      */
     public static String generateSignature(final Map<String, String> data, String signKey) {
         Set<String> paramKeySet = data.keySet();
@@ -234,10 +234,10 @@ public class SignTools {
     /**
      * yyyyMMddHHmmssSSS
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:10:03
      * @param dateTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:10:03
      */
     public static String getDateTimeMillisToString(LocalDateTime dateTime) {
         return dateTime.format(DATETIMEMILLIS);
@@ -246,10 +246,10 @@ public class SignTools {
     /**
      * yyyyMMddHHmmssSSS
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-12 19:07:40
      * @param value
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-12 19:07:40
      */
     public static LocalDateTime getDateTimeMillisByString(String value) {
         return LocalDateTime.parse(value, DATETIMEMILLIS);
@@ -258,10 +258,10 @@ public class SignTools {
     /**
      * 发送时间与当前时间的差异（ms）
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 09:08:35
      * @param sendTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 09:08:35
      */
     public static long getTimeDifferenceForNow(LocalDateTime sendTime) {
         return getTimeDifference(LocalDateTime.now(), sendTime);
@@ -270,11 +270,11 @@ public class SignTools {
     /**
      * 获取两个时间的差异绝对值（ms）
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 09:05:43
      * @param firstTime
      * @param secondTime
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-18 09:05:43
      */
     public static long getTimeDifference(LocalDateTime firstTime, LocalDateTime secondTime) {
         return Math.abs(Duration.between(firstTime, secondTime).toMillis());
@@ -282,13 +282,13 @@ public class SignTools {
 
     /**
      * 获取多个文件集合的Content-MD5
-     *
+     * <p>
      * 计算每个文件的Content-MD5，按ASCII码进行升序拼接再对String拼接串获取Content-MD5
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-07-02 11:54:35
      * @param objectList
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-07-02 11:54:35
      */
     public static String getMultipleObjectContentMD5(List<?> objectList) {
         if (objectList == null || objectList.size() < 1) {
@@ -318,10 +318,10 @@ public class SignTools {
     /**
      * 获取字符串拼接串的content-md5
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-07-02 11:56:31
      * @param stringList
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-07-02 11:56:31
      */
     public static String getStringListContentMd5(List<String> stringList) {
         if (stringList == null || stringList.size() < 1) {
@@ -345,10 +345,10 @@ public class SignTools {
     /**
      * 计算文件的Content-MD5
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-17 15:51:02
      * @param byteArray
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-17 15:51:02
      */
     public static String getContentMD5(final byte[] byteArray) {
         return Base64.encodeBase64String(DigestUtils.md5(byteArray));
@@ -357,10 +357,10 @@ public class SignTools {
     /**
      * 计算文件的Content-MD5
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-05 14:53:50
      * @param inputStream
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-05 14:53:50
      */
     public static String getContentMD5(InputStream inputStream) {
         try {
@@ -374,10 +374,10 @@ public class SignTools {
     /**
      * 计算文件的Content-MD5
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-05 14:54:04
      * @param file
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-05 14:54:04
      */
     public static String getContentMD5(File file) {
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
@@ -391,10 +391,10 @@ public class SignTools {
     /**
      * 计算文件的Content-MD5
      *
-     * @author wangmin1994@qq.com
-     * @since 2019-06-05 14:54:09
      * @param filePath
      * @return
+     * @author wangmin1994@qq.com
+     * @since 2019-06-05 14:54:09
      */
     public static String getContentMD5(String filePath) {
         return getContentMD5(new File(filePath));
