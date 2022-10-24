@@ -19,7 +19,7 @@
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-bom</artifactId>
         <version>1.0.0.RELEASE</version>
-        <relativePath/>
+        <relativePath>../qing-bom/pom.xml</relativePath>
     </parent>
     <artifactId>qing-bus-server</artifactId>
     <name>qing-bus-server</name>
@@ -51,6 +51,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile.maven.version}</version>
                 <configuration>
                     <repository>${docker.registry.prefix}/${project.artifactId}</repository>
                     <tag>${docker.registry.tag}</tag>

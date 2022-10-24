@@ -18,7 +18,7 @@
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-bom</artifactId>
         <version>1.0.0.RELEASE</version>
-        <relativePath/>
+        <relativePath>../qing-bom/pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
