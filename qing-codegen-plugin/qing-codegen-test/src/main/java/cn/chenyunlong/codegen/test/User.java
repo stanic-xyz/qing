@@ -30,17 +30,17 @@ import com.only4play.jpa.support.BaseJpaAggregate;
  * @author gim 2022/1/11 10:53 下午
  */
 //
-@GenVo(pkgName = "com.only4play.codegen.test.vo")
-@GenCreator(pkgName = "com.only4play.codegen.test.creator")
-@GenUpdater(pkgName = "com.only4play.codegen.test.updater")
-@GenRepository(pkgName = "com.only4play.codegen.test.repository")
-@GenService(pkgName = "com.only4play.codegen.test.service")
-@GenController(pkgName = "com.only4play.codegen.test.controller")
-@GenQuery(pkgName = "com.only4play.codegen.test.query")
-@GenUpdateRequest(pkgName = "com.only4play.codegen.test.api.request")
-@GenQueryRequest(pkgName = "com.only4play.codegen.test.api.request")
-@GenResponse(pkgName = "com.only4play.codegen.test.api.response")
-@GenFeign(pkgName = "com.only4play.codegen.test.api.service")
+@GenVo(pkgName = "cn.chenyunlong.codegen.test.vo")
+@GenCreator(pkgName = "cn.chenyunlong.codegen.test.creator")
+@GenUpdater(pkgName = "cn.chenyunlong.codegen.test.updater")
+@GenRepository(pkgName = "cn.chenyunlong.codegen.test.repository")
+@GenService(pkgName = "cn.chenyunlong.codegen.test.service")
+@GenController(pkgName = "cn.chenyunlong.codegen.test.controller")
+@GenQuery(pkgName = "cn.chenyunlong.codegen.test.query")
+@GenUpdateRequest(pkgName = "cn.chenyunlong.codegen.test.api.request")
+@GenQueryRequest(pkgName = "cn.chenyunlong.codegen.test.api.request")
+@GenResponse(pkgName = "cn.chenyunlong.codegen.test.api.response")
+@GenFeign(pkgName = "cn.chenyunlong.codegen.test.api.service")
 public class User extends BaseJpaAggregate {
 
     private String username;
