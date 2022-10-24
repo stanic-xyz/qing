@@ -15,6 +15,6 @@ package cn.chenyunlong.codegen.test;
 
 public interface Constants {
 
-    String GEN_API_SOURCE = "op-codegen-plugin/qing-codegen-test/src/main/java";
+    String GEN_API_SOURCE = "/op-codegen-plugin/qing-codegen-test/src/main/java";
 
 }

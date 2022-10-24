@@ -18,7 +18,7 @@ package cn.chenyunlong.common.exception;
  **/
 public class SystemException extends RuntimeException {
 
-    private String msg;
+    private final String msg;
 
     public SystemException(String msg) {
         super(msg);
