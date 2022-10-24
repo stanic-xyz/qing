@@ -35,6 +35,7 @@ import cn.chenyunlong.qing.service.dao.AnimeListService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -52,6 +53,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class AnimeInfoModel {
     private final AnimeInfoService animeInfoService;
     private final AnimeOptionsService optionService;
@@ -60,19 +62,6 @@ public class AnimeInfoModel {
     private final AnimeEpisodeService episodeService;
     private final AnimeListService animeListService;
     private final ExecutorService executorService = Executors.newFixedThreadPool(4);
-
-    public AnimeInfoModel(AnimeInfoService animeInfoService,
-                          AnimeOptionsService optionService,
-                          AnimeOptionsService animeOptionsService,
-                          AnimeCommentService animeCommentService,
-                          AnimeEpisodeService episodeService, AnimeListService animeListService) {
-        this.animeInfoService = animeInfoService;
-        this.optionService = optionService;
-        this.animeOptionsService = animeOptionsService;
-        this.animeCommentService = animeCommentService;
-        this.episodeService = episodeService;
-        this.animeListService = animeListService;
-    }
 
     /**
      * 首页数据展示结构
