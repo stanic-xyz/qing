@@ -19,7 +19,7 @@
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-bom</artifactId>
         <version>1.0.0.RELEASE</version>
-        <relativePath/>
+        <relativePath>../qing-bom/pom.xml</relativePath>
     </parent>
     <artifactId>qing-service-cloud-gateway</artifactId>
     <name>qing-service-cloud-gateway</name>

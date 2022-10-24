@@ -19,7 +19,7 @@
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-bom</artifactId>
         <version>1.0.0.RELEASE</version>
-        <relativePath/>
+        <relativePath>../qing-bom/pom.xml</relativePath>
     </parent>
     <artifactId>qing-admin-server</artifactId>
     <name>qing-admin-server</name>
@@ -58,8 +58,8 @@
                 <configuration>
                     <repository>${docker.registry.prefix}/${project.artifactId}</repository>
                     <tag>${docker.registry.tag}</tag>
-                    <username>${docker.registry.username}</username>
-                    <password>${docker.registry.password}</password>
+                    <username>${registry_username}</username>
+                    <password>${registry_password}</password>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
