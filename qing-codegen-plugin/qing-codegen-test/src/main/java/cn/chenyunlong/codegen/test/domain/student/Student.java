@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.codegen.test;
+package cn.chenyunlong.codegen.test.domain.student;
 
 import cn.chenyunlong.codegen.processor.api.*;
 import cn.chenyunlong.codegen.processor.controller.GenController;
@@ -25,6 +25,7 @@ import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.updater.IgnoreUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
+import cn.chenyunlong.codegen.test.Constants;
 import cn.chenyunlong.common.constants.ValidStatus;
 import com.only4play.jpa.converter.ValidStatusConverter;
 import com.only4play.jpa.support.BaseJpaAggregate;
@@ -34,22 +35,22 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@GenVo(pkgName = "cn.chenyunlong.codegen.test.vo")
-@GenCreator(pkgName = "cn.chenyunlong.codegen.test.creator")
-@GenUpdater(pkgName = "cn.chenyunlong.codegen.test.updater")
-@GenRepository(pkgName = "cn.chenyunlong.codegen.test.repository")
-@GenService(pkgName = "cn.chenyunlong.codegen.test.service")
-@GenServiceImpl(pkgName = "cn.chenyunlong.codegen.test.service")
-@GenQuery(pkgName = "cn.chenyunlong.codegen.test.query")
-@GenMapper(pkgName = "cn.chenyunlong.codegen.test.mapper")
-@GenController(pkgName = "cn.chenyunlong.codegen.test.controller")
-@GenCreateRequest(pkgName = "cn.chenyunlong.codegen.test.api.request", sourcePath = Constants.GEN_API_SOURCE)
-@GenUpdateRequest(pkgName = "cn.chenyunlong.codegen.test.api.request", sourcePath = Constants.GEN_API_SOURCE)
-@GenQueryRequest(pkgName = "cn.chenyunlong.codegen.test.api.request", sourcePath = Constants.GEN_API_SOURCE)
-@GenResponse(pkgName = "cn.chenyunlong.codegen.test.api.response", sourcePath = Constants.GEN_API_SOURCE)
-@GenFeign(pkgName = "cn.chenyunlong.codegen.test.api.service", sourcePath = Constants.GEN_API_SOURCE, serverName = "srv")
+@GenVo(pkgName = "cn.chenyunlong.codegen.test.domain.student.vo")
+@GenCreator(pkgName = "cn.chenyunlong.codegen.test.domain.student.creator")
+@GenUpdater(pkgName = "cn.chenyunlong.codegen.test.domain.student.updater")
+@GenRepository(pkgName = "cn.chenyunlong.codegen.test.domain.student.repository")
+@GenService(pkgName = "cn.chenyunlong.codegen.test.domain.student.service")
+@GenServiceImpl(pkgName = "cn.chenyunlong.codegen.test.domain.student.service")
+@GenQuery(pkgName = "cn.chenyunlong.codegen.test.domain.student.query")
+@GenMapper(pkgName = "cn.chenyunlong.codegen.test.domain.student.mapper")
+@GenController(pkgName = "cn.chenyunlong.codegen.test.domain.student.controller")
+@GenCreateRequest(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.request", sourcePath = Constants.GEN_API_SOURCE)
+@GenUpdateRequest(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.request", sourcePath = Constants.GEN_API_SOURCE)
+@GenQueryRequest(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.request", sourcePath = Constants.GEN_API_SOURCE)
+@GenResponse(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.response", sourcePath = Constants.GEN_API_SOURCE)
+@GenFeign(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.service", sourcePath = Constants.GEN_API_SOURCE, serverName = "srv")
 @Entity
-@Table(name = "")
+@Table(name = "t_student")
 @Data
 public class Student extends BaseJpaAggregate {
 
