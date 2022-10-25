@@ -27,7 +27,10 @@ import cn.chenyunlong.codegen.processor.vo.GenVo;
 import com.only4play.jpa.support.BaseJpaAggregate;
 
 /**
+ * 测试代码自动生成的结果
+ *
  * @author gim 2022/1/11 10:53 下午
+ * @date 2022/10/25
  */
 //
 @GenVo(pkgName = "cn.chenyunlong.codegen.test.domain.user.vo")
