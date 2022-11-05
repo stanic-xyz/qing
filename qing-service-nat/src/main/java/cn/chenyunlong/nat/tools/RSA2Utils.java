@@ -32,9 +32,6 @@ import java.util.Map;
  * <p>
  * RSA2工具集
  * </p>
- *
- * @author wangmin1994@qq.com
- * @since 2019-03-28 11:17:42
  */
 public class RSA2Utils {
 
@@ -91,15 +88,16 @@ public class RSA2Utils {
         Map<String, String> keyPairMap = new HashMap<>();
         keyPairMap.put("publicKey", publicKeyStr);
         keyPairMap.put("privateKey", privateKeyStr);
-
         return keyPairMap;
     }
 
     /**
-     * 得到公钥
+     * 获取公钥
      *
      * @param publicKey 密钥字符串（经过base64编码）
-     * @throws Exception
+     * @return {@link RSAPublicKey}
+     * @throws NoSuchAlgorithmException 没有这样算法异常
+     * @throws InvalidKeySpecException  无效关键规范异常
      */
     public static RSAPublicKey getPublicKey(String publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         // 通过X509编码的Key指令获得公钥对象
@@ -109,10 +107,12 @@ public class RSA2Utils {
     }
 
     /**
-     * 得到私钥
+     * 获得私钥
      *
      * @param privateKey 密钥字符串（经过base64编码）
-     * @throws Exception
+     * @return {@link RSAPrivateKey}
+     * @throws NoSuchAlgorithmException 没有这样算法异常
+     * @throws InvalidKeySpecException  无效关键规范异常
      */
     public static RSAPrivateKey getPrivateKey(String privateKey)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -125,9 +125,9 @@ public class RSA2Utils {
     /**
      * 公钥加密
      *
-     * @param data
-     * @param publicKey
-     * @return
+     * @param data      数据
+     * @param publicKey 公钥
+     * @return {@link String}
      */
     public static String publicEncrypt(String data, RSAPublicKey publicKey) {
         try {
@@ -143,9 +143,9 @@ public class RSA2Utils {
     /**
      * 私钥解密
      *
-     * @param data
-     * @param privateKey
-     * @return
+     * @param data       数据
+     * @param privateKey 私钥
+     * @return {@link String}
      */
     public static String privateDecrypt(String data, RSAPrivateKey privateKey) {
         try {
@@ -161,9 +161,9 @@ public class RSA2Utils {
     /**
      * 私钥加密
      *
-     * @param data
-     * @param privateKey
-     * @return
+     * @param data       数据
+     * @param privateKey 私钥
+     * @return {@link String}
      */
     public static String privateEncrypt(String data, RSAPrivateKey privateKey) {
         try {
@@ -179,9 +179,9 @@ public class RSA2Utils {
     /**
      * 公钥解密
      *
-     * @param data
-     * @param publicKey
-     * @return
+     * @param data      数据
+     * @param publicKey 公钥
+     * @return {@link String}
      */
     public static String publicDecrypt(String data, RSAPublicKey publicKey) {
         try {
@@ -194,9 +194,18 @@ public class RSA2Utils {
         }
     }
 
-    private static byte[] rsaSplitCodec(Cipher cipher, int opmode, byte[] datas, int keySize) {
+    /**
+     * rsa编解码器
+     *
+     * @param cipher      密码
+     * @param decryptMode 解密模式
+     * @param data        数据
+     * @param keySize     密钥长度
+     * @return {@link byte[]}
+     */
+    private static byte[] rsaSplitCodec(Cipher cipher, int decryptMode, byte[] data, int keySize) {
         int maxBlock = 0;
-        if (opmode == Cipher.DECRYPT_MODE) {
+        if (decryptMode == Cipher.DECRYPT_MODE) {
             maxBlock = keySize / 8;
         } else {
             maxBlock = keySize / 8 - 11;
@@ -206,11 +215,11 @@ public class RSA2Utils {
         byte[] buff;
         int i = 0;
         try {
-            while (datas.length > offSet) {
-                if (datas.length - offSet > maxBlock) {
-                    buff = cipher.doFinal(datas, offSet, maxBlock);
+            while (data.length > offSet) {
+                if (data.length - offSet > maxBlock) {
+                    buff = cipher.doFinal(data, offSet, maxBlock);
                 } else {
-                    buff = cipher.doFinal(datas, offSet, datas.length - offSet);
+                    buff = cipher.doFinal(data, offSet, data.length - offSet);
                 }
                 out.write(buff, 0, buff.length);
                 i++;
@@ -219,9 +228,9 @@ public class RSA2Utils {
         } catch (Exception e) {
             throw new RuntimeException("加解密阀值为[" + maxBlock + "]的数据时发生异常", e);
         }
-        byte[] resultDatas = out.toByteArray();
+        byte[] resultData = out.toByteArray();
         IOUtils.closeQuietly(out);
-        return resultDatas;
+        return resultData;
     }
 
 }

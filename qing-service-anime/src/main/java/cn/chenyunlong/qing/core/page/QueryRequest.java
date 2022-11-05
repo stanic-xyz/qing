@@ -15,11 +15,13 @@ package cn.chenyunlong.qing.core.page;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Data
 public class QueryRequest implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -4869594085374385813L;
 
     private int pageSize = 10;

@@ -13,14 +13,14 @@
 
 package cn.chenyunlong.nat.tools;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Hashtable;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,41 +28,33 @@ import java.util.regex.Pattern;
  * <p>
  * 验证类工具集
  * </p>
- *
- * @author wangmin1994@qq.com
- * @since 2019-03-28 11:18:24
  */
+@Slf4j
 public final class ValidatorUtils {
-    public static final String[] constellationArr = {"水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座",
-            "天蝎座", "射手座", "魔羯座"};
-    public static final int[] constellationEdgeDay = {20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22};
 
-    public static void main(String[] args) {
-        System.out.println(isUserId("1000000"));
-    }
+    public static final int[] constellationEdgeDay = {20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22};
+    //星座的中文
+    @SuppressWarnings("unused")
+    public static final String[] constellationNames = {"水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "魔羯座"};
+    //星座的英文
+    public static final String[] constellationNames_en = {"aquarius", "pisces", "aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn"};
 
     /**
-     * 手机号码判断
+     * 判断是否是手机号码
      *
-     * @param mobiles
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:55:46
+     * @param mobile 电话号码
      */
-    public static boolean isMobileNO(String mobiles) {
-        if (mobiles == null) {
+    public static boolean isMobileNO(String mobile) {
+        if (mobile == null) {
             return false;
         }
-        return mobiles.matches("(^1[0-9]{10}$)|(^([5689])\\d{7}$)");
+        return mobile.matches("(^1[0-9]{10}$)|(^([5689])\\d{7}$)");
     }
 
     /**
      * 邮箱格式判断
      *
-     * @param email
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:55:40
+     * @param email 电子邮件地址
      */
     public static boolean isEmail(String email) {
         String str = "^[0-9a-zA-Z_][-_.0-9a-zA-Z]{0,63}@([0-9a-zA-Z][0-9a-zA-Z-]*\\.)+[a-zA-Z]{2,4}$";
@@ -72,147 +64,126 @@ public final class ValidatorUtils {
     }
 
     /**
-     * 用户ID判断
+     * 判断是否是userId
+     * <p>
+     * userId必须是6~9位的纯数字字符串
      *
-     * @param string
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:55:28
+     * @param string userId字符串
+     * @return boolean 是否是userId
      */
     public static boolean isUserId(String string) {
         if (string == null) {
             return false;
         }
-        return string.matches("^[1-9]{1}\\d{6,9}");
+        return string.matches("^[1-9]\\d{6,9}");
     }
 
     /**
      * 用户账号格式判断
      *
-     * @param userAccount
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:55:58
+     * @param userAccount 用户账号
      */
     public static boolean isUserAccount(String userAccount) {
-        String str = "^[a-zA-Z]{1}[a-zA-Z0-9_]{5,15}$";
+        String str = "^[a-zA-Z][a-zA-Z0-9_]{5,15}$";
         Pattern p = Pattern.compile(str);
         Matcher m = p.matcher(userAccount);
         return m.matches();
     }
 
     /**
-     * 用户密码判断
+     * 用户密码格式判断
      *
-     * @param userpwd
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:07
+     * @param userPassword 用户密码
+     * @return boolean
      */
-    public static boolean isUserPwd(String userpwd) {
-        if (userpwd == null) {
+    public static boolean isUserPwd(String userPassword) {
+        if (userPassword == null) {
             return false;
         }
-        return userpwd.matches("^[\\w-]{6,16}$");
+        return userPassword.matches("^[\\w-]{6,16}$");
     }
 
     /**
      * 护照格式判断
      *
-     * @param passport
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:14
+     * @param passport 护照编号
      */
     public static boolean isPassport(String passport) {
         passport = passport.replaceAll(" ", "");
         String str = "^([a-zA-Z]{5,17})|([a-zA-Z0-9]{5,17})$";
-        Pattern p = Pattern.compile(str);
-        Matcher m = p.matcher(passport);
-        return m.matches();
+        Pattern pattern = Pattern.compile(str);
+        Matcher matcher = pattern.matcher(passport);
+        return matcher.matches();
     }
 
     /**
      * 邮编格式判断
      *
-     * @param zipCode
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:19
+     * @param zipCode 邮政编码
      */
     public static boolean isZipCode(String zipCode) {
         String str = "^\\d{6}$";
-        Pattern p = Pattern.compile(str);
-        Matcher m = p.matcher(zipCode);
-        return m.matches();
+        Pattern pattern = Pattern.compile(str);
+        Matcher matcher = pattern.matcher(zipCode);
+        return matcher.matches();
     }
 
     /**
      * 组织机构代码
      *
-     * @param organizeCode
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:25
+     * @param organizeCode 组织机构代码
      */
     public static boolean isOrganizeCode(String organizeCode) {
-        String str = "^([0-9A-Z]){8}[-]?[0-9|X]$";
-        Pattern p = Pattern.compile(str);
-        Matcher m = p.matcher(organizeCode);
-        return m.matches();
+        String str = "^([0-9A-Z]){8}-?[0-9|X]$";
+        Pattern pattern = Pattern.compile(str);
+        Matcher matcher = pattern.matcher(organizeCode);
+        return matcher.matches();
     }
 
     /**
      * 座机电话
      *
-     * @param officePhone
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:31
+     * @param officePhone 座机号码
      */
     public static boolean isOfficePhone(String officePhone) {
         String str = "(^(\\d{11})$|^((\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d)|(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d))$)";
-        Pattern p = Pattern.compile(str);
-        Matcher m = p.matcher(officePhone);
-        return m.matches();
+        Pattern pattern = Pattern.compile(str);
+        Matcher matcher = pattern.matcher(officePhone);
+        return matcher.matches();
     }
 
     /**
-     * 金额格式
+     * 注册资本是
      *
-     * @param registeredCapital
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:56:37
+     * @param registeredCapital 注册资本
+     * @return boolean
      */
     public static boolean isRegisteredCapital(String registeredCapital) {
-        String str = "^(([1-9]\\d{0,11})|0)(\\.\\d{1,2})?$";
-        Pattern p = Pattern.compile(str);
-        Matcher m = p.matcher(registeredCapital);
-        return m.matches();
+        String compile = "^(([1-9]\\d{0,11})|0)(\\.\\d{1,2})?$";
+        Pattern pattern = Pattern.compile(compile);
+        Matcher matcher = pattern.matcher(registeredCapital);
+        return matcher.matches();
     }
 
     /**
      * 验证字符串是否是BigDecimal
      *
-     * @param str
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:57:02
+     * @param numberStr 数字的字符串
+     * @return boolean
      */
-    public static boolean isBigDecimal(String str) {
-        Matcher match = null;
-        if (isNumeric(str)) {
+    public static boolean isBigDecimal(String numberStr) {
+        Matcher match;
+        if (isNumeric(numberStr)) {
             Pattern pattern = Pattern.compile("[0-9]*");
-            match = pattern.matcher(str.trim());
+            match = pattern.matcher(numberStr.trim());
         } else {
-            if (!str.trim().contains(".")) {
-                Pattern pattern = Pattern.compile("^[+]?[0-9]*");
-                match = pattern.matcher(str.trim());
+            Pattern pattern;
+            if (!numberStr.trim().contains(".")) {
+                pattern = Pattern.compile("^[+]?[0-9]*");
             } else {
-                Pattern pattern = Pattern.compile("^[+]?[0-9]+(\\.\\d{1,100})");
-                match = pattern.matcher(str.trim());
+                pattern = Pattern.compile("^[+]?[0-9]+(\\.\\d{1,100})");
             }
+            match = pattern.matcher(numberStr.trim());
         }
         return match.matches();
     }
@@ -220,16 +191,13 @@ public final class ValidatorUtils {
     /**
      * 银行账号校验
      *
-     * @param str
-     * @return
-     * @author wangmin1994@qq.com
-     * @since 2019-06-18 08:57:11
+     * @param bankAccount 银行账户校验
      */
-    public static boolean isBankAccNo(String str) {
-        if (!isNumeric(str)) {
+    public static boolean isBankAccountNo(String bankAccount) {
+        if (!isNumeric(bankAccount)) {
             return false;
         }
-        return str.length() == 15 || str.length() == 16 || str.length() == 19 || str.length() == 23;
+        return bankAccount.length() == 15 || bankAccount.length() == 16 || bankAccount.length() == 19 || bankAccount.length() == 23;
 
     }
 
@@ -237,7 +205,6 @@ public final class ValidatorUtils {
      * 检测18位身份证号是否合法
      *
      * @param idNumber 身份证号
-     * @return Boolean
      */
     public static Boolean isIdNumber(String idNumber) {
         String str = "^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
@@ -247,11 +214,15 @@ public final class ValidatorUtils {
     }
 
     /**
+     * 经办人身份证验证
      * 功能：身份证的有效验证
      *
-     * @param IDStr 身份证号
+     * @param IDStr    身份证号
+     * @param birthday 生日
+     * @param sex      性别
      * @return 有效：返回"" 无效：返回String信息
-     * @throws ParseException
+     * @throws NumberFormatException 数字格式异常
+     * @throws ParseException        解析异常
      */
     public static String IDCardValidate(String IDStr, Date birthday, String sex)
             throws NumberFormatException, ParseException {
@@ -272,7 +243,7 @@ public final class ValidatorUtils {
         if (IDStr.length() == 18) {
             Ai = IDStr.substring(0, 17);
             gender = Integer.parseInt(IDStr.substring(16, 17)) % 2 == 1 ? 1 : 2;
-        } else if (IDStr.length() == 15) {
+        } else {
             gender = Integer.parseInt(IDStr.substring(14, 15)) % 2 == 1 ? 1 : 2;
             Ai = IDStr.substring(0, 6) + "19" + IDStr.substring(6, 15);
         }
@@ -328,11 +299,11 @@ public final class ValidatorUtils {
         // ==============================================
 
         // ================ 判断最后一位的值 ================
-        int TotalmulAiWi = 0;
+        int totalmulAiWi = 0;
         for (int i = 0; i < 17; i++) {
-            TotalmulAiWi = TotalmulAiWi + Integer.parseInt(String.valueOf(Ai.charAt(i))) * Integer.parseInt(Wi[i]);
+            totalmulAiWi = totalmulAiWi + Integer.parseInt(String.valueOf(Ai.charAt(i))) * Integer.parseInt(Wi[i]);
         }
-        int modValue = TotalmulAiWi % 11;
+        int modValue = totalmulAiWi % 11;
         String strVerifyCode = ValCodeArr[modValue];
         Ai = Ai + strVerifyCode;
 
@@ -396,20 +367,19 @@ public final class ValidatorUtils {
     /**
      * 功能：判断字符串是否为数字
      *
-     * @param str
-     * @return
+     * @param string 字符串
+     * @return boolean
      */
-    public static boolean isNumeric(String str) {
+    public static boolean isNumeric(String string) {
         Pattern pattern = Pattern.compile("[0-9]*");
-        Matcher isNum = pattern.matcher(str);
+        Matcher isNum = pattern.matcher(string);
         return isNum.matches();
     }
 
     /**
      * 功能：判断字符串是否为日期格式
      *
-     * @param strDate
-     * @return
+     * @param strDate 日期字符串
      */
     public static boolean isDate(String strDate) {
         Pattern pattern = Pattern.compile(
@@ -422,83 +392,85 @@ public final class ValidatorUtils {
      * 是否是ipv4地址
      *
      * @param str 字符串
-     * @return
      */
     public static boolean isIPv4Address(String str) {
         if (str != null) {
             int dot1 = str.indexOf('.');
             if (dot1 <= 0) {
-                return false;
+                return true;
             }
             int temp;
             try {
                 temp = Integer.parseInt(str.substring(0, dot1++));
                 if (temp < 0 || temp > 255) {
-                    return false;
+                    return true;
                 }
             } catch (Exception ex) {
-                return false;
+                return true;
             }
 
             int dot2 = str.indexOf('.', dot1);
             if (dot2 <= 0) {
-                return false;
+                return true;
             }
             try {
                 temp = Integer.parseInt(str.substring(dot1, dot2++));
                 if (temp < 0 || temp > 255) {
-                    return false;
+                    return true;
                 }
             } catch (Exception ex) {
-                return false;
+                return true;
             }
 
             int dot3 = str.indexOf('.', dot2);
             if (dot3 <= 0) {
-                return false;
+                return true;
             }
             try {
                 temp = Integer.parseInt(str.substring(dot2, dot3++));
                 if (temp < 0 || temp > 255) {
-                    return false;
+                    return true;
                 }
             } catch (Exception ex) {
-                return false;
+                return true;
             }
             try {
                 temp = Integer.parseInt(str.substring(dot3));
                 if (temp < 0 || temp > 255) {
-                    return false;
+                    return true;
                 }
             } catch (Exception ex) {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
+     * 得到星座
      * 根据出生日期获取星座
      *
-     * @return
+     * @param date   日期
+     * @param locale 语言环境
+     * @return {@link String}
      */
-    public static String getConstellation(Date date) {
+    public static String getConstellation(LocalDate date, Locale locale) {
         if (date == null) {
             return "";
         }
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        if (day < constellationEdgeDay[month]) {
-            month = month - 1;
+        int month = date.getMonthValue();
+        int day = date.getDayOfMonth();
+        if (day < constellationEdgeDay[month - 1]) {
+            if (month == 1) {
+                month = Month.DECEMBER.getValue();
+            } else {
+                month = month - 1;
+            }
         }
-        if (month >= 0) {
-            return constellationArr[month];
-        }
+        //使用了java的ResourceBundle
+        ResourceBundle constellation = ResourceBundle.getBundle("constellation", locale);
+        return constellation.getString(constellationNames_en[month - 1]);
         // default to return 魔羯
-        return constellationArr[11];
     }
-
 }

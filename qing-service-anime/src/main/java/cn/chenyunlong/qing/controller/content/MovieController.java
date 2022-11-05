@@ -46,7 +46,7 @@ public class MovieController {
     private final ReportService reportService;
 
     @GetMapping(path = {"", "/index.html"})
-    public ModelAndView index(ModelAndView modelAndView) throws JsonProcessingException {
+    public ModelAndView index(ModelAndView modelAndView) throws JsonProcessingException, InterruptedException {
         IndexModel indexModel = animeInfoModel.getIndex();
         modelAndView.setViewName("home");
         modelAndView.addObject("data", indexModel);

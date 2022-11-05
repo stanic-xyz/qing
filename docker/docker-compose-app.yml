@@ -3,10 +3,10 @@ services:
   eureka-service:
     networks:
       - dev
-    container_name: eureka-service
-    image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-service-provider:1.0.0.RELEASE
+    container_name: anime-service
+    image: stanic-docker.pkg.coding.net/qing/qing/qing-service-anime:1.0.0.RELEASE
     ports:
-      - "5555:8080"
+      - "80:8080"
     environment:
       TZ: Asia/Shanghai
       ENV: prod

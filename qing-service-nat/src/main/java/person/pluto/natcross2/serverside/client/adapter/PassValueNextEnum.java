@@ -34,8 +34,8 @@ public enum PassValueNextEnum {
     //
     ;
 
-    private boolean nextFlag;
-    private boolean closeFlag;
+    private final boolean nextFlag;
+    private final boolean closeFlag;
 
     private PassValueNextEnum(boolean nextFlag, boolean closeFlag) {
         this.nextFlag = nextFlag;

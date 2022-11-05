@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -68,9 +69,7 @@ public class EscapeTools {
      */
     public static void escapeHtml4Ignore(Object object, Object... names) {
         Set<Object> nameSet = new HashSet<>();
-        for (Object name : names) {
-            nameSet.add(name);
-        }
+        nameSet.addAll(Arrays.asList(names));
         escapeHtml4IgnoreSet(object, nameSet);
     }
 

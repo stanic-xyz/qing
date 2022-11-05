@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.qing.security.config;
 
-import cn.chenyunlong.qing.security.filter.MyTokenFilter;
-import cn.chenyunlong.qing.security.support.TokenProvider;
 import cn.chenyunlong.qing.config.properties.QingProperties;
 import cn.chenyunlong.qing.security.MyAccessDeniedHandler;
 import cn.chenyunlong.qing.security.MyAuthenticationEntryPoint;
+import cn.chenyunlong.qing.security.filter.MyTokenFilter;
+import cn.chenyunlong.qing.security.support.TokenProvider;
 import cn.chenyunlong.qing.service.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -35,12 +35,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
-    private final AuthenticationFailureHandler authenticationFailureHandler;
     private final MyAccessDeniedHandler myAccessDeniedHandler;
-    private final QingProperties qingProperties;
     private final TokenProvider tokenProvider;
-    private final UserService userService;
     private final UserDetailsService userDetailsService;
     private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 
@@ -53,11 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                           TokenProvider tokenProvider,
                           UserDetailsService myUserDetailService,
                           MyAuthenticationEntryPoint myAuthenticationEntryPoint) {
-        this.authenticationSuccessHandler = authenticationSuccessHandler;
-        this.authenticationFailureHandler = authenticationFeilureHandler;
-        this.qingProperties = qingProperties;
         this.myAccessDeniedHandler = myAccessDeniedHandler;
-        this.userService = userService;
         this.tokenProvider = tokenProvider;
         this.userDetailsService = myUserDetailService;
         this.myAuthenticationEntryPoint = myAuthenticationEntryPoint;

@@ -17,6 +17,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 
+import java.io.Serial;
 import java.util.Arrays;
 
 /**
@@ -27,6 +28,7 @@ import java.util.Arrays;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InvalidExtensionException extends FileUploadException {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String[] allowedExtension;
@@ -41,6 +43,7 @@ public class InvalidExtensionException extends FileUploadException {
     }
 
     public static class InvalidImageExtensionException extends InvalidExtensionException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public InvalidImageExtensionException(String[] allowedExtension, String extension, String filename) {
@@ -49,6 +52,7 @@ public class InvalidExtensionException extends FileUploadException {
     }
 
     public static class InvalidFlashExtensionException extends InvalidExtensionException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public InvalidFlashExtensionException(String[] allowedExtension, String extension, String filename) {
@@ -57,6 +61,7 @@ public class InvalidExtensionException extends FileUploadException {
     }
 
     public static class InvalidMediaExtensionException extends InvalidExtensionException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public InvalidMediaExtensionException(String[] allowedExtension, String extension, String filename) {
@@ -65,6 +70,7 @@ public class InvalidExtensionException extends FileUploadException {
     }
 
     public static class InvalidVideoExtensionException extends InvalidExtensionException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public InvalidVideoExtensionException(String[] allowedExtension, String extension, String filename) {

@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 
 /**
  * 创建一个UIPanel
@@ -26,6 +27,7 @@ import java.io.InputStream;
  */
 public class ImagePanel extends JPanel {
 
+    @Serial
     private static final long serialVersionUID = 3602544785116642939L;
     private final ImageIcon imageIcon;
 

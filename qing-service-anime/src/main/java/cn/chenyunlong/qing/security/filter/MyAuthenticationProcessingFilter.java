@@ -32,12 +32,9 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
     private final Logger logger = LoggerFactory.getLogger(MyAuthenticationProcessingFilter.class);
     private static final String TOKEN = "Authorization";
 
-    private final QingProperties qingProperties;
-
 
     public MyAuthenticationProcessingFilter(QingProperties qingProperties) {
         super(new AntPathRequestMatcher("/login", "POST"));
-        this.qingProperties = qingProperties;
     }
 
 

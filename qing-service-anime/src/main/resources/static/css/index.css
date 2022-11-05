@@ -31,7 +31,7 @@
     box-sizing: border-box;
     width: 45px;
     padding: 6px 2px 8px 2px;
-    margin: 0px -2px 7px 0px;
+    margin: 0 -2px 7px 0;
     display: inline-block;
     text-align: center;
     cursor: pointer;
@@ -72,8 +72,7 @@
 }
 
 .one_new_anime {
-    padding: 2px 2px 2px 2px;
-    padding: 3px 0px 3px 0px;
+    padding: 3px 0 3px 0;
     width: 100%;
     line-height: 1.40em;
 }

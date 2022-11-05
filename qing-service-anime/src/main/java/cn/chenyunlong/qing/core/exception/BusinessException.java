@@ -13,12 +13,15 @@
 
 package cn.chenyunlong.qing.core.exception;
 
+import java.io.Serial;
+
 /**
  * 业务异常
  *
  * @author ruoyi
  */
 public class BusinessException extends RuntimeException {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     protected final String message;

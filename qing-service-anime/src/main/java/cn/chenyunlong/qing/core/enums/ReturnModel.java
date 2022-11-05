@@ -23,12 +23,8 @@ package cn.chenyunlong.qing.core.enums;
  * @since 2019-03-28 10:46:06
  */
 public class ReturnModel {
-    private boolean success;
-    private Object data;
 
     private ReturnModel(boolean success, Object data) {
-        this.success = success;
-        this.data = data;
     }
 
     public static ReturnModel of(boolean success, Object data) {

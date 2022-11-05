@@ -94,6 +94,7 @@ public class RSAEncrypt {
      * 从文件中输入流中加载公钥
      *
      * @param path 公钥输入流
+     * @return {@link String}
      * @throws Exception 加载公钥时产生的异常
      */
     public static String loadPublicKeyByFile(String path) throws Exception {

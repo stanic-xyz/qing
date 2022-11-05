@@ -51,8 +51,8 @@ public class SimpleSocketPart extends AbsSocketPart implements IBelongControl {
     @Override
     public boolean isValid() {
         if (isAlive) {
-            if (outToInPassway == null || !outToInPassway.isValid() || inToOutPassway == null
-                    || !inToOutPassway.isValid()) {
+            if (outToInPassway == null || outToInPassway.isValid() || inToOutPassway == null
+                    || inToOutPassway.isValid()) {
                 return false;
             }
             return isAlive;
