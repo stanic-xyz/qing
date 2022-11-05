@@ -32,7 +32,7 @@
     padding: 4px 3px;
     text-decoration: none;
     line-height: 20px;
-    margin: 1px 0px;
+    margin: 1px 0;
     font-size: 1.1em;
 }
 
@@ -60,7 +60,7 @@
     width: auto;
     height: auto;
     display: inline-block;
-    margin: 0px 10px;
+    margin: 0 10px;
     border: 1px solid #444;
 
 }
@@ -152,7 +152,7 @@
     }
 
     .search-list {
-        margin: 0px 0px;
+        margin: 0 0;
         border: 1px solid #444;
         width: 99%;
     }
@@ -168,7 +168,7 @@
         border: 1px solid #654;
         text-align: left;
         width: 16%;
-        padding: .1em 0em .1em .5em;
+        padding: .1em 0 .1em .5em;
     }
 
     #result_count {
@@ -181,7 +181,7 @@
 
     .cell {
         width: 99%;
-        padding: 12px 0px 0px 4px;
+        padding: 12px 0 0 4px;
     }
 
     .cell .cell_poster {

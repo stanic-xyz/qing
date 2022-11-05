@@ -73,8 +73,7 @@ public class ReturnModel {
         if (this.isSuccess() != other.isSuccess()) return false;
         final Object this$data = this.getData();
         final Object other$data = other.getData();
-        if (this$data == null ? other$data != null : !this$data.equals(other$data)) return false;
-        return true;
+        return this$data == null ? other$data == null : this$data.equals(other$data);
     }
 
     protected boolean canEqual(final Object other) {

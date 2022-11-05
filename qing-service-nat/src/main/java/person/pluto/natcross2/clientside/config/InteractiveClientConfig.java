@@ -59,16 +59,14 @@ public class InteractiveClientConfig implements IClientConfig<InteractiveModel, 
 
     @Override
     public IClientHeartThread newClientHeartThread(ClientControlThread clientControlThread) {
-        ClientHeartThread clientHeartThread = new ClientHeartThread(clientControlThread);
-        return clientHeartThread;
+        return new ClientHeartThread(clientControlThread);
     }
 
     @Override
     public IClientAdapter<InteractiveModel, InteractiveModel> newCreateControlAdapter(
             ClientControlThread clientControlThread) {
-        InteractiveSimpleClientAdapter simpleClientAdapter = new InteractiveSimpleClientAdapter(clientControlThread,
+        return new InteractiveSimpleClientAdapter(clientControlThread,
                 this);
-        return simpleClientAdapter;
     }
 
     @Override

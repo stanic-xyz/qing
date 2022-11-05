@@ -132,10 +132,7 @@ public class ServletUtils {
         }
 
         String ajax = request.getParameter("__ajax");
-        if (StringUtils.inStringIgnoreCase(ajax, "json", "xml")) {
-            return true;
-        }
-        return false;
+        return StringUtils.inStringIgnoreCase(ajax, "json", "xml");
     }
 
     /**

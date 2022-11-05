@@ -18,6 +18,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -47,6 +48,7 @@ import java.util.*;
 @Aspect
 @Component
 @Order(1)
+@Slf4j
 public class WebLogAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebLogAspect.class);
 
@@ -56,12 +58,26 @@ public class WebLogAspect {
 
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) {
+        //ToDo 切入点之前
+        if (log.isDebugEnabled()) {
+            log.debug("切入点之前：{}", joinPoint.getSourceLocation());
+        }
     }
 
-    @AfterReturning(value = "webLog()", returning = "ret")
-    public void doAfterReturning(Object ret) {
+    @AfterReturning(value = "webLog()", returning = "returnVal")
+    public void doAfterReturning(Object returnVal) {
+        if (log.isDebugEnabled()) {
+            log.debug("returnValue:{}", returnVal);
+        }
     }
 
+    /**
+     * 打日志
+     *
+     * @param joinPoint 连接点
+     * @return {@link Object}
+     * @throws Throwable throwable
+     */
     @Around("webLog()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
@@ -95,7 +111,7 @@ public class WebLogAspect {
         logMap.put("parameter", webLog.getParameter());
         logMap.put("spendTime", webLog.getSpendTime());
         logMap.put("description", webLog.getDescription());
-        LOGGER.info("{}", JSONUtil.parse(webLog));
+        LOGGER.info("{}", JSONUtil.toJsonStr(webLog));
         return result;
     }
 

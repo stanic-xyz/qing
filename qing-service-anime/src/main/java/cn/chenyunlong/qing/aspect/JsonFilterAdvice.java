@@ -45,6 +45,7 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
      *
      * @param methodParameter 方法参数
      * @param converterClass  转换函数
+     * @return boolean
      */
     @Override
     public boolean supports(MethodParameter methodParameter, @NonNull Class<? extends HttpMessageConverter<?>> converterClass) {
@@ -53,7 +54,7 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
     }
 
     /**
-     * 请求结果了
+     * 写出结果前
      *
      * @param apiResult          返回结果
      * @param methodParameter    方法仓鼠信息
@@ -75,7 +76,11 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
         JsonFieldFilter annotation = methodParameter.getMethodAnnotation(JsonFieldFilter.class);
         //获取需要进行过滤的字段或者其他东西！
         if (annotation != null) {
+            //需要过滤的字段列表
             List<String> possibleFilters = Arrays.asList(annotation.filters());
+            if (log.isDebugEnabled()) {
+                log.debug("需要过滤的字段列表{}", possibleFilters);
+            }
             apiResult.setMsg(apiResult.getMsg() + "：Modified");
         }
         serverHttpResponse.getHeaders().setContentType(MediaType.parseMediaType(MediaType.APPLICATION_JSON_VALUE));

@@ -25,9 +25,6 @@ import java.util.zip.ZipOutputStream;
  * <p>
  * 压缩工具类
  * </p>
- *
- * @author wangmin1994@qq.com
- * @since 2019-06-05 10:15:14
  */
 public final class ZipUtils {
 
@@ -38,12 +35,9 @@ public final class ZipUtils {
      *
      * @param sourcePairList 源流对（主要针对网络流环境，避免了先存目录再压缩的尬境），左键为文件名，右键为输入流
      * @param outputStream   输出流，依然可以使用网络输出流，避免先存再发
-     * @throws RuntimeException
-     * @author wangmin1994@qq.com
-     * @since 2019-06-05 10:06:39
+     * @throws RuntimeException 运行时异常
      */
-    public static void toZip(List<Pair<String, InputStream>> sourcePairList, OutputStream outputStream)
-            throws RuntimeException {
+    public static void toZip(List<Pair<String, InputStream>> sourcePairList, OutputStream outputStream) throws RuntimeException {
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             byte[] buffer = new byte[BUFFER_SIZE];
             int len = -1;
@@ -54,7 +48,6 @@ public final class ZipUtils {
                 while ((len = sourceInputStream.read(buffer)) != -1) {
                     zipOutputStream.write(buffer, 0, len);
                 }
-
                 zipOutputStream.closeEntry();
                 // 流已读完，在此关闭即可
                 sourceInputStream.close();

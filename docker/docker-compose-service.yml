@@ -11,7 +11,7 @@ services:
     networks:
       - zhangli
     ports:
-      - 6379:6379
+      - "6379:6379"
     env_file: .env
   service-provider:
     networks:
@@ -19,7 +19,7 @@ services:
     container_name: service-provider
     image: stanic-docker.pkg.coding.net/zhangli/zhangli/zhangli-service-provider:1.0.0.RELEASE
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
       TZ: Asia/Shanghai
       NACOS_SERVER: nacos:8848

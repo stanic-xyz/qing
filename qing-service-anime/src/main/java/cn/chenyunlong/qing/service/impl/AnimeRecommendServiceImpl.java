@@ -34,12 +34,9 @@ import java.util.List;
 @Service
 public class AnimeRecommendServiceImpl extends ServiceImpl<AnimeRecommendMapper, AnimeRecommendEntity> implements AnimeRecommendService {
 
-    private final AnimeRecommendMapper animeRecommendMapper;
-
     private final AnimeInfoMapper animeInfoMapper;
 
     public AnimeRecommendServiceImpl(AnimeRecommendMapper animeRecommendMapper, AnimeInfoMapper animeInfoMapper) {
-        this.animeRecommendMapper = animeRecommendMapper;
         this.animeInfoMapper = animeInfoMapper;
     }
 

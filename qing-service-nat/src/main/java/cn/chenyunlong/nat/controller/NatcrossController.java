@@ -13,21 +13,21 @@
 
 package cn.chenyunlong.nat.controller;
 
+import cn.chenyunlong.nat.common.model.model.ResultModel;
+import cn.chenyunlong.nat.common.model.model.enumeration.ResultEnum;
+import cn.chenyunlong.nat.entity.ListenPort;
 import cn.chenyunlong.nat.enumeration.PortTypeEnum;
 import cn.chenyunlong.nat.model.request.ListenPortParam;
+import cn.chenyunlong.nat.server.FileServer;
+import cn.chenyunlong.nat.server.NatcrossServer;
+import cn.chenyunlong.nat.service.IListenPortService;
+import cn.chenyunlong.nat.tools.ValidatorUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import person.pluto.natcross2.serverside.listen.ListenServerControl;
 import person.pluto.natcross2.serverside.listen.ServerListenThread;
-import cn.chenyunlong.nat.common.model.model.ResultModel;
-import cn.chenyunlong.nat.common.model.model.enumeration.ResultEnum;
-import cn.chenyunlong.nat.entity.ListenPort;
-import cn.chenyunlong.nat.server.FileServer;
-import cn.chenyunlong.nat.server.NatcrossServer;
-import cn.chenyunlong.nat.service.IListenPortService;
-import cn.chenyunlong.nat.tools.ValidatorUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -76,7 +76,7 @@ public class NatcrossController {
     public ResultModel createListenPort(@RequestBody ListenPortParam listenPortParam) {
 
         if (listenPortParam == null || listenPortParam.getListenPort() == null || listenPortParam.getDestIp() == null
-                || !ValidatorUtils.isIPv4Address(listenPortParam.getDestIp()) || listenPortParam.getDestPort() == null) {
+                || ValidatorUtils.isIPv4Address(listenPortParam.getDestIp()) || listenPortParam.getDestPort() == null) {
             return ResultEnum.PARAM_FAIL.toResultModel();
         }
         // 检查以前是否有设定保存
@@ -121,7 +121,7 @@ public class NatcrossController {
     public ResultModel updateListenPort(@RequestBody ListenPortParam listenPortParam) {
 
         if (listenPortParam == null || listenPortParam.getListenPort() == null
-                || (listenPortParam.getDestIp() != null && !ValidatorUtils.isIPv4Address(listenPortParam.getDestIp()))) {
+                || (listenPortParam.getDestIp() != null && ValidatorUtils.isIPv4Address(listenPortParam.getDestIp()))) {
             return ResultEnum.PARAM_FAIL.toResultModel();
         }
 

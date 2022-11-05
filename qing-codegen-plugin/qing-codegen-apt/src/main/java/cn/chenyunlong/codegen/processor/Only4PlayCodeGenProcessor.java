@@ -13,10 +13,10 @@
 
 package cn.chenyunlong.codegen.processor;
 
-import com.google.auto.service.AutoService;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.registry.CodeGenProcessorRegistry;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import com.google.auto.service.AutoService;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -36,20 +36,19 @@ import java.util.Set;
 public class Only4PlayCodeGenProcessor extends AbstractProcessor {
 
     @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        annotations.stream().forEach(an -> {
-            Set<? extends Element> typeElements = roundEnv.getElementsAnnotatedWith(an);
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
+        annotations.forEach(element -> {
+            Set<? extends Element> typeElements = roundEnvironment.getElementsAnnotatedWith(element);
             Set<TypeElement> types = ElementFilter.typesIn(typeElements);
             for (TypeElement typeElement : types) {
                 CodeGenProcessor codeGenProcessor = CodeGenProcessorRegistry.find(
-                        an.getQualifiedName().toString());
+                        element.getQualifiedName().toString());
                 try {
-                    codeGenProcessor.generate(typeElement, roundEnv);
-                } catch (Exception e) {
-                    ProcessingEnvironmentHolder.getEnvironment().getMessager().printMessage(Kind.ERROR, "代码生成异常:" + e.getMessage());
+                    codeGenProcessor.generate(typeElement, roundEnvironment);
+                } catch (Exception exception) {
+                    ProcessingEnvironmentHolder.getEnvironment().getMessager().printMessage(Kind.ERROR, "代码生成异常:" + exception.getMessage());
                 }
             }
-
         });
         return false;
     }

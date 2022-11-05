@@ -18,11 +18,13 @@ import cn.chenyunlong.qing.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class SysOperLog extends BaseEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

@@ -168,7 +168,7 @@ public final class ClientControlThread implements Runnable, IBelongControl {
         }
 
         Set<String> keySet = socketPartMap.keySet();
-        String[] array = keySet.toArray(new String[keySet.size()]);
+        String[] array = keySet.toArray(new String[0]);
 
         for (String key : array) {
             stopSocketPart(key);
@@ -207,10 +207,7 @@ public final class ClientControlThread implements Runnable, IBelongControl {
      * @since 2020-01-07 16:14:21
      */
     public boolean isAlive() {
-        if (isAlive) {
-            return true;
-        }
-        return false;
+        return isAlive;
     }
 
     /**

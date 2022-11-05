@@ -60,13 +60,9 @@ public class ClientConnectProcess implements IProcess {
 
         boolean doSetPartClient = serverListenThread.doSetPartClient(clientConnectModel.getSocketPartKey(),
                 socketChannel.getSocket());
-        if (doSetPartClient) {
-            // 若设置成功，则上层无需关闭
-            return true;
-        } else {
-            // 若设置失败，则由上层关闭
-            return false;
-        }
+        // 若设置成功，则上层无需关闭
+        // 若设置失败，则由上层关闭
+        return doSetPartClient;
     }
 
 }

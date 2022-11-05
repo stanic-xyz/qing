@@ -611,7 +611,7 @@ public class ExcelUtil<T> {
             if (StringUtils.containsAny(separator, propertyValue)) {
                 for (String value : propertyValue.split(separator)) {
                     if (itemArray[0].equals(value)) {
-                        propertyString.append(itemArray[1] + separator);
+                        propertyString.append(itemArray[1]).append(separator);
                         break;
                     }
                 }

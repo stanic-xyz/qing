@@ -65,12 +65,24 @@ public class RemoteExecuteCommand {
         return flg;
     }
 
+    public static void main(String[] args) {
+        RemoteExecuteCommand rec = new RemoteExecuteCommand("121.36.163.95", "root", "4745701816Long");
+        //执行命令
+//        System.out.println(rec.execute("chmod 777 /usr/ksybak/myshell/tomcat-fw.sh"));
+        System.out.println(rec.execute("ls /var"));
+        //System.out.println(rec.execute("/usr/ksybak/myshell/tomcat-fw.sh"));
+        //执行脚本
+        //rec.execute("sh /usr/local/tomcat/bin/statup.sh");
+        //这个方法与上面最大的区别就是，上面的方法，不管执行成功与否都返回，
+        //这个方法呢，如果命令或者脚本执行错误将返回空字符串
+        //System.out.println(rec.executeSuccess("ifconfig"));
+    }
+
     /**
+     * 远程执行shell脚本或者命令
+     *
      * @param cmd 即将执行的命令
      * @return 命令执行完后返回的结果值
-     * @author Ickes
-     * 远程执行shll脚本或者命令
-     * @since V0.1
      */
     public String execute(String cmd) {
         String result = "";
@@ -85,32 +97,6 @@ public class RemoteExecuteCommand {
                 if (!StringUtils.hasLength(result)) {
                     result = processStdout(session.getStderr(), DEFAULT_CHARSET);
                 }
-                conn.close();
-                session.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-
-    /**
-     * @param cmd 即将执行的命令
-     * @return 命令执行成功后返回的结果值，如果命令执行失败，返回空字符串，不是null
-     * @author Ickes
-     * 远程执行shll脚本或者命令
-     * @since V0.1
-     */
-    public String executeSuccess(String cmd) {
-        String result = "";
-        try {
-            if (login()) {
-                //打开一个会话
-                Session session = conn.openSession();
-                //执行命令
-                session.execCommand(cmd);
-                result = processStdout(session.getStdout(), DEFAULT_CHARSET);
                 conn.close();
                 session.close();
             }
@@ -183,17 +169,29 @@ public class RemoteExecuteCommand {
         this.userPwd = userPwd;
     }
 
-    public static void main(String[] args) {
-        RemoteExecuteCommand rec = new RemoteExecuteCommand("121.36.163.95", "root", "");
-        //执行命令
-//        System.out.println(rec.execute("chmod 777 /usr/ksybak/myshell/tomcat-fw.sh"));
-        System.out.println(rec.execute("ls /var"));
-        //System.out.println(rec.execute("/usr/ksybak/myshell/tomcat-fw.sh"));
-        //执行脚本
-        //rec.execute("sh /usr/local/tomcat/bin/statup.sh");
-        //这个方法与上面最大的区别就是，上面的方法，不管执行成功与否都返回，
-        //这个方法呢，如果命令或者脚本执行错误将返回空字符串
-        //System.out.println(rec.executeSuccess("ifconfig"));
+    /**
+     * 远程执行shell脚本或者命令
+     *
+     * @param cmd 即将执行的命令
+     * @return 命令执行成功后返回的结果值，如果命令执行失败，返回空字符串，不是null
+     */
+    @SuppressWarnings("unused")
+    public String executeSuccess(String cmd) {
+        String result = "";
+        try {
+            if (login()) {
+                //打开一个会话
+                Session session = conn.openSession();
+                //执行命令
+                session.execCommand(cmd);
+                result = processStdout(session.getStdout(), DEFAULT_CHARSET);
+                conn.close();
+                session.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 

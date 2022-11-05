@@ -35,8 +35,8 @@ public enum NatcrossResultEnum {
     // 未知错误
     FAIL("9999", "未知错误");
 
-    private String code;
-    private String name;
+    private final String code;
+    private final String name;
 
     private NatcrossResultEnum(String code, String name) {
         this.code = code;

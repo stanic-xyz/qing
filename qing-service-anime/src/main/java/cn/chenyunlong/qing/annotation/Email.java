@@ -26,34 +26,35 @@ public @interface Email {
     /**
      * 接收人
      *
-     * @return
+     * @return {@link String}
      */
     String receiver();
 
     /**
      * 内容
      *
-     * @return
+     * @return {@link String}
      */
     String content();
 
     /**
      * 主题
      *
-     * @return
+     * @return {@link String}
      */
     String object();
 
     /**
      * 模板ID
      *
-     * @return
+     * @return int
      */
     int templateId() default 1;
 
-    /***
-     * 短信类型 ， 1：预约信息，2，收购数据，3：预约语音
-     * @return
+    /**
+     * 电子邮件类型 1：预约信息，2，收购数据，3：预约语音
+     *
+     * @return int
      */
     int emailType() default 1;
 }

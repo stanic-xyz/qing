@@ -29,17 +29,15 @@ import java.util.regex.Pattern;
  * <p>
  * 通用性工具集
  * </p>
- *
- * @author wangmin1994@qq.com
- * @since 2019-03-28 11:17:57
  */
 public final class Tools {
 
     /**
+     * 删除重复
      * 去除list中的重复元素
      *
-     * @param array
-     * @return
+     * @param array 数组
+     * @return {@link List}<{@link T}>
      */
     public static <T> List<T> removeRepeat(List<T> array) {
         if (array == null) {
@@ -56,13 +54,12 @@ public final class Tools {
     }
 
     /**
+     * 输入输出
      * 输入流转输出流
      *
-     * @param inputStream
-     * @param outputStream
-     * @throws IOException
-     * @author wangmin1994@qq.com
-     * @since 2019-06-17 16:01:41
+     * @param inputStream  输入流
+     * @param outputStream 输出流
+     * @throws IOException ioexception
      */
     public static void inputToOutput(InputStream inputStream, OutputStream outputStream) throws IOException {
         byte[] temp = new byte[4096];
@@ -76,10 +73,8 @@ public final class Tools {
     /**
      * unicode转中文
      *
-     * @param str
-     * @return
-     * @author yutao
-     * @date 2017年1月24日上午10:33:25
+     * @param str str
+     * @return {@link String}
      */
     public static String unicodeToString(String str) {
         if (StringUtils.isBlank(str)) {
@@ -87,10 +82,10 @@ public final class Tools {
         }
         Pattern pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))");
         Matcher matcher = pattern.matcher(str);
-        char ch;
+        char c;
         while (matcher.find()) {
-            ch = (char) Integer.parseInt(matcher.group(2), 16);
-            str = str.replace(matcher.group(1), ch + "");
+            c = (char) Integer.parseInt(matcher.group(2), 16);
+            str = str.replace(matcher.group(1), c + "");
         }
         return str;
     }

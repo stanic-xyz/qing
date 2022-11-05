@@ -92,6 +92,13 @@ public class LogAspect {
         handleLog(joinPoint, null, jsonResult);
     }
 
+    /**
+     * 处理日志
+     *
+     * @param joinPoint  连接点
+     * @param e          异常信息
+     * @param jsonResult json结果
+     */
     protected void handleLog(final JoinPoint joinPoint, final Exception e, Object jsonResult) {
         try {
             // 获得注解
@@ -109,7 +116,7 @@ public class LogAspect {
             // 请求的地址
             String ip = "192.168.129.1";
             String deptName = "DeptName";
-            String operUrl = "/test";
+            String operateUrl = "/test";
 
             operaLog.setOperIp(ip);
             // 返回参数
@@ -117,7 +124,7 @@ public class LogAspect {
                 operaLog.setJsonResult(JSONObject.toJSONString(jsonResult));
             }
 
-            operaLog.setOperUrl(operUrl);
+            operaLog.setOperUrl(operateUrl);
             operaLog.setOperName(currentUser);
             operaLog.setDeptName(deptName);
 
@@ -135,7 +142,6 @@ public class LogAspect {
             // 处理设置注解上的参数
             getControllerMethodDescription(joinPoint, controllerLog, operaLog);
             //TODO 保存数据库，暂时没有实现该功能
-//            AsyncManager.me().execute(AsyncFactory.recordOper(operaLog));
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("==前置通知异常==");
@@ -167,24 +173,27 @@ public class LogAspect {
     /**
      * 获取请求的参数，放到log中
      *
-     * @param operLog 操作日志
+     * @param sysLog 操作日志
      */
-    private void setRequestValue(JoinPoint joinPoint, SysOperLog operLog) {
+    private void setRequestValue(JoinPoint joinPoint, SysOperLog sysLog) {
         Map<String, String[]> map = HttpContextUtil.getHttpServletRequest().getParameterMap();
         if (!map.isEmpty()) {
             String params = JSONObject.toJSONString(map);
-            operLog.setOperParam(params);
+            sysLog.setOperParam(params);
         } else {
             Object args = joinPoint.getArgs();
             if (args != null) {
                 String params = argsArrayToString(joinPoint.getArgs());
-                operLog.setOperParam(params);
+                sysLog.setOperParam(params);
             }
         }
     }
 
     /**
      * 是否存在注解，如果存在就获取
+     *
+     * @param joinPoint 连接点
+     * @return {@link Log}
      */
     private Log getAnnotationLog(JoinPoint joinPoint) {
         Signature signature = joinPoint.getSignature();
@@ -198,14 +207,17 @@ public class LogAspect {
     }
 
     /**
-     * 参数拼装
+     * 把参数拼接成字符串
+     *
+     * @param paramsArray 参数数组
+     * @return {@link String}
      */
     private String argsArrayToString(Object[] paramsArray) {
         StringBuilder params = new StringBuilder();
         if (paramsArray != null && paramsArray.length > 0) {
-            for (Object o : paramsArray) {
-                if (!isFilterObject(o)) {
-                    Object jsonObj = JSONObject.toJSONString(o);
+            for (Object obj : paramsArray) {
+                if (!isFilterObject(obj)) {
+                    Object jsonObj = JSONObject.toJSONString(obj);
                     params.append(jsonObj).append(" ");
                 }
             }
@@ -216,27 +228,32 @@ public class LogAspect {
     /**
      * 判断是否需要过滤的对象。
      *
-     * @param o 对象信息。
+     * @param obj 对象信息。
      * @return 如果是需要过滤的对象，则返回true；否则返回false。
      */
     @SuppressWarnings("rawtypes")
-    public boolean isFilterObject(final Object o) {
-        Class<?> clazz = o.getClass();
-        if (clazz.isArray()) {
-            return clazz.getComponentType().isAssignableFrom(MultipartFile.class);
-        } else if (Collection.class.isAssignableFrom(clazz)) {
-            Collection collection = (Collection) o;
-            for (Object value : collection) {
-                return value instanceof MultipartFile;
-            }
-        } else if (Map.class.isAssignableFrom(clazz)) {
-            Map map = (Map) o;
+    public boolean isFilterObject(final Object obj) {
+        Class<?> objClass = obj.getClass();
+        //数组
+        if (objClass.isArray()) {
+            return objClass.getComponentType().isAssignableFrom(MultipartFile.class);
+        }
+        //集合
+        else if (Collection.class.isAssignableFrom(objClass)) {
+            Collection collection = (Collection) obj;
+            return collection.getClass().getComponentType().isAssignableFrom(MultipartFile.class);
+
+        }
+        //map集合
+        else if (Map.class.isAssignableFrom(objClass)) {
+            Map map = (Map) obj;
             for (Object value : map.entrySet()) {
                 Map.Entry entry = (Map.Entry) value;
                 return entry.getValue() instanceof MultipartFile;
             }
         }
-        return o instanceof MultipartFile || o instanceof HttpServletRequest || o instanceof HttpServletResponse
-                || o instanceof BindingResult;
+        //单独的对象
+        return obj instanceof MultipartFile || obj instanceof HttpServletRequest || obj instanceof HttpServletResponse
+                || obj instanceof BindingResult;
     }
 }

@@ -13,10 +13,9 @@
 
 package cn.chenyunlong.nat.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.Objects;
 
 /**
  * <p>

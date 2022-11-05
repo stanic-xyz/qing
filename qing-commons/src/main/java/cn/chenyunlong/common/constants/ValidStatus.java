@@ -27,8 +27,8 @@ public enum ValidStatus implements BaseEnum<ValidStatus> {
      * 无效
      */
     INVALID(0, "invalid");
-    private Integer code;
-    private String name;
+    private final Integer code;
+    private final String name;
 
     ValidStatus(Integer code, String msg) {
         this.code = code;

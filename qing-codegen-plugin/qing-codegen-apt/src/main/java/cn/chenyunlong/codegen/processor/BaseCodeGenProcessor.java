@@ -208,27 +208,27 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * 得到描述信息构建器
      *
      * @param builder  构建器
-     * @param ve       已经
+     * @param element  已经
      * @param typeName 类型名称
      */
-    private void getDescriptionInfoBuilder(TypeSpec.Builder builder, VariableElement ve, TypeName typeName) {
+    private void getDescriptionInfoBuilder(TypeSpec.Builder builder, VariableElement element, TypeName typeName) {
         FieldSpec.Builder fieldSpec = FieldSpec
-                .builder(typeName, ve.getSimpleName().toString(), Modifier.PRIVATE)
+                .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
                 .addAnnotation(AnnotationSpec.builder(Schema.class)
-                        .addMember("title", "$S", getFieldDesc(ve))
+                        .addMember("title", "$S", getFieldDesc(element))
                         .build());
         builder.addField(fieldSpec.build());
-        String fieldName = getFieldDefaultName(ve);
+        String fieldName = getFieldDefaultName(element);
         MethodSpec.Builder getMethod = MethodSpec.methodBuilder("get" + fieldName)
                 .returns(typeName)
                 .addModifiers(Modifier.PUBLIC)
-                .addStatement("return $L", ve.getSimpleName().toString());
+                .addStatement("return $L", element.getSimpleName().toString());
         MethodSpec.Builder setMethod = MethodSpec.methodBuilder("set" + fieldName)
                 .returns(void.class)
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(typeName, ve.getSimpleName().toString())
-                .addStatement("this.$L = $L", ve.getSimpleName().toString(),
-                        ve.getSimpleName().toString());
+                .addParameter(typeName, element.getSimpleName().toString())
+                .addStatement("this.$L = $L", element.getSimpleName().toString(),
+                        element.getSimpleName().toString());
         builder.addMethod(getMethod.build());
         builder.addMethod(setMethod.build());
     }
@@ -239,13 +239,12 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @param builder          构建器
      * @param variableElements 变量元素
      */
-    public void addSetterAndGetterMethodWithConverter(TypeSpec.Builder builder,
-                                                      Set<VariableElement> variableElements) {
-        for (VariableElement ve : variableElements) {
+    public void addSetterAndGetterMethodWithConverter(TypeSpec.Builder builder, Set<VariableElement> variableElements) {
+        for (VariableElement variableElement : variableElements) {
             TypeName typeName;
-            if (Objects.nonNull(ve.getAnnotation(TypeConverter.class))) {
+            if (Objects.nonNull(variableElement.getAnnotation(TypeConverter.class))) {
                 //这里处理下泛型的情况，比如List<String> 这种，TypeConverter FullName 用逗号分隔"java.lang.List
-                String fullName = ve.getAnnotation(TypeConverter.class).toTypeFullName();
+                String fullName = variableElement.getAnnotation(TypeConverter.class).toTypeFullName();
                 Iterable<String> classes = Splitter.on(",").split(fullName);
                 int size = Iterables.size(classes);
                 if (size > 1) {
@@ -253,12 +252,12 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
                     //ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class))
                     typeName = ParameterizedTypeName.get(ClassName.bestGuess(Iterables.get(classes, 0)), ClassName.bestGuess(Iterables.get(classes, 1)));
                 } else {
-                    typeName = ClassName.bestGuess(ve.getAnnotation(TypeConverter.class).toTypeFullName());
+                    typeName = ClassName.bestGuess(variableElement.getAnnotation(TypeConverter.class).toTypeFullName());
                 }
             } else {
-                typeName = TypeName.get(ve.asType());
+                typeName = TypeName.get(variableElement.asType());
             }
-            getDescriptionInfoBuilder(builder, ve, typeName);
+            getDescriptionInfoBuilder(builder, variableElement, typeName);
         }
     }
 
@@ -293,8 +292,14 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
                 .map(FieldDesc::name).orElse(ve.getSimpleName().toString());
     }
 
-    protected String getFieldDefaultName(VariableElement ve) {
-        return ve.getSimpleName().toString().substring(0, 1).toUpperCase() + ve.getSimpleName()
+    /**
+     * 获取字段默认名称
+     *
+     * @param variableElement 变量元素
+     * @return {@link String}
+     */
+    protected String getFieldDefaultName(VariableElement variableElement) {
+        return variableElement.getSimpleName().toString().substring(0, 1).toUpperCase() + variableElement.getSimpleName()
                 .toString().substring(1);
     }
 
@@ -306,14 +311,12 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @param pathStr         路径str
      * @param typeSpecBuilder 类型规范施工
      */
-    public void genJavaSourceFile(String packageName, String pathStr,
-                                  TypeSpec.Builder typeSpecBuilder) {
+    public void genJavaSourceFile(String packageName, String pathStr, TypeSpec.Builder typeSpecBuilder) {
         TypeSpec typeSpec = typeSpecBuilder.build();
         JavaFile javaFile = JavaFile
                 .builder(packageName, typeSpec)
                 .addFileComment("---Auto Generated by Only4Play ---")
                 .build();
-//    System.out.println(javaFile);
         String packagePath =
                 packageName.replace(".", File.separator) + File.separator + typeSpec.name + ".java";
         try {

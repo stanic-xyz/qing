@@ -41,7 +41,7 @@ public enum InteractiveTypeEnum {
     //
     ;
 
-    private String describe;
+    private final String describe;
 
     InteractiveTypeEnum(String describe) {
         this.describe = describe;

@@ -82,7 +82,7 @@ public class SimplePassway implements Runnable {
      * @since 2020-01-08 15:59:13
      */
     public boolean isValid() {
-        return alive;
+        return !alive;
     }
 
     /**

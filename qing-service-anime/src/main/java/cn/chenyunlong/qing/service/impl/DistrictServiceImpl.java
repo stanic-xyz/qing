@@ -32,10 +32,7 @@ import java.util.stream.Collectors;
 @Service
 public class DistrictServiceImpl extends AbstractCrudService<DistrictMapper, District> implements DistrictService {
 
-    private final DistrictMapper districtMapper;
-
     public DistrictServiceImpl(DistrictMapper districtMapper) {
-        this.districtMapper = districtMapper;
     }
 
     @Override
