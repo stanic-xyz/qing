@@ -24,7 +24,7 @@ import cn.hutool.core.thread.NamedThreadFactory;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.validation.annotation.Validated;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,17 +35,13 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * @author Stan
  */
-@Tag(name = "anime")
-@Validated
+@Tag(name = "番剧")
 @RestController
-@RequestMapping("api/admin/anime")
+@RequestMapping("api/anime")
+@RequiredArgsConstructor
 public class AnimeApiController {
 
     private final AnimeInfoService animeInfoService;
-
-    public AnimeApiController(AnimeInfoService animeInfoService) {
-        this.animeInfoService = animeInfoService;
-    }
 
     @PostMapping
     public ApiResult<AnimeInfoVo> addAnime(@Valid @RequestBody AnimeInfoParam animeInfo) {

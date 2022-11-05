@@ -59,12 +59,12 @@ zhangli:
   openAopLog: true
   swagger:
     author: Stan
-    basePackage: cn.chenyunlong.zhangli
-    description: Zhangli's Rear Gargen  API Documentation.
+    basePackage: cn.chenyunlong.qing
+    description: My Rear Garden API Documentation.
     email: 1576302867@qq.com
-    license: Apache 2.0
-    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
-    title: Application from Agefans
+    license: MulanPSL-2.0
+    licenseUrl: http://license.coscl.org.cn/MulanPSL2
+    title: Application from Project Qing
     url: https://bangumi.chenyunlong.cn
     version: V1.0.0
     doc-disabled: false
@@ -87,3 +87,5 @@ mp:
 springdoc:
   api-docs:
     enabled: true
+  swagger-ui:
+    doc-expansion: none

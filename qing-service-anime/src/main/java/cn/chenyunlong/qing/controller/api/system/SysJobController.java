@@ -13,18 +13,19 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.core.enums.BusinessType;
-import cn.chenyunlong.qing.core.page.TableDataInfo;
 import cn.chenyunlong.qing.annotation.Log;
+import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.core.controller.BaseController;
+import cn.chenyunlong.qing.core.enums.BusinessType;
 import cn.chenyunlong.qing.core.exception.job.TaskException;
+import cn.chenyunlong.qing.core.page.TableDataInfo;
 import cn.chenyunlong.qing.model.entities.sys.SysJob;
 import cn.chenyunlong.qing.service.ISysJobService;
 import cn.chenyunlong.qing.utils.poi.ExcelUtil;
 import cn.chenyunlong.qing.utils.quartz.CronUtils;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.quartz.SchedulerException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -33,22 +34,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 调度任务信息操作处理
+ * 定时任务调度控制器
  *
- * @author ruoyi
+ * @author Stan
+ * @date 2022/11/05
  */
+@Tag(name = "系统定时任务")
 @Controller
 @RequestMapping("/monitor/job")
+@RequiredArgsConstructor
 public class SysJobController extends BaseController {
-    private final String prefix = "monitor/job";
 
-    @Autowired
-    private ISysJobService jobService;
-
-    @GetMapping()
-    public String job() {
-        return prefix + "/job";
-    }
+    private final ISysJobService jobService;
 
     @PostMapping("/list")
     @ResponseBody
@@ -82,6 +79,7 @@ public class SysJobController extends BaseController {
     public String detail(@PathVariable("jobId") Long jobId, ModelMap mmap) {
         mmap.put("name", "templates/monitor/job");
         mmap.put("job", jobService.selectJobById(jobId));
+        String prefix = "monitor/job";
         return prefix + "/detail";
     }
 
@@ -111,14 +109,6 @@ public class SysJobController extends BaseController {
     }
 
     /**
-     * 新增调度
-     */
-    @GetMapping("/add")
-    public String add() {
-        return prefix + "/add";
-    }
-
-    /**
      * 新增保存调度
      */
     @Log(title = "定时任务", businessType = BusinessType.INSERT)
@@ -130,15 +120,6 @@ public class SysJobController extends BaseController {
             return ApiResult.fail("cron表达式不正确");
         }
         return ApiResult.success(jobService.insertJob(job));
-    }
-
-    /**
-     * 修改调度
-     */
-    @GetMapping("/edit/{jobId}")
-    public String edit(@PathVariable("jobId") Long jobId, ModelMap mmap) {
-        mmap.put("job", jobService.selectJobById(jobId));
-        return prefix + "/edit";
     }
 
     /**

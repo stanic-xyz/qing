@@ -18,21 +18,26 @@ import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
 import cn.chenyunlong.qing.model.params.AddEpisodeParam;
 import cn.chenyunlong.qing.service.AnimeEpisodeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Validated
-@Tag(name = "api/anime/episode")
+/**
+ * 分集控制器
+ *
+ * @author Stan
+ * @date 2022/11/05
+ */
+@Tag(name = "分集")
 @RestController
+@RequestMapping("api/episodes")
+@RequiredArgsConstructor
 public class EpisodeController {
 
     private final AnimeEpisodeService episodeService;
-
-    public EpisodeController(AnimeEpisodeService episodeService) {
-        this.episodeService = episodeService;
-    }
 
     @PostMapping("")
     public ApiResult<AnimeEpisodeDTO> add(@Validated @RequestBody AddEpisodeParam episodeParam) {

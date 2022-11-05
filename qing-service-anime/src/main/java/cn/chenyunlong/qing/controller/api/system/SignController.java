@@ -16,6 +16,8 @@ package cn.chenyunlong.qing.controller.api.system;
 import cn.chenyunlong.qing.annotation.Log;
 import cn.chenyunlong.qing.model.entities.Sign;
 import cn.chenyunlong.qing.service.SignService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -25,15 +27,13 @@ import java.time.LocalDate;
  *
  * @author Stan
  */
+@Tag(name = "签名")
 @RestController
 @RequestMapping("sign")
+@RequiredArgsConstructor
 public class SignController {
 
     private final SignService signService;
-
-    public SignController(SignService signService) {
-        this.signService = signService;
-    }
 
     @Log(title = "获取签到状态")
     @GetMapping("get")
@@ -43,7 +43,7 @@ public class SignController {
 
     @Log(title = "钉一下")
     @PostMapping("ding")
-    public Object dingyixia(@RequestParam("userId") Long userId) {
+    public Sign ding(@RequestParam("userId") Long userId) {
 
         int signRecord = 0;
         LocalDate date = LocalDate.now();

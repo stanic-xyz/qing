@@ -28,6 +28,7 @@ import com.riversoft.weixin.mp.base.AppSetting;
 import com.riversoft.weixin.mp.care.CareMessages;
 import com.riversoft.weixin.mp.message.MpXmlMessages;
 import com.riversoft.weixin.mp.oauth2.MpOAuth2s;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +40,11 @@ import java.util.Date;
  * 对接微信公众平台
  *
  * @author Stan
+ * @date 2022/11/05
  */
+@Tag(name = "微信公众平台")
 @RestController
-@RequestMapping("wxmp")
+@RequestMapping("api/wx/mp")
 public class WxMpController {
 
     private final Logger log = LoggerFactory.getLogger(WxMpController.class);
@@ -73,7 +76,7 @@ public class WxMpController {
      * @param msgSignature 消息签名
      * @param timestamp    时间
      * @param nonce        随机字符串
-     * @param echostr      回应字符串
+     * @param echoStr      回应字符串
      * @param encryptType  加密类自行
      * @param content      内容
      * @return 回复给微信后台的内容
@@ -84,11 +87,11 @@ public class WxMpController {
                      @RequestParam(value = "msg_signature", required = false) String msgSignature,
                      @RequestParam(value = "timestamp") String timestamp,
                      @RequestParam(value = "nonce") String nonce,
-                     @RequestParam(value = "echostr", required = false) String echostr,
+                     @RequestParam(value = "echostr", required = false) String echoStr,
                      @RequestParam(value = "encrypt_type", required = false) String encryptType,
                      @RequestBody(required = false) String content) {
 
-        log.info("signature={}, msg_signature={}, timestamp={}, nonce={}, echostr={}, encrypt_type={}", signature, msgSignature, timestamp, nonce, echostr, encryptType);
+        log.info("signature={}, msg_signature={}, timestamp={}, nonce={}, echostr={}, encrypt_type={}", signature, msgSignature, timestamp, nonce, echoStr, encryptType);
 
         AppSetting appSetting = AppSetting.defaultSettings();
         try {
@@ -101,8 +104,8 @@ public class WxMpController {
             return "非法请求.";
         }
 
-        if (!StringUtils.isEmpty(echostr)) {
-            return echostr;
+        if (!StringUtils.isEmpty(echoStr)) {
+            return echoStr;
         }
 
         XmlMessageHeader xmlRequest;
@@ -143,8 +146,7 @@ public class WxMpController {
                 log.info("后台收到了消息：" + welcome);
                 CareMessages.defaultCareMessages().text(xmlRequest.getFromUser(), welcome);
 
-                if (xmlRequest instanceof EventRequest) {
-                    EventRequest eventRequest = (EventRequest) xmlRequest;
+                if (xmlRequest instanceof EventRequest eventRequest) {
                     log.debug("事件请求[{}]", eventRequest.getEventType().name());
                     CareMessages.defaultCareMessages().text(xmlRequest.getFromUser(), "事件请求:" + eventRequest.getEventType().name());
                 } else {
