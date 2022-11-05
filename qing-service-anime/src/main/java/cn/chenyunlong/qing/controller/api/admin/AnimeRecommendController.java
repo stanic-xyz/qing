@@ -19,7 +19,7 @@ import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.model.params.AnimeRecommendParam;
 import cn.chenyunlong.qing.service.AnimeRecommendService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +37,7 @@ public class AnimeRecommendController {
         this.recommendService = recommendService;
     }
 
-    @ApiOperation("Gets animeType detail by id")
+    @Operation(summary = "Gets animeType detail by id", description = "描述信息")
     @GetMapping("{recommendId:\\d+}")
     public ApiResult<AnimeRecommendEntity> getAnimeTypeInfo(@PathVariable("recommendId") Long recommendId) {
         return ApiResult.success(recommendService.getById(recommendId));
@@ -60,7 +60,7 @@ public class AnimeRecommendController {
     }
 
 
-    @PutMapping("{typeId:\\d+")
+    @PutMapping("{typeId:\\d+}")
     public ApiResult<AnimeRecommendEntity> modifyAnimeType(@PathVariable("typeId") Long typeId,
                                                            @Valid @RequestBody AnimeRecommendParam typeParam) {
         //查询动漫信息

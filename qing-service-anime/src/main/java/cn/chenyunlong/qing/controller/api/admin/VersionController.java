@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -58,7 +57,7 @@ public class VersionController extends ApiController {
      * @return 单条数据
      */
     @GetMapping("{id}")
-    public ApiResult<VersionDTO> selectOne(@PathVariable Serializable id) {
+    public ApiResult<VersionDTO> selectOne(@PathVariable Long id) {
         return success(versionService.getDetailById(id));
     }
 

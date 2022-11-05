@@ -13,13 +13,13 @@
 
 package cn.chenyunlong.qing.service.impl;
 
-import cn.chenyunlong.qing.service.external.BiliService;
 import cn.chenyunlong.qing.mapper.BiliAnimeMapper;
 import cn.chenyunlong.qing.model.bilibili.BiliAnime;
 import cn.chenyunlong.qing.model.entities.bilibili.BiliAnimeInfoEntity;
 import cn.chenyunlong.qing.model.entities.bilibili.BilibiliAnimeScoreEntity;
 import cn.chenyunlong.qing.service.BilibiliAnimeScoreService;
 import cn.chenyunlong.qing.service.BilibiliAnimeService;
+import cn.chenyunlong.qing.service.external.BiliService;
 import cn.chenyunlong.qing.utils.BeanUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -29,7 +29,6 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Stan
@@ -58,7 +57,7 @@ public class BiliApiServiceImpl implements BilibiliAnimeService {
                     assert animeInfoEntity != null;
                     animeInfoEntity.setScore(StringUtils.hasText(animeInfo.getOrder()) ? Double.parseDouble(animeInfo.getOrder().replace("分", "")) : 0);
                     return animeInfoEntity;
-                }).collect(Collectors.toList());
+                }).toList();
 
         QueryWrapper<BiliAnimeInfoEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("distinct (media_id) as media_id");

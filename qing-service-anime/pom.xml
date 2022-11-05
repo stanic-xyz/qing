@@ -84,9 +84,9 @@
         </dependency>
         <!-- knife4j文档支持 -->
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>3.0.3</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.12</version>
         </dependency>
         <!--jwt 支持-->
         <dependency>
@@ -190,6 +190,10 @@
             <artifactId>mockito-core</artifactId>
             <version>4.8.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
     </dependencies>
     <build>
