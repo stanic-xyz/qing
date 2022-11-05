@@ -84,5 +84,6 @@ mp:
   wx:
     app-id: wx09bf7e704a150a9c
     secret: 9fdb9fa846356d32247a9aa68d758791
-
-
+springdoc:
+  api-docs:
+    enabled: true

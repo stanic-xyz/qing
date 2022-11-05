@@ -18,7 +18,7 @@ import cn.chenyunlong.qing.model.entities.AnimeType;
 import cn.chenyunlong.qing.model.params.AnimeTypeParam;
 import cn.chenyunlong.qing.service.AnimeTypeService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,7 @@ public class AnimeTypeController {
         this.typeService = typeService;
     }
 
-    @ApiOperation("Gets animeType detail by id")
+    @Operation(summary = "Gets animeType detail by id")
     @GetMapping("{typeId:\\d+}")
     public ApiResult<AnimeType> getAnimeTypeInfo(@PathVariable("typeId") Long typeId) {
         return ApiResult.success(typeService.getById(typeId));
@@ -58,7 +58,7 @@ public class AnimeTypeController {
     }
 
 
-    @PutMapping("{typeId:\\d+")
+    @PutMapping("{typeId:\\d+}")
     public ApiResult<AnimeType> modifyAnimeType(@PathVariable("typeId") Long typeId,
                                                 @Valid @RequestBody AnimeTypeParam typeParam) {
         //查询动漫信息

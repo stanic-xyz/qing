@@ -17,8 +17,8 @@ import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.model.entities.ActivityEntity;
 import cn.chenyunlong.qing.service.ActivityService;
 import cn.chenyunlong.qing.service.AttachementService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author Stan
  */
-@Api(tags = "活动信息")
+@Tag(name = "活动信息")
 @RestController
 @RequestMapping("activity")
 public class ActivityController {
@@ -57,7 +57,7 @@ public class ActivityController {
      * @return 动态添加结果
      */
     @PostMapping
-    @ApiOperation("添加动态信息")
+    @Operation(summary = "添加动态信息")
     public ApiResult<Object> addActivity(@RequestBody ActivityEntity activity) {
         activityService.addActivity(activity);
         return ApiResult.success();

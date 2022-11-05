@@ -14,8 +14,7 @@
 package cn.chenyunlong.qing.core;
 
 import cn.chenyunlong.qing.core.exception.SystemErrorType;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,13 +29,13 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "返回数据值")
+@Schema(description = "返回数据值")
 public class ApiResult<T> {
-    @ApiModelProperty(value = "返回值编码；0表示成功，其他全部失败")
+    @Schema(name = "返回值编码；0表示成功，其他全部失败")
     private int code;
-    @ApiModelProperty(value = "异常提示信息")
+    @Schema(name = "异常提示信息")
     private String msg;
-    @ApiModelProperty(value = "具体返回值信息,如果为一般表示请求成功")
+    @Schema(name = "具体返回值信息,如果为一般表示请求成功")
     private T data;
 
     /**

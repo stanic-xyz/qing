@@ -13,9 +13,9 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
-import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.annotation.Log;
 import cn.chenyunlong.qing.config.properties.QingProperties;
+import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.model.entities.UploadFile;
 import cn.chenyunlong.qing.service.FileUploadService;
 import com.qcloud.cos.COSClient;
@@ -24,8 +24,8 @@ import com.qcloud.cos.model.Bucket;
 import com.qcloud.cos.model.COSObjectSummary;
 import com.qcloud.cos.model.ListObjectsRequest;
 import com.qcloud.cos.model.ObjectListing;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +43,7 @@ import java.util.UUID;
 /**
  * @author Stan
  */
-@Api
+@Tag(name = "文件控制器")
 @Slf4j
 @RestController
 @RequestMapping("file")
@@ -61,7 +61,7 @@ public class FileController {
     }
 
     @Log(title = "获取存储桶列表")
-    @ApiOperation("获取存储桶列表")
+    @Operation(summary = "获取存储桶列表")
     @GetMapping("bucket/list")
     public ApiResult<List<Bucket>> listBuckts() {
         List<Bucket> buckets = cosClient.listBuckets();
@@ -76,7 +76,7 @@ public class FileController {
      * @throws IOException io异常
      */
     @Log
-    @ApiOperation(value = "上传文件", notes = "上传文件")
+    @Operation(summary = "上传文件", description = "上传文件")
     @PostMapping("upload")
     public ApiResult<String> uploadFile(@RequestParam MultipartFile multipartFile) throws IOException {
 
@@ -88,9 +88,10 @@ public class FileController {
 
             String filePath = LocalDate.now().toString();
 
-            String randomuuid = UUID.randomUUID().toString();
+            String randomUUID = UUID.randomUUID().toString();
+
             assert originalFilename != null;
-            String fileName = filePath + randomuuid + originalFilename.substring(originalFilename.lastIndexOf('.'));
+            String fileName = filePath + randomUUID + originalFilename.substring(originalFilename.lastIndexOf('.'));
 
             String baseUploadDir = qingProperties.getFile().getBaseUploadDir();
 
@@ -126,7 +127,7 @@ public class FileController {
     }
 
     @Log
-    @ApiOperation(value = "上传文件到腾讯对象存储", notes = "上传文件到腾讯对象存储")
+    @Operation(summary = "上传文件到腾讯对象存储", description = "上传文件到腾讯对象存储")
     @PostMapping("cos/upload")
     public ApiResult<List<COSObjectSummary>> cosUpload() {
         List<COSObjectSummary> cosObjects = new LinkedList<>();
@@ -157,8 +158,8 @@ public class FileController {
                 e.printStackTrace();
                 return ApiResult.fail(e.getMessage());
             }
-            // common prefix表示表示被delimiter截断的路径, 如delimter设置为/, common prefix则表示所有子目录的路径
-            List<String> commonPrefixs = objectListing.getCommonPrefixes();
+            // common prefix表示表示被delimiter截断的路径, 如delimiter设置为/, common prefix则表示所有子目录的路径
+            List<String> commonPrefix = objectListing.getCommonPrefixes();
 
             // object summary表示所有列出的object列表
             List<COSObjectSummary> cosObjectSummaries = objectListing.getObjectSummaries();

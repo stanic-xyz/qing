@@ -13,10 +13,10 @@
 
 package cn.chenyunlong.qing.config;
 
-import cn.chenyunlong.qing.config.properties.QingProperties;
-import cn.chenyunlong.qing.intercepter.HostInterceptor;
 import cn.chenyunlong.qing.cache.AbstractStringCacheStore;
 import cn.chenyunlong.qing.cache.InMemoryCacheStore;
+import cn.chenyunlong.qing.config.properties.QingProperties;
+import cn.chenyunlong.qing.intercepter.HostInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

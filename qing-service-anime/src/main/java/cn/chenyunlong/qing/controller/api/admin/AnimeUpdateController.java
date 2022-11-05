@@ -17,7 +17,7 @@ import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
 import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.service.AnimeRecommendService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +31,7 @@ import java.util.List;
  * @author Stan
  */
 @Validated
-@Api(tags = "api/anime/update")
+@Tag(name = "api/anime/update")
 @RestController
 @RequiredArgsConstructor
 public class AnimeUpdateController {

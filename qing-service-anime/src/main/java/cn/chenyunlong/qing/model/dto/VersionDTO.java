@@ -15,21 +15,21 @@ package cn.chenyunlong.qing.model.dto;
 
 import cn.chenyunlong.qing.model.dto.base.OutputConverter;
 import cn.chenyunlong.qing.model.entities.Version;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class VersionDTO implements OutputConverter<VersionDTO, Version> {
 
-    @ApiModelProperty("版本ID")
+    @Schema(name = "版本ID")
     private Long vid;
 
-    @ApiModelProperty("版本代码")
+    @Schema(name = "版本代码")
     private String code;
 
-    @ApiModelProperty("版本名称")
+    @Schema(name = "版本名称")
     private String name;
 
-    @ApiModelProperty("版本描述信息")
+    @Schema(name = "版本描述信息")
     private String description;
 }

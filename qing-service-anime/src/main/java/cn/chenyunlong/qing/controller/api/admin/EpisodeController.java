@@ -17,14 +17,14 @@ import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
 import cn.chenyunlong.qing.model.params.AddEpisodeParam;
 import cn.chenyunlong.qing.service.AnimeEpisodeService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Validated
-@Api(tags = "api/anime/episode")
+@Tag(name = "api/anime/episode")
 @RestController
 public class EpisodeController {
 
