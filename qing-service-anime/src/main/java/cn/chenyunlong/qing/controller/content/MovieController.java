@@ -26,6 +26,8 @@ import cn.chenyunlong.qing.utils.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +36,13 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 /**
+ * 前端控制器
+ *
  * @author Stan
+ * @date 2022/11/05
  */
+@Hidden
+@Tag(name = "前端界面")
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor

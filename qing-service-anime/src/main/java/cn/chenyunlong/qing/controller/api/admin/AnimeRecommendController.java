@@ -20,22 +20,21 @@ import cn.chenyunlong.qing.model.params.AnimeRecommendParam;
 import cn.chenyunlong.qing.service.AnimeRecommendService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@Tag(name = "推荐")
 @RestController
-@RequestMapping("api/admin/recommend")
+@RequestMapping("api/recommend")
+@RequiredArgsConstructor
 public class AnimeRecommendController {
 
     private final AnimeRecommendService recommendService;
-
-
-    public AnimeRecommendController(AnimeRecommendService recommendService) {
-        this.recommendService = recommendService;
-    }
 
     @Operation(summary = "Gets animeType detail by id", description = "描述信息")
     @GetMapping("{recommendId:\\d+}")

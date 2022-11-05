@@ -21,6 +21,8 @@ import cn.chenyunlong.qing.core.exception.ServiceException;
 import cn.chenyunlong.qing.core.page.TableDataInfo;
 import cn.chenyunlong.qing.model.entities.sys.SysConfig;
 import cn.chenyunlong.qing.service.ISysConfigService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,16 +35,14 @@ import java.util.List;
  * @author Stan
  * @date 2022/11/05
  */
+@Tag(name = "系统配置")
 @RestController
 @RequestMapping("/system/config")
+@RequiredArgsConstructor
 public class SysConfigController extends BaseController {
     private final String prefix = "system/config";
 
     private final ISysConfigService configService;
-
-    public SysConfigController(ISysConfigService configService) {
-        this.configService = configService;
-    }
 
     @GetMapping()
     public String config() {

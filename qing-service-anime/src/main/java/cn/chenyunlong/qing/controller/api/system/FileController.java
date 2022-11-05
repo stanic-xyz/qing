@@ -26,8 +26,8 @@ import com.qcloud.cos.model.ListObjectsRequest;
 import com.qcloud.cos.model.ObjectListing;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,24 +41,21 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * 文件控制器
+ *
  * @author Stan
+ * @date 2022/11/05
  */
 @Tag(name = "文件控制器")
 @Slf4j
 @RestController
-@RequestMapping("file")
+@RequestMapping("api/sys/file")
+@RequiredArgsConstructor
 public class FileController {
 
     private final QingProperties qingProperties;
     private final FileUploadService fileUploadService;
     private final COSClient cosClient;
-
-    @Autowired
-    public FileController(QingProperties qingProperties, FileUploadService fileUploadService, COSClient cosClient) {
-        this.qingProperties = qingProperties;
-        this.fileUploadService = fileUploadService;
-        this.cosClient = cosClient;
-    }
 
     @Log(title = "获取存储桶列表")
     @Operation(summary = "获取存储桶列表")

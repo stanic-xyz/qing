@@ -24,6 +24,8 @@ import cn.chenyunlong.qing.service.ISysJobLogService;
 import cn.chenyunlong.qing.service.ISysJobService;
 import cn.chenyunlong.qing.utils.StringUtils;
 import cn.chenyunlong.qing.utils.poi.ExcelUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -35,19 +37,16 @@ import java.util.List;
  *
  * @author ruoyi
  */
+@Tag(name = "系统日志")
 @Controller
 @RequestMapping("/monitor/jobLog")
+@RequiredArgsConstructor
 public class SysJobLogController extends BaseController {
     private final String prefix = "monitor/job";
 
     private final ISysJobService jobService;
 
     private final ISysJobLogService jobLogService;
-
-    public SysJobLogController(ISysJobService jobService, ISysJobLogService jobLogService) {
-        this.jobService = jobService;
-        this.jobLogService = jobLogService;
-    }
 
     //    @RequiresPermissions("monitor:job:view")
     @GetMapping()
