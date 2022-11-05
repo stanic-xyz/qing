@@ -44,8 +44,7 @@ public final class AESUtil {
      */
     public static Key createKeyByBase64(String basekey) {
         byte[] keyBytes = Base64.getDecoder().decode(basekey);
-        Key key = new SecretKeySpec(keyBytes, "AES");
-        return key;
+        return new SecretKeySpec(keyBytes, "AES");
     }
 
     /**
@@ -67,8 +66,7 @@ public final class AESUtil {
             // 获得原始对称密钥的字节数组
             byte[] keyBytes = secretKey.getEncoded();
             // key转换,根据字节数组生成AES密钥
-            Key key = new SecretKeySpec(keyBytes, "AES");
-            return key;
+            return new SecretKeySpec(keyBytes, "AES");
         } catch (NoSuchAlgorithmException e) {
             log.error("create aes key exception", e);
             return null;

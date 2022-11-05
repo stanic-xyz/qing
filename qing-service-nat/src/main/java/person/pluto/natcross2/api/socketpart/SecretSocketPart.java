@@ -57,8 +57,8 @@ public class SecretSocketPart extends AbsSocketPart implements IBelongControl {
     @Override
     public boolean isValid() {
         if (isAlive) {
-            if (noToSecretPassway == null || !noToSecretPassway.isValid() || secretToNoPassway == null
-                    || !secretToNoPassway.isValid()) {
+            if (noToSecretPassway == null || noToSecretPassway.isValid() || secretToNoPassway == null
+                    || secretToNoPassway.isValid()) {
                 return false;
             }
             return isAlive;
@@ -91,11 +91,11 @@ public class SecretSocketPart extends AbsSocketPart implements IBelongControl {
         }
 
         if (noToSecretPassway != null) {
-            noToSecretPassway.cancell();
+            noToSecretPassway.cancel();
             noToSecretPassway = null;
         }
         if (secretToNoPassway != null) {
-            secretToNoPassway.cancell();
+            secretToNoPassway.cancel();
             secretToNoPassway = null;
         }
 

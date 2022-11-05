@@ -1,5 +1,6 @@
 # 留住TA的朋友圈
 
+[![MulanPSL-2.0](https://img.shields.io/:license-MulanPSL2-blue.svg)](http://license.coscl.org.cn/MulanPSL2/index.html)
 [![Java CI with Maven](https://github.com/YunlongChen/zhangli/actions/workflows/maven.yml/badge.svg?branch=master)](https://github.com/YunlongChen/zhangli/actions/workflows/maven.yml)
 
 #### 介绍

@@ -14,6 +14,7 @@
 package com.only4play.jpa.converter;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.time.Instant;
 
 /**
@@ -22,6 +23,7 @@ import java.time.Instant;
  * @author Stan
  * @date 2022/10/24
  */
+@Converter
 public class InstantLongConverter implements AttributeConverter<Instant, Long> {
 
     /**

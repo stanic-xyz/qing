@@ -14,8 +14,8 @@
 package cn.chenyunlong.nat.common.model.model.enumeration;
 
 
-import org.apache.commons.lang3.StringUtils;
 import cn.chenyunlong.nat.common.model.model.ResultModel;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -122,8 +122,8 @@ public enum ResultEnum {
     // 未知错误
     FAIL("9999", "未知错误");
 
-    private String code;
-    private String name;
+    private final String code;
+    private final String name;
 
     ResultEnum(String code, String name) {
         this.code = code;

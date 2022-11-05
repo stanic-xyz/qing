@@ -74,8 +74,7 @@ public class SecretInteractiveModel extends InteractiveModel {
      * @since 2020-01-08 16:39:46
      */
     public void encryptMsg(Key key) throws Exception {
-        String encryptBase64 = AESUtil.encryptBase64(key, super.toJSONString().getBytes(charset));
-        this.encrypt = encryptBase64;
+        this.encrypt = AESUtil.encryptBase64(key, super.toJSONString().getBytes(charset));
     }
 
     /**
@@ -101,9 +100,8 @@ public class SecretInteractiveModel extends InteractiveModel {
      * @since 2020-01-08 16:39:59
      */
     public void autographMsg(String tokenKey) {
-        String signature = MD5Signature.getSignature(Charset.forName(charset), tokenKey, timestamp.toString(), encrypt,
+        this.autograph = MD5Signature.getSignature(Charset.forName(charset), tokenKey, timestamp.toString(), encrypt,
                 charset);
-        this.autograph = signature;
     }
 
     /**

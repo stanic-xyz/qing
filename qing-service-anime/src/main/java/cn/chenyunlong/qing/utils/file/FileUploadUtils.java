@@ -14,12 +14,12 @@
 package cn.chenyunlong.qing.utils.file;
 
 import cn.chenyunlong.qing.core.constant.Constants;
-import cn.chenyunlong.qing.utils.uuid.IdUtils;
 import cn.chenyunlong.qing.core.exception.file.FileNameLengthLimitExceededException;
 import cn.chenyunlong.qing.core.exception.file.FileSizeLimitExceededException;
 import cn.chenyunlong.qing.core.exception.file.InvalidExtensionException;
 import cn.chenyunlong.qing.utils.DateUtils;
 import cn.chenyunlong.qing.utils.StringUtils;
+import cn.chenyunlong.qing.utils.uuid.IdUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -112,8 +112,7 @@ public class FileUploadUtils {
 
         File desc = getAbsoluteFile(baseDir, fileName);
         file.transferTo(desc);
-        String pathFileName = getPathFileName(baseDir, fileName);
-        return pathFileName;
+        return getPathFileName(baseDir, fileName);
     }
 
     /**

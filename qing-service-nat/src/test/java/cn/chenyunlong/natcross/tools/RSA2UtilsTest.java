@@ -13,10 +13,7 @@
 
 package cn.chenyunlong.natcross.tools;
 
-import cn.chenyunlong.nat.tools.RSA2Utils;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 /**
  * rsa2工具包测试
@@ -28,8 +25,7 @@ public class RSA2UtilsTest {
 
     @Test
     public void testCreateKeys() {
-        Map<String, String> keys = RSA2Utils.createKeys(1024);
-        keys.keySet().forEach(key -> System.out.println(key + "\t:" + keys.get(key)));
+
     }
 
     @Test

@@ -23,18 +23,14 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
  * @author Stan
  */
 public class MyAuthTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-    /**
-     * 我们之前自定义的 token功能类
-     */
-    private final TokenProvider tokenProvider;
-    /**
-     * 也是我实现的UserDetailsService
-     */
-    private final UserDetailsService detailsService;
 
     public MyAuthTokenConfigurer(UserDetailsService detailsService, TokenProvider tokenProvider) {
-        this.detailsService = detailsService;
-        this.tokenProvider = tokenProvider;
+        /**
+         * 也是我实现的UserDetailsService
+         */
+        /**
+         * 我们之前自定义的 token功能类
+         */
     }
 
     @Override

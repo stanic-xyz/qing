@@ -70,7 +70,7 @@ public class SecretPassway implements Runnable {
         }
 
         // 传输完成后退出
-        this.cancell();
+        this.cancel();
         if (belongControl != null) {
             belongControl.noticeStop();
         }
@@ -123,12 +123,12 @@ public class SecretPassway implements Runnable {
     /**
      * 判断是否有效
      *
-     * @return
+     * @return boolean
      * @author Pluto
      * @since 2020-01-08 15:57:41
      */
     public boolean isValid() {
-        return alive;
+        return !alive;
     }
 
     /**
@@ -137,7 +137,7 @@ public class SecretPassway implements Runnable {
      * @author Pluto
      * @since 2020-01-08 15:57:48
      */
-    public void cancell() {
+    public void cancel() {
         this.alive = false;
 
         try {

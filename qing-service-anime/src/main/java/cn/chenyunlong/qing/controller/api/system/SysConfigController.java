@@ -13,12 +13,12 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
+import cn.chenyunlong.qing.annotation.Log;
 import cn.chenyunlong.qing.core.constant.UserConstants;
+import cn.chenyunlong.qing.core.controller.BaseController;
 import cn.chenyunlong.qing.core.enums.BusinessType;
 import cn.chenyunlong.qing.core.exception.ServiceException;
 import cn.chenyunlong.qing.core.page.TableDataInfo;
-import cn.chenyunlong.qing.annotation.Log;
-import cn.chenyunlong.qing.core.controller.BaseController;
 import cn.chenyunlong.qing.model.entities.sys.SysConfig;
 import cn.chenyunlong.qing.service.ISysConfigService;
 import org.springframework.ui.ModelMap;
@@ -28,9 +28,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 参数配置 信息操作处理
+ * 系统配置控制器
  *
- * @author ruoyi
+ * @author Stan
+ * @date 2022/11/05
  */
 @RestController
 @RequestMapping("/system/config")

@@ -29,11 +29,16 @@ import cn.chenyunlong.codegen.test.Constants;
 import cn.chenyunlong.common.constants.ValidStatus;
 import com.only4play.jpa.converter.ValidStatusConverter;
 import com.only4play.jpa.support.BaseJpaAggregate;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @GenVo(pkgName = "cn.chenyunlong.codegen.test.domain.student.vo")
 @GenCreator(pkgName = "cn.chenyunlong.codegen.test.domain.student.creator")
@@ -51,7 +56,10 @@ import javax.persistence.Table;
 @GenFeign(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.service", sourcePath = Constants.GEN_API_SOURCE, serverName = "srv")
 @Entity
 @Table(name = "t_student")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Student extends BaseJpaAggregate {
 
     @Convert(converter = ValidStatusConverter.class)
@@ -69,5 +77,18 @@ public class Student extends BaseJpaAggregate {
 
     public void invalid() {
         setValidStatus(ValidStatus.INVALID);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Student student = (Student) o;
+        return getId() != null && Objects.equals(getId(), student.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

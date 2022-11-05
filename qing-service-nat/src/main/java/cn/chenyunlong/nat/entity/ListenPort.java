@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import person.pluto.natcross2.api.socketpart.AbsSocketPart;
 import person.pluto.natcross2.serverside.listen.ServerListenThread;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.Socket;
 import java.time.LocalDateTime;
@@ -41,6 +42,7 @@ import java.util.Map.Entry;
 @Slf4j
 public class ListenPort implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     private Integer listenPort;
 

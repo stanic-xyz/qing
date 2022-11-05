@@ -83,11 +83,7 @@ public final class JsonObject<E> {
 
 
     public boolean isSuccess() {
-        if (Objects.equals(CodeEnum.Success.getCode(), this.getCode())) {
-            return true;
-        } else {
-            return false;
-        }
+        return Objects.equals(CodeEnum.Success.getCode(), this.getCode());
     }
 
 }

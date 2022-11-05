@@ -66,7 +66,7 @@ public class AnimeInfoModel {
     /**
      * 首页数据展示结构
      */
-    public IndexModel getIndex() {
+    public IndexModel getIndex() throws InterruptedException {
         IndexModel indexModel = new IndexModel();
         //获取更新
         Future<List<AnimeInfoMinimalDTO>> recentUpdate = executorService.submit(() -> animeInfoService.getRecentUpdate(optionService.getRecentPageSize()));
@@ -85,10 +85,12 @@ public class AnimeInfoModel {
             indexModel.setUpdateInfoList(update.get());
             indexModel.setDalyUpdateList(listUpdate.get());
             indexModel.setRecommendList(listRecommend.get());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        } catch (InterruptedException exception) {
+            log.warn("Interrupted", exception);
+            throw exception;
+        } catch (ExecutionException exception) {
+            log.error("异步线程执行发生了错误", exception);
         }
-
         return indexModel;
     }
 

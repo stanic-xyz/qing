@@ -36,7 +36,7 @@ public class ClientHeartThread implements IClientHeartThread, Runnable {
 
     @Override
     public void run() {
-        Integer failCount = 0;
+        int failCount = 0;
 
         while (isAlive) {
             try {

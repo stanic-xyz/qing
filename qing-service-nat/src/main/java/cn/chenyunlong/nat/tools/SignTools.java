@@ -61,7 +61,7 @@ public class SignTools {
      */
     public static boolean isSignatureValid(final Map<String, String> data, String signKey, Long maxDiffTime,
                                            Object fileObject) {
-        return isSignatureValid(data, signKey, maxDiffTime, fileObject == null ? null : Arrays.asList(fileObject));
+        return isSignatureValid(data, signKey, maxDiffTime, fileObject == null ? null : List.of(fileObject));
     }
 
     /**
@@ -77,7 +77,7 @@ public class SignTools {
      */
     public static boolean isSignatureValid(final Map<String, String> data, String signKey, Long maxDiffTime,
                                            List<?> objectList) {
-        if (!isTimeOutValid(data.get(FIELD_TIMESTAMP), maxDiffTime)) {
+        if (isTimeOutValid(data.get(FIELD_TIMESTAMP), maxDiffTime)) {
             return false;
         }
         if (!isSignatureValid(data, signKey)) {
@@ -104,7 +104,7 @@ public class SignTools {
      * @since 2019-06-18 09:31:26
      */
     public static boolean isSignatureTimeOutValid(final Map<String, String> data, String signKey, Long maxDiffTime) {
-        if (!isTimeOutValid(data.get(FIELD_TIMESTAMP), maxDiffTime)) {
+        if (isTimeOutValid(data.get(FIELD_TIMESTAMP), maxDiffTime)) {
             return false;
         }
         return isSignatureValid(data, signKey);
@@ -125,15 +125,15 @@ public class SignTools {
             sendTime = getDateTimeMillisByString(timestamp);
         } catch (Exception e) {
             log.warn("验签时，timestamp字段转换时间异常，获取的值为[{}]", timestamp);
-            return false;
+            return true;
         }
 
         long timeDifferenceForNow = getTimeDifferenceForNow(sendTime);
         if (timeDifferenceForNow > maxDiffTime) {
             log.debug("验签时，时间间隔过长 {} > {} (ms)", timeDifferenceForNow, maxDiffTime);
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -164,7 +164,7 @@ public class SignTools {
      * @since 2019-07-02 14:01:51
      */
     public static Map<String, String> fullSignature(Map<String, String> data, String signKey, Object fileObject) {
-        return fullSignature(data, signKey, fileObject == null ? null : Arrays.asList(fileObject));
+        return fullSignature(data, signKey, fileObject == null ? null : List.of(fileObject));
     }
 
     /**
@@ -211,7 +211,7 @@ public class SignTools {
      */
     public static String generateSignature(final Map<String, String> data, String signKey) {
         Set<String> paramKeySet = data.keySet();
-        String[] paramKeyArray = paramKeySet.toArray(new String[paramKeySet.size()]);
+        String[] paramKeyArray = paramKeySet.toArray(new String[0]);
         Arrays.sort(paramKeyArray);
 
         StringBuilder stringBuilder = new StringBuilder();

@@ -198,7 +198,7 @@ public final class ServerListenThread implements Runnable, IBelongControl {
         }
 
         Set<String> keySet = socketPartMap.keySet();
-        String[] array = keySet.toArray(new String[keySet.size()]);
+        String[] array = keySet.toArray(new String[0]);
 
         for (String key : array) {
             stopSocketPart(key);
@@ -238,7 +238,7 @@ public final class ServerListenThread implements Runnable, IBelongControl {
 
         Set<String> keySet = socketPartMap.keySet();
         // 被去除的时候set会变化而导致空值问题
-        String[] array = keySet.toArray(new String[keySet.size()]);
+        String[] array = keySet.toArray(new String[0]);
 
         for (String key : array) {
 
@@ -321,7 +321,7 @@ public final class ServerListenThread implements Runnable, IBelongControl {
      */
     public List<String> getSocketPartList() {
         Set<String> keySet = this.socketPartMap.keySet();
-        return Arrays.asList(keySet.toArray(new String[keySet.size()]));
+        return Arrays.asList(keySet.toArray(new String[0]));
     }
 
     /**

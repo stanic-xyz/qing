@@ -47,17 +47,17 @@
 
 .div_right_r_3 .div_right_r:nth-child(3n) {
     border-right-color: transparent;
-    margin-right: 0px;
+    margin-right: 0;
 }
 
 .div_right_r_2 .div_right_r:nth-child(2n) {
     border-right-color: transparent;
-    margin-right: 0px;
+    margin-right: 0;
 }
 
 .rank_text {
     width: 238px;
-    margin: 2px 0px;
+    margin: 2px 0;
     padding-bottom: 1px;
     border-bottom: 0.5px solid #232323;
 }
@@ -86,7 +86,7 @@
     box-sizing: border-box;
     min-width: 2em;
     font-size: 0.8em;
-    letter-spacing: 0px;
+    letter-spacing: 0;
     padding-left: 2px;
     padding-right: 2px;
     text-align: center;
@@ -131,7 +131,7 @@
     color: #888888;
     font-size: 0.7em;
     line-height: 2.0em;
-    letter-spacing: 0px;
+    letter-spacing: 0;
     text-align: right;
     margin-right: 2px;
     float: right;
