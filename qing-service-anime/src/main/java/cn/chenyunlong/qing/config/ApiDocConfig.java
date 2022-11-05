@@ -13,25 +13,47 @@
 
 package cn.chenyunlong.qing.config;
 
+import cn.chenyunlong.qing.config.properties.SwaggerProperties;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@RequiredArgsConstructor
 public class ApiDocConfig {
+
+    private final SwaggerProperties swaggerProperties;
 
     @Bean
     public OpenAPI springShopOpenAPI() {
-        return new OpenAPI()
-                .info(new Info().title("SpringShop API")
-                        .description("Spring shop sample application")
-                        .version("v0.0.1")
-                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
-                .externalDocs(new ExternalDocumentation()
-                        .description("SpringShop Wiki Documentation")
-                        .url("https://springshop.wiki.github.org/docs"));
+        ExternalDocumentation documentation = new ExternalDocumentation()
+                .description(swaggerProperties.getDescription())
+                .url("https://wiki.chenyunlong/docs/qing");
+        Info info = new Info().title(swaggerProperties.getTitle())
+                .description(swaggerProperties.getDescription())
+                .version(swaggerProperties.getVersion())
+                .license(new License().name(swaggerProperties.getLicense()).url(swaggerProperties.getLicenseUrl()));
+        SecurityRequirement securityItem = new SecurityRequirement();
+        return new OpenAPI().info(info).externalDocs(documentation).addSecurityItem(securityItem);
+    }
+
+    @Bean
+    public GroupedOpenApi petOpenApi() {
+        String[] paths = {"/api/**"};
+        return GroupedOpenApi.builder().group("api").pathsToMatch(paths)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi totalOpenApi() {
+        String[] paths = {"/**"};
+        return GroupedOpenApi.builder().group("全部").pathsToMatch(paths)
+                .build();
     }
 }

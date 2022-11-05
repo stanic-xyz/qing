@@ -15,7 +15,10 @@ package cn.chenyunlong.qing.controller.api.auth;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.KeyPair;
@@ -28,20 +31,24 @@ import java.util.Map;
  * @author Stan
  * @date 2021/01/14
  */
+@Tag(name = "RSA公钥")
 @RestController
+@RequestMapping("api/rsa")
+@RequiredArgsConstructor
 public class KeyPairController {
 
     private final KeyPair keyPair;
 
-    public KeyPairController(KeyPair keyPair) {
-        this.keyPair = keyPair;
-    }
-
-    @GetMapping("/rsa/publicKey")
+    /**
+     * 获取RSA公钥
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
+    @GetMapping("/publicKey")
     public Map<String, Object> getKey() {
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAKey key = new RSAKey.Builder(publicKey).build();
-        return new JWKSet(key).toJSONObject();
+        RSAKey rsaKey = new RSAKey.Builder(publicKey).build();
+        return new JWKSet(rsaKey).toJSONObject();
     }
 
 }

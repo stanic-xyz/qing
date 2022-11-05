@@ -19,6 +19,7 @@ import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.model.dto.VersionDTO;
 import cn.chenyunlong.qing.model.params.VersionParam;
 import cn.chenyunlong.qing.service.VersionService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ import java.util.List;
  * @author makejava
  * @since 2022-05-21 23:24:25
  */
+@Tag(name = "版本")
 @RestController
 @RequestMapping("api/versions")
 @RequiredArgsConstructor

@@ -18,6 +18,7 @@ import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.model.dto.DistrictDTO;
 import cn.chenyunlong.qing.service.DistrictService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,15 +30,12 @@ import java.util.List;
  * @author Stan
  */
 @Validated
-@Tag(name = "区域控制器")
+@Tag(name = "区域")
 @RestController
 @RequestMapping("api/districts")
+@RequiredArgsConstructor
 public class DistrictController extends ApiController {
     private final DistrictService districtService;
-
-    public DistrictController(DistrictService districtService) {
-        this.districtService = districtService;
-    }
 
     @GetMapping
     public ApiResult<List<DistrictDTO>> getDistrictList() {

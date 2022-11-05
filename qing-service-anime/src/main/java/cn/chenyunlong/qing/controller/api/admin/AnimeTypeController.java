@@ -19,21 +19,21 @@ import cn.chenyunlong.qing.model.params.AnimeTypeParam;
 import cn.chenyunlong.qing.service.AnimeTypeService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@Tag(name = "类型")
 @RestController
 @RequestMapping("api/types")
+@RequiredArgsConstructor
 public class AnimeTypeController {
 
     private final AnimeTypeService typeService;
-
-    public AnimeTypeController(AnimeTypeService typeService) {
-        this.typeService = typeService;
-    }
 
     @Operation(summary = "Gets animeType detail by id")
     @GetMapping("{typeId:\\d+}")

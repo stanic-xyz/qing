@@ -29,6 +29,7 @@ import cn.chenyunlong.qing.security.support.TokenProvider;
 import cn.chenyunlong.qing.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
@@ -46,22 +47,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * 身份验证控制器
+ *
  * @author Stan
+ * @date 2022/11/05
  */
 @Tag(name = "认证授权")
 @RestController
-@RequestMapping("authorize")
+@RequestMapping("api/authorize")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthGithubRequest authRequest;
     private final UserService userService;
     private final TokenProvider tokenProvider;
-
-    public AuthController(AuthGithubRequest authRequest, UserService userService, TokenProvider tokenProvider) {
-        this.authRequest = authRequest;
-        this.userService = userService;
-        this.tokenProvider = tokenProvider;
-    }
 
     @PostMapping("login/preCheck")
     @Operation(summary = "Login")
