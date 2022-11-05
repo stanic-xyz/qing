@@ -23,7 +23,7 @@ import cn.chenyunlong.qing.service.AnimeInfoService;
 import cn.hutool.core.thread.NamedThreadFactory;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * @author Stan
  */
-@Api(tags = "anime")
+@Tag(name = "anime")
 @Validated
 @RestController
 @RequestMapping("api/admin/anime")

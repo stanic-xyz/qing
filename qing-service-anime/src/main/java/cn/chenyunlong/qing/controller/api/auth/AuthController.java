@@ -27,8 +27,8 @@ import cn.chenyunlong.qing.model.params.UserParam;
 import cn.chenyunlong.qing.model.vo.system.UserInfoVO;
 import cn.chenyunlong.qing.security.support.TokenProvider;
 import cn.chenyunlong.qing.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
@@ -48,7 +48,7 @@ import java.util.List;
 /**
  * @author Stan
  */
-@Api(tags = "认证授权")
+@Tag(name = "认证授权")
 @RestController
 @RequestMapping("authorize")
 public class AuthController {
@@ -64,7 +64,7 @@ public class AuthController {
     }
 
     @PostMapping("login/preCheck")
-    @ApiOperation("Login")
+    @Operation(summary = "Login")
     @CacheLock(autoDelete = false, prefix = "login_pre_check")
     public LoginPreCheckDTO authPreCheck(@RequestBody @Valid LoginParam loginParam) {
         final User user = userService.authenticate(loginParam);
@@ -72,7 +72,7 @@ public class AuthController {
     }
 
     @Log(title = "通过表单登陆")
-    @ApiOperation("通过表单登陆")
+    @Operation(summary = "通过表单登陆")
     @PostMapping(value = "formLogin")
     public ApiResult<UserInfoVO> formLoin(@RequestBody LoginParam loginParam) throws LoginErrorException {
         User authenticate = userService.authenticate(loginParam);

@@ -13,9 +13,9 @@
 
 package cn.chenyunlong.qing.model.params;
 
-import cn.chenyunlong.qing.model.entities.Version;
 import cn.chenyunlong.qing.model.dto.base.InputConverter;
-import io.swagger.annotations.ApiModelProperty;
+import cn.chenyunlong.qing.model.entities.Version;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -24,14 +24,14 @@ import javax.validation.constraints.NotBlank;
 public class VersionParam implements InputConverter<Version> {
 
     @NotBlank
-    @ApiModelProperty("版本代码")
+    @Schema(name = "版本代码")
     private String code;
 
     @NotBlank
-    @ApiModelProperty("版本名称")
+    @Schema(name = "版本名称")
     private String name;
 
     @NotBlank
-    @ApiModelProperty("版本描述信息")
+    @Schema(name = "版本描述信息")
     private String description;
 }

@@ -23,7 +23,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -41,7 +40,7 @@ public class VersionServiceImpl extends AbstractCrudService<VersionMapper, Versi
     }
 
     @Override
-    public VersionDTO getDetailById(Serializable versionId) {
+    public VersionDTO getDetailById(Long versionId) {
         return toDto(getById(versionId), VersionDTO.class);
     }
 

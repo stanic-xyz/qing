@@ -15,7 +15,7 @@ package cn.chenyunlong.qing.model.entities;
 
 import cn.chenyunlong.qing.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -27,10 +27,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class AnimeType extends BaseEntity<AnimeType> {
     private Long id;
-    @ApiModelProperty("类型名称")
+    @Schema(name = "类型名称")
     private String name;
-    @ApiModelProperty("类型描述")
+    @Schema(name = "类型描述")
     private String description;
-    @ApiModelProperty("排序号")
+    @Schema(name = "排序号")
     private Integer orderNo;
 }

@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.model.params;
 
-import cn.chenyunlong.qing.model.entities.User;
 import cn.chenyunlong.qing.model.dto.base.InputConverter;
+import cn.chenyunlong.qing.model.entities.User;
 import lombok.Data;
 
 import javax.validation.constraints.Email;

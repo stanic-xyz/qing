@@ -13,13 +13,12 @@
 
 package cn.chenyunlong.qing.service;
 
-import cn.chenyunlong.qing.service.base.CrudService;
 import cn.chenyunlong.qing.model.dto.VersionDTO;
 import cn.chenyunlong.qing.model.entities.Version;
 import cn.chenyunlong.qing.model.params.VersionParam;
+import cn.chenyunlong.qing.service.base.CrudService;
 import org.springframework.lang.NonNull;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public interface VersionService extends CrudService<Version> {
      * @param versionId 颁布的信息ID
      * @return 服务代码
      */
-    VersionDTO getDetailById(Serializable versionId);
+    VersionDTO getDetailById(Long versionId);
 
     /**
      * 添加了审批

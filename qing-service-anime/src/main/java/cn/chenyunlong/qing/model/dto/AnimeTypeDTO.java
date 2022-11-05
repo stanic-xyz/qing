@@ -15,18 +15,18 @@ package cn.chenyunlong.qing.model.dto;
 
 import cn.chenyunlong.qing.model.dto.base.OutputConverter;
 import cn.chenyunlong.qing.model.entities.AnimeType;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class AnimeTypeDTO implements OutputConverter<AnimeTypeDTO, AnimeType> {
 
     private Long id;
-    @ApiModelProperty("类型名称")
+    @Schema(name = "类型名称")
     private String name;
-    @ApiModelProperty("类型描述")
+    @Schema(name = "类型描述")
     private String description;
-    @ApiModelProperty("排序号")
+    @Schema(name = "排序号")
     private Integer orderNo;
 
 }
