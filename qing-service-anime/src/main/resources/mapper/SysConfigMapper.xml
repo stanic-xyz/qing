@@ -61,7 +61,7 @@
         <include refid="sqlwhereSearch"/>
     </select>
 
-    <select id="selectConfigList" parameterType="cn.chenyunlong.qing.model.entities.sys.SysConfig"
+    <select id="selectConfigList" parameterType="cn.chenyunlong.qing.domain.system.SysConfig"
             resultMap="SysConfigResult">
         <include refid="selectConfigVo"/>
         <where>
@@ -82,7 +82,7 @@
         where `config_key` = #{configKey} limit 1
     </select>
 
-    <insert id="insertConfig" parameterType="cn.chenyunlong.qing.model.entities.sys.SysConfig">
+    <insert id="insertConfig" parameterType="cn.chenyunlong.qing.domain.system.SysConfig">
         insert into `sys_config` (
         <if test="configName != null and configName != '' ">config_name,</if>
         <if test="configKey != null and configKey != '' ">config_key,</if>
@@ -102,7 +102,7 @@
         )
     </insert>
 
-    <update id="updateConfig" parameterType="cn.chenyunlong.qing.model.entities.sys.SysConfig">
+    <update id="updateConfig" parameterType="cn.chenyunlong.qing.domain.system.SysConfig">
         update `sys_config`
         <set>
             <if test="configName != null and configName != ''">config_name = #{configName},</if>

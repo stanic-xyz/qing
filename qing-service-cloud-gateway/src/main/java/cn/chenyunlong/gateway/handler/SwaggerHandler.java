@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.gateway.handler;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,23 +30,14 @@ import java.util.Optional;
  * @date 2021/01/21
  */
 @RestController
+@RequiredArgsConstructor
 public class SwaggerHandler {
 
     private final SecurityConfiguration securityConfiguration;
 
-
     private final UiConfiguration uiConfiguration;
 
     private final SwaggerResourcesProvider swaggerResources;
-
-    @Autowired
-    public SwaggerHandler(SwaggerResourcesProvider swaggerResources,
-                          @Autowired(required = false) SecurityConfiguration securityConfiguration,
-                          @Autowired(required = false) UiConfiguration uiConfiguration) {
-        this.swaggerResources = swaggerResources;
-        this.securityConfiguration = securityConfiguration;
-        this.uiConfiguration = uiConfiguration;
-    }
 
     /**
      * Swagger安全配置，支持oauth和apiKey设置

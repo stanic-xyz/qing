@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.utils.quartz;
 
-import cn.chenyunlong.qing.model.entities.sys.SysJob;
+import cn.chenyunlong.qing.domain.system.SysJob;
 import org.quartz.JobExecutionContext;
 
 /**

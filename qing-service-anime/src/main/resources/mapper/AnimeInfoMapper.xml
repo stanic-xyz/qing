@@ -19,7 +19,7 @@
 
 <mapper namespace="cn.chenyunlong.qing.mapper.AnimeInfoMapper">
 
-    <resultMap id="BaseResultMap" type="cn.chenyunlong.qing.model.entities.anime.AnimeInfo">
+    <resultMap id="BaseResultMap" type="cn.chenyunlong.qing.domain.anime.AnimeInfo">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="district_name" property="districtName"/>

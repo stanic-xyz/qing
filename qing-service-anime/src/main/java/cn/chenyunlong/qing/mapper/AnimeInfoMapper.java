@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.mapper;
 
-import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;

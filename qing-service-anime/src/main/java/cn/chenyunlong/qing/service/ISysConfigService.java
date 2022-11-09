@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.service;
 
-import cn.chenyunlong.qing.model.entities.sys.SysConfig;
+import cn.chenyunlong.qing.domain.system.SysConfig;
 
 import java.util.List;
 

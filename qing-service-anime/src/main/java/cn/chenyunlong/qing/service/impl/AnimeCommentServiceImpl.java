@@ -13,9 +13,9 @@
 
 package cn.chenyunlong.qing.service.impl;
 
-import cn.chenyunlong.qing.mapper.AnimeCommentMapper;
+import cn.chenyunlong.qing.domain.comment.AnimeComment;
+import cn.chenyunlong.qing.domain.comment.mapper.AnimeCommentMapper;
 import cn.chenyunlong.qing.model.dto.AnimeCommentDTO;
-import cn.chenyunlong.qing.model.entities.AnimeComment;
 import cn.chenyunlong.qing.service.AnimeCommentService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;

@@ -16,7 +16,7 @@ package cn.chenyunlong.qing.service.impl;
 import cn.chenyunlong.qing.core.constant.ScheduleConstants;
 import cn.chenyunlong.qing.core.exception.job.TaskException;
 import cn.chenyunlong.qing.mapper.SysJobMapper;
-import cn.chenyunlong.qing.model.entities.sys.SysJob;
+import cn.chenyunlong.qing.domain.system.SysJob;
 import cn.chenyunlong.qing.service.ISysJobService;
 import cn.chenyunlong.qing.utils.quartz.CronUtils;
 import cn.chenyunlong.qing.utils.quartz.ScheduleUtils;

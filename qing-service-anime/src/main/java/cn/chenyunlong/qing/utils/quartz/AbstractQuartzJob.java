@@ -15,13 +15,13 @@ package cn.chenyunlong.qing.utils.quartz;
 
 import cn.chenyunlong.qing.core.constant.Constants;
 import cn.chenyunlong.qing.core.constant.ScheduleConstants;
+import cn.chenyunlong.qing.domain.system.SysJob;
+import cn.chenyunlong.qing.domain.system.SysJobLog;
 import cn.chenyunlong.qing.service.ISysJobLogService;
-import cn.chenyunlong.qing.utils.spring.SpringUtils;
-import cn.chenyunlong.qing.model.entities.sys.SysJob;
-import cn.chenyunlong.qing.model.entities.sys.SysJobLog;
 import cn.chenyunlong.qing.utils.BeanUtils;
 import cn.chenyunlong.qing.utils.ExceptionUtil;
 import cn.chenyunlong.qing.utils.StringUtils;
+import cn.chenyunlong.qing.utils.spring.SpringUtils;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

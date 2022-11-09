@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.service.impl;
 
-import cn.chenyunlong.qing.mapper.ActivityMapper;
-import cn.chenyunlong.qing.model.entities.ActivityEntity;
+import cn.chenyunlong.qing.domain.activity.ActivityEntity;
+import cn.chenyunlong.qing.domain.activity.mapper.ActivityMapper;
 import cn.chenyunlong.qing.service.ActivityService;
 import org.springframework.stereotype.Service;
 

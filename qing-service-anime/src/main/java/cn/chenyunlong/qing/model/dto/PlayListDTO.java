@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.model.dto;
 
+import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
 import cn.chenyunlong.qing.model.dto.base.OutputConverter;
-import cn.chenyunlong.qing.model.entities.anime.PlaylistEntity;
 import lombok.Data;
 
 import java.util.List;

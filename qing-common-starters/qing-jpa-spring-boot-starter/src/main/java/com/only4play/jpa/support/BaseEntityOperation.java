@@ -35,13 +35,13 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  */
 public abstract class BaseEntityOperation implements EntityOperation {
 
-    static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    public static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     /**
-     * 进行验证 泛型
+     * 做验证
      *
      * @param t     t 泛型对象
-     * @param group
+     * @param group 校验组
      */
     public <T> void doValidate(T t, Class<? extends ValidateGroup> group) {
         Set<ConstraintViolation<T>> constraintViolations = validator.validate(t, group, Default.class);

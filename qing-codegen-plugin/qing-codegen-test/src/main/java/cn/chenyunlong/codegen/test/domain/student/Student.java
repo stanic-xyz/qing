@@ -25,7 +25,6 @@ import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.updater.IgnoreUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
-import cn.chenyunlong.codegen.test.Constants;
 import cn.chenyunlong.common.constants.ValidStatus;
 import com.only4play.jpa.converter.ValidStatusConverter;
 import com.only4play.jpa.support.BaseJpaAggregate;
@@ -35,9 +34,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @GenVo(pkgName = "cn.chenyunlong.codegen.test.domain.student.vo")
@@ -49,13 +46,15 @@ import java.util.Objects;
 @GenQuery(pkgName = "cn.chenyunlong.codegen.test.domain.student.query")
 @GenMapper(pkgName = "cn.chenyunlong.codegen.test.domain.student.mapper")
 @GenController(pkgName = "cn.chenyunlong.codegen.test.domain.student.controller")
-@GenCreateRequest(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.request", sourcePath = Constants.GEN_API_SOURCE)
-@GenUpdateRequest(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.request", sourcePath = Constants.GEN_API_SOURCE)
-@GenQueryRequest(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.request", sourcePath = Constants.GEN_API_SOURCE)
-@GenResponse(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.response", sourcePath = Constants.GEN_API_SOURCE)
-@GenFeign(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.service", sourcePath = Constants.GEN_API_SOURCE, serverName = "srv")
+@GenCreateRequest(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.request")
+@GenUpdateRequest(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.request")
+@GenQueryRequest(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.request")
+@GenResponse(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.response")
+@GenFeign(pkgName = "cn.chenyunlong.codegen.test.domain.student.api.service", serverName = "service")
 @Entity
-@Table(name = "t_student")
+@Table(name = "t_student", indexes = {
+        @Index(name = "idx_student_user_id_unq", columnList = "user_id", unique = true)
+})
 @Getter
 @Setter
 @ToString
@@ -66,6 +65,9 @@ public class Student extends BaseJpaAggregate {
     @IgnoreUpdater
     @IgnoreCreator
     private ValidStatus validStatus;
+
+    @Column(name = "user_id", unique = true)
+    private Integer userId;
 
     public void init() {
         setValidStatus(ValidStatus.VALID);

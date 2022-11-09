@@ -16,19 +16,42 @@ package cn.chenyunlong.codegen.processor.vo;
 import java.lang.annotation.*;
 
 /**
- * @Author: Gim
- * @Description:
+ * 生成VO
+ *
+ * @author Stan
+ * @author Gim
+ * @date 2022/11/06
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface GenVo {
 
+    /**
+     * 包名
+     *
+     * @return {@link String}
+     */
     String pkgName();
 
+    /**
+     * 源路径
+     *
+     * @return {@link String}
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 是否覆盖源
+     *
+     * @return boolean
+     */
     boolean overrideSource() default false;
 
+    /**
+     * jpa
+     *
+     * @return boolean
+     */
     boolean jpa() default true;
 }

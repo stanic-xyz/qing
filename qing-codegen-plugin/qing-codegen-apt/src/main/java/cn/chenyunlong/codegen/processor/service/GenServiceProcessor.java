@@ -16,10 +16,10 @@ package cn.chenyunlong.codegen.processor.service;
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.common.model.PageRequestWrapper;
-import com.google.auto.service.AutoService;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
+import cn.chenyunlong.common.model.PageRequestWrapper;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
@@ -48,18 +48,12 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
         DefaultNameContext nameContext = getNameContext(typeElement);
-        Optional<MethodSpec> createMethod = createMethod(typeElement, nameContext);
-        createMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> updateMethod = updateMethod(typeElement, nameContext);
-        updateMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> validMethod = validMethod(typeElement);
-        validMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> invalidMethod = invalidMethod(typeElement);
-        invalidMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> findByIdMethod = findByIdMethod(nameContext);
-        findByIdMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> findByPageMethod = findByPageMethod(nameContext);
-        findByPageMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
+        createMethod(typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
+        updateMethod(typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
+        validMethod(typeElement).ifPresent(typeSpecBuilder::addMethod);
+        invalidMethod(typeElement).ifPresent(typeSpecBuilder::addMethod);
+        findByIdMethod(nameContext).ifPresent(typeSpecBuilder::addMethod);
+        findByPageMethod(nameContext).ifPresent(typeSpecBuilder::addMethod);
         genJavaSourceFile(generatePackage(typeElement),
                 typeElement.getAnnotation(GenService.class).sourcePath(), typeSpecBuilder);
     }

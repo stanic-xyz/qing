@@ -13,9 +13,9 @@
 
 package cn.chenyunlong.qing.service.impl;
 
+import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
 import cn.chenyunlong.qing.mapper.AnimeEpisodeMapper;
 import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
-import cn.chenyunlong.qing.model.entities.anime.AnimeEpisodeEntity;
 import cn.chenyunlong.qing.model.params.AddEpisodeParam;
 import cn.chenyunlong.qing.service.AnimeEpisodeService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

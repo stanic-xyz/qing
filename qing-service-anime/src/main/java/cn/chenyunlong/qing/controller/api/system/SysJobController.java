@@ -19,7 +19,7 @@ import cn.chenyunlong.qing.core.controller.BaseController;
 import cn.chenyunlong.qing.core.enums.BusinessType;
 import cn.chenyunlong.qing.core.exception.job.TaskException;
 import cn.chenyunlong.qing.core.page.TableDataInfo;
-import cn.chenyunlong.qing.model.entities.sys.SysJob;
+import cn.chenyunlong.qing.domain.system.SysJob;
 import cn.chenyunlong.qing.service.ISysJobService;
 import cn.chenyunlong.qing.utils.poi.ExcelUtil;
 import cn.chenyunlong.qing.utils.quartz.CronUtils;

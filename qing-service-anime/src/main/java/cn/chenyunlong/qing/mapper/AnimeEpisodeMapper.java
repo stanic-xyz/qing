@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.mapper;
 
+import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
 import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
-import cn.chenyunlong.qing.model.entities.anime.AnimeEpisodeEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;

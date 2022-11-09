@@ -30,6 +30,11 @@ import org.springframework.web.util.pattern.PathPatternParser;
 @Configuration
 public class GlobalCorsConfig {
 
+    /**
+     * 歌珥过滤器
+     *
+     * @return {@link CorsWebFilter}
+     */
     @Bean
     public CorsWebFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();

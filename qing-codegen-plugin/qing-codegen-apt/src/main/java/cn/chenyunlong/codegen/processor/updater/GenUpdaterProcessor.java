@@ -13,10 +13,10 @@
 
 package cn.chenyunlong.codegen.processor.updater;
 
-import com.google.auto.service.AutoService;
-import com.google.common.base.CaseFormat;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import com.google.auto.service.AutoService;
+import com.google.common.base.CaseFormat;
 import com.squareup.javapoet.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -42,6 +42,12 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
 
     public static final String SUFFIX = "Updater";
 
+    /**
+     * 生成类
+     *
+     * @param typeElement      类型元素
+     * @param roundEnvironment 周围环境
+     */
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
         Set<VariableElement> fields = findFields(typeElement,

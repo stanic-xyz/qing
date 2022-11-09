@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.service.dao;
 
-import cn.chenyunlong.qing.model.entities.anime.PlaylistEntity;
+import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;

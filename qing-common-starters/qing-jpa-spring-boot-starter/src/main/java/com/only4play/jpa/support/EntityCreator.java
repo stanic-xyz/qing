@@ -33,7 +33,7 @@ public class EntityCreator<T, ID> extends BaseEntityOperation implements Create<
     private final CrudRepository<T, ID> repository;
     private T t;
     private Consumer<T> successHook = t -> log.info("save success");
-    private Consumer<? super Throwable> errorHook = e -> e.printStackTrace();
+    private Consumer<? super Throwable> errorHook = Throwable::printStackTrace;
 
     public EntityCreator(CrudRepository<T, ID> repository) {
         this.repository = repository;
@@ -46,6 +46,12 @@ public class EntityCreator<T, ID> extends BaseEntityOperation implements Create<
         return this;
     }
 
+    /**
+     * 创建对象
+     *
+     * @param supplier 供应商
+     * @return {@link UpdateHandler}<{@link T}>
+     */
     @Override
     public UpdateHandler<T> create(Supplier<T> supplier) {
         this.t = supplier.get();

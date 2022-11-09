@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.service;
 
 
-import cn.chenyunlong.qing.model.entities.ActivityEntity;
+import cn.chenyunlong.qing.domain.activity.ActivityEntity;
 
 import java.util.List;
 

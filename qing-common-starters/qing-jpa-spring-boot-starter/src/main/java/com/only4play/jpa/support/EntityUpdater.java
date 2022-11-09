@@ -35,7 +35,7 @@ public class EntityUpdater<T, ID> extends BaseEntityOperation implements Loader<
     private final CrudRepository<T, ID> repository;
     private T entity;
     private Consumer<T> successHook = t -> log.info("update success");
-    private Consumer<? super Throwable> errorHook = e -> e.printStackTrace();
+    private Consumer<? super Throwable> errorHook = Throwable::printStackTrace;
 
     public EntityUpdater(CrudRepository<T, ID> repository) {
         this.repository = repository;

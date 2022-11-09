@@ -15,9 +15,9 @@ package cn.chenyunlong.qing.controller.content;
 
 import cn.chenyunlong.qing.controller.content.model.AnimeInfoModel;
 import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.model.dto.anime.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.model.dto.anime.AnimeInfoRankDTO;
-import cn.chenyunlong.qing.model.entities.AnimeComment;
+import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.response.AnimeInfoRankDTO;
+import cn.chenyunlong.qing.domain.comment.AnimeComment;
 import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.model.vo.page.*;
 import cn.chenyunlong.qing.service.AnimeInfoService;
