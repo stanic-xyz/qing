@@ -17,7 +17,7 @@ import cn.chenyunlong.qing.core.constant.Constants;
 import cn.chenyunlong.qing.core.constant.UserConstants;
 import cn.chenyunlong.qing.core.exception.BusinessException;
 import cn.chenyunlong.qing.mapper.SysConfigMapper;
-import cn.chenyunlong.qing.model.entities.sys.SysConfig;
+import cn.chenyunlong.qing.domain.system.SysConfig;
 import cn.chenyunlong.qing.service.ISysConfigService;
 import cn.chenyunlong.qing.utils.CacheUtils;
 import cn.chenyunlong.qing.utils.StringUtils;

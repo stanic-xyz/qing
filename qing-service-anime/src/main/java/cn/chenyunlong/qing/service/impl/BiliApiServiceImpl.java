@@ -13,10 +13,10 @@
 
 package cn.chenyunlong.qing.service.impl;
 
-import cn.chenyunlong.qing.mapper.BiliAnimeMapper;
+import cn.chenyunlong.qing.domain.bilibili.BiliAnimeInfoEntity;
+import cn.chenyunlong.qing.domain.bilibili.BilibiliAnimeScoreEntity;
+import cn.chenyunlong.qing.domain.bilibili.mapper.BiliAnimeMapper;
 import cn.chenyunlong.qing.model.bilibili.BiliAnime;
-import cn.chenyunlong.qing.model.entities.bilibili.BiliAnimeInfoEntity;
-import cn.chenyunlong.qing.model.entities.bilibili.BilibiliAnimeScoreEntity;
 import cn.chenyunlong.qing.service.BilibiliAnimeScoreService;
 import cn.chenyunlong.qing.service.BilibiliAnimeService;
 import cn.chenyunlong.qing.service.external.BiliService;

@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.qing.service.impl;
 
+import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
+import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
 import cn.chenyunlong.qing.mapper.AnimePlaylistMapper;
 import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
 import cn.chenyunlong.qing.model.dto.PlayListDTO;
-import cn.chenyunlong.qing.model.entities.anime.AnimeEpisodeEntity;
-import cn.chenyunlong.qing.model.entities.anime.PlaylistEntity;
 import cn.chenyunlong.qing.service.AnimeEpisodeService;
 import cn.chenyunlong.qing.service.PlaylistService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

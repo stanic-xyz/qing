@@ -15,7 +15,7 @@ package cn.chenyunlong.qing.aspect;
 
 import cn.chenyunlong.qing.annotation.Log;
 import cn.chenyunlong.qing.core.enums.BusinessStatus;
-import cn.chenyunlong.qing.model.entities.sys.SysOperLog;
+import cn.chenyunlong.qing.domain.system.SysOperLog;
 import cn.chenyunlong.qing.utils.HttpContextUtil;
 import cn.chenyunlong.qing.utils.IpUtils;
 import com.alibaba.fastjson.JSONObject;

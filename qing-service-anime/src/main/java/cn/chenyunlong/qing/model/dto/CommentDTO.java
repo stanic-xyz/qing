@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.model.dto;
 
+import cn.chenyunlong.qing.domain.comment.AnimeComment;
 import cn.chenyunlong.qing.model.dto.base.OutputConverter;
-import cn.chenyunlong.qing.model.entities.AnimeComment;
 import lombok.Data;
 
 import java.time.LocalDateTime;

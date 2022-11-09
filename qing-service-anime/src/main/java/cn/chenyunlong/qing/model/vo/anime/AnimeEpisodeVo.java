@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.model.vo.anime;
 
+import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
 import cn.chenyunlong.qing.model.dto.base.OutputConverter;
-import cn.chenyunlong.qing.model.entities.anime.AnimeEpisodeEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;

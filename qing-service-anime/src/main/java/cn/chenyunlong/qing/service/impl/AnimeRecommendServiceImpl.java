@@ -14,10 +14,10 @@
 package cn.chenyunlong.qing.service.impl;
 
 import cn.chenyunlong.qing.core.exception.ServiceException;
+import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.mapper.AnimeInfoMapper;
 import cn.chenyunlong.qing.mapper.AnimeRecommendMapper;
 import cn.chenyunlong.qing.model.entities.AnimeRecommendEntity;
-import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
 import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.model.params.AnimeRecommendParam;
 import cn.chenyunlong.qing.service.AnimeRecommendService;

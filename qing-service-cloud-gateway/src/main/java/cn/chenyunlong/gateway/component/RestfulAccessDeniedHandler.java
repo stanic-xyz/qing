@@ -52,6 +52,12 @@ public class RestfulAccessDeniedHandler implements ServerAccessDeniedHandler {
         return getVoidMono(response);
     }
 
+    /**
+     * 得到空的mono
+     *
+     * @param response 响应
+     * @return {@link Mono}<{@link Void}>
+     */
     @NotNull
     static Mono<Void> getVoidMono(ServerHttpResponse response) {
         response.getHeaders().set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);

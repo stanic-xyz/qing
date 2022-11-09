@@ -27,10 +27,9 @@
     <script type="text/javascript" th:src="@{{host}/js/utils.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/age_playpre.js(host=${data.hostname})}"></script>
-    <script type="text/javascript" th:src="@{{host}/js/snowfall.min.js(host=${data.hostname})}"></script>
-    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.1.1/dist/echarts.min.js"></script>
-    <script src="https://unpkg.com/petite-vue" defer init></script>
+    <script type="text/javascript" th:src="@{{host}/js/petite-vue.js(host=${data.hostname})}"></script>
+
+
     <!-- overload -->
     <style>
         .anime_icon1 {
@@ -48,8 +47,35 @@
     </style>
 </head>
 
+<script type="module">
+    PetiteVue.createApp({
+        // exposed to all expressions
+        count: 0,
+        menuIndex: 0,
+        reportType: 0,
+        detail: '有问题一定要告诉我们哦',
+        reportTypes: [{id: 0, name: '链接失效'}, {id: 2, name: '级数缺失'}, {id: 2, name: '资源质量差'}],
+        reportValue: 'test',
+        // getters
+        get plusOne() {
+            return this.count + 1
+        },
+        // methods
+        increment() {
+            this.count++
+            this.menuIndex++
+        },
+        next(index) {
+            this.menuIndex = index
+        },
+        sendReport() {
+            console.log("提交反馈信息", this.reportType, this.reportTypes[this.reportType])
+        }
+    }).mount()
+</script>
+
 <body>
-<div id="root" style="z-index: 1" v-scope="{}">
+<div id="root" style="z-index: 1" v-scope>
     <div id="top" th:include="common/header :: top()"></div>
     <header id="nav" th:include="common/header :: commonHead('detail')"></header>
     <div id="container">
@@ -165,20 +191,20 @@
                 <ul class="menu0" id="menu0">
                     <li style="display: block"
                         th:each="listInfo,iterStat : ${data?.animeInfo?.playList}"
-                        th:class="${iterStat.index == 0 ? 'on' : '' }"
                         th:text="${listInfo?.name}"
-                        th:data-index="${iterStat.index}"
-                        onclick="setTab(0,this.getAttribute('data-index'))">
+                        th:@click="|next(${iterStat.index})|"
+                        th:v-bind:class="|{'on':${iterStat.index} == menuIndex}|"
+                        th:if="|${iterStat.index} == menuIndex|">
                     </li>
                 </ul>
                 <div class="main0" id="main0">
                     <div class="movurl"
                          th:each="playList,status:${data.animeInfo.playList}"
-                         th:style="${status.index == 0? 'display: block;':'display: none;'}">
+                         th:v-bind:style="|{'display': ${status.index}== menuIndex ?'block':'none'}|">
                         <ul>
                             <li th:each="episode:${playList?.episodeList}">
                                 <a th:href="@{/play/{animeId}(playid=${episode?.id},animeId=${data.animeInfo.id})}"
-                                   target="_self"
+                                   th:target="_self"
                                    th:title="${episode.name}"
                                    th:text="${episode.name}">
                                 </a>
@@ -187,20 +213,6 @@
                     </div>
                 </div>
             </div>
-            <script type="text/javascript">
-                function setTab(m, n) {
-                    const tli = document.getElementById("menu0").getElementsByTagName("li");
-                    const mli = document.getElementById("main0").getElementsByTagName("div");
-                    for (i = 0; i < tli.length; i++) {
-                        tli[i].className = (i === n ? "on" : "");
-                        mli[i].style.display = (i === n ? "block" : "none");
-                        const pli_cnt = mli[i].getElementsByTagName("ul")[0].getElementsByTagName("li");
-                        if (!pli_cnt.length) {
-                            tli[i].style.display = 'block';
-                        }
-                    }
-                }
-            </script>
 
             <div class="blockline1" style="margin: 8px;"></div>
             <div id="wangpan-div" class="baseblock">
@@ -215,73 +227,25 @@
             </div>
 
             <div class="blockline1" style="margin: 8px;"></div>
-            <div id="score" style="height:260px;"></div>
-            <script type="text/javascript">
-                // 基于准备好的dom，初始化echarts实例
-                const myChart = echarts.init(document.getElementById('score'));
-                // 指定图表的配置项和数据
-                const option = {
-                    title: {
-                        x: "center",
-                        text: "评分信息"
-                    },
-                    tooltip: {},
-                    legend: {
-                        data: ['销量']
-                    },
-                    xAxis: {
-                        data: ["2021-01", "2021-02", "2021-03", "2021-04", "2021-05", "2021-06", "2021-07", "2021-08"]
-                    },
-                    yAxis: {
-                        data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-                    },
-                    series: [{
-                        name: '评分',
-                        type: 'bar',
-                        data: [9.5, 9.5, 9.5, 9.5, 5.5, 9.5, 5.3, 9.5]
-                    }]
-                };
-
-                // 使用刚指定的配置项和数据显示图表。
-                myChart.setOption(option);
-            </script>
-            <div class="blockline1" style="margin: 8px;"></div>
             <div class="baseblock">
                 <div class="blocktitle">反馈：</div>
                 <div class="report_div">
-                    <form id="report_form" action="/report" method="GET">
+                    <div id="report_form">
                         <div>
-                            <input id="report_aid" type="hidden" name="cid" th:value="${data?.animeInfo?.id}">
-                            <label>
-                                <input type="checkbox" name="link_invalid" value="1">链接失效</label>
-                            <label>
-                                <input type="checkbox" name="bad_quality" value="1">资源质量差</label>
-                            <label>
-                                <input type="checkbox" name="some_missing" value="1">集数缺失</label>
+                            <input id="report_aid" type="hidden" name="cid"
+                                   th:value="${data?.animeInfo?.id}"
+                                   th:v-model="reportValue">
+                            <label v-for="type in reportTypes">
+                                <input type="checkbox" name="link_invalid" value="1">{{ type.name }}</label>
                             <label>
                                 <input type="checkbox" name="other" value="1">其他</label>
                             <input autocapitalize="off" autocomplete="off" name="detail"
                                    placeholder="请告诉我们详细情况~~"
+                                   v-model="detail"
                                    spellcheck="true">
-                            <input class="nbutton" type="submit" value="提交">
+                            <button class="nbutton" @click="sendReport" value="提交">提交</button>
                         </div>
-                    </form>
-                    <script>
-                        const reportForm = $('#report_form');
-                        reportForm.on('submit',
-                            function () {
-                                //阻止form表单默认提交
-                                event.preventDefault();
-                                $.ajax({
-                                    type: "get",
-                                    url: "/report?" + reportForm.serialize(),
-                                }).success(function (message) {
-                                    alert(message);
-                                }).fail(function (err) {
-                                    alert('未知错误' + err);
-                                });
-                            });
-                    </script>
+                    </div>
                 </div>
             </div>
 
@@ -434,13 +398,13 @@
                                 const comment_dict = _comments[i];
                                 const _sid = comment_dict['sid'];
                                 var _content_val = comment_dict['content'];
-                                _content_val = _content_val.replace(/\</g, '&lt;');
-                                _content_val = _content_val.replace(/\>/g, '&gt;');
+                                _content_val = _content_val.replace(/</g, '&lt;');
+                                _content_val = _content_val.replace(/>/g, '&gt;');
                                 _content_val = __content_img_on(_content_val);
                                 const _time = __timeCycle(Number(comment_dict['time']));
                                 var _username = comment_dict['username'];
-                                _username = _username.replace(/\</g, '&lt;');
-                                _username = _username.replace(/\>/g, '&gt;');
+                                _username = _username.replace(/</g, '&lt;');
+                                _username = _username.replace(/>/g, '&gt;');
                                 var html_li = '<li class="comment">';
                                 html_li += '<hr class="hrspace2">';
                                 html_li += ('<div class="comment_cell_user">' + _username + '</div>');
@@ -481,23 +445,15 @@
 </div>
 
 <script>
-    //调用飘落函数 实现飘落效果
+    // 调用飘落函数 实现飘落效果
     $(".bg_box").snowfall({
-        image: ["/img/common/kanzaki1.png"],
+        image: ["/img/common/kanzaki2.png"],
         flakeCount: 20,
         minSize: 10,
         maxSize: 60,
         maxSpeed: 2,
         shadow: false
     });
-</script>
-<script>var _hmt = _hmt || [];
-(function () {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?7fdef555dc32f7d31fadd14999021b7b";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-})();
 </script>
 </body>
 

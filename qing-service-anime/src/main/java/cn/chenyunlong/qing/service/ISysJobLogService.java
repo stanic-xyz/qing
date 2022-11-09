@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.service;
 
-import cn.chenyunlong.qing.model.entities.sys.SysJobLog;
+import cn.chenyunlong.qing.domain.system.SysJobLog;
 
 import java.util.List;
 

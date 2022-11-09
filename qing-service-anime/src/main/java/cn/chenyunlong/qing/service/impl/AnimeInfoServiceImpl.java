@@ -13,15 +13,15 @@
 
 package cn.chenyunlong.qing.service.impl;
 
-import cn.chenyunlong.qing.mapper.AnimeCommentMapper;
+import cn.chenyunlong.qing.domain.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.response.AnimeInfoRankDTO;
+import cn.chenyunlong.qing.domain.anime.response.AnimeInfoUpdateDTO;
+import cn.chenyunlong.qing.domain.comment.AnimeComment;
+import cn.chenyunlong.qing.domain.comment.mapper.AnimeCommentMapper;
 import cn.chenyunlong.qing.mapper.AnimeInfoMapper;
 import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
 import cn.chenyunlong.qing.model.dto.PlayListDTO;
-import cn.chenyunlong.qing.model.dto.anime.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.model.dto.anime.AnimeInfoRankDTO;
-import cn.chenyunlong.qing.model.dto.anime.AnimeInfoUpdateDTO;
-import cn.chenyunlong.qing.model.entities.AnimeComment;
-import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
 import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.model.vo.anime.AnimeInfoPlayVo;
 import cn.chenyunlong.qing.model.vo.anime.AnimeInfoVo;

@@ -13,9 +13,9 @@
 
 package cn.chenyunlong.qing.model.params;
 
-import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
-import cn.chenyunlong.qing.utils.StringUtils;
+import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.model.dto.base.InputConverter;
+import cn.chenyunlong.qing.utils.StringUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

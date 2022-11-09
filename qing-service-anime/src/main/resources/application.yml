@@ -89,3 +89,5 @@ springdoc:
     enabled: true
   swagger-ui:
     doc-expansion: none
+    default-model-expand-depth: 20
+  show-actuator: true

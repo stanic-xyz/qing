@@ -35,6 +35,13 @@ import java.util.Set;
 @AutoService(Processor.class)
 public class Only4PlayCodeGenProcessor extends AbstractProcessor {
 
+    /**
+     * 过程
+     *
+     * @param annotations      注释
+     * @param roundEnvironment 周围环境
+     * @return boolean
+     */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
         annotations.forEach(element -> {
@@ -53,6 +60,11 @@ public class Only4PlayCodeGenProcessor extends AbstractProcessor {
         return false;
     }
 
+    /**
+     * 初始化
+     *
+     * @param processingEnv 处理env
+     */
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -60,11 +72,21 @@ public class Only4PlayCodeGenProcessor extends AbstractProcessor {
         CodeGenProcessorRegistry.initProcessors();
     }
 
+    /**
+     * 获取支持注释类型
+     *
+     * @return {@link Set}<{@link String}>
+     */
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         return CodeGenProcessorRegistry.getSupportedAnnotations();
     }
 
+    /**
+     * 获取支持的源版本
+     *
+     * @return {@link SourceVersion}
+     */
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();

@@ -14,14 +14,14 @@
 package cn.chenyunlong.qing.controller.content.model;
 
 import cn.chenyunlong.qing.core.Pagination;
+import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
+import cn.chenyunlong.qing.domain.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
+import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.response.AnimeInfoUpdateDTO;
 import cn.chenyunlong.qing.model.dto.AnimeCommentDTO;
 import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
 import cn.chenyunlong.qing.model.dto.PlayListDTO;
-import cn.chenyunlong.qing.model.dto.anime.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.model.dto.anime.AnimeInfoUpdateDTO;
-import cn.chenyunlong.qing.model.entities.anime.AnimeEpisodeEntity;
-import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
-import cn.chenyunlong.qing.model.entities.anime.PlaylistEntity;
 import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.model.vo.OptionsModel;
 import cn.chenyunlong.qing.model.vo.anime.AnimeInfoPlayVo;
@@ -94,6 +94,12 @@ public class AnimeInfoModel {
         return indexModel;
     }
 
+    /**
+     * 获取详情界面
+     *
+     * @param animeId 动漫id
+     * @return {@link DetailModel}
+     */
     public DetailModel detail(Long animeId) {
         DetailModel detailModel = new DetailModel();
         AnimeInfo animeInfo = animeInfoService.getById(animeId);

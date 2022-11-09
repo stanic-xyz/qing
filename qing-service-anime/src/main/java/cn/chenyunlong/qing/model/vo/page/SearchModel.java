@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.model.vo.page;
 
-import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.model.vo.OptionsModel;
 import lombok.Data;

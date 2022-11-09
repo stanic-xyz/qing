@@ -31,11 +31,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @Schema(description = "返回数据值")
 public class ApiResult<T> {
-    @Schema(name = "返回值编码；0表示成功，其他全部失败")
+    @Schema(title = "错误代码", description = "返回值编码；0表示成功，其他全部失败")
     private int code;
-    @Schema(name = "异常提示信息")
+    @Schema(title = "提示信息", description = "异常提示信息")
     private String msg;
-    @Schema(name = "具体返回值信息,如果为一般表示请求成功")
+    @Schema(title = "返回值", description = "具体返回值信息,如果为一般表示请求成功")
     private T data;
 
     /**

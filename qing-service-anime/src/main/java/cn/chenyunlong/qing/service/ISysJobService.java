@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.service;
 
 import cn.chenyunlong.qing.core.exception.job.TaskException;
-import cn.chenyunlong.qing.model.entities.sys.SysJob;
+import cn.chenyunlong.qing.domain.system.SysJob;
 import org.quartz.SchedulerException;
 
 import java.util.List;
