@@ -25,21 +25,24 @@ public interface CodeGenProcessor {
     /**
      * 需要解析的类上的注解
      *
-     * @return
+     * @return {@link Class}<{@link ?} {@link extends} {@link Annotation}>
      */
     Class<? extends Annotation> getAnnotation();
 
     /**
      * 获取生成的包路径
      *
-     * @return
+     * @param typeElement 类型元素
+     * @return {@link String}
      */
     String generatePackage(TypeElement typeElement);
 
     /**
      * 代码生成逻辑
      *
-     * @throws Exception
+     * @param typeElement      类型元素
+     * @param roundEnvironment 周围环境
+     * @throws Exception 异常
      */
     void generate(TypeElement typeElement, RoundEnvironment roundEnvironment) throws Exception;
 }

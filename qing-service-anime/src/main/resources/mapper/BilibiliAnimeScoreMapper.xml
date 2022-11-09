@@ -15,9 +15,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.chenyunlong.qing.mapper.BilibiliAnimeScoreMapper">
+<mapper namespace="cn.chenyunlong.qing.domain.bilibili.mapper.BilibiliAnimeScoreMapper">
 
-    <resultMap id="BaseResultMap" type="cn.chenyunlong.qing.model.entities.bilibili.BilibiliAnimeScoreEntity">
+    <resultMap id="BaseResultMap" type="cn.chenyunlong.qing.domain.bilibili.BilibiliAnimeScoreEntity">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="animeId" column="anime_id" jdbcType="BIGINT"/>
         <result property="score" column="score" jdbcType="DOUBLE"/>

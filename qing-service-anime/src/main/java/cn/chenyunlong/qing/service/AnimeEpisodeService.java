@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.service;
 
+import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
 import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
-import cn.chenyunlong.qing.model.entities.anime.AnimeEpisodeEntity;
 import cn.chenyunlong.qing.model.params.AddEpisodeParam;
 import com.baomidou.mybatisplus.extension.service.IService;
 

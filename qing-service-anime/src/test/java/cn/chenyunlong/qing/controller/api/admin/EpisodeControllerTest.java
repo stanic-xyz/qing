@@ -14,14 +14,14 @@
 package cn.chenyunlong.qing.controller.api.admin;
 
 import cn.chenyunlong.qing.controller.BaseApiTest;
+import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
+import cn.chenyunlong.qing.domain.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.ListEpisodeEntity;
+import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
 import cn.chenyunlong.qing.mapper.AnimeEpisodeMapper;
 import cn.chenyunlong.qing.mapper.AnimeInfoMapper;
 import cn.chenyunlong.qing.mapper.AnimeListEpisodeMapper;
 import cn.chenyunlong.qing.mapper.AnimePlaylistMapper;
-import cn.chenyunlong.qing.model.entities.anime.AnimeEpisodeEntity;
-import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
-import cn.chenyunlong.qing.model.entities.anime.ListEpisodeEntity;
-import cn.chenyunlong.qing.model.entities.anime.PlaylistEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

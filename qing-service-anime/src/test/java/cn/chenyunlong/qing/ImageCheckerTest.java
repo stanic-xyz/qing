@@ -21,18 +21,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,19 +42,8 @@ import java.util.Objects;
 @Slf4j
 public class ImageCheckerTest {
 
-
-    public static void main(String[] args) throws FileNotFoundException {
-        File file = ResourceUtils.getFile("E:\\GitHub\\cdn\\age");
-        if (file.isDirectory()) {
-            File[] listFiles = file.listFiles();
-            assert listFiles != null;
-            for (File listFile : listFiles) {
-                System.out.println(listFile.getName());
-            }
-        }
-    }
-
     @Test
+    @DisplayName("测试生成日期")
     void generateDate() {
         LocalDateTime localDateTime = LocalDateTime.of(2005, 12, 30, 0, 0, 0);
         for (int i = 0; i < 100; i++) {
@@ -70,6 +57,7 @@ public class ImageCheckerTest {
 
     @Disabled
     @Test
+    @DisplayName("从diyGod获取手办信息")
     public void getGkFromDiyGod() {
 
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();

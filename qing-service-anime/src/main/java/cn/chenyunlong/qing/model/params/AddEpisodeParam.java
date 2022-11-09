@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.model.params;
 
-import cn.chenyunlong.qing.model.entities.anime.AnimeEpisodeEntity;
+import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
 import cn.chenyunlong.qing.model.dto.base.InputConverter;
 import lombok.Data;
 

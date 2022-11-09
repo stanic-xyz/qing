@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.service.impl;
 
 import cn.chenyunlong.qing.mapper.SysJobLogMapper;
-import cn.chenyunlong.qing.model.entities.sys.SysJobLog;
+import cn.chenyunlong.qing.domain.system.SysJobLog;
 import cn.chenyunlong.qing.service.ISysJobLogService;
 import cn.chenyunlong.qing.utils.text.Convert;
 import org.springframework.stereotype.Service;

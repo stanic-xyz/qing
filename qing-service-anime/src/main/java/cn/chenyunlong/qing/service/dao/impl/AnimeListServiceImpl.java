@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.service.dao.impl;
 
+import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
 import cn.chenyunlong.qing.mapper.AnimePlaylistMapper;
-import cn.chenyunlong.qing.model.entities.anime.PlaylistEntity;
 import cn.chenyunlong.qing.service.dao.AnimeListService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

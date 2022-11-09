@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.controller.api.system;
 
 import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.model.entities.ActivityEntity;
+import cn.chenyunlong.qing.domain.activity.ActivityEntity;
 import cn.chenyunlong.qing.service.ActivityService;
 import cn.chenyunlong.qing.service.AttachementService;
 import io.swagger.v3.oas.annotations.Operation;

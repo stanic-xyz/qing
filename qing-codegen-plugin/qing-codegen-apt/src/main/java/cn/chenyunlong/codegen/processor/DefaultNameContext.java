@@ -17,10 +17,16 @@ import lombok.Data;
 
 /**
  * 默认名称名称上下文，便于其他引入类方便使用
+ *
+ * @author Gim
+ * @date 2022/11/06
  */
 @Data
 public class DefaultNameContext {
 
+    /**
+     * vo包名称
+     */
     private String voPackageName;
 
     private String voClassName;

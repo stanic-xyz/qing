@@ -19,7 +19,7 @@ import cn.chenyunlong.qing.core.controller.BaseController;
 import cn.chenyunlong.qing.core.enums.BusinessType;
 import cn.chenyunlong.qing.core.exception.ServiceException;
 import cn.chenyunlong.qing.core.page.TableDataInfo;
-import cn.chenyunlong.qing.model.entities.sys.SysConfig;
+import cn.chenyunlong.qing.domain.system.SysConfig;
 import cn.chenyunlong.qing.service.ISysConfigService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

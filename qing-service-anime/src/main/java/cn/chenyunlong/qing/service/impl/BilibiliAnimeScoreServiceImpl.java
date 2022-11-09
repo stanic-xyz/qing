@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.service.impl;
 
-import cn.chenyunlong.qing.mapper.BilibiliAnimeScoreMapper;
-import cn.chenyunlong.qing.model.entities.bilibili.BilibiliAnimeScoreEntity;
+import cn.chenyunlong.qing.domain.bilibili.BilibiliAnimeScoreEntity;
+import cn.chenyunlong.qing.domain.bilibili.mapper.BilibiliAnimeScoreMapper;
 import cn.chenyunlong.qing.service.BilibiliAnimeScoreService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

@@ -63,18 +63,12 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                 .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
                 .build();
         typeSpecBuilder.addField(serviceField);
-        Optional<MethodSpec> createMethod = createMethod(serviceFieldName, typeElement, nameContext);
-        createMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> updateMethod = updateMethod(serviceFieldName, typeElement, nameContext);
-        updateMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> validMethod = validMethod(serviceFieldName, typeElement);
-        validMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> invalidMethod = inValidMethod(serviceFieldName, typeElement);
-        invalidMethod.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> findById = findById(serviceFieldName, nameContext);
-        findById.ifPresent(m -> typeSpecBuilder.addMethod(m));
-        Optional<MethodSpec> findByPage = findByPage(serviceFieldName, nameContext);
-        findByPage.ifPresent(m -> typeSpecBuilder.addMethod(m));
+        createMethod(serviceFieldName, typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
+        updateMethod(serviceFieldName, typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
+        validMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
+        inValidMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
+        findById(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
+        findByPage(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
         genJavaSourceFile(generatePackage(typeElement),
                 typeElement.getAnnotation(GenController.class).sourcePath(), typeSpecBuilder);
     }
@@ -92,13 +86,15 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
     /**
      * 创建方法
      *
-     * @param serviceFieldName
-     * @param typeElement
-     * @param nameContext
-     * @return
+     * @param serviceFieldName 服务字段名
+     * @param typeElement      类型元素
+     * @param nameContext      命名上下文
+     * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> createMethod(String serviceFieldName, TypeElement typeElement, DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getCreatePackageName(), nameContext.getCreatorPackageName(), nameContext.getMapperPackageName());
+        boolean containsNull;
+        containsNull = StringUtils.containsNull(nameContext.getCreatePackageName(),
+                nameContext.getCreatorPackageName(), nameContext.getMapperPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("create" + typeElement.getSimpleName())
                     .addParameter(ParameterSpec.builder(ClassName.get(nameContext.getCreatePackageName(), nameContext.getCreateClassName()), "request").addAnnotation(
@@ -121,10 +117,10 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
     /**
      * 更新方法
      *
-     * @param serviceFieldName
-     * @param typeElement
-     * @param nameContext
-     * @return
+     * @param serviceFieldName 服务字段名
+     * @param typeElement      类型元素
+     * @param nameContext      命名上下文
+     * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> updateMethod(String serviceFieldName, TypeElement typeElement, DefaultNameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getUpdatePackageName(), nameContext.getUpdaterPackageName(), nameContext.getMapperPackageName());
@@ -153,9 +149,9 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
     /**
      * 启用
      *
-     * @param serviceFieldName
-     * @param typeElement
-     * @return
+     * @param serviceFieldName 服务字段名
+     * @param typeElement      类型元素
+     * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> validMethod(String serviceFieldName, TypeElement typeElement) {
         return Optional.of(MethodSpec.methodBuilder("valid" + typeElement.getSimpleName())
@@ -177,9 +173,9 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
     /**
      * 修复不返回方法的问题
      *
-     * @param serviceFieldName
-     * @param typeElement
-     * @return
+     * @param serviceFieldName 服务字段名
+     * @param typeElement      类型元素
+     * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> inValidMethod(String serviceFieldName, TypeElement typeElement) {
         return Optional.of(MethodSpec.methodBuilder("invalid" + typeElement.getSimpleName())
@@ -198,6 +194,13 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                 .build());
     }
 
+    /**
+     * 通过id查询
+     *
+     * @param serviceFieldName 服务字段名
+     * @param nameContext      命名上下文
+     * @return {@link Optional}<{@link MethodSpec}>
+     */
     private Optional<MethodSpec> findById(String serviceFieldName, DefaultNameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getVoPackageName(), nameContext.getResponsePackageName(), nameContext.getMapperPackageName());
         if (!containsNull) {
@@ -224,11 +227,11 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
     }
 
     /**
-     * 分页
+     * 分页查询
      *
-     * @param serviceFieldName
-     * @param nameContext
-     * @return
+     * @param serviceFieldName 服务字段名
+     * @param nameContext      命名上下文
+     * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> findByPage(String serviceFieldName, DefaultNameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(), nameContext.getQueryPackageName(), nameContext.getMapperPackageName(), nameContext.getVoPackageName(), nameContext.getResponsePackageName());
@@ -246,22 +249,25 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                                     ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()))
                     )
                     .addCode(
-                            CodeBlock.of("wrapper.setSorts(request.getSorts());\n"
-                                    + "    wrapper.setPageSize(request.getPageSize());\n"
-                                    + "    wrapper.setPage(request.getPage());\n")
+                            CodeBlock.of("""
+                                    wrapper.setSorts(request.getSorts());
+                                        wrapper.setPageSize(request.getPageSize());
+                                        wrapper.setPage(request.getPage());
+                                    """)
                     )
                     .addCode(CodeBlock.of("$T<$T> page = $L.findByPage(wrapper);\n"
                             , Page.class, ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), serviceFieldName))
                     .addCode(
-                            CodeBlock.of("return $T.success(\n"
-                                    + "        $T.of(\n"
-                                    + "            page.getContent().stream()\n"
-                                    + "                .map(vo -> $T.INSTANCE.vo2CustomResponse(vo))\n"
-                                    + "                .collect($T.toList()),\n"
-                                    + "            page.getTotalElements(),\n"
-                                    + "            page.getSize(),\n"
-                                    + "            page.getNumber())\n"
-                                    + "    );", JsonObject.class, PageResult.class, ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()), Collectors.class)
+                            CodeBlock.of("""
+                                    return $T.success(
+                                            $T.of(
+                                                page.getContent().stream()
+                                                    .map(vo -> $T.INSTANCE.vo2CustomResponse(vo))
+                                                    .collect($T.toList()),
+                                                page.getTotalElements(),
+                                                page.getSize(),
+                                                page.getNumber())
+                                        );""", JsonObject.class, PageResult.class, ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()), Collectors.class)
                     )
                     .addJavadoc("findByPage request")
                     .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ParameterizedTypeName.get(ClassName.get(

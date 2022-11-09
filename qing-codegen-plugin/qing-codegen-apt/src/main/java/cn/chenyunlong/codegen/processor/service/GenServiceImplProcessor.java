@@ -16,13 +16,13 @@ package cn.chenyunlong.codegen.processor.service;
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import cn.chenyunlong.codegen.util.StringUtils;
 import com.only4play.jpa.support.EntityOperations;
 import com.querydsl.core.BooleanBuilder;
 import com.squareup.javapoet.*;
@@ -76,21 +76,13 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                 .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
                 .build();
         typeSpecBuilder.addField(repositoryField);
-        Optional<MethodSpec> createMethod = createMethod(typeElement, nameContext, repositoryFieldName,
-                classFieldName);
-        createMethod.ifPresent(typeSpecBuilder::addMethod);
+        createMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
         Optional<MethodSpec> updateMethod = updateMethod(typeElement, nameContext, repositoryFieldName);
         updateMethod.ifPresent(typeSpecBuilder::addMethod);
-        Optional<MethodSpec> validMethod = validMethod(typeElement, repositoryFieldName);
-        validMethod.ifPresent(typeSpecBuilder::addMethod);
-        Optional<MethodSpec> invalidMethod = invalidMethod(typeElement, repositoryFieldName);
-        invalidMethod.ifPresent(typeSpecBuilder::addMethod);
-        Optional<MethodSpec> findByIdMethod = findByIdMethod(typeElement, nameContext,
-                repositoryFieldName, classFieldName);
-        findByIdMethod.ifPresent(typeSpecBuilder::addMethod);
-        Optional<MethodSpec> findByPageMethod = findByPageMethod(typeElement, nameContext,
-                repositoryFieldName);
-        findByPageMethod.ifPresent(typeSpecBuilder::addMethod);
+        validMethod(typeElement, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
+        invalidMethod(typeElement, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
+        findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
+        findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
         genJavaSourceFile(generatePackage(typeElement),
                 typeElement.getAnnotation(GenServiceImpl.class).sourcePath(), typeSpecBuilder);
     }
@@ -116,9 +108,12 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                     .addModifiers(Modifier.PUBLIC)
                     .addCode(
                             CodeBlock.of(
-                                    "Optional<$T> $L = $T.doCreate($L)\n.create(() -> $T.INSTANCE.dtoToEntity(creator))\n"
-                                            + ".update(e -> e.init())\n"
-                                            + ".execute();\n",
+                                    """
+                                            Optional<$T> $L = $T.doCreate($L)
+                                            .create(() -> $T.INSTANCE.dtoToEntity(creator))
+                                            .update(e -> e.init())
+                                            .execute();
+                                            """,
                                     typeElement, classFieldName, EntityOperations.class, repositoryFieldName,
                                     ClassName.get(nameContext.getMapperPackageName(),
                                             nameContext.getMapperClassName()))
@@ -144,9 +139,11 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                             "updater")
                     .addModifiers(Modifier.PUBLIC)
                     .addCode(
-                            CodeBlock.of("$T.doUpdate($L)\n.loadById(updater.getId())\n"
-                                            + ".update(e -> updater.update$L(e))\n"
-                                            + ".execute();",
+                            CodeBlock.of("""
+                                            $T.doUpdate($L)
+                                            .loadById(updater.getId())
+                                            .update(e -> updater.update$L(e))
+                                            .execute();""",
                                     EntityOperations.class, repositoryFieldName, typeElement.getSimpleName())
                     )
                     .addJavadoc("update")
@@ -161,9 +158,11 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                 .addParameter(Long.class, "id")
                 .addModifiers(Modifier.PUBLIC)
                 .addCode(
-                        CodeBlock.of("$T.doUpdate($L)\n.loadById(id)\n"
-                                        + ".update(e -> e.valid())\n"
-                                        + ".execute();",
+                        CodeBlock.of("""
+                                        $T.doUpdate($L)
+                                        .loadById(id)
+                                        .update(e -> e.valid())
+                                        .execute();""",
                                 EntityOperations.class, repositoryFieldName)
                 )
                 .addJavadoc("valid")
@@ -176,9 +175,11 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                 .addParameter(Long.class, "id")
                 .addModifiers(Modifier.PUBLIC)
                 .addCode(
-                        CodeBlock.of("$T.doUpdate($L)\n.loadById(id)\n"
-                                        + ".update(e -> e.invalid())\n"
-                                        + ".execute();",
+                        CodeBlock.of("""
+                                        $T.doUpdate($L)
+                                        .loadById(id)
+                                        .update(e -> e.invalid())
+                                        .execute();""",
                                 EntityOperations.class, repositoryFieldName)
                 )
                 .addJavadoc("invalid")
@@ -216,7 +217,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryPackageName(),
                 nameContext.getVoPackageName());
         if (!containsNull) {
-            return Optional.of(MethodSpec.methodBuilder("findByPage")
+            MethodSpec methodSpec = MethodSpec.methodBuilder("findByPage")
                     .addParameter(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class),
                                     ClassName.get(nameContext.getQueryPackageName(), nameContext.getQueryClassName())),
                             "query")
@@ -226,16 +227,21 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                                     BooleanBuilder.class)
                     )
                     .addCode(
-                            CodeBlock.of("$T<$T> page = $L.findAll(booleanBuilder,\n"
-                                            + "        $T.of(query.getPage() - 1, query.getPageSize(), $T.by(\n"
-                                            + "            $T.DESC, \"createdAt\")));\n", Page.class, typeElement,
+                            CodeBlock.of("""
+                                            $T<$T> page = $L.findAll(booleanBuilder,
+                                                    $T.of(query.getPage() - 1, query.getPageSize(), $T.by(
+                                                        $T.DESC, "createdAt")));
+                                            """, Page.class, typeElement,
                                     repositoryFieldName,
                                     PageRequest.class, Sort.class, Direction.class)
                     )
                     .addCode(
                             CodeBlock.of(
-                                    "return new $T<>(page.getContent().stream().map(entity -> new $T(entity))\n"
-                                            + "        .collect($T.toList()), page.getPageable(), page.getTotalElements());",
+                                    """
+                                            return new $T<>(page.getContent()
+                                            .stream().map($T::new)
+                                            .collect($T.toList()), page.getPageable(), page.getTotalElements());
+                                                    """,
                                     PageImpl.class,
                                     ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()),
                                     Collectors.class)
@@ -244,7 +250,8 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                     .addAnnotation(Override.class)
                     .returns(ParameterizedTypeName.get(ClassName.get(Page.class),
                             ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName())))
-                    .build());
+                    .build();
+            return Optional.of(methodSpec);
         }
         return Optional.empty();
     }

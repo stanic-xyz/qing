@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.mapper;
 
-import cn.chenyunlong.qing.model.entities.anime.PlaylistEntity;
+import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;

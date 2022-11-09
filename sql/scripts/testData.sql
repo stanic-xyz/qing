@@ -128,3 +128,22 @@ VALUES (20000001, '海贼王', NULL,
         '新世紀エヴァンゲリオン劇場版 DEATH & REBIRTH', NULL, '1997-03-15', 'Production I.G / GAINAX', '完结', '科幻 机战 爱情',
         '科幻 机战 爱情',
         NULL, '10000', '新世紀エヴァンゲリオン劇場版 シト新生')
+
+
+# 插入测试播放列表
+insert into qing.anime_playlist(id, name, anime_id, description)
+values (1, '播放列表1', 20000001, 'description'),
+       (2, '播放列表2', 20000001, 'description');
+
+# 插入播放列表
+INSERT
+INTO qing.anime_episode (anime_id, list_id, name, status, uploader_name, uploader_id, url, order_no)
+VALUES (20000001, 1, '第一集', 0, 'stan', 123, '123', 1),
+       (20000001, 1, '第二集', 0, 'stan', 123, '123', 1),
+       (20000001, 1, '第三集', 0, 'stan', 123, '123', 1),
+       (20000001, 1, '第四集', 0, 'stan', 123, '123', 1),
+       (20000001, 1, '第五集', 0, 'stan', 123, '123', 1),
+       (20000001, 1, '第六集', 0, 'stan', 123, '123', 1),
+       (20000001, 2, '第一集', 0, 'stan', 123, '123', 1),
+       (20000001, 2, '第二集', 0, 'stan', 123, '123', 1),
+       (20000001, 2, '第三集', 0, 'stan', 123, '123', 1)

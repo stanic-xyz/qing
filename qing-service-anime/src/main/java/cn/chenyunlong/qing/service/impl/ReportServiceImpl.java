@@ -14,10 +14,10 @@
 package cn.chenyunlong.qing.service.impl;
 
 import cn.chenyunlong.qing.core.exception.ServiceException;
+import cn.chenyunlong.qing.domain.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.feedback.AnimeFeedbackEntity;
 import cn.chenyunlong.qing.mapper.AnimeFeedbackMapper;
 import cn.chenyunlong.qing.mapper.AnimeInfoMapper;
-import cn.chenyunlong.qing.model.entities.AnimeFeedbackEntity;
-import cn.chenyunlong.qing.model.entities.anime.AnimeInfo;
 import cn.chenyunlong.qing.service.ReportService;
 import cn.chenyunlong.qing.utils.StringUtils;
 import org.springframework.stereotype.Service;

@@ -22,6 +22,12 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 import javax.persistence.*;
 import java.time.Instant;
 
+/**
+ * 基地jpa类型
+ *
+ * @author Stan
+ * @date 2022/11/05
+ */
 @MappedSuperclass
 @Data
 public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggregate> {
