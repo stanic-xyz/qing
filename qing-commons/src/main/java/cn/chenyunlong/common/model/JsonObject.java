@@ -22,8 +22,11 @@ import lombok.Setter;
 import java.util.Objects;
 
 /**
+ * 公共返回结构
+ *
  * @author gim
- **/
+ * @date 2022/11/11
+ */
 @Data
 public final class JsonObject<E> {
 
@@ -51,25 +54,25 @@ public final class JsonObject<E> {
         return obj;
     }
 
-    public static JsonObject fail(BaseEnum codeEnum) {
-        JsonObject object = new JsonObject();
+    public static <T> JsonObject<T> fail(BaseEnum codeEnum) {
+        JsonObject<T> object = new JsonObject<T>();
         object.setMsg(codeEnum.getName());
         object.setCode(codeEnum.getCode());
         return object;
     }
 
-    public static JsonObject fail(String msg) {
-        JsonObject object = new JsonObject();
-        object.setMsg(msg);
-        object.setCode(CodeEnum.Fail.getCode());
-        return object;
+    public static <T> JsonObject<T> fail(String msg) {
+        JsonObject<T> jsonObject = new JsonObject<>();
+        jsonObject.setMsg(msg);
+        jsonObject.setCode(CodeEnum.Fail.getCode());
+        return jsonObject;
     }
 
-    public static <E> JsonObject<E> fail(E e, String msg) {
+    public static <E> JsonObject<E> fail(E result, String msg) {
         JsonObject<E> object = new JsonObject<>();
         object.setCode(CodeEnum.Fail.getCode());
         object.setMsg(msg);
-        object.setResult(e);
+        object.setResult(result);
         return object;
     }
 
