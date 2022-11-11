@@ -47,3 +47,14 @@ alias mvn-release='mvn clean source:jar javadoc:jar verify && mvn clean release:
 如果需要为签名设置GPG密钥，请参阅[GPG密钥][GPG_Keys]指南。
 
 [gpg_keys]: https://square.github.io/okio/releasing/#prerequisite-gpg-keys
+
+
+发布到docker私有库
+
+```shell
+cd qing-service-anime
+mvn clean package -pl qing-service-anime
+sudo docker tag [{镜像名称}:{版本名称}] {组织名称}/{镜像名称}:{版本名称}
+sudo docker push {组织名称}/{镜像名称}:{版本名称}
+docker build -t qing-service-anime:1.0.0.RELEASE -f .Dockerfile .
+```

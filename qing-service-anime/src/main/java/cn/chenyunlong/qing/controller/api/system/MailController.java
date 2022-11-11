@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.controller.api.system;
 
 
-import cn.chenyunlong.qing.mail.MailService;
+import cn.chenyunlong.qing.infrastructure.mail.MailService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

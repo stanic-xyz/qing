@@ -14,13 +14,13 @@
 package cn.chenyunlong.qing.service.impl;
 
 import cn.chenyunlong.qing.core.exception.*;
+import cn.chenyunlong.qing.infrastructure.security.support.TokenProvider;
 import cn.chenyunlong.qing.mapper.PermissionMapper;
 import cn.chenyunlong.qing.mapper.UserMapper;
 import cn.chenyunlong.qing.model.entities.Permission;
 import cn.chenyunlong.qing.model.entities.User;
 import cn.chenyunlong.qing.model.entities.UserThird;
 import cn.chenyunlong.qing.model.params.LoginParam;
-import cn.chenyunlong.qing.security.support.TokenProvider;
 import cn.chenyunlong.qing.service.UserService;
 import cn.chenyunlong.qing.service.UserThirdService;
 import cn.hutool.core.lang.Validator;
