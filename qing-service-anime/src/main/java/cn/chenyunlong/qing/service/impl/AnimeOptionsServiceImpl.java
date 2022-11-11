@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.service.impl;
 
-import cn.chenyunlong.qing.config.properties.QingProperties;
+import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.mapper.AnimeInfoMapper;
 import cn.chenyunlong.qing.mapper.AnimeTypeMapper;
 import cn.chenyunlong.qing.mapper.DistrictMapper;

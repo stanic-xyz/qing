@@ -14,8 +14,8 @@
 package cn.chenyunlong.qing.controller.api.system;
 
 import cn.chenyunlong.qing.annotation.Log;
-import cn.chenyunlong.qing.config.properties.QingProperties;
 import cn.chenyunlong.qing.core.ApiResult;
+import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.model.entities.UploadFile;
 import cn.chenyunlong.qing.service.FileUploadService;
 import com.qcloud.cos.COSClient;
