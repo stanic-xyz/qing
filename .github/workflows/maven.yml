@@ -27,4 +27,4 @@ jobs:
       - name: Build with Maven
         run: cd qing-bom && mvn install
       - name: Build Docker Image and Push to Docker Hub
-        run: cd qing-service-anime && mvn clean package dockerfile:build dockerfile:tag dockerfile:push -Dregistry_username=$REGISTRY_USERNAME -Dregistry_password=$REGISTRY_PASSWORD -B
+        run: cd qing-service-anime && mvn clean package -B
