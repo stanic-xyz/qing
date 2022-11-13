@@ -19,7 +19,7 @@
     <groupId>cn.chenyunlong</groupId>
     <artifactId>qing-project</artifactId>
     <version>1.0.0.RELEASE</version>
-    <description>留住TA的朋友圈</description>
+    <description>个人网站信息</description>
 
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
@@ -44,6 +44,8 @@
             <id>stan</id>
             <email>1576302867@qq.com</email>
             <name>陈云龙</name>
+            <url>https://dev.chenyunlong.cn</url>
+            <organizationUrl>https://dev.chenyunlong.cn/qing</organizationUrl>
         </developer>
     </developers>
 
@@ -61,7 +63,7 @@
             <url>http://license.coscl.org.cn/MulanPSL2</url>
         </license>
     </licenses>
-
+    <inceptionYear>2019-Now</inceptionYear>
 
     <build>
         <pluginManagement>
