@@ -1,8 +1,7 @@
 # 留住TA的朋友圈
 
-[![License](https://img.shields.io/:license-MulanPSL2-blue.svg)](http://license.coscl.org.cn/MulanPSL2/index.html)
-[![Build Project](https://github.com/YunlongChen/zhangli/actions/workflows/maven.yml/badge.svg?branch=master)](https://github.com/YunlongChen/zhangli/actions/workflows/maven.yml)
-[![Build Status](https://devcloud.cn-north-4.huaweicloud.com/api/codeci/v5/badge.svg?job_id=4673bf1f31b348b1ba153ee3a5596987&branch=master&language=zh-cn)](https://devcloud.cn-north-4.huaweicloud.com/codeci/project/26fd7bfab4694a77a9a0fe2b30dbb37d/codeci/detail/workspace/4673bf1f31b348b1ba153ee3a5596987)
+[![License](https://img.shields.io/badge/licence-MulanPSL2-blue)](http://license.coscl.org.cn/MulanPSL2/index.html)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/yunlongChen/qing/Build)
 
 #### 介绍
 
