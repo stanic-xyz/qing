@@ -32,13 +32,13 @@ docker build -t stanic-docker.pkg.coding.net/qing/qing/qing-service-anime:1.0.0.
 ```xml
 
 <settings>
-   <servers>
-      <server>
-         <id>sonatype-nexus-staging</id>
-         <username>your-nexus-username</username>
-         <password>your-nexus-password</password>
-      </server>
-   </servers>
+    <servers>
+        <server>
+            <id>sonatype-nexus-staging</id>
+            <username>your-nexus-username</username>
+            <password>your-nexus-password</password>
+        </server>
+    </servers>
 </settings>
 ```
 
