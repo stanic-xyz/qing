@@ -24,7 +24,7 @@ import cn.chenyunlong.codegen.processor.repository.GenRepository;
 import cn.chenyunlong.codegen.processor.service.GenService;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
-import com.only4play.jpa.support.BaseJpaAggregate;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 
 /**
  * 测试代码自动生成的结果

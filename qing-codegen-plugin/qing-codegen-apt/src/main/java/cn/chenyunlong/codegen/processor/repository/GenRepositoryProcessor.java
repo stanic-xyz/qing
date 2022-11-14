@@ -15,9 +15,9 @@ package cn.chenyunlong.codegen.processor.repository;
 
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import com.google.auto.service.AutoService;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import com.only4play.jpa.support.BaseRepository;
+import cn.chenyunlong.jpa.support.BaseRepository;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
