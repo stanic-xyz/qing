@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.codegen.processor.vo;
 
-import com.only4play.jpa.support.BaseJpaAggregate;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
