@@ -182,8 +182,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version> <!-- or newer version -->
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>17</source>
+          <target>17</target>
           <annotationProcessorPaths>
             <path>
               <groupId>com.only4play</groupId>
