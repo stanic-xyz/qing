@@ -33,7 +33,7 @@ import java.util.Set;
  * @author gim
  */
 @AutoService(Processor.class)
-public class Only4PlayCodeGenProcessor extends AbstractProcessor {
+public class QingCodeGenProcessor extends AbstractProcessor {
 
     /**
      * 过程
