@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.security;
 
-import cn.chenyunlong.qing.core.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

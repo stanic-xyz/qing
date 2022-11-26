@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.domain.system;
 
-import cn.chenyunlong.qing.annotation.Excel;
-import cn.chenyunlong.qing.core.domain.BaseEntity;
+import cn.chenyunlong.qing.infrastructure.annotation.Excel;
+import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

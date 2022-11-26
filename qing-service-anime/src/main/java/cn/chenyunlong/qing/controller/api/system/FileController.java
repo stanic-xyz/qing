@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
-import cn.chenyunlong.qing.annotation.Log;
-import cn.chenyunlong.qing.core.ApiResult;
+import cn.chenyunlong.qing.domain.file.UploadFile;
+import cn.chenyunlong.qing.domain.file.service.FileUploadService;
+import cn.chenyunlong.qing.infrastructure.annotation.Log;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
-import cn.chenyunlong.qing.model.entities.UploadFile;
-import cn.chenyunlong.qing.service.FileUploadService;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.model.Bucket;

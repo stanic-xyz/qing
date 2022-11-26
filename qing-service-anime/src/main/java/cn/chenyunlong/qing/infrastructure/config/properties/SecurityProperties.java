@@ -14,11 +14,13 @@
 package cn.chenyunlong.qing.infrastructure.config.properties;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author stan
  */
 @Data
+@ConfigurationProperties(prefix = "qing.security")
 public class SecurityProperties {
 
     /**

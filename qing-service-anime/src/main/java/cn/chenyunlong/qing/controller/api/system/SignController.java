@@ -13,9 +13,9 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
-import cn.chenyunlong.qing.annotation.Log;
-import cn.chenyunlong.qing.model.entities.Sign;
-import cn.chenyunlong.qing.service.SignService;
+import cn.chenyunlong.qing.domain.sign.Sign;
+import cn.chenyunlong.qing.domain.sign.service.SignService;
+import cn.chenyunlong.qing.infrastructure.annotation.Log;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

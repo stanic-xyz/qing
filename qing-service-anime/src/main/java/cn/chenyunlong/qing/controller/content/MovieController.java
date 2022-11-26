@@ -14,15 +14,15 @@
 package cn.chenyunlong.qing.controller.content;
 
 import cn.chenyunlong.qing.controller.content.model.AnimeInfoModel;
-import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
 import cn.chenyunlong.qing.domain.anime.response.AnimeInfoRankDTO;
+import cn.chenyunlong.qing.domain.anime.service.AnimeInfoService;
 import cn.chenyunlong.qing.domain.comment.AnimeComment;
-import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
-import cn.chenyunlong.qing.model.vo.page.*;
-import cn.chenyunlong.qing.service.AnimeInfoService;
-import cn.chenyunlong.qing.service.ReportService;
-import cn.chenyunlong.qing.utils.StringUtils;
+import cn.chenyunlong.qing.domain.feedback.service.FeedBackService;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery;
+import cn.chenyunlong.qing.infrastructure.model.vo.page.*;
+import cn.chenyunlong.qing.infrastructure.utils.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,7 +50,7 @@ public class MovieController {
 
     private final AnimeInfoService animeInfoService;
     private final AnimeInfoModel animeInfoModel;
-    private final ReportService reportService;
+    private final FeedBackService feedBackService;
 
     @GetMapping(path = {"", "/index.html"})
     public ModelAndView index(ModelAndView modelAndView) throws JsonProcessingException, InterruptedException {
@@ -167,7 +167,7 @@ public class MovieController {
         if (!linkInvalid && !badQuality & !someMissing && !StringUtils.isEmpty(detail)) {
             return ApiResult.fail("参数不能为空");
         }
-        reportService.addReport(username, cid, linkInvalid, someMissing, badQuality, detail);
+        feedBackService.addReport(username, cid, linkInvalid, someMissing, badQuality, detail);
         return ApiResult.success();
     }
 

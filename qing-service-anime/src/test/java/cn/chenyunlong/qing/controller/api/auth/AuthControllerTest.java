@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.controller.api.auth;
 
 import cn.chenyunlong.qing.controller.BaseApiTest;
-import cn.chenyunlong.qing.model.params.LoginParam;
+import cn.chenyunlong.qing.infrastructure.model.params.LoginParam;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;

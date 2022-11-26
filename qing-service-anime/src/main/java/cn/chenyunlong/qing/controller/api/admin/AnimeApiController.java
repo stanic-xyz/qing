@@ -13,13 +13,13 @@
 
 package cn.chenyunlong.qing.controller.api.admin;
 
-import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.model.anime.AnimeInfoVo;
 import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.model.params.AnimeInfoParam;
-import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
-import cn.chenyunlong.qing.model.vo.anime.AnimeInfoVo;
-import cn.chenyunlong.qing.service.AnimeInfoService;
+import cn.chenyunlong.qing.domain.anime.service.AnimeInfoService;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoParam;
+import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery;
 import cn.hutool.core.thread.NamedThreadFactory;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

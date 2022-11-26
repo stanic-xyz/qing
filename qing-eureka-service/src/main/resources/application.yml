@@ -2,21 +2,28 @@ server:
   port: 8761
 spring:
   application:
-    name: zhangli-eureka-service
+    name: qing-eureka-service
   profiles:
     active: prod
   cloud:
     inetutils:
-      ignored-interfaces[0]: eth0
+      ignored-interfaces:
+        - eth0
+        - VM.*
+      preferred-networks:
+        - 121.36.163.95
+      default-hostname: eureka.chenyunlong.cn
 eureka:
   server:
     enable-self-preservation: true
   client:
     fetch-registry: false
-    register-with-eureka: false
+    register-with-eureka: true
   instance:
     lease-renewal-interval-in-seconds: 30
     instance-id: ${spring.application.name}
+    prefer-ip-address: true
+
   dashboard:
     path: /dashboard
 management:

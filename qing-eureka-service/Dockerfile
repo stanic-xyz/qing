@@ -5,6 +5,5 @@ LABEL maintainer="Stan <1576302867@qq.com>>"
 ENV JVM_OPTS -Xmx64m -Xms64m -XX:MaxPermSize=32m
 EXPOSE 8761
 WORKDIR /home
-ARG JAR_FILE
-ADD target/${JAR_FILE} /home/eureka-service.jar
-ENTRYPOINT ["java","-jar","/home/eureka-service.jar"]
+ADD target/qing-eureka-service.jar /usr/local/app.jar
+ENTRYPOINT ["java","-jar","/usr/local/app.jar"]

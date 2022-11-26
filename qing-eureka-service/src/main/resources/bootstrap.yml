@@ -3,7 +3,7 @@ spring:
     config:
       discovery:
         enabled: true
-        service-id: zhangli-config-git
+        service-id: qing-config-git
       enabled: true
 eureka:
   client:

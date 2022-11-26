@@ -14,8 +14,8 @@
 package cn.chenyunlong.qing.domain.anime.response;
 
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
-import cn.chenyunlong.qing.model.dto.PlayListDTO;
-import cn.chenyunlong.qing.model.dto.base.OutputConverter;
+import cn.chenyunlong.qing.infrastructure.model.dto.PlayListDTO;
+import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
 import lombok.Data;
 
 import java.time.LocalDate;

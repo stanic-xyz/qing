@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.controller.base;
 
-import cn.chenyunlong.qing.core.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 
 public class ApiController {
 
