@@ -35,11 +35,11 @@ mp:
   wx:
     appId: wx09bf7e704a150a9c
     secret: 9fdb9fa846356d32247a9aa68d758791
-zhangli:
+qing:
   file:
     baseUploadDir: upload/
     image-server-url: https://bangumi.chenyunlong.cn
-  # 是否异步记录用户操作日志
+    # 是否异步记录用户操作日志
   openAopLog: true
   swagger:
     doc-disabled: true

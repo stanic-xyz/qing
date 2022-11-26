@@ -31,5 +31,7 @@ import java.util.List;
 @Component
 @ConfigurationProperties(prefix = "secure.ignore")
 public class IgnoreUrlsConfig {
-    private List<String> urls;
+
+    //    服务白名单
+    private List<String> urls = List.of();
 }

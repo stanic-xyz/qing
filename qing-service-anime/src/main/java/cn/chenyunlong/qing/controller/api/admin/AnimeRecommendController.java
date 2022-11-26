@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.qing.controller.api.admin;
 
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.model.entities.AnimeRecommendEntity;
-import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
-import cn.chenyunlong.qing.model.params.AnimeRecommendParam;
-import cn.chenyunlong.qing.service.AnimeRecommendService;
+import cn.chenyunlong.qing.domain.anime.AnimeRecommendEntity;
+import cn.chenyunlong.qing.domain.anime.service.AnimeRecommendService;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery;
+import cn.chenyunlong.qing.infrastructure.model.params.AnimeRecommendParam;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

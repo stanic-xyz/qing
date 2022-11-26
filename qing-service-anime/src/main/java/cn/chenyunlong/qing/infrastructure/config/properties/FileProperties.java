@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @Configuration
-@ConfigurationProperties(prefix = "zhangli.file")
+@ConfigurationProperties(prefix = "qing.file")
 public class FileProperties {
 
     private String imageServerUrl;

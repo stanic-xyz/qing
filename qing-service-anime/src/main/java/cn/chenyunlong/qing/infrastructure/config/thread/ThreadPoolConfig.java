@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.config.thread;
 
-import cn.chenyunlong.qing.utils.Threads;
+import cn.chenyunlong.qing.infrastructure.utils.Threads;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.context.annotation.Bean;

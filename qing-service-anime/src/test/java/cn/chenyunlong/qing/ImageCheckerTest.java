@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing;
 
-import cn.chenyunlong.qing.model.entities.FigureEntity;
+import cn.chenyunlong.qing.domain.third.diygod.figure.FigureEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

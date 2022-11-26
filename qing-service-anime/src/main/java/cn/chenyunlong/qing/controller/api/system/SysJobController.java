@@ -13,16 +13,14 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
-import cn.chenyunlong.qing.annotation.Log;
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.core.controller.BaseController;
-import cn.chenyunlong.qing.core.enums.BusinessType;
-import cn.chenyunlong.qing.core.exception.job.TaskException;
-import cn.chenyunlong.qing.core.page.TableDataInfo;
-import cn.chenyunlong.qing.domain.system.SysJob;
-import cn.chenyunlong.qing.service.ISysJobService;
-import cn.chenyunlong.qing.utils.poi.ExcelUtil;
-import cn.chenyunlong.qing.utils.quartz.CronUtils;
+import cn.chenyunlong.qing.domain.system.job.SysJob;
+import cn.chenyunlong.qing.domain.system.job.service.ISysJobService;
+import cn.chenyunlong.qing.infrastructure.annotation.Log;
+import cn.chenyunlong.qing.infrastructure.enums.BusinessType;
+import cn.chenyunlong.qing.infrastructure.exception.TaskException;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.utils.poi.ExcelUtil;
+import cn.chenyunlong.qing.infrastructure.utils.quartz.CronUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.quartz.SchedulerException;
@@ -43,16 +41,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/monitor/job")
 @RequiredArgsConstructor
-public class SysJobController extends BaseController {
+public class SysJobController {
 
     private final ISysJobService jobService;
 
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysJob job) {
-        startPage();
-        List<SysJob> list = jobService.selectJobList(job);
-        return getDataTable(list);
+    public List<SysJob> list(SysJob job) {
+        return jobService.selectJobList(job);
     }
 
     @Log(title = "定时任务", businessType = BusinessType.EXPORT)

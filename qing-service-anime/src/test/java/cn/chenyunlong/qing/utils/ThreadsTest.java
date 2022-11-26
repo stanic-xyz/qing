@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.utils;
 
+import cn.chenyunlong.qing.infrastructure.utils.Threads;
 import org.junit.jupiter.api.Test;
 
 public class ThreadsTest {

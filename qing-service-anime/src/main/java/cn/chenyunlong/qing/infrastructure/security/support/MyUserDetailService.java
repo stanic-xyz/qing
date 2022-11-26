@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.security.support;
 
-import cn.chenyunlong.qing.model.entities.User;
-import cn.chenyunlong.qing.service.UserService;
+import cn.chenyunlong.qing.domain.user.User;
+import cn.chenyunlong.qing.domain.user.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

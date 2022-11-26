@@ -15,8 +15,8 @@ package cn.chenyunlong.qing.infrastructure.security.support;
 
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.config.properties.SecurityProperties;
-import cn.chenyunlong.qing.model.vo.system.UserInfoVO;
-import cn.chenyunlong.qing.utils.JwtUtil;
+import cn.chenyunlong.qing.infrastructure.model.vo.system.UserInfoVO;
+import cn.chenyunlong.qing.infrastructure.utils.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;

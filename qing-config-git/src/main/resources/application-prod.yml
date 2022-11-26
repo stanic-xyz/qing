@@ -16,6 +16,6 @@ spring:
     config:
       server:
         git:
-          uri: https://gitee.com/stanChen/zhangli-config.git
-          username: stanChen
+          uri: https://gitee.com/stanChen/qing-config.git
+          username: 1576302867@qq.com
           password: 4745701816long

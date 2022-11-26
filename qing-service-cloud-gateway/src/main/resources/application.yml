@@ -1,14 +1,13 @@
 server:
-  port: 9528
+  port: 9527
 spring:
+  jmx:
+    enabled: false
   application:
     name: spring-cloud-api-gateway
   profiles:
     active: prod
   cloud:
-    loadbalancer:
-      ribbon:
-        enabled: false
     gateway:
       routes:
         - id: qing-service-anime
@@ -28,6 +27,9 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      default-filters:
+        - PrefixPath=/**
+        - AddResponseHeader=X-Response-Default-Qing, Default-Qing
   security:
     oauth2:
       resourceserver:

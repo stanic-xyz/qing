@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.mail;
 
-import cn.chenyunlong.qing.core.exception.EmailException;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
+import cn.chenyunlong.qing.infrastructure.exception.EmailException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;

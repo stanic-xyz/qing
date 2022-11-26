@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.activity;
 
-import cn.chenyunlong.qing.model.entities.Attachment;
+import cn.chenyunlong.qing.domain.anime.Attachment;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;

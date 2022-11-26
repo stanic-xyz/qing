@@ -13,20 +13,20 @@
 
 package cn.chenyunlong.qing.controller.api.auth;
 
-import cn.chenyunlong.qing.annotation.Log;
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.core.enums.MFAType;
-import cn.chenyunlong.qing.core.exception.AbstractException;
-import cn.chenyunlong.qing.core.exception.LoginErrorException;
+import cn.chenyunlong.qing.domain.permission.Permission;
+import cn.chenyunlong.qing.domain.user.User;
+import cn.chenyunlong.qing.domain.user.service.UserService;
+import cn.chenyunlong.qing.infrastructure.annotation.Log;
 import cn.chenyunlong.qing.infrastructure.cache.lock.CacheLock;
+import cn.chenyunlong.qing.infrastructure.enums.MFAType;
+import cn.chenyunlong.qing.infrastructure.exception.AbstractException;
+import cn.chenyunlong.qing.infrastructure.exception.LoginErrorException;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.dto.LoginPreCheckDTO;
+import cn.chenyunlong.qing.infrastructure.model.params.LoginParam;
+import cn.chenyunlong.qing.infrastructure.model.params.UserParam;
+import cn.chenyunlong.qing.infrastructure.model.vo.system.UserInfoVO;
 import cn.chenyunlong.qing.infrastructure.security.support.TokenProvider;
-import cn.chenyunlong.qing.model.dto.LoginPreCheckDTO;
-import cn.chenyunlong.qing.model.entities.Permission;
-import cn.chenyunlong.qing.model.entities.User;
-import cn.chenyunlong.qing.model.params.LoginParam;
-import cn.chenyunlong.qing.model.params.UserParam;
-import cn.chenyunlong.qing.model.vo.system.UserInfoVO;
-import cn.chenyunlong.qing.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

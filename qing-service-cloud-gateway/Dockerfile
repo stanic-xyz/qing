@@ -1,9 +1,8 @@
-FROM java:8-jre AS zhangli-service-cloud-gateway
+FROM openjdk:17-slim AS qing-service-cloud-gateway
 USER root
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"
-EXPOSE 9001
+EXPOSE 9528
 WORKDIR /home
-ARG JAR_FILE
-ADD target/${JAR_FILE} /home/zhangli-service-cloud-gateway.jar
-ENTRYPOINT ["/usr/bin/java","-jar","/home/zhangli-service-cloud-gateway.jar"]
+ADD target/qing-service-cloud-gateway.jar /usr/local/app.jar
+ENTRYPOINT ["java","-jar","/usr/local/app.jar"]

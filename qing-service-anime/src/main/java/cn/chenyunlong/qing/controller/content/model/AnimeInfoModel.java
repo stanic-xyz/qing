@@ -13,25 +13,21 @@
 
 package cn.chenyunlong.qing.controller.content.model;
 
-import cn.chenyunlong.qing.core.Pagination;
 import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
+import cn.chenyunlong.qing.domain.anime.model.anime.AnimeInfoPlayVo;
+import cn.chenyunlong.qing.domain.anime.model.anime.AnimeInfoVo;
 import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
 import cn.chenyunlong.qing.domain.anime.response.AnimeInfoUpdateDTO;
-import cn.chenyunlong.qing.model.dto.AnimeCommentDTO;
-import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
-import cn.chenyunlong.qing.model.dto.PlayListDTO;
-import cn.chenyunlong.qing.model.params.AnimeInfoQuery;
-import cn.chenyunlong.qing.model.vo.OptionsModel;
-import cn.chenyunlong.qing.model.vo.anime.AnimeInfoPlayVo;
-import cn.chenyunlong.qing.model.vo.anime.AnimeInfoVo;
-import cn.chenyunlong.qing.model.vo.page.*;
-import cn.chenyunlong.qing.service.AnimeCommentService;
-import cn.chenyunlong.qing.service.AnimeEpisodeService;
-import cn.chenyunlong.qing.service.AnimeInfoService;
-import cn.chenyunlong.qing.service.AnimeOptionsService;
-import cn.chenyunlong.qing.service.dao.AnimeListService;
+import cn.chenyunlong.qing.domain.anime.service.*;
+import cn.chenyunlong.qing.infrastructure.model.Pagination;
+import cn.chenyunlong.qing.infrastructure.model.dto.AnimeCommentDTO;
+import cn.chenyunlong.qing.infrastructure.model.dto.AnimeEpisodeDTO;
+import cn.chenyunlong.qing.infrastructure.model.dto.PlayListDTO;
+import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery;
+import cn.chenyunlong.qing.infrastructure.model.vo.OptionsModel;
+import cn.chenyunlong.qing.infrastructure.model.vo.page.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

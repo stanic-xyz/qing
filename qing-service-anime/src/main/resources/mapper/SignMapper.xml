@@ -17,8 +17,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.chenyunlong.qing.mapper.SignMapper">
-    <insert id="add" parameterType="cn.chenyunlong.qing.model.entities.Sign">
+<mapper namespace="cn.chenyunlong.qing.domain.system.mapper.SignMapper">
+    <insert id="add" parameterType="cn.chenyunlong.qing.domain.sign.Sign">
         INSERT INTO `zhangli`.`t_sign_record` (`user_id`, `date_month`, `mask`, `continue_sign_month`)
         VALUES (#{userId},
                 #{dateMonth}, #{mask}, #{continueSignMonth})

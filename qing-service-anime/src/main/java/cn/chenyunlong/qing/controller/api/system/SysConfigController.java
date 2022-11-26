@@ -13,14 +13,12 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
-import cn.chenyunlong.qing.annotation.Log;
-import cn.chenyunlong.qing.core.constant.UserConstants;
-import cn.chenyunlong.qing.core.controller.BaseController;
-import cn.chenyunlong.qing.core.enums.BusinessType;
-import cn.chenyunlong.qing.core.exception.ServiceException;
-import cn.chenyunlong.qing.core.page.TableDataInfo;
 import cn.chenyunlong.qing.domain.system.SysConfig;
-import cn.chenyunlong.qing.service.ISysConfigService;
+import cn.chenyunlong.qing.domain.system.service.ISysConfigService;
+import cn.chenyunlong.qing.infrastructure.annotation.Log;
+import cn.chenyunlong.qing.infrastructure.constant.UserConstants;
+import cn.chenyunlong.qing.infrastructure.enums.BusinessType;
+import cn.chenyunlong.qing.infrastructure.exception.ServiceException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.ModelMap;
@@ -39,7 +37,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/config")
 @RequiredArgsConstructor
-public class SysConfigController extends BaseController {
+public class SysConfigController {
     private final String prefix = "system/config";
 
     private final ISysConfigService configService;
@@ -54,10 +52,8 @@ public class SysConfigController extends BaseController {
      */
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysConfig config) {
-        startPage();
-        List<SysConfig> list = configService.selectConfigList(config);
-        return getDataTable(list);
+    public List<SysConfig> list(SysConfig config) {
+        return configService.selectConfigList(config);
     }
 
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)

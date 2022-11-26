@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.aspect;
 
-import cn.chenyunlong.qing.annotation.JsonFieldFilter;
-import cn.chenyunlong.qing.core.ApiResult;
+import cn.chenyunlong.qing.infrastructure.annotation.JsonFieldFilter;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

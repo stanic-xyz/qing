@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.security;
 
-import cn.chenyunlong.qing.core.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;

@@ -13,10 +13,10 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
-import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.domain.activity.ActivityEntity;
-import cn.chenyunlong.qing.service.ActivityService;
-import cn.chenyunlong.qing.service.AttachementService;
+import cn.chenyunlong.qing.domain.activity.service.ActivityService;
+import cn.chenyunlong.qing.domain.anime.attachement.service.AttachementService;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

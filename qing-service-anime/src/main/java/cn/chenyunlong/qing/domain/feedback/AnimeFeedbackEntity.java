@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.feedback;
 
-import cn.chenyunlong.qing.core.domain.BaseEntity;
+import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;

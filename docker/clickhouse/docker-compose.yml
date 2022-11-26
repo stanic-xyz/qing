@@ -1,0 +1,15 @@
+version: '2'
+services:
+  click-house:
+    image: clickhouse/clickhouse-server
+    container_name: clickhouse-server
+    environment:
+      TZ: Asia/Shanghai
+      CLICKHOUSE_DB: my_database
+      CLICKHOUSE_USER: user_ck
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+      CLICKHOUSE_PASSWORD: 123456
+    ports:
+      - "9129:9000/tcp"
+      - "8123:8123/tcp"
+    restart: always

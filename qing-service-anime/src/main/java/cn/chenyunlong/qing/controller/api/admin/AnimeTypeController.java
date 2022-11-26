@@ -13,10 +13,10 @@
 
 package cn.chenyunlong.qing.controller.api.admin;
 
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.model.entities.AnimeType;
-import cn.chenyunlong.qing.model.params.AnimeTypeParam;
-import cn.chenyunlong.qing.service.AnimeTypeService;
+import cn.chenyunlong.qing.domain.anime.AnimeType;
+import cn.chenyunlong.qing.domain.anime.service.AnimeTypeService;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.params.AnimeTypeParam;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

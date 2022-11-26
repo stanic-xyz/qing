@@ -13,7 +13,8 @@
 
 package cn.chenyunlong.qing.service.external;
 
-import cn.chenyunlong.qing.model.bilibili.BiliAnime;
+import cn.chenyunlong.qing.domain.third.bilibili.model.BiliAnime;
+import cn.chenyunlong.qing.domain.third.bilibili.service.BiliService;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 

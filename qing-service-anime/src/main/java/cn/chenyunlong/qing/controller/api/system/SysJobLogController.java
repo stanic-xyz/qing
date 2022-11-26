@@ -13,17 +13,15 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
-import cn.chenyunlong.qing.annotation.Log;
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.core.controller.BaseController;
-import cn.chenyunlong.qing.core.enums.BusinessType;
-import cn.chenyunlong.qing.core.page.TableDataInfo;
-import cn.chenyunlong.qing.domain.system.SysJob;
-import cn.chenyunlong.qing.domain.system.SysJobLog;
-import cn.chenyunlong.qing.service.ISysJobLogService;
-import cn.chenyunlong.qing.service.ISysJobService;
-import cn.chenyunlong.qing.utils.StringUtils;
-import cn.chenyunlong.qing.utils.poi.ExcelUtil;
+import cn.chenyunlong.qing.domain.system.job.SysJob;
+import cn.chenyunlong.qing.domain.system.job.SysJobLog;
+import cn.chenyunlong.qing.domain.system.job.service.ISysJobLogService;
+import cn.chenyunlong.qing.domain.system.job.service.ISysJobService;
+import cn.chenyunlong.qing.infrastructure.annotation.Log;
+import cn.chenyunlong.qing.infrastructure.enums.BusinessType;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.utils.StringUtils;
+import cn.chenyunlong.qing.infrastructure.utils.poi.ExcelUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -41,7 +39,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/monitor/jobLog")
 @RequiredArgsConstructor
-public class SysJobLogController extends BaseController {
+public class SysJobLogController {
     private final String prefix = "monitor/job";
 
     private final ISysJobService jobService;
@@ -61,10 +59,8 @@ public class SysJobLogController extends BaseController {
     //    @RequiresPermissions("monitor:job:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysJobLog jobLog) {
-        startPage();
-        List<SysJobLog> list = jobLogService.selectJobLogList(jobLog);
-        return getDataTable(list);
+    public List<SysJobLog> list(SysJobLog jobLog) {
+        return jobLogService.selectJobLogList(jobLog);
     }
 
     @Log(title = "调度日志", businessType = BusinessType.EXPORT)

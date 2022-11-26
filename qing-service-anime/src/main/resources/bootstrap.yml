@@ -1,6 +1,6 @@
 spring:
   application:
-    name: zhangli-service-provider
+    name: qing-service-provider
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}:@project.version@

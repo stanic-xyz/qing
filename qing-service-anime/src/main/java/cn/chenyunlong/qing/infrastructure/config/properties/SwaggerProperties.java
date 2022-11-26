@@ -20,7 +20,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author stan
  */
 @Data
-@ConfigurationProperties(prefix = "zhangli.swagger")
+@ConfigurationProperties(prefix = "qing.swagger")
 public class SwaggerProperties {
     private String basePackage;
     private String title;

@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.controller.api.system;
 
-import cn.chenyunlong.qing.service.WeChatMessageService;
+import cn.chenyunlong.qing.domain.third.wechat.service.WeChatMessageService;
 import com.riversoft.weixin.common.decrypt.AesException;
 import com.riversoft.weixin.common.decrypt.MessageDecryption;
 import com.riversoft.weixin.common.decrypt.SHA1;

@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.domain.anime.response;
 
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
-import cn.chenyunlong.qing.model.dto.base.OutputConverter;
+import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
