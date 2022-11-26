@@ -13,10 +13,10 @@
 
 package cn.chenyunlong.qing.controller.api.admin;
 
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.model.dto.AnimeEpisodeDTO;
-import cn.chenyunlong.qing.model.params.AddEpisodeParam;
-import cn.chenyunlong.qing.service.AnimeEpisodeService;
+import cn.chenyunlong.qing.domain.anime.service.AnimeEpisodeService;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.dto.AnimeEpisodeDTO;
+import cn.chenyunlong.qing.infrastructure.model.params.AddEpisodeParam;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

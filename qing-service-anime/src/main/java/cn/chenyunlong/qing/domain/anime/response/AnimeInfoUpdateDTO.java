@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.domain.anime.response;
 
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
-import cn.chenyunlong.qing.model.dto.base.OutputConverter;
+import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

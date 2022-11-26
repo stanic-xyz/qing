@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.cache;
 
-import cn.chenyunlong.qing.core.exception.ServiceException;
-import cn.chenyunlong.qing.utils.JsonUtils;
+import cn.chenyunlong.qing.infrastructure.exception.ServiceException;
+import cn.chenyunlong.qing.infrastructure.utils.JsonUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;

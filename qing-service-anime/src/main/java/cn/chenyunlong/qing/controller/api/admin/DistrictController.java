@@ -13,10 +13,9 @@
 
 package cn.chenyunlong.qing.controller.api.admin;
 
-import cn.chenyunlong.qing.controller.base.ApiController;
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.model.dto.DistrictDTO;
-import cn.chenyunlong.qing.service.DistrictService;
+import cn.chenyunlong.qing.domain.district.service.DistrictService;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.dto.DistrictDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static cn.chenyunlong.qing.controller.base.ApiController.success;
+
 /**
  * @author Stan
  */
@@ -34,7 +35,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/districts")
 @RequiredArgsConstructor
-public class DistrictController extends ApiController {
+public class DistrictController {
     private final DistrictService districtService;
 
     @GetMapping

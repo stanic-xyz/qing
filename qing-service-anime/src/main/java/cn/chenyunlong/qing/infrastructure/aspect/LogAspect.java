@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.qing.infrastructure.aspect;
 
-import cn.chenyunlong.qing.annotation.Log;
-import cn.chenyunlong.qing.core.enums.BusinessStatus;
 import cn.chenyunlong.qing.domain.system.SysOperLog;
-import cn.chenyunlong.qing.utils.HttpContextUtil;
-import cn.chenyunlong.qing.utils.IpUtils;
+import cn.chenyunlong.qing.infrastructure.annotation.Log;
+import cn.chenyunlong.qing.infrastructure.enums.BusinessStatus;
+import cn.chenyunlong.qing.infrastructure.utils.HttpContextUtil;
+import cn.chenyunlong.qing.infrastructure.utils.IpUtils;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -46,7 +46,7 @@ import java.util.Map;
 @Component
 public class LogAspect {
 
-    @Pointcut("@annotation(cn.chenyunlong.qing.annotation.Log)")
+    @Pointcut("@annotation(cn.chenyunlong.qing.infrastructure.annotation.Log)")
     public void pointcut() {
         // do nothing
     }

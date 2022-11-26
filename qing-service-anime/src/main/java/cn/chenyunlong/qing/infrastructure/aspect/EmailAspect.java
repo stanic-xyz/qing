@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.aspect;
 
-import cn.chenyunlong.qing.annotation.Email;
+import cn.chenyunlong.qing.infrastructure.annotation.Email;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -45,7 +45,7 @@ public class EmailAspect {
     }
 
 
-    @Pointcut("@annotation(cn.chenyunlong.qing.annotation.Email)")
+    @Pointcut("@annotation(cn.chenyunlong.qing.infrastructure.annotation.Email)")
     public void pointcut() {
         // do nothing
     }

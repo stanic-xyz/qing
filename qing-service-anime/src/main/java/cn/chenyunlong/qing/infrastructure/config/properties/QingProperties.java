@@ -25,8 +25,8 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @Configuration
-@ConfigurationProperties(prefix = "zhangli")
-@EnableConfigurationProperties(FileProperties.class)
+@ConfigurationProperties(prefix = "qing")
+@EnableConfigurationProperties(value = {FileProperties.class, SecurityProperties.class})
 public class QingProperties {
 
     /**

@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.aspect;
 
-import cn.chenyunlong.qing.core.WebLog;
+import cn.chenyunlong.qing.infrastructure.model.WebLog;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
@@ -52,7 +52,7 @@ import java.util.*;
 public class WebLogAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebLogAspect.class);
 
-    @Pointcut("@annotation(cn.chenyunlong.qing.annotation.Log)")
+    @Pointcut("@annotation(cn.chenyunlong.qing.infrastructure.annotation.Log)")
     public void webLog() {
     }
 

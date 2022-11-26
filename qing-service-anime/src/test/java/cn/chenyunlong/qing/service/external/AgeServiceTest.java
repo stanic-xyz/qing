@@ -13,8 +13,9 @@
 
 package cn.chenyunlong.qing.service.external;
 
-import cn.chenyunlong.qing.model.agefans.AgeAnimeInfo;
-import cn.chenyunlong.qing.model.agefans.AgePlayInfoModel;
+import cn.chenyunlong.qing.domain.third.agefans.model.AgeAnimeInfo;
+import cn.chenyunlong.qing.domain.third.agefans.model.AgePlayInfoModel;
+import cn.chenyunlong.qing.domain.third.agefans.service.AgeService;
 import cn.hutool.core.io.IoUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;

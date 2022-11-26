@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.security;
 
-import cn.chenyunlong.qing.core.ApiResult;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;

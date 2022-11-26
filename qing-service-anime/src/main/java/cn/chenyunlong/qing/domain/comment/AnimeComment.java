@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.comment;
 
-import cn.chenyunlong.qing.core.domain.BaseEntity;
+import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

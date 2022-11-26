@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   name: mysql
+  namespace: qing
 spec:
   # 实例的数量
   replicas: 1

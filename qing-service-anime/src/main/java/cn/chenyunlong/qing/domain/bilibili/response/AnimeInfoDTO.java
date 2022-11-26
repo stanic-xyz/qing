@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.domain.bilibili.response;
 
 import cn.chenyunlong.qing.domain.bilibili.BiliAnimeInfoEntity;
-import cn.chenyunlong.qing.model.dto.base.OutputConverter;
+import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
 import lombok.Data;
 import org.springframework.lang.NonNull;
 

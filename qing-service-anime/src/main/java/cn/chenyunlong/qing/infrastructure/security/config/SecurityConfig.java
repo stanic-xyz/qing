@@ -13,12 +13,12 @@
 
 package cn.chenyunlong.qing.infrastructure.security.config;
 
+import cn.chenyunlong.qing.domain.user.service.UserService;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.security.MyAccessDeniedHandler;
 import cn.chenyunlong.qing.infrastructure.security.MyAuthenticationEntryPoint;
 import cn.chenyunlong.qing.infrastructure.security.filter.MyTokenFilter;
 import cn.chenyunlong.qing.infrastructure.security.support.TokenProvider;
-import cn.chenyunlong.qing.service.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

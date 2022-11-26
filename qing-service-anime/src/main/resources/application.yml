@@ -34,8 +34,8 @@ spring:
     template-loader-path: classpath:/templates/mail/
     suffix: .ftl
   redis:
-    host: 127.0.0.1
-    port: 6379
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
   cache:
     type: simple
   quartz:
@@ -51,7 +51,7 @@ mybatis-plus:
     banner: false
   type-aliases-package: cn.chenyunlong.qing.**.domain,cn.chenyunlong.qing.**.entities
   mapper-locations: classpath*:mapper/**/*Mapper.xml
-zhangli:
+qing:
   file:
     baseUploadDir: upload/
     image-server-url: https://www.stanic.xyz/pic/
@@ -69,7 +69,7 @@ zhangli:
     version: V1.0.0
     doc-disabled: false
   security:
-    authenticationPrefix: authentication_
+    secret-key: authentication_
   index-size: 26
 management:
   endpoints:
@@ -91,3 +91,8 @@ springdoc:
     doc-expansion: none
     default-model-expand-depth: 20
   show-actuator: true
+eureka:
+  client:
+    service-url:
+      defaultUrl: ${QING_EUREKA_ADDR:http://localhost:8761}/eureka
+

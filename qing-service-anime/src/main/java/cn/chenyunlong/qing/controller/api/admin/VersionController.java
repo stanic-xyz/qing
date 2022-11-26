@@ -15,10 +15,10 @@ package cn.chenyunlong.qing.controller.api.admin;
 
 
 import cn.chenyunlong.qing.controller.base.ApiController;
-import cn.chenyunlong.qing.core.ApiResult;
-import cn.chenyunlong.qing.model.dto.VersionDTO;
-import cn.chenyunlong.qing.model.params.VersionParam;
-import cn.chenyunlong.qing.service.VersionService;
+import cn.chenyunlong.qing.domain.system.version.VersionService;
+import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.infrastructure.model.dto.VersionDTO;
+import cn.chenyunlong.qing.infrastructure.model.params.VersionParam;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
