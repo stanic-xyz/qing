@@ -52,9 +52,9 @@ alias mvn-release='mvn clean source:jar javadoc:jar verify && mvn clean release:
 发布到docker私有库
 
 ```shell
-cd qing-service-anime
-mvn clean package -pl qing-service-anime
+cd qing-service-vo
+mvn clean package -pl qing-service-vo
 sudo docker tag [{镜像名称}:{版本名称}] {组织名称}/{镜像名称}:{版本名称}
 sudo docker push {组织名称}/{镜像名称}:{版本名称}
-docker build -t qing-service-anime:1.0.0.RELEASE -f .Dockerfile .
+docker build -t qing-service-vo:1.0.0.RELEASE -f .Dockerfile .
 ```

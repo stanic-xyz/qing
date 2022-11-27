@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.model.vo.page;
 
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoMinimalDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

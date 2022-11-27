@@ -11,12 +11,20 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.bilibili.mapper;
+package cn.chenyunlong.qing.domain.anime.model.vo;
 
-import cn.chenyunlong.qing.domain.bilibili.BiliAnimeInfoEntity;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoDetailDTO;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-@Mapper
-public interface BiliAnimeMapper extends BaseMapper<BiliAnimeInfoEntity> {
+/**
+ * @author Stan
+ */
+
+@Data
+@ToString
+@EqualsAndHashCode(callSuper = true)
+public class AnimeInfoPlayVo extends AnimeInfoDetailDTO {
+
 }

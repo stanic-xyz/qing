@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.qing.domain.third.bilibili.service.impl;
 
-import cn.chenyunlong.qing.domain.bilibili.BiliAnimeInfoEntity;
-import cn.chenyunlong.qing.domain.bilibili.BilibiliAnimeScoreEntity;
-import cn.chenyunlong.qing.domain.bilibili.mapper.BiliAnimeMapper;
+import cn.chenyunlong.qing.domain.third.bilibili.BiliAnimeInfoEntity;
+import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
+import cn.chenyunlong.qing.domain.third.bilibili.mapper.BiliAnimeMapper;
 import cn.chenyunlong.qing.domain.third.bilibili.model.BiliAnime;
-import cn.chenyunlong.qing.domain.third.bilibili.service.BiliService;
+import cn.chenyunlong.qing.domain.third.bilibili.service.BiliBiliService;
 import cn.chenyunlong.qing.domain.third.bilibili.service.BilibiliAnimeScoreService;
 import cn.chenyunlong.qing.domain.third.bilibili.service.BilibiliAnimeService;
 import cn.chenyunlong.qing.infrastructure.utils.BeanUtils;
@@ -37,19 +37,19 @@ import java.util.List;
 public class BiliApiServiceImpl implements BilibiliAnimeService {
 
     //调用B站的后台接口获取数据
-    private final BiliService biliService;
+    private final BiliBiliService biliBiliService;
     private final BiliAnimeMapper biliAnimeMapper;
     private final BilibiliAnimeScoreService animeScoreService;
 
-    public BiliApiServiceImpl(BiliService biliService, BiliAnimeMapper biliAnimeMapper, BilibiliAnimeScoreService animeScoreService) {
-        this.biliService = biliService;
+    public BiliApiServiceImpl(BiliBiliService biliBiliService, BiliAnimeMapper biliAnimeMapper, BilibiliAnimeScoreService animeScoreService) {
+        this.biliBiliService = biliBiliService;
         this.biliAnimeMapper = biliAnimeMapper;
         this.animeScoreService = animeScoreService;
     }
 
     @Override
     public void updateAnimeInfo() {
-        List<BiliAnime> animeList = biliService.getBiliAnimeList();
+        List<BiliAnime> animeList = biliBiliService.getBiliAnimeList();
 
         List<BiliAnimeInfoEntity> animeInfoEntities = animeList.stream()
                 .map(animeInfo -> {

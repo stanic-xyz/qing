@@ -52,7 +52,7 @@ public enum CodeEnum implements BaseEnum<CodeEnum> {
     }
 
     @Override
-    public String getName() {
+    public String getOptionName() {
         return this.msg;
     }
 

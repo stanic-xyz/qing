@@ -11,30 +11,27 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.model.anime;
+package cn.chenyunlong.qing.domain.anime.model.dto;
 
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
-import cn.chenyunlong.qing.infrastructure.model.dto.PlayListDTO;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * @author Stan
  */
-
 @Data
-public class AnimeInfoVo implements OutputConverter<AnimeInfoVo, AnimeInfo> {
+@ToString
+@EqualsAndHashCode
+public class AnimeInfoRankDTO implements OutputConverter<AnimeInfoRankDTO, AnimeInfo> {
 
     private Long id;
     private String name;
-    private String instruction;
-    private Integer districtId;
-    private String districtName;
     private String coverUrl;
-    private Integer typeId;
     private String typeName;
     private String originalName;
     private String otherName;
@@ -43,8 +40,6 @@ public class AnimeInfoVo implements OutputConverter<AnimeInfoVo, AnimeInfo> {
     private LocalDate premiereDate;
     private String playStatus;
     private String plotType;
-    private String tags;
-    private String officialWebsite;
+    private Boolean isNew = false;
     private String playHeat;
-    private List<PlayListDTO> playList;
 }

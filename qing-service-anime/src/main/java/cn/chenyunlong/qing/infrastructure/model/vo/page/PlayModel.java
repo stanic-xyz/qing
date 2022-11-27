@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.model.vo.page;
 
-import cn.chenyunlong.qing.domain.anime.model.anime.AnimeInfoPlayVo;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoPlayVo;
 import cn.chenyunlong.qing.infrastructure.model.dto.AnimeCommentDTO;
 import cn.chenyunlong.qing.infrastructure.model.dto.AnimeEpisodeDTO;
 import com.baomidou.mybatisplus.core.metadata.IPage;

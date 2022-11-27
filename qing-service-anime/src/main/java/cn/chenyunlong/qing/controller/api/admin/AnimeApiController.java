@@ -14,8 +14,8 @@
 package cn.chenyunlong.qing.controller.api.admin;
 
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
-import cn.chenyunlong.qing.domain.anime.model.anime.AnimeInfoVo;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoVo;
 import cn.chenyunlong.qing.domain.anime.service.AnimeInfoService;
 import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoParam;

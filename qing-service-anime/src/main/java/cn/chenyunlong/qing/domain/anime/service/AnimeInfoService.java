@@ -15,10 +15,10 @@ package cn.chenyunlong.qing.domain.anime.service;
 
 
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
-import cn.chenyunlong.qing.domain.anime.model.anime.AnimeInfoVo;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoRankDTO;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoUpdateDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoRankDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoUpdateDTO;
+import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoVo;
 import cn.chenyunlong.qing.domain.comment.AnimeComment;
 import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery;
 import com.baomidou.mybatisplus.core.metadata.IPage;

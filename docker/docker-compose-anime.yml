@@ -4,7 +4,7 @@ services:
     networks:
       - qing
     container_name: service-provider
-    image: stanic-docker.pkg.coding.net/qing/qing/qing-service-anime:1.0.0.RELEASE
+    image: stanic-docker.pkg.coding.net/qing/qing/qing-service-vo:1.0.0.RELEASE
     ports:
       - "80:8080"
     environment:

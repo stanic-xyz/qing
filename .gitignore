@@ -35,3 +35,12 @@ HELP.md
 /logs/
 
 doc/db/.back_Qing
+
+
+### Local file
+**/application-local.yml
+**/application-local.yaml
+**/application-local.properties
+
+### .env 配置文件
+.env

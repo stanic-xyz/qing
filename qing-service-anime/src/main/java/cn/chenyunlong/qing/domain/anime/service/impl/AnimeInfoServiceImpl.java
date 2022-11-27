@@ -15,11 +15,11 @@ package cn.chenyunlong.qing.domain.anime.service.impl;
 
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.mapper.AnimeInfoMapper;
-import cn.chenyunlong.qing.domain.anime.model.anime.AnimeInfoPlayVo;
-import cn.chenyunlong.qing.domain.anime.model.anime.AnimeInfoVo;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoRankDTO;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoUpdateDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoRankDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoUpdateDTO;
+import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoPlayVo;
+import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoVo;
 import cn.chenyunlong.qing.domain.anime.service.AnimeEpisodeService;
 import cn.chenyunlong.qing.domain.anime.service.AnimeInfoService;
 import cn.chenyunlong.qing.domain.anime.service.PlaylistService;
@@ -34,6 +34,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -187,17 +189,17 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
     public void downloadImages() throws IOException {
         List<AnimeInfo> animeInfos = list(new QueryWrapper<>());
         final File[] listFiles;
-        File exsitsFile = ResourceUtils.getFile("E:\\GitHub\\cdn\\age");
-        if (exsitsFile.isDirectory()) {
-            listFiles = exsitsFile.listFiles();
+        File exitsFile = ResourceUtils.getFile("E:\\GitHub\\cdn\\age");
+        if (exitsFile.isDirectory()) {
+            listFiles = exitsFile.listFiles();
         } else {
             listFiles = new File[]{};
         }
 
         File file = ResourceUtils.getFile("E:\\GitHub\\cdn");
-        int index = 0;
+        AtomicInteger index = new AtomicInteger();
         for (AnimeInfo animeInfo : animeInfos) {
-            try {
+            Try.of(() -> {
                 String imgUrl = animeInfo.getCoverUrl().replace("https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/", "");
                 if (StringUtils.hasText(imgUrl) && Arrays.stream(Objects.requireNonNull(listFiles)).noneMatch(file1 -> file1.getName().endsWith(imgUrl))) {
                     String ageImgUrl = "https://sc04.alicdn.com/kf/" + imgUrl;
@@ -207,10 +209,11 @@ public class AnimeInfoServiceImpl extends ServiceImpl<AnimeInfoMapper, AnimeInfo
                 } else {
                     log.info("{}->>图片已存在：{}", animeInfo.getName(), animeInfo.getCoverUrl());
                 }
-                index++;
-            } catch (Exception exception) {
-                log.error(animeInfo.getCoverUrl(), exception);
-            }
+                index.getAndIncrement();
+                return null;
+            }).onFailure(throwable -> {
+                log.error("获取图片的方面发生了错误,{}", animeInfo.getCoverUrl(), throwable);
+            });
         }
         log.info("同步了{}条数据", index);
     }

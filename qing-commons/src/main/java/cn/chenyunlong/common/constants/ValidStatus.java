@@ -41,7 +41,7 @@ public enum ValidStatus implements BaseEnum<ValidStatus> {
     }
 
     @Override
-    public String getName() {
+    public String getOptionName() {
         return name;
     }
 

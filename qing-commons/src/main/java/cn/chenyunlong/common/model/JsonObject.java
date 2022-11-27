@@ -43,7 +43,7 @@ public final class JsonObject<E> {
     public static <E> JsonObject<E> success(E e) {
         JsonObject<E> object = new JsonObject<>();
         object.setCode(CodeEnum.Success.getCode());
-        object.setMsg(CodeEnum.Success.getName());
+        object.setMsg(CodeEnum.Success.getOptionName());
         object.setResult(e);
         return object;
     }
@@ -56,7 +56,7 @@ public final class JsonObject<E> {
 
     public static <T> JsonObject<T> fail(BaseEnum codeEnum) {
         JsonObject<T> object = new JsonObject<T>();
-        object.setMsg(codeEnum.getName());
+        object.setMsg(codeEnum.getOptionName());
         object.setCode(codeEnum.getCode());
         return object;
     }
@@ -78,7 +78,7 @@ public final class JsonObject<E> {
 
     public static <E> JsonObject<E> res(BaseEnum codeEnum, E e) {
         JsonObject<E> object = new JsonObject<>();
-        object.setMsg(codeEnum.getName());
+        object.setMsg(codeEnum.getOptionName());
         object.setCode(codeEnum.getCode());
         object.setResult(e);
         return object;
