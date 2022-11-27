@@ -30,6 +30,13 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "qing.file")
 public class FileProperties {
 
+    /**
+     * 图片服务器url
+     */
     private String imageServerUrl;
+
+    /**
+     * 基地上传dir
+     */
     private String baseUploadDir;
 }

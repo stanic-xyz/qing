@@ -47,7 +47,6 @@ public class PlaylistServiceImpl implements PlaylistService {
         QueryWrapper<AnimeEpisodeEntity> episodeQueryWrapper = new QueryWrapper<>();
         episodeQueryWrapper.eq("anime_id", animeId);
         List<AnimeEpisodeDTO> episodeDTOList = episodeService.listEpisodeByAnimeId(animeId);
-
         return convertToListVo(playlistEntities, episodeDTOList);
     }
 

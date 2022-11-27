@@ -15,18 +15,21 @@ package cn.chenyunlong.qing.infrastructure.enums;
 
 
 /**
- * <p>
- * boolean类型返回model
- * </p>
- *
- * @author wangmin1994@qq.com
- * @since 2019-03-28 10:46:06
+ * @author Stan
+ * @date 2022/11/27
  */
 public class ReturnModel {
 
     private ReturnModel(boolean success, Object data) {
     }
 
+    /**
+     * 放弃吧
+     *
+     * @param success 成功的结果
+     * @param data
+     * @return {@link ReturnModel}
+     */
     public static ReturnModel of(boolean success, Object data) {
         return new ReturnModel(success, data);
     }

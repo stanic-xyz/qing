@@ -25,11 +25,11 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class BiliService {
+public class BiliBiliService {
 
     private final RestTemplate restTemplate;
 
-    public BiliService(RestTemplate restTemplate) {
+    public BiliBiliService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

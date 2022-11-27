@@ -14,8 +14,8 @@
 package cn.chenyunlong.qing.controller.content;
 
 import cn.chenyunlong.qing.controller.content.model.AnimeInfoModel;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.domain.anime.response.AnimeInfoRankDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoRankDTO;
 import cn.chenyunlong.qing.domain.anime.service.AnimeInfoService;
 import cn.chenyunlong.qing.domain.comment.AnimeComment;
 import cn.chenyunlong.qing.domain.feedback.service.FeedBackService;

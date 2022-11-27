@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.response;
+package cn.chenyunlong.qing.domain.anime.model.dto;
 
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
@@ -27,7 +27,7 @@ import java.time.LocalDate;
 @Data
 @ToString
 @EqualsAndHashCode
-public class AnimeInfoRankDTO implements OutputConverter<AnimeInfoRankDTO, AnimeInfo> {
+public class AnimeInfoMinimalDTO implements OutputConverter<AnimeInfoMinimalDTO, AnimeInfo> {
 
     private Long id;
     private String name;
@@ -41,5 +41,4 @@ public class AnimeInfoRankDTO implements OutputConverter<AnimeInfoRankDTO, Anime
     private String playStatus;
     private String plotType;
     private Boolean isNew = false;
-    private String playHeat;
 }

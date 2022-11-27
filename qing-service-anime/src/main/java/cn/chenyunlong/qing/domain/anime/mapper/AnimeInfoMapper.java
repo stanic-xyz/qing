@@ -64,7 +64,7 @@ public interface AnimeInfoMapper extends BaseMapper<AnimeInfo> {
      * @param pageSize       分页大小
      * @return 返回
      */
-    List<AnimeInfo> selectAnimationW(@Param("anime") AnimeInfoQuery animeInfoQuery, Long offset, Integer pageSize);
+    List<AnimeInfo> selectAnimationW(@Param("vo") AnimeInfoQuery animeInfoQuery, Long offset, Integer pageSize);
 
     /**
      * 根据名称查询动漫信息

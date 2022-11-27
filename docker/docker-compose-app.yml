@@ -3,8 +3,8 @@ services:
   eureka-service:
     networks:
       - dev
-    container_name: anime-service
-    image: stanic-docker.pkg.coding.net/qing/qing/qing-service-anime:1.0.0.RELEASE
+    container_name: vo-service
+    image: stanic-docker.pkg.coding.net/qing/qing/qing-service-vo:1.0.0.RELEASE
     ports:
       - "80:8080"
     environment:

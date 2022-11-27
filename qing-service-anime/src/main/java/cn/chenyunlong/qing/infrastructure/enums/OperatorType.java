@@ -16,7 +16,8 @@ package cn.chenyunlong.qing.infrastructure.enums;
 /**
  * 操作人类别
  *
- * @author ruoyi
+ * @author Stan
+ * @date 2022/11/27
  */
 public enum OperatorType {
     /**

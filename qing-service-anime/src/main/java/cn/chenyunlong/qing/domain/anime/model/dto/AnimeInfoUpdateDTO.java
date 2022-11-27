@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.response;
+package cn.chenyunlong.qing.domain.anime.model.dto;
 
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;

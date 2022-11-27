@@ -26,7 +26,7 @@
 修改你本地的 `~/.m2/settings.xml`, 具体参见如下:
 
 ```shell
-docker build -t stanic-docker.pkg.coding.net/qing/qing/qing-service-anime:1.0.0.RELEASE 
+docker build -t stanic-docker.pkg.coding.net/qing/qing/qing-service-vo:1.0.0.RELEASE 
 ```
 
 ```xml

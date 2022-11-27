@@ -13,36 +13,58 @@
 
 package cn.chenyunlong.qing.infrastructure.enums;
 
+import cn.chenyunlong.common.constants.BaseEnum;
+
 /**
  * MFA type.
  *
  * @author Stan
+ * @date 2022/11/27
  */
-public enum MFAType implements ValueEnum<Integer> {
+public enum MFAType implements BaseEnum<MFAType> {
 
     /**
      * Disable MFA auth.
      */
-    NONE(0),
+    NONE(0, "Disable"),
 
     /**
      * Time-based One-time Password (rfc6238).
-     * see: https://tools.ietf.org/html/rfc6238
+     * see: <a href="https://tools.ietf.org/html/rfc6238">...</a>
      */
-    TFA_TOTP(1);
+    TFA_TOTP(1, "TFA_TOTP");
 
     private final Integer value;
 
-    MFAType(Integer value) {
-        this.value = value;
+    private final String mfaName;
+
+    MFAType(Integer mtfType, String mfaName) {
+        this.value = mtfType;
+        this.mfaName = mfaName;
     }
 
     public static boolean useMFA(MFAType mfaType) {
         return mfaType != null && MFAType.NONE != mfaType;
     }
 
+    /**
+     * 获取code码存入数据库
+     *
+     * @return 获取编码
+     */
     @Override
-    public Integer getValue() {
+    public Integer getCode() {
         return value;
     }
+
+    /**
+     * 获取编码名称，便于维护
+     *
+     * @return 获取编码名称
+     */
+    @Override
+    public String getOptionName() {
+        return mfaName;
+    }
+
 }

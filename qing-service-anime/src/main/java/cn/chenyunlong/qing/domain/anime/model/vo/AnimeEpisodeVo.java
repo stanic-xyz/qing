@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.model.anime;
+package cn.chenyunlong.qing.domain.anime.model.vo;
 
 import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
