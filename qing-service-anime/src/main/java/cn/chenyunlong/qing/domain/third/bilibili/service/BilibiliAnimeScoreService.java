@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.third.bilibili.service;
 
-import cn.chenyunlong.qing.domain.bilibili.BilibiliAnimeScoreEntity;
+import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

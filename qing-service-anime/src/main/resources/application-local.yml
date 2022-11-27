@@ -1,3 +1,5 @@
+server:
+  port: 8080
 spring:
   devtools:
     livereload:
@@ -5,7 +7,7 @@ spring:
     restart:
       enabled: false
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/qing?serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/qing?serverTimezone=GMT%2B8
     hikari:
       username: root
       password: 123456
@@ -16,25 +18,25 @@ spring:
     host: ${REDIS_HOST:127.0.0.1}
     port: 6379
   mail:
-    host: ${QING_MAIL_HOST:smtp.qq.com}
-    username: ${QING_MAIL_USERNAME:your_mail_count}
-    password: ${QING_MAIL_PASSWORD:your_mail_token}
+    host: smtp.qq.com
+    username: 1576302867@qq.com
+    password: xyshwmdggdtqfjhb
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}:@project.version@
     appname: ${spring.application.name}
-    hostname: ${QING_SERVICE_ANIME_HOST:localhost}
+    hostname: bangumi.chenyunlong.cn
   client:
     service-url:
-      defaultZone: ${QING_EUREKA_ADDR:http://localhost:8761}/eureka/
+      defaultZone: https://eureka.chenyunlong.cn/eureka/
 mp:
   wx:
-    appId: ${QING_WECHAT_APPID}
-    secret: ${QING_WECHAT_SECRET}
+    appId: wx09bf7e704a150a9c
+    secret: 9fdb9fa846356d32247a9aa68d758791
 qing:
   file:
     baseUploadDir: upload/
-    image-server-url: http://${QING_SERVICE_ANIME_HOST}
+    image-server-url: http://localhost:8080
   # 是否异步记录用户操作日志
   openAopLog: true
   swagger:
@@ -43,3 +45,4 @@ qing:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+

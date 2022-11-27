@@ -11,26 +11,38 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.bilibili;
+package cn.chenyunlong.qing.domain.third.bilibili;
 
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Data
+import java.time.LocalDateTime;
+
+/**
+ * @TableName bilibili_anime_score
+ */
 @EqualsAndHashCode(callSuper = true)
-@TableName("bilibili_anime")
-public class BiliAnimeInfoEntity extends BaseEntity<BiliAnimeInfoEntity> {
-    @TableId
+@TableName(value = "bilibili_anime_score")
+@Data
+public class BilibiliAnimeScoreEntity extends BaseEntity<BilibiliAnimeScoreEntity> {
+    /**
+     * 主键ID
+     */
     private Long id;
-    private Long mediaId;
-    private String title;
-    private Long seasonId;
-    private String cover;
-    private Integer isFinished;
-    private String indexShow;
+    /**
+     * 动漫ID
+     */
+    private Long animeId;
+
+    /**
+     *
+     */
     private Double score;
-    private String link;
+
+    /**
+     * 记录时间
+     */
+    private LocalDateTime recordTime;
 }

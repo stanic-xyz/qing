@@ -31,42 +31,43 @@ public class ResultModel {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ResultModel.class);
 
-    public static ResultModel of(String retCode, String retMsg, Object object) {
-        return new ResultModel(retCode, retMsg, object);
+    private Integer code;
+    private String message;
+
+    private ResultModel(Integer code, String message, Object object) {
+        this.code = code;
+        this.message = message;
+        this.data = object;
     }
 
-    public static ResultModel of(ResultEnum resultEnum, Object data) {
-        return new ResultModel(resultEnum.getCode(), resultEnum.getName(), data);
+    public static ResultModel of(Integer code, String message, Object object) {
+        return new ResultModel(code, message, object);
     }
 
-    public static ResultModel of(ResultEnum resultEnum) {
-        return new ResultModel(resultEnum.getCode(), resultEnum.getName(), null);
+    public static ResultModel of(ResponseCode responseCode, Object data) {
+        return new ResultModel(responseCode.getCode(), responseCode.getOptionName(), data);
+    }
+
+    public static ResultModel of(ResponseCode responseCode) {
+        return new ResultModel(responseCode.getCode(), responseCode.getOptionName(), null);
     }
 
     public static ResultModel ofFail(Object data) {
-        return new ResultModel(ResultEnum.FAIL.getCode(), ResultEnum.FAIL.getName(), data);
+        return new ResultModel(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getOptionName(), data);
     }
 
     public static ResultModel ofFail() {
-        return new ResultModel(ResultEnum.FAIL.getCode(), ResultEnum.FAIL.getName(), null);
+        return new ResultModel(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getOptionName(), null);
     }
 
     public static ResultModel ofSuccess(Object data) {
-        return new ResultModel(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getName(), data);
+        return new ResultModel(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getOptionName(), data);
     }
 
-    public static ResultModel ofSuccess() {
-        return new ResultModel(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getName(), null);
-    }
-
-    private String retCod;
-    private String retMsg;
     private Object data;
 
-    private ResultModel(String retCode, String retMsg, Object object) {
-        this.retCod = retCode;
-        this.retMsg = retMsg;
-        this.data = object;
+    public static ResultModel ofSuccess() {
+        return new ResultModel(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getOptionName(), null);
     }
 
     /**
@@ -79,7 +80,7 @@ public class ResultModel {
      * @since 2019-05-10 14:04:48
      */
     public ResultModel set(String fieldStr, Object object) {
-        Field field = null;
+        Field field;
         try {
             field = this.getClass().getDeclaredField(fieldStr);
         } catch (NoSuchFieldException | SecurityException e) {
@@ -91,7 +92,7 @@ public class ResultModel {
         try {
             field.set(this, object);
         } catch (IllegalArgumentException | IllegalAccessException e) {
-            log.warn("ResultModel set field faild!", e);
+            log.warn("ResultModel set field failed!", e);
             return this;
         }
         return this;

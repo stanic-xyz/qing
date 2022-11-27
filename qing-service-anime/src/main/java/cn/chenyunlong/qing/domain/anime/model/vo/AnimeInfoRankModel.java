@@ -11,22 +11,25 @@
  *
  */
 
-package cn.chenyunlong.qing.service.external;
+package cn.chenyunlong.qing.domain.anime.model.vo;
 
-import cn.chenyunlong.qing.domain.third.bilibili.model.BiliAnime;
-import cn.chenyunlong.qing.domain.third.bilibili.service.BiliService;
-import org.junit.jupiter.api.Test;
-import org.springframework.web.client.RestTemplate;
+import cn.chenyunlong.qing.domain.anime.AnimeInfo;
+import lombok.Data;
 
 import java.util.List;
 
-class BiliServiceTest {
+/**
+ * @author Stan
+ */
+@Data
+public class AnimeInfoRankModel {
 
-    private final BiliService biliService = new BiliService(new RestTemplate());
+    private List<AnimeInfo> animeInfoList;
+    private long totalCount;
 
-    @Test
-    void getBiliAnimeList() {
-        List<BiliAnime> biliAnimeList = biliService.getBiliAnimeList();
-        biliAnimeList.forEach(System.out::println);
+    public AnimeInfoRankModel(List<AnimeInfo> animeInfoList, long totalCount) {
+        this.animeInfoList = animeInfoList;
+        this.totalCount = totalCount;
     }
+
 }

@@ -13,27 +13,49 @@
 
 package cn.chenyunlong.qing.infrastructure.enums;
 
+import cn.chenyunlong.common.constants.BaseEnum;
+import lombok.Getter;
+
 /**
  * 视频的状态
  */
-public enum VideoStatus implements ValueEnum<Integer> {
+public enum VideoStatus implements BaseEnum<VideoStatus> {
     /**
      * 正常
      */
-    NORMAL(0),
+    NORMAL(0, "正常"),
     /**
      * 被禁用
      */
-    DISABLED(1);
+    DISABLED(1, "被禁用");
 
+    @Getter
     private final Integer value;
 
-    VideoStatus(Integer value) {
+    @Getter
+    private final String optionName;
+
+    VideoStatus(Integer value, String optionName) {
         this.value = value;
+        this.optionName = optionName;
     }
 
+    /**
+     * 获取code码存入数据库
+     *
+     * @return 获取编码
+     */
     @Override
-    public Integer getValue() {
+    public Integer getCode() {
         return value;
+    }
+
+    /**
+     * 获取编码名称，便于维护
+     *
+     * @return 获取编码名称
+     */
+    public String getName() {
+        return optionName;
     }
 }

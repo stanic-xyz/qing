@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 80
 spring:
   profiles:
     active: prod
@@ -26,23 +26,15 @@ spring:
     multipart:
       max-file-size: 4MB
       max-request-size: 10MB
-  mail:
-    host: smtp.qq.com
-    username: 1576302867@qq.com
-    password: uqvyyxhvhdpnbabg
   freemarker:
     template-loader-path: classpath:/templates/mail/
     suffix: .ftl
-  redis:
-    host: ${REDIS_HOST:127.0.0.1}
-    port: ${REDIS_PORT:6379}
   cache:
     type: simple
+  thymeleaf:
+    cache: true
   quartz:
     scheduler-name: testName
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
 mybatis-plus:
   configuration:
     cache-enabled: true
@@ -51,10 +43,6 @@ mybatis-plus:
     banner: false
   type-aliases-package: cn.chenyunlong.qing.**.domain,cn.chenyunlong.qing.**.entities
   mapper-locations: classpath*:mapper/**/*Mapper.xml
-qing:
-  file:
-    baseUploadDir: upload/
-    image-server-url: https://www.stanic.xyz/pic/
   # 是否异步记录用户操作日志
   openAopLog: true
   swagger:
@@ -80,10 +68,6 @@ management:
   endpoint:
     health:
       show-details: always
-mp:
-  wx:
-    app-id: wx09bf7e704a150a9c
-    secret: 9fdb9fa846356d32247a9aa68d758791
 springdoc:
   api-docs:
     enabled: true

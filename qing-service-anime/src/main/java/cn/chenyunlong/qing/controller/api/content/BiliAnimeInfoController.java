@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.controller.api.content;
 
-import cn.chenyunlong.qing.domain.bilibili.BilibiliAnimeScoreEntity;
+import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
 import cn.chenyunlong.qing.domain.third.bilibili.service.BilibiliAnimeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
