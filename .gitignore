@@ -43,4 +43,4 @@ doc/db/.back_Qing
 **/application-local.properties
 
 ### .env 配置文件
-.env
+**.env
