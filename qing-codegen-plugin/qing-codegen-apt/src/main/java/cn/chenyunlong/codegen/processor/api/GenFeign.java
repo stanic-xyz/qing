@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface GenFeign {
 
-    String pkgName();
+    String pkgName() default "service";
 
     String serverName() default "xxxSrv";
 

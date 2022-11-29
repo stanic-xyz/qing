@@ -33,9 +33,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * @Author: Gim
- * @Date: 2019-10-08 17:14
- * @Description:
+ * 更新接口参数代码生成器
+ *
+ * @author Stan
+ * @date 2022/11/29
  */
 @AutoService(value = CodeGenProcessor.class)
 public class GenUpdateRequestProcessor extends BaseCodeGenProcessor {
@@ -46,7 +47,7 @@ public class GenUpdateRequestProcessor extends BaseCodeGenProcessor {
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
         DefaultNameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
-                p -> Objects.isNull(p.getAnnotation(IgnoreUpdater.class)));
+                element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getUpdateClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
@@ -56,8 +57,8 @@ public class GenUpdateRequestProcessor extends BaseCodeGenProcessor {
         typeSpecBuilder.addField(
                 FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
         addIdSetterAndGetter(typeSpecBuilder);
-        genJavaSourceFile(generatePackage(typeElement),
-                typeElement.getAnnotation(GenUpdateRequest.class).sourcePath(), typeSpecBuilder);
+        String packageName = nameContext.getQueryRequestPackageName();
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenUpdateRequest.class).sourcePath(), typeSpecBuilder);
     }
 
     @Override

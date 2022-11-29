@@ -21,7 +21,7 @@ package cn.chenyunlong.codegen.processor.updater;
  */
 public @interface GenUpdater {
 
-    String pkgName();
+    String pkgName() default "updater";
 
     String sourcePath() default "src/main/java";
 

@@ -31,7 +31,7 @@ public interface BaseEnum<T extends Enum<T> & BaseEnum<T>> {
      *
      * @return 获取编码名称
      */
-    String getOptionName();
+    String getName();
 
     /**
      * 根据code码获取枚举

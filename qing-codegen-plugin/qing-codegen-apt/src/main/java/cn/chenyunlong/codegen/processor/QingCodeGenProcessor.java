@@ -38,22 +38,23 @@ public class QingCodeGenProcessor extends AbstractProcessor {
     /**
      * 过程
      *
-     * @param annotations      注释
+     * @param elements         文档元素列表
      * @param roundEnvironment 周围环境
      * @return boolean
      */
     @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnvironment) {
-        annotations.forEach(element -> {
+    public boolean process(Set<? extends TypeElement> elements, RoundEnvironment roundEnvironment) {
+        elements.forEach(element -> {
             Set<? extends Element> typeElements = roundEnvironment.getElementsAnnotatedWith(element);
-            Set<TypeElement> types = ElementFilter.typesIn(typeElements);
-            for (TypeElement typeElement : types) {
-                CodeGenProcessor codeGenProcessor = CodeGenProcessorRegistry.find(
-                        element.getQualifiedName().toString());
+            Set<TypeElement> typeElementSet = ElementFilter.typesIn(typeElements);
+            for (TypeElement typeElement : typeElementSet) {
+                CodeGenProcessor codeGenProcessor;
+                codeGenProcessor = CodeGenProcessorRegistry.find(element.getQualifiedName().toString());
                 try {
                     codeGenProcessor.generate(typeElement, roundEnvironment);
                 } catch (Exception exception) {
-                    ProcessingEnvironmentHolder.getEnvironment().getMessager().printMessage(Kind.ERROR, "代码生成异常:" + exception.getMessage());
+                    ProcessingEnvironmentHolder.getEnvironment().getMessager().printMessage(Kind.ERROR,
+                            "代码生成异常:" + exception.getMessage());
                 }
             }
         });
@@ -63,12 +64,12 @@ public class QingCodeGenProcessor extends AbstractProcessor {
     /**
      * 初始化
      *
-     * @param processingEnv 处理env
+     * @param processingEnvironment 加工环境
      */
     @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
-        super.init(processingEnv);
-        ProcessingEnvironmentHolder.setEnvironment(processingEnv);
+    public synchronized void init(ProcessingEnvironment processingEnvironment) {
+        super.init(processingEnvironment);
+        ProcessingEnvironmentHolder.setEnvironment(processingEnvironment);
         CodeGenProcessorRegistry.initProcessors();
     }
 

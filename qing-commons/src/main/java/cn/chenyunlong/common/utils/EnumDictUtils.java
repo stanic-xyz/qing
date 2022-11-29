@@ -32,7 +32,7 @@ public class EnumDictUtils {
         return EnumSet.allOf(cls).stream().map(et -> {
                     EnumVo vo = new EnumVo();
                     vo.setCode(et.getCode());
-            vo.setName(et.getOptionName());
+            vo.setName(et.getName());
             vo.setText(et.name());
                     return vo;
                 }

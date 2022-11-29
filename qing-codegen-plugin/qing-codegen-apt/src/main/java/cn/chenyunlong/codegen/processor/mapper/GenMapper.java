@@ -20,7 +20,7 @@ package cn.chenyunlong.codegen.processor.mapper;
  */
 public @interface GenMapper {
 
-    String pkgName();
+    String pkgName() default "mapper";
 
     String sourcePath() default "src/main/java";
 

@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface GenRepository {
 
-    String pkgName();
+    String pkgName() default "repository";
 
     String sourcePath() default "src/main/java";
 

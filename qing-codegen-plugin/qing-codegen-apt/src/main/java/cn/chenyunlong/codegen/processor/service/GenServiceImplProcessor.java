@@ -66,11 +66,12 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         if (StringUtils.containsNull(nameContext.getRepositoryPackageName())) {
             return;
         }
-        String repositoryFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
-                nameContext.getRepositoryClassName());
-        String classFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
-                typeElement.getSimpleName().toString());
-        FieldSpec repositoryField = FieldSpec
+        String repositoryFieldName;
+        repositoryFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, nameContext.getRepositoryClassName());
+        String classFieldName;
+        classFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, typeElement.getSimpleName().toString());
+        FieldSpec repositoryField;
+        repositoryField = FieldSpec
                 .builder(ClassName.get(nameContext.getRepositoryPackageName(),
                         nameContext.getRepositoryClassName()), repositoryFieldName)
                 .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
@@ -83,8 +84,8 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         invalidMethod(typeElement, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
         findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
         findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(generatePackage(typeElement),
-                typeElement.getAnnotation(GenServiceImpl.class).sourcePath(), typeSpecBuilder);
+        String implPackageName = nameContext.getImplPackageName();
+        genJavaSourceFile(implPackageName, typeElement.getAnnotation(GenServiceImpl.class).sourcePath(), typeSpecBuilder);
     }
 
     @Override

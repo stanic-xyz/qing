@@ -17,6 +17,12 @@ import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * jpa-vo基础基
+ *
+ * @author Stan
+ * @date 2022/11/28
+ */
 @Data
 public class AbstractBaseJpaVO {
 

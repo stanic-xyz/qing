@@ -15,6 +15,7 @@ package cn.chenyunlong.codegen.processor.repository;
 
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
+import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import com.google.auto.service.AutoService;
@@ -41,7 +42,10 @@ public class GenRepositoryProcessor extends BaseCodeGenProcessor {
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class), ClassName.get(typeElement), ClassName.get(Long.class)))
                 .addModifiers(Modifier.PUBLIC);
-        genJavaSourceFile(generatePackage(typeElement), typeElement.getAnnotation(GenRepository.class).sourcePath(), typeSpecBuilder);
+
+        DefaultNameContext nameContext = getNameContext(typeElement);
+        String packageName = nameContext.getRepositoryPackageName();
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenRepository.class).sourcePath(), typeSpecBuilder);
     }
 
     @Override

@@ -16,9 +16,9 @@ package cn.chenyunlong.codegen.processor.api;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.processor.query.QueryItem;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.Request;
 import com.google.auto.service.AutoService;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -31,9 +31,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * @Author: Gim
- * @Date: 2019-10-08 17:14
- * @Description:
+ * 处理QueryRequest的代码生成
+ *
+ * @author Stan
+ * @date 2022/11/28
  */
 @AutoService(value = CodeGenProcessor.class)
 public class GenQueryRequestProcessor extends BaseCodeGenProcessor {
@@ -43,14 +44,18 @@ public class GenQueryRequestProcessor extends BaseCodeGenProcessor {
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
         DefaultNameContext nameContext = getNameContext(typeElement);
+
+        String queryRequestPackageName = nameContext.getQueryRequestPackageName();
+
         Set<VariableElement> fields = findFields(typeElement,
-                p -> Objects.nonNull(p.getAnnotation(QueryItem.class)));
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getQueryRequestClassName())
+                element -> Objects.nonNull(element.getAnnotation(QueryItem.class)));
+        TypeSpec.Builder typeSpecBuilder;
+        typeSpecBuilder = TypeSpec.classBuilder(nameContext.getQueryRequestClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
                 .addAnnotation(Schema.class);
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields);
-        genJavaSourceFile(generatePackage(typeElement),
+        genJavaSourceFile(queryRequestPackageName,
                 typeElement.getAnnotation(GenQueryRequest.class).sourcePath(), typeSpecBuilder);
     }
 
