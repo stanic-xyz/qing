@@ -80,7 +80,7 @@
                                 <span class="rank_text_idx asciifont"
                                       th:class="${iterStat.index>9?'rank_text_idx asciifont':'rank_text_idx rank_text_idx_top asciifont'}"
                                       th:text="${iterStat.index+1}">1</span>
-                                <a th:href="@{/detail/{animeId}(animeId= ${anime.id})}">
+                                <a th:href="@{/detail/{animeId}.html(animeId= ${anime.id})}">
                                     <span class="rank_text_name" th:text="${anime.name}"></span></a>
                                 <span class="rank_value asciifont" th:text="${anime.playHeat}">0</span>
                             </li>
@@ -90,7 +90,7 @@
                                 th:if="${iterStat.index >= 25 && iterStat.index < 50}">
                                 <span class="rank_text_idx asciifont"
                                       th:text="${iterStat.index+1}">1</span>
-                                <a th:href="@{/detail/{animeId}(animeId= ${anime.id})}">
+                                <a th:href="@{/detail/{animeId}.html(animeId= ${anime.id})}">
                                     <span class="rank_text_name" th:text="${anime.name}"></span></a>
                                 <span class="rank_value asciifont" th:text="${anime.playHeat}">0</span>
                             </li>
@@ -100,7 +100,7 @@
                                 th:if="${iterStat.index >= 50 && iterStat.index < 75}">
                                 <span class="rank_text_idx asciifont"
                                       th:text="${iterStat.index+1}">1</span>
-                                <a th:href="@{/detail/{animeId}(animeId= ${anime.id})}">
+                                <a th:href="@{/detail/{animeId}.html(animeId= ${anime.id})}">
                                     <span class="rank_text_name" th:text="${anime.name}"></span></a>
                                 <span class="rank_value asciifont" th:text="${anime.playHeat}">0</span>
                             </li>

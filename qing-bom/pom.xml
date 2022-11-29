@@ -47,6 +47,7 @@
         <guava.version>31.1-jre</guava.version>
         <lombok.version>1.18.24</lombok.version>
         <hutool.version>5.8.10</hutool.version>
+        <swagger.version>2.2.7</swagger.version>
     </properties>
 
     <dependencyManagement>
@@ -86,6 +87,11 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

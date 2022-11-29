@@ -40,14 +40,17 @@ public abstract class BaseEntityOperation implements EntityOperation {
     /**
      * 做验证
      *
-     * @param t     t 泛型对象
+     * @param obj   t 泛型对象
      * @param group 校验组
      */
-    public <T> void doValidate(T t, Class<? extends ValidateGroup> group) {
-        Set<ConstraintViolation<T>> constraintViolations = validator.validate(t, group, Default.class);
+    public <T> void doValidate(T obj, Class<? extends ValidateGroup> group) {
+        Set<ConstraintViolation<T>> constraintViolations = validator.validate(obj, group, Default.class);
         if (!isEmpty(constraintViolations)) {
             List<ValidateResult> results = constraintViolations.stream()
-                    .map(cv -> new ValidateResult(cv.getPropertyPath().toString(), cv.getMessage()))
+                    .map(constraintViolation ->
+                            new ValidateResult(
+                                    constraintViolation.getPropertyPath().toString(),
+                                    constraintViolation.getMessage()))
                     .collect(Collectors.toList());
             throw new ValidationException(results);
         }

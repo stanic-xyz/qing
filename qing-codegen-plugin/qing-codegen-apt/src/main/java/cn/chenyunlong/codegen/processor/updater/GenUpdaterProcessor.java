@@ -51,6 +51,7 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
      */
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+
         Set<VariableElement> variableElements;
         variableElements = findFields(typeElement, element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         String className = PREFIX + typeElement.getSimpleName() + SUFFIX;

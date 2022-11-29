@@ -21,10 +21,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -71,25 +68,25 @@ public class AgeService {
 
         String currentUrl = url + "&r=" + random.nextDouble();
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache");
-        headers.add("Cookie", cookie.toString());
-        headers.add("Host", "www.agefans.cc");
-        headers.add("Referer", referUrl);
+        headers.add(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue());
+        headers.add(HttpHeaders.COOKIE, cookie.toString());
+        headers.add(HttpHeaders.HOST, "www.agefans.cc");
+        headers.add(HttpHeaders.REFERER, referUrl);
 
         HttpEntity<String> stringHttpEntity = new HttpEntity<>(null, headers);
         ResponseEntity<String> firstResponse;
         firstResponse = restTemplate.exchange(url, HttpMethod.GET, stringHttpEntity, String.class);
 
-        List<String> sessions = firstResponse.getHeaders().get("Set-Cookie");
+        List<String> sessions = firstResponse.getHeaders().get(HttpHeaders.SET_COOKIE);
         assert sessions != null;
         sessions.stream().map(session -> session.substring(0, session.indexOf(";")))
                 .forEach(s -> cookie.append(";").append(s));
 
         headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache");
-        headers.add("Cookie", cookie.toString());
-        headers.add("Host", "www.agemys.com");
-        headers.add("Referer", referUrl);
+        headers.add(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue());
+        headers.add(HttpHeaders.COOKIE, cookie.toString());
+        headers.add(HttpHeaders.HOST, "www.agemys.com");
+        headers.add(HttpHeaders.REFERER, referUrl);
         stringHttpEntity = new HttpEntity<>(null, headers);
 
         ResponseEntity<String> response;
