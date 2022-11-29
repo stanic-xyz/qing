@@ -45,6 +45,8 @@
         <sentinel.version>1.7.2</sentinel.version>
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
         <guava.version>31.1-jre</guava.version>
+        <lombok.version>1.18.24</lombok.version>
+        <hutool.version>5.8.10</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -78,7 +80,12 @@
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
-                <version>5.8.10</version>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

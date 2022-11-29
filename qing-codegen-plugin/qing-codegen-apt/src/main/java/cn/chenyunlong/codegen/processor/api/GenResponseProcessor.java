@@ -16,9 +16,9 @@ package cn.chenyunlong.codegen.processor.api;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.processor.vo.IgnoreVo;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import com.google.auto.service.AutoService;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -31,9 +31,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * @Author: Gim
- * @Date: 2019-10-08 17:14
- * @Description:
+ * 处理Response的代码生成
+ *
+ * @author Stan
+ * @date 2022/11/28
  */
 @AutoService(value = CodeGenProcessor.class)
 public class GenResponseProcessor extends BaseCodeGenProcessor {
@@ -44,14 +45,14 @@ public class GenResponseProcessor extends BaseCodeGenProcessor {
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
         DefaultNameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
-                p -> Objects.isNull(p.getAnnotation(IgnoreVo.class)));
+                variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getResponseClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(AbstractJpaResponse.class)
                 .addAnnotation(Schema.class);
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields);
-        genJavaSourceFile(generatePackage(typeElement),
-                typeElement.getAnnotation(GenResponse.class).sourcePath(), typeSpecBuilder);
+        String packageName = nameContext.getResponsePackageName();
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenResponse.class).sourcePath(), typeSpecBuilder);
     }
 
     @Override

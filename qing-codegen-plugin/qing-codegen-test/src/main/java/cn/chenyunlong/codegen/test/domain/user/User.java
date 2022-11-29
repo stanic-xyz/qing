@@ -13,18 +13,20 @@
 
 package cn.chenyunlong.codegen.test.domain.user;
 
-import cn.chenyunlong.codegen.processor.api.GenFeign;
-import cn.chenyunlong.codegen.processor.api.GenQueryRequest;
-import cn.chenyunlong.codegen.processor.api.GenResponse;
-import cn.chenyunlong.codegen.processor.api.GenUpdateRequest;
+import cn.chenyunlong.codegen.processor.GenBase;
+import cn.chenyunlong.codegen.processor.api.*;
 import cn.chenyunlong.codegen.processor.controller.GenController;
 import cn.chenyunlong.codegen.processor.creator.GenCreator;
+import cn.chenyunlong.codegen.processor.creator.IgnoreCreator;
+import cn.chenyunlong.codegen.processor.mapper.GenMapper;
 import cn.chenyunlong.codegen.processor.query.GenQuery;
 import cn.chenyunlong.codegen.processor.repository.GenRepository;
 import cn.chenyunlong.codegen.processor.service.GenService;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
+import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import lombok.Data;
 
 /**
  * 测试代码自动生成的结果
@@ -33,42 +35,28 @@ import cn.chenyunlong.jpa.support.BaseJpaAggregate;
  * @date 2022/10/25
  */
 //
-@GenVo(pkgName = "cn.chenyunlong.codegen.test.domain.user.vo")
-@GenCreator(pkgName = "cn.chenyunlong.codegen.test.domain.user.creator")
-@GenUpdater(pkgName = "cn.chenyunlong.codegen.test.domain.user.updater")
-@GenRepository(pkgName = "cn.chenyunlong.codegen.test.domain.user.repository")
-@GenService(pkgName = "cn.chenyunlong.codegen.test.domain.user.service")
-@GenController(pkgName = "cn.chenyunlong.codegen.test.domain.user.controller")
-@GenQuery(pkgName = "cn.chenyunlong.codegen.test.domain.user.query")
-@GenUpdateRequest(pkgName = "cn.chenyunlong.codegen.test.domain.user.api.request")
-@GenQueryRequest(pkgName = "cn.chenyunlong.codegen.test.domain.user.api.request")
-@GenResponse(pkgName = "cn.chenyunlong.codegen.test.domain.user.api.response")
-@GenFeign(pkgName = "cn.chenyunlong.codegen.test.domain.user.api.service")
+@GenBase(basePackage = "cn.chenyunlong.codegen.test.domain.user.gen")
+@GenVo
+@GenCreator
+@GenUpdater
+@GenRepository
+@GenService
+@GenController
+@GenQuery
+@GenCreateRequest
+@GenUpdateRequest
+@GenQueryRequest
+@GenResponse
+@GenFeign
+@GenMapper
+@Data
 public class User extends BaseJpaAggregate {
 
+    @FieldDesc(name = "用户名")
     private String username;
 
+    @IgnoreCreator
+    @FieldDesc(name = "用户名")
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void valid() {
-    }
-
-    public void invalid() {
-    }
 }

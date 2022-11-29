@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface GenUpdateRequest {
 
-    String pkgName();
+    String pkgName() default "request";
 
     String sourcePath() default "src/main/java";
 

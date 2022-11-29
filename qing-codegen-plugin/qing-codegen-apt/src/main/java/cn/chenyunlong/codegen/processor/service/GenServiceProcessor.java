@@ -44,18 +44,22 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
 
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
-        String className = SERVICE_PREFIX + typeElement.getSimpleName() + SERVICE_SUFFIX;
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
-                .addModifiers(Modifier.PUBLIC);
+
         DefaultNameContext nameContext = getNameContext(typeElement);
+
+        String className = SERVICE_PREFIX + typeElement.getSimpleName() + SERVICE_SUFFIX;
+        TypeSpec.Builder typeSpecBuilder;
+        typeSpecBuilder = TypeSpec.interfaceBuilder(className)
+                .addModifiers(Modifier.PUBLIC);
         createMethod(typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
         updateMethod(typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
         validMethod(typeElement).ifPresent(typeSpecBuilder::addMethod);
         invalidMethod(typeElement).ifPresent(typeSpecBuilder::addMethod);
         findByIdMethod(nameContext).ifPresent(typeSpecBuilder::addMethod);
         findByPageMethod(nameContext).ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(generatePackage(typeElement),
-                typeElement.getAnnotation(GenService.class).sourcePath(), typeSpecBuilder);
+
+        String packageName = nameContext.getServicePackageName();
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenService.class).sourcePath(), typeSpecBuilder);
     }
 
     @Override

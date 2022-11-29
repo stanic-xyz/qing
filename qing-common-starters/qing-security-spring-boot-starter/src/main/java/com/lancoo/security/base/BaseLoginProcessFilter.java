@@ -63,7 +63,7 @@ public abstract class BaseLoginProcessFilter extends AbstractAuthenticationProce
 
     public void checkMethod(HttpServletRequest request) {
         if (!HttpMethod.POST.name().equals(request.getMethod())) {
-            throw new MethodNotSupportException(AuthErrorMsg.methodNotSupport.getOptionName());
+            throw new MethodNotSupportException(AuthErrorMsg.methodNotSupport.getName());
         }
     }
 }

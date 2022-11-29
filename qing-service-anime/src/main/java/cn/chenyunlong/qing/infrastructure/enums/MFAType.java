@@ -63,7 +63,7 @@ public enum MFAType implements BaseEnum<MFAType> {
      * @return 获取编码名称
      */
     @Override
-    public String getOptionName() {
+    public String getName() {
         return mfaName;
     }
 

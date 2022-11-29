@@ -32,7 +32,7 @@ public @interface GenVo {
      *
      * @return {@link String}
      */
-    String pkgName();
+    String pkgName() default "vo";
 
     /**
      * 源路径

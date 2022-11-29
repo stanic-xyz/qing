@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface GenController {
 
-    String pkgName();
+    String pkgName() default "controller";
 
     String sourcePath() default "src/main/java";
 

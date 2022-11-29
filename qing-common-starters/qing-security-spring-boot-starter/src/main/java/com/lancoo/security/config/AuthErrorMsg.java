@@ -56,7 +56,7 @@ public enum AuthErrorMsg implements BaseEnum<AuthErrorMsg> {
     }
 
     @Override
-    public String getOptionName() {
+    public String getName() {
         return this.name;
     }
 

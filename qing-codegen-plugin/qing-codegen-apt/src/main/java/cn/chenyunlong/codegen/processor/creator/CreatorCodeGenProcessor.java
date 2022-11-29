@@ -14,8 +14,8 @@
 package cn.chenyunlong.codegen.processor.creator;
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import com.google.auto.service.AutoService;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
@@ -66,19 +66,17 @@ public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
      */
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
-        /*
-          为啥加@Data 还要生成get set 方法？
-          lombok - mapstruct 集成
-         */
+        // lombok - mapstruct 集成
         String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         Builder classBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class)
                 .addAnnotation(Data.class);
-        addSetterAndGetterMethod(classBuilder, findFields(typeElement, element -> Objects.isNull(element.getAnnotation(
-                IgnoreCreator.class)) && !dtoIgnore(element)));
-        String packageName = generatePackage(typeElement);
+        addSetterAndGetterMethod(classBuilder,
+                findFields(typeElement, variableElement
+                        -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)));
+        String packageName = getNameContext(typeElement).getCreatorPackageName();
         genJavaFile(packageName, classBuilder);
         genJavaFile(packageName, getSourceType(sourceClassName, packageName, className));
     }

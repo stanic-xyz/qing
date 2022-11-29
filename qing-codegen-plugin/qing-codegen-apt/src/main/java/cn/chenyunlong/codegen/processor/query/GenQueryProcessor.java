@@ -14,8 +14,9 @@
 package cn.chenyunlong.codegen.processor.query;
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import com.google.auto.service.AutoService;
+import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -38,17 +39,23 @@ public class GenQueryProcessor extends BaseCodeGenProcessor {
 
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+
+        DefaultNameContext nameContext = getNameContext(typeElement);
+
         String className = PREFIX + typeElement.getSimpleName() + QUERY_SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + QUERY_SUFFIX;
-        TypeSpec.Builder builder = TypeSpec.classBuilder(className)
+        String queryRequestPackageName = nameContext.getQueryRequestPackageName();
+
+        TypeSpec.Builder builder;
+        builder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class)
                 .addAnnotation(Data.class);
         addSetterAndGetterMethod(builder, findFields(typeElement, ve -> Objects.nonNull(ve.getAnnotation(
                 QueryItem.class))));
-        String packageName = generatePackage(typeElement);
-        genJavaFile(packageName, builder);
-        genJavaFile(packageName, getSourceType(sourceClassName, packageName, className));
+
+        genJavaFile(queryRequestPackageName, builder);
+        genJavaFile(queryRequestPackageName, getSourceType(sourceClassName, queryRequestPackageName, className));
     }
 
     @Override

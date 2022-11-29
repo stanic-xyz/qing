@@ -25,12 +25,12 @@ public class BusinessException extends RuntimeException {
     private Object data;
 
     public BusinessException(BaseEnum msg) {
-        super(msg.getOptionName());
+        super(msg.getName());
         this.msg = msg;
     }
 
     public BusinessException(BaseEnum msg, Object data) {
-        super(msg.getOptionName());
+        super(msg.getName());
         this.msg = msg;
         this.data = data;
     }

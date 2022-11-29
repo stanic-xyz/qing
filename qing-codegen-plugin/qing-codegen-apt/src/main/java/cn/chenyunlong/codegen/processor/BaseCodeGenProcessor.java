@@ -43,10 +43,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -61,27 +58,25 @@ import java.util.function.Predicate;
 /**
  * 基础代码一代处理器
  *
- * @author gim
- * @date 2022/10/24
+ * @author Stan
+ * @date 2022/11/27
  */
 public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
 
     public static final String PREFIX = "Base";
 
-    @Override
-    public void generate(TypeElement typeElement, RoundEnvironment roundEnvironment)
-            throws Exception {
-        //添加其他逻辑扩展
-        generateClass(typeElement, roundEnvironment);
-    }
-
     /**
-     * 生成类
+     * 生成Class
      *
      * @param typeElement      类型元素
      * @param roundEnvironment 周围环境
+     * @throws Exception 异常
      */
-    protected abstract void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) throws Exception;
+    @Override
+    public void generate(TypeElement typeElement, RoundEnvironment roundEnvironment) throws Exception {
+        //添加其他逻辑扩展
+        generateClass(typeElement, roundEnvironment);
+    }
 
     /**
      * 获取字段信息
@@ -90,13 +85,12 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @param predicate   谓词
      * @return {@link Set}<{@link VariableElement}>
      */
-    public Set<VariableElement> findFields(TypeElement typeElement,
-                                           Predicate<VariableElement> predicate) {
+    public Set<VariableElement> findFields(TypeElement typeElement, Predicate<VariableElement> predicate) {
         List<? extends Element> fieldTypes = typeElement.getEnclosedElements();
         Set<VariableElement> variableElements = new LinkedHashSet<>();
-        for (VariableElement e : ElementFilter.fieldsIn(fieldTypes)) {
-            if (predicate.test(e)) {
-                variableElements.add(e);
+        for (VariableElement element : ElementFilter.fieldsIn(fieldTypes)) {
+            if (predicate.test(element)) {
+                variableElements.add(element);
             }
         }
         return variableElements;
@@ -110,24 +104,32 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      */
     public DefaultNameContext getNameContext(TypeElement typeElement) {
         DefaultNameContext context = new DefaultNameContext();
-        String serviceName = GenServiceProcessor.SERVICE_PREFIX + typeElement.getSimpleName()
-                + GenServiceProcessor.SERVICE_SUFFIX;
-        String implName = typeElement.getSimpleName() + GenServiceImplProcessor.IMPL_SUFFIX;
-        String repositoryName = typeElement.getSimpleName() + GenRepositoryProcessor.REPOSITORY_SUFFIX;
-        String mapperName = typeElement.getSimpleName() + GenMapperProcessor.SUFFIX;
-        String voName = typeElement.getSimpleName() + VoCodeGenProcessor.SUFFIX;
-        String queryName = typeElement.getSimpleName() + GenQueryProcessor.QUERY_SUFFIX;
-        String creatorName = typeElement.getSimpleName() + CreatorCodeGenProcessor.SUFFIX;
-        String updaterName = typeElement.getSimpleName() + GenUpdaterProcessor.SUFFIX;
-        String createRequestName =
-                typeElement.getSimpleName() + GenCreateRequestProcessor.CREATE_REQUEST_SUFFIX;
-        String updateRequestName =
-                typeElement.getSimpleName() + GenUpdateRequestProcessor.UPDATE_REQUEST_SUFFIX;
-        String queryRequestName =
-                typeElement.getSimpleName() + GenQueryRequestProcessor.QUERY_REQUEST_SUFFIX;
-        String responseName = typeElement.getSimpleName() + GenResponseProcessor.RESPONSE_SUFFIX;
-        String feignName = typeElement.getSimpleName() + GenFeignProcessor.FEIGN_SUFFIX;
-        String controllerName = typeElement.getSimpleName() + GenControllerProcessor.CONTROLLER_SUFFIX;
+        Name domainName = typeElement.getSimpleName();
+        String serviceName = GenServiceProcessor.SERVICE_PREFIX + domainName + GenServiceProcessor.SERVICE_SUFFIX;
+        // 获取根路径
+        Optional<GenBase> baseOptional = Optional.ofNullable(typeElement.getAnnotation(GenBase.class));
+        baseOptional.ifPresent(anno -> context.setBasePackage(anno.basePackage()));
+        if (baseOptional.isEmpty()) {
+            Name domainQualifiedName = typeElement.getQualifiedName();
+            int basePackageLength = domainQualifiedName.length() - domainName.length() - 1;
+            String basePackageName = domainQualifiedName.subSequence(0, basePackageLength).toString();
+            context.setBasePackage(basePackageName);
+        }
+        String implName = domainName + GenServiceImplProcessor.IMPL_SUFFIX;
+        String repositoryName = domainName + GenRepositoryProcessor.REPOSITORY_SUFFIX;
+        String mapperName = domainName + GenMapperProcessor.SUFFIX;
+        String voName = domainName + VoCodeGenProcessor.SUFFIX;
+        String queryName = domainName + GenQueryProcessor.QUERY_SUFFIX;
+        String creatorName = domainName + CreatorCodeGenProcessor.SUFFIX;
+        String updaterName = domainName + GenUpdaterProcessor.SUFFIX;
+        String createRequestName = domainName + GenCreateRequestProcessor.CREATE_REQUEST_SUFFIX;
+        String updateRequestName = domainName + GenUpdateRequestProcessor.UPDATE_REQUEST_SUFFIX;
+        String queryRequestName = domainName + GenQueryRequestProcessor.QUERY_REQUEST_SUFFIX;
+        String responseName = domainName + GenResponseProcessor.RESPONSE_SUFFIX;
+        String feignName = domainName + GenFeignProcessor.FEIGN_SUFFIX;
+        String controllerName = domainName + GenControllerProcessor.CONTROLLER_SUFFIX;
+
+        // 设置上下文环境
         context.setServiceClassName(serviceName);
         context.setRepositoryClassName(repositoryName);
         context.setMapperClassName(mapperName);
@@ -142,34 +144,36 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
         context.setResponseClassName(responseName);
         context.setFeignClassName(feignName);
         context.setControllerClassName(controllerName);
-        Optional.ofNullable(typeElement.getAnnotation(GenCreator.class)).ifPresent(anno
-                -> context.setCreatorPackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenUpdater.class)).ifPresent(anno
-                -> context.setUpdaterPackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenQuery.class)).ifPresent(anno
-                -> context.setQueryPackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenVo.class)).ifPresent(anno
-                -> context.setVoPackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenRepository.class)).ifPresent(anno
-                -> context.setRepositoryPackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenMapper.class)).ifPresent(anno
-                -> context.setMapperPackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenService.class)).ifPresent(anno
-                -> context.setServicePackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenServiceImpl.class)).ifPresent(anno
-                -> context.setImplPackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenCreateRequest.class)).ifPresent(anno
-                -> context.setCreatePackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenUpdateRequest.class)).ifPresent(anno
-                -> context.setUpdatePackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenQueryRequest.class)).ifPresent(anno
-                -> context.setQueryRequestPackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenResponse.class)).ifPresent(anno
-                -> context.setResponsePackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenFeign.class)).ifPresent(anno
-                -> context.setFeignPackageName(anno.pkgName()));
-        Optional.ofNullable(typeElement.getAnnotation(GenController.class)).ifPresent(anno
-                -> context.setControllerPackageName(anno.pkgName()));
+
+        //  生成代码
+        Optional.ofNullable(typeElement.getAnnotation(GenCreator.class))
+                .ifPresent(creator -> context.setCreatorPackageName(creator.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenUpdater.class))
+                .ifPresent(updater -> context.setUpdaterPackageName(updater.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenQuery.class))
+                .ifPresent(query -> context.setQueryPackageName(query.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenVo.class))
+                .ifPresent(genVo -> context.setVoPackageName(genVo.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenRepository.class))
+                .ifPresent(repository -> context.setRepositoryPackageName(repository.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenMapper.class))
+                .ifPresent(mapper -> context.setMapperPackageName(mapper.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenService.class))
+                .ifPresent(service -> context.setServicePackageName(service.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenServiceImpl.class))
+                .ifPresent(service -> context.setImplPackageName(service.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenCreateRequest.class))
+                .ifPresent(createRequest -> context.setCreatePackageName(createRequest.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenUpdateRequest.class))
+                .ifPresent(updateRequest -> context.setUpdatePackageName(updateRequest.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenQueryRequest.class))
+                .ifPresent(queryRequest -> context.setQueryRequestPackageName(queryRequest.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenResponse.class))
+                .ifPresent(response -> context.setResponsePackageName(response.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenFeign.class))
+                .ifPresent(feign -> context.setFeignPackageName(feign.pkgName()));
+        Optional.ofNullable(typeElement.getAnnotation(GenController.class))
+                .ifPresent(controller -> context.setControllerPackageName(controller.pkgName()));
         return context;
     }
 
@@ -212,25 +216,26 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @param typeName 类型名称
      */
     private void getDescriptionInfoBuilder(TypeSpec.Builder builder, VariableElement element, TypeName typeName) {
-        FieldSpec.Builder fieldSpec = FieldSpec
+        FieldSpec.Builder fieldSpec;
+        fieldSpec = FieldSpec
                 .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
                 .addAnnotation(AnnotationSpec.builder(Schema.class)
                         .addMember("title", "$S", getFieldDesc(element))
                         .build());
         builder.addField(fieldSpec.build());
-        String fieldName = getFieldDefaultName(element);
-        MethodSpec.Builder getMethod = MethodSpec.methodBuilder("get" + fieldName)
-                .returns(typeName)
-                .addModifiers(Modifier.PUBLIC)
-                .addStatement("return $L", element.getSimpleName().toString());
-        MethodSpec.Builder setMethod = MethodSpec.methodBuilder("set" + fieldName)
-                .returns(void.class)
-                .addModifiers(Modifier.PUBLIC)
-                .addParameter(typeName, element.getSimpleName().toString())
-                .addStatement("this.$L = $L", element.getSimpleName().toString(),
-                        element.getSimpleName().toString());
-        builder.addMethod(getMethod.build());
-        builder.addMethod(setMethod.build());
+//        String fieldName = getFieldDefaultName(element);
+//        MethodSpec.Builder getMethod = MethodSpec.methodBuilder("get" + fieldName)
+//                .returns(typeName)
+//                .addModifiers(Modifier.PUBLIC)
+//                .addStatement("return $L", element.getSimpleName().toString());
+//        MethodSpec.Builder setMethod = MethodSpec.methodBuilder("set" + fieldName)
+//                .returns(void.class)
+//                .addModifiers(Modifier.PUBLIC)
+//                .addParameter(typeName, element.getSimpleName().toString())
+//                .addStatement("this.$L = $L", element.getSimpleName().toString(),
+//                        element.getSimpleName().toString());
+//        builder.addMethod(getMethod.build());
+//        builder.addMethod(setMethod.build());
     }
 
     /**
@@ -305,6 +310,15 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
 
 
     /**
+     * 生成类
+     *
+     * @param typeElement      类型元素
+     * @param roundEnvironment 周围环境
+     */
+    protected abstract void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) throws Exception;
+
+
+    /**
      * 生成java源文件
      *
      * @param packageName     包名
@@ -315,10 +329,9 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
         TypeSpec typeSpec = typeSpecBuilder.build();
         JavaFile javaFile = JavaFile
                 .builder(packageName, typeSpec)
-                .addFileComment("---Auto Generated by Only4Play ---")
+                .addFileComment("---Auto Generated by Project Qing ---")
                 .build();
-        String packagePath =
-                packageName.replace(".", File.separator) + File.separator + typeSpec.name + ".java";
+        String packagePath = packageName.replace(".", File.separator) + File.separator + typeSpec.name + ".java";
         try {
             Path path = Paths.get(pathStr);
             File file = new File(path.toFile().getAbsolutePath());
@@ -330,8 +343,8 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
             if (!sourceFile.exists()) {
                 javaFile.writeTo(file);
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -355,16 +368,16 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
     /**
      * 源类型与构造
      *
-     * @param e              e
+     * @param typeElement    typeElement
      * @param sourceName     源名称
      * @param packageName    包名
      * @param superClassName 超类名字
      * @return {@link TypeSpec.Builder}
      */
-    public TypeSpec.Builder getSourceTypeWithConstruct(TypeElement e, String sourceName,
+    public TypeSpec.Builder getSourceTypeWithConstruct(TypeElement typeElement, String sourceName,
                                                        String packageName, String superClassName) {
         MethodSpec.Builder constructorSpecBuilder = MethodSpec.constructorBuilder()
-                .addParameter(TypeName.get(e.asType()), "source")
+                .addParameter(TypeName.get(typeElement.asType()), "source")
                 .addModifiers(Modifier.PUBLIC);
         constructorSpecBuilder.addStatement("super(source)");
         return TypeSpec.classBuilder(sourceName)
@@ -386,13 +399,14 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @param typeSpecBuilder 类型规范施工
      */
     protected void genJavaFile(String packageName, TypeSpec.Builder typeSpecBuilder) {
-        JavaFile javaFile = JavaFile.builder(packageName, typeSpecBuilder.build())
-                .addFileComment("---Auto Generated by Only4Play ---").build();
+        JavaFile javaFile;
+        javaFile = JavaFile.builder(packageName, typeSpecBuilder.build())
+                .addFileComment("---Auto Generated by Only4Play ---")
+                .build();
         try {
             javaFile.writeTo(ProcessingEnvironmentHolder.getEnvironment().getFiler());
-        } catch (IOException e) {
-            ProcessingEnvironmentHolder.getEnvironment().getMessager()
-                    .printMessage(Kind.ERROR, e.getMessage());
+        } catch (IOException exception) {
+            ProcessingEnvironmentHolder.getEnvironment().getMessager().printMessage(Kind.ERROR, exception.getMessage());
         }
     }
 

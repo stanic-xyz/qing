@@ -14,8 +14,9 @@
 package cn.chenyunlong.codegen.processor.vo;
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import com.google.auto.service.AutoService;
+import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
@@ -51,6 +52,9 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
 
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+
+        DefaultNameContext nameContext = getNameContext(typeElement);
+
         Set<VariableElement> fields = findFields(typeElement,
                 ve -> Objects.isNull(ve.getAnnotation(IgnoreVo.class)));
         String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
@@ -65,13 +69,18 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
                 .addParameter(TypeName.get(typeElement.asType()), "source")
                 .addModifiers(Modifier.PUBLIC);
         constructorSpecBuilder.addStatement("super(source)");
-        fields.forEach(variableElement -> constructorSpecBuilder.addStatement("this.set$L(source.get$L())", getFieldDefaultName(variableElement),
-                getFieldDefaultName(variableElement)));
+        fields.forEach(variableElement -> constructorSpecBuilder
+                .addStatement(
+                        "this.set$L(source.get$L())",
+                        getFieldDefaultName(variableElement),
+                        getFieldDefaultName(variableElement)
+                ));
         builder.addMethod(MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PROTECTED)
                 .build());
         builder.addMethod(constructorSpecBuilder.build());
-        String packageName = generatePackage(typeElement);
+
+        String packageName = nameContext.getVoPackageName();
         genJavaFile(packageName, builder);
         genJavaFile(packageName, getSourceTypeWithConstruct(typeElement, sourceClassName, packageName, className));
     }
