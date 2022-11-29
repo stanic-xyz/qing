@@ -11,24 +11,14 @@
  *
  */
 
-package cn.chenyunlong.qing.utils;
+package cn.chenyunlong.codegen.enumes;
 
-import cn.chenyunlong.qing.infrastructure.utils.Threads;
-import org.junit.jupiter.api.Test;
+public enum OrmType {
 
-public class ThreadsTest {
+    MYBATIS,
 
-    @Test
-    public void sleep() {
-        Threads.sleep(1000);
-    }
+    MYBATIS_PLUS,
 
-    @Test
-    public void shutdownAndAwaitTermination() {
+    JPA
 
-    }
-
-    @Test
-    public void printException() {
-    }
 }

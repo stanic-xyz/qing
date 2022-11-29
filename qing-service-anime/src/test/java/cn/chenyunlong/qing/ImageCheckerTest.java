@@ -71,11 +71,8 @@ public class ImageCheckerTest {
         HttpEntity<String> httpEntity = new HttpEntity<>("", httpHeaders);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(httpRequestFactory);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                httpEntity,
-                String.class);
+        ResponseEntity<String> responseEntity;
+        responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             String gksBody = responseEntity.getBody();
             if (StringUtils.hasText(gksBody)) {

@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.codegen.processor;
 
+import cn.chenyunlong.codegen.enumes.OrmType;
+
 /**
  * 代码生成器基础文件
  *
@@ -36,4 +38,11 @@ public @interface GenBase {
      * @return {@link String}
      */
     String sourcePath() default "src/main/java";
+
+    /**
+     * orm框架类型
+     *
+     * @return {@link OrmType}
+     */
+    OrmType ormType() default OrmType.MYBATIS_PLUS;
 }
