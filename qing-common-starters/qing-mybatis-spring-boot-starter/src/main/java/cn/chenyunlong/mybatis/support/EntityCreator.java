@@ -31,8 +31,7 @@ import java.util.function.Supplier;
  * @date 2022/11/14
  */
 @Slf4j
-public class EntityCreator<T> extends BaseEntityOperation implements Create<T>, UpdateHandler<T>,
-        Executor<T> {
+public class EntityCreator<T> extends BaseEntityOperation implements Create<T>, UpdateHandler<T>, Executor<T> {
 
     private final BaseMapper<T> baseMapper;
     private T t;

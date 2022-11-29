@@ -60,7 +60,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping({"detail/{movieId}", "detail/{movieId}/index.html"})
+    @GetMapping({"detail/{movieId}", "detail/{movieId}.html"})
     public ModelAndView movie(@PathVariable(value = "movieId") Long animeId) {
         DetailModel detailModel = animeInfoModel.detail(animeId);
         ModelAndView modelAndView = new ModelAndView("detail");

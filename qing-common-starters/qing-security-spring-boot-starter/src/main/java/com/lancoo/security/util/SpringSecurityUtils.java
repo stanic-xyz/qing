@@ -31,7 +31,7 @@ public class SpringSecurityUtils {
      * @return 当前用户信息
      */
     public static String getCurrentUsername() {
-        String temp = "";
+        String temp;
         try {
             BaseJwtUser jwtUser = getJwtUser();
             if (Objects.nonNull(jwtUser)) {

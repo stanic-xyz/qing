@@ -19,7 +19,7 @@ import com.lancoo.security.base.JwtAuthenticationTokenFilter;
 import com.lancoo.security.base.extension.DummyUserContextAware;
 import com.lancoo.security.base.extension.UserContextAware;
 import com.lancoo.security.config.SecurityCommonProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -43,18 +43,17 @@ import org.springframework.web.cors.CorsUtils;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableConfigurationProperties(SecurityCommonProperties.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
 
-    @Autowired
-    private JwtAuthenticationProvider jwtAuthenticationProvider;
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
-    @Autowired
-    private SecurityCommonProperties commonProperties;
+    private final JwtAuthenticationProvider jwtAuthenticationProvider;
+
+    private final SecurityCommonProperties commonProperties;
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) {
