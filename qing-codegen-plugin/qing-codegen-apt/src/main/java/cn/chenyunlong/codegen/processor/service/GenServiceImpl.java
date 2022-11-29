@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface GenServiceImpl {
 
-    String pkgName();
+    String pkgName() default "service.impl";
 
     String sourcePath() default "src/main/java";
 

@@ -13,11 +13,27 @@
 
 package cn.chenyunlong.common.annotation;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
+
 /**
  * @Author: Gim
  * @Date: 2019/11/25 16:20
  * @Description:
  */
+@Target(ElementType.FIELD)
 public @interface FieldDesc {
+    /**
+     * 字段名称
+     *
+     * @return {@link String}
+     */
     String name() default "";
+
+    /**
+     * 描述
+     *
+     * @return {@link String}
+     */
+    String description() default "";
 }

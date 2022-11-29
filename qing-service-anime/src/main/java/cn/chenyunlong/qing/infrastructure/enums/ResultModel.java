@@ -45,29 +45,29 @@ public class ResultModel {
     }
 
     public static ResultModel of(ResponseCode responseCode, Object data) {
-        return new ResultModel(responseCode.getCode(), responseCode.getOptionName(), data);
+        return new ResultModel(responseCode.getCode(), responseCode.getName(), data);
     }
 
     public static ResultModel of(ResponseCode responseCode) {
-        return new ResultModel(responseCode.getCode(), responseCode.getOptionName(), null);
+        return new ResultModel(responseCode.getCode(), responseCode.getName(), null);
     }
 
     public static ResultModel ofFail(Object data) {
-        return new ResultModel(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getOptionName(), data);
+        return new ResultModel(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getName(), data);
     }
 
     public static ResultModel ofFail() {
-        return new ResultModel(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getOptionName(), null);
+        return new ResultModel(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getName(), null);
     }
 
     public static ResultModel ofSuccess(Object data) {
-        return new ResultModel(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getOptionName(), data);
+        return new ResultModel(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getName(), data);
     }
 
     private Object data;
 
     public static ResultModel ofSuccess() {
-        return new ResultModel(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getOptionName(), null);
+        return new ResultModel(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getName(), null);
     }
 
     /**

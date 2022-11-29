@@ -11,10 +11,29 @@
  *
  */
 
-package cn.chenyunlong.codegen.test;
+package cn.chenyunlong.codegen.processor;
 
-public interface Constants {
+/**
+ * 代码生成器基础文件
+ *
+ * @author Stan
+ * @date 2022/11/27
+ */
+public @interface GenBase {
 
-    String GEN_API_SOURCE = "E:/GitHub/qing/qing-codegen-plugin/qing-codegen-test/src/main/java";
 
+    /**
+     * 代码生成器根包
+     *
+     * @return {@link String}
+     */
+    String basePackage() default "";
+
+
+    /**
+     * 源代码路径
+     *
+     * @return {@link String}
+     */
+    String sourcePath() default "src/main/java";
 }

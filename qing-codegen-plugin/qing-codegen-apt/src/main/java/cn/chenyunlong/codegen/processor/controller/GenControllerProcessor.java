@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
 import java.util.Optional;
@@ -48,29 +49,40 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
         DefaultNameContext nameContext = getNameContext(typeElement);
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getControllerClassName())
-                .addAnnotation(RestController.class)
-                .addAnnotation(Slf4j.class)
-                .addAnnotation(AnnotationSpec.builder(RequestMapping.class).addMember("value", "$S", StringUtils.camel(typeElement.getSimpleName().toString()) + "/v1").build())
-                .addAnnotation(RequiredArgsConstructor.class)
-                .addModifiers(Modifier.PUBLIC);
+
         String serviceFieldName = StringUtils.camel(typeElement.getSimpleName().toString()) + "Service";
-        if (StringUtils.containsNull(nameContext.getServicePackageName())) {
+        String serviceClassName = nameContext.getServiceClassName();
+        String servicePackageName = nameContext.getServicePackageName();
+        String controllerClassName = nameContext.getControllerClassName();
+        String controllerPackageName = nameContext.getControllerPackageName();
+
+        if (StringUtils.containsNull(servicePackageName)) {
             return;
         }
-        FieldSpec serviceField = FieldSpec
-                .builder(ClassName.get(nameContext.getServicePackageName(), nameContext.getServiceClassName()), serviceFieldName)
-                .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
-                .build();
-        typeSpecBuilder.addField(serviceField);
+
+        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(controllerClassName)
+                .addAnnotation(RestController.class)
+                .addAnnotation(Slf4j.class)
+                .addAnnotation(AnnotationSpec
+                        .builder(RequestMapping.class)
+                        .addMember("value", "$S",
+                                StringUtils.camel(typeElement.getSimpleName().toString()) + "/v1")
+                        .build())
+                .addAnnotation(RequiredArgsConstructor.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addField(FieldSpec
+                        .builder(ClassName
+                                .get(servicePackageName, serviceClassName), serviceFieldName)
+                        .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
+                        .build());
+
         createMethod(serviceFieldName, typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
         updateMethod(serviceFieldName, typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
         validMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
         inValidMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
         findById(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
         findByPage(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(generatePackage(typeElement),
-                typeElement.getAnnotation(GenController.class).sourcePath(), typeSpecBuilder);
+        genJavaSourceFile(controllerPackageName, typeElement.getAnnotation(GenController.class).sourcePath(), typeSpecBuilder);
     }
 
     @Override
@@ -92,24 +104,39 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> createMethod(String serviceFieldName, TypeElement typeElement, DefaultNameContext nameContext) {
-        boolean containsNull;
-        containsNull = StringUtils.containsNull(nameContext.getCreatePackageName(),
-                nameContext.getCreatorPackageName(), nameContext.getMapperPackageName());
+        String creatorPackageName = nameContext.getCreatorPackageName();
+        String queryRequestPackageName = nameContext.getQueryRequestPackageName();
+        String mapperPackageName = nameContext.getMapperPackageName();
+
+        boolean containsNull = StringUtils.containsNull(queryRequestPackageName, creatorPackageName, mapperPackageName);
         if (!containsNull) {
-            return Optional.of(MethodSpec.methodBuilder("create" + typeElement.getSimpleName())
-                    .addParameter(ParameterSpec.builder(ClassName.get(nameContext.getCreatePackageName(), nameContext.getCreateClassName()), "request").addAnnotation(
-                            RequestBody.class).build())
-                    .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "create" + typeElement.getSimpleName()).build())
+
+            String creatorClassName = nameContext.getCreatorClassName();
+            String mapperClassName = nameContext.getMapperClassName();
+            String createClassName = nameContext.getCreateClassName();
+
+            MethodSpec.Builder createMethodBuilder = MethodSpec.methodBuilder("create" + typeElement.getSimpleName());
+            createMethodBuilder
+                    .addParameter(ParameterSpec
+                            .builder(ClassName.get(queryRequestPackageName, createClassName), "request")
+                            .addAnnotation(RequestBody.class)
+                            .build())
+                    .addAnnotation(AnnotationSpec
+                            .builder(PostMapping.class)
+                            .addMember("value", "$S", "create" + typeElement.getSimpleName())
+                            .build())
                     .addModifiers(Modifier.PUBLIC)
-                    .addCode(
-                            CodeBlock.of("$T creator = $T.INSTANCE.request2Dto(request);\n",
-                                    ClassName.get(nameContext.getCreatorPackageName(), nameContext.getCreatorClassName()), ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()))
-                    )
-                    .addCode(
-                            CodeBlock.of("return JsonObject.success($L.create$L(creator));", serviceFieldName, typeElement.getSimpleName().toString())
-                    )
+                    .addCode(CodeBlock
+                            .of("$T creator = $T.INSTANCE.request2Dto(request);",
+                                    ClassName.get(creatorPackageName, creatorClassName),
+                                    ClassName.get(mapperPackageName, mapperClassName)))
+                    .addCode(CodeBlock
+                            .of("return JsonObject.success($L.create$L(creator));",
+                                    serviceFieldName,
+                                    typeElement.getSimpleName().toString()))
                     .addJavadoc("createRequest")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(Long.class))).build());
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(Long.class)));
+            return Optional.of(createMethodBuilder.build());
         }
         return Optional.empty();
     }
@@ -123,22 +150,31 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> updateMethod(String serviceFieldName, TypeElement typeElement, DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getUpdatePackageName(), nameContext.getUpdaterPackageName(), nameContext.getMapperPackageName());
+        String updatePackageName = nameContext.getUpdatePackageName();
+        String updaterPackageName = nameContext.getUpdaterPackageName();
+        String mapperPackageName = nameContext.getMapperPackageName();
+        boolean containsNull = StringUtils.containsNull(updatePackageName, updaterPackageName, mapperPackageName);
         if (!containsNull) {
-            return Optional.of(MethodSpec.methodBuilder("update" + typeElement.getSimpleName())
-                    .addParameter(ParameterSpec.builder(ClassName.get(nameContext.getUpdatePackageName(), nameContext.getUpdateClassName()), "request").addAnnotation(RequestBody.class).build())
-                    .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "update" + typeElement.getSimpleName()).build())
+            String updateClassName = nameContext.getUpdateClassName();
+            String updaterClassName = nameContext.getUpdaterClassName();
+            String mapperClassName = nameContext.getMapperClassName();
+            Name className = typeElement.getSimpleName();
+            return Optional.of(MethodSpec.methodBuilder("update" + className)
+                    .addParameter(ParameterSpec
+                            .builder(ClassName.get(updatePackageName, updateClassName), "request")
+                            .addAnnotation(RequestBody.class)
+                            .build())
+                    .addAnnotation(AnnotationSpec
+                            .builder(PostMapping.class)
+                            .addMember("value", "$S", "update" + className)
+                            .build())
                     .addModifiers(Modifier.PUBLIC)
-                    .addCode(
-                            CodeBlock.of("$T updater = $T.INSTANCE.request2Updater(request);\n",
-                                    ClassName.get(nameContext.getUpdaterPackageName(), nameContext.getUpdaterClassName()), ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()))
+                    .addCode(CodeBlock.of("$T updater = $T.INSTANCE.request2Updater(request);",
+                            ClassName.get(updaterPackageName, updaterClassName),
+                            ClassName.get(mapperPackageName, mapperClassName))
                     )
-                    .addCode(
-                            CodeBlock.of("$L.update$L(updater);\n", serviceFieldName, typeElement.getSimpleName().toString())
-                    )
-                    .addCode(
-                            CodeBlock.of("return $T.success($T.Success.getName());", JsonObject.class, CodeEnum.class)
-                    )
+                    .addCode(CodeBlock.of("$L.update$L(updater);\n", serviceFieldName, className.toString()))
+                    .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonObject.class, CodeEnum.class))
                     .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
                     .addJavadoc("update request")
                     .build());
@@ -155,16 +191,17 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      */
     private Optional<MethodSpec> validMethod(String serviceFieldName, TypeElement typeElement) {
         return Optional.of(MethodSpec.methodBuilder("valid" + typeElement.getSimpleName())
-                .addParameter(ParameterSpec.builder(Long.class, "id").addAnnotation(PathVariable.class).build())
-                .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "valid/{id}").build())
+                .addParameter(ParameterSpec
+                        .builder(Long.class, "id")
+                        .addAnnotation(PathVariable.class)
+                        .build())
+                .addAnnotation(AnnotationSpec
+                        .builder(PostMapping.class)
+                        .addMember("value", "$S", "valid/{id}")
+                        .build())
                 .addModifiers(Modifier.PUBLIC)
-                .addCode(
-                        CodeBlock.of("$L.valid$L(id);\n",
-                                serviceFieldName, typeElement.getSimpleName().toString())
-                )
-                .addCode(
-                        CodeBlock.of("return $T.success($T.Success.getName());", JsonObject.class, CodeEnum.class)
-                )
+                .addCode(CodeBlock.of("$L.valid$L(id);", serviceFieldName, typeElement.getSimpleName().toString()))
+                .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonObject.class, CodeEnum.class))
                 .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
                 .addJavadoc("valid")
                 .build());
@@ -178,17 +215,19 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> inValidMethod(String serviceFieldName, TypeElement typeElement) {
-        return Optional.of(MethodSpec.methodBuilder("invalid" + typeElement.getSimpleName())
-                .addParameter(ParameterSpec.builder(Long.class, "id").addAnnotation(PathVariable.class).build())
-                .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "invalid/{id}").build())
+        return Optional.of(MethodSpec
+                .methodBuilder("invalid" + typeElement.getSimpleName())
+                .addParameter(ParameterSpec
+                        .builder(Long.class, "id")
+                        .addAnnotation(PathVariable.class)
+                        .build())
+                .addAnnotation(AnnotationSpec
+                        .builder(PostMapping.class)
+                        .addMember("value", "$S", "invalid/{id}")
+                        .build())
                 .addModifiers(Modifier.PUBLIC)
-                .addCode(
-                        CodeBlock.of("$L.invalid$L(id);\n",
-                                serviceFieldName, typeElement.getSimpleName().toString())
-                )
-                .addCode(
-                        CodeBlock.of("return $T.success($T.Success.getName());", JsonObject.class, CodeEnum.class)
-                )
+                .addCode(CodeBlock.of("$L.invalid$L(id);", serviceFieldName, typeElement.getSimpleName().toString()))
+                .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonObject.class, CodeEnum.class))
                 .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
                 .addJavadoc("invalid")
                 .build());
@@ -202,25 +241,32 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> findById(String serviceFieldName, DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getVoPackageName(), nameContext.getResponsePackageName(), nameContext.getMapperPackageName());
+        String voPackageName = nameContext.getVoPackageName();
+        String responsePackageName = nameContext.getResponsePackageName();
+        String mapperPackageName = nameContext.getMapperPackageName();
+        boolean containsNull = StringUtils.containsNull(voPackageName, responsePackageName, mapperPackageName);
         if (!containsNull) {
+            String voClassName = nameContext.getVoClassName();
+            String responseClassName = nameContext.getResponseClassName();
             return Optional.of(MethodSpec.methodBuilder("findById")
-                    .addParameter(ParameterSpec.builder(Long.class, "id").addAnnotation(PathVariable.class).build())
-                    .addAnnotation(AnnotationSpec.builder(GetMapping.class).addMember("value", "$S", "findById/{id}").build())
+                    .addParameter(ParameterSpec
+                            .builder(Long.class, "id")
+                            .addAnnotation(PathVariable.class)
+                            .build())
+                    .addAnnotation(AnnotationSpec
+                            .builder(GetMapping.class)
+                            .addMember("value", "$S", "findById/{id}")
+                            .build())
                     .addModifiers(Modifier.PUBLIC)
-                    .addCode(
-                            CodeBlock.of("$T vo = $L.findById(id);\n", ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), serviceFieldName)
-                    )
-                    .addCode(
-                            CodeBlock.of("$T response = $T.INSTANCE.vo2CustomResponse(vo);\n"
-                                    , ClassName.get(nameContext.getResponsePackageName(), nameContext.getResponseClassName()),
-                                    ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()))
-                    )
-                    .addCode(
-                            CodeBlock.of("return $T.success(response);", JsonObject.class)
-                    )
+                    .addCode(CodeBlock
+                            .of("$T vo = $L.findById(id);", ClassName.get(voPackageName, voClassName), serviceFieldName))
+                    .addCode(CodeBlock.of("$T response = $T.INSTANCE.vo2CustomResponse(vo);",
+                            ClassName.get(responsePackageName, responseClassName),
+                            ClassName.get(mapperPackageName, nameContext.getMapperClassName())))
+                    .addCode(CodeBlock.of("return $T.success(response);", JsonObject.class))
                     .addJavadoc("findById")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(nameContext.getResponsePackageName(), nameContext.getResponseClassName())))
+                    .returns(ParameterizedTypeName
+                            .get(ClassName.get(JsonObject.class), ClassName.get(responsePackageName, responseClassName)))
                     .build());
         }
         return Optional.empty();

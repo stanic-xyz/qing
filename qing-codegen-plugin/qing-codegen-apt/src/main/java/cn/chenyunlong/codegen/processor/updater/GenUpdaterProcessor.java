@@ -14,6 +14,7 @@
 package cn.chenyunlong.codegen.processor.updater;
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
+import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
@@ -50,35 +51,36 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
      */
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
-        Set<VariableElement> fields = findFields(typeElement,
-                p -> Objects.isNull(p.getAnnotation(IgnoreUpdater.class)));
+        Set<VariableElement> variableElements;
+        variableElements = findFields(typeElement, element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class)
                 .addAnnotation(Data.class);
-        addSetterAndGetterMethod(typeSpecBuilder, fields);
+        addSetterAndGetterMethod(typeSpecBuilder, variableElements);
         CodeBlock.Builder builder = CodeBlock.builder();
-        for (VariableElement ve : fields) {
+        for (VariableElement variableElement : variableElements) {
             builder.addStatement("$T.ofNullable($L()).ifPresent(v -> param.$L(v))", Optional.class,
-                    "get" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, ve.getSimpleName().toString()),
-                    "set" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, ve.getSimpleName().toString()));
+                    "get" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, variableElement.getSimpleName().toString()),
+                    "set" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, variableElement.getSimpleName().toString()));
         }
-        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(
+        MethodSpec.Builder methodBuilder;
+        methodBuilder = MethodSpec.methodBuilder(
                         "update" + typeElement.getSimpleName())
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(TypeName.get(typeElement.asType()), "param")
                 .addCode(builder.build())
                 .returns(void.class);
         typeSpecBuilder.addMethod(methodBuilder.build());
-        typeSpecBuilder.addField(
-                FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
+        typeSpecBuilder.addField(FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
         addIdSetterAndGetter(typeSpecBuilder);
         typeSpecBuilder.addMethod(MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PROTECTED)
                 .build());
-        String packageName = generatePackage(typeElement);
+        DefaultNameContext nameContext = getNameContext(typeElement);
+        String packageName = nameContext.getUpdaterPackageName();
         genJavaFile(packageName, typeSpecBuilder);
         genJavaFile(packageName, getSourceType(sourceClassName, packageName, className));
     }

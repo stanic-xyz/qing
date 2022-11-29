@@ -134,7 +134,7 @@ public enum ResponseCode implements BaseEnum<ResponseCode> {
     }
 
     @Override
-    public String getOptionName() {
+    public String getName() {
         return name;
     }
 }

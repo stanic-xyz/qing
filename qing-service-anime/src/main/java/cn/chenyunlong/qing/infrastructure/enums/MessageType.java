@@ -60,7 +60,7 @@ public enum MessageType implements BaseEnum<MessageType> {
      * @return 获取编码名称
      */
     @Override
-    public String getOptionName() {
+    public String getName() {
         return getTypeName();
     }
 }

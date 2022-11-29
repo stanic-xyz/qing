@@ -44,14 +44,20 @@ public class GenCreateRequestProcessor extends BaseCodeGenProcessor {
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
         DefaultNameContext nameContext = getNameContext(typeElement);
+
+        String queryRequestPackageName = nameContext.getQueryRequestPackageName();
+
         Set<VariableElement> fields = findFields(typeElement,
-                p -> Objects.isNull(p.getAnnotation(IgnoreCreator.class)));
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getCreateClassName())
+                element -> Objects.isNull(element.getAnnotation(IgnoreCreator.class)));
+        TypeSpec.Builder typeSpecBuilder;
+        typeSpecBuilder = TypeSpec
+                .classBuilder(nameContext.getCreateClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
                 .addAnnotation(Schema.class);
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields);
-        genJavaSourceFile(generatePackage(typeElement),
+
+        genJavaSourceFile(queryRequestPackageName,
                 typeElement.getAnnotation(GenCreateRequest.class).sourcePath(), typeSpecBuilder);
     }
 

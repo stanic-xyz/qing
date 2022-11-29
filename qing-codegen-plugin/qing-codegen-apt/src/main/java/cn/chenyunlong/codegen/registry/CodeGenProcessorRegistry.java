@@ -22,11 +22,14 @@ import java.util.ServiceLoader;
 import java.util.Set;
 
 /**
- * @author gim 通过SPI 加载所有的CodeGenProcessor 识别要处理的annotation标记类
+ * 通过SPI 加载所有的CodeGenProcessor 识别要处理的annotation标记类
+ *
+ * @author Stan
+ * @date 2022/11/28
  */
 public final class CodeGenProcessorRegistry {
 
-    private static Map<String, ? extends CodeGenProcessor> PROCESSORS;
+    private static Map<String, ? extends CodeGenProcessor> processors;
 
 
     private CodeGenProcessorRegistry() {
@@ -39,11 +42,17 @@ public final class CodeGenProcessorRegistry {
      * @return {@link Set}<{@link String}>
      */
     public static Set<String> getSupportedAnnotations() {
-        return PROCESSORS.keySet();
+        return processors.keySet();
     }
 
+    /**
+     * 查询通过spi配置进来的代码生成处理器
+     *
+     * @param annotationClassName 注释类名
+     * @return {@link CodeGenProcessor}
+     */
     public static CodeGenProcessor find(String annotationClassName) {
-        return PROCESSORS.get(annotationClassName);
+        return processors.get(annotationClassName);
     }
 
     /**
@@ -51,13 +60,14 @@ public final class CodeGenProcessorRegistry {
      * spi 加载所有的processor
      */
     public static void initProcessors() {
-        final Map<String, CodeGenProcessor> map = Maps.newLinkedHashMap();
-        ServiceLoader<CodeGenProcessor> processors = ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader());
-        for (CodeGenProcessor next : processors) {
-            Class<? extends Annotation> annotation = next.getAnnotation();
-            map.put(annotation.getName(), next);
+        final Map<String, CodeGenProcessor> genProcessorMap = Maps.newLinkedHashMap();
+        ServiceLoader<CodeGenProcessor> genProcessors;
+        genProcessors = ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader());
+        for (CodeGenProcessor processor : genProcessors) {
+            Class<? extends Annotation> annotation = processor.getAnnotation();
+            genProcessorMap.put(annotation.getName(), processor);
         }
-        PROCESSORS = map;
+        CodeGenProcessorRegistry.processors = genProcessorMap;
     }
 
 }

@@ -25,7 +25,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface GenCreator {
 
-    String pkgName();
+    String pkgName() default "creator";
 
     String sourcePath() default "src/main/java";
 

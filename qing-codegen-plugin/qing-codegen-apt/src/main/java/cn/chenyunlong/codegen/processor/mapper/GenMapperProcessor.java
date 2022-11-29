@@ -15,11 +15,11 @@ package cn.chenyunlong.codegen.processor.mapper;
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.common.mapper.GenericEnumMapper;
 import com.google.auto.service.AutoService;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import cn.chenyunlong.codegen.util.StringUtils;
 import com.squareup.javapoet.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -30,10 +30,12 @@ import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 
+
 /**
- * @Author: Gim
- * @Date: 2019/11/25 14:14
- * @Description:
+ * 生成Mapper
+ *
+ * @author Stan
+ * @date 2022/11/29
  */
 @AutoService(value = CodeGenProcessor.class)
 public class GenMapperProcessor extends BaseCodeGenProcessor {
@@ -42,8 +44,11 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
 
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+
+        DefaultNameContext nameContext = getNameContext(typeElement);
+
         String className = typeElement.getSimpleName() + SUFFIX;
-        String packageName = typeElement.getAnnotation(GenMapper.class).pkgName();
+        String mapperPackageName = nameContext.getMapperPackageName();
         AnnotationSpec mapperAnnotation = AnnotationSpec.builder(Mapper.class)
                 .addMember("uses", "$T.class", GenericEnumMapper.class)
                 .addMember("uses", "$T.class", DateMapper.class)
@@ -51,14 +56,13 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
                 .addAnnotation(mapperAnnotation)
                 .addModifiers(Modifier.PUBLIC);
-        FieldSpec instance = FieldSpec
-                .builder(ClassName.get(packageName, className), "INSTANCE")
+        FieldSpec instance;
+        instance = FieldSpec
+                .builder(ClassName.get(mapperPackageName, className), "INSTANCE")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                .initializer("$T.getMapper($T.class)",
-                        Mappers.class, ClassName.get(packageName, className))
+                .initializer("$T.getMapper($T.class)", Mappers.class, ClassName.get(mapperPackageName, className))
                 .build();
         typeSpecBuilder.addField(instance);
-        DefaultNameContext nameContext = getNameContext(typeElement);
         Optional<MethodSpec> dtoToEntityMethod = dtoToEntityMethod(typeElement, nameContext);
         dtoToEntityMethod.ifPresent(typeSpecBuilder::addMethod);
         Optional<MethodSpec> request2UpdaterMethod = request2UpdaterMethod(nameContext);
@@ -71,8 +75,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         vo2ResponseMethod.ifPresent(typeSpecBuilder::addMethod);
         Optional<MethodSpec> vo2CustomResponseMethod = vo2CustomResponseMethod(nameContext);
         vo2CustomResponseMethod.ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(generatePackage(typeElement),
-                typeElement.getAnnotation(GenMapper.class).sourcePath(), typeSpecBuilder);
+        genJavaSourceFile(mapperPackageName, typeElement.getAnnotation(GenMapper.class).sourcePath(), typeSpecBuilder);
     }
 
 
