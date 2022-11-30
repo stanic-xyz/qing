@@ -155,15 +155,15 @@
                         <ul class="blockcontent">
 
                             <li class="relates_series">
-                                <a href="/detail/20170004">为美好的世界献上祝福！ 第二季</a>
+                                <a href="/anime/20170004/index.html">为美好的世界献上祝福！ 第二季</a>
                             </li>
 
                             <li class="relates_series">
-                                <a href="/detail/20160084">为美好的世界献上祝福！OAD</a>
+                                <a href="/anime/20160084/index.html">为美好的世界献上祝福！OAD</a>
                             </li>
 
                             <li class="relates_series">
-                                <a href="/detail/20180187">为美好的世界献上祝福！红传说</a>
+                                <a href="/anime/20180187/index.html">为美好的世界献上祝福！红传说</a>
                             </li>
 
                         </ul>
@@ -203,7 +203,7 @@
                          th:v-bind:style="|{'display': ${status.index}== menuIndex ?'block':'none'}|">
                         <ul>
                             <li th:each="episode:${playList?.episodeList}">
-                                <a th:href="@{/play/{animeId}(playid=${episode?.id},animeId=${data.animeInfo.id})}"
+                                <a th:href="@{/anime/play/{animeId}/index.html(playId=${episode?.id},animeId=${data.animeInfo.id})}"
                                    th:target="_self"
                                    th:title="${episode.name}"
                                    th:text="${episode.name}">
@@ -263,22 +263,22 @@
                     <div id="recommend_block" class="switchblock" hidden="">
                         <ul class="ul_li_a4">
                             <li class="anime_icon1">
-                                <a href="/detail/20160111">
+                                <a href="/anime/20160111/index.html">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148"
                                          height="205"
                                          src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"
                                          data-src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"></a>
-                                <a href="/detail/20160111">
+                                <a href="/anime/20160111/index.html">
                                     <div class="anime_icon1_name">伤物语</div>
                                 </a>
                             </li>
                             <li class="anime_icon1" th:each="anime:${data.relevant}">
-                                <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
+                                <a th:href="@{/anime/{animeId}/index.html(animeId=${anime.id})}">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148"
                                          height="205" th:src="${anime.coverUrl}" th:data-src="${anime.coverUrl}"
                                          src=""
                                          alt="暂无"></a>
-                                <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
+                                <a th:href="@{/anime/{animeId}/index.html(animeId=${anime.id})}">
                                     <div class="anime_icon1_name" th:text="${anime.name}"></div>
                                 </a>
                             </li>
@@ -417,8 +417,8 @@
                             }
                             html_comment_lis += '<hr class="hrspace2">';
                             html_comment_lis += '<div id="current_comment_page" page=""></div>';
-                            $('#comment_list').html(html_comment_lis);
-                            $('.comment_page').html(html_pageurls)
+                            $('#comment_list') / index.html(html_comment_lis);
+                            $('.comment_page') / index.html(html_pageurls)
                         }
                     </script>
 
