@@ -42,6 +42,26 @@
 - 七牛云存储 sdk：qiniu java sdk
 - 服务端页面渲染：thymeleaf
 
+#### 技术选型
+
+* spring cloud &emsp;2021.0.4
+* spring-cloud-alibaba &emsp;2021.0.4.0
+* querydsl &emsp;5.0
+* spring-data &emsp;2021.1.4
+* springdoc-openapi-ui &emsp;1.6.8
+* spring-cloud-starter-sleuth
+* spring-cloud-stream-binder-kafka
+* javers(审计框架)
+* flowable (流程引擎)
+* spring-boot-starter-data-elasticsearch（elasticsearch 7.15.2)
+* spring cloud gateway
+* spring security(权限控制)
+* flink(1.13.2)，flinkcdc
+* elasticjob (分布式任务调度)
+* spring batch(批处理框架)
+* drools （规则引擎）
+* qiniu
+
 ---
 
 #### 安装教程

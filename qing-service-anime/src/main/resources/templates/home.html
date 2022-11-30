@@ -48,8 +48,8 @@
                     <li id="new_anime_page_btn_4" class="new_anime_btn  highlighttag"
                         :class="{new_anime_btn_current: count==4}" @click="count=4">周四
                     </li>
-                    <li id="new_anime_page_btn_5" class="new_anime_btn  highlighttag"
-                        :class="{new_anime_btn_current: count==5}" @click="count=5">周五
+                    <li :class="{new_anime_btn_current: count==5}" @click="count=5"
+                        class="new_anime_btn  highlighttag" id="new_anime_page_btn_5">周五
                     </li>
                     <li id="new_anime_page_btn_6" class="new_anime_btn highlighttag"
                         :class="{new_anime_btn_current: count==6}" @click="count=6">周六
@@ -62,9 +62,9 @@
                 <ul id="new_anime_page" th:each="entry:${data.recentMap.entrySet()}"
                     th:attr="v-if=${entry.key +'== count'}">
                     <li class="one_new_anime" th:each="anime,iter : ${entry.value}">
-                        <a class="one_new_anime_name" th:href="@{'/detail/'+${anime.id}+'/index.html'}"
+                        <a class="one_new_anime_name" th:href="@{'/anime/'+${anime.id}+'/index.html'}"
                            th:text="${anime.name}"></a>
-                        <a class="one_new_anime_ji" th:href="@{'/detail/'+${anime.id}+'/index.html'}"
+                        <a class="one_new_anime_ji" th:href="@{'/anime/'+${anime.id}+'/index.html'}"
                            th:text="${anime.premiereDate}"></a>
                         <div class="one_anime_new" th:attr="v-if=${!anime.isNew}">new!</div>
                     </li>
@@ -75,7 +75,7 @@
             <div class="blockcontent">
                 <ul id="anime_update">
                     <li class="one_new_anime" th:each="anime : ${data.recentList}">
-                        <a th:href="@{'/detail/'+${anime.id}+'/index.html'}" href="" class="one_new_anime_name"
+                        <a class="one_new_anime_name" href="" th:href="@{'/anime/'+${anime.id}+'/index.html'}"
                            style="width: 220px;" th:text="${anime.name}"></a>
                         <span class="anime_update_date asciifont" style="margin-left: 12px;"
                               th:text="${anime.premiereDate}"></span>
@@ -90,12 +90,12 @@
             <div class="blockcontent">
                 <ul class="ul_li_a5">
                     <li class="anime_icon1" th:each="anime:${data.recommendList}">
-                        <a th:href="@{'/detail/'+${anime.id}+'/index.html'}">
+                        <a th:href="@{'/anime/'+${anime.id}+'/index.html'}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}" th:alt-title="${anime.name}" loading="lazy" alt="">
                             <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}+'/index.html'}">
+                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}+'/index/index.html'}">
                             <div class="anime_icon1_name" th:text="${anime.name}"></div>
                         </a>
                     </li>
@@ -108,12 +108,12 @@
             <div class="blockcontent">
                 <ul class="ul_li_a5">
                     <li class="anime_icon1" th:each="anime:${data.recentList}">
-                        <a th:href="@{'/detail/'+${anime.id}+'/index.html'}">
+                        <a th:href="@{'/anime/'+${anime.id}+'/index.html'}">
                             <img referrerpolicy="no-referrer" width="120px" height="165px" class="anime_icon1_img"
                                  th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" th:alt="${anime.name}"
                                  th:title="${'[TV 01-12]'}" loading="lazy" alt="/img/empty.png">
                             <span class="anime_icon1_name1" th:text="${'[TV 01-12]'}">[TV 01-12]</span></a>
-                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}+'/index.html'}">
+                        <a class="anime_icon1_name_a" th:href="@{'detail/'+${anime.id}+'/index/index.html'}">
                             <div class="anime_icon1_name" th:text="${anime.name}"></div>
                         </a>
                     </li>

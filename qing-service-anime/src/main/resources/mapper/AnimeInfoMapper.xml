@@ -44,7 +44,8 @@
         where anime_info.id = #{id}
     </update>
 
-    <select id="listAnime" resultMap="BaseResultMap" parameterType="cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery">
+    <select id="listAnime" resultMap="BaseResultMap"
+            parameterType="cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery">
         SELECT `id`,
         `name`,
         `district_name`,
@@ -202,7 +203,7 @@
         where !isnull(premiere_date)
     </select>
     <select id="listRecommendAnimeInfo" resultMap="BaseResultMap">
-        SELECT anime.id,
+        SELECT anime_info.id as id,
                `name`,
                `district_name`,
                `cover_url`,
@@ -218,13 +219,14 @@
                `official_website`,
                `play_heat`,
                `original_name`
-        FROM anime_recommend
-                 left join anime_info anime on anime_recommend.aid = anime.id
-        order by anime_recommend.order_no
+        FROM anime_info
+                 left join anime_recommend recommend on recommend.aid = anime_info.id
+        order by anime_info.order_no
+        limit 0,10
     </select>
 
     <insert id="insert">
-        INSERT INTO `zhangli`.`anime_info`
+        INSERT INTO `anime_info`
         (`id`,
          `name`,
          district_name,

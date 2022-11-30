@@ -23,7 +23,7 @@
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/play.css(host=${data?.hostname})}">
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <script th:src="@{{host}/js/hm.js(host=${data?.hostname})}"></script>
-    <script th:src="@{{host}/js/detail.js(host=${data?.hostname})}"></script>
+    <script th:src="@{{host}/js/anime.js(host=${data?.hostname})}"></script>
     <script th:src="@{{host}/js/utils.js(host=${data?.hostname})}"></script>
     <script th:src="@{{host}/js/jquery.foucs.js(host=${data?.hostname})}"></script>
     <script th:src="@{{host}/js/history.js(host=${data?.hostname})}"></script>
@@ -44,7 +44,7 @@
         <div class="baseblock">
             <div class="blocktitle">
                 <h4 id="detailname">
-                    <a th:href="${'/detail/'+data?.animeInfo?.id}"
+                    <a th:href="${'/anime/'+data?.animeInfo?.id+'/index.html'}"
                        th:text="${data?.animeInfo?.name}">
                     </a>
                 </h4>
@@ -55,7 +55,7 @@
                     <tbody>
                     <tr>
                         <td>
-                            <a th:href="${'/detail/'+data?.animeInfo?.id}">
+                            <a th:href="${'/anime/'+data?.animeInfo?.id+'/index.html'}">
                                 <img referrerpolicy="no-referrer" id="play_poster_img" width="187" height="260"
                                      th:src="${data?.animeInfo?.coverUrl}"
                                      th:alt="${data?.animeInfo?.name}" alt="番剧剧照">
@@ -135,7 +135,7 @@
                                  th:style="${status.index == 0? 'display: block;':'display: none;'}">
                                 <ul>
                                     <li th:each="episode:${playList?.episodeList}">
-                                        <a th:href="@{/play/{animeId}(playid=${episode?.id},animeId=${data.animeInfo.id})}"
+                                        <a th:href="@{/play/{animeId}(playId=${episode?.id},animeId=${data.animeInfo.id})}"
                                            target="_self"
                                            th:class="on"
                                            th:title="${episode.name}"
@@ -166,7 +166,7 @@
                         <div id="ageframediv" style="width: 980px; height: 551px;">
                             <!--                            <span id="ipchk_getplay" hidden="hidden"-->
                             <!--                                  style="float: left;color: #F00;margin: 5px;font-size: 1.1em;"></span>-->
-                            <!--                            <iframe id="age_playfram" src="/saved_resource.html" height="100%" width="100%"-->
+                            <!--                            <iframe id="age_playfram" src="/saved_resource/index.html" height="100%" width="100%"-->
                             <!--                                    scrolling="no" allowfullscreen="" frameborder="0"></iframe>-->
                             <!--                            <div id="testvideo_div" hidden="hidden"></div>-->
                             <!--                            <a class="fullscn" style="display: none;">网页全屏</a></div>-->
@@ -273,82 +273,82 @@
                 <div class="blockcontent">
                     <ul class="ul_li_a8">
                         <li class="anime_icon1">
-                            <a href="/detail/20170042">
+                            <a href="/anime/20170042">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H913d39ec1c4d48829d5018875503d13bh.jpg"
                                      data-src="//sc02.alicdn.com/kf/H913d39ec1c4d48829d5018875503d13bh.jpg"></a>
-                            <a href="/detail/20170042">
+                            <a href="/anime/20170042">
                                 <div class="anime_icon1_name">徒然喜欢你</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="/detail/20180031">
+                            <a href="/anime/20180031">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/Haca4ba804e2243f68964e932b2e32eadY.jpg"
                                      data-src="//sc02.alicdn.com/kf/Haca4ba804e2243f68964e932b2e32eadY.jpg"></a>
-                            <a href="/detail/20180031">
+                            <a href="/anime/20180031">
                                 <div class="anime_icon1_name">优C世界</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="/detail/20170069">
+                            <a href="/anime/20170069">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H4287714e3b83442aa4fe8e18d3ba88e4m.jpg"
                                      data-src="//sc02.alicdn.com/kf/H4287714e3b83442aa4fe8e18d3ba88e4m.jpg"></a>
-                            <a href="/detail/20170069">
+                            <a href="/anime/20170069">
                                 <div class="anime_icon1_name">有顶天家族 第二季</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="/detail/20170142">
+                            <a href="/anime/20170142">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/Hb5dcf2c5404c4f07a1b18e1a4ae384ace.jpg"
                                      data-src="//sc02.alicdn.com/kf/Hb5dcf2c5404c4f07a1b18e1a4ae384ace.jpg"></a>
-                            <a href="/detail/20170142">
+                            <a href="/anime/20170142">
                                 <div class="anime_icon1_name">KiraKira☆光之美少女 A La Mode 清脆出炉！回忆的法式千层酥！
                                 </div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="/detail/20110051">
+                            <a href="/anime/20110051">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H5053d55f53b04bd8b5fb341085e6fe96y.jpg"
                                      data-src="//sc02.alicdn.com/kf/H5053d55f53b04bd8b5fb341085e6fe96y.jpg"></a>
-                            <a href="/detail/20110051">
+                            <a href="/anime/20110051">
                                 <div class="anime_icon1_name">恶魔阿萨谢尔在召唤你</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="/detail/20170097">
+                            <a href="/anime/20170097">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H04440c7bcfed4fd99f014b2e05fb01a1u.jpg"
                                      data-src="//sc02.alicdn.com/kf/H04440c7bcfed4fd99f014b2e05fb01a1u.jpg"></a>
-                            <a href="/detail/20170097">
+                            <a href="/anime/20170097">
                                 <div class="anime_icon1_name">结城友奈是勇者 鹫尾须美之章</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="/detail/20140071">
+                            <a href="/anime/20140071">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H1c81c2a7246d447cbcf363d0514a30499.jpg"
                                      data-src="//sc02.alicdn.com/kf/H1c81c2a7246d447cbcf363d0514a30499.jpg"></a>
-                            <a href="/detail/20140071">
+                            <a href="/anime/20140071">
                                 <div class="anime_icon1_name">棺姬嘉依卡</div>
                             </a>
                         </li>
 
                         <li class="anime_icon1">
-                            <a href="/detail/20190052">
+                            <a href="/anime/20190052">
                                 <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148" height="205"
                                      src="/H94f6b0966c2140cba8510dec831046e0v.jpg"
                                      data-src="//sc02.alicdn.com/kf/H94f6b0966c2140cba8510dec831046e0v.jpg"></a>
-                            <a href="/detail/20190052">
+                            <a href="/anime/20190052">
                                 <div class="anime_icon1_name">一个人的〇〇小日子</div>
                             </a>
                         </li>

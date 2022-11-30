@@ -12,7 +12,7 @@
   -->
 
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)/detail/20160083 -->
+<!-- saved from url=(0038)/anime/20160083 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       lang="zh"
@@ -181,7 +181,7 @@
             <div class="blockcontent1">
                 <div class="cell blockdiff2" th:each="anime,iterStat : ${data.animeList}"
                      th:class="${iterStat.index%2==0?'cell blockdiff':'cell blockdiff2'}">
-                    <a th:href="${'/detail/'+anime.getId()}" class="cell_poster">
+                    <a class="cell_poster" th:href="${'/anime/'+anime.getId()+'/index.html'}">
                         <img referrerpolicy="no-referrer" width="150px" height="208px"
                              loading="lazy"
                              th:src="${anime.coverUrl}" th:alt="${anime.getName()}" alt="暂无描述"
@@ -189,7 +189,7 @@
                         <span class="newname">第120话</span></a>
                     <div class="cell_imform">
                         <div>
-                            <a th:href="${'/detail/'+anime.getId()}" class="cell_imform_name"
+                            <a class="cell_imform_name" th:href="${'/anime/'+anime.getId()+'/index.html'}"
                                th:text="${anime.getName()}">--</a>
                         </div>
                         <div class="cell_imform_kvs">
@@ -226,7 +226,7 @@
                         </div>
                         <div class="cell_imform_btns">
                             <a class="nbutton2 cell_res_button"
-                               th:href="@{/detail/{animeId}(animeId=${anime.id})}">资源详情</a>
+                               th:href="@{/anime/{animeId}/index.html(animeId=${anime.id})}">资源详情</a>
                             <a class="nbutton2 cell_res_button"
                                th:href="@{/play/{animeId}(animeId=${anime.id})}">在线播放</a>
                         </div>
