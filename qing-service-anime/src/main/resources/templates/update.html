@@ -12,7 +12,7 @@
   -->
 
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)../movie/detail/20160083 -->
+<!-- saved from url=(0038)../movie/anime/20160083 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -24,7 +24,6 @@
     <link type="text/css" rel="stylesheet" th:href="@{{host}/css/common.css(host=${data.hostname})}">
     <script th:src="@{{host}/js/hm.js(host=${data.hostname})}"></script>
     <script type="text/javascript" th:src="@{{host}/js/history.js(host=${data.hostname})}"></script>
-    <!-- overload -->
 </head>
 
 <body>
@@ -39,13 +38,14 @@
                 <div class="spaceblock"></div>
                 <ul class="ul_li_a6">
                     <li th:each="anime : ${data.animeList}" class="anime_icon2">
-                        <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
+                        <a th:href="@{/anime/{animeId}/index.html(animeId=${anime.id})}">
                             <img referrerpolicy="no-referrer" width="150px" height="208px" class="anime_icon2_img"
                                  th:src="@{{coverUrl}(coverUrl=${anime.coverUrl})}" alt="租借女友"
                                  title="02:00 第10话">
                             <span class="anime_icon1_name1">02:00 第10话</span></a>
                         <h4 class="anime_icon2_name">
-                            <a th:href="@{'../movie/detail/'+${anime.id}}" th:text="${anime.name}">租借女友</a></h4>
+                            <a th:href="@{'/anime/'+${anime.id}+'/index.html'} " th:text="${anime.name}">租借女友</a>
+                        </h4>
                     </li>
                 </ul>
                 <div th:include="common/header::pager('/update',${data.pagination.pages},${data.pagination.current},${data.pagination.getSize()})"></div>

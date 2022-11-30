@@ -21,6 +21,8 @@ spring:
     host: smtp.qq.com
     username: 1576302867@qq.com
     password: xyshwmdggdtqfjhb
+  cache:
+    type: none
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}:@project.version@
@@ -44,5 +46,5 @@ qing:
   index-size: 26
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 

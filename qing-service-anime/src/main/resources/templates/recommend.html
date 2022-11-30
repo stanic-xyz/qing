@@ -12,7 +12,7 @@
   -->
 
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<!-- saved from url=(0038)/detail/20160083 -->
+<!-- saved from url=(0038)/anime/20160083 -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -35,13 +35,13 @@
             <div class="blockcontent">
                 <ul class="ul_li_a6">
                     <li class="anime_icon2" th:each="anime,iterStat : ${animeInfos}">
-                        <a th:href="@{/detail/{animeId}(animeId=${anime.id})}">
+                        <a th:href="@{/anime/{animeId}/index.html(animeId=${anime.id})}">
                             <img referrerpolicy="no-referrer" width="150px" height="208px" class="anime_icon2_img"
-                                 th:src="${anime.coverUrl}" th:alt="${anime.name}"
+                                 alt="图片信息" th:alt="${anime.name}" th:src="${anime.coverUrl}"
                                  th:title="${anime.name}">
                             <span class="anime_icon1_name1">[TV 01-12]</span></a>
                         <h4 class="anime_icon2_name">
-                            <a th:href="@{/detail/{animeId}(animeId=${anime.id})}" th:text="${anime.name}"></a>
+                            <a th:href="@{/anime/{animeId}(animeId=${anime.id})}" th:text="${anime.name}"></a>
                         </h4>
                     </li>
                 </ul>

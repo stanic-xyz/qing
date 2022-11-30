@@ -60,11 +60,21 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping({"detail/{movieId}", "detail/{movieId}.html"})
+    @GetMapping({"anime/{movieId}", "anime/{movieId}/index.html"})
     public ModelAndView movie(@PathVariable(value = "movieId") Long animeId) {
         DetailModel detailModel = animeInfoModel.detail(animeId);
         ModelAndView modelAndView = new ModelAndView("detail");
         modelAndView.addObject("data", detailModel);
+        return modelAndView;
+    }
+
+    @GetMapping({"anime/play/{movieId}", "anime/play/{movieId}.html"})
+    public ModelAndView play(
+            @PathVariable(value = "movieId") Long animeId,
+            @RequestParam(value = "playId", required = false) Long playId) {
+        PlayModel playModel = animeInfoModel.play(animeId, playId);
+        ModelAndView modelAndView = new ModelAndView("play");
+        modelAndView.addObject("data", playModel);
         return modelAndView;
     }
 
@@ -77,17 +87,6 @@ public class MovieController {
         CatalogModel catalogModel = animeInfoModel.listCatalog(new Page<>(page, pageSize), animeInfoQuery);
         modelAndView.setViewName("catalog");
         modelAndView.addObject("data", catalogModel);
-        return modelAndView;
-    }
-
-    @GetMapping({"play/{movieId}", "play/{movieId}/index.html"})
-    public ModelAndView play(
-            @PathVariable(value = "movieId") Long animeId,
-            @RequestParam(value = "playid", required = false) Long playId) {
-
-        PlayModel playModel = animeInfoModel.play(animeId, playId);
-        ModelAndView modelAndView = new ModelAndView("play");
-        modelAndView.addObject("data", playModel);
         return modelAndView;
     }
 
