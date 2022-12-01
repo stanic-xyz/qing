@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.lancoo.security.SecurityAutoConfiguration
+cn.chenyunlong.security.SecurityAutoConfiguration,\
+  cn.chenyunlong.security.config.ContextConfig

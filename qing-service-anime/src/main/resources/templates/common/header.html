@@ -51,11 +51,13 @@
 
 <header id="nav" th:fragment="commonHead(title)">
     <a th:class="${title=='index'?'nav_button nav_button_current':'nav_button'}" th:href="@{/index.html}">首页</a>
-    <a th:class="${title=='catlog'?'nav_button nav_button_current':'nav_button'}" th:href="@{/catalog.html}">目录</a>
+    <a th:class="${title=='catlog'?'nav_button nav_button_current':'nav_button'}"
+       th:href="@{/catalog/index.html}">目录</a>
     <a th:class="${title=='recommend'?'nav_button nav_button_current':'nav_button'}"
-       th:href="@{/recommend.html}">每日推荐</a>
-    <a th:class="${title=='update'?'nav_button nav_button_current':'nav_button'}" th:href="@{/update.html}">最近更新</a>
-    <a th:class="${title=='rank'?'nav_button nav_button_current':'nav_button'}" th:href="@{/rank.html}">排行榜</a>
+       th:href="@{/recommend/index.html}">每日推荐</a>
+    <a th:class="${title=='update'?'nav_button nav_button_current':'nav_button'}"
+       th:href="@{/update/index.html}">最近更新</a>
+    <a th:class="${title=='rank'?'nav_button nav_button_current':'nav_button'}" th:href="@{/rank/index.html}">排行榜</a>
     <a th:class="${title=='detail'?'nav_button nav_button_current':'nav_button'}"
        th:style="${title=='detail'?'':'display: none'}">详情</a>
     <a th:class="${title=='search'?'nav_button nav_button_current':'nav_button'}"
