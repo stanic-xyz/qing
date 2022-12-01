@@ -15,9 +15,9 @@
 
 #### 以下是关于项目的运行
 
-目前的计划是集成到自动构建自动部署中，使用的工具是coding的devops平台[CODING项目协同管理平台](https://stanic.coding.net/)
+目前的计划是集成到自动构建自动部署中，使用的构建工具是Coding的devops平台[CODING项目协同管理平台](https://stanic.coding.net/)
 
-项目演示地址： [http://www.chenyunlong.cn/index.html](http://www.chenyunlong.cn/index.html)  暂时还没有做好部署，以后有机会会传上去让大家看看的
+项目演示地址： [https://bangumi.chenyunlong.cn/index.html](https://bangumi.chenyunlong.cn/index.html)
 
 该项目是本人在学习微服务中的一些实践，可以简单的作为参考（目前还没有完全实现，所以参考意义不大）
 
@@ -31,36 +31,30 @@
 
 #### 软件选型
 
-- 数据库：mysql
-- 持久层框架：mybatis
-- 数据库连接池管理：hikaricp
-- 数据库分页插件：github pagehelper
-- mvc 框架：spring mvc
-- 应用层容器：spring boot
-- json 序列化工具：fastjson
-- 邮件发送 sdk：javax mail
-- 七牛云存储 sdk：qiniu java sdk
-- 服务端页面渲染：thymeleaf
+- Spring Boot ：应用层容器
+- Spring Cloud &emsp;2021.0.4
+- Spring Cloud Alibaba &emsp;2021.0.4.0
+- MySQL ：数据库
+- mybatis-plus ：持久层框架
+- spring-data &emsp;2021.1.4 ：持久层框架
+- Spring Security ：权限控制
+- Springdoc OpenApi ui&emsp;1.6.8 在线文档工具
+- spring cloud gateway 微服务网关
+- Spring Batch ：批处理框架
+- Fastjson ：json序列化工具
+- javax mail： 邮件发送 sdk
+- thymeleaf 服务端页面渲染
 
-#### 技术选型
+#### 技术选型（待集成）
 
-* spring cloud &emsp;2021.0.4
-* spring-cloud-alibaba &emsp;2021.0.4.0
-* querydsl &emsp;5.0
-* spring-data &emsp;2021.1.4
-* springdoc-openapi-ui &emsp;1.6.8
-* spring-cloud-starter-sleuth
-* spring-cloud-stream-binder-kafka
-* javers(审计框架)
-* flowable (流程引擎)
-* spring-boot-starter-data-elasticsearch（elasticsearch 7.15.2)
-* spring cloud gateway
-* spring security(权限控制)
-* flink(1.13.2)，flinkcdc
-* elasticjob (分布式任务调度)
-* spring batch(批处理框架)
-* drools （规则引擎）
-* qiniu
+* [ ] querydsl &emsp;5.0
+* [ ] javers (审计框架)
+* [ ] flowable (流程引擎)
+* [ ] spring-boot-starter-data-elasticsearch（elasticsearch 7.15.2)
+* [ ] flink(1.13.2)，flinkcdc
+* [ ] elasticjob (分布式任务调度)
+* [ ] drools （规则引擎）
+* [ ] thymeleaf 模板引擎，用于渲染首页
 
 ---
 

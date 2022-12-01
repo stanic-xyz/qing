@@ -126,7 +126,7 @@ public class AnimeInfoModel {
         return detailModel;
     }
 
-    public PlayModel play(Long animeId, Long playId) {
+    public PlayModel play(Long animeId, Long listId, Long playId) {
         PlayModel playModel = new PlayModel();
         AnimeInfo animeInfo = animeInfoService.getById(animeId);
 
