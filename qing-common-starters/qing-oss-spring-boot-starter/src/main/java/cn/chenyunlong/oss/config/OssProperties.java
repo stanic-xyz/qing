@@ -11,7 +11,7 @@
  *
  */
 
-package com.lancoo.oss.config;
+package cn.chenyunlong.oss.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
