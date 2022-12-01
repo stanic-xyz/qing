@@ -203,7 +203,7 @@
                          th:v-bind:style="|{'display': ${status.index}== menuIndex ?'block':'none'}|">
                         <ul>
                             <li th:each="episode:${playList?.episodeList}">
-                                <a th:href="@{/anime/play/{animeId}/index.html(playId=${episode?.id},animeId=${data.animeInfo.id})}"
+                                <a th:href="@{/anime/{animeId}/play/{listId}/{episodeId}/index.html(animeId=${data.animeInfo.id},listId=${playList.id},episodeId=${episode.id})}"
                                    th:target="_self"
                                    th:title="${episode.name}"
                                    th:text="${episode.name}">
@@ -262,16 +262,6 @@
                     </div>
                     <div id="recommend_block" class="switchblock" hidden="">
                         <ul class="ul_li_a4">
-                            <li class="anime_icon1">
-                                <a href="/anime/20160111/index.html">
-                                    <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148"
-                                         height="205"
-                                         src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"
-                                         data-src="https://sc02.alicdn.com/kf/H3e0ebe3098c345e9af4d0a68fc601667H.jpg"></a>
-                                <a href="/anime/20160111/index.html">
-                                    <div class="anime_icon1_name">伤物语</div>
-                                </a>
-                            </li>
                             <li class="anime_icon1" th:each="anime:${data.relevant}">
                                 <a th:href="@{/anime/{animeId}/index.html(animeId=${anime.id})}">
                                     <img referrerpolicy="no-referrer" class="anime_icon1_img" width="148"

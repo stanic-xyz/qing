@@ -68,17 +68,17 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping({"anime/play/{movieId}", "anime/play/{movieId}.html"})
-    public ModelAndView play(
-            @PathVariable(value = "movieId") Long animeId,
-            @RequestParam(value = "playId", required = false) Long playId) {
-        PlayModel playModel = animeInfoModel.play(animeId, playId);
+    @GetMapping("anime/{movieId}/play/{listId}/{playId}/index.html")
+    public ModelAndView play(@PathVariable(value = "movieId") Long animeId,
+                             @PathVariable(value = "listId") Long listId,
+                             @PathVariable(value = "playId") Long playId) {
+        PlayModel playModel = animeInfoModel.play(animeId, listId, playId);
         ModelAndView modelAndView = new ModelAndView("play");
         modelAndView.addObject("data", playModel);
         return modelAndView;
     }
 
-    @GetMapping({"catalog", "catalog.html"})
+    @GetMapping({"catalog", "catalog/index.html"})
     public ModelAndView catalog(AnimeInfoQuery animeInfoQuery,
                                 @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "24") Integer pageSize) {
@@ -90,7 +90,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping({"rank", "rank.html"})
+    @GetMapping({"rank", "rank/index.html"})
     public ModelAndView rank(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "75") Integer size,
@@ -105,7 +105,7 @@ public class MovieController {
     }
 
 
-    @GetMapping({"update", "update.html"})
+    @GetMapping({"update", "update/index.html"})
     public ModelAndView update(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "24") Integer pageSize) {
         ModelAndView modelAndView = new ModelAndView("update");
@@ -115,7 +115,7 @@ public class MovieController {
     }
 
 
-    @GetMapping({"recommend", "recommend.html"})
+    @GetMapping({"recommend", "recommend/index.html"})
     public ModelAndView recommend(ModelAndView modelAndView) {
         List<AnimeInfoMinimalDTO> animeInfoList = animeInfoService.getRecommendAnimeInfoList();
         modelAndView.setViewName("recommend");
@@ -123,7 +123,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping({"search", "search.html"})
+    @GetMapping({"search", "search/index.html"})
     public ModelAndView search(
             @RequestParam(value = "query", required = false, defaultValue = "") String query,
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
