@@ -11,8 +11,11 @@
  *
  */
 
-package com.lancoo.oss;
+package cn.chenyunlong.oss;
 
+import cn.chenyunlong.oss.client.OssClient;
+import cn.chenyunlong.oss.client.S3OssClient;
+import cn.chenyunlong.oss.config.OssProperties;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -20,9 +23,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.lancoo.oss.client.OssClient;
-import com.lancoo.oss.client.S3OssClient;
-import com.lancoo.oss.config.OssProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
