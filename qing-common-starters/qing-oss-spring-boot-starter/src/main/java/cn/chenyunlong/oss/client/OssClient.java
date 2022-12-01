@@ -11,7 +11,7 @@
  *
  */
 
-package com.lancoo.oss.client;
+package cn.chenyunlong.oss.client;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectResult;
