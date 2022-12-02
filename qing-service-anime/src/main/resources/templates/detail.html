@@ -49,13 +49,13 @@
 
 <script type="module">
     PetiteVue.createApp({
-        // exposed to all expressions
         count: 0,
         menuIndex: 0,
         reportType: 0,
+        animeId: null,
         detail: '有问题一定要告诉我们哦',
         reportTypes: [{id: 0, name: '链接失效'}, {id: 2, name: '级数缺失'}, {id: 2, name: '资源质量差'}],
-        reportValue: 'test',
+        chooseReportTypes: [],
         // getters
         get plusOne() {
             return this.count + 1
@@ -67,9 +67,14 @@
         },
         next(index) {
             this.menuIndex = index
+            console.log('跳转到某一个页面', this.menuIndex)
         },
         sendReport() {
+            console.log("反馈信息详情", this.detail)
             console.log("提交反馈信息", this.reportType, this.reportTypes[this.reportType])
+        },
+        mounted() {
+            console.log(`I'm mounted!`)
         }
     }).mount()
 </script>
@@ -234,16 +239,19 @@
                         <div>
                             <input id="report_aid" type="hidden" name="cid"
                                    th:value="${data?.animeInfo?.id}"
-                                   th:v-model="reportValue">
+                                   th:v-model="animeId">
                             <label v-for="type in reportTypes">
-                                <input type="checkbox" name="link_invalid" value="1">{{ type.name }}</label>
+                                <input name="link_invalid" th:v-bind:value="type.name" type="radio"
+                                       v-model="chooseReportTypes">{{ type.name }}</label>
+                            <br/>
                             <label>
-                                <input type="checkbox" name="other" value="1">其他</label>
-                            <input autocapitalize="off" autocomplete="off" name="detail"
-                                   placeholder="请告诉我们详细情况~~"
-                                   v-model="detail"
-                                   spellcheck="true">
-                            <button class="nbutton" @click="sendReport" value="提交">提交</button>
+                                {{chooseReportTypes}}
+                                <br/>
+                                <textarea autocapitalize="off" autocomplete="off" name="detail"
+                                          spellcheck="true">{{detail}}</textarea>
+                            </label>
+                            <br/>
+                            <button class="nbutton" th:@click="sendReport" value="提交">提交</button>
                         </div>
                     </div>
                 </div>
