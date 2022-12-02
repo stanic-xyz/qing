@@ -1,10 +1,10 @@
-FROM java:8-jre AS zhangli-admin-server
+FROM openjdk:17-slim AS qing-admin-server
 USER root
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"
 ENV ENV prod
+ENV QING_REGISTRY_EUREKA_URL "http://localhost:8761/eureka"
 EXPOSE 10086
 WORKDIR /home
-ARG JAR_FILE
-ADD target/${JAR_FILE} /home/zhangli-admin-server.jar
-ENTRYPOINT ["/usr/bin/java","-jar","/home/zhangli-admin-server.jar"]
+ADD target/qing-admin-server.jar /usr/local/app.jar
+ENTRYPOINT ["java","-jar","/usr/local/app.jar"]

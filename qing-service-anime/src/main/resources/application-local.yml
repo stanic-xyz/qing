@@ -26,11 +26,11 @@ spring:
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}:@project.version@
-    appname: ${spring.application.name}
-    hostname: bangumi.chenyunlong.cn
+    hostname: 127.0.0.1
+    namespace: qing
   client:
     service-url:
-      defaultZone: https://eureka.chenyunlong.cn/eureka/
+      defaultZone: http://localhost:8761/eureka/
 mp:
   wx:
     appId: wx09bf7e704a150a9c

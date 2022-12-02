@@ -2,18 +2,23 @@ server:
   port: 10086
 spring:
   application:
-    name: zhangli-admin-server
+    name: qing-admin-server
   profiles:
-    active: ${ENV:prod}
+    active: prod
   security:
     # 配置登录用户名和密码
     user:
-      name: stan
-      password: 123456
-#  boot:
-#    admin:
-#      discovery:
-#        ignored-services: ${spring.application.name}
+      name: ${QING_ADMIN_USERNAME}
+      password: ${QING_ADMIN_PASSWORD}
+  boot:
+    admin:
+      discovery:
+        ignored-services:
+          - ${spring.application.name}
+          - password
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}:@project.version@
 management:
   endpoints:
     web:
