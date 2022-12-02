@@ -60,7 +60,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping({"anime/{movieId}", "anime/{movieId}/index.html"})
+    @GetMapping("anime/{movieId}/index.html")
     public ModelAndView movie(@PathVariable(value = "movieId") Long animeId) {
         DetailModel detailModel = animeInfoModel.detail(animeId);
         ModelAndView modelAndView = new ModelAndView("detail");
@@ -78,7 +78,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping({"catalog", "catalog/index.html"})
+    @GetMapping("catalog/index.html")
     public ModelAndView catalog(AnimeInfoQuery animeInfoQuery,
                                 @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "24") Integer pageSize) {
@@ -90,7 +90,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping({"rank", "rank/index.html"})
+    @GetMapping("rank/index.html")
     public ModelAndView rank(
             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "75") Integer size,
@@ -105,7 +105,7 @@ public class MovieController {
     }
 
 
-    @GetMapping({"update", "update/index.html"})
+    @GetMapping("update/index.html")
     public ModelAndView update(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "24") Integer pageSize) {
         ModelAndView modelAndView = new ModelAndView("update");
@@ -115,7 +115,7 @@ public class MovieController {
     }
 
 
-    @GetMapping({"recommend", "recommend/index.html"})
+    @GetMapping("recommend/index.html")
     public ModelAndView recommend(ModelAndView modelAndView) {
         List<AnimeInfoMinimalDTO> animeInfoList = animeInfoService.getRecommendAnimeInfoList();
         modelAndView.setViewName("recommend");
@@ -123,7 +123,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @GetMapping({"search", "search/index.html"})
+    @GetMapping("search/index.html")
     public ModelAndView search(
             @RequestParam(value = "query", required = false, defaultValue = "") String query,
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
