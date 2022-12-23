@@ -1,5 +1,5 @@
 server:
-  port: 10086
+  port: 80
 spring:
   application:
     name: qing-admin-server
@@ -10,12 +10,6 @@ spring:
     user:
       name: ${QING_ADMIN_USERNAME}
       password: ${QING_ADMIN_PASSWORD}
-  boot:
-    admin:
-      discovery:
-        ignored-services:
-          - ${spring.application.name}
-          - password
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}:@project.version@
@@ -27,3 +21,8 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+info:
+  version: '@project.version@'
+  name: '@project.artifactId@'
+  group: '@project.groupId@'
+  description: '@project.description@'

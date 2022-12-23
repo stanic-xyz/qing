@@ -19,7 +19,7 @@ import lombok.Getter;
 /**
  * 视频的状态
  */
-public enum VideoStatus implements BaseEnum<VideoStatus> {
+public enum VideoStatus implements BaseEnum {
     /**
      * 正常
      */
@@ -30,13 +30,13 @@ public enum VideoStatus implements BaseEnum<VideoStatus> {
     DISABLED(1, "被禁用");
 
     @Getter
-    private final Integer value;
+    private final Integer option;
 
     @Getter
     private final String optionName;
 
     VideoStatus(Integer value, String optionName) {
-        this.value = value;
+        this.option = value;
         this.optionName = optionName;
     }
 
@@ -46,8 +46,8 @@ public enum VideoStatus implements BaseEnum<VideoStatus> {
      * @return 获取编码
      */
     @Override
-    public Integer getCode() {
-        return value;
+    public Integer getValue() {
+        return option;
     }
 
     /**

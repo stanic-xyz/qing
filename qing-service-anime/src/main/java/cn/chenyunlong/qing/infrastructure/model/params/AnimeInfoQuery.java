@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.model.params;
 
-import cn.chenyunlong.qing.domain.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.InputConverter;
 import cn.chenyunlong.qing.infrastructure.utils.StringUtils;
 import lombok.Data;

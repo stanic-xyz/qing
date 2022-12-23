@@ -15,9 +15,7 @@ package cn.chenyunlong.security.config;
 
 import cn.chenyunlong.common.constants.BaseEnum;
 
-import java.util.Optional;
-
-public enum AuthErrorMsg implements BaseEnum<AuthErrorMsg> {
+public enum AuthErrorMsg implements BaseEnum {
     /**
      * 认证
      */
@@ -45,19 +43,16 @@ public enum AuthErrorMsg implements BaseEnum<AuthErrorMsg> {
         this.name = name;
     }
 
-    public static Optional<AuthErrorMsg> of(Integer code) {
-        return Optional.ofNullable(
-                BaseEnum.parseByCode(AuthErrorMsg.class, code));
-    }
-
-    @Override
-    public Integer getCode() {
-        return this.code;
-    }
-
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * @return
+     */
+    @Override
+    public Integer getValue() {
+        return code;
+    }
 }

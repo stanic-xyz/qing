@@ -13,14 +13,18 @@
 
 package cn.chenyunlong.qing.infrastructure.domain;
 
+import cn.chenyunlong.codegen.processor.creator.IgnoreCreator;
+import cn.chenyunlong.codegen.processor.updater.IgnoreUpdater;
+import cn.chenyunlong.common.constants.ValidStatus;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
 import cn.chenyunlong.qing.infrastructure.utils.StringUtils;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
+import javax.persistence.Convert;
 import java.time.LocalDateTime;
 
 /**
@@ -33,7 +37,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @NoArgsConstructor
-public class BaseEntity<DOMAIN extends BaseEntity<DOMAIN>> extends Model<DOMAIN> implements Serializable {
+public class BaseEntity extends BaseJpaAggregate {
 
     /**
      * Create time.
@@ -44,11 +48,6 @@ public class BaseEntity<DOMAIN extends BaseEntity<DOMAIN>> extends Model<DOMAIN>
      * Update time.
      */
     private LocalDateTime updateTime;
-
-    /**
-     * 搜索值
-     */
-    private String searchValue;
 
     /**
      * 创建者
@@ -65,6 +64,11 @@ public class BaseEntity<DOMAIN extends BaseEntity<DOMAIN>> extends Model<DOMAIN>
      */
     private String remark;
 
+    @Convert(converter = ValidStatusConverter.class)
+    @IgnoreUpdater
+    @IgnoreCreator
+    private ValidStatus validStatus;
+
 
     /**
      * 数据检查
@@ -76,9 +80,6 @@ public class BaseEntity<DOMAIN extends BaseEntity<DOMAIN>> extends Model<DOMAIN>
         if (updateTime == null) {
             updateTime = LocalDateTime.now();
         }
-        if (StringUtils.isEmpty(searchValue)) {
-            searchValue = "";
-        }
         if (StringUtils.isEmpty(createBy)) {
             createBy = "system";
         }
@@ -86,6 +87,20 @@ public class BaseEntity<DOMAIN extends BaseEntity<DOMAIN>> extends Model<DOMAIN>
             updateBy = "";
         }
     }
+
+
+    public void init() {
+        setValidStatus(ValidStatus.VALID);
+    }
+
+    public void valid() {
+        setValidStatus(ValidStatus.VALID);
+    }
+
+    public void invalid() {
+        setValidStatus(ValidStatus.INVALID);
+    }
+
 
     protected boolean canEqual(final Object other) {
         return other instanceof BaseEntity;

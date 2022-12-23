@@ -105,15 +105,16 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> request2UpdaterMethod(DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getUpdaterPackageName(), nameContext.getUpdatePackageName());
+        String updaterPackageName = nameContext.getUpdaterPackageName();
+        String updatePackageName = nameContext.getUpdatePackageName();
+        boolean containsNull = StringUtils.containsNull(updaterPackageName, updatePackageName);
         if (!containsNull) {
+            String updateClassName = nameContext.getUpdateClassName();
+            String updaterClassName = nameContext.getUpdaterClassName();
             return Optional.of(MethodSpec
                     .methodBuilder("request2Updater")
-                    .returns(
-                            ClassName.get(nameContext.getUpdaterPackageName(), nameContext.getUpdaterClassName()))
-                    .addParameter(
-                            ClassName.get(nameContext.getUpdatePackageName(), nameContext.getUpdateClassName()),
-                            "request")
+                    .returns(ClassName.get(updaterPackageName, updaterClassName))
+                    .addParameter(ClassName.get(updatePackageName, updateClassName), "request")
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .build());
         }
@@ -121,15 +122,15 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> request2DtoMethod(DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getCreatorPackageName(), nameContext.getCreatePackageName());
+        String createPackageName = nameContext.getCreatePackageName();
+        String creatorPackageName = nameContext.getCreatorPackageName();
+        boolean containsNull = StringUtils.containsNull(creatorPackageName, createPackageName);
         if (!containsNull) {
+            String creatorClassName = nameContext.getCreatorClassName();
             return Optional.of(MethodSpec
                     .methodBuilder("request2Dto")
-                    .returns(
-                            ClassName.get(nameContext.getCreatorPackageName(), nameContext.getCreatorClassName()))
-                    .addParameter(
-                            ClassName.get(nameContext.getCreatePackageName(), nameContext.getCreateClassName()),
-                            "request")
+                    .returns(ClassName.get(creatorPackageName, creatorClassName))
+                    .addParameter(ClassName.get(createPackageName, nameContext.getCreateClassName()), "request")
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .build());
         }
@@ -137,14 +138,15 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> request2QueryMethod(DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getQueryPackageName(), nameContext.getQueryRequestPackageName());
+        String requestPackageName = nameContext.getQueryRequestPackageName();
+        String packageName = nameContext.getQueryPackageName();
+        boolean containsNull = StringUtils.containsNull(packageName, requestPackageName);
         if (!containsNull) {
+            String queryRequestClassName = nameContext.getQueryRequestClassName();
             return Optional.of(MethodSpec
                     .methodBuilder("request2Query")
-                    .returns(
-                            ClassName.get(nameContext.getQueryPackageName(), nameContext.getQueryClassName()))
-                    .addParameter(ClassName.get(nameContext.getQueryRequestPackageName(),
-                            nameContext.getQueryRequestClassName()), "request")
+                    .returns(ClassName.get(packageName, nameContext.getQueryClassName()))
+                    .addParameter(ClassName.get(requestPackageName, queryRequestClassName), "request")
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .build());
         }
@@ -152,14 +154,15 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> vo2ResponseMethod(DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getResponsePackageName(), nameContext.getVoPackageName());
+        String responsePackageName = nameContext.getResponsePackageName();
+        String voPackageName = nameContext.getVoPackageName();
+        boolean containsNull = StringUtils.containsNull(responsePackageName, voPackageName);
         if (!containsNull) {
+            String responseClassName = nameContext.getResponseClassName();
             return Optional.of(MethodSpec
                     .methodBuilder("vo2Response")
-                    .returns(ClassName.get(nameContext.getResponsePackageName(),
-                            nameContext.getResponseClassName()))
-                    .addParameter(ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()),
-                            "vo")
+                    .returns(ClassName.get(responsePackageName, responseClassName))
+                    .addParameter(ClassName.get(voPackageName, nameContext.getVoClassName()), "vo")
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .build());
         }
@@ -167,18 +170,17 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> vo2CustomResponseMethod(DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getResponsePackageName(), nameContext.getVoPackageName());
+        String responsePackageName = nameContext.getResponsePackageName();
+        boolean containsNull = StringUtils.containsNull(responsePackageName, nameContext.getVoPackageName());
         if (!containsNull) {
+            String responseClassName = nameContext.getResponseClassName();
             return Optional.of(MethodSpec
                     .methodBuilder("vo2CustomResponse")
-                    .returns(ClassName.get(nameContext.getResponsePackageName(),
-                            nameContext.getResponseClassName()))
-                    .addParameter(ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()),
-                            "vo")
+                    .returns(ClassName.get(responsePackageName, responseClassName))
+                    .addParameter(ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), "vo")
                     .addCode(
                             CodeBlock.of("$T response = vo2Response(vo);\n",
-                                    ClassName.get(nameContext.getResponsePackageName(),
-                                            nameContext.getResponseClassName()))
+                                    ClassName.get(responsePackageName, responseClassName))
                     )
                     .addCode(
                             CodeBlock.of("return response;")

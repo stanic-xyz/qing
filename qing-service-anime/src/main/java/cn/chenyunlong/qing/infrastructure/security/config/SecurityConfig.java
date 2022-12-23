@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.security.config;
 
-import cn.chenyunlong.qing.domain.user.service.UserService;
+import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.security.MyAccessDeniedHandler;
 import cn.chenyunlong.qing.infrastructure.security.MyAuthenticationEntryPoint;
@@ -42,10 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler,
-                          AuthenticationFailureHandler authenticationFeilureHandler,
+                          AuthenticationFailureHandler authenticationFailureHandler,
                           QingProperties qingProperties,
                           MyAccessDeniedHandler myAccessDeniedHandler,
-                          UserService userService,
+                          IUserService userService,
                           TokenProvider tokenProvider,
                           UserDetailsService myUserDetailService,
                           MyAuthenticationEntryPoint myAuthenticationEntryPoint) {

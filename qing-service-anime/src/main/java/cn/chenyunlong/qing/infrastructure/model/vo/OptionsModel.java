@@ -13,9 +13,9 @@
 
 package cn.chenyunlong.qing.infrastructure.model.vo;
 
-import cn.chenyunlong.qing.domain.anime.AnimeType;
+import cn.chenyunlong.qing.domain.anime.type.AnimeType;
 import cn.chenyunlong.qing.domain.district.District;
-import cn.chenyunlong.qing.infrastructure.model.entities.Version;
+import cn.chenyunlong.qing.domain.system.version.Version;
 import lombok.Data;
 
 import java.util.List;

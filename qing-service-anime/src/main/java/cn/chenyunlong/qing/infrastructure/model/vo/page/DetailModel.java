@@ -13,10 +13,9 @@
 
 package cn.chenyunlong.qing.infrastructure.model.vo.page;
 
-import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoVo;
+import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.anime.model.vo.AnimeInfoVo;
 import cn.chenyunlong.qing.infrastructure.model.dto.AnimeCommentDTO;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -29,5 +28,5 @@ public class DetailModel extends BaseModel {
     private AnimeInfoVo animeInfo;
     private List<AnimeInfoMinimalDTO> relevant;
     private List<AnimeInfoMinimalDTO> recommendation;
-    private IPage<AnimeCommentDTO> comments;
+    private List<AnimeCommentDTO> comments;
 }

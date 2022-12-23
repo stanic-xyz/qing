@@ -13,17 +13,46 @@
 
 package cn.chenyunlong.qing.domain.sign;
 
+import cn.chenyunlong.codegen.processor.GenBase;
+import cn.chenyunlong.codegen.processor.api.*;
+import cn.chenyunlong.codegen.processor.controller.GenController;
+import cn.chenyunlong.codegen.processor.creator.GenCreator;
+import cn.chenyunlong.codegen.processor.mapper.GenMapper;
+import cn.chenyunlong.codegen.processor.query.GenQuery;
+import cn.chenyunlong.codegen.processor.repository.GenRepository;
+import cn.chenyunlong.codegen.processor.service.GenService;
+import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
+import cn.chenyunlong.codegen.processor.updater.GenUpdater;
+import cn.chenyunlong.codegen.processor.vo.GenVo;
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false)
+@GenVo
+@GenCreator
+@GenUpdater
+@GenRepository
+@GenService
+@GenServiceImpl
+@GenController
+@GenQuery
+@GenCreateRequest
+@GenUpdateRequest
+@GenQueryRequest
+@GenResponse
+@GenFeign
+@GenMapper
+@GenBase(basePackage = "cn.chenyunlong.qing.domain.sign")
+@Table(name = "sign")
+@Entity
 @Data
-public class Sign extends BaseEntity<Sign> {
+public class Sign extends BaseEntity {
 
-    private Long id;
     private Long userId;
     private LocalDate dateMonth;
     private Integer mask;

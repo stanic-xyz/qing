@@ -14,8 +14,8 @@
 package cn.chenyunlong.qing.controller.api.auth;
 
 import cn.chenyunlong.qing.domain.permission.Permission;
-import cn.chenyunlong.qing.domain.user.User;
-import cn.chenyunlong.qing.domain.user.service.UserService;
+import cn.chenyunlong.qing.domain.user.user.User;
+import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import cn.chenyunlong.qing.infrastructure.annotation.Log;
 import cn.chenyunlong.qing.infrastructure.cache.lock.CacheLock;
 import cn.chenyunlong.qing.infrastructure.enums.MFAType;
@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,14 +60,15 @@ import java.util.List;
 public class AuthController {
 
     private final AuthGithubRequest authRequest;
-    private final UserService userService;
+    private final IUserService userService;
     private final TokenProvider tokenProvider;
 
     @PostMapping("login/preCheck")
     @Operation(summary = "Login")
     @CacheLock(autoDelete = false, prefix = "login_pre_check")
     public LoginPreCheckDTO authPreCheck(@RequestBody @Valid LoginParam loginParam) {
-        final User user = userService.authenticate(loginParam);
+//        final User user = userService.authenticate(loginParam);
+        final User user = null;
         return new LoginPreCheckDTO(MFAType.useMFA(user.getMfaType()));
     }
 
@@ -74,7 +76,8 @@ public class AuthController {
     @Operation(summary = "通过表单登陆")
     @PostMapping(value = "formLogin")
     public ApiResult<UserInfoVO> formLoin(@RequestBody LoginParam loginParam) throws LoginErrorException {
-        User authenticate = userService.authenticate(loginParam);
+//        User authenticate = userService.authenticate(loginParam);
+        User authenticate = null;
         UserInfoVO userInfoVO = new UserInfoVO().convertFrom(authenticate);
         String jwtToken = tokenProvider.createJwtToken(userInfoVO, false);
         userInfoVO.setToken(jwtToken);
@@ -84,8 +87,8 @@ public class AuthController {
     @PostMapping("register")
     public ApiResult<User> register(@RequestBody UserParam userParam) throws AbstractException {
         try {
-            User user = userService.addUserInfo(userParam.convertTo());
-            return ApiResult.success(user);
+//            User user = userService.addUserInfo(userParam.convertTo());
+            return ApiResult.success(null);
         } catch (AbstractException exp) {
             return ApiResult.fail(exp.getMessage());
         }
@@ -105,12 +108,14 @@ public class AuthController {
         AuthResponse authResponse = authRequest.login(callback);
         if (authResponse.ok()) {
             AuthUser authUser = (AuthUser) authResponse.getData();
-            User user = userService.getUserInfoByThird(authUser);
+//            User user = userService.getUserInfoByThird(authUser);
+            User user = null;
             if (user == null) {
                 return ApiResult.fail("未绑定！");
             }
 
-            List<Permission> permissionList = userService.getPermissionByUsername(user.getUsername());
+//            List<Permission> permissionList = userService.getPermissionByUsername(user.getUsername());
+            List<Permission> permissionList = Collections.emptyList();
             List<GrantedAuthority> authorities = new LinkedList<>();
             permissionList.stream().map(permission ->
                             new SimpleGrantedAuthority("ROLE_" + permission.getName()))

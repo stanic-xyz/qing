@@ -13,14 +13,14 @@
 
 package cn.chenyunlong.qing.infrastructure.model.params;
 
-import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
+import cn.chenyunlong.qing.domain.anime.episode.Episode;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.InputConverter;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class AddEpisodeParam implements InputConverter<AnimeEpisodeEntity> {
+public class AddEpisodeParam implements InputConverter<Episode> {
     private Long animeId;
     @NotBlank(message = "视频名称不能为空")
     private String name;

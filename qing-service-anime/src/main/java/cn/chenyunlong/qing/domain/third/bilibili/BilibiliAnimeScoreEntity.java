@@ -14,23 +14,19 @@
 package cn.chenyunlong.qing.domain.third.bilibili;
 
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
  * @TableName bilibili_anime_score
  */
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "bilibili_anime_score")
+@Table(name = "bilibili_anime_score")
 @Data
-public class BilibiliAnimeScoreEntity extends BaseEntity<BilibiliAnimeScoreEntity> {
-    /**
-     * 主键ID
-     */
-    private Long id;
+public class BilibiliAnimeScoreEntity extends BaseEntity {
     /**
      * 动漫ID
      */

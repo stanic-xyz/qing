@@ -17,6 +17,7 @@ package cn.chenyunlong.jpa.support.converter;
 import cn.chenyunlong.common.constants.ValidStatus;
 
 import javax.persistence.AttributeConverter;
+import java.util.Arrays;
 
 /**
  * 校验状态转换器
@@ -34,7 +35,7 @@ public class ValidStatusConverter implements AttributeConverter<ValidStatus, Int
      */
     @Override
     public Integer convertToDatabaseColumn(ValidStatus validStatus) {
-        return validStatus.getCode();
+        return validStatus.getValue();
     }
 
     /**
@@ -45,6 +46,9 @@ public class ValidStatusConverter implements AttributeConverter<ValidStatus, Int
      */
     @Override
     public ValidStatus convertToEntityAttribute(Integer code) {
-        return ValidStatus.of(code).orElse(null);
+        return Arrays.stream(ValidStatus.values())
+                .filter(validStatus -> validStatus.getValue().equals(code))
+                .findFirst()
+                .orElse(null);
     }
 }

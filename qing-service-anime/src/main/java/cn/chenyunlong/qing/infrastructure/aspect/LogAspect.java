@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.aspect;
 
-import cn.chenyunlong.qing.domain.system.SysOperLog;
+import cn.chenyunlong.qing.domain.system.log.SysOperateLog;
 import cn.chenyunlong.qing.infrastructure.annotation.Log;
 import cn.chenyunlong.qing.infrastructure.enums.BusinessStatus;
 import cn.chenyunlong.qing.infrastructure.utils.HttpContextUtil;
@@ -111,7 +111,7 @@ public class LogAspect {
             String currentUser = "stan";
 
             // *========数据库日志=========*//
-            SysOperLog operaLog = new SysOperLog();
+            SysOperateLog operaLog = new SysOperateLog();
             operaLog.setStatus(BusinessStatus.SUCCESS.ordinal());
             // 请求的地址
             String ip = "192.168.129.1";
@@ -156,7 +156,7 @@ public class LogAspect {
      * @param log      日志
      * @param operaLog 操作日志
      */
-    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, SysOperLog operaLog) {
+    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, SysOperateLog operaLog) {
         // 设置action动作
         operaLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
@@ -175,7 +175,7 @@ public class LogAspect {
      *
      * @param sysLog 操作日志
      */
-    private void setRequestValue(JoinPoint joinPoint, SysOperLog sysLog) {
+    private void setRequestValue(JoinPoint joinPoint, SysOperateLog sysLog) {
         Map<String, String[]> map = HttpContextUtil.getHttpServletRequest().getParameterMap();
         if (!map.isEmpty()) {
             String params = JSONObject.toJSONString(map);

@@ -13,28 +13,34 @@
 
 package cn.chenyunlong.qing.controller.content.model;
 
-import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
-import cn.chenyunlong.qing.domain.anime.AnimeInfo;
-import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
-import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoUpdateDTO;
-import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoPlayVo;
-import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoVo;
-import cn.chenyunlong.qing.domain.anime.service.*;
+import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeInfoMapper;
+import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoUpdateDTO;
+import cn.chenyunlong.qing.domain.anime.anime.model.vo.AnimeInfoPlayVo;
+import cn.chenyunlong.qing.domain.anime.anime.model.vo.AnimeInfoVo;
+import cn.chenyunlong.qing.domain.anime.anime.response.AnimeInfoResponse;
+import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeInfoService;
+import cn.chenyunlong.qing.domain.anime.anime.vo.AnimeInfoVO;
+import cn.chenyunlong.qing.domain.anime.comment.service.ICommentService;
+import cn.chenyunlong.qing.domain.anime.comment.vo.CommentVO;
+import cn.chenyunlong.qing.domain.anime.domainservice.AnimeOptionsService;
+import cn.chenyunlong.qing.domain.anime.episode.Episode;
+import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
+import cn.chenyunlong.qing.domain.anime.playlist.Playlist;
 import cn.chenyunlong.qing.infrastructure.model.Pagination;
-import cn.chenyunlong.qing.infrastructure.model.dto.AnimeCommentDTO;
 import cn.chenyunlong.qing.infrastructure.model.dto.AnimeEpisodeDTO;
 import cn.chenyunlong.qing.infrastructure.model.dto.PlayListDTO;
 import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.infrastructure.model.vo.OptionsModel;
 import cn.chenyunlong.qing.infrastructure.model.vo.page.*;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -51,12 +57,11 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class AnimeInfoModel {
-    private final AnimeInfoService animeInfoService;
+    private final IAnimeInfoService animeInfoService;
     private final AnimeOptionsService optionService;
     private final AnimeOptionsService animeOptionsService;
-    private final AnimeCommentService animeCommentService;
-    private final AnimeEpisodeService episodeService;
-    private final AnimeListService animeListService;
+    private final ICommentService commentService;
+    private final IEpisodeService episodeService;
     private final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     /**
@@ -98,14 +103,15 @@ public class AnimeInfoModel {
      */
     public DetailModel detail(Long animeId) {
         DetailModel detailModel = new DetailModel();
-        AnimeInfo animeInfo = animeInfoService.getById(animeId);
+        AnimeInfoVO animeInfo = animeInfoService.findById(animeId);
         if (animeInfo != null) {
-            AnimeInfoVo animeInfoVo = new AnimeInfoVo().convertFrom(animeInfo);
-            List<PlaylistEntity> animePlayList = animeListService.getAnimePlayList(animeId);
+            AnimeInfoResponse infoResponse = AnimeInfoMapper.INSTANCE.vo2CustomResponse(animeInfo);
+            List<Playlist> animePlayList = Collections.emptyList();
             List<AnimeInfoMinimalDTO> recommendAnimeInfoList = animeInfoService.getRecommendAnimeInfoList();
             //获取前十条评论信息
-            IPage<AnimeCommentDTO> commentsByAnimeId = animeCommentService.getCommentsByAnimeId(animeId, 1, 10);
-            List<AnimeEpisodeEntity> episodeEntities = episodeService.getByAnimeId(animeId);
+            Page<CommentVO> byPage = commentService.findByPage(null);
+
+            List<Episode> episodeEntities = Collections.emptyList();
 
             List<PlayListDTO> playListList = animePlayList.stream().map(playlistEntity ->
             {
@@ -117,11 +123,12 @@ public class AnimeInfoModel {
                 playListDTO.setEpisodeList(animeEpisodeEntityStream);
                 return playListDTO;
             }).collect(Collectors.toList());
+            AnimeInfoVo animeInfoVo = new AnimeInfoVo();
             animeInfoVo.setPlayList(playListList);
             detailModel.setAnimeInfo(animeInfoVo);
             detailModel.setRelevant(recommendAnimeInfoList);
             detailModel.setRecommendation(recommendAnimeInfoList);
-            detailModel.setComments(commentsByAnimeId);
+            detailModel.setComments(Collections.emptyList());
         }
         return detailModel;
     }
@@ -132,27 +139,27 @@ public class AnimeInfoModel {
 
         if (animeInfo != null) {
             AnimeInfoVo animeInfoVo = new AnimeInfoVo().convertFrom(animeInfo);
-            List<PlayListDTO> objectList = animeListService.getAnimePlayList(animeId).stream().map(playlistEntity -> (PlayListDTO) new PlayListDTO().convertFrom(playlistEntity)).collect(Collectors.toList());
+
+            // TODO 暂时空置
+            List<PlayListDTO> objectList = Collections.emptyList();
             animeInfoVo.setPlayList(objectList);
             playModel.setAnimeInfo(new AnimeInfoPlayVo().convertFrom(animeInfo));
             playModel.setRelevant(animeInfoService.getRecommendAnimeInfoList());
             playModel.setRecommendation(animeInfoService.getRecommendAnimeInfoList());
             //获取前十条评论信息
-            playModel.setComments(animeCommentService.getCommentsByAnimeId(animeId, 1, 10));
+            playModel.setComments(Collections.emptyList());
         }
 
         playModel.setRelevant(animeInfoService.getRecommendAnimeInfoList());
         playModel.setRecommendation(animeInfoService.getRecommendAnimeInfoList());
         //获取前十条评论信息
-        playModel.setComments(animeCommentService.getCommentsByAnimeId(animeId, 1, 10));
+        playModel.setComments(Collections.emptyList());
         if (playId != null) {
-            AnimeEpisodeEntity episodeEntity = episodeService.getById(playId);
+            Episode episodeEntity = null;
             if (episodeEntity != null) {
                 playModel.setEpisodeInfo(new AnimeEpisodeDTO().convertFrom(episodeEntity));
             }
         }
-
-
         return playModel;
     }
 
@@ -165,22 +172,22 @@ public class AnimeInfoModel {
      */
     public UpdateModel listUpdate(Integer page, Integer pageSize) {
         UpdateModel updateModel = new UpdateModel();
-        IPage<AnimeInfoMinimalDTO> animeInfoPage = animeInfoService.getUpdateAnimeInfo(page, pageSize);
-        updateModel.setAnimeList(animeInfoPage.getRecords());
-        updateModel.setPagination(new Pagination(animeInfoPage));
+        Page<AnimeInfoMinimalDTO> animeInfoPage = new PageImpl<>(Collections.emptyList());
+        updateModel.setAnimeList(animeInfoPage.getContent());
+        updateModel.setPagination(new Pagination());
         return updateModel;
     }
 
-    public CatalogModel listCatalog(Page<AnimeInfo> objectPage, AnimeInfoQuery animeInfoQuery) {
+    public CatalogModel listCatalog() {
         CatalogModel catalogModel = new CatalogModel();
-        IPage<AnimeInfoVo> animeInfoPage = animeInfoService.listByPage(objectPage, animeInfoQuery);
+        Page<AnimeInfoVo> animeInfoPage = new PageImpl<>(Collections.emptyList());
         OptionsModel animeOptionsModel = animeOptionsService.getOptions();
-        catalogModel.setQuery(animeInfoQuery);
+        catalogModel.setQuery(null);
         catalogModel.setYears(animeOptionsModel.getYears());
         catalogModel.setOptions(animeOptionsModel);
-        catalogModel.setAnimeList(animeInfoPage.getRecords());
-        catalogModel.setTotal(animeInfoPage.getTotal());
-        catalogModel.setPagination(new Pagination(animeInfoPage));
+        catalogModel.setAnimeList(Collections.emptyList());
+        catalogModel.setTotal(0L);
+        catalogModel.setPagination(new Pagination());
         return catalogModel;
     }
 
@@ -193,18 +200,16 @@ public class AnimeInfoModel {
      */
     public SearchModel searchModel(Page<AnimeInfo> objectPage, AnimeInfoQuery animeInfoQuery) {
         SearchModel searchModel = new SearchModel();
-        LambdaQueryWrapper<AnimeInfo> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(AnimeInfo::getName, animeInfoQuery.getKeyword());
 
-        IPage<AnimeInfo> animeInfoPage = animeInfoService.page(objectPage, queryWrapper);
+        Page<AnimeInfo> animeInfoPage = new PageImpl<>(Collections.emptyList());
         OptionsModel animeOptionsModel = animeOptionsService.getOptions();
         searchModel.setQuery(animeInfoQuery);
         searchModel.setOptions(animeOptionsModel);
-        searchModel.setAnimeInfos(animeInfoPage.getRecords());
-        searchModel.setTotalCount(animeInfoPage.getTotal());
-        searchModel.setCurrentIndex(animeInfoPage.getCurrent());
-        searchModel.setPagination(new Pagination(animeInfoPage));
-        searchModel.setTotalPage(animeInfoPage.getPages());
+        searchModel.setAnimeInfos(Collections.emptyList());
+        searchModel.setTotalCount(0L);
+        searchModel.setCurrentIndex(0L);
+        searchModel.setPagination(new Pagination());
+        searchModel.setTotalPage(2L);
         return searchModel;
     }
 }

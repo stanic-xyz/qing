@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.model.params;
 
-import cn.chenyunlong.qing.domain.user.User;
+import cn.chenyunlong.qing.domain.user.user.User;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.InputConverter;
 import lombok.Data;
 

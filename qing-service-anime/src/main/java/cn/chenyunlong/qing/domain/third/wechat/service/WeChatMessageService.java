@@ -13,8 +13,7 @@
 
 package cn.chenyunlong.qing.domain.third.wechat.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -26,9 +25,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Stan
  * @date 2022/11/26
  */
+@Slf4j
 @Service
 public class WeChatMessageService {
-    private final Logger log = LoggerFactory.getLogger(WeChatMessageService.class);
     //构建一个队列
     private final static Map<String, Long> messages = new ConcurrentHashMap<>();
 

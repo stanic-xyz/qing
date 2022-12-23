@@ -1,12 +1,12 @@
 eureka:
   instance:
-    prefer-ip-address: true
-    ip-address: 127.0.0.1
-    hostname: localhost
-    secure-port-enabled: true
-    non-secure-port-enabled: false
-    secure-virtual-host-name: config.chenyunlong.cn
-    virtual-host-name: config.host.chenyunlong.cn
+    prefer-ip-address: false
+    ip-address: ${QING_ADMIN_IP:127.0.0.1}
+    hostname: ${QING_ADMIN_HOST:localhost}
+    non-secure-port: ${QING_ADMIN_PORT}
+    non-secure-port-enabled: true
+    secure-virtual-host-name: ${QING_ADMIN_HOST}
+    virtual-host-name: ${QING_ADMIN_HOST}
   client:
     service-url:
-      defaultZone: ${QING_EUREKA_URL}
+      defaultZone: ${QING_REGISTRY_EUREKA_URL}

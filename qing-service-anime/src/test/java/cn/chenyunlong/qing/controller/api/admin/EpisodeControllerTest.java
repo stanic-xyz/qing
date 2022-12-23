@@ -14,14 +14,14 @@
 package cn.chenyunlong.qing.controller.api.admin;
 
 import cn.chenyunlong.qing.controller.BaseApiTest;
-import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
-import cn.chenyunlong.qing.domain.anime.AnimeInfo;
-import cn.chenyunlong.qing.domain.anime.ListEpisodeEntity;
-import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
-import cn.chenyunlong.qing.domain.anime.mapper.AnimeEpisodeMapper;
-import cn.chenyunlong.qing.domain.anime.mapper.AnimeInfoMapper;
-import cn.chenyunlong.qing.domain.anime.mapper.AnimeListEpisodeMapper;
-import cn.chenyunlong.qing.domain.anime.mapper.AnimePlaylistMapper;
+import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.anime.mapper.mp.AnimeInfoMapper;
+import cn.chenyunlong.qing.domain.anime.episode.Episode;
+import cn.chenyunlong.qing.domain.anime.episode.mapper.AnimeEpisodeMapper;
+import cn.chenyunlong.qing.domain.anime.playlist.ListEpisodeEntity;
+import cn.chenyunlong.qing.domain.anime.playlist.Playlist;
+import cn.chenyunlong.qing.domain.anime.playlist.mapper.AnimeListEpisodeMapper;
+import cn.chenyunlong.qing.domain.anime.playlist.mapper.AnimePlaylistMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +46,11 @@ class EpisodeControllerTest extends BaseApiTest {
     @Test
     void add() {
         List<AnimeInfo> animeInfoList = animeInfoMapper.selectList(new QueryWrapper<>());
-        QueryWrapper<AnimeEpisodeEntity> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<Episode> queryWrapper = new QueryWrapper<>();
         queryWrapper.last("LIMIT 0,1");
-        AnimeEpisodeEntity episodeEntity = animeEpisodeMapper.selectOne(queryWrapper);
+        Episode episodeEntity = animeEpisodeMapper.selectOne(queryWrapper);
         if (episodeEntity == null) {
-            episodeEntity = new AnimeEpisodeEntity();
+            episodeEntity = new Episode();
             episodeEntity.setName("测试播放视频");
             episodeEntity.setStatus(0);
             episodeEntity.setOrderNo(0);
@@ -66,11 +66,10 @@ class EpisodeControllerTest extends BaseApiTest {
             AnimeInfo animeInfo = optionalAnimeInfo.get();
             //添加三个测试目录
             for (int i = 0; i < 3; i++) {
-                PlaylistEntity playList = new PlaylistEntity();
+                Playlist playList = new Playlist();
                 playList.setAnimeId(animeInfo.getId());
                 playList.setDescription("测试列表" + i);
                 playList.setName("播放列表" + i);
-                playList.setSearchValue("");
                 playList.preCheck();
                 playlistMapper.insert(playList);
 

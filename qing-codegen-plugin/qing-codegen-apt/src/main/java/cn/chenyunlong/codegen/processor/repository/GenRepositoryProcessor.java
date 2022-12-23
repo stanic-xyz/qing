@@ -29,7 +29,10 @@ import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
 
 /**
+ * 生成Repository层的代码
+ *
  * @author gim
+ * @date 2022/12/22
  */
 @AutoService(value = CodeGenProcessor.class)
 public class GenRepositoryProcessor extends BaseCodeGenProcessor {

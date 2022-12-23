@@ -13,11 +13,10 @@
 
 package cn.chenyunlong.qing.infrastructure.model.vo.page;
 
-import cn.chenyunlong.qing.domain.anime.model.dto.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoPlayVo;
+import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoMinimalDTO;
+import cn.chenyunlong.qing.domain.anime.anime.model.vo.AnimeInfoPlayVo;
 import cn.chenyunlong.qing.infrastructure.model.dto.AnimeCommentDTO;
 import cn.chenyunlong.qing.infrastructure.model.dto.AnimeEpisodeDTO;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,6 +29,6 @@ public class PlayModel extends BaseModel {
     private AnimeInfoPlayVo animeInfo;
     private List<AnimeInfoMinimalDTO> relevant;
     private List<AnimeInfoMinimalDTO> recommendation;
-    private IPage<AnimeCommentDTO> comments;
+    private List<AnimeCommentDTO> comments;
     private AnimeEpisodeDTO episodeInfo;
 }

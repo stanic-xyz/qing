@@ -81,7 +81,7 @@
                     <configuration>
                         <failsOnError>true</failsOnError>
                         <consoleOutput>true</consoleOutput>
-                        <configLocation>checkstyle.xml</configLocation>
+                        <configLocation>checkstyle/checkstyle.xml</configLocation>
                     </configuration>
                     <executions>
                         <execution>

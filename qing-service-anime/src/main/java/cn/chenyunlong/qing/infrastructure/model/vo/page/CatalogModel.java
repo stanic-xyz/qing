@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.model.vo.page;
 
-import cn.chenyunlong.qing.domain.anime.model.vo.AnimeInfoVo;
+import cn.chenyunlong.qing.domain.anime.anime.model.vo.AnimeInfoVo;
 import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery;
 import cn.chenyunlong.qing.infrastructure.model.vo.OptionsModel;
 import cn.chenyunlong.qing.infrastructure.model.vo.YearInfo;

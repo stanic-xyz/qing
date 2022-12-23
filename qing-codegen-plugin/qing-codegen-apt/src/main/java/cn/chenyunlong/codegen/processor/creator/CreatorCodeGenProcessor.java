@@ -42,6 +42,7 @@ public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
     public static final String SUFFIX = "Creator";
     static final List<TypeName> dtoIgnoreFieldTypes;
 
+    // 这里为什么要忽略这些代码
     static {
         dtoIgnoreFieldTypes = new ArrayList<>();
         dtoIgnoreFieldTypes.add(TypeName.get(Date.class));

@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.model.dto;
 
-import cn.chenyunlong.qing.domain.anime.PlaylistEntity;
+import cn.chenyunlong.qing.domain.anime.playlist.Playlist;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
 import lombok.Data;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * @author Stan
  */
 @Data
-public class PlayListDTO implements OutputConverter<PlayListDTO, PlaylistEntity> {
+public class PlayListDTO implements OutputConverter<PlayListDTO, Playlist> {
     private Long id;
     private Long animeId;
     private String name;
