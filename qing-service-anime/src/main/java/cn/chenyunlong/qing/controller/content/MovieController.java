@@ -13,17 +13,11 @@
 
 package cn.chenyunlong.qing.controller.content;
 
-import cn.chenyunlong.qing.controller.content.model.AnimeInfoModel;
-import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeInfoService;
-import cn.chenyunlong.qing.domain.anime.comment.service.ICommentService;
 import cn.chenyunlong.qing.infrastructure.model.params.AnimeInfoQuery;
-import cn.chenyunlong.qing.infrastructure.model.vo.page.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collections;
-import java.util.List;
 
 /**
  * 前端控制器
@@ -47,23 +40,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieController {
 
-    private final IAnimeInfoService animeInfoService;
-    private final AnimeInfoModel animeInfoModel;
-    private final ICommentService commentService;
 
     @GetMapping(path = {"", "/index.html"})
     public ModelAndView index(ModelAndView modelAndView) throws JsonProcessingException, InterruptedException {
-        IndexModel indexModel = animeInfoModel.getIndex();
         modelAndView.setViewName("home");
-        modelAndView.addObject("data", indexModel);
+        modelAndView.addObject("data", null);
         return modelAndView;
     }
 
     @GetMapping("anime/{movieId}/index.html")
     public ModelAndView movie(@PathVariable(value = "movieId") Long animeId) {
-        DetailModel detailModel = animeInfoModel.detail(animeId);
         ModelAndView modelAndView = new ModelAndView("detail");
-        modelAndView.addObject("data", detailModel);
+        modelAndView.addObject("data", null);
         return modelAndView;
     }
 
@@ -71,9 +59,8 @@ public class MovieController {
     public ModelAndView play(@PathVariable(value = "movieId") Long animeId,
                              @PathVariable(value = "listId") Long listId,
                              @PathVariable(value = "playId") Long playId) {
-        PlayModel playModel = animeInfoModel.play(animeId, listId, playId);
         ModelAndView modelAndView = new ModelAndView("play");
-        modelAndView.addObject("data", playModel);
+        modelAndView.addObject("data", null);
         return modelAndView;
     }
 
@@ -83,9 +70,8 @@ public class MovieController {
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "24") Integer pageSize) {
 
         ModelAndView modelAndView = new ModelAndView();
-        CatalogModel catalogModel = animeInfoModel.listCatalog();
         modelAndView.setViewName("catalog");
-        modelAndView.addObject("data", catalogModel);
+        modelAndView.addObject("data", null);
         return modelAndView;
     }
 
@@ -106,17 +92,15 @@ public class MovieController {
     public ModelAndView update(@RequestParam(defaultValue = "1") Integer page,
                                @RequestParam(defaultValue = "24") Integer pageSize) {
         ModelAndView modelAndView = new ModelAndView("update");
-        UpdateModel updateModel = animeInfoModel.listUpdate(page, pageSize);
-        modelAndView.addObject("data", updateModel);
+        modelAndView.addObject("data", null);
         return modelAndView;
     }
 
 
     @GetMapping("recommend/index.html")
     public ModelAndView recommend(ModelAndView modelAndView) {
-        List<AnimeInfoMinimalDTO> animeInfoList = animeInfoService.getRecommendAnimeInfoList();
         modelAndView.setViewName("recommend");
-        modelAndView.addObject("animeInfos", animeInfoList);
+        modelAndView.addObject("animeInfos", null);
         return modelAndView;
     }
 
@@ -127,9 +111,8 @@ public class MovieController {
             @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
             AnimeInfoQuery searchParam) {
 
-        SearchModel searchModel = animeInfoModel.searchModel(new PageImpl<>(Collections.emptyList()), searchParam);
         ModelAndView modelAndView = new ModelAndView("search");
-        modelAndView.addObject("data", searchModel);
+        modelAndView.addObject("data", null);
         return modelAndView;
     }
 

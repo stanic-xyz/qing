@@ -2,17 +2,11 @@
 package cn.chenyunlong.qing.domain.anime.anime.service;
 
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.anime.creator.AnimeInfoCreator;
-import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoRankDTO;
-import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoUpdateDTO;
 import cn.chenyunlong.qing.domain.anime.anime.query.AnimeInfoQuery;
 import cn.chenyunlong.qing.domain.anime.anime.updater.AnimeInfoUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.vo.AnimeInfoVO;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface IAnimeInfoService {
     /**
@@ -44,16 +38,4 @@ public interface IAnimeInfoService {
      * findByPage
      */
     Page<AnimeInfoVO> findByPage(PageRequestWrapper<AnimeInfoQuery> query);
-
-    void removeById(Long animeId);
-
-    List<AnimeInfoMinimalDTO> getRecommendAnimeInfoList();
-
-    Page<AnimeInfoRankDTO> getRankPage();
-
-    List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize);
-
-    List<AnimeInfoUpdateDTO> getUpdateInfo();
-
-    AnimeInfo getById(Long animeId);
 }
