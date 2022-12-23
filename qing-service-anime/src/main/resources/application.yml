@@ -40,7 +40,6 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-    show-sql: true
     generate-ddl: true
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -50,6 +49,7 @@ spring:
         jdbc:
           batch_size: 1000
         order_inserts: true
+    show-sql: true
 mybatis-plus:
   configuration:
     cache-enabled: true
