@@ -15,7 +15,6 @@ package cn.chenyunlong.jpa.support;
 
 import cn.chenyunlong.common.validator.CreateGroup;
 import com.google.common.base.Preconditions;
-import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.CrudRepository;
 
@@ -32,9 +31,7 @@ public class EntityCreator<T, ID> extends BaseEntityOperation implements Create<
 
     private final CrudRepository<T, ID> repository;
     private T data;
-    private Consumer<T> successHook = t -> {
-        log.info("save success");
-    };
+    private Consumer<T> successHook = t -> log.info("save success");
     private Consumer<? super Throwable> errorHook = throwable -> {
         log.error("插入数据发生了异常");
         throwable.printStackTrace();
@@ -73,10 +70,14 @@ public class EntityCreator<T, ID> extends BaseEntityOperation implements Create<
     @Override
     public Optional<T> execute() {
         doValidate(this.data, CreateGroup.class);
-        T save = Try.of(() -> repository.save(data))
-                .onSuccess(successHook)
-                .onFailure(errorHook).getOrNull();
-        return Optional.ofNullable(save);
+        try {
+            T save = repository.save(data);
+            successHook.accept(save);
+            return Optional.ofNullable(save);
+        } catch (Exception exception) {
+            errorHook.accept(exception);
+            return Optional.empty();
+        }
     }
 
     @Override

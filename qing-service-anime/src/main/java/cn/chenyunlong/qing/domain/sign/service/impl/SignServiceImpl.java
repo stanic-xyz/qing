@@ -42,6 +42,8 @@ public class SignServiceImpl implements ISignService {
         Optional<Sign> sign = EntityOperations.doCreate(signRepository)
                 .create(() -> SignMapper.INSTANCE.dtoToEntity(creator))
                 .update(BaseEntity::init)
+                .successHook((data) -> log.error("插入数据成功了:{}", data))
+                .errorHook((throwable) -> log.error("插入数据发生了异常", throwable))
                 .execute();
         return sign.isPresent() ? sign.get().getId() : 0;
     }
@@ -53,7 +55,7 @@ public class SignServiceImpl implements ISignService {
     public void updateSign(SignUpdater updater) {
         EntityOperations.doUpdate(signRepository)
                 .loadById(updater.getId())
-                .update(e -> updater.updateSign(e))
+                .update(updater::updateSign)
                 .execute();
     }
 
@@ -64,7 +66,7 @@ public class SignServiceImpl implements ISignService {
     public void validSign(Long id) {
         EntityOperations.doUpdate(signRepository)
                 .loadById(id)
-                .update(e -> e.valid())
+                .update(BaseEntity::valid)
                 .execute();
     }
 
@@ -75,7 +77,7 @@ public class SignServiceImpl implements ISignService {
     public void invalidSign(Long id) {
         EntityOperations.doUpdate(signRepository)
                 .loadById(id)
-                .update(e -> e.invalid())
+                .update(BaseEntity::invalid)
                 .execute();
     }
 

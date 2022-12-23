@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/qing?serverTimezone=GMT%2B8
     hikari:
       connection-init-sql: select 1
       username: root
@@ -11,7 +11,7 @@ spring:
     host: localhost
   thymeleaf:
     cache: false
-    prefix: file:${user.dir}/zhangli-service-provider/src/main/resources/templates/
+    prefix: file:${user.dir}/qing-service-anime/src/main/resources/templates/
   data:
     elasticsearch:
       client:
