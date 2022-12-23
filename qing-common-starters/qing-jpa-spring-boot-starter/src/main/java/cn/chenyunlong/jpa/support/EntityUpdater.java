@@ -17,7 +17,6 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.validator.UpdateGroup;
 import com.google.common.base.Preconditions;
-import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.CrudRepository;
 
@@ -44,10 +43,14 @@ public class EntityUpdater<T, ID> extends BaseEntityOperation implements Loader<
     @Override
     public Optional<T> execute() {
         doValidate(this.entity, UpdateGroup.class);
-        T save = Try.of(() -> repository.save(entity))
-                .onSuccess(successHook)
-                .onFailure(errorHook).getOrNull();
-        return Optional.ofNullable(save);
+        try {
+            T save = repository.save(entity);
+            successHook.accept(save);
+            return Optional.ofNullable(save);
+        } catch (Exception exception) {
+            errorHook.accept(exception);
+        }
+        return Optional.empty();
     }
 
     @Override
