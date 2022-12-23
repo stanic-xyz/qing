@@ -13,71 +13,38 @@
 
 package cn.chenyunlong.qing.controller.api.admin;
 
+import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.qing.controller.BaseApiTest;
-import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
-import cn.chenyunlong.qing.domain.anime.anime.mapper.mp.AnimeInfoMapper;
-import cn.chenyunlong.qing.domain.anime.episode.Episode;
-import cn.chenyunlong.qing.domain.anime.episode.mapper.AnimeEpisodeMapper;
-import cn.chenyunlong.qing.domain.anime.playlist.ListEpisodeEntity;
-import cn.chenyunlong.qing.domain.anime.playlist.Playlist;
-import cn.chenyunlong.qing.domain.anime.playlist.mapper.AnimeListEpisodeMapper;
-import cn.chenyunlong.qing.domain.anime.playlist.mapper.AnimePlaylistMapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import cn.chenyunlong.qing.domain.anime.episode.creator.EpisodeCreator;
+import cn.chenyunlong.qing.domain.anime.episode.query.EpisodeQuery;
+import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
+import cn.chenyunlong.qing.domain.anime.episode.vo.EpisodeVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.domain.Page;
 
 class EpisodeControllerTest extends BaseApiTest {
 
     @Autowired
-    private AnimeEpisodeMapper animeEpisodeMapper;
+    private IEpisodeService episodeService;
 
-    @Autowired
-    private AnimeInfoMapper animeInfoMapper;
-
-    @Autowired
-    private AnimePlaylistMapper playlistMapper;
-
-    @Autowired
-    private AnimeListEpisodeMapper listEpisodeMapper;
 
     @Test
     void add() {
-        List<AnimeInfo> animeInfoList = animeInfoMapper.selectList(new QueryWrapper<>());
-        QueryWrapper<Episode> queryWrapper = new QueryWrapper<>();
-        queryWrapper.last("LIMIT 0,1");
-        Episode episodeEntity = animeEpisodeMapper.selectOne(queryWrapper);
+        PageRequestWrapper<EpisodeQuery> queryWrapper = new PageRequestWrapper<>();
+        queryWrapper.setPage(1);
+        queryWrapper.setPageSize(20);
+        Page<EpisodeVO> episodeEntity = episodeService.findByPage(queryWrapper);
+
         if (episodeEntity == null) {
-            episodeEntity = new Episode();
-            episodeEntity.setName("测试播放视频");
-            episodeEntity.setStatus(0);
-            episodeEntity.setOrderNo(0);
-            episodeEntity.setUploaderId(0L);
-            episodeEntity.setUploaderName("admin");
-            episodeEntity.setUrl("https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/media/testvideo.mp4");
-            animeEpisodeMapper.insert(episodeEntity);
-        }
-
-        Optional<AnimeInfo> optionalAnimeInfo = animeInfoList.stream().findFirst();
-
-        if (optionalAnimeInfo.isPresent()) {
-            AnimeInfo animeInfo = optionalAnimeInfo.get();
-            //添加三个测试目录
-            for (int i = 0; i < 3; i++) {
-                Playlist playList = new Playlist();
-                playList.setAnimeId(animeInfo.getId());
-                playList.setDescription("测试列表" + i);
-                playList.setName("播放列表" + i);
-                playList.preCheck();
-                playlistMapper.insert(playList);
-
-                ListEpisodeEntity listEpisodeEntiry = new ListEpisodeEntity();
-                listEpisodeEntiry.setListId(playList.getId());
-                listEpisodeEntiry.setEpisodeId(episodeEntity.getId());
-                listEpisodeMapper.insert(listEpisodeEntiry);
-            }
+            EpisodeCreator creator = new EpisodeCreator();
+            creator.setName("测试播放视频");
+            creator.setStatus(0);
+            creator.setOrderNo(0);
+            creator.setUploaderId(0L);
+            creator.setUploaderName("admin");
+            creator.setUrl("https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/media/testvideo.mp4");
+            episodeService.createEpisode(creator);
         }
     }
 }
