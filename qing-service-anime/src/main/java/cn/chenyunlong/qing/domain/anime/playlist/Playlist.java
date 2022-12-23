@@ -38,7 +38,7 @@ import java.util.Objects;
  * @author Stan
  */
 @Data
-@GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.episode")
+@GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.playlist")
 @GenVo
 @GenCreator
 @GenUpdater

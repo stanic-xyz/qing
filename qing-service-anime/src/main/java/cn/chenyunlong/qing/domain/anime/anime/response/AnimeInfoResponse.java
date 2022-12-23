@@ -4,11 +4,9 @@ package cn.chenyunlong.qing.domain.anime.anime.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
 @Schema
 public class AnimeInfoResponse extends AbstractJpaResponse {
     @Schema(
@@ -100,4 +98,148 @@ public class AnimeInfoResponse extends AbstractJpaResponse {
             title = "orderNo"
     )
     private Integer orderNo;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getInstruction() {
+        return instruction;
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
+    }
+
+    public Long getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Long districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
+
+    public Long getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
+    }
+
+    public String getOtherName() {
+        return otherName;
+    }
+
+    public void setOtherName(String otherName) {
+        this.otherName = otherName;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public LocalDate getPremiereDate() {
+        return premiereDate;
+    }
+
+    public void setPremiereDate(LocalDate premiereDate) {
+        this.premiereDate = premiereDate;
+    }
+
+    public PlayStatus getPlayStatus() {
+        return playStatus;
+    }
+
+    public void setPlayStatus(PlayStatus playStatus) {
+        this.playStatus = playStatus;
+    }
+
+    public String getPlotType() {
+        return plotType;
+    }
+
+    public void setPlotType(String plotType) {
+        this.plotType = plotType;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getOfficialWebsite() {
+        return officialWebsite;
+    }
+
+    public void setOfficialWebsite(String officialWebsite) {
+        this.officialWebsite = officialWebsite;
+    }
+
+    public String getPlayHeat() {
+        return playHeat;
+    }
+
+    public void setPlayHeat(String playHeat) {
+        this.playHeat = playHeat;
+    }
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
+    }
 }

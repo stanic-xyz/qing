@@ -8,16 +8,11 @@ import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.anime.creator.AnimeInfoCreator;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeInfoMapper;
-import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoMinimalDTO;
-import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoRankDTO;
-import cn.chenyunlong.qing.domain.anime.anime.model.dto.AnimeInfoUpdateDTO;
 import cn.chenyunlong.qing.domain.anime.anime.query.AnimeInfoQuery;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeInfoRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeInfoService;
 import cn.chenyunlong.qing.domain.anime.anime.updater.AnimeInfoUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.vo.AnimeInfoVO;
-import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
-import cn.chenyunlong.qing.infrastructure.exception.NotFoundException;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +23,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -47,7 +40,7 @@ public class AnimeInfoServiceImpl implements IAnimeInfoService {
     public Long createAnimeInfo(AnimeInfoCreator creator) {
         Optional<AnimeInfo> animeInfo = EntityOperations.doCreate(animeInfoRepository)
                 .create(() -> AnimeInfoMapper.INSTANCE.dtoToEntity(creator))
-                .update(BaseEntity::init)
+                .update(e -> e.init())
                 .execute();
         return animeInfo.isPresent() ? animeInfo.get().getId() : 0;
     }
@@ -59,7 +52,7 @@ public class AnimeInfoServiceImpl implements IAnimeInfoService {
     public void updateAnimeInfo(AnimeInfoUpdater updater) {
         EntityOperations.doUpdate(animeInfoRepository)
                 .loadById(updater.getId())
-                .update(updater::updateAnimeInfo)
+                .update(e -> updater.updateAnimeInfo(e))
                 .execute();
     }
 
@@ -107,59 +100,4 @@ public class AnimeInfoServiceImpl implements IAnimeInfoService {
                 .stream().map(AnimeInfoVO::new)
                 .collect(Collectors.toList()), page.getPageable(), page.getTotalElements());
     }
-
-    /**
-     * @param animeId
-     */
-    @Override
-    public void removeById(Long animeId) {
-        AnimeInfo animeInfo = animeInfoRepository.getReferenceById(animeId);
-        if (animeInfo == null) {
-            throw new NotFoundException("资源未找到");
-        }
-        animeInfoRepository.delete(animeInfo);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public Page<AnimeInfoRankDTO> getRankPage() {
-        return new PageImpl<>(Collections.emptyList());
-    }
-
-    /**
-     * @param recentPageSize
-     * @return
-     */
-    @Override
-    public List<AnimeInfoMinimalDTO> getRecentUpdate(int recentPageSize) {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @param animeId
-     * @return
-     */
-    @Override
-    public AnimeInfo getById(Long animeId) {
-        return null;
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public List<AnimeInfoUpdateDTO> getUpdateInfo() {
-        return Collections.emptyList();
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public List<AnimeInfoMinimalDTO> getRecommendAnimeInfoList() {
-        return Collections.emptyList();
-    }
-
 }

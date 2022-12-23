@@ -91,7 +91,7 @@ public class EpisodeController {
         return JsonObject.success(
                 PageResult.of(
                         page.getContent().stream()
-                                .map(EpisodeMapper.INSTANCE::vo2CustomResponse)
+                                .map(vo -> EpisodeMapper.INSTANCE.vo2CustomResponse(vo))
                                 .collect(Collectors.toList()),
                         page.getTotalElements(),
                         page.getSize(),
