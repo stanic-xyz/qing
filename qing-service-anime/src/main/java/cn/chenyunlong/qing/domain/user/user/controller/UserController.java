@@ -15,6 +15,7 @@ import cn.chenyunlong.qing.domain.user.user.response.UserResponse;
 import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import cn.chenyunlong.qing.domain.user.user.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.user.user.vo.UserVO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "用户服务")
 @RestController
 @Slf4j
 @RequestMapping("user/v1")
@@ -91,7 +93,7 @@ public class UserController {
         return JsonObject.success(
                 PageResult.of(
                         page.getContent().stream()
-                                .map(vo -> UserMapper.INSTANCE.vo2CustomResponse(vo))
+                                .map(UserMapper.INSTANCE::vo2CustomResponse)
                                 .collect(Collectors.toList()),
                         page.getTotalElements(),
                         page.getSize(),

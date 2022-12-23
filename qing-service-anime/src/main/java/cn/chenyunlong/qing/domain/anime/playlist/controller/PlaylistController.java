@@ -27,75 +27,75 @@ import java.util.stream.Collectors;
 @RequestMapping("playlist/v1")
 @RequiredArgsConstructor
 public class PlaylistController {
-  private final IPlaylistService playlistService;
+    private final IPlaylistService playlistService;
 
-  /**
-   * createRequest
-   */
-  @PostMapping("createPlaylist")
-  public JsonObject<Long> createPlaylist(@RequestBody PlaylistCreateRequest request) {
-    PlaylistCreator creator = PlaylistMapper.INSTANCE.request2Dto(request);
-    return JsonObject.success(playlistService.createPlaylist(creator));
-  }
+    /**
+     * createRequest
+     */
+    @PostMapping("createPlaylist")
+    public JsonObject<Long> createPlaylist(@RequestBody PlaylistCreateRequest request) {
+        PlaylistCreator creator = PlaylistMapper.INSTANCE.request2Dto(request);
+        return JsonObject.success(playlistService.createPlaylist(creator));
+    }
 
-  /**
-   * update request
-   */
-  @PostMapping("updatePlaylist")
-  public JsonObject<String> updatePlaylist(@RequestBody PlaylistUpdateRequest request) {
-    PlaylistUpdater updater = PlaylistMapper.INSTANCE.request2Updater(request);
-    playlistService.updatePlaylist(updater);
-    return JsonObject.success(CodeEnum.Success.getName());
-  }
+    /**
+     * update request
+     */
+    @PostMapping("updatePlaylist")
+    public JsonObject<String> updatePlaylist(@RequestBody PlaylistUpdateRequest request) {
+        PlaylistUpdater updater = PlaylistMapper.INSTANCE.request2Updater(request);
+        playlistService.updatePlaylist(updater);
+        return JsonObject.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * valid
-   */
-  @PostMapping("valid/{id}")
-  public JsonObject<String> validPlaylist(@PathVariable Long id) {
-    playlistService.validPlaylist(id);
-    return JsonObject.success(CodeEnum.Success.getName());
-  }
+    /**
+     * valid
+     */
+    @PostMapping("valid/{id}")
+    public JsonObject<String> validPlaylist(@PathVariable Long id) {
+        playlistService.validPlaylist(id);
+        return JsonObject.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * invalid
-   */
-  @PostMapping("invalid/{id}")
-  public JsonObject<String> invalidPlaylist(@PathVariable Long id) {
-    playlistService.invalidPlaylist(id);
-    return JsonObject.success(CodeEnum.Success.getName());
-  }
+    /**
+     * invalid
+     */
+    @PostMapping("invalid/{id}")
+    public JsonObject<String> invalidPlaylist(@PathVariable Long id) {
+        playlistService.invalidPlaylist(id);
+        return JsonObject.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * findById
-   */
-  @GetMapping("findById/{id}")
-  public JsonObject<PlaylistResponse> findById(@PathVariable Long id) {
-    PlaylistVO vo = playlistService.findById(id);
-    PlaylistResponse response = PlaylistMapper.INSTANCE.vo2CustomResponse(vo);
-    return JsonObject.success(response);
-  }
+    /**
+     * findById
+     */
+    @GetMapping("findById/{id}")
+    public JsonObject<PlaylistResponse> findById(@PathVariable Long id) {
+        PlaylistVO vo = playlistService.findById(id);
+        PlaylistResponse response = PlaylistMapper.INSTANCE.vo2CustomResponse(vo);
+        return JsonObject.success(response);
+    }
 
-  /**
-   * findByPage request
-   */
-  @PostMapping("findByPage")
-  public JsonObject<PageResult<PlaylistResponse>> findByPage(
-          @RequestBody PageRequestWrapper<PlaylistQueryRequest> request) {
-    PageRequestWrapper<PlaylistQuery> wrapper = new PageRequestWrapper<>();
-    wrapper.setBean(PlaylistMapper.INSTANCE.request2Query(request.getBean()));
-    wrapper.setSorts(request.getSorts());
-    wrapper.setPageSize(request.getPageSize());
-    wrapper.setPage(request.getPage());
-    Page<PlaylistVO> page = playlistService.findByPage(wrapper);
-    return JsonObject.success(
-            PageResult.of(
-                    page.getContent().stream()
-                            .map(vo -> PlaylistMapper.INSTANCE.vo2CustomResponse(vo))
-                            .collect(Collectors.toList()),
-                    page.getTotalElements(),
-                    page.getSize(),
-                    page.getNumber())
-    );
-  }
+    /**
+     * findByPage request
+     */
+    @PostMapping("findByPage")
+    public JsonObject<PageResult<PlaylistResponse>> findByPage(
+            @RequestBody PageRequestWrapper<PlaylistQueryRequest> request) {
+        PageRequestWrapper<PlaylistQuery> wrapper = new PageRequestWrapper<>();
+        wrapper.setBean(PlaylistMapper.INSTANCE.request2Query(request.getBean()));
+        wrapper.setSorts(request.getSorts());
+        wrapper.setPageSize(request.getPageSize());
+        wrapper.setPage(request.getPage());
+        Page<PlaylistVO> page = playlistService.findByPage(wrapper);
+        return JsonObject.success(
+                PageResult.of(
+                        page.getContent().stream()
+                                .map(vo -> PlaylistMapper.INSTANCE.vo2CustomResponse(vo))
+                                .collect(Collectors.toList()),
+                        page.getTotalElements(),
+                        page.getSize(),
+                        page.getNumber())
+        );
+    }
 }
