@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.controller.api.content;
 
 import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
-import cn.chenyunlong.qing.domain.third.bilibili.service.BilibiliAnimeService;
+import cn.chenyunlong.qing.domain.third.bilibili.service.BiliAnimeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +37,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BiliAnimeInfoController {
 
-    private final BilibiliAnimeService animeInfoService;
+    private final BiliAnimeService animeInfoService;
 
     /**
      * 得到评分列表

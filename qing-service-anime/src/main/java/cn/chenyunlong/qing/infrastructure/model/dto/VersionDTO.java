@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.model.dto;
 
+import cn.chenyunlong.qing.domain.system.version.Version;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
-import cn.chenyunlong.qing.infrastructure.model.entities.Version;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

@@ -13,13 +13,11 @@
 
 package cn.chenyunlong.common.constants;
 
-import java.util.Optional;
-
 /**
  * @author gim
  */
 
-public enum CodeEnum implements BaseEnum<CodeEnum> {
+public enum CodeEnum implements BaseEnum {
     /**
      * 整个系统通用编码 xx_xx_xxxx (服务标识_业务_错误编号，便于错误快速定位
      */
@@ -47,16 +45,15 @@ public enum CodeEnum implements BaseEnum<CodeEnum> {
     }
 
     @Override
-    public Integer getCode() {
-        return this.code;
-    }
-
-    @Override
     public String getName() {
         return this.msg;
     }
 
-    public static Optional<CodeEnum> of(Integer code) {
-        return Optional.ofNullable(BaseEnum.parseByCode(CodeEnum.class, code));
+    /**
+     * @return 获取枚举的值
+     */
+    @Override
+    public Integer getValue() {
+        return code;
     }
 }

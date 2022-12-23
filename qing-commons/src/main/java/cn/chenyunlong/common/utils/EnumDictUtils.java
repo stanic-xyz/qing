@@ -28,12 +28,12 @@ public class EnumDictUtils {
     private EnumDictUtils() {
     }
 
-    public static <T extends Enum<T> & BaseEnum<T>> List<EnumVo> getEnumDictVo(Class<T> cls) {
-        return EnumSet.allOf(cls).stream().map(et -> {
+    public static <T extends Enum<T> & BaseEnum> List<EnumVo> getEnumDictVo(Class<T> cls) {
+        return EnumSet.allOf(cls).stream().map(value -> {
                     EnumVo vo = new EnumVo();
-                    vo.setCode(et.getCode());
-            vo.setName(et.getName());
-            vo.setText(et.name());
+                    vo.setCode(value.getValue());
+                    vo.setName(value.getName());
+                    vo.setText(value.name());
                     return vo;
                 }
         ).collect(

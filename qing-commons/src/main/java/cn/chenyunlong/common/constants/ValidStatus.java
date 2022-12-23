@@ -13,12 +13,10 @@
 
 package cn.chenyunlong.common.constants;
 
-import java.util.Optional;
-
 /**
  * @author gim
  **/
-public enum ValidStatus implements BaseEnum<ValidStatus> {
+public enum ValidStatus implements BaseEnum {
     /**
      * 有效
      */
@@ -36,16 +34,15 @@ public enum ValidStatus implements BaseEnum<ValidStatus> {
     }
 
     @Override
-    public Integer getCode() {
-        return code;
-    }
-
-    @Override
     public String getName() {
         return name;
     }
 
-    public static Optional<ValidStatus> of(Integer code) {
-        return Optional.ofNullable(BaseEnum.parseByCode(ValidStatus.class, code));
+    /**
+     * @return
+     */
+    @Override
+    public Integer getValue() {
+        return code;
     }
 }

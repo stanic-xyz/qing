@@ -35,10 +35,26 @@ spring:
     cache: true
   quartz:
     scheduler-name: testName
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    show-sql: true
+    generate-ddl: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        generate_statistics: false
+        jdbc:
+          batch_size: 1000
+        order_inserts: true
 mybatis-plus:
   configuration:
     cache-enabled: true
     log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
   global-config:
     banner: false
   type-aliases-package: cn.chenyunlong.qing.**.domain,cn.chenyunlong.qing.**.entities

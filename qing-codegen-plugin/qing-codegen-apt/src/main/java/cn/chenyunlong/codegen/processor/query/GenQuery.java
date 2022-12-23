@@ -25,7 +25,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface GenQuery {
 
-    String pkgName() default "request";
+    String pkgName() default "query";
 
     String sourcePath() default "src/main/java";
 

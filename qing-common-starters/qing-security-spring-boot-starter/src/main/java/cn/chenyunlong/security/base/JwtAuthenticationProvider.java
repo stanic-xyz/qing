@@ -49,7 +49,7 @@ public class JwtAuthenticationProvider extends BaseAuthenticationProvider implem
             } catch (ParseTokenException e) {
                 throw new CustomAuthenticationException(e.getCode(), e.getMsg());
             } catch (Exception e) {
-                throw new CustomAuthenticationException(CodeEnum.SystemError.getCode(), CodeEnum.SystemError.getName());
+                throw new CustomAuthenticationException(CodeEnum.SystemError.getValue(), CodeEnum.SystemError.getName());
             }
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(jwtUser, token, jwtUser.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authToken);

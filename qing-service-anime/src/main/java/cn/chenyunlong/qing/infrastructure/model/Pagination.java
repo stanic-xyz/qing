@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.qing.infrastructure.model;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
 
 import java.util.List;
@@ -42,13 +41,4 @@ public class Pagination {
     private Boolean hasPrev;
 
     private Boolean hasNext;
-
-    public Pagination(IPage animeInfoPage) {
-        this.pages = animeInfoPage.getPages();
-        this.totalCount = animeInfoPage.getTotal();
-        this.size = animeInfoPage.getSize();
-        this.hasNext = animeInfoPage.getCurrent() < animeInfoPage.getPages();
-        this.hasPrev = animeInfoPage.getCurrent() > 1;
-        this.current = animeInfoPage.getCurrent();
-    }
 }

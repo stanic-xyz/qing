@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.domain.third.bilibili.service;
 
+import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
 import cn.chenyunlong.qing.domain.third.bilibili.model.AnimeData;
 import cn.chenyunlong.qing.domain.third.bilibili.model.BgngumeResponse;
 import cn.chenyunlong.qing.domain.third.bilibili.model.BiliAnime;
@@ -20,12 +21,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
 @Service
-public class BiliBiliService {
+public class BiliBiliService implements BiliAnimeService {
 
     private final RestTemplate restTemplate;
 
@@ -63,5 +66,26 @@ public class BiliBiliService {
         }
         log.info("从哔哩哔哩同步了{}部动漫的评分数据！！", animeList.size());
         return animeList;
+    }
+
+    /**
+     * 同步哔哩哔哩的动漫信息
+     */
+    @Override
+    public void updateAnimeInfo() {
+
+    }
+
+    /**
+     * 获取B站动漫的评分记录
+     *
+     * @param animeId   动漫ID
+     * @param startTime 开始时间
+     * @param entTime   结束时间
+     * @return 评分记录
+     */
+    @Override
+    public List<BilibiliAnimeScoreEntity> getScoreInfoList(Long animeId, LocalDateTime startTime, LocalDateTime entTime) {
+        return Collections.emptyList();
     }
 }

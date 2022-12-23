@@ -14,10 +14,11 @@
 package cn.chenyunlong.qing.domain.third.diygod.figure;
 
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -29,8 +30,9 @@ import java.time.LocalDate;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("figure")
-public class FigureEntity extends BaseEntity<FigureEntity> {
+@Table(name = "figure")
+@Entity
+public class FigureEntity extends BaseEntity {
     private String name;
     private String otherNames;
     private LocalDate releaseDate;

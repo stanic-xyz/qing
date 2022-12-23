@@ -21,6 +21,7 @@ import cn.chenyunlong.codegen.enumes.OrmType;
  * @author Stan
  * @date 2022/11/27
  */
+
 public @interface GenBase {
 
 

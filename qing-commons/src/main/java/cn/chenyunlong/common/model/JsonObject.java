@@ -41,11 +41,11 @@ public final class JsonObject<E> {
     }
 
     public static <E> JsonObject<E> success(E e) {
-        JsonObject<E> object = new JsonObject<>();
-        object.setCode(CodeEnum.Success.getCode());
-        object.setMsg(CodeEnum.Success.getName());
-        object.setResult(e);
-        return object;
+        JsonObject<E> jsonObject = new JsonObject<>();
+        jsonObject.setCode(CodeEnum.Success.getValue());
+        jsonObject.setMsg(CodeEnum.Success.getName());
+        jsonObject.setResult(e);
+        return jsonObject;
     }
 
     public static <E> JsonObject<E> success(E t, String msg) {
@@ -57,20 +57,20 @@ public final class JsonObject<E> {
     public static <T> JsonObject<T> fail(BaseEnum codeEnum) {
         JsonObject<T> object = new JsonObject<T>();
         object.setMsg(codeEnum.getName());
-        object.setCode(codeEnum.getCode());
+        object.setCode(codeEnum.getValue());
         return object;
     }
 
     public static <T> JsonObject<T> fail(String msg) {
         JsonObject<T> jsonObject = new JsonObject<>();
         jsonObject.setMsg(msg);
-        jsonObject.setCode(CodeEnum.Fail.getCode());
+        jsonObject.setCode(CodeEnum.Fail.getValue());
         return jsonObject;
     }
 
     public static <E> JsonObject<E> fail(E result, String msg) {
         JsonObject<E> object = new JsonObject<>();
-        object.setCode(CodeEnum.Fail.getCode());
+        object.setCode(CodeEnum.Fail.getValue());
         object.setMsg(msg);
         object.setResult(result);
         return object;
@@ -79,14 +79,14 @@ public final class JsonObject<E> {
     public static <E> JsonObject<E> res(BaseEnum codeEnum, E e) {
         JsonObject<E> object = new JsonObject<>();
         object.setMsg(codeEnum.getName());
-        object.setCode(codeEnum.getCode());
+        object.setCode(codeEnum.getValue());
         object.setResult(e);
         return object;
     }
 
 
     public boolean isSuccess() {
-        return Objects.equals(CodeEnum.Success.getCode(), this.getCode());
+        return Objects.equals(CodeEnum.Success.getValue(), this.getCode());
     }
 
 }

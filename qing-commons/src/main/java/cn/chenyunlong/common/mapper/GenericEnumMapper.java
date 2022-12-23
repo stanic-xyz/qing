@@ -15,13 +15,20 @@ package cn.chenyunlong.common.mapper;
 
 import cn.chenyunlong.common.constants.ValidStatus;
 
+import java.util.Objects;
+
 public class GenericEnumMapper {
 
     public Integer asInteger(ValidStatus status) {
-        return status.getCode();
+        return status.getValue();
     }
 
     public ValidStatus asValidStatus(Integer code) {
-        return ValidStatus.of(code).orElse(ValidStatus.INVALID);
+        for (ValidStatus status : ValidStatus.values()) {
+            if (Objects.equals(status.getValue(), code)) {
+                return status;
+            }
+        }
+        return ValidStatus.INVALID;
     }
 }

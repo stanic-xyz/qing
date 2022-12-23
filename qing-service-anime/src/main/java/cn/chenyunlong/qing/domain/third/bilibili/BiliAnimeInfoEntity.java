@@ -14,17 +14,15 @@
 package cn.chenyunlong.qing.domain.third.bilibili;
 
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.Table;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("bilibili_anime")
-public class BiliAnimeInfoEntity extends BaseEntity<BiliAnimeInfoEntity> {
-    @TableId
-    private Long id;
+@Table(name = "bilibili_anime")
+public class BiliAnimeInfoEntity extends BaseEntity {
     private Long mediaId;
     private String title;
     private Long seasonId;

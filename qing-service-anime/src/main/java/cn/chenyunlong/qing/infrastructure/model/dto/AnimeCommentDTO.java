@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.model.dto;
 
-import cn.chenyunlong.qing.domain.comment.AnimeComment;
+import cn.chenyunlong.qing.domain.anime.comment.Comment;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -23,7 +23,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class AnimeCommentDTO implements OutputConverter<AnimeCommentDTO, AnimeComment> {
+public class AnimeCommentDTO implements OutputConverter<AnimeCommentDTO, Comment> {
     private Long id;
     private Long cid;
     private String username;
