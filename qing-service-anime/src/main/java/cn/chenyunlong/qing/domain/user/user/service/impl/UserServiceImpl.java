@@ -52,7 +52,7 @@ public class UserServiceImpl implements IUserService {
     public void updateUser(UserUpdater updater) {
         EntityOperations.doUpdate(userRepository)
                 .loadById(updater.getId())
-                .update(e -> updater.updateUser(e))
+                .update(updater::updateUser)
                 .execute();
     }
 
