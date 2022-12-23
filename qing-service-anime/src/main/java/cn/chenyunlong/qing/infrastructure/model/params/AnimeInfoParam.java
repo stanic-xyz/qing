@@ -13,12 +13,12 @@
 
 package cn.chenyunlong.qing.infrastructure.model.params;
 
-import cn.chenyunlong.qing.domain.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.InputConverter;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
@@ -39,9 +39,9 @@ public class AnimeInfoParam implements InputConverter<AnimeInfo> {
     private String author;
     @NotBlank(message = "公司名称不能为空")
     private String company;
-    @NotEmpty(message = "出版日期不能为空")
+    @NotNull(message = "出版日期不能为空")
     private LocalDate premiereDate;
-    @NotEmpty(message = "播放状态不能为空")
+    @NotNull(message = "播放状态不能为空")
     private String playStatus;
     private String plotType;
     private String tags;

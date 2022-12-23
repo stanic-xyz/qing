@@ -223,19 +223,19 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
                         .addMember("title", "$S", getFieldDesc(element))
                         .build());
         builder.addField(fieldSpec.build());
-//        String fieldName = getFieldDefaultName(element);
-//        MethodSpec.Builder getMethod = MethodSpec.methodBuilder("get" + fieldName)
-//                .returns(typeName)
-//                .addModifiers(Modifier.PUBLIC)
-//                .addStatement("return $L", element.getSimpleName().toString());
-//        MethodSpec.Builder setMethod = MethodSpec.methodBuilder("set" + fieldName)
-//                .returns(void.class)
-//                .addModifiers(Modifier.PUBLIC)
-//                .addParameter(typeName, element.getSimpleName().toString())
-//                .addStatement("this.$L = $L", element.getSimpleName().toString(),
-//                        element.getSimpleName().toString());
-//        builder.addMethod(getMethod.build());
-//        builder.addMethod(setMethod.build());
+        String fieldName = getFieldDefaultName(element);
+        MethodSpec.Builder getMethod = MethodSpec.methodBuilder("get" + fieldName)
+                .returns(typeName)
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("return $L", element.getSimpleName().toString());
+        MethodSpec.Builder setMethod = MethodSpec.methodBuilder("set" + fieldName)
+                .returns(void.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(typeName, element.getSimpleName().toString())
+                .addStatement("this.$L = $L", element.getSimpleName().toString(),
+                        element.getSimpleName().toString());
+        builder.addMethod(getMethod.build());
+        builder.addMethod(setMethod.build());
     }
 
     /**

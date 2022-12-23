@@ -48,6 +48,7 @@
         <lombok.version>1.18.24</lombok.version>
         <hutool.version>5.8.10</hutool.version>
         <swagger.version>2.2.7</swagger.version>
+        <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     </properties>
 
     <dependencyManagement>
@@ -92,6 +93,16 @@
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${org.mapstruct.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

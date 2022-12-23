@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.model.params;
 
-import cn.chenyunlong.qing.domain.anime.AnimeRecommendEntity;
+import cn.chenyunlong.qing.domain.anime.recommend.Recommend;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.InputConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -24,7 +24,7 @@ import javax.validation.constraints.Size;
 
 @Schema(description = "查询推荐信息的请求参数信息")
 @Data
-public class AnimeRecommendParam implements InputConverter<AnimeRecommendEntity> {
+public class AnimeRecommendParam implements InputConverter<Recommend> {
 
     @Schema(title = "动漫ID")
     @NotNull(message = "动漫ID不能为空")

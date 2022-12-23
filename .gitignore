@@ -45,6 +45,8 @@ application-local.yml
 application-local.yaml
 application-local.properties
 
+**.local
 ### .env 配置文件
-**.env
+local.env
+
 /qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/user/gen/

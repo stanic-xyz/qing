@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.third.agefans.model;
 
-import cn.chenyunlong.qing.domain.anime.AnimeMenu;
+import cn.chenyunlong.qing.domain.anime.menu.Menu;
 import lombok.Data;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class CommModel {
     private String index;
     private String indexName;
     private String indexImg;
-    private List<AnimeMenu> animeMenus;
+    private List<Menu> menus;
     private String notice;
     private List<FriendLink> friendLinks;
 }

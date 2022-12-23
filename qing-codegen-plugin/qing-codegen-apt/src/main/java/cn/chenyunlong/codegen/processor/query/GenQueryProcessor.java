@@ -44,18 +44,18 @@ public class GenQueryProcessor extends BaseCodeGenProcessor {
 
         String className = PREFIX + typeElement.getSimpleName() + QUERY_SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + QUERY_SUFFIX;
-        String queryRequestPackageName = nameContext.getQueryRequestPackageName();
+        String queryPackageName = nameContext.getQueryPackageName();
 
         TypeSpec.Builder builder;
         builder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class)
                 .addAnnotation(Data.class);
-        addSetterAndGetterMethod(builder, findFields(typeElement, ve -> Objects.nonNull(ve.getAnnotation(
+        addSetterAndGetterMethod(builder, findFields(typeElement, variableElement -> Objects.nonNull(variableElement.getAnnotation(
                 QueryItem.class))));
 
-        genJavaFile(queryRequestPackageName, builder);
-        genJavaFile(queryRequestPackageName, getSourceType(sourceClassName, queryRequestPackageName, className));
+        genJavaFile(queryPackageName, builder);
+        genJavaFile(queryPackageName, getSourceType(sourceClassName, queryPackageName, className));
     }
 
     @Override

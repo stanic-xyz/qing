@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.controller.api.system;
 
 import cn.chenyunlong.qing.domain.file.UploadFile;
-import cn.chenyunlong.qing.domain.file.service.FileUploadService;
+import cn.chenyunlong.qing.domain.file.service.IUploadFileService;
 import cn.chenyunlong.qing.infrastructure.annotation.Log;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.model.ApiResult;
@@ -54,7 +54,7 @@ import java.util.UUID;
 public class FileController {
 
     private final QingProperties qingProperties;
-    private final FileUploadService fileUploadService;
+    private final IUploadFileService fileUploadService;
     private final COSClient cosClient;
 
     @Log(title = "获取存储桶列表")
@@ -116,7 +116,7 @@ public class FileController {
             uploadFile.setUrl(qingProperties.getFile().getImageServerUrl() + fileName);
             uploadFile.setFileSize(multipartFile.getSize());
             uploadFile.setMimeType(multipartFile.getContentType());
-            fileUploadService.saveFile(uploadFile);
+//            fileUploadService.saveFile(uploadFile);
             return ApiResult.success();
         } else {
             return ApiResult.fail("没有上传图片啊");

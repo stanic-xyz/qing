@@ -21,7 +21,7 @@ import cn.chenyunlong.common.constants.BaseEnum;
  * @author Stan
  * @date 2022/11/27
  */
-public enum MFAType implements BaseEnum<MFAType> {
+public enum MFAType implements BaseEnum {
 
     /**
      * Disable MFA auth.
@@ -53,7 +53,7 @@ public enum MFAType implements BaseEnum<MFAType> {
      * @return 获取编码
      */
     @Override
-    public Integer getCode() {
+    public Integer getValue() {
         return value;
     }
 

@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.model.dto;
 
-import cn.chenyunlong.qing.domain.anime.AnimeType;
+import cn.chenyunlong.qing.domain.anime.type.AnimeType;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

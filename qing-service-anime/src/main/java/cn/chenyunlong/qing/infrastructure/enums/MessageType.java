@@ -20,7 +20,7 @@ import lombok.Getter;
  * @author Stan
  */
 
-public enum MessageType implements BaseEnum<MessageType> {
+public enum MessageType implements BaseEnum {
 
     /**
      * 普通消息
@@ -50,7 +50,7 @@ public enum MessageType implements BaseEnum<MessageType> {
      * @return 获取编码
      */
     @Override
-    public Integer getCode() {
+    public Integer getValue() {
         return value;
     }
 

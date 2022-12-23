@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.model.dto;
 
-import cn.chenyunlong.qing.domain.anime.AnimeEpisodeEntity;
+import cn.chenyunlong.qing.domain.anime.episode.Episode;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class AnimeEpisodeDTO implements OutputConverter<AnimeEpisodeDTO, AnimeEpisodeEntity> {
+public class AnimeEpisodeDTO implements OutputConverter<AnimeEpisodeDTO, Episode> {
 
     private Long id;
     private Long animeId;

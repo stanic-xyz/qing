@@ -31,9 +31,14 @@ import java.util.function.Supplier;
 public class EntityCreator<T, ID> extends BaseEntityOperation implements Create<T>, UpdateHandler<T>, Executor<T> {
 
     private final CrudRepository<T, ID> repository;
-    private T t;
-    private Consumer<T> successHook = t -> log.info("save success");
-    private Consumer<? super Throwable> errorHook = Throwable::printStackTrace;
+    private T data;
+    private Consumer<T> successHook = t -> {
+        log.info("save success");
+    };
+    private Consumer<? super Throwable> errorHook = throwable -> {
+        log.error("插入数据发生了异常");
+        throwable.printStackTrace();
+    };
 
     public EntityCreator(CrudRepository<T, ID> repository) {
         this.repository = repository;
@@ -54,21 +59,21 @@ public class EntityCreator<T, ID> extends BaseEntityOperation implements Create<
      */
     @Override
     public UpdateHandler<T> create(Supplier<T> supplier) {
-        this.t = supplier.get();
+        this.data = supplier.get();
         return this;
     }
 
     @Override
     public Executor<T> update(Consumer<T> consumer) {
-        Preconditions.checkArgument(Objects.nonNull(t), "entity must supply");
-        consumer.accept(this.t);
+        Preconditions.checkArgument(Objects.nonNull(data), "entity must supply");
+        consumer.accept(this.data);
         return this;
     }
 
     @Override
     public Optional<T> execute() {
-        doValidate(this.t, CreateGroup.class);
-        T save = Try.of(() -> repository.save(t))
+        doValidate(this.data, CreateGroup.class);
+        T save = Try.of(() -> repository.save(data))
                 .onSuccess(successHook)
                 .onFailure(errorHook).getOrNull();
         return Optional.ofNullable(save);

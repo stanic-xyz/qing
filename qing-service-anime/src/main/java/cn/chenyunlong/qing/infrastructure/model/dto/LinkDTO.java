@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.model.dto;
 
+import cn.chenyunlong.qing.domain.system.link.Link;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.OutputConverter;
-import cn.chenyunlong.qing.infrastructure.model.entities.Link;
 import lombok.Data;
 
 /**
