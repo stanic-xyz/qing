@@ -37,7 +37,7 @@ spring:
     scheduler-name: testName
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     generate-ddl: true
@@ -45,7 +45,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:
-        generate_statistics: true
+        generate_statistics: false
         jdbc:
           batch_size: 1000
         order_inserts: true

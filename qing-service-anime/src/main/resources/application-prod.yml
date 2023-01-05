@@ -10,6 +10,9 @@ spring:
     host: ${QING_MAIL_HOST}
     username: ${QING_MAIL_USERNAME}
     password: ${QING_MAIL_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
 eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}:@project.version@

@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Configuration
 @ConfigurationProperties(prefix = "qing")
-@EnableConfigurationProperties(value = {FileProperties.class, SecurityProperties.class})
+@EnableConfigurationProperties(value = {FileProperties.class, SecurityProperties.class, OssProperties.class})
 public class QingProperties {
 
     /**
@@ -37,7 +37,12 @@ public class QingProperties {
     /**
      * 文件相关配置
      */
-    private FileProperties file;
+    private FileProperties file = new FileProperties();
+
+    /**
+     * 对象存储相关配置
+     */
+    private OssProperties oss = new OssProperties();
 
     /**
      * web安全配置

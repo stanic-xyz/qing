@@ -9,6 +9,8 @@ import cn.chenyunlong.qing.domain.user.user.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.user.user.vo.UserVO;
 import org.springframework.data.domain.Page;
 
+import java.util.Optional;
+
 public interface IUserService {
     /**
      * create
@@ -40,5 +42,12 @@ public interface IUserService {
      */
     Page<UserVO> findByPage(PageRequestWrapper<UserQuery> query);
 
-    User findUserByUsername(String username);
+    Optional<User> findUserByUsername(String username);
+
+    /**
+     * 通过
+     */
+    Optional<User> authenticate(String userName, String password, String authCode);
+
+    User addUserInfo(User user);
 }

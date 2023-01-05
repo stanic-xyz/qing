@@ -11,8 +11,10 @@
  *
  */
 
-package cn.chenyunlong.qing.controller.api.auth;
+package cn.chenyunlong.qing.domain.user.domainservice;
 
+import cn.chenyunlong.common.constants.CodeEnum;
+import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.domain.permission.Permission;
 import cn.chenyunlong.qing.domain.user.user.User;
 import cn.chenyunlong.qing.domain.user.user.service.IUserService;
@@ -66,29 +68,30 @@ public class AuthController {
     @PostMapping("login/preCheck")
     @Operation(summary = "Login")
     @CacheLock(autoDelete = false, prefix = "login_pre_check")
-    public LoginPreCheckDTO authPreCheck(@RequestBody @Valid LoginParam loginParam) {
-//        final User user = userService.authenticate(loginParam);
-        final User user = null;
-        return new LoginPreCheckDTO(MFAType.useMFA(user.getMfaType()));
+    public ApiResult<LoginPreCheckDTO> authPreCheck(@RequestBody @Valid LoginParam loginParam) {
+        return userService.authenticate(loginParam.getUsername(), loginParam.getPassword(), loginParam.getAuthCode())
+                .map(user -> ApiResult.success(new LoginPreCheckDTO(MFAType.useMFA(user.getMfaType()))))
+                .orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
     }
 
     @Log(title = "通过表单登陆")
     @Operation(summary = "通过表单登陆")
     @PostMapping(value = "formLogin")
     public ApiResult<UserInfoVO> formLoin(@RequestBody LoginParam loginParam) throws LoginErrorException {
-//        User authenticate = userService.authenticate(loginParam);
-        User authenticate = null;
-        UserInfoVO userInfoVO = new UserInfoVO().convertFrom(authenticate);
-        String jwtToken = tokenProvider.createJwtToken(userInfoVO, false);
-        userInfoVO.setToken(jwtToken);
-        return ApiResult.success(userInfoVO);
+        return userService.authenticate(loginParam.getUsername(), loginParam.getPassword(), loginParam.getAuthCode())
+                .map(user -> {
+                    UserInfoVO userInfoVO = new UserInfoVO().convertFrom(user);
+                    String jwtToken = tokenProvider.createJwtToken(userInfoVO, false);
+                    userInfoVO.setToken(jwtToken);
+                    return ApiResult.success(userInfoVO);
+                }).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
     }
 
     @PostMapping("register")
     public ApiResult<User> register(@RequestBody UserParam userParam) throws AbstractException {
         try {
-//            User user = userService.addUserInfo(userParam.convertTo());
-            return ApiResult.success(null);
+            User user = userService.addUserInfo(userParam.convertTo());
+            return ApiResult.success(user);
         } catch (AbstractException exp) {
             return ApiResult.fail(exp.getMessage());
         }
