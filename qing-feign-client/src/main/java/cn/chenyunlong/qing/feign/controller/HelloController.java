@@ -50,7 +50,7 @@ public class HelloController {
     }
 
 
-    @GetMapping("gschoolInfo")
+    @GetMapping("getSchoolInfo")
     public String hello(@RequestParam String appId, String accessToken, String sysIds, String schoolId) {
         String value = baseService.getUserInfo(appId, accessToken, sysIds, schoolId);
         return "this is hello world!" + test + ":" + value;

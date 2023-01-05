@@ -4,7 +4,7 @@ spring:
   jmx:
     enabled: false
   application:
-    name: spring-cloud-api-gateway
+    name: qing-service-cloud-gateway
   profiles:
     active: prod
   cloud:

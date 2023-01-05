@@ -3,6 +3,14 @@ package cn.chenyunlong.qing.domain.user.user.repository;
 
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.user.user.User;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface UserRepository extends BaseRepository<User, Long> {
+import java.util.Optional;
+
+public interface UserRepository extends BaseRepository<User, Long>, QuerydslPredicateExecutor<User> {
+    @Query("select u from User u where u.username = ?1")
+    Optional<User> findUserByUsername(String username);
+
+
 }

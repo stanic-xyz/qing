@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.qing.infrastructure.security.support;
 
-import cn.chenyunlong.qing.domain.user.user.User;
 import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,16 +34,13 @@ public class MyUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findUserByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("用户名未找到！");
-        }
+        return userService.findUserByUsername(username)
+                .map(user -> {
+                    Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
-        grantedAuthorities.add(authority);
-
-        return new UserDetail(user, grantedAuthorities);
+                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
+                    grantedAuthorities.add(authority);
+                    return new UserDetail(user, grantedAuthorities);
+                }).orElseThrow(() -> new UsernameNotFoundException("用户名未找到！"));
     }
 }

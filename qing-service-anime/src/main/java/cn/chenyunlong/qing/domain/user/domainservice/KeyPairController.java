@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.controller.api.auth;
+package cn.chenyunlong.qing.domain.user.domainservice;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;

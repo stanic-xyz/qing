@@ -22,10 +22,6 @@ public class UserInfoVO implements OutputConverter<UserInfoVO, User> {
 
     private String username;
     private String nickname;
-    private String password;
-    private String phone;
-    private String email;
     private String avatar;
-    private String description;
     private String token;
 }
