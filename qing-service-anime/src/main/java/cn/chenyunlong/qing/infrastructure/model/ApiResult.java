@@ -66,4 +66,9 @@ public class ApiResult<T> {
     public static <T> ApiResult<T> fail(String msg) {
         return new ApiResult<T>(1, msg, null);
     }
+
+    public ApiResult<T> setData(T data) {
+        this.data = data;
+        return this;
+    }
 }

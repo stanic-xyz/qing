@@ -3,10 +3,9 @@ package cn.chenyunlong.qing.domain.system.version.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
-import java.lang.Long;
-import java.lang.String;
-
+@Data
 @Schema
 public class VersionUpdateRequest implements Request {
     @Schema(

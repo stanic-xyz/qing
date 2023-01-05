@@ -91,7 +91,7 @@ public class AnimeInfoController {
         return JsonObject.success(
                 PageResult.of(
                         page.getContent().stream()
-                                .map(vo -> AnimeInfoMapper.INSTANCE.vo2CustomResponse(vo))
+                                .map(AnimeInfoMapper.INSTANCE::vo2CustomResponse)
                                 .collect(Collectors.toList()),
                         page.getTotalElements(),
                         page.getSize(),

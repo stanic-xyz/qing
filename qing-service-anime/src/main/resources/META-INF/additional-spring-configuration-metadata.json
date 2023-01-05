@@ -3,7 +3,7 @@
     {
       "name": "zhangli.swagger.author",
       "type": "java.lang.String",
-      "description": "Description for zhangli.swagger.author."
+      "description": "Description for Qing.swagger.author."
     },
     {
       "name": "zhangli.security.authenticationPrefix",

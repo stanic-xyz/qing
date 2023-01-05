@@ -39,4 +39,15 @@ public class PageResult<T> {
     public static <T> PageResult of(List<T> list, Long total, Integer pageSize, Integer pageNumber) {
         return new PageResult(list, total, pageSize, pageNumber);
     }
+
+    public PageResult(List<T> list, Long total, Integer pageSize, Integer pageNumber, Class<T> clazz) {
+        this.list = list;
+        this.total = total;
+        this.pageSize = pageSize;
+        this.pageNumber = pageNumber;
+    }
+
+    public static <T> PageResult<T> of(List<T> list, Long total, Integer pageSize, Integer pageNumber, Class<T> clazz) {
+        return new PageResult<T>(list, total, pageSize, pageNumber, clazz);
+    }
 }

@@ -13,6 +13,8 @@ import cn.chenyunlong.qing.domain.user.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import cn.chenyunlong.qing.domain.user.user.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.user.user.vo.UserVO;
+import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
+import cn.hutool.core.lang.Snowflake;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     /**
      * createImpl
      */
@@ -40,7 +45,7 @@ public class UserServiceImpl implements IUserService {
     public Long createUser(UserCreator creator) {
         Optional<User> user = EntityOperations.doCreate(userRepository)
                 .create(() -> UserMapper.INSTANCE.dtoToEntity(creator))
-                .update(e -> e.init())
+                .update(BaseEntity::init)
                 .execute();
         return user.isPresent() ? user.get().getId() : 0;
     }
@@ -102,11 +107,39 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return 用户信息
      */
     @Override
-    public User findUserByUsername(String username) {
-        return null;
+    public Optional<User> findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+
+    /**
+     * 通过
+     *
+     * @param userName 用户名
+     * @param password 密码
+     * @param authCode 验证码
+     */
+    @Override
+    public Optional<User> authenticate(String userName, String password, String authCode) {
+        return findUserByUsername(userName)
+                .filter(user -> {
+                    String encode = passwordEncoder.encode(password);
+                    return passwordEncoder.matches(password, user.getPassword());
+                });
+    }
+
+
+    /**
+     * @param user 用户信息
+     * @return 用户信息
+     */
+    @Override
+    public User addUserInfo(User user) {
+        user.setUid(new Snowflake().nextId());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.saveAndFlush(user);
     }
 }
