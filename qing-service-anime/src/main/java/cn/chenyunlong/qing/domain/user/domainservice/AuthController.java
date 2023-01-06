@@ -17,6 +17,7 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.domain.permission.Permission;
 import cn.chenyunlong.qing.domain.user.user.User;
+import cn.chenyunlong.qing.domain.user.user.request.UserRegisterRequest;
 import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import cn.chenyunlong.qing.infrastructure.annotation.Log;
 import cn.chenyunlong.qing.infrastructure.cache.lock.CacheLock;
@@ -26,7 +27,6 @@ import cn.chenyunlong.qing.infrastructure.exception.LoginErrorException;
 import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import cn.chenyunlong.qing.infrastructure.model.dto.LoginPreCheckDTO;
 import cn.chenyunlong.qing.infrastructure.model.params.LoginParam;
-import cn.chenyunlong.qing.infrastructure.model.params.UserParam;
 import cn.chenyunlong.qing.infrastructure.model.vo.system.UserInfoVO;
 import cn.chenyunlong.qing.infrastructure.security.support.TokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -88,7 +88,7 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public ApiResult<User> register(@RequestBody UserParam userParam) throws AbstractException {
+    public ApiResult<User> register(@RequestBody UserRegisterRequest userParam) throws AbstractException {
         try {
             User user = userService.addUserInfo(userParam.convertTo());
             return ApiResult.success(user);

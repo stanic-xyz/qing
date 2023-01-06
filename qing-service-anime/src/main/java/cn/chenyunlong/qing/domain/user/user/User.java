@@ -32,6 +32,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -65,6 +66,7 @@ import java.time.LocalDateTime;
 public class User extends BaseEntity {
     private Long uid;
     private String username;
+    @Column(unique = true)
     private String nickname;
     private String password;
     private String phone;

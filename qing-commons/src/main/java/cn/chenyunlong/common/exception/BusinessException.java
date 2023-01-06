@@ -21,22 +21,22 @@ import cn.chenyunlong.common.constants.BaseEnum;
  */
 public class BusinessException extends RuntimeException {
 
-    private final BaseEnum msg;
+    private final BaseEnum code;
     private Object data;
 
-    public BusinessException(BaseEnum msg) {
-        super(msg.getName());
-        this.msg = msg;
+    public BusinessException(BaseEnum code) {
+        super(code.getName());
+        this.code = code;
     }
 
-    public BusinessException(BaseEnum msg, Object data) {
-        super(msg.getName());
-        this.msg = msg;
+    public BusinessException(BaseEnum code, Object data) {
+        super(code.getName());
+        this.code = code;
         this.data = data;
     }
 
-    public BaseEnum getMsg() {
-        return msg;
+    public BaseEnum getCode() {
+        return code;
     }
 
     public Object getData() {

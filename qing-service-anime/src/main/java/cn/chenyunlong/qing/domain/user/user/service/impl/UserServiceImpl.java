@@ -138,6 +138,9 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public User addUserInfo(User user) {
+        if (findUserByUsername(user.getUsername()).isPresent()) {
+            throw new BusinessException(CodeEnum.ValidateError);
+        }
         user.setUid(new Snowflake().nextId());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.saveAndFlush(user);
