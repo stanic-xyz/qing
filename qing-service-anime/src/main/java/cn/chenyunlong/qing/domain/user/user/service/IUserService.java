@@ -49,5 +49,11 @@ public interface IUserService {
      */
     Optional<User> authenticate(String userName, String password, String authCode);
 
+    /**
+     * 添加用户信息
+     *
+     * @param user 用户信息
+     * @return 添加用户信息
+     */
     User addUserInfo(User user);
 }
