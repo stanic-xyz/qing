@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Convert;
-import java.time.LocalDateTime;
 
 /**
  * Base entity.
@@ -38,16 +37,6 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @NoArgsConstructor
 public class BaseEntity extends BaseJpaAggregate {
-
-    /**
-     * Create time.
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * Update time.
-     */
-    private LocalDateTime updateTime;
 
     /**
      * 创建者
@@ -73,17 +62,20 @@ public class BaseEntity extends BaseJpaAggregate {
     /**
      * 数据检查
      */
-    public void preCheck() {
-        if (createBy == null) {
-            createTime = LocalDateTime.now();
-        }
-        if (updateTime == null) {
-            updateTime = LocalDateTime.now();
-        }
-        if (StringUtils.isEmpty(createBy)) {
+    @Override
+    public void prePersist() {
+        super.prePersist();
+        if (StringUtils.isBlank(createBy)) {
             createBy = "system";
         }
-        if (StringUtils.isEmpty(updateBy)) {
+        if (StringUtils.isBlank(updateBy)) {
+            updateBy = "";
+        }
+    }
+
+    @Override
+    public void preUpdate() {
+        if (StringUtils.isBlank(updateBy)) {
             updateBy = "";
         }
     }
