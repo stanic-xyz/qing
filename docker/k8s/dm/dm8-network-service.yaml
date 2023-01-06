@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dm
+  labels:
+    app: dm
+spec:
+  type: NodePort
+  ports:
+    - port: 5236
+      nodePort: 30000
+      protocol: TCP
+  selector:
+    app: dm

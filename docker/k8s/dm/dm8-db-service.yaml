@@ -1,0 +1,36 @@
+#旧版K8s使用apps/v1beta1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dm-deployment
+  labels:
+    app: dm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dm
+  minReadySeconds: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: dm
+    spec:
+      containers:
+        - name: dm8
+          image: dm8_single:v8.1.2.128_ent_x86_64_ctm_pack4
+          ports:
+            - containerPort: 5236
+          env:
+            - name: PAGE_SIZE
+              value: "16"
+            - name: LD_LIBRARY_PATH
+              value: "/opt/dmdbms/bin"
+            - name: INSTANCE_NAME
+              value: "dm8_01"
+
