@@ -66,7 +66,7 @@ public class AuthController {
     private final TokenProvider tokenProvider;
 
     @PostMapping("login/preCheck")
-    @Operation(summary = "Login")
+    @Operation(summary = "preCheck")
     @CacheLock(autoDelete = false, prefix = "login_pre_check")
     public ApiResult<LoginPreCheckDTO> authPreCheck(@RequestBody @Valid LoginParam loginParam) {
         return userService.authenticate(loginParam.getUsername(), loginParam.getPassword(), loginParam.getAuthCode())
@@ -88,10 +88,10 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public ApiResult<User> register(@RequestBody UserRegisterRequest userParam) throws AbstractException {
+    public ApiResult<UserInfoVO> register(@RequestBody UserRegisterRequest userParam) throws AbstractException {
         try {
             User user = userService.addUserInfo(userParam.convertTo());
-            return ApiResult.success(user);
+            return ApiResult.success(new UserInfoVO().convertFrom(user));
         } catch (AbstractException exp) {
             return ApiResult.fail(exp.getMessage());
         }

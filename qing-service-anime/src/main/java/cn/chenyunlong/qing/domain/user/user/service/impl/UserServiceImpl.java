@@ -125,10 +125,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Optional<User> authenticate(String userName, String password, String authCode) {
         return findUserByUsername(userName)
-                .filter(user -> {
-                    String encode = passwordEncoder.encode(password);
-                    return passwordEncoder.matches(password, user.getPassword());
-                });
+                .filter(user -> passwordEncoder.matches(password, user.getPassword()));
     }
 
 
