@@ -3,6 +3,17 @@
 [![License](https://img.shields.io/badge/licence-MulanPSL2-blue)](http://license.coscl.org.cn/MulanPSL2)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/yunlongChen/qing/maven.yml?branch=main)
 
+##### 前端项目
+
+<p>
+  <a href="https://gitee.com/stanChen/qing-frontend">
+    <img alt="Gitee" src="https://img.shields.io/badge/-Gitee-C71D23?style=flat&logo=gitee&logoColor=white" />
+  </a>
+  <a href="https://github.com/stanic-xyz/qing-frontend">
+    <img alt="Github" src="https://img.shields.io/badge/-Github-181717?style=flat&logo=Github&logoColor=white" />
+  </a>
+</p>
+
 #### 介绍
 
 该项目是我关于SpringCloud的一次实践 通过该项目我希望能够对SpringCloud更加了解的同时 不光是对我们本人技术的一点锻炼
