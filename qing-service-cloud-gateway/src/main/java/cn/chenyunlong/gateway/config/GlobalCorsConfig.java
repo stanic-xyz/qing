@@ -13,12 +13,16 @@
 
 package cn.chenyunlong.gateway.config;
 
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.util.pattern.PathPatternParser;
+import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * 全局跨域配置
@@ -45,6 +49,16 @@ public class GlobalCorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
         source.registerCorsConfiguration("/**", config);
         return new CorsWebFilter(source);
+    }
+
+    /**
+     * 定义一个KeyResolver
+     *
+     * @return Key生成器
+     */
+    @Bean
+    public KeyResolver ipKeyResolver() {
+        return exchange -> Mono.just(Objects.requireNonNull(exchange.getRequest().getRemoteAddress()).getHostName());
     }
 
 }

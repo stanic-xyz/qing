@@ -28,4 +28,14 @@ public @interface GenController {
     String sourcePath() default "src/main/java";
 
     boolean overrideSource() default false;
+
+    /**
+     * 控制器名称
+     */
+    String name() default "";
+
+    /**
+     * 控制器描述信息
+     */
+    String description() default "";
 }

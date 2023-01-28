@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+        xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+        xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+        typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
+        targetNamespace="http://www.flowable.org/processdef">
+    <process id="leave-new" name="leave-new" isExecutable="true">
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_leave-new">
+        <bpmndi:BPMNPlane bpmnElement="leave-new" id="BPMNPlane_leave-new">
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>
