@@ -23,7 +23,7 @@ import javax.persistence.*;
 import java.time.Instant;
 
 /**
- * 基地jpa类型
+ * 基础jpa类型
  *
  * @author Stan
  * @date 2022/11/05
