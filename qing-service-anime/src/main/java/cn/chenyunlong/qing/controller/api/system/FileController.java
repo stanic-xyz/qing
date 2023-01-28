@@ -28,7 +28,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -75,7 +78,7 @@ public class FileController {
     @Log
     @Operation(summary = "上传文件", description = "上传文件")
     @PostMapping("upload")
-    public ApiResult<String> uploadFile(@RequestParam MultipartFile multipartFile) throws IOException {
+    public ApiResult<String> uploadFile(MultipartFile multipartFile) throws IOException {
 
         if (!multipartFile.isEmpty()) {
 
@@ -117,7 +120,7 @@ public class FileController {
             uploadFile.setFileSize(multipartFile.getSize());
             uploadFile.setMimeType(multipartFile.getContentType());
 //            fileUploadService.saveFile(uploadFile);
-            return ApiResult.success();
+            return ApiResult.success(fileName);
         } else {
             return ApiResult.fail("没有上传图片啊");
         }

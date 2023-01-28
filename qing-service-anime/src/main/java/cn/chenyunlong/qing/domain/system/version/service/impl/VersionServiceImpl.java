@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -89,9 +88,6 @@ public class VersionServiceImpl implements IVersionService {
         return new VersionVO(version.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
-    /**
-     * @return
-     */
     @Override
     public List<Version> findAll() {
         return versionRepository.findAll();
@@ -108,6 +104,6 @@ public class VersionServiceImpl implements IVersionService {
                         Sort.Direction.DESC, "createdAt")));
         return new PageImpl<>(page.getContent()
                 .stream().map(VersionVO::new)
-                .collect(Collectors.toList()), page.getPageable(), page.getTotalElements());
+                .toList(), page.getPageable(), page.getTotalElements());
     }
 }

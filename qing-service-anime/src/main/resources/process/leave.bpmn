@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:modeler="http://camunda.org/schema/modeler/1.0"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_02m23tv"
+                  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0"
+                  modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+    <bpmn:process id="leave" name="leave" isExecutable="true">
+        <bpmn:startEvent id="sid-f9388087-3e5d-4441-9d0b-582bfd338523">
+            <outgoing>sid-402270f8-22ca-4d35-990d-905776a096ae</outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="sid-402270f8-22ca-4d35-990d-905776a096ae"
+                           sourceRef="sid-f9388087-3e5d-4441-9d0b-582bfd338523"
+                           targetRef="sid-7315def4-2185-4402-81e1-e6a8675e0516" name="用户审批">
+            <documentation>用户审批</documentation>
+        </bpmn:sequenceFlow>
+        <bpmn:receiveTask id="sid-7315def4-2185-4402-81e1-e6a8675e0516" name="管理功能审批了">
+            <documentation/>
+            <incoming>sid-402270f8-22ca-4d35-990d-905776a096ae</incoming>
+            <outgoing>sid-709e0317-d9a0-442e-8233-e06c0e7d160a</outgoing>
+            <outgoing>sid-4019a713-6ed4-4cc4-98fb-b9513d98bc6c</outgoing>
+        </bpmn:receiveTask>
+        <bpmn:subProcess id="sid-92637e20-47d0-4b42-b4f3-e53df35d850d" camunda:exclusive="true">
+            <outgoing>sid-5ec76cdf-9213-445b-92ff-d5bf5e40610b</outgoing>
+            <incoming>sid-cde82122-2781-473e-b9fb-a36a6c945ea3</incoming>
+        </bpmn:subProcess>
+        <bpmn:endEvent id="sid-8fba400d-8317-4c37-804c-597bc046974f">
+            <incoming>sid-5ec76cdf-9213-445b-92ff-d5bf5e40610b</incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="sid-5ec76cdf-9213-445b-92ff-d5bf5e40610b"
+                           sourceRef="sid-92637e20-47d0-4b42-b4f3-e53df35d850d"
+                           targetRef="sid-8fba400d-8317-4c37-804c-597bc046974f"/>
+        <bpmn:sequenceFlow id="sid-4019a713-6ed4-4cc4-98fb-b9513d98bc6c"
+                           sourceRef="sid-7315def4-2185-4402-81e1-e6a8675e0516"
+                           targetRef="sid-5fe56ca7-84f1-4872-abf3-70f629610f17"/>
+        <bpmn:exclusiveGateway id="sid-5fe56ca7-84f1-4872-abf3-70f629610f17"
+                               default="sid-cde82122-2781-473e-b9fb-a36a6c945ea3">
+            <outgoing>sid-8366b22d-f340-4c01-af1a-574e893c7b58</outgoing>
+            <incoming>sid-4019a713-6ed4-4cc4-98fb-b9513d98bc6c</incoming>
+            <outgoing>sid-cde82122-2781-473e-b9fb-a36a6c945ea3</outgoing>
+        </bpmn:exclusiveGateway>
+        <bpmn:sequenceFlow id="sid-cde82122-2781-473e-b9fb-a36a6c945ea3"
+                           sourceRef="sid-5fe56ca7-84f1-4872-abf3-70f629610f17"
+                           targetRef="sid-92637e20-47d0-4b42-b4f3-e53df35d850d">
+            <conditionExpression xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                 xsi:type="tFormalExpression"></conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:sendTask id="sid-cb1391a5-bfa0-4626-811b-2c93ee99c6cf" camunda:exclusive="true">
+            <incoming>sid-8366b22d-f340-4c01-af1a-574e893c7b58</incoming>
+            <extensionElements>
+                <camunda:field name="username"/>
+                <camunda:field name="password">
+                    <camunda:expression>${usernames}</camunda:expression>
+                </camunda:field>
+            </extensionElements>
+        </bpmn:sendTask>
+        <bpmn:sequenceFlow id="sid-8366b22d-f340-4c01-af1a-574e893c7b58"
+                           sourceRef="sid-5fe56ca7-84f1-4872-abf3-70f629610f17"
+                           targetRef="sid-cb1391a5-bfa0-4626-811b-2c93ee99c6cf">
+            <conditionExpression xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                 xsi:type="tFormalExpression"></conditionExpression>
+        </bpmn:sequenceFlow>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_leave">
+        <bpmndi:BPMNPlane id="BPMNPlane_leave" bpmnElement="leave">
+            <bpmndi:BPMNShape id="shape-f69163f2-4dc1-4e58-ab69-062137188143"
+                              bpmnElement="sid-f9388087-3e5d-4441-9d0b-582bfd338523">
+                <dc:Bounds x="-100.0" y="-90.0" width="30.0" height="30.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="shape-220c33c9-dd8c-444a-a146-211456cae2b8"
+                              bpmnElement="sid-7315def4-2185-4402-81e1-e6a8675e0516">
+                <dc:Bounds x="-40.0" y="-97.5" width="65.0" height="45.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="edge-e48068c0-00a6-44c0-a460-8751a3b88001"
+                             bpmnElement="sid-402270f8-22ca-4d35-990d-905776a096ae">
+                <di:waypoint x="-70.0" y="-75.0"/>
+                <di:waypoint x="-40.0" y="-75.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="shape-96f98d70-4f93-4ffd-92ba-83b16acf663d"
+                              bpmnElement="sid-92637e20-47d0-4b42-b4f3-e53df35d850d">
+                <dc:Bounds x="67.5" y="-15.0" width="100.0" height="80.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="shape-545f1008-d1da-4061-bc2e-4e72274486dc"
+                              bpmnElement="sid-8fba400d-8317-4c37-804c-597bc046974f">
+                <dc:Bounds x="102.5" y="90.0" width="30.0" height="30.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="edge-dc6f60cc-a1e3-48ab-95f2-4cfd16587aee"
+                             bpmnElement="sid-5ec76cdf-9213-445b-92ff-d5bf5e40610b">
+                <di:waypoint x="117.5" y="65.0"/>
+                <di:waypoint x="117.5" y="90.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="shape-a42ed65d-3d44-4670-b654-70d611b35fe0"
+                              bpmnElement="sid-5fe56ca7-84f1-4872-abf3-70f629610f17">
+                <dc:Bounds x="95.0" y="-95.0" width="40.0" height="40.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="edge-4ffacef0-ca51-47d1-b6d7-ac74883fad46"
+                             bpmnElement="sid-4019a713-6ed4-4cc4-98fb-b9513d98bc6c">
+                <di:waypoint x="25.0" y="-75.0"/>
+                <di:waypoint x="95.0" y="-75.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="edge-7d98d822-0218-4c53-8c8b-7c9827dd91d8"
+                             bpmnElement="sid-cde82122-2781-473e-b9fb-a36a6c945ea3">
+                <di:waypoint x="115.0" y="-55.0"/>
+                <di:waypoint x="117.5" y="-15.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="shape-c8826708-7a59-4145-b550-52a2164d44c7"
+                              bpmnElement="sid-cb1391a5-bfa0-4626-811b-2c93ee99c6cf">
+                <dc:Bounds x="205.0" y="-95.0" width="100.0" height="80.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="edge-6cccf912-a5ff-45c8-8459-227f909990cb"
+                             bpmnElement="sid-8366b22d-f340-4c01-af1a-574e893c7b58">
+                <di:waypoint x="135.0" y="-75.0"/>
+                <di:waypoint x="205.0" y="-75.0"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

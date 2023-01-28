@@ -7,12 +7,13 @@ import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.anime.creator.AnimeInfoCreator;
-import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeInfoMapper;
 import cn.chenyunlong.qing.domain.anime.anime.query.AnimeInfoQuery;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeInfoRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeInfoService;
 import cn.chenyunlong.qing.domain.anime.anime.updater.AnimeInfoUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.vo.AnimeInfoVO;
+import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
+import cn.hutool.core.bean.BeanUtil;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +39,11 @@ public class AnimeInfoServiceImpl implements IAnimeInfoService {
      */
     @Override
     public Long createAnimeInfo(AnimeInfoCreator creator) {
+
+        // todo 这里暂时不能使用mapper映射
         Optional<AnimeInfo> animeInfo = EntityOperations.doCreate(animeInfoRepository)
-                .create(() -> AnimeInfoMapper.INSTANCE.dtoToEntity(creator))
-                .update(e -> e.init())
+                .create(() -> BeanUtil.copyProperties(creator, AnimeInfo.class))
+                .update(BaseEntity::init)
                 .execute();
         return animeInfo.isPresent() ? animeInfo.get().getId() : 0;
     }

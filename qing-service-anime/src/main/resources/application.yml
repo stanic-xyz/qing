@@ -49,6 +49,7 @@ spring:
         jdbc:
           batch_size: 1000
         order_inserts: true
+        dialect: cn.chenyunlong.qing.infrastructure.config.MySQLConfig
     show-sql: true
 mybatis-plus:
   configuration:

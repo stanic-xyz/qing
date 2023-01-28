@@ -18,9 +18,8 @@ import cn.chenyunlong.qing.domain.system.version.vo.VersionVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -69,6 +68,7 @@ public class VersionController {
     /**
      * findById
      */
+    @Secured("ROLE_USER")
     @GetMapping("findById/{id}")
     public JsonObject<VersionResponse> findById(@PathVariable Long id) {
         VersionVO vo = versionService.findById(id);
@@ -91,8 +91,8 @@ public class VersionController {
         return JsonObject.success(
                 PageResult.of(
                         page.getContent().stream()
-                                .map(vo -> VersionMapper.INSTANCE.vo2CustomResponse(vo))
-                                .collect(Collectors.toList()),
+                                .map(VersionMapper.INSTANCE::vo2CustomResponse)
+                                .toList(),
                         page.getTotalElements(),
                         page.getSize(),
                         page.getNumber())

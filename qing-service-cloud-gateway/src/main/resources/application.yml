@@ -13,16 +13,15 @@ spring:
         - id: qing-service-anime
           uri: lb://qing-service-anime
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
           predicates:
-            - After=2019-09-24T16:30:00+08:00[Asia/Shanghai]
             - Path=/anime/**
         - id: qing-service-nat
           uri: lb://qing-service-nat-provider
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
           predicates:
-            - Path=/natcross/**
+            - Path=/nat-cross/**
       discovery:
         locator:
           enabled: true
@@ -30,6 +29,15 @@ spring:
       default-filters:
         - PrefixPath=/**
         - AddResponseHeader=X-Response-Default-Qing, Default-Qing
+      globalcors:
+        cors-configurations:
+          '[/**]': # 匹配所有请求
+            allowedOrigins: "*" #跨域处理 允许所有的域
+            allowedMethods: # 支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
   security:
     oauth2:
       resourceserver:
@@ -53,7 +61,6 @@ secure:
       - "/**/*.ico"
       - "/webjars/springfox-swagger-ui/**"
       - "/actuator/**"
-      - "/anime/**"
       - "/actuator/**"
 #开启SpringBoot Admin的监控
 management:
