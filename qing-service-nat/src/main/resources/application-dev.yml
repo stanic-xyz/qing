@@ -8,13 +8,13 @@ server:
     key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
 spring:
   application:
-    name: zhangli-service-natcross-provider
+    name: qing-service-nat
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       username: root
       password: 123456
-    url: jdbc:mysql://localhost:3306/zhangli?serverTimezone=UTC
+    url: jdbc:mariadb://localhost:3306/qing-nat?serverTimezone=UTC
   servlet:
     multipart:
       max-file-size: 10MB

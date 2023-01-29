@@ -8,15 +8,15 @@ server:
     key-store-password: ${SERVER_SSL_KEY_STORE_PASSWORD:}
 spring:
   application:
-    name: qing-service-nat-provider
+    name: qing-service-nat
   profiles:
     active: dev
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       username: root
       password: MysqlPwdROOT1996
-    url: jdbc:mysql://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
+    url: jdbc:mariadb://cdb-4fyv2fr8.cd.tencentcdb.com:10085/zhangli?serverTimezone=UTC
   servlet:
     multipart:
       max-file-size: 10MB
