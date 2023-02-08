@@ -37,7 +37,14 @@ public final class JsonObject<E> {
     @Setter(AccessLevel.PRIVATE)
     private E result;
 
+    private String devMessage;
+
     private JsonObject() {
+    }
+
+    public JsonObject setDevMessage(String devMessage) {
+        this.devMessage = devMessage;
+        return this;
     }
 
     public static <E> JsonObject<E> success(E e) {

@@ -9,14 +9,10 @@ import java.time.LocalDate;
 
 @Schema
 public class AnimeInfoCreateRequest implements Request {
-    @Schema(
-            title = "name"
-    )
+    @Schema(title = "name")
     private String name;
 
-    @Schema(
-            title = "instruction"
-    )
+    @Schema(title = "instruction")
     private String instruction;
 
     @Schema(

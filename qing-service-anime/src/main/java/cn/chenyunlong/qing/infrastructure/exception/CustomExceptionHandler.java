@@ -13,27 +13,50 @@
 
 package cn.chenyunlong.qing.infrastructure.exception;
 
+import cn.chenyunlong.common.model.JsonObject;
+import cn.chenyunlong.qing.infrastructure.enums.ResponseCode;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Stan
  */
+@SuppressWarnings("rawtypes")
 @ControllerAdvice
 public class CustomExceptionHandler {
 
 
     @ResponseBody
     @ExceptionHandler(value = AbstractException.class)
-    public Map<String, Object> errorHandler(Exception ex) {
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("code", 400);
-        //判断异常的类型,返回不一样的返回值
-        map.put("msg", ex.getMessage());
-        return map;
+    public JsonObject errorHandler(Exception exception) {
+        return JsonObject.res(ResponseCode.PARAM_FAIL, exception);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = HttpMessageConversionException.class)
+    public JsonObject messageConversionException(Exception exception) {
+        return JsonObject.fail("参数异常，请检查参数格式").setDevMessage(exception.getMessage());
+    }
+
+
+    /**
+     * 运行时异常处理程序
+     * 捕获  RuntimeException 异常
+     *
+     * @param request   request
+     * @param exception 异常
+     * @param response  response
+     * @return 响应结果
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public JsonObject<Long> runtimeExceptionHandler(HttpServletRequest request, final Exception exception, HttpServletResponse response) {
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        return JsonObject.fail("消息错误了" + exception.getMessage());
     }
 }
