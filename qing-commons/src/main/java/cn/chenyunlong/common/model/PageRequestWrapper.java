@@ -15,6 +15,7 @@ package cn.chenyunlong.common.model;
 
 import lombok.Data;
 
+import javax.annotation.Nonnegative;
 import java.util.Map;
 
 /**
@@ -24,7 +25,10 @@ import java.util.Map;
 public class PageRequestWrapper<T> {
 
     private T bean;
+
     private Integer pageSize;
+
+    @Nonnegative
     private Integer page;
     private Map<String, String> sorts;
 }
