@@ -24,6 +24,10 @@ import cn.chenyunlong.codegen.processor.service.GenService;
 import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
+import cn.chenyunlong.common.constants.ValidStatus;
+import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.AnimeInfoBizInfo;
+import cn.chenyunlong.qing.domain.anime.anime.events.AnimeInfoEvents;
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,6 +35,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * @author Stan
@@ -73,4 +78,15 @@ public class AnimeInfo extends BaseEntity {
     private String officialWebsite;
     private String playHeat;
     private Integer orderNo;
+
+    /**
+     * 导入动漫
+     */
+    public void in(AnimeInfoBizInfo bizInfo) {
+        if (Objects.equals(ValidStatus.VALID, this.getValidStatus())) {
+            throw new BusinessException(AnimeInfoErrorCode.ASSET_HAS_IN);
+        }
+        setValidStatus(ValidStatus.VALID);
+        registerEvent(new AnimeInfoEvents.AnimeInfoInEvent(this, bizInfo));
+    }
 }

@@ -13,10 +13,21 @@
 
 package cn.chenyunlong.common.constants;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * 枚举基础类
  */
 public interface BaseEnum {
+
+    static <T extends BaseEnum> T parseByCode(Class<T> typeClass, Integer code) {
+        T[] enumConstants = typeClass.getEnumConstants();
+        return Arrays.stream(enumConstants)
+                .filter(baseEnum
+                        -> Objects.equals(baseEnum.getValue(), code))
+                .findFirst().orElse(null);
+    }
 
     /**
      * 获取code码存入数据库

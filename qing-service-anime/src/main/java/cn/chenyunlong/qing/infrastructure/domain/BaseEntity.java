@@ -24,6 +24,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.persistence.Column;
 import javax.persistence.Convert;
 
 /**
@@ -51,6 +52,7 @@ public class BaseEntity extends BaseJpaAggregate {
     /**
      * 备注
      */
+    @Column(columnDefinition = "varchar(500)")
     private String remark;
 
     @Convert(converter = ValidStatusConverter.class)
