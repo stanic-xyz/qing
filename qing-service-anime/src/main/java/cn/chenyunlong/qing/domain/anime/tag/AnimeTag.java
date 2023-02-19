@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.playlist;
+package cn.chenyunlong.qing.domain.anime.tag;
 
 import cn.chenyunlong.codegen.processor.GenBase;
 import cn.chenyunlong.codegen.processor.api.*;
@@ -19,24 +19,23 @@ import cn.chenyunlong.codegen.processor.controller.GenController;
 import cn.chenyunlong.codegen.processor.creator.GenCreator;
 import cn.chenyunlong.codegen.processor.mapper.GenMapper;
 import cn.chenyunlong.codegen.processor.query.GenQuery;
+import cn.chenyunlong.codegen.processor.query.QueryItem;
 import cn.chenyunlong.codegen.processor.repository.GenRepository;
 import cn.chenyunlong.codegen.processor.service.GenService;
 import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @author Stan
+ * @author 标签信息
  */
-@Data
-@GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.playlist")
 @GenVo
 @GenCreator
 @GenUpdater
@@ -51,13 +50,18 @@ import javax.persistence.Table;
 @GenResponse
 @GenFeign
 @GenMapper
-@NoArgsConstructor
-@AllArgsConstructor
+@GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.tag")
+@Data
 @Entity
-@Table(name = "anime_playlist")
-public class Playlist extends BaseEntity {
+@Table(name = "anime_tag")
+@EqualsAndHashCode(callSuper = false)
+public class AnimeTag extends BaseEntity {
 
-    private Long animeId;
+    @QueryItem
+    @Schema(name = "标签名称")
     private String name;
+    @Schema(name = "标签描述")
     private String description;
+    @Schema(name = "排序号")
+    private Integer orderNo;
 }

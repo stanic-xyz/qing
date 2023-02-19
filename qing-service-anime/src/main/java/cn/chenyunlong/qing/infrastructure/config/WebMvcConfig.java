@@ -17,6 +17,7 @@ import cn.chenyunlong.qing.infrastructure.cache.AbstractStringCacheStore;
 import cn.chenyunlong.qing.infrastructure.cache.InMemoryCacheStore;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.intercepter.HostInterceptor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -33,13 +34,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final QingProperties qingProperties;
 
-    public WebMvcConfig(QingProperties qingProperties) {
-        this.qingProperties = qingProperties;
-    }
 
     /**
      * 配置跨域
@@ -79,4 +78,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
+
 }

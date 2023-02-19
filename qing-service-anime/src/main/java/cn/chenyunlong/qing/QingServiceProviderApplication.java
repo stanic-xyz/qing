@@ -22,7 +22,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * 项目入口
  *
  * @author Stan
- * @date 2022/10/18
+ * @since 2022/10/18
  */
 @EnableCaching
 @EnableDiscoveryClient

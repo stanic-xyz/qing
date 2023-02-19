@@ -95,7 +95,6 @@ public abstract class AbstractMailService implements MailService {
             log.info("Callback is null, skip to send email");
             return;
         }
-
         if (!qingProperties.isMailEnabled()) {
             // If disabled
             log.info("Email has been disabled by yourself, you can re-enable it through email settings"

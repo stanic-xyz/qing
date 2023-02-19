@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.request.AuthGithubRequest;
@@ -29,6 +30,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,12 +55,20 @@ import java.util.Collections;
 @Slf4j
 @Configuration
 @EnableConfigurationProperties({QingProperties.class, SwaggerProperties.class})
-public class QingConfiguration {
+@RequiredArgsConstructor
+public class QingConfiguration implements InitializingBean {
 
     private final QingProperties qingProperties;
 
-    public QingConfiguration(QingProperties qingProperties) {
-        this.qingProperties = qingProperties;
+    private final SwaggerProperties swaggerProperties;
+
+
+    /**
+     * @throws Exception
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println(swaggerProperties.getDescription());
     }
 
     @Bean

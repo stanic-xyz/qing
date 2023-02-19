@@ -30,7 +30,7 @@ import cn.chenyunlong.qing.domain.anime.anime.domainservice.AnimeInfoBizInfo;
 import cn.chenyunlong.qing.domain.anime.anime.events.AnimeInfoEvents;
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -58,7 +58,6 @@ import java.util.Objects;
 @Data
 @Entity
 @Table(name = "anime_info")
-@EqualsAndHashCode(callSuper = true)
 public class AnimeInfo extends BaseEntity {
     private String name;
     private String instruction;
@@ -88,5 +87,18 @@ public class AnimeInfo extends BaseEntity {
         }
         setValidStatus(ValidStatus.VALID);
         registerEvent(new AnimeInfoEvents.AnimeInfoInEvent(this, bizInfo));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        AnimeInfo animeInfo = (AnimeInfo) o;
+        return getId() != null && Objects.equals(getId(), animeInfo.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
