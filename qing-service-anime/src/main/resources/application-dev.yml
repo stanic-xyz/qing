@@ -10,9 +10,6 @@ spring:
     hikari:
       username: root
       password: 123456
-  thymeleaf:
-    cache: false
-    prefix: file:${user.dir}/qing-service-anime/src/main/resources/templates/
   redis:
     host: ${REDIS_HOST:127.0.0.1}
     port: 6379

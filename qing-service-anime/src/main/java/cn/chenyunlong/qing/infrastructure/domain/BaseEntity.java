@@ -31,10 +31,10 @@ import javax.persistence.Convert;
  * Base entity.
  *
  * @author Stan
- * @date 2021/05/22
+ * @since 2021/05/22
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @NoArgsConstructor
 public class BaseEntity extends BaseJpaAggregate {

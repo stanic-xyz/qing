@@ -2,7 +2,7 @@ server:
   port: 80
 spring:
   profiles:
-    active: prod
+    active: local
   application:
     name: qing-service-anime
   messages:
@@ -31,8 +31,6 @@ spring:
     suffix: .ftl
   cache:
     type: simple
-  thymeleaf:
-    cache: true
   quartz:
     scheduler-name: testName
   jpa:

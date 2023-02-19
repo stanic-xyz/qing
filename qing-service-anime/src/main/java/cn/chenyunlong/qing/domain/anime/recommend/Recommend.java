@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.domain.anime.recommend;
 
+import cn.chenyunlong.codegen.processor.query.QueryItem;
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import lombok.Data;
 
@@ -35,6 +36,7 @@ public class Recommend extends BaseEntity {
     /**
      * 动漫ID
      */
+    @QueryItem
     private Long aid;
 
     /**
