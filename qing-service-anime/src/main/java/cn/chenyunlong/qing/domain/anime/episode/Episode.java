@@ -35,6 +35,7 @@ import javax.persistence.Table;
  * anime_episode
  *
  * @author Stan
+ * @since 2022/10/18
  */
 
 @GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.episode")

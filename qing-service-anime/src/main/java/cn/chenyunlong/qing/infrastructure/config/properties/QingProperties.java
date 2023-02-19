@@ -60,11 +60,6 @@ public class QingProperties {
     private String authenticationPrefix;
 
     /**
-     * 电子邮件支持
-     */
-    private boolean emailEnabled;
-
-    /**
      * 缓存方式
      */
     private String cache;
