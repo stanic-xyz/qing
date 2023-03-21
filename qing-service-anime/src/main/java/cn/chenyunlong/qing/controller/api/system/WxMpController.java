@@ -42,7 +42,7 @@ import java.util.Date;
  * @author Stan
  * @date 2022/11/05
  */
-@Tag(name = "微信公众平台")
+@Tag(name = "微信公众平台对接")
 @RestController
 @RequestMapping("api/wx/mp")
 public class WxMpController {

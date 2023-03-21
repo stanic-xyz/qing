@@ -15,6 +15,8 @@ import cn.chenyunlong.qing.domain.anime.anime.response.AnimeInfoResponse;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeInfoService;
 import cn.chenyunlong.qing.domain.anime.anime.updater.AnimeInfoUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.vo.AnimeInfoVO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,25 +26,24 @@ import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@RequestMapping("animeInfo/v1")
+@RequestMapping("api/v1/anime")
+@Tag(name = "动漫信息", description = "动漫信息")
 @RequiredArgsConstructor
 public class AnimeInfoController {
     private final IAnimeInfoService animeInfoService;
 
-    /**
-     * createRequest
-     */
-    @PostMapping("createAnimeInfo")
+    @Operation(summary = "添加动漫信息")
+    @PostMapping
     public JsonObject<Long> createAnimeInfo(@RequestBody AnimeInfoCreateRequest request) {
         AnimeInfoCreator creator = AnimeInfoMapper.INSTANCE.request2Dto(request);
         return JsonObject.success(animeInfoService.createAnimeInfo(creator));
     }
 
-    /**
-     * update request
-     */
-    @PostMapping("updateAnimeInfo")
-    public JsonObject<String> updateAnimeInfo(@RequestBody AnimeInfoUpdateRequest request) {
+    @Operation(summary = "更新动漫信息")
+    @PostMapping("{animeId}")
+    public JsonObject<String> updateAnimeInfo(
+            @PathVariable(name = "animeId") String animeId,
+            @RequestBody AnimeInfoUpdateRequest request) {
         AnimeInfoUpdater updater = AnimeInfoMapper.INSTANCE.request2Updater(request);
         animeInfoService.updateAnimeInfo(updater);
         return JsonObject.success(CodeEnum.Success.getName());
@@ -51,27 +52,27 @@ public class AnimeInfoController {
     /**
      * valid
      */
-    @PostMapping("valid/{id}")
-    public JsonObject<String> validAnimeInfo(@PathVariable Long id) {
-        animeInfoService.validAnimeInfo(id);
+    @PostMapping("{animeId}/valid")
+    public JsonObject<String> validAnimeInfo(@PathVariable Long animeId) {
+        animeInfoService.validAnimeInfo(animeId);
         return JsonObject.success(CodeEnum.Success.getName());
     }
 
     /**
      * invalid
      */
-    @PostMapping("invalid/{id}")
-    public JsonObject<String> invalidAnimeInfo(@PathVariable Long id) {
-        animeInfoService.invalidAnimeInfo(id);
+    @PostMapping("{animeId}/invalid")
+    public JsonObject<String> invalidAnimeInfo(@PathVariable Long animeId) {
+        animeInfoService.invalidAnimeInfo(animeId);
         return JsonObject.success(CodeEnum.Success.getName());
     }
 
     /**
      * findById
      */
-    @GetMapping("findById/{id}")
-    public JsonObject<AnimeInfoResponse> findById(@PathVariable Long id) {
-        AnimeInfoVO vo = animeInfoService.findById(id);
+    @GetMapping("{animeId}")
+    public JsonObject<AnimeInfoResponse> findById(@PathVariable Long animeId) {
+        AnimeInfoVO vo = animeInfoService.findById(animeId);
         AnimeInfoResponse response = AnimeInfoMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonObject.success(response);
     }

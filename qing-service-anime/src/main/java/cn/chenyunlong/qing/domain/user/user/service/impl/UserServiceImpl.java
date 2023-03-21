@@ -5,6 +5,7 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.EntityOperations;
+import cn.chenyunlong.qing.domain.user.user.QUser;
 import cn.chenyunlong.qing.domain.user.user.User;
 import cn.chenyunlong.qing.domain.user.user.creator.UserCreator;
 import cn.chenyunlong.qing.domain.user.user.mapper.UserMapper;
@@ -141,5 +142,17 @@ public class UserServiceImpl implements IUserService {
         user.setUid(new Snowflake().nextId());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.saveAndFlush(user);
+    }
+
+    /**
+     * 更新密码
+     *
+     * @param userId   用户id
+     * @param password 暗语
+     */
+    @Override
+    public User updatePassword(String userId, String password) {
+        QUser user = QUser.user;
+        return null;
     }
 }

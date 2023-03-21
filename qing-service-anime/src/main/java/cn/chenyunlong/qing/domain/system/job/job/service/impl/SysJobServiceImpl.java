@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.system.job.job.repository.SysJobRepository;
 import cn.chenyunlong.qing.domain.system.job.job.service.ISysJobService;
 import cn.chenyunlong.qing.domain.system.job.job.updater.SysJobUpdater;
 import cn.chenyunlong.qing.domain.system.job.job.vo.SysJobVO;
+import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class SysJobServiceImpl implements ISysJobService {
     public Long createSysJob(SysJobCreator creator) {
         Optional<SysJob> sysJob = EntityOperations.doCreate(sysJobRepository)
                 .create(() -> SysJobMapper.INSTANCE.dtoToEntity(creator))
-                .update(e -> e.init())
+                .update(BaseEntity::init)
                 .execute();
         return sysJob.isPresent() ? sysJob.get().getId() : 0;
     }

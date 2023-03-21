@@ -2,8 +2,8 @@
 package cn.chenyunlong.qing.domain.anime.lifecycle.response;
 
 import cn.chenyunlong.common.model.AbstractJpaResponse;
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.InOutBizType;
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.InOutType;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizType;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema

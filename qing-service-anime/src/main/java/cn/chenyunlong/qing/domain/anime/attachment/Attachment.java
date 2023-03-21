@@ -41,7 +41,7 @@ import javax.persistence.Table;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenController
+@GenController(name = "附件管理")
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest

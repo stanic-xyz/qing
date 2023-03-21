@@ -24,7 +24,7 @@ import org.mapstruct.factory.Mappers;
 public interface SysJobMapper {
     SysJobMapper INSTANCE = Mappers.getMapper(SysJobMapper.class);
 
-    SysJob dtoToEntity(SysJobCreator dto);
+    SysJob dtoToEntity(SysJobCreator creator);
 
     SysJobUpdater request2Updater(SysJobUpdateRequest request);
 

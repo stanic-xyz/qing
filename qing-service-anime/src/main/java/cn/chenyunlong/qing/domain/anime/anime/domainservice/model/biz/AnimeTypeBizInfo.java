@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.domain.anime.anime.domainservice;
+package cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz;
 
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,12 +9,12 @@ import java.util.List;
 
 @Builder
 @Getter
-public class AnimeInfoBizInfo {
+public class AnimeTypeBizInfo {
 
     private InOutBizType inOutBizType;
 
     @Schema(name = "唯一编码")
-    private List<Long> uniqueCodes;
+    private List<String> uniqueCodes;
 
     @Schema(name = "批次号")
     private String batchNo;

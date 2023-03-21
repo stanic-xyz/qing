@@ -41,7 +41,7 @@ import javax.persistence.Table;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenController
+@GenController(name = "活动信息")
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest
