@@ -31,7 +31,7 @@ import java.util.List;
  * @author Stan
  * @date 2022/11/05
  */
-@Tag(name = "哔哩哔哩动画")
+@Tag(name = "哔哩哔哩动画服务")
 @RestController
 @RequestMapping("api/anime/bilibili")
 @RequiredArgsConstructor

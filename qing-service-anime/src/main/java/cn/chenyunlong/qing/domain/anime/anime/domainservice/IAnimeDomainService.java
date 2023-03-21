@@ -1,15 +1,15 @@
 package cn.chenyunlong.qing.domain.anime.anime.domainservice;
 
 
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.BatchInOutModel;
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.TransferModel;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.BatchInOutModel;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.TransferModel;
 
 public interface IAnimeDomainService {
 
     /**
      * 资产入库
      */
-    void handleAnimeInfoIn(BatchInOutModel batchInOutModel);
+    void handleAnimeInfoRecommend(BatchInOutModel batchInOutModel);
 
 
     /**

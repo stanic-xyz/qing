@@ -56,4 +56,14 @@ public interface IUserService {
      * @return 添加用户信息
      */
     User addUserInfo(User user);
+
+
+    /**
+     * 更新密码
+     *
+     * @param userId   用户id
+     * @param password 暗语
+     * @return {@link User}
+     */
+    User updatePassword(String userId, String password);
 }

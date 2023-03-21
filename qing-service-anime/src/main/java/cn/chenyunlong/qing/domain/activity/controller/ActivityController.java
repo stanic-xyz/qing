@@ -15,6 +15,7 @@ import cn.chenyunlong.qing.domain.activity.response.ActivityResponse;
 import cn.chenyunlong.qing.domain.activity.service.IActivityService;
 import cn.chenyunlong.qing.domain.activity.updater.ActivityUpdater;
 import cn.chenyunlong.qing.domain.activity.vo.ActivityVO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,76 +27,77 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequestMapping("activity/v1")
 @RequiredArgsConstructor
+@Tag(name = "活动控制器", description = "活动控制器")
 public class ActivityController {
-  private final IActivityService activityService;
+    private final IActivityService activityService;
 
-  /**
-   * createRequest
-   */
-  @PostMapping("createActivity")
-  public JsonObject<Long> createActivity(@RequestBody ActivityCreateRequest request) {
-    ActivityCreator creator = ActivityMapper.INSTANCE.request2Dto(request);
-    return JsonObject.success(activityService.createActivity(creator));
-  }
+    /**
+     * createRequest
+     */
+    @PostMapping("createActivity")
+    public JsonObject<Long> createActivity(@RequestBody ActivityCreateRequest request) {
+        ActivityCreator creator = ActivityMapper.INSTANCE.request2Dto(request);
+        return JsonObject.success(activityService.createActivity(creator));
+    }
 
-  /**
-   * update request
-   */
-  @PostMapping("updateActivity")
-  public JsonObject<String> updateActivity(@RequestBody ActivityUpdateRequest request) {
-    ActivityUpdater updater = ActivityMapper.INSTANCE.request2Updater(request);
-    activityService.updateActivity(updater);
-    return JsonObject.success(CodeEnum.Success.getName());
-  }
+    /**
+     * update request
+     */
+    @PostMapping("updateActivity")
+    public JsonObject<String> updateActivity(@RequestBody ActivityUpdateRequest request) {
+        ActivityUpdater updater = ActivityMapper.INSTANCE.request2Updater(request);
+        activityService.updateActivity(updater);
+        return JsonObject.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * valid
-   */
-  @PostMapping("valid/{id}")
-  public JsonObject<String> validActivity(@PathVariable Long id) {
-    activityService.validActivity(id);
-    return JsonObject.success(CodeEnum.Success.getName());
-  }
+    /**
+     * valid
+     */
+    @PostMapping("valid/{id}")
+    public JsonObject<String> validActivity(@PathVariable Long id) {
+        activityService.validActivity(id);
+        return JsonObject.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * invalid
-   */
-  @PostMapping("invalid/{id}")
-  public JsonObject<String> invalidActivity(@PathVariable Long id) {
-    activityService.invalidActivity(id);
-    return JsonObject.success(CodeEnum.Success.getName());
-  }
+    /**
+     * invalid
+     */
+    @PostMapping("invalid/{id}")
+    public JsonObject<String> invalidActivity(@PathVariable Long id) {
+        activityService.invalidActivity(id);
+        return JsonObject.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * findById
-   */
-  @GetMapping("findById/{id}")
-  public JsonObject<ActivityResponse> findById(@PathVariable Long id) {
-    ActivityVO vo = activityService.findById(id);
-    ActivityResponse response = ActivityMapper.INSTANCE.vo2CustomResponse(vo);
-    return JsonObject.success(response);
-  }
+    /**
+     * findById
+     */
+    @GetMapping("findById/{id}")
+    public JsonObject<ActivityResponse> findById(@PathVariable Long id) {
+        ActivityVO vo = activityService.findById(id);
+        ActivityResponse response = ActivityMapper.INSTANCE.vo2CustomResponse(vo);
+        return JsonObject.success(response);
+    }
 
-  /**
-   * findByPage request
-   */
-  @PostMapping("findByPage")
-  public JsonObject<PageResult<ActivityResponse>> findByPage(
-          @RequestBody PageRequestWrapper<ActivityQueryRequest> request) {
-    PageRequestWrapper<ActivityQuery> wrapper = new PageRequestWrapper<>();
-    wrapper.setBean(ActivityMapper.INSTANCE.request2Query(request.getBean()));
-    wrapper.setSorts(request.getSorts());
-    wrapper.setPageSize(request.getPageSize());
-    wrapper.setPage(request.getPage());
-    Page<ActivityVO> page = activityService.findByPage(wrapper);
-    return JsonObject.success(
-            PageResult.of(
-                    page.getContent().stream()
-                            .map(ActivityMapper.INSTANCE::vo2CustomResponse)
-                            .collect(Collectors.toList()),
-                    page.getTotalElements(),
-                    page.getSize(),
-                    page.getNumber())
-    );
-  }
+    /**
+     * findByPage request
+     */
+    @PostMapping("findByPage")
+    public JsonObject<PageResult<ActivityResponse>> findByPage(
+            @RequestBody PageRequestWrapper<ActivityQueryRequest> request) {
+        PageRequestWrapper<ActivityQuery> wrapper = new PageRequestWrapper<>();
+        wrapper.setBean(ActivityMapper.INSTANCE.request2Query(request.getBean()));
+        wrapper.setSorts(request.getSorts());
+        wrapper.setPageSize(request.getPageSize());
+        wrapper.setPage(request.getPage());
+        Page<ActivityVO> page = activityService.findByPage(wrapper);
+        return JsonObject.success(
+                PageResult.of(
+                        page.getContent().stream()
+                                .map(ActivityMapper.INSTANCE::vo2CustomResponse)
+                                .collect(Collectors.toList()),
+                        page.getTotalElements(),
+                        page.getSize(),
+                        page.getNumber())
+        );
+    }
 }

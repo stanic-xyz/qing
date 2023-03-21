@@ -17,6 +17,7 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.domain.permission.Permission;
 import cn.chenyunlong.qing.domain.user.user.User;
+import cn.chenyunlong.qing.domain.user.user.request.ChangePasswordRequest;
 import cn.chenyunlong.qing.domain.user.user.request.UserRegisterRequest;
 import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import cn.chenyunlong.qing.infrastructure.annotation.Log;
@@ -65,6 +66,12 @@ public class AuthController {
     private final IUserService userService;
     private final TokenProvider tokenProvider;
 
+    /**
+     * 检查用户是否存在
+     *
+     * @param loginParam 登录参数
+     * @return 登录参数
+     */
     @PostMapping("login/preCheck")
     @Operation(summary = "preCheck")
     @CacheLock(autoDelete = false, prefix = "login_pre_check")
@@ -92,6 +99,16 @@ public class AuthController {
         try {
             User user = userService.addUserInfo(userParam.convertTo());
             return ApiResult.success(new UserInfoVO().convertFrom(user));
+        } catch (AbstractException exp) {
+            return ApiResult.fail(exp.getMessage());
+        }
+    }
+
+    @PostMapping("changePassword")
+    public ApiResult<Boolean> changePassword(@RequestBody ChangePasswordRequest userParam) throws AbstractException {
+        try {
+            userService.updatePassword(userParam.getUsername(), userParam.getPassword());
+            return ApiResult.success(true);
         } catch (AbstractException exp) {
             return ApiResult.fail(exp.getMessage());
         }

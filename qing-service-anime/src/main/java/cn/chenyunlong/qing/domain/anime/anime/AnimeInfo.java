@@ -27,6 +27,7 @@ import cn.chenyunlong.codegen.processor.vo.GenVo;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.AnimeInfoBizInfo;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeInfoRecommendBizInfo;
 import cn.chenyunlong.qing.domain.anime.anime.events.AnimeInfoEvents;
 import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import lombok.Data;
@@ -46,7 +47,7 @@ import java.util.Objects;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenController
+@GenController(name = "动漫信息")
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest
@@ -100,5 +101,14 @@ public class AnimeInfo extends BaseEntity {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    /**
+     * 添加到推荐
+     *
+     * @param recommendBizInfo 推荐信息
+     */
+    public void recommend(AnimeInfoRecommendBizInfo recommendBizInfo) {
+
     }
 }
