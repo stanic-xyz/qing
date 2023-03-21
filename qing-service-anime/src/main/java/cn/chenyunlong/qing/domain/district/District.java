@@ -34,6 +34,7 @@ import javax.persistence.Table;
 /**
  * @author Stan
  */
+@Data
 @GenBase(basePackage = "cn.chenyunlong.qing.domain.district")
 @GenVo
 @GenCreator
@@ -49,7 +50,6 @@ import javax.persistence.Table;
 @GenResponse
 @GenFeign
 @GenMapper
-@Data
 @Entity
 @Table(name = "anime_district")
 @EqualsAndHashCode(callSuper = true)

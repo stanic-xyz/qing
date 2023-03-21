@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
 @Slf4j
+@RestController
 @RequestMapping("animeTag/v1")
 @RequiredArgsConstructor
 public class AnimeTagController {
