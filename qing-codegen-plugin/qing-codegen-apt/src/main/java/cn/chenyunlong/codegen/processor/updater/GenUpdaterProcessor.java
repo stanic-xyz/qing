@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -53,7 +53,8 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
 
         Set<VariableElement> variableElements;
-        variableElements = findFields(typeElement, element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
+        variableElements = findFields(typeElement,
+                element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
@@ -64,8 +65,10 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
         CodeBlock.Builder builder = CodeBlock.builder();
         for (VariableElement variableElement : variableElements) {
             builder.addStatement("$T.ofNullable($L()).ifPresent(v -> param.$L(v))", Optional.class,
-                    "get" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, variableElement.getSimpleName().toString()),
-                    "set" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, variableElement.getSimpleName().toString()));
+                    "get" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL,
+                            variableElement.getSimpleName().toString()),
+                    "set" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL,
+                            variableElement.getSimpleName().toString()));
         }
         MethodSpec.Builder methodBuilder;
         methodBuilder = MethodSpec.methodBuilder(

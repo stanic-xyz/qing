@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -82,7 +82,8 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
         inValidMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
         findById(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
         findByPage(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(controllerPackageName, typeElement.getAnnotation(GenController.class).sourcePath(), typeSpecBuilder);
+        genJavaSourceFile(controllerPackageName, typeElement.getAnnotation(GenController.class).sourcePath(),
+                typeSpecBuilder);
     }
 
     @Override
@@ -103,7 +104,8 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @param nameContext      命名上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> createMethod(String serviceFieldName, TypeElement typeElement, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> createMethod(String serviceFieldName, TypeElement typeElement,
+                                              DefaultNameContext nameContext) {
         String creatorPackageName = nameContext.getCreatorPackageName();
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -149,7 +151,8 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @param nameContext      命名上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> updateMethod(String serviceFieldName, TypeElement typeElement, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> updateMethod(String serviceFieldName, TypeElement typeElement,
+                                              DefaultNameContext nameContext) {
         String updatePackageName = nameContext.getUpdatePackageName();
         String updaterPackageName = nameContext.getUpdaterPackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -259,14 +262,16 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                             .build())
                     .addModifiers(Modifier.PUBLIC)
                     .addCode(CodeBlock
-                            .of("$T vo = $L.findById(id);", ClassName.get(voPackageName, voClassName), serviceFieldName))
+                            .of("$T vo = $L.findById(id);", ClassName.get(voPackageName, voClassName),
+                                    serviceFieldName))
                     .addCode(CodeBlock.of("$T response = $T.INSTANCE.vo2CustomResponse(vo);",
                             ClassName.get(responsePackageName, responseClassName),
                             ClassName.get(mapperPackageName, nameContext.getMapperClassName())))
                     .addCode(CodeBlock.of("return $T.success(response);", JsonObject.class))
                     .addJavadoc("findById")
                     .returns(ParameterizedTypeName
-                            .get(ClassName.get(JsonObject.class), ClassName.get(responsePackageName, responseClassName)))
+                            .get(ClassName.get(JsonObject.class), ClassName.get(responsePackageName,
+                                    responseClassName)))
                     .build());
         }
         return Optional.empty();
@@ -280,7 +285,9 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> findByPage(String serviceFieldName, DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(), nameContext.getQueryPackageName(), nameContext.getMapperPackageName(), nameContext.getVoPackageName(), nameContext.getResponsePackageName());
+        boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(),
+                nameContext.getQueryPackageName(), nameContext.getMapperPackageName(), nameContext.getVoPackageName()
+                , nameContext.getResponsePackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("findByPage")
                     .addParameter(ParameterSpec.builder(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class), ClassName.get(nameContext.getQueryRequestPackageName(), nameContext.getQueryRequestClassName())), "request").addAnnotation(RequestBody.class).build())
@@ -288,7 +295,8 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                     .addModifiers(Modifier.PUBLIC)
                     .addCode(
                             CodeBlock.of("$T<$T> wrapper = new $T<>();\n"
-                                    , PageRequestWrapper.class, ClassName.get(nameContext.getQueryPackageName(), nameContext.getQueryClassName()), PageRequestWrapper.class)
+                                    , PageRequestWrapper.class, ClassName.get(nameContext.getQueryPackageName(),
+                                            nameContext.getQueryClassName()), PageRequestWrapper.class)
                     )
                     .addCode(
                             CodeBlock.of("wrapper.setBean($T.INSTANCE.request2Query(request.getBean()));\n",
@@ -302,22 +310,27 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                                     """)
                     )
                     .addCode(CodeBlock.of("$T<$T> page = $L.findByPage(wrapper);\n"
-                            , Page.class, ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), serviceFieldName))
+                            , Page.class, ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName())
+                            , serviceFieldName))
                     .addCode(
                             CodeBlock.of("""
-                                    return $T.success(
-                                            $T.of(
-                                                page.getContent().stream()
-                                                    .map(vo -> $T.INSTANCE.vo2CustomResponse(vo))
-                                                    .collect($T.toList()),
-                                                page.getTotalElements(),
-                                                page.getSize(),
-                                                page.getNumber())
-                                        );""", JsonObject.class, PageResult.class, ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()), Collectors.class)
+                                            return $T.success(
+                                                    $T.of(
+                                                        page.getContent().stream()
+                                                            .map(vo -> $T.INSTANCE.vo2CustomResponse(vo))
+                                                            .collect($T.toList()),
+                                                        page.getTotalElements(),
+                                                        page.getSize(),
+                                                        page.getNumber())
+                                                );""", JsonObject.class, PageResult.class,
+                                    ClassName.get(nameContext.getMapperPackageName(),
+                                            nameContext.getMapperClassName()), Collectors.class)
                     )
                     .addJavadoc("findByPage request")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ParameterizedTypeName.get(ClassName.get(
-                            PageResult.class), ClassName.get(nameContext.getResponsePackageName(), nameContext.getResponseClassName()))))
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class),
+                            ParameterizedTypeName.get(ClassName.get(
+                                    PageResult.class), ClassName.get(nameContext.getResponsePackageName(),
+                                    nameContext.getResponseClassName()))))
                     .build());
         }
         return Optional.empty();

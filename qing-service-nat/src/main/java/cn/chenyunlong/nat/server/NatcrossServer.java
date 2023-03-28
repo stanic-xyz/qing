@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.nat.server;
 
+import cn.chenyunlong.nat.entity.ListenPort;
 import cn.chenyunlong.nat.enumeration.PortTypeEnum;
 import cn.chenyunlong.nat.model.CertModel;
 import cn.chenyunlong.nat.model.SecretModel;
@@ -24,7 +25,6 @@ import person.pluto.natcross2.serverside.listen.config.IListenServerConfig;
 import person.pluto.natcross2.serverside.listen.config.SecretSimpleListenServerConfig;
 import person.pluto.natcross2.serverside.listen.config.SimpleListenServerConfig;
 import person.pluto.natcross2.serverside.listen.serversocket.ICreateServerSocket;
-import cn.chenyunlong.nat.entity.ListenPort;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;

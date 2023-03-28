@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -15,7 +15,6 @@ package cn.chenyunlong.codegen.processor;
 
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.registry.CodeGenProcessorRegistry;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.google.auto.service.AutoService;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -26,11 +25,13 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic.Kind;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 /**
  * @author gim
+ * @since 2023-10-24
  */
 @AutoService(Processor.class)
 public class QingCodeGenProcessor extends AbstractProcessor {
@@ -38,25 +39,30 @@ public class QingCodeGenProcessor extends AbstractProcessor {
     /**
      * 过程
      *
-     * @param elements         文档元素列表
-     * @param roundEnvironment 周围环境
+     * @param elements    文档元素列表
+     * @param environment 周围环境
      * @return boolean
      */
     @Override
-    public boolean process(Set<? extends TypeElement> elements, RoundEnvironment roundEnvironment) {
-        elements.forEach(element -> {
-            Set<? extends Element> typeElements = roundEnvironment.getElementsAnnotatedWith(element);
+    public boolean process(Set<? extends TypeElement> elements, RoundEnvironment environment) {
+        elements.forEach(element ->
+        {
+            System.out.println("处理【" + element.getQualifiedName() + "】的代码生成");
+            Set<? extends Element> typeElements = environment.getElementsAnnotatedWith(element);
+            // 加载需要处理的类的所有注解
             Set<TypeElement> typeElementSet = ElementFilter.typesIn(typeElements);
-            for (TypeElement typeElement : typeElementSet) {
-                CodeGenProcessor codeGenProcessor;
-                codeGenProcessor = CodeGenProcessorRegistry.find(element.getQualifiedName().toString());
-                try {
-                    codeGenProcessor.generate(typeElement, roundEnvironment);
-                } catch (Exception exception) {
-                    ProcessingEnvironmentHolder.getEnvironment().getMessager().printMessage(Kind.ERROR,
-                            "代码生成异常:" + exception.getMessage());
-                }
-            }
+            Collections.unmodifiableSet(typeElementSet)
+                    .forEach(typeElement
+                            -> Optional.of(CodeGenProcessorRegistry.find(element.getQualifiedName().toString()))
+                            .ifPresent(codeGenProcessor ->
+                            {
+                                try {
+                                    codeGenProcessor.generate(typeElement, environment);
+                                } catch (Exception exception) {
+                                    String message = "代码生成异常:";
+                                    ProcessingEnvironmentHolder.printErrorMessage(message, typeElement, exception);
+                                }
+                            }));
         });
         return false;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.codegen.registry;
 
+import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.google.common.collect.Maps;
 
@@ -25,7 +26,7 @@ import java.util.Set;
  * 通过SPI 加载所有的CodeGenProcessor 识别要处理的annotation标记类
  *
  * @author Stan
- * @date 2022/11/28
+ * @since 2022/11/28
  */
 public final class CodeGenProcessorRegistry {
 
@@ -62,11 +63,14 @@ public final class CodeGenProcessorRegistry {
     public static void initProcessors() {
         final Map<String, CodeGenProcessor> genProcessorMap = Maps.newLinkedHashMap();
         ServiceLoader<CodeGenProcessor> genProcessors;
+        ProcessingEnvironmentHolder.printMessage("加载apt处理器");
         genProcessors = ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader());
         for (CodeGenProcessor processor : genProcessors) {
             Class<? extends Annotation> annotation = processor.getAnnotation();
             genProcessorMap.put(annotation.getName(), processor);
+            ProcessingEnvironmentHolder.printMessage("加载apt处理器：" + annotation.getName());
         }
+        // 添加处理器
         CodeGenProcessorRegistry.processors = genProcessorMap;
     }
 
