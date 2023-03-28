@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2019-2022 YunLong Chen
+  ~ Copyright (c) 2019-2023  YunLong Chen
   ~ Project Qing is licensed under Mulan PSL v2.
   ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
   ~ You may obtain a copy of Mulan PSL v2 at:
@@ -35,6 +35,29 @@
             <artifactId>qing-codegen-apt</artifactId>
             <version>1.0.0.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>5.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -60,12 +83,34 @@
                     <encoding>UTF-8</encoding>
                     <annotationProcessorPaths>
                         <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        <path>
                             <groupId>cn.chenyunlong</groupId>
                             <artifactId>qing-codegen-apt</artifactId>
                             <version>1.0.0.RELEASE</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <!-- QUERYDSL -->
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <version>1.1.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/annotations</outputDirectory>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -79,6 +124,7 @@
                             <target>
                                 <echo message="remove test files from codegen"/>
                                 <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/user/gen"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/mapper/gen"/>
                             </target>
                         </configuration>
                         <goals>

@@ -1,24 +1,16 @@
 server:
-  port: 8761
+  port: 80
 spring:
   application:
     name: qing-eureka-service
   profiles:
     active: prod
-  cloud:
-    inetutils:
-      ignored-interfaces:
-        - eth0
-        - VM.*
-      preferred-networks:
-        - 121.36.163.95
-      default-hostname: eureka.chenyunlong.cn
 eureka:
   server:
     enable-self-preservation: true
   client:
     fetch-registry: false
-    register-with-eureka: true
+    register-with-eureka: false
   instance:
     lease-renewal-interval-in-seconds: 30
     instance-id: ${spring.application.name}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -22,6 +22,7 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.EntityOperations;
+import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.querydsl.core.BooleanBuilder;
@@ -56,8 +57,8 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         DefaultNameContext nameContext = getNameContext(typeElement);
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
-                .addSuperinterface(
-                        ClassName.get(nameContext.getServicePackageName(), nameContext.getServiceClassName()))
+                .addSuperinterface(ClassName.get(nameContext.getServicePackageName(),
+                        nameContext.getServiceClassName()))
                 .addAnnotation(Transactional.class)
                 .addAnnotation(Service.class)
                 .addAnnotation(Slf4j.class)
@@ -85,7 +86,8 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
         findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
         String implPackageName = nameContext.getImplPackageName();
-        genJavaSourceFile(implPackageName, typeElement.getAnnotation(GenServiceImpl.class).sourcePath(), typeSpecBuilder);
+        genJavaSourceFile(implPackageName, typeElement.getAnnotation(GenServiceImpl.class).sourcePath(),
+                typeSpecBuilder);
     }
 
     @Override
@@ -100,7 +102,8 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
 
     private Optional<MethodSpec> createMethod(TypeElement typeElement, DefaultNameContext nameContext,
                                               String repositoryFieldName, String classFieldName) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getCreatorPackageName(), nameContext.getMapperPackageName());
+        boolean containsNull = StringUtils.containsNull(nameContext.getCreatorPackageName(),
+                nameContext.getMapperPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("create" + typeElement.getSimpleName())
                     .addParameter(
@@ -112,12 +115,16 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                                     """
                                             Optional<$T> $L = $T.doCreate($L)
                                             .create(() -> $T.INSTANCE.dtoToEntity(creator))
-                                            .update(e -> e.init())
+                                            .update($T::init)
                                             .execute();
                                             """,
-                                    typeElement, classFieldName, EntityOperations.class, repositoryFieldName,
-                                    ClassName.get(nameContext.getMapperPackageName(),
-                                            nameContext.getMapperClassName()))
+                                    typeElement,
+                                    classFieldName,
+                                    EntityOperations.class,
+                                    repositoryFieldName,
+                                    ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()),
+                                    BaseEntity.class
+                            )
                     )
                     .addCode(
                             CodeBlock.of("return $L.isPresent() ? $L.get().getId() : 0;", classFieldName,
@@ -143,7 +150,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                             CodeBlock.of("""
                                             $T.doUpdate($L)
                                             .loadById(updater.getId())
-                                            .update(e -> updater.update$L(e))
+                                            .update(updater::update$L)
                                             .execute();""",
                                     EntityOperations.class, repositoryFieldName, typeElement.getSimpleName())
                     )
@@ -162,9 +169,9 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                         CodeBlock.of("""
                                         $T.doUpdate($L)
                                         .loadById(id)
-                                        .update(e -> e.valid())
+                                        .update($T::valid)
                                         .execute();""",
-                                EntityOperations.class, repositoryFieldName)
+                                EntityOperations.class, repositoryFieldName, BaseEntity.class)
                 )
                 .addJavadoc("valid")
                 .addAnnotation(Override.class)
@@ -179,9 +186,9 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                         CodeBlock.of("""
                                         $T.doUpdate($L)
                                         .loadById(id)
-                                        .update(e -> e.invalid())
+                                        .update($T::invalid)
                                         .execute();""",
-                                EntityOperations.class, repositoryFieldName)
+                                EntityOperations.class, repositoryFieldName, BaseEntity.class)
                 )
                 .addJavadoc("invalid")
                 .addAnnotation(Override.class)
@@ -189,7 +196,8 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> findByIdMethod(TypeElement typeElement,
-                                                DefaultNameContext nameContext, String repositoryFieldName, String classFieldName) {
+                                                DefaultNameContext nameContext, String repositoryFieldName,
+                                                String classFieldName) {
         boolean containsNull = StringUtils.containsNull(nameContext.getVoPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("findById")

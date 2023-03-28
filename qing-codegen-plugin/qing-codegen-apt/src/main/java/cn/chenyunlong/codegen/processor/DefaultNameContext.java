@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -20,7 +20,7 @@ import lombok.Data;
  * 默认名称名称上下文，便于其他引入类方便使用
  *
  * @author Gim
- * @date 2022/11/06
+ * @since 2022/11/06
  */
 @Data
 public class DefaultNameContext {
@@ -41,48 +41,53 @@ public class DefaultNameContext {
 
     private String updaterClassName;
     private String controllerClassName;
+    private String creatorPackageName;
+    private String creatorClassName;
+    private String mapperPackageName;
+    private String mapperClassName;
+    private String repositoryPackageName;
+    private String repositoryClassName;
+    private String servicePackageName;
+    private String serviceClassName;
+    private String implPackageName;
+    private String controllerPackageName;
+    /**
+     * API 相关
+     */
+    private String createPackageName;
+    private String createClassName;
+    private String updatePackageName;
+    private String updateClassName;
+    private String queryRequestPackageName;
+    private String queryRequestClassName;
+    private String responsePackageName;
+    private String responseClassName;
+    private String feignPackageName;
+    private String feignClassName;
 
     public String getVoPackageName() {
         return getFinalPackage(voPackageName);
     }
 
-    private String creatorPackageName;
-
     public String getQueryPackageName() {
         return getFinalPackage(queryPackageName);
     }
-
-    private String creatorClassName;
-
-    private String mapperPackageName;
 
     public String getUpdaterPackageName() {
         return getFinalPackage(updaterPackageName);
     }
 
-    private String mapperClassName;
-
-    private String repositoryPackageName;
-
     public String getCreatorPackageName() {
         return getFinalPackage(creatorPackageName);
     }
-
-    private String repositoryClassName;
-
-    private String servicePackageName;
 
     public String getMapperPackageName() {
         return getFinalPackage(mapperPackageName);
     }
 
-    private String serviceClassName;
-
     public String getRepositoryPackageName() {
         return getFinalPackage(repositoryPackageName);
     }
-
-    private String implPackageName;
 
     public String getServicePackageName() {
         return getFinalPackage(servicePackageName);
@@ -92,51 +97,25 @@ public class DefaultNameContext {
         return getFinalPackage(implPackageName);
     }
 
-    private String controllerPackageName;
-
     public String getControllerPackageName() {
         return getFinalPackage(controllerPackageName);
     }
-
-    /**
-     * API 相关
-     */
-    private String createPackageName;
 
     public String getCreatePackageName() {
         return getFinalPackage(createPackageName);
     }
 
-    private String createClassName;
-
-    private String updatePackageName;
-
     public String getUpdatePackageName() {
         return getFinalPackage(updatePackageName);
     }
-
-    private String updateClassName;
-
-    private String queryRequestPackageName;
 
     public String getQueryRequestPackageName() {
         return getFinalPackage(queryRequestPackageName);
     }
 
-    private String queryRequestClassName;
-
-
-    private String responsePackageName;
-
-    private String responseClassName;
-
     public String getResponsePackageName() {
         return getFinalPackage(responsePackageName);
     }
-
-    private String feignPackageName;
-
-    private String feignClassName;
 
     public String getFeignPackageName() {
         return getFinalPackage(feignPackageName);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -50,7 +50,8 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
         DefaultNameContext nameContext = getNameContext(typeElement);
-        String classFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, typeElement.getSimpleName().toString());
+        String classFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
+                typeElement.getSimpleName().toString());
         GenFeign feign = typeElement.getAnnotation(GenFeign.class);
         Builder builder = TypeSpec.interfaceBuilder(nameContext.getFeignClassName())
                 .addModifiers(Modifier.PUBLIC)
@@ -98,9 +99,11 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("create" + typeElement.getSimpleName())
                     .addParameter(
-                            ParameterSpec.builder(ClassName.get(nameContext.getCreatePackageName(), nameContext.getCreateClassName()), "request").addAnnotation(
+                            ParameterSpec.builder(ClassName.get(nameContext.getCreatePackageName(),
+                                    nameContext.getCreateClassName()), "request").addAnnotation(
                                     RequestBody.class).build())
-                    .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "create" + typeElement.getSimpleName()).build())
+                    .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S",
+                            "create" + typeElement.getSimpleName()).build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("createRequest")
                     .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(Long.class))).build());
@@ -119,8 +122,10 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
         boolean containsNull = StringUtils.containsNull(nameContext.getUpdatePackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("update" + typeElement.getSimpleName())
-                    .addParameter(ParameterSpec.builder(ClassName.get(nameContext.getUpdatePackageName(), nameContext.getUpdateClassName()), "request").addAnnotation(RequestBody.class).build())
-                    .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "update" + typeElement.getSimpleName()).build())
+                    .addParameter(ParameterSpec.builder(ClassName.get(nameContext.getUpdatePackageName(),
+                            nameContext.getUpdateClassName()), "request").addAnnotation(RequestBody.class).build())
+                    .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S",
+                            "update" + typeElement.getSimpleName()).build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
                     .addJavadoc("update request")
@@ -181,7 +186,8 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
                             .build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("findById")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(nameContext.getResponsePackageName(), nameContext.getResponseClassName())))
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class),
+                            ClassName.get(nameContext.getResponsePackageName(), nameContext.getResponseClassName())))
                     .build());
         }
         return Optional.empty();
@@ -194,16 +200,20 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> findByPage(DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(), nameContext.getResponsePackageName());
+        boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(),
+                nameContext.getResponsePackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("findByPage")
                     .addParameter(ParameterSpec.builder(ParameterizedTypeName.get(ClassName.get(
-                            PageRequestWrapper.class), ClassName.get(nameContext.getQueryRequestPackageName(), nameContext.getQueryRequestClassName())), "request").addAnnotation(RequestBody.class).build())
+                            PageRequestWrapper.class), ClassName.get(nameContext.getQueryRequestPackageName(),
+                            nameContext.getQueryRequestClassName())), "request").addAnnotation(RequestBody.class).build())
                     .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "findByPage").build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("findByPage request")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ParameterizedTypeName.get(ClassName.get(
-                            PageResult.class), ClassName.get(nameContext.getResponsePackageName(), nameContext.getResponseClassName()))))
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class),
+                            ParameterizedTypeName.get(ClassName.get(
+                                    PageResult.class), ClassName.get(nameContext.getResponsePackageName(),
+                                    nameContext.getResponseClassName()))))
                     .build());
         }
         return Optional.empty();

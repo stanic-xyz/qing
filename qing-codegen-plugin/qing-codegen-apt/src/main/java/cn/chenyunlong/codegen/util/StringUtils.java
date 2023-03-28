@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -35,17 +35,6 @@ public final class StringUtils {
     /**
      * 包含空
      *
-     * @param list string列表
-     * @return boolean
-     */
-    public static boolean containsNull(List<String> list) {
-        List<String> nullList = list.stream().filter(Objects::isNull).toList();
-        return nullList.size() > 0;
-    }
-
-    /**
-     * 包含空
-     *
      * @param list string数组
      * @return boolean
      */
@@ -56,4 +45,13 @@ public final class StringUtils {
         return nullList.size() > 0;
     }
 
+    /**
+     * 判断字符串不为空
+     *
+     * @param str 字符串
+     * @return 字符串是否为空
+     */
+    public static boolean isNotBlank(String str) {
+        return org.springframework.util.StringUtils.hasText(str);
+    }
 }

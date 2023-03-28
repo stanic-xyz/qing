@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2019-2022 YunLong Chen
+  ~ Copyright (c) 2019-2023  YunLong Chen
   ~ Project Qing is licensed under Mulan PSL v2.
   ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
   ~ You may obtain a copy of Mulan PSL v2 at:
@@ -34,6 +34,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
     <build>
