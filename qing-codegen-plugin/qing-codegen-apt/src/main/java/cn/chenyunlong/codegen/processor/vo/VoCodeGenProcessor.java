@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -52,11 +52,11 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
 
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
-
+        //根据名称获取上下文
         DefaultNameContext nameContext = getNameContext(typeElement);
 
         Set<VariableElement> fields = findFields(typeElement,
-                ve -> Objects.isNull(ve.getAnnotation(IgnoreVo.class)));
+                variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
         String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         Builder builder = TypeSpec.classBuilder(className)

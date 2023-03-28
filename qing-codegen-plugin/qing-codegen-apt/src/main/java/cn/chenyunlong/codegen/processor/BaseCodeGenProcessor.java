@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -34,6 +34,7 @@ import cn.chenyunlong.codegen.processor.updater.GenUpdaterProcessor;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
 import cn.chenyunlong.codegen.processor.vo.VoCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.common.annotation.TypeConverter;
 import com.google.common.base.Splitter;
@@ -42,6 +43,7 @@ import com.squareup.javapoet.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
@@ -59,7 +61,7 @@ import java.util.function.Predicate;
  * 基础代码一代处理器
  *
  * @author Stan
- * @date 2022/11/27
+ * @since 2022/11/27
  */
 public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
 
@@ -68,14 +70,14 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
     /**
      * 生成Class
      *
-     * @param typeElement      类型元素
-     * @param roundEnvironment 周围环境
+     * @param typeElement 类型元素
+     * @param environment 周围环境
      * @throws Exception 异常
      */
     @Override
-    public void generate(TypeElement typeElement, RoundEnvironment roundEnvironment) throws Exception {
+    public void generate(TypeElement typeElement, RoundEnvironment environment) throws Exception {
         //添加其他逻辑扩展
-        generateClass(typeElement, roundEnvironment);
+        generateClass(typeElement, environment);
     }
 
     /**
@@ -105,16 +107,23 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
     public DefaultNameContext getNameContext(TypeElement typeElement) {
         DefaultNameContext context = new DefaultNameContext();
         Name domainName = typeElement.getSimpleName();
+
+        ProcessingEnvironment processingEnvironment = ProcessingEnvironmentHolder.getEnvironment();
+        PackageElement packageElement = processingEnvironment.getElementUtils().getPackageOf(typeElement);
+
+        Name qualifiedName = packageElement.getQualifiedName();
+        String packageName = qualifiedName.toString();
+        context.setBasePackage(packageName);
+        Optional.ofNullable(typeElement.getAnnotation(GenBase.class)).ifPresent(anno ->
+        {
+            if (StringUtils.isNotBlank(anno.basePackage())) {
+                context.setBasePackage(anno.basePackage());
+            }
+        });
+
+        System.out.println("文件生成根路径： " + context.getBasePackage());
+
         String serviceName = GenServiceProcessor.SERVICE_PREFIX + domainName + GenServiceProcessor.SERVICE_SUFFIX;
-        // 获取根路径
-        Optional<GenBase> baseOptional = Optional.ofNullable(typeElement.getAnnotation(GenBase.class));
-        baseOptional.ifPresent(anno -> context.setBasePackage(anno.basePackage()));
-        if (baseOptional.isEmpty()) {
-            Name domainQualifiedName = typeElement.getQualifiedName();
-            int basePackageLength = domainQualifiedName.length() - domainName.length() - 1;
-            String basePackageName = domainQualifiedName.subSequence(0, basePackageLength).toString();
-            context.setBasePackage(basePackageName);
-        }
         String implName = domainName + GenServiceImplProcessor.IMPL_SUFFIX;
         String repositoryName = domainName + GenRepositoryProcessor.REPOSITORY_SUFFIX;
         String mapperName = domainName + GenMapperProcessor.SUFFIX;
@@ -255,7 +264,8 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
                 if (size > 1) {
                     //泛型生成像这样
                     //ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class))
-                    typeName = ParameterizedTypeName.get(ClassName.bestGuess(Iterables.get(classes, 0)), ClassName.bestGuess(Iterables.get(classes, 1)));
+                    typeName = ParameterizedTypeName.get(ClassName.bestGuess(Iterables.get(classes, 0)),
+                            ClassName.bestGuess(Iterables.get(classes, 1)));
                 } else {
                     typeName = ClassName.bestGuess(variableElement.getAnnotation(TypeConverter.class).toTypeFullName());
                 }
@@ -327,6 +337,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      */
     public void genJavaSourceFile(String packageName, String pathStr, TypeSpec.Builder typeSpecBuilder) {
         TypeSpec typeSpec = typeSpecBuilder.build();
+        // 生成.java文件
         JavaFile javaFile = JavaFile
                 .builder(packageName, typeSpec)
                 .addFileComment("---Auto Generated by Project Qing ---")
@@ -344,6 +355,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
                 javaFile.writeTo(file);
             }
         } catch (IOException exception) {
+            System.out.println("生成文件失败 ");
             exception.printStackTrace();
         }
     }

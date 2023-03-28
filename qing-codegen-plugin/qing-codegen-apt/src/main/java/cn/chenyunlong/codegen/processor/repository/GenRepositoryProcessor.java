@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -43,7 +43,8 @@ public class GenRepositoryProcessor extends BaseCodeGenProcessor {
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
         String className = typeElement.getSimpleName() + REPOSITORY_SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class), ClassName.get(typeElement), ClassName.get(Long.class)))
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class),
+                        ClassName.get(typeElement), ClassName.get(Long.class)))
                 .addModifiers(Modifier.PUBLIC);
 
         DefaultNameContext nameContext = getNameContext(typeElement);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2022 YunLong Chen
+ * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -20,7 +20,6 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
@@ -73,7 +72,8 @@ public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
         Builder classBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class)
-                .addAnnotation(Data.class);
+//                .addAnnotation(Data.class)
+                ;
         addSetterAndGetterMethod(classBuilder,
                 findFields(typeElement, variableElement
                         -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)));
