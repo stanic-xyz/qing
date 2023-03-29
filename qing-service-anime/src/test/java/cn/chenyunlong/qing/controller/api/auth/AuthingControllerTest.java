@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-class AuthControllerTest extends BaseApiTest {
+class AuthingControllerTest extends BaseApiTest {
 
     @Test
     void formLoin() throws Exception {

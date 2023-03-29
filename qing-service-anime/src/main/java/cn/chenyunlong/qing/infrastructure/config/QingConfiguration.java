@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.config;
 
+import cn.chenyunlong.qing.infrastructure.config.authing.AuthingConfig;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.config.properties.SwaggerProperties;
 import cn.chenyunlong.qing.infrastructure.intercepter.LoggingRequestInterceptor;
@@ -54,13 +55,15 @@ import java.util.Collections;
  */
 @Slf4j
 @Configuration
-@EnableConfigurationProperties({QingProperties.class, SwaggerProperties.class})
+@EnableConfigurationProperties({QingProperties.class, SwaggerProperties.class, AuthingConfig.class})
 @RequiredArgsConstructor
 public class QingConfiguration implements InitializingBean {
 
     private final QingProperties qingProperties;
 
     private final SwaggerProperties swaggerProperties;
+
+    private final AuthingConfig authing;
 
 
     /**
@@ -126,7 +129,8 @@ public class QingConfiguration implements InitializingBean {
     @Bean
     public KeyPair keyPair() {
         //从classpath下的证书中获取秘钥对
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "123456".toCharArray());
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"),
+                "123456".toCharArray());
         return keyStoreKeyFactory.getKeyPair("jwt", "123456".toCharArray());
     }
 }
