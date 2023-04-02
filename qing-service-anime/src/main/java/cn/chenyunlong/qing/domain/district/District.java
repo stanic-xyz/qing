@@ -24,7 +24,7 @@ import cn.chenyunlong.codegen.processor.service.GenService;
 import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
-import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

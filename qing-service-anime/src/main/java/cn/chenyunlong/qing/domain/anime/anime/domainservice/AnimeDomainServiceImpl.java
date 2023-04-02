@@ -13,15 +13,9 @@
 
 package cn.chenyunlong.qing.domain.anime.anime.domainservice;
 
-import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
-import cn.chenyunlong.qing.domain.anime.anime.creator.AnimeInfoCreator;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.BatchInOutModel;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.TransferModel;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizType;
-import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeInfoMapper;
-import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeInfoRepository;
-import cn.chenyunlong.qing.domain.anime.recommend.repository.RecommendRepository;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,59 +23,67 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AnimeDomainServiceImpl implements IAnimeDomainService {
 
-    private final AnimeInfoRepository animeInfoRepository;
-    private final RecommendRepository recommendRepository;
+//    private final AnimeInfoRepository animeInfoRepository;
+//    private final RecommendRepository recommendRepository;
+//
+//    @Override
+//    @Transactional
+//    public void handleAnimeInfoRecommend(BatchInOutModel batchInOutModel) {
+//        Assert.notEmpty(batchInOutModel.getAnimeIds());
+//        String genBatchNo = IdUtil.simpleUUID();
+//        AnimeInfoBizInfo animeInfoBizInfo = AnimeInfoBizInfo
+//                .builder()
+//                .batchNo(batchInOutModel.getBatchNo())
+//                .genBatchNo(genBatchNo)
+//                .inOutBizType(batchInOutModel.getInOutBizType())
+//                .uniqueCodes(batchInOutModel.getAnimeIds())
+//                .operateUser(batchInOutModel.getOperateUser())
+//                .build();
+//
+//        //查询所有的动漫信息
+//        animeInfoRepository.findAllById(batchInOutModel.getAnimeIds()).forEach(animeInfo -> {
+//            // 判断是否存在
+//            Optional<AnimeInfo> animeInfoOptional = animeInfoRepository.findById(animeInfo.getId());
+//            animeInfoOptional.ifPresent(info -> {
+//                //如果已经存在则更新入库
+//                EntityOperations
+//                        .doUpdate(animeInfoRepository)
+//                        .load(animeInfoOptional::get)
+//                        .update(asset -> asset.in(animeInfoBizInfo))
+//                        .execute();
+//            });
+//            if (animeInfoOptional.isEmpty()) {
+//                //不存在则直接入库
+//                AnimeInfoCreator creator = new AnimeInfoCreator();
+////                        creator.setName(batchInOutModel.getHouseId());
+//                creator.setName(batchInOutModel.getName());
+////                        creator.setSkuId(batchInOutModel.getSkuId());
+////                        creator.setUniqueCode(animeInfo);
+//
+//                AnimeInfo dtoToEntity = AnimeInfoMapper.INSTANCE.dtoToEntity(creator);
+//
+//                EntityOperations
+//                        .doCreate(animeInfoRepository)
+//                        .create(() -> dtoToEntity)
+//                        .update(anime -> anime.in(animeInfoBizInfo))
+//                        .execute();
+//            }
+//        });
+//    }
 
+    /**
+     * 资产入库
+     *
+     * @param batchInOutModel 订单信息
+     */
     @Override
-    @Transactional
     public void handleAnimeInfoRecommend(BatchInOutModel batchInOutModel) {
-        Assert.notEmpty(batchInOutModel.getAnimeIds());
-        String genBatchNo = IdUtil.simpleUUID();
-        AnimeInfoBizInfo animeInfoBizInfo = AnimeInfoBizInfo
-                .builder()
-                .batchNo(batchInOutModel.getBatchNo())
-                .genBatchNo(genBatchNo)
-                .inOutBizType(batchInOutModel.getInOutBizType())
-                .uniqueCodes(batchInOutModel.getAnimeIds())
-                .operateUser(batchInOutModel.getOperateUser())
-                .build();
 
-        //查询所有的动漫信息
-        animeInfoRepository.findAllById(batchInOutModel.getAnimeIds()).forEach(animeInfo -> {
-            // 判断是否存在
-            Optional<AnimeInfo> animeInfoOptional = animeInfoRepository.findById(animeInfo.getId());
-            animeInfoOptional.ifPresent(info -> {
-                //如果已经存在则更新入库
-                EntityOperations
-                        .doUpdate(animeInfoRepository)
-                        .load(animeInfoOptional::get)
-                        .update(asset -> asset.in(animeInfoBizInfo))
-                        .execute();
-            });
-            if (animeInfoOptional.isEmpty()) {
-                //不存在则直接入库
-                AnimeInfoCreator creator = new AnimeInfoCreator();
-//                        creator.setName(batchInOutModel.getHouseId());
-                creator.setName(batchInOutModel.getName());
-//                        creator.setSkuId(batchInOutModel.getSkuId());
-//                        creator.setUniqueCode(animeInfo);
-
-                AnimeInfo dtoToEntity = AnimeInfoMapper.INSTANCE.dtoToEntity(creator);
-
-                EntityOperations
-                        .doCreate(animeInfoRepository)
-                        .create(() -> dtoToEntity)
-                        .update(anime -> anime.in(animeInfoBizInfo))
-                        .execute();
-            }
-        });
     }
 
     @Override
@@ -129,19 +131,23 @@ public class AnimeDomainServiceImpl implements IAnimeDomainService {
         outModel.setHouseId(transferModel.getTransferOutHouseId());
         outModel.setAnimeIds(transferModel.getUniqueCodes());
         handleAnimeInfoOut(outModel);
-        log.info("处理出库完成，仓库id:{},批次号:{},自动批号:{}", transferModel.getTransferOutHouseId(), transferModel.getBatchNo(),
+        log.info("处理出库完成，仓库id:{},批次号:{},自动批号:{}",
+                transferModel.getTransferOutHouseId(),
+                transferModel.getBatchNo(),
                 genBatchNo);
 
-        Optional<AnimeInfo> animeInfo = animeInfoRepository.findById(transferModel.getUniqueCodes().get(0));
-        BatchInOutModel inModel = new BatchInOutModel();
-        inModel.setAnimeIds(transferModel.getUniqueCodes());
-        inModel.setName(animeInfo.get().getName());
-        inModel.setInOutBizType(InOutBizType.IN_TRANSFER);
-        inModel.setSkuId(transferModel.getSkuId());
-        inModel.setOperateUser(transferModel.getOperateUser());
-        inModel.setBatchNo(transferModel.getBatchNo());
-        handleAnimeInfoRecommend(inModel);
-        log.info("处理入库完成，仓库id:{},批次号:{},自动批号:{}", transferModel.getTransferOutHouseId(), transferModel.getBatchNo(),
-                genBatchNo);
+//        Optional<AnimeInfo> animeInfo = animeInfoRepository.findById(transferModel.getUniqueCodes().get(0));
+//        BatchInOutModel inModel = new BatchInOutModel();
+//        inModel.setAnimeIds(transferModel.getUniqueCodes());
+//        inModel.setName(animeInfo.get().getName());
+//        inModel.setInOutBizType(InOutBizType.IN_TRANSFER);
+//        inModel.setSkuId(transferModel.getSkuId());
+//        inModel.setOperateUser(transferModel.getOperateUser());
+//        inModel.setBatchNo(transferModel.getBatchNo());
+//        handleAnimeInfoRecommend(inModel);
+//        log.info("处理入库完成，仓库id:{},批次号:{},自动批号:{}",
+//                transferModel.getTransferOutHouseId(),
+//                transferModel.getBatchNo(),
+//                genBatchNo);
     }
 }

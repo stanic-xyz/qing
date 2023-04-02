@@ -73,7 +73,7 @@ public class EntityCreator<T, ID> extends BaseEntityOperation implements Create<
         try {
             T save = repository.save(data);
             successHook.accept(save);
-            return Optional.ofNullable(save);
+            return Optional.of(save);
         } catch (Exception exception) {
             errorHook.accept(exception);
             return Optional.empty();

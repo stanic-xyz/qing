@@ -24,7 +24,8 @@ import cn.chenyunlong.codegen.processor.service.GenService;
 import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
-import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
+import cn.chenyunlong.common.annotation.FieldDesc;
+import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -41,7 +42,7 @@ import javax.persistence.Table;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenController(name = "活动信息")
+@GenController(pkgName = "cn.chenyunlong.qing.controller", name = "活动信息")
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest
@@ -49,12 +50,15 @@ import javax.persistence.Table;
 @GenResponse
 @GenFeign
 @GenMapper
-@Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "activity")
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class Activity extends BaseEntity {
+
+    @FieldDesc(description = "活动ID")
     private String activityId;
+
     private String username;
     private String activityName;
     private String activityContent;

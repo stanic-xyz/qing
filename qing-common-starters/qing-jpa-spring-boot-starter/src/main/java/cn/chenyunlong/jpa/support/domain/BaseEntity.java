@@ -32,7 +32,7 @@ import javax.persistence.Convert;
  * @since 2021/05/22
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @NoArgsConstructor
 public class BaseEntity extends BaseJpaAggregate {

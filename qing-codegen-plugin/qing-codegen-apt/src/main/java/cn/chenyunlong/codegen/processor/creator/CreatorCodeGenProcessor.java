@@ -39,11 +39,10 @@ import java.util.Objects;
 public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
 
     public static final String SUFFIX = "Creator";
-    static final List<TypeName> dtoIgnoreFieldTypes;
+    // 这里为什么要忽略这些类型呢
+    static final List<TypeName> dtoIgnoreFieldTypes = new ArrayList<>();
 
-    // 这里为什么要忽略这些代码
     static {
-        dtoIgnoreFieldTypes = new ArrayList<>();
         dtoIgnoreFieldTypes.add(TypeName.get(Date.class));
         dtoIgnoreFieldTypes.add(TypeName.get(LocalDateTime.class));
     }
@@ -71,9 +70,7 @@ public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         Builder classBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class)
-//                .addAnnotation(Data.class)
-                ;
+                .addAnnotation(Schema.class);
         addSetterAndGetterMethod(classBuilder,
                 findFields(typeElement, variableElement
                         -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)));

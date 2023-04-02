@@ -11,17 +11,25 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.permission.service;
+package cn.chenyunlong.common.model;
 
-import org.springframework.security.core.Authentication;
-
-import javax.servlet.http.HttpServletRequest;
+import lombok.Data;
 
 /**
- * @author: 陈云龙
- * @date: 2020/6/29
- * @description 判断是否有权限的接口
+ * jpa-vo基础基
+ *
+ * @author Stan
+ * @date 2022/11/28
  */
-public interface RbacService {
-    boolean hasPermission(HttpServletRequest request, Authentication authentication);
+@Data
+public class AbstractBaseJpaVO {
+
+    private int version;
+
+    private Long id;
+
+    private Long createdAt;
+
+    private Long updatedAt;
+
 }

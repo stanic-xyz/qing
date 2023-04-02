@@ -121,7 +121,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
             }
         });
 
-        System.out.println("文件生成根路径： " + context.getBasePackage());
+//        System.out.println("文件生成根路径： " + context.getBasePackage());
 
         String serviceName = GenServiceProcessor.SERVICE_PREFIX + domainName + GenServiceProcessor.SERVICE_SUFFIX;
         String implName = domainName + GenServiceImplProcessor.IMPL_SUFFIX;
@@ -211,6 +211,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @param variableElements 变量元素
      */
     public void addSetterAndGetterMethod(TypeSpec.Builder builder, Set<VariableElement> variableElements) {
+        builder.addAnnotation(Data.class);
         for (VariableElement variableElement : variableElements) {
             TypeName typeName = TypeName.get(variableElement.asType());
             getDescriptionInfoBuilder(builder, variableElement, typeName);
@@ -229,22 +230,23 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
         fieldSpec = FieldSpec
                 .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
                 .addAnnotation(AnnotationSpec.builder(Schema.class)
-                        .addMember("title", "$S", getFieldDesc(element))
+                        .addMember("title", "$S", getFieldDefaultName(element))
+                        .addMember("description", "$S", getFieldDesc(element))
                         .build());
         builder.addField(fieldSpec.build());
-        String fieldName = getFieldDefaultName(element);
-        MethodSpec.Builder getMethod = MethodSpec.methodBuilder("get" + fieldName)
-                .returns(typeName)
-                .addModifiers(Modifier.PUBLIC)
-                .addStatement("return $L", element.getSimpleName().toString());
-        MethodSpec.Builder setMethod = MethodSpec.methodBuilder("set" + fieldName)
-                .returns(void.class)
-                .addModifiers(Modifier.PUBLIC)
-                .addParameter(typeName, element.getSimpleName().toString())
-                .addStatement("this.$L = $L", element.getSimpleName().toString(),
-                        element.getSimpleName().toString());
-        builder.addMethod(getMethod.build());
-        builder.addMethod(setMethod.build());
+//        String fieldName = getFieldDefaultName(element);
+//        MethodSpec.Builder getMethod = MethodSpec.methodBuilder("get" + fieldName)
+//                .returns(typeName)
+//                .addModifiers(Modifier.PUBLIC)
+//                .addStatement("return $L", element.getSimpleName().toString());
+//        MethodSpec.Builder setMethod = MethodSpec.methodBuilder("set" + fieldName)
+//                .returns(void.class)
+//                .addModifiers(Modifier.PUBLIC)
+//                .addParameter(typeName, element.getSimpleName().toString())
+//                .addStatement("this.$L = $L", element.getSimpleName().toString(),
+//                        element.getSimpleName().toString());
+//        builder.addMethod(getMethod.build());
+//        builder.addMethod(setMethod.build());
     }
 
     /**
@@ -283,28 +285,28 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @param builder 构建器
      */
     protected void addIdSetterAndGetter(TypeSpec.Builder builder) {
-        MethodSpec.Builder getMethod = MethodSpec.methodBuilder("getId")
-                .returns(ClassName.get(Long.class))
-                .addModifiers(Modifier.PUBLIC)
-                .addStatement("return $L", "id");
-        MethodSpec.Builder setMethod = MethodSpec.methodBuilder("setId")
-                .returns(void.class)
-                .addModifiers(Modifier.PUBLIC)
-                .addParameter(TypeName.LONG, "id")
-                .addStatement("this.$L = $L", "id", "id");
-        builder.addMethod(getMethod.build());
-        builder.addMethod(setMethod.build());
+//        MethodSpec.Builder getMethod = MethodSpec.methodBuilder("getId")
+//                .returns(ClassName.get(Long.class))
+//                .addModifiers(Modifier.PUBLIC)
+//                .addStatement("return $L", "id");
+//        MethodSpec.Builder setMethod = MethodSpec.methodBuilder("setId")
+//                .returns(void.class)
+//                .addModifiers(Modifier.PUBLIC)
+//                .addParameter(TypeName.LONG, "id")
+//                .addStatement("this.$L = $L", "id", "id");
+//        builder.addMethod(getMethod.build());
+//        builder.addMethod(setMethod.build());
     }
 
     /**
      * 得到字段描述信息
      *
-     * @param ve 已经
+     * @param element 已经
      * @return {@link String}
      */
-    protected String getFieldDesc(VariableElement ve) {
-        return Optional.ofNullable(ve.getAnnotation(FieldDesc.class))
-                .map(FieldDesc::name).orElse(ve.getSimpleName().toString());
+    protected String getFieldDesc(VariableElement element) {
+        return Optional.ofNullable(element.getAnnotation(FieldDesc.class))
+                .map(FieldDesc::name).orElse(element.getSimpleName().toString());
     }
 
     /**
@@ -373,8 +375,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
         return TypeSpec.classBuilder(sourceName)
                 .superclass(ClassName.get(packageName, superClassName))
                 .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class)
-                .addAnnotation(Data.class);
+                .addAnnotation(Schema.class);
     }
 
     /**

@@ -25,18 +25,20 @@ import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
 import cn.chenyunlong.common.annotation.FieldDesc;
+import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizType;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizTypeConverter;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutType;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutTypeConverter;
-import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @GenVo
 @GenCreator
 @GenUpdater
