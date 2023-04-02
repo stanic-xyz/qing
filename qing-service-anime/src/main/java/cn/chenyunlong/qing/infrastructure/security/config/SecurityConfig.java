@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.qing.infrastructure.security.config;
 
-import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.security.MyAccessDeniedHandler;
 import cn.chenyunlong.qing.infrastructure.security.MyAuthenticationEntryPoint;
@@ -45,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                           AuthenticationFailureHandler authenticationFailureHandler,
                           QingProperties qingProperties,
                           MyAccessDeniedHandler myAccessDeniedHandler,
-                          IUserService userService,
                           TokenProvider tokenProvider,
                           UserDetailsService myUserDetailService,
                           MyAuthenticationEntryPoint myAuthenticationEntryPoint) {
@@ -75,7 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/actuator/**", "/authorize/**", "/file/**", "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**").permitAll()
+                .antMatchers("/actuator/**", "/authorize/**", "/file/**", "/swagger-resources/**", "/swagger-ui.html"
+                        , "/v2/api-docs", "/webjars/**").permitAll()
                 .antMatchers("/easyui/**", "detail/**").permitAll()
                 .antMatchers("/js/**", "/css/**", "/img/*").permitAll()
                 .antMatchers("/login").permitAll()

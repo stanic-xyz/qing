@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.4</version>
+        <version>2.7.10</version>
         <relativePath/>
     </parent>
 
@@ -46,9 +46,12 @@
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
         <guava.version>31.1-jre</guava.version>
         <lombok.version>1.18.24</lombok.version>
-        <hutool.version>5.8.10</hutool.version>
+        <hutool.version>5.8.16</hutool.version>
+        <authing.version>3.0.14</authing.version>
         <swagger.version>2.2.7</swagger.version>
+        <springdoc.version>1.7.0</springdoc.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
+        <vavr.version>0.10.4</vavr.version>
     </properties>
 
     <dependencyManagement>
@@ -75,6 +78,16 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-jpa-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
@@ -83,6 +96,11 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vavr</groupId>
+                <artifactId>vavr</artifactId>
+                <version>${vavr.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -112,8 +130,28 @@
             <dependency>
                 <groupId>cn.authing</groupId>
                 <artifactId>authing-java-sdk</artifactId>
-                <version>3.0.13</version>
+                <version>${authing.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-security</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+
+            <!-- 第三方库依赖 -->
+            <dependency>
+                <groupId>com.qcloud</groupId>
+                <artifactId>cos_api</artifactId>
+                <version>5.6.139</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

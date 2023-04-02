@@ -11,15 +11,34 @@
  *
  */
 
-package cn.chenyunlong.codegen.processor.gpt;
+package cn.chenyunlong.codegen.test.domain.user.gen.mapper;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Generator {
-    String value();
+import org.junit.jupiter.api.Test;
+
+class DefaultDomainMapperTest {
+
+    @Test
+    void dtoToEntity() {
+    }
+
+    @Test
+    void request2Updater() {
+    }
+
+    @Test
+    void request2Dto() {
+    }
+
+    @Test
+    void request2Query() {
+    }
+
+    @Test
+    void vo2Response() {
+    }
+
+    @Test
+    void vo2CustomResponse() {
+    }
 }

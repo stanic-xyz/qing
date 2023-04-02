@@ -19,7 +19,6 @@ import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -49,8 +48,7 @@ public class GenQueryProcessor extends BaseCodeGenProcessor {
         TypeSpec.Builder builder;
         builder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class)
-                .addAnnotation(Data.class);
+                .addAnnotation(Schema.class);
         addSetterAndGetterMethod(builder, findFields(typeElement,
                 variableElement -> Objects.nonNull(variableElement.getAnnotation(
                         QueryItem.class))));

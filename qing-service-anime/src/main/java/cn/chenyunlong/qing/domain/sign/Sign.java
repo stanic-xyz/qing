@@ -24,13 +24,13 @@ import cn.chenyunlong.codegen.processor.service.GenService;
 import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
-import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
+import cn.chenyunlong.common.annotation.FieldDesc;
+import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false)
 @GenVo
@@ -53,9 +53,15 @@ import java.time.LocalDate;
 @Data
 public class Sign extends BaseEntity {
 
+    @FieldDesc(description = "用户ID")
     private Long userId;
-    private LocalDate dateMonth;
-    private Integer mask;
-    private Integer continueSignMonth;
 
+    @FieldDesc(description = "日期")
+    private Long dateMonth;
+
+    @FieldDesc(description = "描述信息")
+    private Integer mask;
+
+    @FieldDesc(description = "每月最大连续天数")
+    private Integer continueSignMonth;
 }

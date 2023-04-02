@@ -24,8 +24,9 @@ import cn.chenyunlong.codegen.processor.service.GenService;
 import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
-import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -34,7 +35,6 @@ import javax.persistence.Table;
  * @author Stan
  * @date 2021/05/22
  */
-@Data
 @GenVo
 @GenCreator
 @GenUpdater
@@ -50,6 +50,8 @@ import javax.persistence.Table;
 @GenFeign
 @GenMapper
 @GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.attachment")
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "attachment")
 public class Attachment extends BaseEntity {
