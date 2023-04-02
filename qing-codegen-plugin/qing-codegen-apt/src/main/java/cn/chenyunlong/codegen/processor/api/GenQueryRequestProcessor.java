@@ -21,7 +21,6 @@ import cn.chenyunlong.common.model.Request;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -54,7 +53,6 @@ public class GenQueryRequestProcessor extends BaseCodeGenProcessor {
         typeSpecBuilder = TypeSpec.classBuilder(nameContext.getQueryRequestClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
-                .addAnnotation(Data.class)
                 .addAnnotation(Schema.class);
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields);
         genJavaSourceFile(queryRequestPackageName,

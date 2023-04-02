@@ -16,6 +16,7 @@ package cn.chenyunlong.codegen.processor.service;
 
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
@@ -100,14 +101,25 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         return typeElement.getAnnotation(GenServiceImpl.class).pkgName();
     }
 
+    /**
+     * 创建方法
+     *
+     * @param typeElement         类型元素，当前的Domain领域对象
+     * @param nameContext         名称上下文，上下文信息
+     * @param repositoryFieldName 存储库字段名称，JP啊Repository对象字段名称
+     * @param classFieldName      类字段名称，作为参数的Class信息，默认：typeElement.getSimpleName().toString()
+     * @return {@link Optional}<{@link MethodSpec}>
+     */
     private Optional<MethodSpec> createMethod(TypeElement typeElement, DefaultNameContext nameContext,
                                               String repositoryFieldName, String classFieldName) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getCreatorPackageName(),
+        String creatorPackageName = nameContext.getCreatorPackageName();
+        String creatorClassName = nameContext.getCreatorClassName();
+        boolean containsNull = StringUtils.containsNull(creatorPackageName,
                 nameContext.getMapperPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("create" + typeElement.getSimpleName())
                     .addParameter(
-                            ClassName.get(nameContext.getCreatorPackageName(), nameContext.getCreatorClassName()),
+                            ClassName.get(creatorPackageName, creatorClassName),
                             "creator")
                     .addModifiers(Modifier.PUBLIC)
                     .addCode(
@@ -122,8 +134,9 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                                     classFieldName,
                                     EntityOperations.class,
                                     repositoryFieldName,
-                                    ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()),
-                                    BaseEntity.class
+                                    ClassName.get(nameContext.getMapperPackageName(),
+                                            typeElement.getSimpleName() + GenMapperProcessor.SUFFIX),
+                                    typeElement
                             )
                     )
                     .addCode(

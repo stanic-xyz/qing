@@ -13,34 +13,29 @@
 
 package cn.chenyunlong.qing.infrastructure.security.support;
 
-import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 @Component
 @RequiredArgsConstructor
 public class MyUserDetailService implements UserDetailsService {
 
-    private final IUserService userService;
+//    private final IUserService userService;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userService.findUserByUsername(username)
-                .map(user -> {
-                    Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
-                    grantedAuthorities.add(authority);
-                    return new UserDetail(user, grantedAuthorities);
-                }).orElseThrow(() -> new UsernameNotFoundException("用户名未找到！"));
+//        return userService.findUserByUsername(username)
+//                .map(user -> {
+//                    Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+//
+//                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
+//                    grantedAuthorities.add(authority);
+//                    return new UserDetail(user, grantedAuthorities);
+//                }).orElseThrow(() -> new UsernameNotFoundException("用户名未找到！"));
+        return null;
     }
 }

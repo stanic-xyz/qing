@@ -123,8 +123,7 @@
                         <configuration>
                             <target>
                                 <echo message="remove test files from codegen"/>
-                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/user/gen"/>
-                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/mapper/gen"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/defaultdomain"/>
                             </target>
                         </configuration>
                         <goals>

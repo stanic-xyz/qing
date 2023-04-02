@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.anime.menu;
 
-import cn.chenyunlong.qing.infrastructure.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

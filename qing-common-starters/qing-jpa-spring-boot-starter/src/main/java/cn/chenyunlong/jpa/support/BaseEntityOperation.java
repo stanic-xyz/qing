@@ -35,7 +35,11 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  */
 public abstract class BaseEntityOperation implements EntityOperation {
 
-    public static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    public static final Validator validator;
+
+    static {
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+    }
 
     /**
      * 做验证

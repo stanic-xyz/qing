@@ -20,7 +20,6 @@ import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.squareup.javapoet.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -59,8 +58,7 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class)
-                .addAnnotation(Data.class);
+                .addAnnotation(Schema.class);
         addSetterAndGetterMethod(typeSpecBuilder, variableElements);
         CodeBlock.Builder builder = CodeBlock.builder();
         for (VariableElement variableElement : variableElements) {

@@ -14,20 +14,19 @@
 package cn.chenyunlong.codegen.test.domain.mapper;
 
 import cn.chenyunlong.codegen.processor.GenBase;
-import cn.chenyunlong.codegen.processor.api.GenCreateRequest;
-import cn.chenyunlong.codegen.processor.api.GenQueryRequest;
-import cn.chenyunlong.codegen.processor.api.GenResponse;
-import cn.chenyunlong.codegen.processor.api.GenUpdateRequest;
+import cn.chenyunlong.codegen.processor.api.*;
 import cn.chenyunlong.codegen.processor.creator.GenCreator;
-import cn.chenyunlong.codegen.processor.creator.IgnoreCreator;
-import cn.chenyunlong.codegen.processor.gpt.Generator;
 import cn.chenyunlong.codegen.processor.mapper.GenMapper;
 import cn.chenyunlong.codegen.processor.query.GenQuery;
+import cn.chenyunlong.codegen.processor.repository.GenRepository;
+import cn.chenyunlong.codegen.processor.service.GenService;
+import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 
@@ -37,26 +36,30 @@ import javax.persistence.Entity;
  * @author gim 2022/1/11 10:53 下午
  * @date 2022/10/25
  */
-//
+
 @GenBase(basePackage = "cn.chenyunlong.codegen.test.domain.mapper.gen")
 @GenVo
 @GenCreator
 @GenUpdater
+@GenRepository
+@GenService
+@GenServiceImpl
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest
 @GenQueryRequest
 @GenResponse
+@GenFeign
 @GenMapper
 @Data
 @Entity
-@Generator("")
+@EqualsAndHashCode(callSuper = true)
 public class TestMapperObject extends BaseEntity {
 
     @FieldDesc(name = "用户名")
     private String username;
 
-    @IgnoreCreator
+
     @FieldDesc(name = "用户名")
     private String password;
 
