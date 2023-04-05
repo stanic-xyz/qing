@@ -25,5 +25,5 @@ public @interface GenMapper {
 
     String sourcePath() default "src/main/java";
 
-    boolean overrideSource() default false;
+    boolean overrideSource() default true;
 }
