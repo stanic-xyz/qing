@@ -61,7 +61,6 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
         Set<VariableElement> variableElements;
         variableElements = findFields(typeElement,
                 element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
-        String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         TypeSpec.Builder classBuilder = TypeSpec.classBuilder(sourceClassName)
                 .addModifiers(Modifier.PUBLIC)
