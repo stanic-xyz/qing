@@ -18,13 +18,9 @@ import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
-import cn.chenyunlong.common.mapper.DateMapper;
-import cn.chenyunlong.common.mapper.GenericEnumMapper;
+import cn.hutool.core.bean.BeanUtil;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
-import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
-import org.mapstruct.factory.Mappers;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -51,19 +47,20 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
 
         String className = typeElement.getSimpleName() + SUFFIX;
         String mapperPackageName = nameContext.getMapperPackageName();
-        AnnotationSpec mapperAnnotation = AnnotationSpec.builder(Mapper.class)
-                .addMember("uses", "$T.class", GenericEnumMapper.class)
-                .addMember("uses", "$T.class", DateMapper.class)
-                .addMember("unmappedTargetPolicy", "$T.IGNORE", ReportingPolicy.class)
-                .build();
+//        AnnotationSpec mapperAnnotation = AnnotationSpec.builder(Mapper.class)
+//                .addMember("uses", "$T.class", GenericEnumMapper.class)
+//                .addMember("uses", "$T.class", DateMapper.class)
+//                .addMember("unmappedTargetPolicy", "$T.IGNORE", ReportingPolicy.class)
+//                .build();
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
-                .addAnnotation(mapperAnnotation)
+//                .addAnnotation(mapperAnnotation)
                 .addModifiers(Modifier.PUBLIC);
         FieldSpec instance;
+        ClassName type = ClassName.get(mapperPackageName, className);
         instance = FieldSpec
-                .builder(ClassName.get(mapperPackageName, className), "INSTANCE")
+                .builder(type, "INSTANCE")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                .initializer("$T.getMapper($T.class)", Mappers.class, ClassName.get(mapperPackageName, className))
+                .initializer("new $T() {}", type)
                 .build();
         typeSpecBuilder.addField(instance);
         Optional<MethodSpec> dtoToEntityMethod = dtoToEntityMethod(typeElement, nameContext);
@@ -94,15 +91,18 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> dtoToEntityMethod(TypeElement typeElement, DefaultNameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getCreatorPackageName());
+        String packageName = nameContext.getCreatorPackageName();
+        boolean containsNull = StringUtils.containsNull(packageName);
         if (!containsNull) {
+            ClassName returnType = ClassName.get(typeElement);
             return Optional.of(MethodSpec
                     .methodBuilder("dtoToEntity")
-                    .returns(ClassName.get(typeElement))
-                    .addParameter(
-                            ClassName.get(nameContext.getCreatorPackageName(), nameContext.getCreatorClassName()),
-                            "dto")
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                    .returns(returnType)
+                    .addParameter(ClassName.get(packageName, nameContext.getCreatorClassName()), "dto")
+                    .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                    .addCode(
+                            CodeBlock.of("return $T.copyProperties(dto, $T.class);",
+                                    BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();
@@ -115,11 +115,15 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         if (!containsNull) {
             String updateClassName = nameContext.getUpdateClassName();
             String updaterClassName = nameContext.getUpdaterClassName();
+            ClassName returnType = ClassName.get(updaterPackageName, updaterClassName);
             return Optional.of(MethodSpec
                     .methodBuilder("request2Updater")
-                    .returns(ClassName.get(updaterPackageName, updaterClassName))
+                    .returns(returnType)
                     .addParameter(ClassName.get(updatePackageName, updateClassName), "request")
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                    .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                    .addCode(
+                            CodeBlock.of("return $T.copyProperties(request, $T.class);",
+                                    BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();
@@ -131,11 +135,15 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         boolean containsNull = StringUtils.containsNull(creatorPackageName, createPackageName);
         if (!containsNull) {
             String creatorClassName = nameContext.getCreatorClassName();
+            ClassName returnType = ClassName.get(creatorPackageName, creatorClassName);
             return Optional.of(MethodSpec
                     .methodBuilder("request2Dto")
-                    .returns(ClassName.get(creatorPackageName, creatorClassName))
+                    .returns(returnType)
                     .addParameter(ClassName.get(createPackageName, nameContext.getCreateClassName()), "request")
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                    .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                    .addCode(
+                            CodeBlock.of("return $T.copyProperties(request, $T.class);",
+                                    BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();
@@ -147,11 +155,15 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         boolean containsNull = StringUtils.containsNull(packageName, requestPackageName);
         if (!containsNull) {
             String queryRequestClassName = nameContext.getQueryRequestClassName();
+            ClassName returnType = ClassName.get(packageName, nameContext.getQueryClassName());
             return Optional.of(MethodSpec
                     .methodBuilder("request2Query")
-                    .returns(ClassName.get(packageName, nameContext.getQueryClassName()))
+                    .returns(returnType)
                     .addParameter(ClassName.get(requestPackageName, queryRequestClassName), "request")
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                    .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                    .addCode(
+                            CodeBlock.of("return $T.copyProperties(request, $T.class);",
+                                    BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();
@@ -163,11 +175,15 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         boolean containsNull = StringUtils.containsNull(responsePackageName, voPackageName);
         if (!containsNull) {
             String responseClassName = nameContext.getResponseClassName();
+            ClassName returnType = ClassName.get(responsePackageName, responseClassName);
             return Optional.of(MethodSpec
                     .methodBuilder("vo2Response")
-                    .returns(ClassName.get(responsePackageName, responseClassName))
+                    .returns(returnType)
                     .addParameter(ClassName.get(voPackageName, nameContext.getVoClassName()), "vo")
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                    .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                    .addCode(
+                            CodeBlock.of("return $T.copyProperties(vo, $T.class);",
+                                    BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();
@@ -184,7 +200,6 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
                     .addParameter(ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), "vo")
                     .addCode(CodeBlock.of("return vo2Response(vo);"))
-
                     .build());
         }
         return Optional.empty();
