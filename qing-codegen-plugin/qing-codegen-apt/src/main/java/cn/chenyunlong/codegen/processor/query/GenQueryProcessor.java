@@ -64,9 +64,8 @@ public class GenQueryProcessor extends BaseCodeGenProcessor {
         addSetterAndGetterMethod(classBuilder, findFields(typeElement,
                 variableElement -> Objects.nonNull(variableElement.getAnnotation(
                         QueryItem.class))), useLombok);
-
-        String sourcePath = typeElement.getAnnotation(GenQuery.class).sourcePath();
-        genJavaSourceFile(queryPackageName, sourcePath, classBuilder, true);
+        GenQuery annotation = typeElement.getAnnotation(GenQuery.class);
+        genJavaSourceFile(queryPackageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
     }
 
     @Override

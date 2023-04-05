@@ -53,8 +53,8 @@ public class GenResponseProcessor extends BaseCodeGenProcessor {
                 .addAnnotation(Schema.class);
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
         String packageName = nameContext.getResponsePackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenResponse.class).sourcePath(), typeSpecBuilder,
-                true);
+        GenResponse annotation = typeElement.getAnnotation(GenResponse.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override

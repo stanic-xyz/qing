@@ -50,8 +50,8 @@ public class GenRepositoryProcessor extends BaseCodeGenProcessor {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
         String packageName = nameContext.getRepositoryPackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenRepository.class).sourcePath(), typeSpecBuilder,
-                true);
+        GenRepository annotation = typeElement.getAnnotation(GenRepository.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override

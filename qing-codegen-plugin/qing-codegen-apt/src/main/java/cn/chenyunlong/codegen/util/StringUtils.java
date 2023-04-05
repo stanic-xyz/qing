@@ -28,8 +28,12 @@ public final class StringUtils {
     private StringUtils() {
     }
 
-    public static String camel(String source) {
+    public static String lowerCamel(String source) {
         return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, source);
+    }
+
+    public static String bigCamel(String source) {
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, source);
     }
 
     /**

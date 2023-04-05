@@ -78,8 +78,8 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         vo2ResponseMethod.ifPresent(typeSpecBuilder::addMethod);
         Optional<MethodSpec> vo2CustomResponseMethod = vo2CustomResponseMethod(nameContext);
         vo2CustomResponseMethod.ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(mapperPackageName, typeElement.getAnnotation(GenMapper.class).sourcePath(), typeSpecBuilder
-                , true);
+        GenMapper annotation = typeElement.getAnnotation(GenMapper.class);
+        genJavaSourceFile(mapperPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
 

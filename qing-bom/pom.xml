@@ -84,6 +84,21 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup</groupId>
+                <artifactId>javapoet</artifactId>
+                <version>1.13.0</version>
+            </dependency>
+            <dependency>
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-codegen-apt</artifactId>
                 <version>${project.version}</version>
@@ -97,11 +112,6 @@
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-commons</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.hutool</groupId>

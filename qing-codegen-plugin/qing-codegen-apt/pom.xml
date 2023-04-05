@@ -32,13 +32,11 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
-            <version>1.0.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.squareup/javapoet -->
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
-            <version>1.13.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -51,7 +49,6 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.5.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -64,14 +61,10 @@
         <dependency>
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-commons</artifactId>
-            <version>1.0.0.RELEASE</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-jpa-spring-boot-starter</artifactId>
-            <version>1.0.0.RELEASE</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>

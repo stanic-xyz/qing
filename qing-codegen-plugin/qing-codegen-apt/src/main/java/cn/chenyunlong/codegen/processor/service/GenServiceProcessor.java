@@ -60,7 +60,8 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
         findByPageMethod(nameContext).ifPresent(typeSpecBuilder::addMethod);
 
         String packageName = nameContext.getServicePackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenService.class).sourcePath(), typeSpecBuilder, true);
+        GenService annotation = typeElement.getAnnotation(GenService.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override
