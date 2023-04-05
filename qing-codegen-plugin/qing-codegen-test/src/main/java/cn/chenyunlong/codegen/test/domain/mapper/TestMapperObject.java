@@ -13,17 +13,17 @@
 
 package cn.chenyunlong.codegen.test.domain.mapper;
 
-import cn.chenyunlong.codegen.processor.GenBase;
-import cn.chenyunlong.codegen.processor.api.GenCreateRequest;
-import cn.chenyunlong.codegen.processor.api.GenQueryRequest;
-import cn.chenyunlong.codegen.processor.api.GenResponse;
-import cn.chenyunlong.codegen.processor.api.GenUpdateRequest;
-import cn.chenyunlong.codegen.processor.creator.GenCreator;
-import cn.chenyunlong.codegen.processor.mapper.GenMapper;
-import cn.chenyunlong.codegen.processor.query.GenQuery;
-import cn.chenyunlong.codegen.processor.query.QueryItem;
-import cn.chenyunlong.codegen.processor.updater.GenUpdater;
-import cn.chenyunlong.codegen.processor.vo.GenVo;
+import cn.chenyunlong.codegen.annotation.GenBase;
+import cn.chenyunlong.codegen.annotation.GenCreateRequest;
+import cn.chenyunlong.codegen.annotation.GenQueryRequest;
+import cn.chenyunlong.codegen.annotation.GenResponse;
+import cn.chenyunlong.codegen.annotation.GenUpdateRequest;
+import cn.chenyunlong.codegen.annotation.GenCreator;
+import cn.chenyunlong.codegen.annotation.GenMapper;
+import cn.chenyunlong.codegen.annotation.GenQuery;
+import cn.chenyunlong.codegen.annotation.QueryItem;
+import cn.chenyunlong.codegen.annotation.GenUpdater;
+import cn.chenyunlong.codegen.annotation.GenVo;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;

@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.codegen.processor.api;
 
+import cn.chenyunlong.codegen.annotation.GenFeign;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;

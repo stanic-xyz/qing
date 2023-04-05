@@ -80,6 +80,16 @@
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-codegen-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-codegen-apt</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-jpa-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -151,8 +161,6 @@
                 <artifactId>cos_api</artifactId>
                 <version>5.6.139</version>
             </dependency>
-
-
         </dependencies>
     </dependencyManagement>
 
@@ -160,6 +168,20 @@
         <profile>
             <id>release</id>
             <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-deploy-plugin</artifactId>
+                            <version>3.0.0</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-gpg-plugin</artifactId>
+                            <version>1.6</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

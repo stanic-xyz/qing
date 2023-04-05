@@ -13,17 +13,23 @@
 
 package cn.chenyunlong.codegen.processor.vo;
 
+import cn.chenyunlong.codegen.annotation.GenVo;
+import cn.chenyunlong.codegen.annotation.IgnoreVo;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import com.google.auto.service.AutoService;
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -66,6 +72,12 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
                 .addAnnotation(Schema.class);
         if (useLombok) {
             builder.addAnnotation(Data.class);
+            builder.addAnnotation(
+                    AnnotationSpec.builder(EqualsAndHashCode.class)
+                            .addMember("callSuper", "$L", true).build());
+            builder.addAnnotation(
+                    AnnotationSpec.builder(NoArgsConstructor.class)
+                            .addMember("access", "$T.PROTECTED", AccessLevel.class).build());
         }
         addSetterAndGetterMethod(builder, fields, useLombok);
         MethodSpec.Builder constructorSpecBuilder = MethodSpec.constructorBuilder()
@@ -78,9 +90,6 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
                         getFieldDefaultName(variableElement),
                         getFieldDefaultName(variableElement)
                 ));
-        builder.addMethod(MethodSpec.constructorBuilder()
-                .addModifiers(Modifier.PROTECTED)
-                .build());
         builder.addMethod(constructorSpecBuilder.build());
 
         String packageName = nameContext.getVoPackageName();
