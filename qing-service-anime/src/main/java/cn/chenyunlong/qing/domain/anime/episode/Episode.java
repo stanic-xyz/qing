@@ -33,6 +33,7 @@ import javax.persistence.Table;
 @GenCreator
 @GenUpdater
 @GenRepository
+@GenController
 @GenService
 @GenServiceImpl
 @GenQuery
