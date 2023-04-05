@@ -58,9 +58,6 @@ import java.util.function.Predicate;
  */
 public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
 
-    private final boolean useLombok = true;
-    public static final String PREFIX = "Base";
-
     /**
      * 生成Class
      *
@@ -71,6 +68,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
     @Override
     public void generate(TypeElement typeElement, RoundEnvironment environment) throws Exception {
         //添加其他逻辑扩展
+        boolean useLombok = true;
         generateClass(typeElement, environment, useLombok);
     }
 
@@ -354,8 +352,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @param superClassName 超类名字
      * @return {@link TypeSpec.Builder}
      */
-    public TypeSpec.Builder getSourceType(String sourceName, String packageName,
-                                          String superClassName) {
+    public TypeSpec.Builder getSourceType(String sourceName, String packageName, String superClassName) {
         return TypeSpec.classBuilder(sourceName)
                 .superclass(ClassName.get(packageName, superClassName))
                 .addModifiers(Modifier.PUBLIC)
@@ -394,7 +391,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
     /**
      * 生成java文件
      *
-     * @param packageName     包名
+     * @param packageName     生成的包名
      * @param typeSpecBuilder 类型规范施工
      */
     protected void genJavaFile(String packageName, TypeSpec.Builder typeSpecBuilder) {
@@ -410,11 +407,10 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
     }
 
     /**
-     * gen java源文件
-     * 生成java源文件
+     * 生成Java源文件
      *
      * @param packageName     包名
-     * @param pathStr         路径str
+     * @param pathStr         生成文件路径
      * @param typeSpecBuilder 类型规范施工
      * @param overrideSource  是否覆盖源文件
      */

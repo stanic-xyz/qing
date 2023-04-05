@@ -64,7 +64,6 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
 
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
-//        String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         Builder builder = TypeSpec.classBuilder(sourceClassName)
                 .superclass(AbstractBaseJpaVO.class)

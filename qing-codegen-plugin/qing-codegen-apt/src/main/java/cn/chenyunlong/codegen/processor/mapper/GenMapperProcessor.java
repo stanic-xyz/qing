@@ -37,7 +37,7 @@ import java.util.Optional;
  * 生成Mapper
  *
  * @author Stan
- * @since 2022/11/29
+ * @date 2022/11/29
  */
 @AutoService(value = CodeGenProcessor.class)
 public class GenMapperProcessor extends BaseCodeGenProcessor {
