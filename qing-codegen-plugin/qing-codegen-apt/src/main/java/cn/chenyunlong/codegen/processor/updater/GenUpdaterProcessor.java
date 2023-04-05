@@ -18,8 +18,8 @@ import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.util.StringUtils;
 import com.google.auto.service.AutoService;
-import com.google.common.base.CaseFormat;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -74,11 +74,10 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
         addSetterAndGetterMethod(classBuilder, variableElements, useLombok);
         CodeBlock.Builder builder = CodeBlock.builder();
         for (VariableElement variableElement : variableElements) {
-            builder.addStatement("$T.ofNullable($L()).ifPresent(v -> param.$L(v))", Optional.class,
-                    "get" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL,
-                            variableElement.getSimpleName().toString()),
-                    "set" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL,
-                            variableElement.getSimpleName().toString()));
+            builder.addStatement("$T.ofNullable($L()).ifPresent(param::$L)",
+                    Optional.class,
+                    StringUtils.getterName(variableElement.getSimpleName().toString()),
+                    StringUtils.setterName(variableElement.getSimpleName().toString()));
         }
         MethodSpec.Builder methodBuilder;
         methodBuilder = MethodSpec.methodBuilder(
