@@ -13,16 +13,7 @@
 
 package cn.chenyunlong.qing.domain.activity;
 
-import cn.chenyunlong.codegen.processor.GenBase;
-import cn.chenyunlong.codegen.processor.api.*;
-import cn.chenyunlong.codegen.processor.creator.GenCreator;
-import cn.chenyunlong.codegen.processor.mapper.GenMapper;
-import cn.chenyunlong.codegen.processor.query.GenQuery;
-import cn.chenyunlong.codegen.processor.repository.GenRepository;
-import cn.chenyunlong.codegen.processor.service.GenService;
-import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
-import cn.chenyunlong.codegen.processor.updater.GenUpdater;
-import cn.chenyunlong.codegen.processor.vo.GenVo;
+import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;

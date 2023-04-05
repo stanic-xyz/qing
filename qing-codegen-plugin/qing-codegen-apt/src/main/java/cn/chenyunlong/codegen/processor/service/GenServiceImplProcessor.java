@@ -14,6 +14,7 @@
 package cn.chenyunlong.codegen.processor.service;
 
 
+import cn.chenyunlong.codegen.annotation.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor;
@@ -263,7 +264,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                                             return new $T<>(page.getContent()
                                             .stream().map($T::new)
                                             .collect($T.toList()), page.getPageable(), page.getTotalElements());
-                                                    """,
+                                            """,
                                     PageImpl.class,
                                     ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()),
                                     Collectors.class)

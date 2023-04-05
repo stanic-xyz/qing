@@ -65,19 +65,14 @@ public class QingConfiguration implements InitializingBean {
 
     private final AuthingConfig authing;
 
-
-    /**
-     * @throws Exception
-     */
     @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println(swaggerProperties.getDescription());
+    public void afterPropertiesSet() {
+        log.info("配置信息：{}", swaggerProperties.getDescription());
     }
 
     @Bean
     public ObjectMapper getObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
-
         //这里进行一些配置
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

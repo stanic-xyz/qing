@@ -27,6 +27,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>qing-codegen-api</module>
         <module>qing-codegen-apt</module>
         <module>qing-codegen-test</module>
     </modules>

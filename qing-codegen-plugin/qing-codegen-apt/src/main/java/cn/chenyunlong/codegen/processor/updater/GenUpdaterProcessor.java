@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.codegen.processor.updater;
 
+import cn.chenyunlong.codegen.annotation.GenUpdater;
+import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;

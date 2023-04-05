@@ -14,6 +14,7 @@
 package cn.chenyunlong.codegen.processor.controller;
 
 
+import cn.chenyunlong.codegen.annotation.GenController;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;

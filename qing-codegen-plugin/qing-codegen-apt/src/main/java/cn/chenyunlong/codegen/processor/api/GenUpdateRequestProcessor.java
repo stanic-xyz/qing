@@ -13,9 +13,10 @@
 
 package cn.chenyunlong.codegen.processor.api;
 
+import cn.chenyunlong.codegen.annotation.GenUpdateRequest;
+import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.processor.updater.IgnoreUpdater;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.Request;
 import com.google.auto.service.AutoService;

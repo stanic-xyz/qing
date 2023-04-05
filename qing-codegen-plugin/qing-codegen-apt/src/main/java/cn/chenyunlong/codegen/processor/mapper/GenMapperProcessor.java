@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.codegen.processor.mapper;
 
+import cn.chenyunlong.codegen.annotation.GenMapper;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
@@ -22,6 +23,7 @@ import cn.chenyunlong.common.mapper.GenericEnumMapper;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -52,6 +54,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         AnnotationSpec mapperAnnotation = AnnotationSpec.builder(Mapper.class)
                 .addMember("uses", "$T.class", GenericEnumMapper.class)
                 .addMember("uses", "$T.class", DateMapper.class)
+                .addMember("unmappedTargetPolicy", "$T.IGNORE", ReportingPolicy.class)
                 .build();
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
                 .addAnnotation(mapperAnnotation)
