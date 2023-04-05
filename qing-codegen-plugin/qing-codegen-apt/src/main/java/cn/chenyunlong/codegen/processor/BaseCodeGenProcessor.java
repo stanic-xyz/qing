@@ -13,25 +13,17 @@
 
 package cn.chenyunlong.codegen.processor;
 
+import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.processor.api.*;
-import cn.chenyunlong.codegen.processor.controller.GenController;
 import cn.chenyunlong.codegen.processor.controller.GenControllerProcessor;
 import cn.chenyunlong.codegen.processor.creator.CreatorCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.creator.GenCreator;
-import cn.chenyunlong.codegen.processor.mapper.GenMapper;
 import cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor;
-import cn.chenyunlong.codegen.processor.query.GenQuery;
 import cn.chenyunlong.codegen.processor.query.GenQueryProcessor;
-import cn.chenyunlong.codegen.processor.repository.GenRepository;
 import cn.chenyunlong.codegen.processor.repository.GenRepositoryProcessor;
-import cn.chenyunlong.codegen.processor.service.GenService;
-import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.service.GenServiceImplProcessor;
 import cn.chenyunlong.codegen.processor.service.GenServiceProcessor;
-import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.updater.GenUpdaterProcessor;
-import cn.chenyunlong.codegen.processor.vo.GenVo;
 import cn.chenyunlong.codegen.processor.vo.VoCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
@@ -234,12 +226,15 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      */
     private void getDescriptionInfoBuilder(TypeSpec.Builder builder, VariableElement element, TypeName typeName,
                                            boolean useLombok) {
+        String fieldDescription = getFieldDesc(element);
+        AnnotationSpec.Builder schemaAnnotationBuilder = AnnotationSpec.builder(Schema.class)
+                .addMember("title", "$S", getFieldDefaultName(element));
+        if (StringUtils.isNotBlank(fieldDescription)) {
+            schemaAnnotationBuilder.addMember("description", "$S", fieldDescription);
+        }
         FieldSpec.Builder fieldSpec = FieldSpec
                 .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
-                .addAnnotation(AnnotationSpec.builder(Schema.class)
-                        .addMember("title", "$S", getFieldDefaultName(element))
-                        .addMember("description", "$S", getFieldDesc(element))
-                        .build());
+                .addAnnotation(schemaAnnotationBuilder.build());
         builder.addField(fieldSpec.build());
         if (!useLombok) {
             // 不使用lombok

@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.codegen.test.domain.updater;
 
-import cn.chenyunlong.codegen.processor.GenBase;
-import cn.chenyunlong.codegen.processor.updater.GenUpdater;
+import cn.chenyunlong.codegen.annotation.GenBase;
+import cn.chenyunlong.codegen.annotation.GenUpdater;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
