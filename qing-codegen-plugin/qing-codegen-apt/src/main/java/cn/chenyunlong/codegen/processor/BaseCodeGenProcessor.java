@@ -228,7 +228,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
                                            boolean useLombok) {
         String fieldDescription = getFieldDesc(element);
         AnnotationSpec.Builder schemaAnnotationBuilder = AnnotationSpec.builder(Schema.class)
-                .addMember("title", "$S", getFieldDefaultName(element));
+                .addMember("title", "$S", element.getSimpleName().toString());
         if (StringUtils.isNotBlank(fieldDescription)) {
             schemaAnnotationBuilder.addMember("description", "$S", fieldDescription);
         }
@@ -331,8 +331,7 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @return {@link String}
      */
     protected String getFieldDefaultName(VariableElement variableElement) {
-        return variableElement.getSimpleName().toString().substring(0, 1).toUpperCase() + variableElement.getSimpleName()
-                .toString().substring(1);
+        return StringUtils.bigCamel(variableElement.getSimpleName().toString());
     }
 
 

@@ -81,7 +81,8 @@ public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
                 findFields(typeElement, variableElement
                         -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)), useLombok);
         String packageName = getNameContext(typeElement).getCreatorPackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenCreator.class).sourcePath(), classBuilder, true);
+        GenCreator annotation = typeElement.getAnnotation(GenCreator.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
     }
 
     /**

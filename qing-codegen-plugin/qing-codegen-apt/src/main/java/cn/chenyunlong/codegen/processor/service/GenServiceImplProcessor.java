@@ -88,8 +88,8 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
         findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
         String implPackageName = nameContext.getImplPackageName();
-        genJavaSourceFile(implPackageName, typeElement.getAnnotation(GenServiceImpl.class).sourcePath(),
-                typeSpecBuilder, true);
+        GenServiceImpl annotation = typeElement.getAnnotation(GenServiceImpl.class);
+        genJavaSourceFile(implPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override

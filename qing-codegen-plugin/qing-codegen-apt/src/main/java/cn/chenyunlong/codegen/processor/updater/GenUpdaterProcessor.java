@@ -93,7 +93,8 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
         String packageName = nameContext.getUpdaterPackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenUpdater.class).sourcePath(), classBuilder, true);
+        GenUpdater annotation = typeElement.getAnnotation(GenUpdater.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
     }
 
     @Override
