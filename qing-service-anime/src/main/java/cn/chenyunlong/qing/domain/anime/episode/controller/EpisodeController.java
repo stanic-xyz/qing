@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@RequestMapping("episode/v1")
+@RequestMapping("api/v1/episode")
 @RequiredArgsConstructor
 public class EpisodeController {
     private final IEpisodeService episodeService;

@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@RequestMapping("comment/v1")
+@RequestMapping("api/v1/comment")
 @RequiredArgsConstructor
 public class CommentController {
     private final ICommentService commentService;
