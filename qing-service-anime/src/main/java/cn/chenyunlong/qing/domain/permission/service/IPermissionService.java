@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.permission.creator.PermissionCreator;
 import cn.chenyunlong.qing.domain.permission.query.PermissionQuery;
 import cn.chenyunlong.qing.domain.permission.updater.PermissionUpdater;
 import cn.chenyunlong.qing.domain.permission.vo.PermissionVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IPermissionService {

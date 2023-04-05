@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.anime.recommend.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.anime.recommend.Recommend;
 
+import java.lang.Long;
+
 public interface RecommendRepository extends BaseRepository<Recommend, Long> {
 }

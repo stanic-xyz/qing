@@ -4,6 +4,9 @@ package cn.chenyunlong.qing.domain.district.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.String;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,19 +22,19 @@ import lombok.NoArgsConstructor;
 )
 public class DistrictVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Code",
+            title = "code",
             description = "code"
     )
     private String code;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;

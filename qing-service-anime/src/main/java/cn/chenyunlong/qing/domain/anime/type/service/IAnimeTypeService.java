@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.anime.type.creator.AnimeTypeCreator;
 import cn.chenyunlong.qing.domain.anime.type.query.AnimeTypeQuery;
 import cn.chenyunlong.qing.domain.anime.type.updater.AnimeTypeUpdater;
 import cn.chenyunlong.qing.domain.anime.type.vo.AnimeTypeVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IAnimeTypeService {

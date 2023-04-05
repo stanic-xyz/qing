@@ -2,13 +2,16 @@
 package cn.chenyunlong.qing.domain.anime.tag.query;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class AnimeTagQuery {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;

@@ -4,6 +4,10 @@ package cn.chenyunlong.qing.domain.system.config.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.system.config.SysConfig;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,37 +23,37 @@ import lombok.NoArgsConstructor;
 )
 public class SysConfigVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "ConfigId",
+            title = "configId",
             description = "configId"
     )
     private Long configId;
 
     @Schema(
-            title = "ConfigName",
+            title = "configName",
             description = "configName"
     )
     private String configName;
 
     @Schema(
-            title = "ConfigKey",
+            title = "configKey",
             description = "configKey"
     )
     private String configKey;
 
     @Schema(
-            title = "ConfigValue",
+            title = "configValue",
             description = "configValue"
     )
     private String configValue;
 
     @Schema(
-            title = "ConfigType",
+            title = "configType",
             description = "configType"
     )
     private String configType;
 
     @Schema(
-            title = "Params",
+            title = "params",
             description = "params"
     )
     private String params;

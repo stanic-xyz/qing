@@ -3,27 +3,30 @@ package cn.chenyunlong.qing.domain.district.updater;
 
 import cn.chenyunlong.qing.domain.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class DistrictUpdater {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Code",
+            title = "code",
             description = "code"
     )
     private String code;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;
@@ -31,8 +34,8 @@ public class DistrictUpdater {
     private Long id;
 
     public void updateDistrict(District param) {
-        Optional.ofNullable(getName()).ifPresent(v -> param.setName(v));
-        Optional.ofNullable(getCode()).ifPresent(v -> param.setCode(v));
-        Optional.ofNullable(getDescription()).ifPresent(v -> param.setDescription(v));
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+        Optional.ofNullable(getCode()).ifPresent(param::setCode);
+        Optional.ofNullable(getDescription()).ifPresent(param::setDescription);
     }
 }

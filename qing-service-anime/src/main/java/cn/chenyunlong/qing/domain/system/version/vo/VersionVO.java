@@ -4,9 +4,7 @@ package cn.chenyunlong.qing.domain.system.version.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.system.version.Version;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.lang.String;
-
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,17 +20,17 @@ import lombok.NoArgsConstructor;
 )
 public class VersionVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "Code"
+            title = "code"
     )
     private String code;
 
     @Schema(
-            title = "Name"
+            title = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description"
+            title = "description"
     )
     private String description;
 

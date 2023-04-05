@@ -3,39 +3,42 @@ package cn.chenyunlong.qing.domain.file.updater;
 
 import cn.chenyunlong.qing.domain.file.UploadFile;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class UploadFileUpdater {
     @Schema(
-            title = "FileId",
+            title = "fileId",
             description = "fileId"
     )
     private Long fileId;
 
     @Schema(
-            title = "FileName",
+            title = "fileName",
             description = "fileName"
     )
     private String fileName;
 
     @Schema(
-            title = "MimeType",
+            title = "mimeType",
             description = "mimeType"
     )
     private String mimeType;
 
     @Schema(
-            title = "Url",
+            title = "url",
             description = "url"
     )
     private String url;
 
     @Schema(
-            title = "FileSize",
+            title = "fileSize",
             description = "fileSize"
     )
     private Long fileSize;
@@ -43,10 +46,10 @@ public class UploadFileUpdater {
     private Long id;
 
     public void updateUploadFile(UploadFile param) {
-        Optional.ofNullable(getFileId()).ifPresent(v -> param.setFileId(v));
-        Optional.ofNullable(getFileName()).ifPresent(v -> param.setFileName(v));
-        Optional.ofNullable(getMimeType()).ifPresent(v -> param.setMimeType(v));
-        Optional.ofNullable(getUrl()).ifPresent(v -> param.setUrl(v));
-        Optional.ofNullable(getFileSize()).ifPresent(v -> param.setFileSize(v));
+        Optional.ofNullable(getFileId()).ifPresent(param::setFileId);
+        Optional.ofNullable(getFileName()).ifPresent(param::setFileName);
+        Optional.ofNullable(getMimeType()).ifPresent(param::setMimeType);
+        Optional.ofNullable(getUrl()).ifPresent(param::setUrl);
+        Optional.ofNullable(getFileSize()).ifPresent(param::setFileSize);
     }
 }

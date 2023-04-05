@@ -8,6 +8,10 @@ import cn.chenyunlong.qing.domain.user.user.request.UserCreateRequest;
 import cn.chenyunlong.qing.domain.user.user.request.UserQueryRequest;
 import cn.chenyunlong.qing.domain.user.user.request.UserUpdateRequest;
 import cn.chenyunlong.qing.domain.user.user.response.UserResponse;
+
+import java.lang.Long;
+import java.lang.String;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

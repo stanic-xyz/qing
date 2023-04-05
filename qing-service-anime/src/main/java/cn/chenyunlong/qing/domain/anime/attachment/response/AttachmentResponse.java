@@ -4,22 +4,28 @@ package cn.chenyunlong.qing.domain.anime.attachment.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.lang.Integer;
+import java.lang.String;
+
+import lombok.Data;
+
 @Schema
+@Data
 public class AttachmentResponse extends AbstractJpaResponse {
     @Schema(
-            title = "AttachmentId",
+            title = "attachmentId",
             description = "attachmentId"
     )
     private Integer attachmentId;
 
     @Schema(
-            title = "AttachmentName",
+            title = "attachmentName",
             description = "attachmentName"
     )
     private String attachmentName;
 
     @Schema(
-            title = "AttachmentUrl",
+            title = "attachmentUrl",
             description = "attachmentUrl"
     )
     private String attachmentUrl;

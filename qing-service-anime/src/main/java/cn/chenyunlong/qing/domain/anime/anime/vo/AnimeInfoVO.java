@@ -5,12 +5,16 @@ import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
+import java.time.LocalDate;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Schema
 @Data
@@ -22,109 +26,109 @@ import java.time.LocalDate;
 )
 public class AnimeInfoVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Instruction",
+            title = "instruction",
             description = "instruction"
     )
     private String instruction;
 
     @Schema(
-            title = "DistrictId",
+            title = "districtId",
             description = "districtId"
     )
     private Long districtId;
 
     @Schema(
-            title = "DistrictName",
+            title = "districtName",
             description = "districtName"
     )
     private String districtName;
 
     @Schema(
-            title = "CoverUrl",
+            title = "coverUrl",
             description = "coverUrl"
     )
     private String coverUrl;
 
     @Schema(
-            title = "TypeId",
+            title = "typeId",
             description = "typeId"
     )
     private Long typeId;
 
     @Schema(
-            title = "TypeName",
+            title = "typeName",
             description = "typeName"
     )
     private String typeName;
 
     @Schema(
-            title = "OriginalName",
+            title = "originalName",
             description = "originalName"
     )
     private String originalName;
 
     @Schema(
-            title = "OtherName",
+            title = "otherName",
             description = "otherName"
     )
     private String otherName;
 
     @Schema(
-            title = "Author",
+            title = "author",
             description = "author"
     )
     private String author;
 
     @Schema(
-            title = "Company",
+            title = "company",
             description = "company"
     )
     private String company;
 
     @Schema(
-            title = "PremiereDate",
+            title = "premiereDate",
             description = "premiereDate"
     )
     private LocalDate premiereDate;
 
     @Schema(
-            title = "PlayStatus",
+            title = "playStatus",
             description = "playStatus"
     )
     private PlayStatus playStatus;
 
     @Schema(
-            title = "PlotType",
+            title = "plotType",
             description = "plotType"
     )
     private String plotType;
 
     @Schema(
-            title = "Tags",
+            title = "tags",
             description = "tags"
     )
     private String tags;
 
     @Schema(
-            title = "OfficialWebsite",
+            title = "officialWebsite",
             description = "officialWebsite"
     )
     private String officialWebsite;
 
     @Schema(
-            title = "PlayHeat",
+            title = "playHeat",
             description = "playHeat"
     )
     private String playHeat;
 
     @Schema(
-            title = "OrderNo",
+            title = "orderNo",
             description = "orderNo"
     )
     private Integer orderNo;

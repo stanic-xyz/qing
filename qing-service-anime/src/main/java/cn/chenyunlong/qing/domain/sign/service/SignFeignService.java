@@ -8,6 +8,10 @@ import cn.chenyunlong.qing.domain.sign.request.SignCreateRequest;
 import cn.chenyunlong.qing.domain.sign.request.SignQueryRequest;
 import cn.chenyunlong.qing.domain.sign.request.SignUpdateRequest;
 import cn.chenyunlong.qing.domain.sign.response.SignResponse;
+
+import java.lang.Long;
+import java.lang.String;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

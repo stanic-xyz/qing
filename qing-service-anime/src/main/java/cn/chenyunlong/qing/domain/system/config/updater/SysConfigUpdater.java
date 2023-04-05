@@ -3,45 +3,48 @@ package cn.chenyunlong.qing.domain.system.config.updater;
 
 import cn.chenyunlong.qing.domain.system.config.SysConfig;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class SysConfigUpdater {
     @Schema(
-            title = "ConfigId",
+            title = "configId",
             description = "configId"
     )
     private Long configId;
 
     @Schema(
-            title = "ConfigName",
+            title = "configName",
             description = "configName"
     )
     private String configName;
 
     @Schema(
-            title = "ConfigKey",
+            title = "configKey",
             description = "configKey"
     )
     private String configKey;
 
     @Schema(
-            title = "ConfigValue",
+            title = "configValue",
             description = "configValue"
     )
     private String configValue;
 
     @Schema(
-            title = "ConfigType",
+            title = "configType",
             description = "configType"
     )
     private String configType;
 
     @Schema(
-            title = "Params",
+            title = "params",
             description = "params"
     )
     private String params;
@@ -49,11 +52,11 @@ public class SysConfigUpdater {
     private Long id;
 
     public void updateSysConfig(SysConfig param) {
-        Optional.ofNullable(getConfigId()).ifPresent(v -> param.setConfigId(v));
-        Optional.ofNullable(getConfigName()).ifPresent(v -> param.setConfigName(v));
-        Optional.ofNullable(getConfigKey()).ifPresent(v -> param.setConfigKey(v));
-        Optional.ofNullable(getConfigValue()).ifPresent(v -> param.setConfigValue(v));
-        Optional.ofNullable(getConfigType()).ifPresent(v -> param.setConfigType(v));
-        Optional.ofNullable(getParams()).ifPresent(v -> param.setParams(v));
+        Optional.ofNullable(getConfigId()).ifPresent(param::setConfigId);
+        Optional.ofNullable(getConfigName()).ifPresent(param::setConfigName);
+        Optional.ofNullable(getConfigKey()).ifPresent(param::setConfigKey);
+        Optional.ofNullable(getConfigValue()).ifPresent(param::setConfigValue);
+        Optional.ofNullable(getConfigType()).ifPresent(param::setConfigType);
+        Optional.ofNullable(getParams()).ifPresent(param::setParams);
     }
 }

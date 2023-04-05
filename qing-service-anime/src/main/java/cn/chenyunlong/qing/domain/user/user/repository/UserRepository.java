@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.user.user.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.user.user.User;
 
+import java.lang.Long;
+
 public interface UserRepository extends BaseRepository<User, Long> {
 }

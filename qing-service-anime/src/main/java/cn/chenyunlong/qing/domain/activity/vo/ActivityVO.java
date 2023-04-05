@@ -4,6 +4,10 @@ package cn.chenyunlong.qing.domain.activity.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.activity.Activity;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.String;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,42 +23,42 @@ import lombok.NoArgsConstructor;
 )
 public class ActivityVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "ActivityId"
+            title = "activityId"
     )
     private String activityId;
 
     @Schema(
-            title = "Username",
+            title = "username",
             description = "username"
     )
     private String username;
 
     @Schema(
-            title = "ActivityName",
+            title = "activityName",
             description = "activityName"
     )
     private String activityName;
 
     @Schema(
-            title = "ActivityContent",
+            title = "activityContent",
             description = "activityContent"
     )
     private String activityContent;
 
     @Schema(
-            title = "AttachmentAddress",
+            title = "attachmentAddress",
             description = "attachmentAddress"
     )
     private String attachmentAddress;
 
     @Schema(
-            title = "AttachmentType",
+            title = "attachmentType",
             description = "attachmentType"
     )
     private Integer attachmentType;
 
     @Schema(
-            title = "PublishState",
+            title = "publishState",
             description = "publishState"
     )
     private Integer publishState;

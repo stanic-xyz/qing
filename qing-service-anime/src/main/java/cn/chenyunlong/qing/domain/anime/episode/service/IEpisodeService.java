@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.anime.episode.creator.EpisodeCreator;
 import cn.chenyunlong.qing.domain.anime.episode.query.EpisodeQuery;
 import cn.chenyunlong.qing.domain.anime.episode.updater.EpisodeUpdater;
 import cn.chenyunlong.qing.domain.anime.episode.vo.EpisodeVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IEpisodeService {

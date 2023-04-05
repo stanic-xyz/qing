@@ -4,34 +4,40 @@ package cn.chenyunlong.qing.domain.file.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.lang.Long;
+import java.lang.String;
+
+import lombok.Data;
+
 @Schema
+@Data
 public class UploadFileResponse extends AbstractJpaResponse {
     @Schema(
-            title = "FileId",
+            title = "fileId",
             description = "fileId"
     )
     private Long fileId;
 
     @Schema(
-            title = "FileName",
+            title = "fileName",
             description = "fileName"
     )
     private String fileName;
 
     @Schema(
-            title = "MimeType",
+            title = "mimeType",
             description = "mimeType"
     )
     private String mimeType;
 
     @Schema(
-            title = "Url",
+            title = "url",
             description = "url"
     )
     private String url;
 
     @Schema(
-            title = "FileSize",
+            title = "fileSize",
             description = "fileSize"
     )
     private Long fileSize;

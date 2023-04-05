@@ -6,6 +6,10 @@ import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizT
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutType;
 import cn.chenyunlong.qing.domain.anime.lifecycle.AnimeLifeCycle;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,67 +25,67 @@ import lombok.NoArgsConstructor;
 )
 public class AnimeLifeCycleVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "资产名称"
     )
     private String name;
 
     @Schema(
-            title = "AssetsId",
+            title = "assetsId",
             description = "资产Id"
     )
     private Long assetsId;
 
     @Schema(
-            title = "SkuId",
+            title = "skuId",
             description = "skuId"
     )
     private Long skuId;
 
     @Schema(
-            title = "UniqueCode",
+            title = "uniqueCode",
             description = "唯一编码"
     )
     private String uniqueCode;
 
     @Schema(
-            title = "HouseName",
+            title = "houseName",
             description = "仓库名称"
     )
     private String houseName;
 
     @Schema(
-            title = "HouseId",
+            title = "houseId",
             description = "仓库id"
     )
     private Long houseId;
 
     @Schema(
-            title = "InOutBizType",
+            title = "inOutBizType",
             description = "出入库业务类型"
     )
     private InOutBizType inOutBizType;
 
     @Schema(
-            title = "InOutType",
+            title = "inOutType",
             description = "出入类型"
     )
     private InOutType inOutType;
 
     @Schema(
-            title = "OperateUser",
+            title = "operateUser",
             description = "操作人"
     )
     private String operateUser;
 
     @Schema(
-            title = "GenBatchNo",
+            title = "genBatchNo",
             description = "唯一批次号"
     )
     private String genBatchNo;
 
     @Schema(
-            title = "BatchNo",
+            title = "batchNo",
             description = "批次号"
     )
     private String batchNo;

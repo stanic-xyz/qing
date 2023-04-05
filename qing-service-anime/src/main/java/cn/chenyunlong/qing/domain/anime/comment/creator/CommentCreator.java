@@ -2,31 +2,35 @@
 package cn.chenyunlong.qing.domain.anime.comment.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class CommentCreator {
     @Schema(
-            title = "Cid",
+            title = "cid",
             description = "cid"
     )
     private Long cid;
 
     @Schema(
-            title = "Username",
+            title = "username",
             description = "username"
     )
     private String username;
 
     @Schema(
-            title = "Content",
+            title = "content",
             description = "content"
     )
     private String content;
 
     @Schema(
-            title = "IpAddress",
+            title = "ipAddress",
             description = "ipAddress"
     )
     private String ipAddress;
