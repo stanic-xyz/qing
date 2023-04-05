@@ -19,6 +19,7 @@ import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
+import cn.hutool.core.bean.BeanUtil;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -83,12 +84,7 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
                 .addParameter(TypeName.get(typeElement.asType()), "source")
                 .addModifiers(Modifier.PUBLIC);
         constructorSpecBuilder.addStatement("super()");
-        fields.forEach(variableElement -> constructorSpecBuilder
-                .addStatement(
-                        "this.set$L(source.get$L())",
-                        getFieldDefaultName(variableElement),
-                        getFieldDefaultName(variableElement)
-                ));
+        constructorSpecBuilder.addStatement("$T.copyProperties(source, this)", BeanUtil.class);
         builder.addMethod(constructorSpecBuilder.build());
 
         String packageName = nameContext.getVoPackageName();
