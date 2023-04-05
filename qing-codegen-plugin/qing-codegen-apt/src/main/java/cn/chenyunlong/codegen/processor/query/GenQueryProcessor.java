@@ -13,12 +13,15 @@
 
 package cn.chenyunlong.codegen.processor.query;
 
+import cn.chenyunlong.codegen.annotation.GenQuery;
+import cn.chenyunlong.codegen.annotation.QueryItem;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -36,25 +39,33 @@ public class GenQueryProcessor extends BaseCodeGenProcessor {
 
     public static String QUERY_SUFFIX = "Query";
 
+    /**
+     * 生成Class
+     *
+     * @param typeElement      顶层元素
+     * @param roundEnvironment 周围环境
+     * @param useLombok
+     */
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
 
-        String className = PREFIX + typeElement.getSimpleName() + QUERY_SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + QUERY_SUFFIX;
         String queryPackageName = nameContext.getQueryPackageName();
 
-        TypeSpec.Builder builder;
-        builder = TypeSpec.classBuilder(className)
+        TypeSpec.Builder classBuilder = TypeSpec.classBuilder(sourceClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
-        addSetterAndGetterMethod(builder, findFields(typeElement,
-                variableElement -> Objects.nonNull(variableElement.getAnnotation(
-                        QueryItem.class))));
 
-        genJavaFile(queryPackageName, builder);
-        genJavaFile(queryPackageName, getSourceType(sourceClassName, queryPackageName, className));
+        if (useLombok) {
+            classBuilder.addAnnotation(Data.class);
+        }
+        addSetterAndGetterMethod(classBuilder, findFields(typeElement,
+                variableElement -> Objects.nonNull(variableElement.getAnnotation(
+                        QueryItem.class))), useLombok);
+        GenQuery annotation = typeElement.getAnnotation(GenQuery.class);
+        genJavaSourceFile(queryPackageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
     }
 
     @Override

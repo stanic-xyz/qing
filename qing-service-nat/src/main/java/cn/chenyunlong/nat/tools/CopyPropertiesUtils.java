@@ -32,17 +32,18 @@ import java.util.Set;
 public class CopyPropertiesUtils {
 
     /**
+     * 获取null属性名称
      * 获取为null的参数，进行忽略
      *
-     * @param source
-     * @return
+     * @param source 来源
+     * @return {@link String[]}
      * @author wangmin1994@qq.com
      * @since 2019-06-29 15:33:35
      */
     public static String[] getNullPropertyNames(Object source) {
         BeanWrapper beanWrapper = new BeanWrapperImpl(source);
         PropertyDescriptor[] propertyDescriptorArray = beanWrapper.getPropertyDescriptors();
-        Set<String> nullNames = new HashSet<String>();
+        Set<String> nullNames = new HashSet<>();
         for (PropertyDescriptor propertyDescriptor : propertyDescriptorArray) {
             Object sourceValue = beanWrapper.getPropertyValue(propertyDescriptor.getName());
             if (sourceValue == null) {
@@ -54,10 +55,11 @@ public class CopyPropertiesUtils {
     }
 
     /**
+     * 复制财产忽略null
      * 拷贝属性
      *
-     * @param source
-     * @param target
+     * @param source 来源
+     * @param target 目标
      * @author wangmin1994@qq.com
      * @since 2019-06-29 15:33:55
      */

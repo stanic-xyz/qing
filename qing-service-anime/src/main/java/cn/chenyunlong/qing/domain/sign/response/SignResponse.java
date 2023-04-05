@@ -16,33 +16,30 @@ package cn.chenyunlong.qing.domain.sign.response;
 
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.lang.Integer;
-import java.lang.Long;
-
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Schema
 public class SignResponse extends AbstractJpaResponse {
     @Schema(
-            title = "UserId",
-            description = ""
+            title = "UserId"
     )
     private Long userId;
 
     @Schema(
-            title = "DateMonth",
-            description = ""
+            title = "DateMonth"
     )
     private Long dateMonth;
 
     @Schema(
-            title = "Mask",
-            description = ""
+            title = "Mask"
     )
     private Integer mask;
 
     @Schema(
-            title = "ContinueSignMonth",
-            description = ""
+            title = "ContinueSignMonth"
     )
     private Integer continueSignMonth;
 }

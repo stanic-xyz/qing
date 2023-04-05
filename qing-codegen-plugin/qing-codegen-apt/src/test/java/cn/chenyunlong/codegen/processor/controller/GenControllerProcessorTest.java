@@ -14,14 +14,10 @@
 package cn.chenyunlong.codegen.processor.controller;
 
 import junit.framework.TestCase;
-import org.junit.Test;
 
 public class GenControllerProcessorTest extends TestCase {
 
-    @Test
     public void testUpdateMethod() {
         System.out.println("true = " + true);
-        // Create a mock TypeElement and NamingContext
-
     }
 }

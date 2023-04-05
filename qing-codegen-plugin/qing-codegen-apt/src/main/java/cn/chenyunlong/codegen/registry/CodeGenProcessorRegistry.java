@@ -63,12 +63,11 @@ public final class CodeGenProcessorRegistry {
     public static void initProcessors() {
         final Map<String, CodeGenProcessor> genProcessorMap = Maps.newLinkedHashMap();
         ServiceLoader<CodeGenProcessor> genProcessors;
-        ProcessingEnvironmentHolder.printMessage("加载apt处理器");
         genProcessors = ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader());
+        ProcessingEnvironmentHolder.printMessage("加载apt处理器");
         for (CodeGenProcessor processor : genProcessors) {
             Class<? extends Annotation> annotation = processor.getAnnotation();
             genProcessorMap.put(annotation.getName(), processor);
-            ProcessingEnvironmentHolder.printMessage("加载apt处理器：" + annotation.getName());
         }
         // 添加处理器
         CodeGenProcessorRegistry.processors = genProcessorMap;

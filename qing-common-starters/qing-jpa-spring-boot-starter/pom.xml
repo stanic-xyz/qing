@@ -34,7 +34,6 @@
         <dependency>
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-commons</artifactId>
-            <version>1.0.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.querydsl</groupId>
@@ -44,11 +43,14 @@
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
-            <version>1.0.0-alpha-3</version>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>

@@ -13,14 +13,16 @@
 
 package cn.chenyunlong.codegen.processor.api;
 
+import cn.chenyunlong.codegen.annotation.GenCreateRequest;
+import cn.chenyunlong.codegen.annotation.IgnoreCreator;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.processor.creator.IgnoreCreator;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.Request;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -42,23 +44,25 @@ public class GenCreateRequestProcessor extends BaseCodeGenProcessor {
     public static final String CREATE_REQUEST_SUFFIX = "CreateRequest";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
 
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
 
         Set<VariableElement> fields = findFields(typeElement,
                 element -> Objects.isNull(element.getAnnotation(IgnoreCreator.class)));
-        TypeSpec.Builder typeSpecBuilder;
-        typeSpecBuilder = TypeSpec
+        TypeSpec.Builder typeSpecBuilder = TypeSpec
                 .classBuilder(nameContext.getCreateClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
                 .addAnnotation(Schema.class);
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields);
+        if (useLombok) {
+            typeSpecBuilder.addAnnotation(Data.class);
+        }
+        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
 
         genJavaSourceFile(queryRequestPackageName,
-                typeElement.getAnnotation(GenCreateRequest.class).sourcePath(), typeSpecBuilder);
+                typeElement.getAnnotation(GenCreateRequest.class).sourcePath(), typeSpecBuilder, true);
     }
 
     @Override
