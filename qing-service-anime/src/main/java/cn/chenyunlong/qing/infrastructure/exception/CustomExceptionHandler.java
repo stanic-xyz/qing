@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.exception;
 
-import cn.chenyunlong.common.model.JsonObject;
+import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.infrastructure.enums.ResponseCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,21 +33,21 @@ public class CustomExceptionHandler {
 
 
     @ExceptionHandler(value = AbstractException.class)
-    public ResponseEntity<JsonObject> errorHandler(Exception exception) {
-        JsonObject<Exception> jsonObject = JsonObject.res(ResponseCode.PARAM_FAIL, exception);
-        return ResponseEntity.badRequest().body(jsonObject);
+    public ResponseEntity<JsonResult> errorHandler(Exception exception) {
+        JsonResult<Exception> jsonResult = JsonResult.res(ResponseCode.PARAM_FAIL, exception);
+        return ResponseEntity.badRequest().body(jsonResult);
     }
 
     @ExceptionHandler(value = HttpMessageConversionException.class)
-    public ResponseEntity<JsonObject> messageConversionException(Exception exception) {
-        JsonObject jsonObject = JsonObject.fail("参数异常，请检查参数格式").setDevMessage(exception.getMessage());
-        return ResponseEntity.badRequest().body(jsonObject);
+    public ResponseEntity<JsonResult> messageConversionException(Exception exception) {
+        JsonResult<Object> jsonResult = JsonResult.fail("参数异常，请检查参数格式").setDevMessage(exception.getMessage());
+        return ResponseEntity.badRequest().body(jsonResult);
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<JsonObject> messageConversionException(BusinessException exception) {
-        JsonObject jsonObject = JsonObject.fail(exception.getMessage()).setDevMessage(exception.getMessage());
-        return ResponseEntity.badRequest().body(jsonObject);
+    public ResponseEntity<JsonResult> messageConversionException(BusinessException exception) {
+        JsonResult jsonResult = JsonResult.fail(exception.getMessage()).setDevMessage(exception.getMessage());
+        return ResponseEntity.badRequest().body(jsonResult);
     }
 
 
@@ -61,10 +61,10 @@ public class CustomExceptionHandler {
      * @return 响应结果
      */
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<JsonObject> runtimeExceptionHandler(HttpServletRequest request, final Exception exception,
+    public ResponseEntity<JsonResult> runtimeExceptionHandler(HttpServletRequest request, final Exception exception,
                                                               HttpServletResponse response) {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
-        JsonObject<Long> longJsonObject = JsonObject.fail("消息错误了" + exception.getMessage());
-        return ResponseEntity.internalServerError().body(longJsonObject);
+        JsonResult<Long> longJsonResult = JsonResult.fail("消息错误了" + exception.getMessage());
+        return ResponseEntity.internalServerError().body(longJsonResult);
     }
 }

@@ -43,7 +43,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
     public static final String SERVICE_PREFIX = "I";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
 
@@ -59,7 +59,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
         findByPageMethod(nameContext).ifPresent(typeSpecBuilder::addMethod);
 
         String packageName = nameContext.getServicePackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenService.class).sourcePath(), typeSpecBuilder);
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenService.class).sourcePath(), typeSpecBuilder, true);
     }
 
     @Override

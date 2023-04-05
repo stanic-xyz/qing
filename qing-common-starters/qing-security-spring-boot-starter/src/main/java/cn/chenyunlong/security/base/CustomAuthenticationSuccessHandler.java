@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.security.base;
 
-import cn.chenyunlong.common.model.JsonObject;
+import cn.chenyunlong.common.model.JsonResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,7 +42,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         successResponse.setToken(token.getPrincipal().toString());
         successResponse.setUsername(token.getUsername());
         ObjectMapper objectMapper = new ObjectMapper();
-        response.getOutputStream().write(objectMapper.writeValueAsBytes(JsonObject.success(successResponse)));
+        response.getOutputStream().write(objectMapper.writeValueAsBytes(JsonResult.success(successResponse)));
         clearAuthenticationAttributes(request);
     }
 

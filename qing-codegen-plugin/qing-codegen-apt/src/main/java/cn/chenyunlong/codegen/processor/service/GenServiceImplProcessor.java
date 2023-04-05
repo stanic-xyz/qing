@@ -54,7 +54,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
     public static final String IMPL_SUFFIX = "ServiceImpl";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
@@ -88,7 +88,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
         String implPackageName = nameContext.getImplPackageName();
         genJavaSourceFile(implPackageName, typeElement.getAnnotation(GenServiceImpl.class).sourcePath(),
-                typeSpecBuilder);
+                typeSpecBuilder, true);
     }
 
     @Override
