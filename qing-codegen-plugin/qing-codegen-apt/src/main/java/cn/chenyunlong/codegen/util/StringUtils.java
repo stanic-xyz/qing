@@ -58,4 +58,24 @@ public final class StringUtils {
     public static boolean isNotBlank(String str) {
         return org.springframework.util.StringUtils.hasText(str);
     }
+
+    /**
+     * 获取SetterName
+     *
+     * @param fieldName 字段名称
+     * @return SetterName
+     */
+    public static String getterName(String fieldName) {
+        return "get" + bigCamel(fieldName);
+    }
+
+    /**
+     * 获取SetterName
+     *
+     * @param fieldName 字段名称
+     * @return SetterName
+     */
+    public static String setterName(String fieldName) {
+        return "set" + bigCamel(fieldName);
+    }
 }
