@@ -4,16 +4,21 @@ package cn.chenyunlong.qing.domain.permission.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.lang.String;
+
+import lombok.Data;
+
 @Schema
+@Data
 public class PermissionResponse extends AbstractJpaResponse {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;

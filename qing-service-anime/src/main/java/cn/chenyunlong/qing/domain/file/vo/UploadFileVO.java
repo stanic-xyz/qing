@@ -4,6 +4,10 @@ package cn.chenyunlong.qing.domain.file.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.file.UploadFile;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,31 +23,31 @@ import lombok.NoArgsConstructor;
 )
 public class UploadFileVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "FileId",
+            title = "fileId",
             description = "fileId"
     )
     private Long fileId;
 
     @Schema(
-            title = "FileName",
+            title = "fileName",
             description = "fileName"
     )
     private String fileName;
 
     @Schema(
-            title = "MimeType",
+            title = "mimeType",
             description = "mimeType"
     )
     private String mimeType;
 
     @Schema(
-            title = "Url",
+            title = "url",
             description = "url"
     )
     private String url;
 
     @Schema(
-            title = "FileSize",
+            title = "fileSize",
             description = "fileSize"
     )
     private Long fileSize;

@@ -8,6 +8,10 @@ import cn.chenyunlong.qing.domain.anime.recommend.request.RecommendCreateRequest
 import cn.chenyunlong.qing.domain.anime.recommend.request.RecommendQueryRequest;
 import cn.chenyunlong.qing.domain.anime.recommend.request.RecommendUpdateRequest;
 import cn.chenyunlong.qing.domain.anime.recommend.response.RecommendResponse;
+
+import java.lang.Long;
+import java.lang.String;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

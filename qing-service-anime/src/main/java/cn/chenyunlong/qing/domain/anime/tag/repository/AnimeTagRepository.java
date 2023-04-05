@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.anime.tag.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.anime.tag.AnimeTag;
 
+import java.lang.Long;
+
 public interface AnimeTagRepository extends BaseRepository<AnimeTag, Long> {
 }

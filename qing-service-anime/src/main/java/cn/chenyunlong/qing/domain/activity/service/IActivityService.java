@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.activity.creator.ActivityCreator;
 import cn.chenyunlong.qing.domain.activity.query.ActivityQuery;
 import cn.chenyunlong.qing.domain.activity.updater.ActivityUpdater;
 import cn.chenyunlong.qing.domain.activity.vo.ActivityVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IActivityService {

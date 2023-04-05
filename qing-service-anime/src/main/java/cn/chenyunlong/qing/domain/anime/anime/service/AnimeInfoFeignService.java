@@ -8,6 +8,10 @@ import cn.chenyunlong.qing.domain.anime.anime.request.AnimeInfoCreateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.request.AnimeInfoQueryRequest;
 import cn.chenyunlong.qing.domain.anime.anime.request.AnimeInfoUpdateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.response.AnimeInfoResponse;
+
+import java.lang.Long;
+import java.lang.String;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

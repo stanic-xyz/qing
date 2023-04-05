@@ -8,6 +8,10 @@ import cn.chenyunlong.qing.domain.system.job.log.request.SysJobLogCreateRequest;
 import cn.chenyunlong.qing.domain.system.job.log.request.SysJobLogQueryRequest;
 import cn.chenyunlong.qing.domain.system.job.log.request.SysJobLogUpdateRequest;
 import cn.chenyunlong.qing.domain.system.job.log.response.SysJobLogResponse;
+
+import java.lang.Long;
+import java.lang.String;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

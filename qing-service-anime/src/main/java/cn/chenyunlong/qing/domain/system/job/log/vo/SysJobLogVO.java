@@ -4,12 +4,15 @@ package cn.chenyunlong.qing.domain.system.job.log.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.system.job.log.SysJobLog;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+import java.util.Date;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Schema
 @Data
@@ -21,55 +24,55 @@ import java.util.Date;
 )
 public class SysJobLogVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "JobLogId",
+            title = "jobLogId",
             description = "jobLogId"
     )
     private Long jobLogId;
 
     @Schema(
-            title = "JobName",
+            title = "jobName",
             description = "jobName"
     )
     private String jobName;
 
     @Schema(
-            title = "JobGroup",
+            title = "jobGroup",
             description = "jobGroup"
     )
     private String jobGroup;
 
     @Schema(
-            title = "InvokeTarget",
+            title = "invokeTarget",
             description = "invokeTarget"
     )
     private String invokeTarget;
 
     @Schema(
-            title = "JobMessage",
+            title = "jobMessage",
             description = "jobMessage"
     )
     private String jobMessage;
 
     @Schema(
-            title = "Status",
+            title = "status",
             description = "status"
     )
     private String status;
 
     @Schema(
-            title = "ExceptionInfo",
+            title = "exceptionInfo",
             description = "exceptionInfo"
     )
     private String exceptionInfo;
 
     @Schema(
-            title = "StartTime",
+            title = "startTime",
             description = "startTime"
     )
     private Date startTime;
 
     @Schema(
-            title = "EndTime",
+            title = "endTime",
             description = "endTime"
     )
     private Date endTime;

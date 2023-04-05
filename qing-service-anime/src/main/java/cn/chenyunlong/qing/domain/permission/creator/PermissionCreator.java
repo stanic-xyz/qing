@@ -9,13 +9,13 @@ import lombok.Data;
 @Data
 public class PermissionCreator {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;

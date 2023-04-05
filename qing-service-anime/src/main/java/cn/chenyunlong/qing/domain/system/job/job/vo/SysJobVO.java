@@ -4,6 +4,10 @@ package cn.chenyunlong.qing.domain.system.job.job.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.system.job.job.SysJob;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,49 +23,49 @@ import lombok.NoArgsConstructor;
 )
 public class SysJobVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "JobId",
+            title = "jobId",
             description = "jobId"
     )
     private Long jobId;
 
     @Schema(
-            title = "JobName",
+            title = "jobName",
             description = "jobName"
     )
     private String jobName;
 
     @Schema(
-            title = "JobGroup",
+            title = "jobGroup",
             description = "jobGroup"
     )
     private String jobGroup;
 
     @Schema(
-            title = "InvokeTarget",
+            title = "invokeTarget",
             description = "invokeTarget"
     )
     private String invokeTarget;
 
     @Schema(
-            title = "CronExpression",
+            title = "cronExpression",
             description = "cronExpression"
     )
     private String cronExpression;
 
     @Schema(
-            title = "MisfirePolicy",
+            title = "misfirePolicy",
             description = "misfirePolicy"
     )
     private String misfirePolicy;
 
     @Schema(
-            title = "Concurrent",
+            title = "concurrent",
             description = "concurrent"
     )
     private String concurrent;
 
     @Schema(
-            title = "Status",
+            title = "status",
             description = "status"
     )
     private String status;

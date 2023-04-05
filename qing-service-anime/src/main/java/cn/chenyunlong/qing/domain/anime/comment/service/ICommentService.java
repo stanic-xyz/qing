@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.anime.comment.creator.CommentCreator;
 import cn.chenyunlong.qing.domain.anime.comment.query.CommentQuery;
 import cn.chenyunlong.qing.domain.anime.comment.updater.CommentUpdater;
 import cn.chenyunlong.qing.domain.anime.comment.vo.CommentVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface ICommentService {

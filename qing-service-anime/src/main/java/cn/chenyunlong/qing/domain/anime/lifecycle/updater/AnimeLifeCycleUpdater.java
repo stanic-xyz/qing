@@ -5,75 +5,78 @@ import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizT
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutType;
 import cn.chenyunlong.qing.domain.anime.lifecycle.AnimeLifeCycle;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class AnimeLifeCycleUpdater {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "资产名称"
     )
     private String name;
 
     @Schema(
-            title = "AssetsId",
+            title = "assetsId",
             description = "资产Id"
     )
     private Long assetsId;
 
     @Schema(
-            title = "SkuId",
+            title = "skuId",
             description = "skuId"
     )
     private Long skuId;
 
     @Schema(
-            title = "UniqueCode",
+            title = "uniqueCode",
             description = "唯一编码"
     )
     private String uniqueCode;
 
     @Schema(
-            title = "HouseName",
+            title = "houseName",
             description = "仓库名称"
     )
     private String houseName;
 
     @Schema(
-            title = "HouseId",
+            title = "houseId",
             description = "仓库id"
     )
     private Long houseId;
 
     @Schema(
-            title = "InOutBizType",
+            title = "inOutBizType",
             description = "出入库业务类型"
     )
     private InOutBizType inOutBizType;
 
     @Schema(
-            title = "InOutType",
+            title = "inOutType",
             description = "出入类型"
     )
     private InOutType inOutType;
 
     @Schema(
-            title = "OperateUser",
+            title = "operateUser",
             description = "操作人"
     )
     private String operateUser;
 
     @Schema(
-            title = "GenBatchNo",
+            title = "genBatchNo",
             description = "唯一批次号"
     )
     private String genBatchNo;
 
     @Schema(
-            title = "BatchNo",
+            title = "batchNo",
             description = "批次号"
     )
     private String batchNo;
@@ -81,16 +84,16 @@ public class AnimeLifeCycleUpdater {
     private Long id;
 
     public void updateAnimeLifeCycle(AnimeLifeCycle param) {
-        Optional.ofNullable(getName()).ifPresent(v -> param.setName(v));
-        Optional.ofNullable(getAssetsId()).ifPresent(v -> param.setAssetsId(v));
-        Optional.ofNullable(getSkuId()).ifPresent(v -> param.setSkuId(v));
-        Optional.ofNullable(getUniqueCode()).ifPresent(v -> param.setUniqueCode(v));
-        Optional.ofNullable(getHouseName()).ifPresent(v -> param.setHouseName(v));
-        Optional.ofNullable(getHouseId()).ifPresent(v -> param.setHouseId(v));
-        Optional.ofNullable(getInOutBizType()).ifPresent(v -> param.setInOutBizType(v));
-        Optional.ofNullable(getInOutType()).ifPresent(v -> param.setInOutType(v));
-        Optional.ofNullable(getOperateUser()).ifPresent(v -> param.setOperateUser(v));
-        Optional.ofNullable(getGenBatchNo()).ifPresent(v -> param.setGenBatchNo(v));
-        Optional.ofNullable(getBatchNo()).ifPresent(v -> param.setBatchNo(v));
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+        Optional.ofNullable(getAssetsId()).ifPresent(param::setAssetsId);
+        Optional.ofNullable(getSkuId()).ifPresent(param::setSkuId);
+        Optional.ofNullable(getUniqueCode()).ifPresent(param::setUniqueCode);
+        Optional.ofNullable(getHouseName()).ifPresent(param::setHouseName);
+        Optional.ofNullable(getHouseId()).ifPresent(param::setHouseId);
+        Optional.ofNullable(getInOutBizType()).ifPresent(param::setInOutBizType);
+        Optional.ofNullable(getInOutType()).ifPresent(param::setInOutType);
+        Optional.ofNullable(getOperateUser()).ifPresent(param::setOperateUser);
+        Optional.ofNullable(getGenBatchNo()).ifPresent(param::setGenBatchNo);
+        Optional.ofNullable(getBatchNo()).ifPresent(param::setBatchNo);
     }
 }

@@ -2,25 +2,29 @@
 package cn.chenyunlong.qing.domain.anime.playlist.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class PlaylistCreator {
     @Schema(
-            title = "AnimeId",
+            title = "animeId",
             description = "animeId"
     )
     private Long animeId;
 
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;

@@ -4,6 +4,11 @@ package cn.chenyunlong.qing.domain.user.third.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.user.third.ThirdUser;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,31 +24,31 @@ import lombok.NoArgsConstructor;
 )
 public class ThirdUserVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "UserId",
+            title = "userId",
             description = "userId"
     )
     private Long userId;
 
     @Schema(
-            title = "Uid",
+            title = "uid",
             description = "uid"
     )
     private String uid;
 
     @Schema(
-            title = "AppType",
+            title = "appType",
             description = "appType"
     )
     private String appType;
 
     @Schema(
-            title = "AccessToken",
+            title = "accessToken",
             description = "accessToken"
     )
     private String accessToken;
 
     @Schema(
-            title = "AccessExpire",
+            title = "accessExpire",
             description = "accessExpire"
     )
     private Integer accessExpire;

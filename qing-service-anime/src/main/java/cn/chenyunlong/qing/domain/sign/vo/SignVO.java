@@ -4,6 +4,10 @@ package cn.chenyunlong.qing.domain.sign.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.sign.Sign;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.Long;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,22 +23,22 @@ import lombok.NoArgsConstructor;
 )
 public class SignVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "UserId"
+            title = "userId"
     )
     private Long userId;
 
     @Schema(
-            title = "DateMonth"
+            title = "dateMonth"
     )
     private Long dateMonth;
 
     @Schema(
-            title = "Mask"
+            title = "mask"
     )
     private Integer mask;
 
     @Schema(
-            title = "ContinueSignMonth"
+            title = "continueSignMonth"
     )
     private Integer continueSignMonth;
 

@@ -4,40 +4,46 @@ package cn.chenyunlong.qing.domain.system.config.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.lang.Long;
+import java.lang.String;
+
+import lombok.Data;
+
 @Schema
+@Data
 public class SysConfigResponse extends AbstractJpaResponse {
     @Schema(
-            title = "ConfigId",
+            title = "configId",
             description = "configId"
     )
     private Long configId;
 
     @Schema(
-            title = "ConfigName",
+            title = "configName",
             description = "configName"
     )
     private String configName;
 
     @Schema(
-            title = "ConfigKey",
+            title = "configKey",
             description = "configKey"
     )
     private String configKey;
 
     @Schema(
-            title = "ConfigValue",
+            title = "configValue",
             description = "configValue"
     )
     private String configValue;
 
     @Schema(
-            title = "ConfigType",
+            title = "configType",
             description = "configType"
     )
     private String configType;
 
     @Schema(
-            title = "Params",
+            title = "params",
             description = "params"
     )
     private String params;

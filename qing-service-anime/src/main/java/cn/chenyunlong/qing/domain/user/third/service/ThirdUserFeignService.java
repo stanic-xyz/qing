@@ -8,6 +8,10 @@ import cn.chenyunlong.qing.domain.user.third.request.ThirdUserCreateRequest;
 import cn.chenyunlong.qing.domain.user.third.request.ThirdUserQueryRequest;
 import cn.chenyunlong.qing.domain.user.third.request.ThirdUserUpdateRequest;
 import cn.chenyunlong.qing.domain.user.third.response.ThirdUserResponse;
+
+import java.lang.Long;
+import java.lang.String;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

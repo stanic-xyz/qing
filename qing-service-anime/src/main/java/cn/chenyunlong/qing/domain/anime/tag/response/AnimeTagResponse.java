@@ -4,22 +4,28 @@ package cn.chenyunlong.qing.domain.anime.tag.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.lang.Integer;
+import java.lang.String;
+
+import lombok.Data;
+
 @Schema
+@Data
 public class AnimeTagResponse extends AbstractJpaResponse {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;
 
     @Schema(
-            title = "OrderNo",
+            title = "orderNo",
             description = "orderNo"
     )
     private Integer orderNo;

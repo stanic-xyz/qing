@@ -3,21 +3,24 @@ package cn.chenyunlong.qing.domain.permission.updater;
 
 import cn.chenyunlong.qing.domain.permission.Permission;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class PermissionUpdater {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;
@@ -25,7 +28,7 @@ public class PermissionUpdater {
     private Long id;
 
     public void updatePermission(Permission param) {
-        Optional.ofNullable(getName()).ifPresent(v -> param.setName(v));
-        Optional.ofNullable(getDescription()).ifPresent(v -> param.setDescription(v));
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+        Optional.ofNullable(getDescription()).ifPresent(param::setDescription);
     }
 }

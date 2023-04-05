@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.domain.system.version.repository;
 
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.system.version.Version;
-
 import java.lang.Long;
 
 public interface VersionRepository extends BaseRepository<Version, Long> {

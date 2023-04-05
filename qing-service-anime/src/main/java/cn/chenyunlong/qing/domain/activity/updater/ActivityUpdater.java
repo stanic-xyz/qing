@@ -3,63 +3,67 @@ package cn.chenyunlong.qing.domain.activity.updater;
 
 import cn.chenyunlong.qing.domain.activity.Activity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class ActivityUpdater {
-    @Schema(
-            title = "ActivityId"
-    )
-    private String activityId;
+  @Schema(
+          title = "activityId"
+  )
+  private String activityId;
 
-    @Schema(
-            title = "Username",
-            description = "username"
-    )
-    private String username;
+  @Schema(
+          title = "username",
+          description = "username"
+  )
+  private String username;
 
-    @Schema(
-            title = "ActivityName",
-            description = "activityName"
-    )
-    private String activityName;
+  @Schema(
+          title = "activityName",
+          description = "activityName"
+  )
+  private String activityName;
 
-    @Schema(
-            title = "ActivityContent",
-            description = "activityContent"
-    )
-    private String activityContent;
+  @Schema(
+          title = "activityContent",
+          description = "activityContent"
+  )
+  private String activityContent;
 
-    @Schema(
-            title = "AttachmentAddress",
-            description = "attachmentAddress"
-    )
-    private String attachmentAddress;
+  @Schema(
+          title = "attachmentAddress",
+          description = "attachmentAddress"
+  )
+  private String attachmentAddress;
 
-    @Schema(
-            title = "AttachmentType",
-            description = "attachmentType"
-    )
-    private Integer attachmentType;
+  @Schema(
+          title = "attachmentType",
+          description = "attachmentType"
+  )
+  private Integer attachmentType;
 
-    @Schema(
-            title = "PublishState",
-            description = "publishState"
-    )
-    private Integer publishState;
+  @Schema(
+          title = "publishState",
+          description = "publishState"
+  )
+  private Integer publishState;
 
-    private Long id;
+  private Long id;
 
-    public void updateActivity(Activity param) {
-        Optional.ofNullable(getActivityId()).ifPresent(v -> param.setActivityId(v));
-        Optional.ofNullable(getUsername()).ifPresent(v -> param.setUsername(v));
-        Optional.ofNullable(getActivityName()).ifPresent(v -> param.setActivityName(v));
-        Optional.ofNullable(getActivityContent()).ifPresent(v -> param.setActivityContent(v));
-        Optional.ofNullable(getAttachmentAddress()).ifPresent(v -> param.setAttachmentAddress(v));
-        Optional.ofNullable(getAttachmentType()).ifPresent(v -> param.setAttachmentType(v));
-        Optional.ofNullable(getPublishState()).ifPresent(v -> param.setPublishState(v));
-    }
+  public void updateActivity(Activity param) {
+    Optional.ofNullable(getActivityId()).ifPresent(param::setActivityId);
+    Optional.ofNullable(getUsername()).ifPresent(param::setUsername);
+    Optional.ofNullable(getActivityName()).ifPresent(param::setActivityName);
+    Optional.ofNullable(getActivityContent()).ifPresent(param::setActivityContent);
+    Optional.ofNullable(getAttachmentAddress()).ifPresent(param::setAttachmentAddress);
+    Optional.ofNullable(getAttachmentType()).ifPresent(param::setAttachmentType);
+    Optional.ofNullable(getPublishState()).ifPresent(param::setPublishState);
+  }
 }

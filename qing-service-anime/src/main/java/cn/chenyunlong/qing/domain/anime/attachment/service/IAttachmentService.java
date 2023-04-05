@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.anime.attachment.creator.AttachmentCreator;
 import cn.chenyunlong.qing.domain.anime.attachment.query.AttachmentQuery;
 import cn.chenyunlong.qing.domain.anime.attachment.updater.AttachmentUpdater;
 import cn.chenyunlong.qing.domain.anime.attachment.vo.AttachmentVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IAttachmentService {

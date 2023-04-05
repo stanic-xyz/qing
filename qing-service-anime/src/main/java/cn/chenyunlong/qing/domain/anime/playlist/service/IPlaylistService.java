@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.anime.playlist.creator.PlaylistCreator;
 import cn.chenyunlong.qing.domain.anime.playlist.query.PlaylistQuery;
 import cn.chenyunlong.qing.domain.anime.playlist.updater.PlaylistUpdater;
 import cn.chenyunlong.qing.domain.anime.playlist.vo.PlaylistVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IPlaylistService {

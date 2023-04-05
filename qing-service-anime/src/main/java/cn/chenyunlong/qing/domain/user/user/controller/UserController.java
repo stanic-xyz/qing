@@ -15,12 +15,20 @@ import cn.chenyunlong.qing.domain.user.user.response.UserResponse;
 import cn.chenyunlong.qing.domain.user.user.service.IUserService;
 import cn.chenyunlong.qing.domain.user.user.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.user.user.vo.UserVO;
+
+import java.lang.Long;
+import java.lang.String;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
