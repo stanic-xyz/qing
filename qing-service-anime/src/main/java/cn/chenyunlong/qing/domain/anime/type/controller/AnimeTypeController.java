@@ -91,7 +91,7 @@ public class AnimeTypeController {
         return JsonResult.success(
                 PageResult.of(
                         page.getContent().stream()
-                                .map(vo -> AnimeTypeMapper.INSTANCE.vo2CustomResponse(vo))
+                                .map(AnimeTypeMapper.INSTANCE::vo2CustomResponse)
                                 .collect(Collectors.toList()),
                         page.getTotalElements(),
                         page.getSize(),

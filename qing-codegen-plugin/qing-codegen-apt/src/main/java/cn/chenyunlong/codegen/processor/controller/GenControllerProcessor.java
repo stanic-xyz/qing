@@ -318,14 +318,17 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                                             return $T.success(
                                                     $T.of(
                                                         page.getContent().stream()
-                                                            .map(vo -> $T.INSTANCE.vo2CustomResponse(vo))
+                                                            .map($T.INSTANCE::vo2CustomResponse)
                                                             .collect($T.toList()),
                                                         page.getTotalElements(),
                                                         page.getSize(),
                                                         page.getNumber())
-                                                );""", JsonResult.class, PageResult.class,
-                                    ClassName.get(nameContext.getMapperPackageName(),
-                                            nameContext.getMapperClassName()), Collectors.class)
+                                                );
+                                            """,
+                                    JsonResult.class,
+                                    PageResult.class,
+                                    ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()),
+                                    Collectors.class)
                     )
                     .addJavadoc("findByPage request")
                     .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),

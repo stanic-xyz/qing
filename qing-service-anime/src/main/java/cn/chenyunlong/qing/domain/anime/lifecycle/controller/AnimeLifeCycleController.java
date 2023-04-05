@@ -91,7 +91,7 @@ public class AnimeLifeCycleController {
         return JsonResult.success(
                 PageResult.of(
                         page.getContent().stream()
-                                .map(vo -> AnimeLifeCycleMapper.INSTANCE.vo2CustomResponse(vo))
+                                .map(AnimeLifeCycleMapper.INSTANCE::vo2CustomResponse)
                                 .collect(Collectors.toList()),
                         page.getTotalElements(),
                         page.getSize(),
