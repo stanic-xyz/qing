@@ -21,6 +21,7 @@ import cn.chenyunlong.common.model.Request;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -42,21 +43,23 @@ public class GenQueryRequestProcessor extends BaseCodeGenProcessor {
     public static String QUERY_REQUEST_SUFFIX = "QueryRequest";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
 
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
 
         Set<VariableElement> fields = findFields(typeElement,
                 element -> Objects.nonNull(element.getAnnotation(QueryItem.class)));
-        TypeSpec.Builder typeSpecBuilder;
-        typeSpecBuilder = TypeSpec.classBuilder(nameContext.getQueryRequestClassName())
+        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getQueryRequestClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
                 .addAnnotation(Schema.class);
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields);
+        if (useLombok) {
+            typeSpecBuilder.addAnnotation(Data.class);
+        }
+        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
         genJavaSourceFile(queryRequestPackageName,
-                typeElement.getAnnotation(GenQueryRequest.class).sourcePath(), typeSpecBuilder);
+                typeElement.getAnnotation(GenQueryRequest.class).sourcePath(), typeSpecBuilder, true);
     }
 
     @Override

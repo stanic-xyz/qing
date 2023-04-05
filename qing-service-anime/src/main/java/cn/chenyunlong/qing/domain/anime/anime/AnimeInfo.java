@@ -29,7 +29,7 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.AnimeInfoBizInfo;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeInfoRecommendBizInfo;
-import cn.chenyunlong.qing.domain.anime.anime.events.AnimeInfoEvents;
+import cn.chenyunlong.qing.domain.anime.anime.events.AnimeInfoInEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -89,7 +89,7 @@ public class AnimeInfo extends BaseEntity {
             throw new BusinessException(AnimeInfoErrorCode.ASSET_HAS_IN);
         }
         setValidStatus(ValidStatus.VALID);
-        registerEvent(new AnimeInfoEvents.AnimeInfoInEvent(this, bizInfo));
+        registerEvent(new AnimeInfoInEvent(this, bizInfo));
     }
 
     /**

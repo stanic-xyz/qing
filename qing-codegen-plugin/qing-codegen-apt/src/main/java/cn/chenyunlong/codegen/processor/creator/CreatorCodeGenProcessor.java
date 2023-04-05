@@ -20,6 +20,7 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
@@ -62,21 +63,23 @@ public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
      *
      * @param typeElement      类型元素
      * @param roundEnvironment 周围环境
+     * @param useLombok        使用lombok
      */
     @Override
-    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         // lombok - mapstruct 集成
-        String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        Builder classBuilder = TypeSpec.classBuilder(className)
+        Builder classBuilder = TypeSpec.classBuilder(sourceClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
+        if (useLombok) {
+            classBuilder.addAnnotation(Data.class);
+        }
         addSetterAndGetterMethod(classBuilder,
                 findFields(typeElement, variableElement
-                        -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)));
+                        -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)), useLombok);
         String packageName = getNameContext(typeElement).getCreatorPackageName();
-        genJavaFile(packageName, classBuilder);
-        genJavaFile(packageName, getSourceType(sourceClassName, packageName, className));
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenCreator.class).sourcePath(), classBuilder, true);
     }
 
     /**

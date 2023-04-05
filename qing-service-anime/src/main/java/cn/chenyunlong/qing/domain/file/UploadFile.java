@@ -42,7 +42,7 @@ import javax.persistence.Table;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenController
+@GenController(description = "创建服务")
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest

@@ -26,8 +26,8 @@
     <artifactId>qing-codegen-test</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -73,7 +73,7 @@
                 <executions>
                     <execution>
                         <id>compile</id>
-                        <phase>compile</phase>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>
                                 compile
@@ -127,7 +127,10 @@
                         <configuration>
                             <target>
                                 <echo message="remove test files from codegen"/>
-                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/defaultdomain"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/creater/gen"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/mapper/gen"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/updater/gen"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/vo/gen"/>
                             </target>
                         </configuration>
                         <goals>

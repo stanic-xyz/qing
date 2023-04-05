@@ -49,6 +49,7 @@
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-codegen-apt</artifactId>
             <version>1.0.0.RELEASE</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
