@@ -11,13 +11,20 @@
  *
  */
 
-package cn.chenyunlong.codegen.processor.controller;
+package cn.chenyunlong.codegen.util;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 
-public class GenControllerProcessorTest extends TestCase {
+public class StringUtilsTest extends TestCase {
 
-    public void testUpdateMethod() {
-        System.out.println("true = " + true);
+    public void testCamel() {
+        Assert.assertEquals("username", StringUtils.lowerCamel("username"));
+        Assert.assertEquals("fileName", StringUtils.lowerCamel("fileName"));
+    }
+
+    public void testUpperCamel() {
+        Assert.assertEquals("Username", StringUtils.bigCamel("username"));
+        Assert.assertEquals("FileName", StringUtils.bigCamel("fileName"));
     }
 }

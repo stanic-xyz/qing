@@ -58,8 +58,8 @@ public class GenUpdateRequestProcessor extends BaseCodeGenProcessor {
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
         addIdField(typeSpecBuilder, useLombok);
         String packageName = nameContext.getQueryRequestPackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenUpdateRequest.class).sourcePath(),
-                typeSpecBuilder, true);
+        GenUpdateRequest annotation = typeElement.getAnnotation(GenUpdateRequest.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override

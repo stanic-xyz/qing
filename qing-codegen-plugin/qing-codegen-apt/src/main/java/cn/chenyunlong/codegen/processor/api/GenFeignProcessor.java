@@ -53,12 +53,12 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
         DefaultNameContext nameContext = getNameContext(typeElement);
         String classFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
                 typeElement.getSimpleName().toString());
-        GenFeign feign = typeElement.getAnnotation(GenFeign.class);
+        GenFeign annotation = typeElement.getAnnotation(GenFeign.class);
         Builder builder = TypeSpec.interfaceBuilder(nameContext.getFeignClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(AnnotationSpec
                         .builder(FeignClient.class)
-                        .addMember("value", "$S", feign.serverName())
+                        .addMember("value", "$S", annotation.serverName())
                         .addMember("contextId", "$S", classFieldName + "Client")
                         .addMember("path", "$S", classFieldName + "/v1")
                         .build());
@@ -75,7 +75,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
         Optional<MethodSpec> findByPage = findByPage(nameContext);
         findByPage.ifPresent(builder::addMethod);
         String feignPackageName = nameContext.getFeignPackageName();
-        genJavaSourceFile(feignPackageName, typeElement.getAnnotation(GenFeign.class).sourcePath(), builder, true);
+        genJavaSourceFile(feignPackageName, annotation.sourcePath(), builder, annotation.overrideSource());
     }
 
     @Override

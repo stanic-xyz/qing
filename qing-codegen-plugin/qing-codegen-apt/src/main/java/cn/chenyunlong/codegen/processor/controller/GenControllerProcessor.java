@@ -51,7 +51,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
 
-        String serviceFieldName = StringUtils.camel(typeElement.getSimpleName().toString()) + "Service";
+        String serviceFieldName = StringUtils.lowerCamel(typeElement.getSimpleName().toString()) + "Service";
         String serviceClassName = nameContext.getServiceClassName();
         String servicePackageName = nameContext.getServicePackageName();
         String controllerClassName = nameContext.getControllerClassName();
@@ -67,7 +67,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                 .addAnnotation(AnnotationSpec
                         .builder(RequestMapping.class)
                         .addMember("value", "$S",
-                                StringUtils.camel(typeElement.getSimpleName().toString()) + "/v1")
+                                StringUtils.lowerCamel(typeElement.getSimpleName().toString()) + "/v1")
                         .build())
                 .addAnnotation(RequiredArgsConstructor.class)
                 .addModifiers(Modifier.PUBLIC)
@@ -83,8 +83,8 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
         inValidMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
         findById(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
         findByPage(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(controllerPackageName, typeElement.getAnnotation(GenController.class).sourcePath(),
-                typeSpecBuilder, true);
+        GenController annotation = typeElement.getAnnotation(GenController.class);
+        genJavaSourceFile(controllerPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override

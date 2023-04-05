@@ -93,6 +93,7 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
         builder.addMethod(constructorSpecBuilder.build());
 
         String packageName = nameContext.getVoPackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenVo.class).sourcePath(), builder, true);
+        GenVo annotation = typeElement.getAnnotation(GenVo.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), builder, annotation.overrideSource());
     }
 }
