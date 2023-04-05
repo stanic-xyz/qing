@@ -66,8 +66,10 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                 .addAnnotation(Slf4j.class)
                 .addAnnotation(AnnotationSpec
                         .builder(RequestMapping.class)
-                        .addMember("value", "$S",
-                                StringUtils.lowerCamel(typeElement.getSimpleName().toString()) + "/v1")
+                        .addMember(
+                                "value",
+                                "$S",
+                                "api/v1/" + StringUtils.lowerUnderscore(typeElement.getSimpleName().toString()))
                         .build())
                 .addAnnotation(RequiredArgsConstructor.class)
                 .addModifiers(Modifier.PUBLIC)

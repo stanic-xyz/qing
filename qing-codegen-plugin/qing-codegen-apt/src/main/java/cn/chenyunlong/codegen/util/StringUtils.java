@@ -32,6 +32,16 @@ public final class StringUtils {
         return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, source);
     }
 
+    /**
+     * 转换成代下划线的
+     *
+     * @param source 源字符串
+     * @return 带横线的字符串
+     */
+    public static String lowerUnderscore(String source) {
+        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, source).replace("_", "-");
+    }
+
     public static String bigCamel(String source) {
         return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, source);
     }
