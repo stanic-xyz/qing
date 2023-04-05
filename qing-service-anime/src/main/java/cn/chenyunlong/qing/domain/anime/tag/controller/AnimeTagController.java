@@ -91,7 +91,7 @@ public class AnimeTagController {
         return JsonResult.success(
                 PageResult.of(
                         page.getContent().stream()
-                                .map(vo -> AnimeTagMapper.INSTANCE.vo2CustomResponse(vo))
+                                .map(AnimeTagMapper.INSTANCE::vo2CustomResponse)
                                 .collect(Collectors.toList()),
                         page.getTotalElements(),
                         page.getSize(),

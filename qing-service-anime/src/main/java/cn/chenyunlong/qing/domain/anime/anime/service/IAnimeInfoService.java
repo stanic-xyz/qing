@@ -9,33 +9,33 @@ import cn.chenyunlong.qing.domain.anime.anime.vo.AnimeInfoVO;
 import org.springframework.data.domain.Page;
 
 public interface IAnimeInfoService {
-    /**
-     * create
-     */
-    Long createAnimeInfo(AnimeInfoCreator creator);
+  /**
+   * create
+   */
+  Long createAnimeInfo(AnimeInfoCreator creator);
 
-    /**
-     * update
-     */
-    void updateAnimeInfo(AnimeInfoUpdater updater);
+  /**
+   * update
+   */
+  void updateAnimeInfo(AnimeInfoUpdater updater);
 
-    /**
-     * valid
-     */
-    void validAnimeInfo(Long id);
+  /**
+   * valid
+   */
+  void validAnimeInfo(Long id);
 
-    /**
-     * invalid
-     */
-    void invalidAnimeInfo(Long id);
+  /**
+   * invalid
+   */
+  void invalidAnimeInfo(Long id);
 
-    /**
-     * findById
-     */
-    AnimeInfoVO findById(Long id);
+  /**
+   * findById
+   */
+  AnimeInfoVO findById(Long id);
 
-    /**
-     * findByPage
-     */
-    Page<AnimeInfoVO> findByPage(PageRequestWrapper<AnimeInfoQuery> query);
+  /**
+   * findByPage
+   */
+  Page<AnimeInfoVO> findByPage(PageRequestWrapper<AnimeInfoQuery> query);
 }

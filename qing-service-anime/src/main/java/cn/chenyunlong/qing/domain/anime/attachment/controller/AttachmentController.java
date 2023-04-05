@@ -91,7 +91,7 @@ public class AttachmentController {
         return JsonResult.success(
                 PageResult.of(
                         page.getContent().stream()
-                                .map(vo -> AttachmentMapper.INSTANCE.vo2CustomResponse(vo))
+                                .map(AttachmentMapper.INSTANCE::vo2CustomResponse)
                                 .collect(Collectors.toList()),
                         page.getTotalElements(),
                         page.getSize(),

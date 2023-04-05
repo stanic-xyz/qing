@@ -181,15 +181,10 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
             return Optional.of(MethodSpec
                     .methodBuilder("vo2CustomResponse")
                     .returns(ClassName.get(responsePackageName, responseClassName))
-                    .addParameter(ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), "vo")
-                    .addCode(
-                            CodeBlock.of("$T response = vo2Response(vo);\n",
-                                    ClassName.get(responsePackageName, responseClassName))
-                    )
-                    .addCode(
-                            CodeBlock.of("return response;")
-                    )
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                    .addParameter(ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), "vo")
+                    .addCode(CodeBlock.of("return vo2Response(vo);"))
+
                     .build());
         }
         return Optional.empty();

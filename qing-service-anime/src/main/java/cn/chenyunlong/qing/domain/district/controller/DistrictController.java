@@ -91,7 +91,7 @@ public class DistrictController {
         return JsonResult.success(
                 PageResult.of(
                         page.getContent().stream()
-                                .map(vo -> DistrictMapper.INSTANCE.vo2CustomResponse(vo))
+                                .map(DistrictMapper.INSTANCE::vo2CustomResponse)
                                 .collect(Collectors.toList()),
                         page.getTotalElements(),
                         page.getSize(),
