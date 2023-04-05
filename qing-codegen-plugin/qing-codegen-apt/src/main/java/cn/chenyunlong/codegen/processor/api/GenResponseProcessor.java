@@ -22,6 +22,7 @@ import cn.chenyunlong.common.model.AbstractJpaResponse;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -51,6 +52,9 @@ public class GenResponseProcessor extends BaseCodeGenProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(AbstractJpaResponse.class)
                 .addAnnotation(Schema.class);
+        if (useLombok) {
+            typeSpecBuilder.addAnnotation(Data.class);
+        }
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
         String packageName = nameContext.getResponsePackageName();
         GenResponse annotation = typeElement.getAnnotation(GenResponse.class);

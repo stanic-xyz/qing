@@ -4,6 +4,10 @@ package cn.chenyunlong.qing.domain.anime.playlist.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.anime.playlist.Playlist;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,19 +23,19 @@ import lombok.NoArgsConstructor;
 )
 public class PlaylistVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "AnimeId",
+            title = "animeId",
             description = "animeId"
     )
     private Long animeId;
 
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;

@@ -4,76 +4,79 @@ package cn.chenyunlong.qing.domain.user.user.updater;
 import cn.chenyunlong.qing.domain.user.user.User;
 import cn.chenyunlong.qing.infrastructure.enums.MFAType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class UserUpdater {
     @Schema(
-            title = "Uid",
+            title = "uid",
             description = "uid"
     )
     private Long uid;
 
     @Schema(
-            title = "Username",
+            title = "username",
             description = "username"
     )
     private String username;
 
     @Schema(
-            title = "Nickname",
+            title = "nickname",
             description = "nickname"
     )
     private String nickname;
 
     @Schema(
-            title = "Password",
+            title = "password",
             description = "password"
     )
     private String password;
 
     @Schema(
-            title = "Phone",
+            title = "phone",
             description = "phone"
     )
     private String phone;
 
     @Schema(
-            title = "Email",
+            title = "email",
             description = "email"
     )
     private String email;
 
     @Schema(
-            title = "Avatar",
+            title = "avatar",
             description = "avatar"
     )
     private String avatar;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;
 
     @Schema(
-            title = "ExpireTime",
+            title = "expireTime",
             description = "expireTime"
     )
     private LocalDateTime expireTime;
 
     @Schema(
-            title = "MfaType",
+            title = "mfaType",
             description = "mfaType"
     )
     private MFAType mfaType;
 
     @Schema(
-            title = "MfaKey",
+            title = "mfaKey",
             description = "mfaKey"
     )
     private String mfaKey;
@@ -81,16 +84,16 @@ public class UserUpdater {
     private Long id;
 
     public void updateUser(User param) {
-        Optional.ofNullable(getUid()).ifPresent(v -> param.setUid(v));
-        Optional.ofNullable(getUsername()).ifPresent(v -> param.setUsername(v));
-        Optional.ofNullable(getNickname()).ifPresent(v -> param.setNickname(v));
-        Optional.ofNullable(getPassword()).ifPresent(v -> param.setPassword(v));
-        Optional.ofNullable(getPhone()).ifPresent(v -> param.setPhone(v));
-        Optional.ofNullable(getEmail()).ifPresent(v -> param.setEmail(v));
-        Optional.ofNullable(getAvatar()).ifPresent(v -> param.setAvatar(v));
-        Optional.ofNullable(getDescription()).ifPresent(v -> param.setDescription(v));
-        Optional.ofNullable(getExpireTime()).ifPresent(v -> param.setExpireTime(v));
-        Optional.ofNullable(getMfaType()).ifPresent(v -> param.setMfaType(v));
-        Optional.ofNullable(getMfaKey()).ifPresent(v -> param.setMfaKey(v));
+        Optional.ofNullable(getUid()).ifPresent(param::setUid);
+        Optional.ofNullable(getUsername()).ifPresent(param::setUsername);
+        Optional.ofNullable(getNickname()).ifPresent(param::setNickname);
+        Optional.ofNullable(getPassword()).ifPresent(param::setPassword);
+        Optional.ofNullable(getPhone()).ifPresent(param::setPhone);
+        Optional.ofNullable(getEmail()).ifPresent(param::setEmail);
+        Optional.ofNullable(getAvatar()).ifPresent(param::setAvatar);
+        Optional.ofNullable(getDescription()).ifPresent(param::setDescription);
+        Optional.ofNullable(getExpireTime()).ifPresent(param::setExpireTime);
+        Optional.ofNullable(getMfaType()).ifPresent(param::setMfaType);
+        Optional.ofNullable(getMfaKey()).ifPresent(param::setMfaKey);
     }
 }

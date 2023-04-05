@@ -2,49 +2,53 @@
 package cn.chenyunlong.qing.domain.system.job.log.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class SysJobLogCreator {
     @Schema(
-            title = "JobLogId",
+            title = "jobLogId",
             description = "jobLogId"
     )
     private Long jobLogId;
 
     @Schema(
-            title = "JobName",
+            title = "jobName",
             description = "jobName"
     )
     private String jobName;
 
     @Schema(
-            title = "JobGroup",
+            title = "jobGroup",
             description = "jobGroup"
     )
     private String jobGroup;
 
     @Schema(
-            title = "InvokeTarget",
+            title = "invokeTarget",
             description = "invokeTarget"
     )
     private String invokeTarget;
 
     @Schema(
-            title = "JobMessage",
+            title = "jobMessage",
             description = "jobMessage"
     )
     private String jobMessage;
 
     @Schema(
-            title = "Status",
+            title = "status",
             description = "status"
     )
     private String status;
 
     @Schema(
-            title = "ExceptionInfo",
+            title = "exceptionInfo",
             description = "exceptionInfo"
     )
     private String exceptionInfo;

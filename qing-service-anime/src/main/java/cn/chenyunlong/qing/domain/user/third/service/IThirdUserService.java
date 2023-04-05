@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.user.third.creator.ThirdUserCreator;
 import cn.chenyunlong.qing.domain.user.third.query.ThirdUserQuery;
 import cn.chenyunlong.qing.domain.user.third.updater.ThirdUserUpdater;
 import cn.chenyunlong.qing.domain.user.third.vo.ThirdUserVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IThirdUserService {

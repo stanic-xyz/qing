@@ -3,27 +3,31 @@ package cn.chenyunlong.qing.domain.anime.attachment.updater;
 
 import cn.chenyunlong.qing.domain.anime.attachment.Attachment;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class AttachmentUpdater {
     @Schema(
-            title = "AttachmentId",
+            title = "attachmentId",
             description = "attachmentId"
     )
     private Integer attachmentId;
 
     @Schema(
-            title = "AttachmentName",
+            title = "attachmentName",
             description = "attachmentName"
     )
     private String attachmentName;
 
     @Schema(
-            title = "AttachmentUrl",
+            title = "attachmentUrl",
             description = "attachmentUrl"
     )
     private String attachmentUrl;
@@ -31,8 +35,8 @@ public class AttachmentUpdater {
     private Long id;
 
     public void updateAttachment(Attachment param) {
-        Optional.ofNullable(getAttachmentId()).ifPresent(v -> param.setAttachmentId(v));
-        Optional.ofNullable(getAttachmentName()).ifPresent(v -> param.setAttachmentName(v));
-        Optional.ofNullable(getAttachmentUrl()).ifPresent(v -> param.setAttachmentUrl(v));
+        Optional.ofNullable(getAttachmentId()).ifPresent(param::setAttachmentId);
+        Optional.ofNullable(getAttachmentName()).ifPresent(param::setAttachmentName);
+        Optional.ofNullable(getAttachmentUrl()).ifPresent(param::setAttachmentUrl);
     }
 }

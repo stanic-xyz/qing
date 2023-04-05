@@ -4,24 +4,29 @@ package cn.chenyunlong.qing.domain.anime.recommend.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.lang.Long;
+import java.lang.String;
 import java.time.LocalDateTime;
 
+import lombok.Data;
+
 @Schema
+@Data
 public class RecommendResponse extends AbstractJpaResponse {
     @Schema(
-            title = "Aid",
+            title = "aid",
             description = "aid"
     )
     private Long aid;
 
     @Schema(
-            title = "Reason",
+            title = "reason",
             description = "reason"
     )
     private String reason;
 
     @Schema(
-            title = "Date",
+            title = "date",
             description = "date"
     )
     private LocalDateTime date;

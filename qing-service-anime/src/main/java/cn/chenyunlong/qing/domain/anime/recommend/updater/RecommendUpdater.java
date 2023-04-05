@@ -3,28 +3,31 @@ package cn.chenyunlong.qing.domain.anime.recommend.updater;
 
 import cn.chenyunlong.qing.domain.anime.recommend.Recommend;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class RecommendUpdater {
     @Schema(
-            title = "Aid",
+            title = "aid",
             description = "aid"
     )
     private Long aid;
 
     @Schema(
-            title = "Reason",
+            title = "reason",
             description = "reason"
     )
     private String reason;
 
     @Schema(
-            title = "Date",
+            title = "date",
             description = "date"
     )
     private LocalDateTime date;
@@ -32,8 +35,8 @@ public class RecommendUpdater {
     private Long id;
 
     public void updateRecommend(Recommend param) {
-        Optional.ofNullable(getAid()).ifPresent(v -> param.setAid(v));
-        Optional.ofNullable(getReason()).ifPresent(v -> param.setReason(v));
-        Optional.ofNullable(getDate()).ifPresent(v -> param.setDate(v));
+        Optional.ofNullable(getAid()).ifPresent(param::setAid);
+        Optional.ofNullable(getReason()).ifPresent(param::setReason);
+        Optional.ofNullable(getDate()).ifPresent(param::setDate);
     }
 }

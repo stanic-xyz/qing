@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.system.job.log.creator.SysJobLogCreator;
 import cn.chenyunlong.qing.domain.system.job.log.query.SysJobLogQuery;
 import cn.chenyunlong.qing.domain.system.job.log.updater.SysJobLogUpdater;
 import cn.chenyunlong.qing.domain.system.job.log.vo.SysJobLogVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface ISysJobLogService {

@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.activity.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.activity.Activity;
 
+import java.lang.Long;
+
 public interface ActivityRepository extends BaseRepository<Activity, Long> {
 }

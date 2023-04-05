@@ -3,27 +3,30 @@ package cn.chenyunlong.qing.domain.anime.playlist.updater;
 
 import cn.chenyunlong.qing.domain.anime.playlist.Playlist;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class PlaylistUpdater {
     @Schema(
-            title = "AnimeId",
+            title = "animeId",
             description = "animeId"
     )
     private Long animeId;
 
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;
@@ -31,8 +34,8 @@ public class PlaylistUpdater {
     private Long id;
 
     public void updatePlaylist(Playlist param) {
-        Optional.ofNullable(getAnimeId()).ifPresent(v -> param.setAnimeId(v));
-        Optional.ofNullable(getName()).ifPresent(v -> param.setName(v));
-        Optional.ofNullable(getDescription()).ifPresent(v -> param.setDescription(v));
+        Optional.ofNullable(getAnimeId()).ifPresent(param::setAnimeId);
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+        Optional.ofNullable(getDescription()).ifPresent(param::setDescription);
     }
 }

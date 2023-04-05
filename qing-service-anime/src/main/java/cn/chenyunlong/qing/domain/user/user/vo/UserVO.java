@@ -5,12 +5,15 @@ import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.user.user.User;
 import cn.chenyunlong.qing.infrastructure.enums.MFAType;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+import java.time.LocalDateTime;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Schema
 @Data
@@ -22,67 +25,67 @@ import java.time.LocalDateTime;
 )
 public class UserVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "Uid",
+            title = "uid",
             description = "uid"
     )
     private Long uid;
 
     @Schema(
-            title = "Username",
+            title = "username",
             description = "username"
     )
     private String username;
 
     @Schema(
-            title = "Nickname",
+            title = "nickname",
             description = "nickname"
     )
     private String nickname;
 
     @Schema(
-            title = "Password",
+            title = "password",
             description = "password"
     )
     private String password;
 
     @Schema(
-            title = "Phone",
+            title = "phone",
             description = "phone"
     )
     private String phone;
 
     @Schema(
-            title = "Email",
+            title = "email",
             description = "email"
     )
     private String email;
 
     @Schema(
-            title = "Avatar",
+            title = "avatar",
             description = "avatar"
     )
     private String avatar;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;
 
     @Schema(
-            title = "ExpireTime",
+            title = "expireTime",
             description = "expireTime"
     )
     private LocalDateTime expireTime;
 
     @Schema(
-            title = "MfaType",
+            title = "mfaType",
             description = "mfaType"
     )
     private MFAType mfaType;
 
     @Schema(
-            title = "MfaKey",
+            title = "mfaKey",
             description = "mfaKey"
     )
     private String mfaKey;

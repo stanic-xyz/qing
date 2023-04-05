@@ -3,27 +3,31 @@ package cn.chenyunlong.qing.domain.anime.type.updater;
 
 import cn.chenyunlong.qing.domain.anime.type.AnimeType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class AnimeTypeUpdater {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;
 
     @Schema(
-            title = "OrderNo",
+            title = "orderNo",
             description = "orderNo"
     )
     private Integer orderNo;
@@ -31,8 +35,8 @@ public class AnimeTypeUpdater {
     private Long id;
 
     public void updateAnimeType(AnimeType param) {
-        Optional.ofNullable(getName()).ifPresent(v -> param.setName(v));
-        Optional.ofNullable(getDescription()).ifPresent(v -> param.setDescription(v));
-        Optional.ofNullable(getOrderNo()).ifPresent(v -> param.setOrderNo(v));
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+        Optional.ofNullable(getDescription()).ifPresent(param::setDescription);
+        Optional.ofNullable(getOrderNo()).ifPresent(param::setOrderNo);
     }
 }

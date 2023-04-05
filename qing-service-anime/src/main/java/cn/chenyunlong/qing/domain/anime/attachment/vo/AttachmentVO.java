@@ -4,6 +4,10 @@ package cn.chenyunlong.qing.domain.anime.attachment.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.anime.attachment.Attachment;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.String;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,19 +23,19 @@ import lombok.NoArgsConstructor;
 )
 public class AttachmentVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "AttachmentId",
+            title = "attachmentId",
             description = "attachmentId"
     )
     private Integer attachmentId;
 
     @Schema(
-            title = "AttachmentName",
+            title = "attachmentName",
             description = "attachmentName"
     )
     private String attachmentName;
 
     @Schema(
-            title = "AttachmentUrl",
+            title = "attachmentUrl",
             description = "attachmentUrl"
     )
     private String attachmentUrl;

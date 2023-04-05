@@ -3,64 +3,67 @@ package cn.chenyunlong.qing.domain.system.job.log.updater;
 
 import cn.chenyunlong.qing.domain.system.job.log.SysJobLog;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.util.Date;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class SysJobLogUpdater {
     @Schema(
-            title = "JobLogId",
+            title = "jobLogId",
             description = "jobLogId"
     )
     private Long jobLogId;
 
     @Schema(
-            title = "JobName",
+            title = "jobName",
             description = "jobName"
     )
     private String jobName;
 
     @Schema(
-            title = "JobGroup",
+            title = "jobGroup",
             description = "jobGroup"
     )
     private String jobGroup;
 
     @Schema(
-            title = "InvokeTarget",
+            title = "invokeTarget",
             description = "invokeTarget"
     )
     private String invokeTarget;
 
     @Schema(
-            title = "JobMessage",
+            title = "jobMessage",
             description = "jobMessage"
     )
     private String jobMessage;
 
     @Schema(
-            title = "Status",
+            title = "status",
             description = "status"
     )
     private String status;
 
     @Schema(
-            title = "ExceptionInfo",
+            title = "exceptionInfo",
             description = "exceptionInfo"
     )
     private String exceptionInfo;
 
     @Schema(
-            title = "StartTime",
+            title = "startTime",
             description = "startTime"
     )
     private Date startTime;
 
     @Schema(
-            title = "EndTime",
+            title = "endTime",
             description = "endTime"
     )
     private Date endTime;
@@ -68,14 +71,14 @@ public class SysJobLogUpdater {
     private Long id;
 
     public void updateSysJobLog(SysJobLog param) {
-        Optional.ofNullable(getJobLogId()).ifPresent(v -> param.setJobLogId(v));
-        Optional.ofNullable(getJobName()).ifPresent(v -> param.setJobName(v));
-        Optional.ofNullable(getJobGroup()).ifPresent(v -> param.setJobGroup(v));
-        Optional.ofNullable(getInvokeTarget()).ifPresent(v -> param.setInvokeTarget(v));
-        Optional.ofNullable(getJobMessage()).ifPresent(v -> param.setJobMessage(v));
-        Optional.ofNullable(getStatus()).ifPresent(v -> param.setStatus(v));
-        Optional.ofNullable(getExceptionInfo()).ifPresent(v -> param.setExceptionInfo(v));
-        Optional.ofNullable(getStartTime()).ifPresent(v -> param.setStartTime(v));
-        Optional.ofNullable(getEndTime()).ifPresent(v -> param.setEndTime(v));
+        Optional.ofNullable(getJobLogId()).ifPresent(param::setJobLogId);
+        Optional.ofNullable(getJobName()).ifPresent(param::setJobName);
+        Optional.ofNullable(getJobGroup()).ifPresent(param::setJobGroup);
+        Optional.ofNullable(getInvokeTarget()).ifPresent(param::setInvokeTarget);
+        Optional.ofNullable(getJobMessage()).ifPresent(param::setJobMessage);
+        Optional.ofNullable(getStatus()).ifPresent(param::setStatus);
+        Optional.ofNullable(getExceptionInfo()).ifPresent(param::setExceptionInfo);
+        Optional.ofNullable(getStartTime()).ifPresent(param::setStartTime);
+        Optional.ofNullable(getEndTime()).ifPresent(param::setEndTime);
     }
 }

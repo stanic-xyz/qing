@@ -2,23 +2,26 @@
 package cn.chenyunlong.qing.domain.system.version.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class VersionCreator {
     @Schema(
-            title = "Code"
+            title = "code"
     )
     private String code;
 
     @Schema(
-            title = "Name"
+            title = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description"
+            title = "description"
     )
     private String description;
 }

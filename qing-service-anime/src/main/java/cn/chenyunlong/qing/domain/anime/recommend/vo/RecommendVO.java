@@ -4,12 +4,15 @@ package cn.chenyunlong.qing.domain.anime.recommend.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.anime.recommend.Recommend;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+import java.time.LocalDateTime;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Schema
 @Data
@@ -21,19 +24,19 @@ import java.time.LocalDateTime;
 )
 public class RecommendVO extends AbstractBaseJpaVO {
     @Schema(
-            title = "Aid",
+            title = "aid",
             description = "aid"
     )
     private Long aid;
 
     @Schema(
-            title = "Reason",
+            title = "reason",
             description = "reason"
     )
     private String reason;
 
     @Schema(
-            title = "Date",
+            title = "date",
             description = "date"
     )
     private LocalDateTime date;

@@ -14,9 +14,10 @@
 package cn.chenyunlong.codegen.annotation;
 
 /**
- * @Author: Gim
- * @Date: 2019/11/25 14:14
- * @Description:
+ * 生成Mapper注解
+ *
+ * @author StanChen
+ * @date 2022/10/24
  */
 @GenBase
 public @interface GenMapper {
@@ -25,5 +26,5 @@ public @interface GenMapper {
 
     String sourcePath() default "src/main/java";
 
-    boolean overrideSource() default true;
+    boolean overrideSource() default false;
 }

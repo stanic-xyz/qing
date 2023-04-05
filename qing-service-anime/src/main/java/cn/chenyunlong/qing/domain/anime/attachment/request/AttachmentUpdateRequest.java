@@ -3,25 +3,30 @@ package cn.chenyunlong.qing.domain.anime.attachment.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class AttachmentUpdateRequest implements Request {
     @Schema(
-            title = "AttachmentId",
+            title = "attachmentId",
             description = "attachmentId"
     )
     private Integer attachmentId;
 
     @Schema(
-            title = "AttachmentName",
+            title = "attachmentName",
             description = "attachmentName"
     )
     private String attachmentName;
 
     @Schema(
-            title = "AttachmentUrl",
+            title = "attachmentUrl",
             description = "attachmentUrl"
     )
     private String attachmentUrl;

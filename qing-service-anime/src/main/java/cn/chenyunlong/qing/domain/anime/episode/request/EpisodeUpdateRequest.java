@@ -3,55 +3,60 @@ package cn.chenyunlong.qing.domain.anime.episode.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class EpisodeUpdateRequest implements Request {
     @Schema(
-            title = "AnimeId",
+            title = "animeId",
             description = "animeId"
     )
     private Long animeId;
 
     @Schema(
-            title = "ListId",
+            title = "listId",
             description = "listId"
     )
     private Long listId;
 
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Status",
+            title = "status",
             description = "status"
     )
     private Integer status;
 
     @Schema(
-            title = "UploaderName",
+            title = "uploaderName",
             description = "uploaderName"
     )
     private String uploaderName;
 
     @Schema(
-            title = "UploaderId",
+            title = "uploaderId",
             description = "uploaderId"
     )
     private Long uploaderId;
 
     @Schema(
-            title = "Url",
+            title = "url",
             description = "url"
     )
     private String url;
 
     @Schema(
-            title = "OrderNo",
+            title = "orderNo",
             description = "orderNo"
     )
     private Integer orderNo;

@@ -3,27 +3,30 @@ package cn.chenyunlong.qing.domain.anime.recommend.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.time.LocalDateTime;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class RecommendUpdateRequest implements Request {
     @Schema(
-            title = "Aid",
+            title = "aid",
             description = "aid"
     )
     private Long aid;
 
     @Schema(
-            title = "Reason",
+            title = "reason",
             description = "reason"
     )
     private String reason;
 
     @Schema(
-            title = "Date",
+            title = "date",
             description = "date"
     )
     private LocalDateTime date;
