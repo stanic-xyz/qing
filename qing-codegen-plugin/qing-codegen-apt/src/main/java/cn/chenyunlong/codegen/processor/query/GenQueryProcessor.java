@@ -30,9 +30,10 @@ import java.lang.annotation.Annotation;
 import java.util.Objects;
 
 /**
- * @Author: Gim
- * @Date: 2019-10-08 17:14
- * @Description:
+ * 生成Query方法
+ *
+ * @author cyl
+ * @date 2019-10-08 17:14
  */
 @AutoService(value = CodeGenProcessor.class)
 public class GenQueryProcessor extends BaseCodeGenProcessor {
@@ -40,11 +41,12 @@ public class GenQueryProcessor extends BaseCodeGenProcessor {
     public static String QUERY_SUFFIX = "Query";
 
     /**
+     * 生成类
      * 生成Class
      *
      * @param typeElement      顶层元素
      * @param roundEnvironment 周围环境
-     * @param useLombok
+     * @param useLombok        是否使用lombok
      */
     @Override
     protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
