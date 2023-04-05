@@ -42,7 +42,7 @@ public class GenResponseProcessor extends BaseCodeGenProcessor {
     public static String RESPONSE_SUFFIX = "Response";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
@@ -50,9 +50,10 @@ public class GenResponseProcessor extends BaseCodeGenProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(AbstractJpaResponse.class)
                 .addAnnotation(Schema.class);
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields);
+        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
         String packageName = nameContext.getResponsePackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenResponse.class).sourcePath(), typeSpecBuilder);
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenResponse.class).sourcePath(), typeSpecBuilder,
+                true);
     }
 
     @Override

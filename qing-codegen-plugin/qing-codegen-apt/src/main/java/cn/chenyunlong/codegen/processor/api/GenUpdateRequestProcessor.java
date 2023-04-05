@@ -19,10 +19,9 @@ import cn.chenyunlong.codegen.processor.updater.IgnoreUpdater;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.Request;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -44,7 +43,7 @@ public class GenUpdateRequestProcessor extends BaseCodeGenProcessor {
     public static String UPDATE_REQUEST_SUFFIX = "UpdateRequest";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
@@ -52,13 +51,14 @@ public class GenUpdateRequestProcessor extends BaseCodeGenProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
                 .addAnnotation(Schema.class);
-
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields);
-        typeSpecBuilder.addField(
-                FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
-        addIdSetterAndGetter(typeSpecBuilder);
+        if (useLombok) {
+            typeSpecBuilder.addAnnotation(Data.class);
+        }
+        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
+        addIdField(typeSpecBuilder, useLombok);
         String packageName = nameContext.getQueryRequestPackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenUpdateRequest.class).sourcePath(), typeSpecBuilder);
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenUpdateRequest.class).sourcePath(),
+                typeSpecBuilder, true);
     }
 
     @Override

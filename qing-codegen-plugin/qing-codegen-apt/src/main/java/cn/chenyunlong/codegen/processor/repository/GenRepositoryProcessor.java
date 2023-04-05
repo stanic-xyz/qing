@@ -40,7 +40,7 @@ public class GenRepositoryProcessor extends BaseCodeGenProcessor {
     public static final String REPOSITORY_SUFFIX = "Repository";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         String className = typeElement.getSimpleName() + REPOSITORY_SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class),
@@ -49,7 +49,8 @@ public class GenRepositoryProcessor extends BaseCodeGenProcessor {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
         String packageName = nameContext.getRepositoryPackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenRepository.class).sourcePath(), typeSpecBuilder);
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenRepository.class).sourcePath(), typeSpecBuilder,
+                true);
     }
 
     @Override

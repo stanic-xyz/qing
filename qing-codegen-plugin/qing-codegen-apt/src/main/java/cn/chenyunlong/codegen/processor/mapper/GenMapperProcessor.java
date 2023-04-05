@@ -43,7 +43,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
     public static final String SUFFIX = "Mapper";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
 
@@ -75,7 +75,8 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         vo2ResponseMethod.ifPresent(typeSpecBuilder::addMethod);
         Optional<MethodSpec> vo2CustomResponseMethod = vo2CustomResponseMethod(nameContext);
         vo2CustomResponseMethod.ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(mapperPackageName, typeElement.getAnnotation(GenMapper.class).sourcePath(), typeSpecBuilder);
+        genJavaSourceFile(mapperPackageName, typeElement.getAnnotation(GenMapper.class).sourcePath(), typeSpecBuilder
+                , true);
     }
 
 

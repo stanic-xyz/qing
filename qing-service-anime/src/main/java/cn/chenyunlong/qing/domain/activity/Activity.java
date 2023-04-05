@@ -15,7 +15,6 @@ package cn.chenyunlong.qing.domain.activity;
 
 import cn.chenyunlong.codegen.processor.GenBase;
 import cn.chenyunlong.codegen.processor.api.*;
-import cn.chenyunlong.codegen.processor.controller.GenController;
 import cn.chenyunlong.codegen.processor.creator.GenCreator;
 import cn.chenyunlong.codegen.processor.mapper.GenMapper;
 import cn.chenyunlong.codegen.processor.query.GenQuery;
@@ -42,7 +41,6 @@ import javax.persistence.Table;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenController(pkgName = "cn.chenyunlong.qing.controller", name = "活动信息")
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest

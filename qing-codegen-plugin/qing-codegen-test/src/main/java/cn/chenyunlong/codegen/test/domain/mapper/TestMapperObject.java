@@ -14,13 +14,14 @@
 package cn.chenyunlong.codegen.test.domain.mapper;
 
 import cn.chenyunlong.codegen.processor.GenBase;
-import cn.chenyunlong.codegen.processor.api.*;
+import cn.chenyunlong.codegen.processor.api.GenCreateRequest;
+import cn.chenyunlong.codegen.processor.api.GenQueryRequest;
+import cn.chenyunlong.codegen.processor.api.GenResponse;
+import cn.chenyunlong.codegen.processor.api.GenUpdateRequest;
 import cn.chenyunlong.codegen.processor.creator.GenCreator;
 import cn.chenyunlong.codegen.processor.mapper.GenMapper;
 import cn.chenyunlong.codegen.processor.query.GenQuery;
-import cn.chenyunlong.codegen.processor.repository.GenRepository;
-import cn.chenyunlong.codegen.processor.service.GenService;
-import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
+import cn.chenyunlong.codegen.processor.query.QueryItem;
 import cn.chenyunlong.codegen.processor.updater.GenUpdater;
 import cn.chenyunlong.codegen.processor.vo.GenVo;
 import cn.chenyunlong.common.annotation.FieldDesc;
@@ -39,27 +40,25 @@ import javax.persistence.Entity;
 
 @GenBase(basePackage = "cn.chenyunlong.codegen.test.domain.mapper.gen")
 @GenVo
+@GenQuery
 @GenCreator
 @GenUpdater
-@GenRepository
-@GenService
-@GenServiceImpl
-@GenQuery
+@GenResponse
 @GenCreateRequest
 @GenUpdateRequest
 @GenQueryRequest
-@GenResponse
-@GenFeign
 @GenMapper
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class TestMapperObject extends BaseEntity {
 
+    @QueryItem
     @FieldDesc(name = "用户名")
     private String username;
 
 
+    @QueryItem
     @FieldDesc(name = "用户名")
     private String password;
 

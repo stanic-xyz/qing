@@ -23,6 +23,7 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -51,19 +52,22 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
     }
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         //根据名称获取上下文
         DefaultNameContext nameContext = getNameContext(typeElement);
 
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
-        String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
+//        String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        Builder builder = TypeSpec.classBuilder(className)
+        Builder builder = TypeSpec.classBuilder(sourceClassName)
                 .superclass(AbstractBaseJpaVO.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
-        addSetterAndGetterMethod(builder, fields);
+        if (useLombok) {
+            builder.addAnnotation(Data.class);
+        }
+        addSetterAndGetterMethod(builder, fields, useLombok);
         MethodSpec.Builder constructorSpecBuilder = MethodSpec.constructorBuilder()
                 .addParameter(TypeName.get(typeElement.asType()), "source")
                 .addModifiers(Modifier.PUBLIC);
@@ -80,7 +84,6 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
         builder.addMethod(constructorSpecBuilder.build());
 
         String packageName = nameContext.getVoPackageName();
-        genJavaFile(packageName, builder);
-        genJavaFile(packageName, getSourceTypeWithConstruct(typeElement, sourceClassName, packageName, className));
+        genJavaSourceFile(packageName, typeElement.getAnnotation(GenVo.class).sourcePath(), builder, true);
     }
 }
