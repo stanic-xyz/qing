@@ -20,9 +20,11 @@ import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import com.google.auto.service.AutoService;
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -54,6 +56,12 @@ public class GenResponseProcessor extends BaseCodeGenProcessor {
                 .addAnnotation(Schema.class);
         if (useLombok) {
             typeSpecBuilder.addAnnotation(Data.class);
+            typeSpecBuilder.addAnnotation(
+                    AnnotationSpec
+                            .builder(EqualsAndHashCode.class)
+                            .addMember("callSuper", "$L", true)
+                            .build()
+            );
         }
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
         String packageName = nameContext.getResponsePackageName();
