@@ -13,16 +13,17 @@
 
 package cn.chenyunlong.codegen.test.domain.mapper;
 
-import cn.chenyunlong.codegen.processor.GenBase;
-import cn.chenyunlong.codegen.processor.api.*;
-import cn.chenyunlong.codegen.processor.creator.GenCreator;
-import cn.chenyunlong.codegen.processor.mapper.GenMapper;
-import cn.chenyunlong.codegen.processor.query.GenQuery;
-import cn.chenyunlong.codegen.processor.repository.GenRepository;
-import cn.chenyunlong.codegen.processor.service.GenService;
-import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
-import cn.chenyunlong.codegen.processor.updater.GenUpdater;
-import cn.chenyunlong.codegen.processor.vo.GenVo;
+import cn.chenyunlong.codegen.annotation.GenBase;
+import cn.chenyunlong.codegen.annotation.GenCreateRequest;
+import cn.chenyunlong.codegen.annotation.GenQueryRequest;
+import cn.chenyunlong.codegen.annotation.GenResponse;
+import cn.chenyunlong.codegen.annotation.GenUpdateRequest;
+import cn.chenyunlong.codegen.annotation.GenCreator;
+import cn.chenyunlong.codegen.annotation.GenMapper;
+import cn.chenyunlong.codegen.annotation.GenQuery;
+import cn.chenyunlong.codegen.annotation.QueryItem;
+import cn.chenyunlong.codegen.annotation.GenUpdater;
+import cn.chenyunlong.codegen.annotation.GenVo;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
@@ -39,27 +40,25 @@ import javax.persistence.Entity;
 
 @GenBase(basePackage = "cn.chenyunlong.codegen.test.domain.mapper.gen")
 @GenVo
+@GenQuery
 @GenCreator
 @GenUpdater
-@GenRepository
-@GenService
-@GenServiceImpl
-@GenQuery
+@GenResponse
 @GenCreateRequest
 @GenUpdateRequest
 @GenQueryRequest
-@GenResponse
-@GenFeign
 @GenMapper
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class TestMapperObject extends BaseEntity {
 
+    @QueryItem
     @FieldDesc(name = "用户名")
     private String username;
 
 
+    @QueryItem
     @FieldDesc(name = "用户名")
     private String password;
 

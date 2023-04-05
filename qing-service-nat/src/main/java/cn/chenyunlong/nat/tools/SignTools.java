@@ -61,7 +61,8 @@ public class SignTools {
      */
     public static boolean isSignatureValid(final Map<String, String> data, String signKey, Long maxDiffTime,
                                            Object fileObject) {
-        return isSignatureValid(data, signKey, maxDiffTime, fileObject == null ? null : List.of(fileObject));
+        return isSignatureValid(data, signKey, maxDiffTime, fileObject == null ? null :
+                Collections.singleton(fileObject));
     }
 
     /**
@@ -164,7 +165,7 @@ public class SignTools {
      * @since 2019-07-02 14:01:51
      */
     public static Map<String, String> fullSignature(Map<String, String> data, String signKey, Object fileObject) {
-        return fullSignature(data, signKey, fileObject == null ? null : List.of(fileObject));
+        return fullSignature(data, signKey, fileObject == null ? null : Collections.singleton(fileObject));
     }
 
     /**

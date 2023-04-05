@@ -13,11 +13,12 @@
 
 package cn.chenyunlong.codegen.processor.api;
 
+import cn.chenyunlong.codegen.annotation.GenFeign;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
-import cn.chenyunlong.common.model.JsonObject;
+import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
 import com.google.auto.service.AutoService;
@@ -48,16 +49,16 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
     public static String FEIGN_SUFFIX = "FeignService";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
         String classFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
                 typeElement.getSimpleName().toString());
-        GenFeign feign = typeElement.getAnnotation(GenFeign.class);
+        GenFeign annotation = typeElement.getAnnotation(GenFeign.class);
         Builder builder = TypeSpec.interfaceBuilder(nameContext.getFeignClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(AnnotationSpec
                         .builder(FeignClient.class)
-                        .addMember("value", "$S", feign.serverName())
+                        .addMember("value", "$S", annotation.serverName())
                         .addMember("contextId", "$S", classFieldName + "Client")
                         .addMember("path", "$S", classFieldName + "/v1")
                         .build());
@@ -74,7 +75,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
         Optional<MethodSpec> findByPage = findByPage(nameContext);
         findByPage.ifPresent(builder::addMethod);
         String feignPackageName = nameContext.getFeignPackageName();
-        genJavaSourceFile(feignPackageName, typeElement.getAnnotation(GenFeign.class).sourcePath(), builder);
+        genJavaSourceFile(feignPackageName, annotation.sourcePath(), builder, annotation.overrideSource());
     }
 
     @Override
@@ -106,7 +107,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
                             "create" + typeElement.getSimpleName()).build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("createRequest")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(Long.class))).build());
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(Long.class))).build());
         }
         return Optional.empty();
     }
@@ -127,7 +128,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
                     .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S",
                             "update" + typeElement.getSimpleName()).build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(String.class)))
                     .addJavadoc("update request")
                     .build());
         }
@@ -145,7 +146,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
                 .addParameter(ParameterSpec.builder(Long.class, "id").addAnnotation(AnnotationSpec.builder(PathVariable.class).addMember("value", "$S", "id").build()).build())
                 .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "valid/{id}").build())
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
+                .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(String.class)))
                 .addJavadoc("valid")
                 .build());
     }
@@ -161,7 +162,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
                 .addParameter(ParameterSpec.builder(Long.class, "id").addAnnotation(AnnotationSpec.builder(PathVariable.class).addMember("value", "$S", "id").build()).build())
                 .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "invalid/{id}").build())
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
+                .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(String.class)))
                 .addJavadoc("invalid")
                 .build());
     }
@@ -186,7 +187,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
                             .build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("findById")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class),
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
                             ClassName.get(nameContext.getResponsePackageName(), nameContext.getResponseClassName())))
                     .build());
         }
@@ -210,7 +211,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
                     .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "findByPage").build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("findByPage request")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class),
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
                             ParameterizedTypeName.get(ClassName.get(
                                     PageResult.class), ClassName.get(nameContext.getResponsePackageName(),
                                     nameContext.getResponseClassName()))))

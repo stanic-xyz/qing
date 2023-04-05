@@ -14,6 +14,7 @@
 package cn.chenyunlong.codegen.processor.service;
 
 
+import cn.chenyunlong.codegen.annotation.GenServiceImpl;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor;
@@ -54,7 +55,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
     public static final String IMPL_SUFFIX = "ServiceImpl";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
@@ -87,8 +88,8 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
         findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
         String implPackageName = nameContext.getImplPackageName();
-        genJavaSourceFile(implPackageName, typeElement.getAnnotation(GenServiceImpl.class).sourcePath(),
-                typeSpecBuilder);
+        GenServiceImpl annotation = typeElement.getAnnotation(GenServiceImpl.class);
+        genJavaSourceFile(implPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override
@@ -263,7 +264,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                                             return new $T<>(page.getContent()
                                             .stream().map($T::new)
                                             .collect($T.toList()), page.getPageable(), page.getTotalElements());
-                                                    """,
+                                            """,
                                     PageImpl.class,
                                     ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()),
                                     Collectors.class)

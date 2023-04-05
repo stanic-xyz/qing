@@ -47,7 +47,6 @@ public class QingCodeGenProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> elements, RoundEnvironment environment) {
         elements.forEach(element ->
         {
-            System.out.println("处理【" + element.getQualifiedName() + "】的代码生成");
             Set<? extends Element> typeElements = environment.getElementsAnnotatedWith(element);
             // 加载需要处理的类的所有注解
             Set<TypeElement> typeElementSet = ElementFilter.typesIn(typeElements);

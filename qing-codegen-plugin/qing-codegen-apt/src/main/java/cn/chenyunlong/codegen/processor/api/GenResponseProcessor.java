@@ -13,9 +13,10 @@
 
 package cn.chenyunlong.codegen.processor.api;
 
+import cn.chenyunlong.codegen.annotation.GenResponse;
+import cn.chenyunlong.codegen.annotation.IgnoreVo;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.processor.vo.IgnoreVo;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import com.google.auto.service.AutoService;
@@ -42,7 +43,7 @@ public class GenResponseProcessor extends BaseCodeGenProcessor {
     public static String RESPONSE_SUFFIX = "Response";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
@@ -50,9 +51,10 @@ public class GenResponseProcessor extends BaseCodeGenProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(AbstractJpaResponse.class)
                 .addAnnotation(Schema.class);
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields);
+        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
         String packageName = nameContext.getResponsePackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenResponse.class).sourcePath(), typeSpecBuilder);
+        GenResponse annotation = typeElement.getAnnotation(GenResponse.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override

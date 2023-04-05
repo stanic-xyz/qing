@@ -28,8 +28,12 @@ public final class StringUtils {
     private StringUtils() {
     }
 
-    public static String camel(String source) {
+    public static String lowerCamel(String source) {
         return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, source);
+    }
+
+    public static String bigCamel(String source) {
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, source);
     }
 
     /**
@@ -53,5 +57,25 @@ public final class StringUtils {
      */
     public static boolean isNotBlank(String str) {
         return org.springframework.util.StringUtils.hasText(str);
+    }
+
+    /**
+     * 获取SetterName
+     *
+     * @param fieldName 字段名称
+     * @return SetterName
+     */
+    public static String getterName(String fieldName) {
+        return "get" + bigCamel(fieldName);
+    }
+
+    /**
+     * 获取SetterName
+     *
+     * @param fieldName 字段名称
+     * @return SetterName
+     */
+    public static String setterName(String fieldName) {
+        return "set" + bigCamel(fieldName);
     }
 }

@@ -22,7 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collections;
 
 class ZipUtilsTest {
@@ -30,13 +29,13 @@ class ZipUtilsTest {
     @AfterAll
     static void afterAll() throws IOException {
         File file = new File("test.7z");
-        Files.deleteIfExists(Path.of(file.getPath()));
+        Files.deleteIfExists(file.toPath());
     }
 
     @BeforeEach
     void setUp() throws IOException {
         File file = new File("test.7z");
-        Files.deleteIfExists(Path.of(file.getPath()));
+        Files.deleteIfExists(file.toPath());
     }
 
     @Test

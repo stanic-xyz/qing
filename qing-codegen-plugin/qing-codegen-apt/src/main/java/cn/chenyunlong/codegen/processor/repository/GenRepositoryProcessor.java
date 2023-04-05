@@ -14,6 +14,7 @@
 package cn.chenyunlong.codegen.processor.repository;
 
 
+import cn.chenyunlong.codegen.annotation.GenRepository;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
@@ -40,7 +41,7 @@ public class GenRepositoryProcessor extends BaseCodeGenProcessor {
     public static final String REPOSITORY_SUFFIX = "Repository";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         String className = typeElement.getSimpleName() + REPOSITORY_SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class),
@@ -49,7 +50,8 @@ public class GenRepositoryProcessor extends BaseCodeGenProcessor {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
         String packageName = nameContext.getRepositoryPackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenRepository.class).sourcePath(), typeSpecBuilder);
+        GenRepository annotation = typeElement.getAnnotation(GenRepository.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override
