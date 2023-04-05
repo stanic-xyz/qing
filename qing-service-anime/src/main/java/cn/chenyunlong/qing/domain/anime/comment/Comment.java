@@ -28,6 +28,7 @@ import javax.persistence.Table;
  */
 @GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.comment")
 @GenVo
+@GenController
 @GenCreator
 @GenUpdater
 @GenRepository
