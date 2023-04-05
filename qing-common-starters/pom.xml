@@ -47,11 +47,6 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-commons</artifactId>
-            <version>1.0.0.RELEASE</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>

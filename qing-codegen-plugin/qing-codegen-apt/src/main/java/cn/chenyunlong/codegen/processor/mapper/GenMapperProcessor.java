@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.codegen.processor.mapper;
 
+import cn.chenyunlong.codegen.annotation.GenMapper;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
@@ -22,6 +23,7 @@ import cn.chenyunlong.common.mapper.GenericEnumMapper;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -43,7 +45,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
     public static final String SUFFIX = "Mapper";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
 
@@ -52,6 +54,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         AnnotationSpec mapperAnnotation = AnnotationSpec.builder(Mapper.class)
                 .addMember("uses", "$T.class", GenericEnumMapper.class)
                 .addMember("uses", "$T.class", DateMapper.class)
+                .addMember("unmappedTargetPolicy", "$T.IGNORE", ReportingPolicy.class)
                 .build();
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
                 .addAnnotation(mapperAnnotation)
@@ -75,7 +78,8 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         vo2ResponseMethod.ifPresent(typeSpecBuilder::addMethod);
         Optional<MethodSpec> vo2CustomResponseMethod = vo2CustomResponseMethod(nameContext);
         vo2CustomResponseMethod.ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(mapperPackageName, typeElement.getAnnotation(GenMapper.class).sourcePath(), typeSpecBuilder);
+        GenMapper annotation = typeElement.getAnnotation(GenMapper.class);
+        genJavaSourceFile(mapperPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
 
@@ -177,15 +181,10 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
             return Optional.of(MethodSpec
                     .methodBuilder("vo2CustomResponse")
                     .returns(ClassName.get(responsePackageName, responseClassName))
-                    .addParameter(ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), "vo")
-                    .addCode(
-                            CodeBlock.of("$T response = vo2Response(vo);\n",
-                                    ClassName.get(responsePackageName, responseClassName))
-                    )
-                    .addCode(
-                            CodeBlock.of("return response;")
-                    )
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                    .addParameter(ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), "vo")
+                    .addCode(CodeBlock.of("return vo2Response(vo);"))
+
                     .build());
         }
         return Optional.empty();

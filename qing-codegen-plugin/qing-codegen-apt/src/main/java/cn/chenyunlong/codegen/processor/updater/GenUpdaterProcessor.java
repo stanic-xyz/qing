@@ -13,13 +13,19 @@
 
 package cn.chenyunlong.codegen.processor.updater;
 
+import cn.chenyunlong.codegen.annotation.GenUpdater;
+import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.util.StringUtils;
 import com.google.auto.service.AutoService;
-import com.google.common.base.CaseFormat;
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -47,26 +53,31 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
      *
      * @param typeElement      类型元素
      * @param roundEnvironment 周围环境
+     * @param useLombok        使用lombok
      */
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         Set<VariableElement> variableElements;
         variableElements = findFields(typeElement,
                 element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
+        TypeSpec.Builder classBuilder = TypeSpec.classBuilder(sourceClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
-        addSetterAndGetterMethod(typeSpecBuilder, variableElements);
+
+        if (useLombok) {
+            classBuilder.addAnnotation(Data.class);
+        }
+
+        addSetterAndGetterMethod(classBuilder, variableElements, useLombok);
         CodeBlock.Builder builder = CodeBlock.builder();
         for (VariableElement variableElement : variableElements) {
-            builder.addStatement("$T.ofNullable($L()).ifPresent(v -> param.$L(v))", Optional.class,
-                    "get" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL,
-                            variableElement.getSimpleName().toString()),
-                    "set" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL,
-                            variableElement.getSimpleName().toString()));
+            builder.addStatement("$T.ofNullable($L()).ifPresent(param::$L)",
+                    Optional.class,
+                    StringUtils.getterName(variableElement.getSimpleName().toString()),
+                    StringUtils.setterName(variableElement.getSimpleName().toString()));
         }
         MethodSpec.Builder methodBuilder;
         methodBuilder = MethodSpec.methodBuilder(
@@ -75,16 +86,14 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
                 .addParameter(TypeName.get(typeElement.asType()), "param")
                 .addCode(builder.build())
                 .returns(void.class);
-        typeSpecBuilder.addMethod(methodBuilder.build());
-        typeSpecBuilder.addField(FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
-        addIdSetterAndGetter(typeSpecBuilder);
-        typeSpecBuilder.addMethod(MethodSpec.constructorBuilder()
-                .addModifiers(Modifier.PROTECTED)
-                .build());
+        classBuilder.addMethod(methodBuilder.build());
+
+        addIdField(classBuilder, useLombok);
+
         DefaultNameContext nameContext = getNameContext(typeElement);
         String packageName = nameContext.getUpdaterPackageName();
-        genJavaFile(packageName, typeSpecBuilder);
-        genJavaFile(packageName, getSourceType(sourceClassName, packageName, className));
+        GenUpdater annotation = typeElement.getAnnotation(GenUpdater.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
     }
 
     @Override

@@ -13,16 +13,23 @@
 
 package cn.chenyunlong.codegen.processor.vo;
 
+import cn.chenyunlong.codegen.annotation.GenVo;
+import cn.chenyunlong.codegen.annotation.IgnoreVo;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import com.google.auto.service.AutoService;
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
@@ -51,19 +58,28 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
     }
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         //根据名称获取上下文
         DefaultNameContext nameContext = getNameContext(typeElement);
 
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
-        String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
+//        String className = PREFIX + typeElement.getSimpleName() + SUFFIX;
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        Builder builder = TypeSpec.classBuilder(className)
+        Builder builder = TypeSpec.classBuilder(sourceClassName)
                 .superclass(AbstractBaseJpaVO.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
-        addSetterAndGetterMethod(builder, fields);
+        if (useLombok) {
+            builder.addAnnotation(Data.class);
+            builder.addAnnotation(
+                    AnnotationSpec.builder(EqualsAndHashCode.class)
+                            .addMember("callSuper", "$L", true).build());
+            builder.addAnnotation(
+                    AnnotationSpec.builder(NoArgsConstructor.class)
+                            .addMember("access", "$T.PROTECTED", AccessLevel.class).build());
+        }
+        addSetterAndGetterMethod(builder, fields, useLombok);
         MethodSpec.Builder constructorSpecBuilder = MethodSpec.constructorBuilder()
                 .addParameter(TypeName.get(typeElement.asType()), "source")
                 .addModifiers(Modifier.PUBLIC);
@@ -74,13 +90,10 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
                         getFieldDefaultName(variableElement),
                         getFieldDefaultName(variableElement)
                 ));
-        builder.addMethod(MethodSpec.constructorBuilder()
-                .addModifiers(Modifier.PROTECTED)
-                .build());
         builder.addMethod(constructorSpecBuilder.build());
 
         String packageName = nameContext.getVoPackageName();
-        genJavaFile(packageName, builder);
-        genJavaFile(packageName, getSourceTypeWithConstruct(typeElement, sourceClassName, packageName, className));
+        GenVo annotation = typeElement.getAnnotation(GenVo.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), builder, annotation.overrideSource());
     }
 }

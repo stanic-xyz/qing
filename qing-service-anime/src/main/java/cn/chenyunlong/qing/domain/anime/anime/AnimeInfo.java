@@ -13,23 +13,13 @@
 
 package cn.chenyunlong.qing.domain.anime.anime;
 
-import cn.chenyunlong.codegen.processor.GenBase;
-import cn.chenyunlong.codegen.processor.api.*;
-import cn.chenyunlong.codegen.processor.controller.GenController;
-import cn.chenyunlong.codegen.processor.creator.GenCreator;
-import cn.chenyunlong.codegen.processor.mapper.GenMapper;
-import cn.chenyunlong.codegen.processor.query.GenQuery;
-import cn.chenyunlong.codegen.processor.repository.GenRepository;
-import cn.chenyunlong.codegen.processor.service.GenService;
-import cn.chenyunlong.codegen.processor.service.GenServiceImpl;
-import cn.chenyunlong.codegen.processor.updater.GenUpdater;
-import cn.chenyunlong.codegen.processor.vo.GenVo;
+import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.AnimeInfoBizInfo;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeInfoRecommendBizInfo;
-import cn.chenyunlong.qing.domain.anime.anime.events.AnimeInfoEvents;
+import cn.chenyunlong.qing.domain.anime.anime.events.AnimeInfoInEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -89,7 +79,7 @@ public class AnimeInfo extends BaseEntity {
             throw new BusinessException(AnimeInfoErrorCode.ASSET_HAS_IN);
         }
         setValidStatus(ValidStatus.VALID);
-        registerEvent(new AnimeInfoEvents.AnimeInfoInEvent(this, bizInfo));
+        registerEvent(new AnimeInfoInEvent(this, bizInfo));
     }
 
     /**

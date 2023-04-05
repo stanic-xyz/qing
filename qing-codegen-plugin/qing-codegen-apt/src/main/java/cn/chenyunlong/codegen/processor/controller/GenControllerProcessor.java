@@ -14,12 +14,13 @@
 package cn.chenyunlong.codegen.processor.controller;
 
 
+import cn.chenyunlong.codegen.annotation.GenController;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
-import cn.chenyunlong.common.model.JsonObject;
+import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
 import com.google.auto.service.AutoService;
@@ -47,10 +48,10 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
     public static final String CONTROLLER_SUFFIX = "Controller";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
 
-        String serviceFieldName = StringUtils.camel(typeElement.getSimpleName().toString()) + "Service";
+        String serviceFieldName = StringUtils.lowerCamel(typeElement.getSimpleName().toString()) + "Service";
         String serviceClassName = nameContext.getServiceClassName();
         String servicePackageName = nameContext.getServicePackageName();
         String controllerClassName = nameContext.getControllerClassName();
@@ -66,7 +67,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                 .addAnnotation(AnnotationSpec
                         .builder(RequestMapping.class)
                         .addMember("value", "$S",
-                                StringUtils.camel(typeElement.getSimpleName().toString()) + "/v1")
+                                StringUtils.lowerCamel(typeElement.getSimpleName().toString()) + "/v1")
                         .build())
                 .addAnnotation(RequiredArgsConstructor.class)
                 .addModifiers(Modifier.PUBLIC)
@@ -82,8 +83,8 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
         inValidMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
         findById(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
         findByPage(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        genJavaSourceFile(controllerPackageName, typeElement.getAnnotation(GenController.class).sourcePath(),
-                typeSpecBuilder);
+        GenController annotation = typeElement.getAnnotation(GenController.class);
+        genJavaSourceFile(controllerPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override
@@ -125,7 +126,6 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                             .build())
                     .addAnnotation(AnnotationSpec
                             .builder(PostMapping.class)
-                            .addMember("value", "$S", "create" + typeElement.getSimpleName())
                             .build())
                     .addModifiers(Modifier.PUBLIC)
                     .addCode(CodeBlock
@@ -133,11 +133,12 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                                     ClassName.get(creatorPackageName, creatorClassName),
                                     ClassName.get(mapperPackageName, mapperClassName)))
                     .addCode(CodeBlock
-                            .of("return JsonObject.success($L.create$L(creator));",
+                            .of("return $T.success($L.create$L(creator));",
+                                    JsonResult.class,
                                     serviceFieldName,
                                     typeElement.getSimpleName().toString()))
                     .addJavadoc("createRequest")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(Long.class)));
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(Long.class)));
             return Optional.of(createMethodBuilder.build());
         }
         return Optional.empty();
@@ -177,8 +178,8 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                             ClassName.get(mapperPackageName, mapperClassName))
                     )
                     .addCode(CodeBlock.of("$L.update$L(updater);\n", serviceFieldName, className.toString()))
-                    .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonObject.class, CodeEnum.class))
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
+                    .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonResult.class, CodeEnum.class))
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(String.class)))
                     .addJavadoc("update request")
                     .build());
         }
@@ -204,8 +205,8 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                         .build())
                 .addModifiers(Modifier.PUBLIC)
                 .addCode(CodeBlock.of("$L.valid$L(id);", serviceFieldName, typeElement.getSimpleName().toString()))
-                .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonObject.class, CodeEnum.class))
-                .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
+                .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonResult.class, CodeEnum.class))
+                .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(String.class)))
                 .addJavadoc("valid")
                 .build());
     }
@@ -230,8 +231,8 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                         .build())
                 .addModifiers(Modifier.PUBLIC)
                 .addCode(CodeBlock.of("$L.invalid$L(id);", serviceFieldName, typeElement.getSimpleName().toString()))
-                .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonObject.class, CodeEnum.class))
-                .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class)))
+                .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonResult.class, CodeEnum.class))
+                .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(String.class)))
                 .addJavadoc("invalid")
                 .build());
     }
@@ -267,10 +268,10 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                     .addCode(CodeBlock.of("$T response = $T.INSTANCE.vo2CustomResponse(vo);",
                             ClassName.get(responsePackageName, responseClassName),
                             ClassName.get(mapperPackageName, nameContext.getMapperClassName())))
-                    .addCode(CodeBlock.of("return $T.success(response);", JsonObject.class))
+                    .addCode(CodeBlock.of("return $T.success(response);", JsonResult.class))
                     .addJavadoc("findById")
                     .returns(ParameterizedTypeName
-                            .get(ClassName.get(JsonObject.class), ClassName.get(responsePackageName,
+                            .get(ClassName.get(JsonResult.class), ClassName.get(responsePackageName,
                                     responseClassName)))
                     .build());
         }
@@ -317,17 +318,20 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                                             return $T.success(
                                                     $T.of(
                                                         page.getContent().stream()
-                                                            .map(vo -> $T.INSTANCE.vo2CustomResponse(vo))
+                                                            .map($T.INSTANCE::vo2CustomResponse)
                                                             .collect($T.toList()),
                                                         page.getTotalElements(),
                                                         page.getSize(),
                                                         page.getNumber())
-                                                );""", JsonObject.class, PageResult.class,
-                                    ClassName.get(nameContext.getMapperPackageName(),
-                                            nameContext.getMapperClassName()), Collectors.class)
+                                                );
+                                            """,
+                                    JsonResult.class,
+                                    PageResult.class,
+                                    ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()),
+                                    Collectors.class)
                     )
                     .addJavadoc("findByPage request")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonObject.class),
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
                             ParameterizedTypeName.get(ClassName.get(
                                     PageResult.class), ClassName.get(nameContext.getResponsePackageName(),
                                     nameContext.getResponseClassName()))))

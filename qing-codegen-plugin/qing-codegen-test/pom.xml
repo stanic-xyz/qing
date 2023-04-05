@@ -26,25 +26,27 @@
     <artifactId>qing-codegen-test</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <dependencies>
+
         <dependency>
             <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-codegen-apt</artifactId>
-            <version>1.0.0.RELEASE</version>
+            <artifactId>qing-codegen-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-apt</artifactId>
-            <version>5.0.0</version>
-            <scope>provided</scope>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-jpa-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
             <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -56,12 +58,30 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -77,6 +97,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>cn.chenyunlong</groupId>
+                        <artifactId>qing-codegen-apt</artifactId>
+                        <version>1.0.0.RELEASE</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
                     <source>17</source>
                     <target>17</target>
@@ -100,6 +127,13 @@
                 <groupId>com.mysema.maven</groupId>
                 <artifactId>apt-maven-plugin</artifactId>
                 <version>1.1.3</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.querydsl</groupId>
+                        <artifactId>querydsl-jpa</artifactId>
+                        <version>5.0.0</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <goals>
@@ -111,6 +145,9 @@
                         </configuration>
                     </execution>
                 </executions>
+                <goals>
+                    <goal>add-test-sources</goal>
+                </goals>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -123,7 +160,11 @@
                         <configuration>
                             <target>
                                 <echo message="remove test files from codegen"/>
-                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/defaultdomain"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/creater/gen"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/mapper/gen"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/updater/gen"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/vo/gen"/>
+                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/testobject/gen"/>
                             </target>
                         </configuration>
                         <goals>

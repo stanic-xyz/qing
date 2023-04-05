@@ -14,6 +14,7 @@
 package cn.chenyunlong.codegen.processor.service;
 
 
+import cn.chenyunlong.codegen.annotation.GenService;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
@@ -43,7 +44,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
     public static final String SERVICE_PREFIX = "I";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment) {
+    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
 
@@ -59,7 +60,8 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
         findByPageMethod(nameContext).ifPresent(typeSpecBuilder::addMethod);
 
         String packageName = nameContext.getServicePackageName();
-        genJavaSourceFile(packageName, typeElement.getAnnotation(GenService.class).sourcePath(), typeSpecBuilder);
+        GenService annotation = typeElement.getAnnotation(GenService.class);
+        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
     }
 
     @Override

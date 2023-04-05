@@ -27,7 +27,7 @@ package cn.chenyunlong.qing.infrastructure.exception;/*
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.SystemException;
-import cn.chenyunlong.common.model.JsonObject;
+import cn.chenyunlong.common.model.JsonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -46,20 +46,20 @@ public class GlobalExceptionAdvice {
      * @return 返回空的信息
      */
     @ExceptionHandler(cn.chenyunlong.common.exception.BusinessException.class)
-    public JsonObject<Void> handleBusinessException(cn.chenyunlong.common.exception.BusinessException exception) {
-        return JsonObject.res(CodeEnum.NotFindError, null);
+    public JsonResult<Void> handleBusinessException(cn.chenyunlong.common.exception.BusinessException exception) {
+        return JsonResult.res(CodeEnum.NotFindError, null);
     }
 
     @ExceptionHandler(SystemException.class)
-    public JsonObject<Void> handleSystemException(SystemException exception) {
+    public JsonResult<Void> handleSystemException(SystemException exception) {
         log.error("系统异常", exception);
-        return JsonObject.fail(CodeEnum.SystemError);
+        return JsonResult.fail(CodeEnum.SystemError);
     }
 
     @ExceptionHandler(Exception.class)
-    public JsonObject<Void> handleException(Exception exception) {
+    public JsonResult<Void> handleException(Exception exception) {
         log.error("系统异常", exception);
-        return JsonObject.fail(CodeEnum.SystemError);
+        return JsonResult.fail(CodeEnum.SystemError);
     }
 
 
