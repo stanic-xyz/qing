@@ -14,10 +14,8 @@
 package cn.chenyunlong.codegen.util;
 
 import com.google.common.base.CaseFormat;
-import com.google.common.collect.Lists;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -43,10 +41,7 @@ public final class StringUtils {
      * @return boolean
      */
     public static boolean containsNull(String... list) {
-        List<String> temp = Lists.newArrayList();
-        Collections.addAll(temp, list);
-        List<String> nullList = temp.stream().filter(Objects::isNull).toList();
-        return nullList.size() > 0;
+        return Arrays.stream(list).anyMatch(Objects::isNull);
     }
 
     /**

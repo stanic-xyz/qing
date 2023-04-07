@@ -15,11 +15,10 @@ package cn.chenyunlong.codegen.processor.vo;
 
 import cn.chenyunlong.codegen.annotation.GenVo;
 import cn.chenyunlong.codegen.annotation.IgnoreVo;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -35,22 +34,17 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.lang.annotation.Annotation;
 import java.util.Objects;
 import java.util.Set;
 
 /**
  * @author gim vo 代码生成器
  */
-@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenVo.class)
 public class VoCodeGenProcessor extends BaseCodeGenProcessor {
 
     public static final String SUFFIX = "VO";
 
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenVo.class;
-    }
 
     @Override
     public String generatePackage(TypeElement typeElement) {
@@ -58,7 +52,7 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
     }
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         //根据名称获取上下文
         DefaultNameContext nameContext = getNameContext(typeElement);
 

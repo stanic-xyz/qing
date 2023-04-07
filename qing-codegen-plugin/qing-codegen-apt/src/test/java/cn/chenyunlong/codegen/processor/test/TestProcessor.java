@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023  YunLong Chen
+ * Copyright (c) 2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -11,21 +11,14 @@
  *
  */
 
-package cn.chenyunlong.codegen.annotation;
+package cn.chenyunlong.codegen.processor.test;
 
-import java.lang.annotation.*;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-/**
- * @author gim
- */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
-@Documented
-public @interface GenService {
+@SupportedGenTypes(types = Schema.class)
+public class TestProcessor extends BaseCodeGenProcessor {
 
-    String pkgName() default "service";
 
-    String sourcePath() default "src/main/java";
-
-    boolean overrideSource() default false;
 }
