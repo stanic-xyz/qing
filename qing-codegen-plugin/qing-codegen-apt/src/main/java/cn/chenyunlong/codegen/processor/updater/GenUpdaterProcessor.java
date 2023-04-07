@@ -15,11 +15,10 @@ package cn.chenyunlong.codegen.processor.updater;
 
 import cn.chenyunlong.codegen.annotation.GenUpdater;
 import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -31,7 +30,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.lang.annotation.Annotation;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -43,7 +41,7 @@ import java.util.Set;
  * @date 2019/11/28 19:33
  */
 
-@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenUpdater.class)
 public class GenUpdaterProcessor extends BaseCodeGenProcessor {
 
     public static final String SUFFIX = "Updater";
@@ -56,7 +54,7 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
      * @param useLombok        使用lombok
      */
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         Set<VariableElement> variableElements;
         variableElements = findFields(typeElement,
@@ -93,11 +91,6 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
         String packageName = nameContext.getUpdaterPackageName();
         GenUpdater annotation = typeElement.getAnnotation(GenUpdater.class);
         genJavaSourceFile(packageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
-    }
-
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenUpdater.class;
     }
 
     @Override

@@ -77,6 +77,13 @@
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>com.google.testing.compile</groupId>
+            <artifactId>compile-testing</artifactId>
+            <version>0.19</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

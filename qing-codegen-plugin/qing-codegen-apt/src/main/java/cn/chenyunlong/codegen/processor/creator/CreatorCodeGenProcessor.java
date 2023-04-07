@@ -15,9 +15,8 @@ package cn.chenyunlong.codegen.processor.creator;
 
 import cn.chenyunlong.codegen.annotation.GenCreator;
 import cn.chenyunlong.codegen.annotation.IgnoreCreator;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
@@ -28,7 +27,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,10 +36,11 @@ import java.util.Objects;
 /**
  * @author cyl Creator 代码生成器
  */
-@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenCreator.class)
 public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
 
     public static final String SUFFIX = "Creator";
+
     // 这里为什么要忽略这些类型呢
     static final List<TypeName> dtoIgnoreFieldTypes = new ArrayList<>();
 
@@ -50,10 +49,6 @@ public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
         dtoIgnoreFieldTypes.add(TypeName.get(LocalDateTime.class));
     }
 
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenCreator.class;
-    }
 
     @Override
     public String generatePackage(TypeElement typeElement) {

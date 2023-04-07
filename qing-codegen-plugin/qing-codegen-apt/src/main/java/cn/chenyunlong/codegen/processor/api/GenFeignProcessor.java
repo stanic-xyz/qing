@@ -14,14 +14,13 @@
 package cn.chenyunlong.codegen.processor.api;
 
 import cn.chenyunlong.codegen.annotation.GenFeign;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
-import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.squareup.javapoet.*;
 import com.squareup.javapoet.TypeSpec.Builder;
@@ -34,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 /**
@@ -43,13 +41,13 @@ import java.util.Optional;
  * @author Stan
  * @date 2022/11/28
  */
-@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenFeign.class)
 public class GenFeignProcessor extends BaseCodeGenProcessor {
 
     public static String FEIGN_SUFFIX = "FeignService";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
         String classFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
                 typeElement.getSimpleName().toString());
@@ -76,11 +74,6 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
         findByPage.ifPresent(builder::addMethod);
         String feignPackageName = nameContext.getFeignPackageName();
         genJavaSourceFile(feignPackageName, annotation.sourcePath(), builder, annotation.overrideSource());
-    }
-
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenFeign.class;
     }
 
     @Override

@@ -16,7 +16,7 @@ package cn.chenyunlong.codegen.annotation;
 
 import cn.chenyunlong.codegen.annotation.enumes.OrmType;
 
-import java.lang.annotation.Inherited;
+import java.lang.annotation.*;
 
 /**
  * 代码生成器基础文件
@@ -26,6 +26,9 @@ import java.lang.annotation.Inherited;
  */
 
 @Inherited
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.SOURCE)
+@Documented
 public @interface GenBase {
 
 

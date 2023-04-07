@@ -21,7 +21,7 @@ import java.lang.annotation.*;
  * @Description:
  */
 @Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Documented
 public @interface QueryItem {
     String desc() default "";

@@ -14,18 +14,16 @@
 package cn.chenyunlong.codegen.processor.mapper;
 
 import cn.chenyunlong.codegen.annotation.GenMapper;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.hutool.core.bean.BeanUtil;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 
@@ -35,13 +33,13 @@ import java.util.Optional;
  * @author Stan
  * @date 2022/11/29
  */
-@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenMapper.class)
 public class GenMapperProcessor extends BaseCodeGenProcessor {
 
     public static final String SUFFIX = "Mapper";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
 
@@ -77,12 +75,6 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         vo2CustomResponseMethod.ifPresent(typeSpecBuilder::addMethod);
         GenMapper annotation = typeElement.getAnnotation(GenMapper.class);
         genJavaSourceFile(mapperPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
-    }
-
-
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenMapper.class;
     }
 
     @Override

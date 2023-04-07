@@ -1,5 +1,6 @@
+
 /*
- * Copyright (c) 2019-2023  YunLong Chen
+ * Copyright (c) 2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -11,21 +12,13 @@
  *
  */
 
-package cn.chenyunlong.codegen.annotation;
-
-import java.lang.annotation.*;
+package test;
 
 /**
- * @author gim
+ * This is just broken.
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
-@Documented
-public @interface GenService {
-
-    String pkgName() default "service";
-
-    String sourcePath() default "src/main/java";
-
-    boolean overrideSource() default false;
+public class HelloWorld {
+    public static void main(String[] args) {
+        System, out, println("Hello World!");
+    }
 }
