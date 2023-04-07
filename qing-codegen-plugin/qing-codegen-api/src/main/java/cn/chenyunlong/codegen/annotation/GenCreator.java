@@ -21,7 +21,7 @@ import java.lang.annotation.*;
  * @apiNote : 实现这个代码可以自动生成创建器
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Documented
 public @interface GenCreator {
 

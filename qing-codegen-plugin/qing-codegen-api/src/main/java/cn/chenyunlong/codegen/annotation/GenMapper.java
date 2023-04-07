@@ -13,12 +13,17 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import java.lang.annotation.*;
+
 /**
  * @Author: Gim
  * @Date: 2019/11/25 14:14
  * @Description:
  */
-@GenBase
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.SOURCE)
+@Documented
 public @interface GenMapper {
 
     String pkgName() default "mapper";

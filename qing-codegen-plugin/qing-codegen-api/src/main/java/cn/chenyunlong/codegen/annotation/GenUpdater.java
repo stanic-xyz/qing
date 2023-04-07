@@ -13,12 +13,17 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import java.lang.annotation.*;
+
 /**
  * 创更新器
  *
  * @author gim
  * @date 2022/10/24
  */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.SOURCE)
+@Documented
 public @interface GenUpdater {
 
     String pkgName() default "updater";

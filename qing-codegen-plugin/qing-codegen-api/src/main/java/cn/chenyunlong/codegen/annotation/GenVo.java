@@ -23,7 +23,7 @@ import java.lang.annotation.*;
  * @date 2022/11/06
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Documented
 public @interface GenVo {
 

@@ -15,12 +15,11 @@ package cn.chenyunlong.codegen.processor.service;
 
 
 import cn.chenyunlong.codegen.annotation.GenService;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
@@ -30,13 +29,12 @@ import org.springframework.data.domain.Page;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 /**
  * @author gim
  */
-@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenService.class)
 public class GenServiceProcessor extends BaseCodeGenProcessor {
 
     public static final String SERVICE_SUFFIX = "Service";
@@ -44,7 +42,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
     public static final String SERVICE_PREFIX = "I";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         DefaultNameContext nameContext = getNameContext(typeElement);
 
@@ -62,11 +60,6 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
         String packageName = nameContext.getServicePackageName();
         GenService annotation = typeElement.getAnnotation(GenService.class);
         genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
-    }
-
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenService.class;
     }
 
     @Override

@@ -14,13 +14,22 @@
 package cn.chenyunlong.codegen.registry;
 
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
+import cn.chenyunlong.codegen.processor.api.*;
+import cn.chenyunlong.codegen.processor.controller.GenControllerProcessor;
+import cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor;
+import cn.chenyunlong.codegen.processor.query.GenQueryProcessor;
+import cn.chenyunlong.codegen.processor.repository.GenRepositoryProcessor;
+import cn.chenyunlong.codegen.processor.service.GenServiceImplProcessor;
+import cn.chenyunlong.codegen.processor.service.GenServiceProcessor;
+import cn.chenyunlong.codegen.processor.updater.GenUpdaterProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import com.google.common.collect.Maps;
 
-import java.lang.annotation.Annotation;
-import java.util.Map;
-import java.util.ServiceLoader;
+import javax.annotation.processing.ProcessingEnvironment;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 通过SPI 加载所有的CodeGenProcessor 识别要处理的annotation标记类
@@ -30,21 +39,32 @@ import java.util.Set;
  */
 public final class CodeGenProcessorRegistry {
 
-    private static Map<String, ? extends CodeGenProcessor> processors;
+
+    private static final List<CodeGenProcessor> PROCESSOR_LIST = new LinkedList<>();
+
+    static {
+        PROCESSOR_LIST.add(new GenUpdateRequestProcessor());
+        PROCESSOR_LIST.add(new GenCreateRequestProcessor());
+        PROCESSOR_LIST.add(new GenQueryRequestProcessor());
+        PROCESSOR_LIST.add(new GenResponseProcessor());
+        PROCESSOR_LIST.add(new GenResponseProcessor());
+        PROCESSOR_LIST.add(new GenResponseProcessor());
+        PROCESSOR_LIST.add(new GenControllerProcessor());
+        PROCESSOR_LIST.add(new GenServiceProcessor());
+        PROCESSOR_LIST.add(new GenServiceImplProcessor());
+        PROCESSOR_LIST.add(new GenRepositoryProcessor());
+        PROCESSOR_LIST.add(new GenFeignProcessor());
+        PROCESSOR_LIST.add(new GenMapperProcessor());
+        PROCESSOR_LIST.add(new GenQueryProcessor());
+        PROCESSOR_LIST.add(new GenUpdaterProcessor());
+        PROCESSOR_LIST.add(new GenQueryProcessor());
+    }
 
 
     private CodeGenProcessorRegistry() {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * 注解处理器要处理的注解集合
-     *
-     * @return {@link Set}<{@link String}>
-     */
-    public static Set<String> getSupportedAnnotations() {
-        return processors.keySet();
-    }
 
     /**
      * 查询通过spi配置进来的代码生成处理器
@@ -52,25 +72,35 @@ public final class CodeGenProcessorRegistry {
      * @param annotationClassName 注释类名
      * @return {@link CodeGenProcessor}
      */
-    public static CodeGenProcessor find(String annotationClassName) {
-        return processors.get(annotationClassName);
+    public static List<CodeGenProcessor> find(String annotationClassName) {
+        return PROCESSOR_LIST.stream().filter(codeGenProcessor -> codeGenProcessor.support(annotationClassName)).collect(Collectors.toList());
     }
 
     /**
      * 初始化处理器
      * spi 加载所有的processor
      */
-    public static void initProcessors() {
-        final Map<String, CodeGenProcessor> genProcessorMap = Maps.newLinkedHashMap();
-        ServiceLoader<CodeGenProcessor> genProcessors;
-        genProcessors = ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader());
+    public static void initProcessors(ProcessingEnvironment processingEnvironment) {
+        ProcessingEnvironmentHolder.setEnvironment(processingEnvironment);
         ProcessingEnvironmentHolder.printMessage("加载apt处理器");
-        for (CodeGenProcessor processor : genProcessors) {
-            Class<? extends Annotation> annotation = processor.getAnnotation();
-            genProcessorMap.put(annotation.getName(), processor);
+        for (CodeGenProcessor codeGenProcessor : PROCESSOR_LIST) {
+            codeGenProcessor.init(processingEnvironment);
         }
-        // 添加处理器
-        CodeGenProcessorRegistry.processors = genProcessorMap;
     }
 
+    public static Set<String> getSupportedAnnotationTypes() {
+        return PROCESSOR_LIST.stream()
+                .map(CodeGenProcessor::getSupportedAnnotation)
+                .filter(Objects::nonNull).map(Class::getCanonicalName)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
+     * 添加处理器
+     *
+     * @param codeGenProcessor 处理器
+     */
+    public static void add(CodeGenProcessor codeGenProcessor) {
+        PROCESSOR_LIST.add(codeGenProcessor);
+    }
 }

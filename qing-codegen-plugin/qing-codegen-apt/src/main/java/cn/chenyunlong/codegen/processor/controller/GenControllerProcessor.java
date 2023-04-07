@@ -15,15 +15,14 @@ package cn.chenyunlong.codegen.processor.controller;
 
 
 import cn.chenyunlong.codegen.annotation.GenController;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +33,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,13 +40,13 @@ import java.util.stream.Collectors;
  * @author gim
  * 获取名称时可以先获取上下文再取，不用一个个的取，这样更方便
  */
-@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenController.class)
 public class GenControllerProcessor extends BaseCodeGenProcessor {
 
     public static final String CONTROLLER_SUFFIX = "Controller";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
 
         String serviceFieldName = StringUtils.lowerCamel(typeElement.getSimpleName().toString()) + "Service";
@@ -85,11 +83,6 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
         findByPage(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
         GenController annotation = typeElement.getAnnotation(GenController.class);
         genJavaSourceFile(controllerPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
-    }
-
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenController.class;
     }
 
     @Override

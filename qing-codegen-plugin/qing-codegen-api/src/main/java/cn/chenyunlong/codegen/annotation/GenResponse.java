@@ -19,7 +19,7 @@ import java.lang.annotation.*;
  * @author gim
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Documented
 public @interface GenResponse {
 

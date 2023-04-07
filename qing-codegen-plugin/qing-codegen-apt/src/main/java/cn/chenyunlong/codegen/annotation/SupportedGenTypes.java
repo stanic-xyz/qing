@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023  YunLong Chen
+ * Copyright (c) 2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -13,29 +13,29 @@
 
 package cn.chenyunlong.codegen.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-/**
- * @author gim
- */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 @Documented
-public @interface GenController {
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface SupportedGenTypes {
 
-    String pkgName() default "controller";
-
-    String sourcePath() default "src/main/java";
-
-    boolean overrideSource() default false;
 
     /**
-     * 控制器名称
+     * 支持的方法
      */
-    String name() default "";
+    Class<? extends Annotation> types();
 
     /**
-     * 控制器描述信息
+     * 支持的类型
+     *
+     * @return 类型信息
      */
-    String description() default "";
+    String annotationName() default "";
 }

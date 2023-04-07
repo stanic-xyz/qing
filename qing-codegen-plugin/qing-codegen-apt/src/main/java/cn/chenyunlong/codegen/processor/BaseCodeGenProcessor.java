@@ -35,8 +35,11 @@ import com.squareup.javapoet.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import javax.annotation.processing.Completion;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -56,7 +59,23 @@ import java.util.function.Predicate;
  * @author Stan
  * @since 2022/11/27
  */
-public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
+public abstract class BaseCodeGenProcessor extends CodeGenProcessor {
+
+    private ProcessingEnvironment processingEnvironment;
+
+    public void generateSource() {
+        System.out.println("processingEnv = " + processingEnvironment.getLocale().getLanguage());
+    }
+
+    /**
+     * 获取生成的包路径
+     *
+     * @param typeElement 类型元素
+     * @return {@link String}
+     */
+    public String generatePackage(TypeElement typeElement) {
+        return null;
+    }
 
     /**
      * 生成Class
@@ -65,7 +84,6 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
      * @param environment 周围环境
      * @throws Exception 异常
      */
-    @Override
     public void generate(TypeElement typeElement, RoundEnvironment environment) throws Exception {
         //添加其他逻辑扩展
         boolean useLombok = true;
@@ -334,17 +352,6 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
 
 
     /**
-     * 生成类
-     *
-     * @param typeElement      类型元素
-     * @param roundEnvironment 周围环境
-     * @param useLombok        是否使用lombok
-     */
-    protected abstract void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment,
-                                          boolean useLombok) throws Exception;
-
-
-    /**
      * 获取生成源的类型信息类型
      *
      * @param sourceName     源名称
@@ -441,4 +448,38 @@ public abstract class BaseCodeGenProcessor implements CodeGenProcessor {
         }
     }
 
+    @Override
+    public Set<String> getSupportedAnnotationTypes() {
+        return Collections.emptySet();
+    }
+
+    /**
+     * {@return the latest source version supported by this annotation
+     * processor}
+     *
+     * @see SupportedSourceVersion
+     * @see ProcessingEnvironment#getSourceVersion
+     */
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latestSupported();
+    }
+
+    /**
+     * Initializes the processor with the processing environment.
+     *
+     * @param processingEnv environment for facilities the tool framework
+     *                      provides to the processor
+     */
+    @Override
+    public void init(ProcessingEnvironment processingEnv) {
+        this.processingEnvironment = processingEnv;
+    }
+
+
+    @Override
+    public Iterable<? extends Completion> getCompletions(Element element, AnnotationMirror annotation,
+                                                         ExecutableElement member, String userText) {
+        return Collections.emptyList();
+    }
 }

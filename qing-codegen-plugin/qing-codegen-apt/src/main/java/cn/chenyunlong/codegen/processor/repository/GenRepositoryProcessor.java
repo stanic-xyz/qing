@@ -15,11 +15,10 @@ package cn.chenyunlong.codegen.processor.repository;
 
 
 import cn.chenyunlong.codegen.annotation.GenRepository;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.jpa.support.BaseRepository;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
@@ -27,7 +26,6 @@ import com.squareup.javapoet.TypeSpec;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 
 /**
  * 生成Repository层的代码
@@ -35,13 +33,13 @@ import java.lang.annotation.Annotation;
  * @author gim
  * @date 2022/12/22
  */
-@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenRepository.class)
 public class GenRepositoryProcessor extends BaseCodeGenProcessor {
 
     public static final String REPOSITORY_SUFFIX = "Repository";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         String className = typeElement.getSimpleName() + REPOSITORY_SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class),
@@ -52,11 +50,6 @@ public class GenRepositoryProcessor extends BaseCodeGenProcessor {
         String packageName = nameContext.getRepositoryPackageName();
         GenRepository annotation = typeElement.getAnnotation(GenRepository.class);
         genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
-    }
-
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenRepository.class;
     }
 
     @Override

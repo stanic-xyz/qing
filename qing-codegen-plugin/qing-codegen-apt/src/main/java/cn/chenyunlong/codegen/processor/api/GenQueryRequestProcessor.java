@@ -15,11 +15,10 @@ package cn.chenyunlong.codegen.processor.api;
 
 import cn.chenyunlong.codegen.annotation.GenQueryRequest;
 import cn.chenyunlong.codegen.annotation.QueryItem;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.Request;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -28,7 +27,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.lang.annotation.Annotation;
 import java.util.Objects;
 import java.util.Set;
 
@@ -38,13 +36,13 @@ import java.util.Set;
  * @author Stan
  * @date 2022/11/28
  */
-@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenQueryRequest.class)
 public class GenQueryRequestProcessor extends BaseCodeGenProcessor {
 
     public static String QUERY_REQUEST_SUFFIX = "QueryRequest";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         DefaultNameContext nameContext = getNameContext(typeElement);
 
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
@@ -61,11 +59,6 @@ public class GenQueryRequestProcessor extends BaseCodeGenProcessor {
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
         genJavaSourceFile(queryRequestPackageName,
                 typeElement.getAnnotation(GenQueryRequest.class).sourcePath(), typeSpecBuilder, true);
-    }
-
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenQueryRequest.class;
     }
 
     @Override

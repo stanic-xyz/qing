@@ -13,36 +13,55 @@
 
 package cn.chenyunlong.codegen.spi;
 
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+
+import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
 /**
- * @author gim
+ * @author chenyunlong
  */
-public interface CodeGenProcessor {
+public abstract class CodeGenProcessor extends AbstractProcessor {
+
 
     /**
-     * 需要解析的类上的注解
+     * 支持方法
      *
-     * @return {@link Class}<{@link ?} {@link extends} {@link Annotation}>
+     * @param annotationClassName 支持方法
+     * @return 是否支持处理该方法
      */
-    Class<? extends Annotation> getAnnotation();
+    public boolean support(String annotationClassName) {
+        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
+        return supportedGenTypes != null && supportedGenTypes.types().getName().equals(annotationClassName);
+
+    }
 
     /**
-     * 获取生成的包路径
+     * 生成类
+     * 生成Class
      *
-     * @param typeElement 类型元素
-     * @return {@link String}
-     */
-    String generatePackage(TypeElement typeElement);
-
-    /**
-     * 代码生成逻辑
-     *
-     * @param typeElement      类型元素
+     * @param typeElement      顶层元素
      * @param roundEnvironment 周围环境
-     * @throws Exception 异常
+     * @param useLombok        是否使用lombok
      */
-    void generate(TypeElement typeElement, RoundEnvironment roundEnvironment) throws Exception;
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+
+    }
+
+    @Override
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        return false;
+    }
+
+
+    public Class<? extends Annotation> getSupportedAnnotation() {
+        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
+        if (supportedGenTypes != null) {
+            return supportedGenTypes.types();
+        }
+        return null;
+    }
 }
