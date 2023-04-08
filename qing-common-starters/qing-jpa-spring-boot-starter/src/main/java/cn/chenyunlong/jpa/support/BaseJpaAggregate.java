@@ -16,6 +16,7 @@ package cn.chenyunlong.jpa.support;
 import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
@@ -28,9 +29,12 @@ import java.time.Instant;
  * @author Stan
  * @date 2022/11/05
  */
-@MappedSuperclass
+
 @Data
+@MappedSuperclass
+@EqualsAndHashCode(callSuper = false)
 public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggregate> {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.PROTECTED)

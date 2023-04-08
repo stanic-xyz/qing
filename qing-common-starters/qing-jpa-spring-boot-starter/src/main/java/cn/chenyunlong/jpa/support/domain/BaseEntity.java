@@ -32,9 +32,9 @@ import javax.persistence.Convert;
  * @since 2021/05/22
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class BaseEntity extends BaseJpaAggregate {
 
     /**
@@ -50,7 +50,7 @@ public class BaseEntity extends BaseJpaAggregate {
     /**
      * 备注
      */
-    @Column(columnDefinition = "varchar(500)")
+    @Column
     private String remark;
 
     @Convert(converter = ValidStatusConverter.class)
@@ -89,11 +89,6 @@ public class BaseEntity extends BaseJpaAggregate {
 
     public void invalid() {
         setValidStatus(ValidStatus.INVALID);
-    }
-
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof BaseEntity;
     }
 
 }
