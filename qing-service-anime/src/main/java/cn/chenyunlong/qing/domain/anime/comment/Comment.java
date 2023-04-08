@@ -41,7 +41,7 @@ import javax.persistence.Table;
 @GenResponse
 @GenFeign
 @GenMapper
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "anime_comment")
