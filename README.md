@@ -1,4 +1,4 @@
-# 留住TA的朋友圈
+# Project-青
 
 [![License](https://img.shields.io/badge/licence-MulanPSL2-blue)](http://license.coscl.org.cn/MulanPSL2)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/yunlongChen/qing/maven.yml?branch=main)
@@ -14,7 +14,9 @@
   </a>
 </p>
 
-#### 介绍
+#### 📚介绍
+
+最新潮的`领域驱动思想`（`DDD`）的落地实践！
 
 该项目是我关于SpringCloud的一次实践 通过该项目我希望能够对SpringCloud更加了解的同时 不光是对我们本人技术的一点锻炼
 
@@ -22,11 +24,13 @@
 
 保住这美好的回忆。爱不爱了不说，至少回忆在这里。 还希望能够保管我自己的小秘密，留住自己喜欢的人的所有回忆
 
-以后还能拿出来作为小小的谈资呢。（卑微.jpg）
+以后还能拿出来作为小小的谈资呢。
 
 #### 以下是关于项目的运行
 
-目前的计划是集成到自动构建自动部署中，使用的构建工具是Coding的devops平台[CODING项目协同管理平台](https://stanic.coding.net/)
+目前的计划是集成到自动构建自动部署中，使用的构建工具是Coding的devops平台
+
+地址地址：[CODING项目协同管理平台](https://stanic.coding.net/p/qing)
 
 项目演示地址： [https://bangumi.chenyunlong.cn/index.html](https://bangumi.chenyunlong.cn/index.html)
 
@@ -34,9 +38,11 @@
 
 ---
 
-#### 一首诗给你听
+#### 人生箴言
 
 哈哈哈 还不会写诗，就先放到这里了吧 你最美
+
+虽然道路曲折，但你仍在最优道路上
 
 ---
 
@@ -54,7 +60,6 @@
 - Spring Batch ：批处理框架
 - Fastjson ：json序列化工具
 - javax mail： 邮件发送 sdk
-- thymeleaf 服务端页面渲染
 
 #### 技术选型（待集成）
 
@@ -65,20 +70,9 @@
 * [ ] flink(1.13.2)，flinkcdc
 * [ ] elasticjob (分布式任务调度)
 * [ ] drools （规则引擎）
-* [ ] thymeleaf 模板引擎，用于渲染首页
 
----
+#### 📚使用说明
 
-#### 安装教程
-
-1. 先安装MySQL数据库
-2. mvn install
-3. java -jar qing-eureka-service.jar
-4. 数据库使用MySQL数据库，数据库连接
-
-#### 使用说明
-
-- 目前该项目书私有项目，不打算公开出来
 - eureka作为配置中心：
     - 设置注册中心的地址https://eureka.chenyunlong.cn/eureka/
     - 域名解析中添加两条TXT记录
@@ -87,20 +81,33 @@
     - 使用自建DNS服务器
 - 使用NACOS作为注册中心
     - 设置注册中心地址：http://nacos.chenyunlong.cn/nacos/
-    - 域名解析设置了：
-
-#### 参与贡献
-
-1. 目前该项目书私有项目，不打算公开出来
+    - 域名解析设置：
 
 ---
 
-#### 个人介绍
+#### 🏗️参与贡献
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [chenyunlong.cn](https://www.chenyunlong.cn)，现在暂时没有东西，但是以后会完善起来的
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+如果您感觉我们的代码有需要优化的地方或者有更好的方案欢迎随时提pr，步骤如下：
 
+1. 在`Gitee`或者`Github`上`fork`项目到自己的`repo`
+2. 把`fork`过去的项目也就是你的项目`clone`到你的本地
+3. 修改代码
+4. `commit`后`push`到自己的库
+5. 登录`Gitee`或`Github`在你仓库首页可以看到一个 `pull request` 按钮，点击它，填写一些说明信息，然后提交即可。
+   等待维护者合并
+
+#### 🐞提供bug反馈或建议
+
+提交问题反馈请说明遇到的问题、如果可以请尽量详细或加图片以便于我们去复现
+
+#### 📏PR遵照的原则
+
+`Qing Project`欢迎任何人为她添砖加瓦，贡献代码，规范如下：
+
+- 注释完备，尤其每个新增的方法应按照Java文档规范标明方法说明、参数说明、返回值说明等信息，必要时请添加单元测试，如果愿意，也可以加上你的大名。
+- 新加的方法尽可能不要使用额外的第三方库方法
+- 我们如果关闭了你的issue或pr，请不要诧异，这是我们保持问题处理整洁的一种方式，你依旧可以继续讨论，当有讨论结果时我们会重新打开。
+
+#### 🚚License
+
+Qing Project is licensed under the Mulan PSL v2 License.
