@@ -40,13 +40,29 @@
         <module>qing-common-starters</module>
     </modules>
 
+    <inceptionYear>2019</inceptionYear>
+    <licenses>
+        <license>
+            <name>Mulan Permissive Software License，Version 2</name>
+            <url>http://license.coscl.org.cn/MulanPSL2</url>
+        </license>
+    </licenses>
+    <organization>
+        <name>stanic.xyz</name>
+        <url>https://stanic.xyz</url>
+    </organization>
     <developers>
         <developer>
-            <id>stan</id>
+            <id>StanChen</id>
             <email>1576302867@qq.com</email>
             <name>陈云龙</name>
             <url>https://dev.chenyunlong.cn</url>
             <organizationUrl>https://dev.chenyunlong.cn/qing</organizationUrl>
+            <roles>
+                <role>owner</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+8</timezone>
         </developer>
     </developers>
 
@@ -64,14 +80,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-
-    <licenses>
-        <license>
-            <name>Mulan Permissive Software License，Version 2</name>
-            <url>http://license.coscl.org.cn/MulanPSL2</url>
-        </license>
-    </licenses>
-    <inceptionYear>2019-Now</inceptionYear>
 
     <build>
         <pluginManagement>
@@ -106,6 +114,9 @@
                     <configuration>
                         <source>17</source>
                         <target>17</target>
+                        <compilerArgument>-Xlint:all</compilerArgument>
+                        <showWarnings>true</showWarnings>
+                        <showDeprecation>true</showDeprecation>
                     </configuration>
                 </plugin>
                 <plugin>
