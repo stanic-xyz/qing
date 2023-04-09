@@ -41,7 +41,7 @@ import java.util.Set;
  * @author gim vo 代码生成器
  */
 @SupportedGenTypes(types = GenVo.class)
-public class VoCodeGenProcessor extends BaseCodeGenProcessor {
+public class GenVoCodeProcessor extends BaseCodeGenProcessor {
 
     public static final String SUFFIX = "VO";
 
