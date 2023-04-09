@@ -16,12 +16,14 @@ package cn.chenyunlong.codegen.registry;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.processor.api.*;
 import cn.chenyunlong.codegen.processor.controller.GenControllerProcessor;
+import cn.chenyunlong.codegen.processor.creator.GenCreatorProcessor;
 import cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor;
 import cn.chenyunlong.codegen.processor.query.GenQueryProcessor;
 import cn.chenyunlong.codegen.processor.repository.GenRepositoryProcessor;
 import cn.chenyunlong.codegen.processor.service.GenServiceImplProcessor;
 import cn.chenyunlong.codegen.processor.service.GenServiceProcessor;
 import cn.chenyunlong.codegen.processor.updater.GenUpdaterProcessor;
+import cn.chenyunlong.codegen.processor.vo.GenVoCodeProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -47,17 +49,16 @@ public final class CodeGenProcessorRegistry {
         PROCESSOR_LIST.add(new GenCreateRequestProcessor());
         PROCESSOR_LIST.add(new GenQueryRequestProcessor());
         PROCESSOR_LIST.add(new GenResponseProcessor());
-        PROCESSOR_LIST.add(new GenResponseProcessor());
-        PROCESSOR_LIST.add(new GenResponseProcessor());
         PROCESSOR_LIST.add(new GenControllerProcessor());
         PROCESSOR_LIST.add(new GenServiceProcessor());
         PROCESSOR_LIST.add(new GenServiceImplProcessor());
         PROCESSOR_LIST.add(new GenRepositoryProcessor());
         PROCESSOR_LIST.add(new GenFeignProcessor());
         PROCESSOR_LIST.add(new GenMapperProcessor());
-        PROCESSOR_LIST.add(new GenQueryProcessor());
         PROCESSOR_LIST.add(new GenUpdaterProcessor());
+        PROCESSOR_LIST.add(new GenVoCodeProcessor());
         PROCESSOR_LIST.add(new GenQueryProcessor());
+        PROCESSOR_LIST.add(new GenCreatorProcessor());
     }
 
 

@@ -18,7 +18,6 @@ import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.DefaultNameContext;
 import cn.chenyunlong.codegen.util.StringUtils;
-import cn.hutool.core.bean.BeanUtil;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -94,7 +93,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
                     .addCode(
                             CodeBlock.of("return $T.copyProperties(dto, $T.class);",
-                                    BeanUtil.class, returnType))
+                                    ClassName.get("cn.hutool.core.bean", "BeanUtil"), returnType))
                     .build());
         }
         return Optional.empty();
@@ -115,7 +114,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
                     .addCode(
                             CodeBlock.of("return $T.copyProperties(request, $T.class);",
-                                    BeanUtil.class, returnType))
+                                    ClassName.get("cn.hutool.core.bean", "BeanUtil"), returnType))
                     .build());
         }
         return Optional.empty();
@@ -135,7 +134,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
                     .addCode(
                             CodeBlock.of("return $T.copyProperties(request, $T.class);",
-                                    BeanUtil.class, returnType))
+                                    ClassName.get("cn.hutool.core.bean", "BeanUtil"), returnType))
                     .build());
         }
         return Optional.empty();
@@ -155,7 +154,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
                     .addCode(
                             CodeBlock.of("return $T.copyProperties(request, $T.class);",
-                                    BeanUtil.class, returnType))
+                                    ClassName.get("cn.hutool.core.bean", "BeanUtil"), returnType))
                     .build());
         }
         return Optional.empty();
@@ -175,7 +174,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
                     .addCode(
                             CodeBlock.of("return $T.copyProperties(vo, $T.class);",
-                                    BeanUtil.class, returnType))
+                                    ClassName.get("cn.hutool.core.bean", "BeanUtil"), returnType))
                     .build());
         }
         return Optional.empty();

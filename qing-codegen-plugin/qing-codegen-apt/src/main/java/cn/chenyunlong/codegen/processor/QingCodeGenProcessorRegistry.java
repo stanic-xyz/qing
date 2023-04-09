@@ -16,7 +16,6 @@ package cn.chenyunlong.codegen.processor;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.registry.CodeGenProcessorRegistry;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import com.google.auto.service.AutoService;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -26,6 +25,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
+import javax.tools.Diagnostic;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
@@ -34,9 +34,8 @@ import java.util.Set;
  * @author gim
  * @since 2023-10-24
  */
-@SupportedAnnotationTypes({})
 @SupportedOptions({})
-@AutoService(QingCodeGenProcessorRegistry.class)
+@SupportedAnnotationTypes({})
 public class QingCodeGenProcessorRegistry extends CodeGenProcessor {
 
     /**
@@ -48,19 +47,24 @@ public class QingCodeGenProcessorRegistry extends CodeGenProcessor {
      */
     @Override
     public boolean process(Set<? extends TypeElement> elements, RoundEnvironment environment) {
-        elements.forEach(element ->
-        {
-            Set<? extends Element> typeElements = environment.getElementsAnnotatedWith(element);
-            // 加载需要处理的类的所有注解
-            Collections.unmodifiableSet(ElementFilter.typesIn(typeElements)).forEach(typeElement
-                    -> Optional.of(CodeGenProcessorRegistry.find(element.getQualifiedName().toString()))
-                    .ifPresent(genProcessorList ->
-                    {
-                        for (CodeGenProcessor codeGenProcessor : genProcessorList) {
-                            codeGenProcessor.generateClass(typeElement, environment, true);
-                        }
-                    }));
-        });
+        try {
+            elements.forEach(element ->
+            {
+                Set<? extends Element> typeElements = environment.getElementsAnnotatedWith(element);
+                // 加载需要处理的类的所有注解
+                Collections.unmodifiableSet(ElementFilter.typesIn(typeElements)).forEach(typeElement
+                        -> Optional.of(CodeGenProcessorRegistry.find(element.getQualifiedName().toString()))
+                        .ifPresent(genProcessorList ->
+                        {
+
+                            for (CodeGenProcessor codeGenProcessor : genProcessorList) {
+                                codeGenProcessor.generateClass(typeElement, environment, true);
+                            }
+                        }));
+            });
+        } catch (Exception exception) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, "生成异常了");
+        }
         return false;
     }
 
@@ -89,8 +93,7 @@ public class QingCodeGenProcessorRegistry extends CodeGenProcessor {
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        Set<String> annotationTypes = CodeGenProcessorRegistry.getSupportedAnnotationTypes();
-        return annotationTypes;
+        return CodeGenProcessorRegistry.getSupportedAnnotationTypes();
     }
 
     @Override

@@ -29,37 +29,21 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
-    <dependencies>
 
-        <dependency>
-            <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-codegen-api</artifactId>
-        </dependency>
+    <dependencies>
         <dependency>
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-jpa-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-codegen-apt</artifactId>
+            <version>1.0.0.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -71,23 +55,14 @@
             <version>${h2.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-sources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -95,7 +70,7 @@
                 <executions>
                     <execution>
                         <id>compile</id>
-                        <phase>compile</phase>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>
                                 compile
@@ -114,46 +89,23 @@
                     <source>17</source>
                     <target>17</target>
                     <encoding>UTF-8</encoding>
+                    <verbose>true</verbose>
                     <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${org.mapstruct.version}</version>
-                        </path>
-                        <path>
+                        <annotationProcessorPath>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </annotationProcessorPath>
+                        <annotationProcessorPath>
                             <groupId>cn.chenyunlong</groupId>
                             <artifactId>qing-codegen-apt</artifactId>
                             <version>1.0.0.RELEASE</version>
-                        </path>
+                        </annotationProcessorPath>
                     </annotationProcessorPaths>
+                    <annotationProcessors>
+                        <processor>cn.chenyunlong.codegen.processor.QingCodeGenProcessorRegistry</processor>
+                    </annotationProcessors>
                 </configuration>
-            </plugin>
-            <!-- QUERYDSL -->
-            <plugin>
-                <groupId>com.mysema.maven</groupId>
-                <artifactId>apt-maven-plugin</artifactId>
-                <version>1.1.3</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.querydsl</groupId>
-                        <artifactId>querydsl-jpa</artifactId>
-                        <version>5.0.0</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>target/generated-sources/annotations</outputDirectory>
-                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-                        </configuration>
-                    </execution>
-                </executions>
-                <goals>
-                    <goal>add-test-sources</goal>
-                </goals>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -166,15 +118,28 @@
                         <configuration>
                             <target>
                                 <echo message="remove test files from codegen"/>
-                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/creater/gen"/>
-                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/mapper/gen"/>
-                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/updater/gen"/>
-                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/vo/gen"/>
-                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/testobject/gen"/>
+                                <!--                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/creater/gen"/>-->
+                                <!--                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/mapper/gen"/>-->
+                                <!--                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/updater/gen"/>-->
+                                <!--                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/vo/gen"/>-->
+                                <!--                                <delete dir="src/main/java/cn/chenyunlong/codegen/test/domain/testobject/gen"/>-->
                             </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>

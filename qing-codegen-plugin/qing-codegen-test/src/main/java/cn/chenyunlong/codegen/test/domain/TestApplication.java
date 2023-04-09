@@ -11,14 +11,15 @@
  *
  */
 
-package cn.chenyunlong.codegen.processor.test;
+package cn.chenyunlong.codegen.test.domain;
 
-import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SupportedGenTypes(types = Schema.class)
-public class TestProcessor extends BaseCodeGenProcessor {
+@SpringBootApplication
+public class TestApplication {
 
-
+    public static void main(String[] args) {
+        SpringApplication.run(TestApplication.class);
+    }
 }

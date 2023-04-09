@@ -37,7 +37,7 @@ import java.util.Set;
  * @date 2019/11/28 19:33
  */
 
-@SupportedGenTypes(types = IgnoreCreator.class)
+@SupportedGenTypes(types = GenCreateRequest.class)
 public class GenCreateRequestProcessor extends BaseCodeGenProcessor {
 
     public static final String CREATE_REQUEST_SUFFIX = "CreateRequest";

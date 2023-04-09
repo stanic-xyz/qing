@@ -26,7 +26,6 @@ import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import com.google.common.base.CaseFormat;
-import com.querydsl.core.BooleanBuilder;
 import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -228,6 +227,10 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
+    private static ClassName getBooleanBuilder() {
+        return ClassName.get("com.querydsl.core", "BooleanBuilder");
+    }
+
     private Optional<MethodSpec> findByPageMethod(TypeElement typeElement,
                                                   DefaultNameContext nameContext, String repositoryFieldName) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryPackageName(),
@@ -239,8 +242,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                             "query")
                     .addModifiers(Modifier.PUBLIC)
                     .addCode(
-                            CodeBlock.of("$T booleanBuilder = new $T();\n", BooleanBuilder.class,
-                                    BooleanBuilder.class)
+                            CodeBlock.of("$T booleanBuilder = new $T();\n", getBooleanBuilder(), getBooleanBuilder())
                     )
                     .addCode(
                             CodeBlock.of("""

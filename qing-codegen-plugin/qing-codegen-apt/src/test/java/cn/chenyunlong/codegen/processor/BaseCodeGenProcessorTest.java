@@ -13,21 +13,18 @@
 
 package cn.chenyunlong.codegen.processor;
 
-import cn.chenyunlong.codegen.processor.test.TestProcessor;
+import cn.chenyunlong.codegen.processor.test.TestSchemaProcessor;
 import cn.hutool.core.io.resource.ClassPathResource;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.JavaFileObjects;
 import io.swagger.v3.oas.annotations.media.Schema;
 import junit.framework.TestCase;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import javax.tools.JavaFileObject;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -42,53 +39,50 @@ public class BaseCodeGenProcessorTest extends TestCase {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
-    private File jarFile;
 
-    @Before
-    public void createJarFile() throws IOException {
-        this.jarFile = new ClassPathResource("lib/swagger-annotations-2.2.7.jar").getFile();
-//        JarOutputStream out = new JarOutputStream(new FileOutputStream(jarFile));
-//        JarEntry helloWorldEntry = new JarEntry("test/HelloWorld.java");
-//        out.putNextEntry(helloWorldEntry);
-//        out.write(Resources.toByteArray(Resources.getResource("test/HelloWorld.java")));
-//        out.close();
-    }
-
-    @Test
-    public void compilesResourcesInJarFiles() throws IOException {
-        assert_().about(javaSource())
-                .that(JavaFileObjects.forResource(
-                        new URL("jar:" + jarFile.toURI() + "!/test/HelloWorld.java")))
+    public void testCompilesResourcesInJarFiles() throws IOException {
+        File jarFile = new ClassPathResource("cn.chenyunlong.codegen.annotation.TestAnnotation").getFile();
+        JavaFileObject javaFileObject = JavaFileObjects.forResource(new URL("jar:" + jarFile.toURI() + "!/test" +
+                "/HelloWorld.java"));
+        assert_()
+                .about(javaSource())
+                .that(javaFileObject)
                 .compilesWithoutError();
     }
 
     public void testGenerateSource() {
-
 
     }
 
     /**
      * 测试代码生成器连接
      */
-    public void testQingCodeGenProcessorRegistry() throws MalformedURLException {
+    public void testQingCodeGenProcessorRegistry() throws IOException {
+
         QingCodeGenProcessorRegistry qingCodeGenProcessorRegistry = new QingCodeGenProcessorRegistry();
-        qingCodeGenProcessorRegistry.addProcessor(new TestProcessor());
+        qingCodeGenProcessorRegistry.addProcessor(new TestSchemaProcessor());
         ArrayList<File> objects = new ArrayList<>();
-        objects.add(new ClassPathResource("lib/swagger-annotations-2.2.7.jar").getFile());
+        objects.add(new ClassPathResource("lib/swagger-annotations-2.2.8.jar").getFile());
+
+//        JarOutputStream out = new JarOutputStream(new FileOutputStream(jarFile));
+//        JarEntry helloWorldEntry = new JarEntry("test/HelloWorld.java");
+//        out.putNextEntry(helloWorldEntry);
+//        out.write(Resources.toByteArray(Resources.getResource("test/HelloWorld.java")));
+//        out.close();
+
 
 //        JavaFileObject fileObject = JavaFileObjects.forResource(
 //                new URL("jar:" + jarFile.toURI() + "!/test/HelloWorld.java"));
-        JavaFileObject javaFileObject = JavaFileObjects.forSourceString("HelloWorld",
+        String fullyQualifiedName = "HelloWorld";
+        JavaFileObject javaFileObject = JavaFileObjects.forSourceString(
+                fullyQualifiedName,
                 """
                         import io.swagger.v3.oas.annotations.media.Schema;
                                                         
                         final class HelloWorld {
                                        
                             @Schema
-                            @TestAnnotation
                             private String username;
-                            
-                            @interface TestAnnotation {}
                         }
                         """);
         Compilation compilation = javac()
