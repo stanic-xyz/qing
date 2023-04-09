@@ -51,7 +51,17 @@ public final class StringUtils {
      * @return 字符串是否为空
      */
     public static boolean isNotBlank(String str) {
-        return org.springframework.util.StringUtils.hasText(str);
+        return (str != null && !str.isEmpty() && containsText(str));
+    }
+
+    private static boolean containsText(CharSequence str) {
+        int strLen = str.length();
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

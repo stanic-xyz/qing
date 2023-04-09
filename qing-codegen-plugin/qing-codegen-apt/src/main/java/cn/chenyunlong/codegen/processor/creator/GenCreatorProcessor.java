@@ -37,7 +37,7 @@ import java.util.Objects;
  * @author cyl Creator 代码生成器
  */
 @SupportedGenTypes(types = GenCreator.class)
-public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
+public class GenCreatorProcessor extends BaseCodeGenProcessor {
 
     public static final String SUFFIX = "Creator";
 
