@@ -13,109 +13,109 @@ import java.util.Optional;
 @Data
 public class AnimeInfoUpdater {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Instruction",
+            title = "instruction",
             description = "instruction"
     )
     private String instruction;
 
     @Schema(
-            title = "DistrictId",
+            title = "districtId",
             description = "districtId"
     )
     private Long districtId;
 
     @Schema(
-            title = "DistrictName",
+            title = "districtName",
             description = "districtName"
     )
     private String districtName;
 
     @Schema(
-            title = "CoverUrl",
+            title = "coverUrl",
             description = "coverUrl"
     )
     private String coverUrl;
 
     @Schema(
-            title = "TypeId",
+            title = "typeId",
             description = "typeId"
     )
     private Long typeId;
 
     @Schema(
-            title = "TypeName",
+            title = "typeName",
             description = "typeName"
     )
     private String typeName;
 
     @Schema(
-            title = "OriginalName",
+            title = "originalName",
             description = "originalName"
     )
     private String originalName;
 
     @Schema(
-            title = "OtherName",
+            title = "otherName",
             description = "otherName"
     )
     private String otherName;
 
     @Schema(
-            title = "Author",
+            title = "author",
             description = "author"
     )
     private String author;
 
     @Schema(
-            title = "Company",
+            title = "company",
             description = "company"
     )
     private String company;
 
     @Schema(
-            title = "PremiereDate",
+            title = "premiereDate",
             description = "premiereDate"
     )
     private LocalDate premiereDate;
 
     @Schema(
-            title = "PlayStatus",
+            title = "playStatus",
             description = "playStatus"
     )
     private PlayStatus playStatus;
 
     @Schema(
-            title = "PlotType",
+            title = "plotType",
             description = "plotType"
     )
     private String plotType;
 
     @Schema(
-            title = "Tags",
+            title = "tags",
             description = "tags"
     )
     private String tags;
 
     @Schema(
-            title = "OfficialWebsite",
+            title = "officialWebsite",
             description = "officialWebsite"
     )
     private String officialWebsite;
 
     @Schema(
-            title = "PlayHeat",
+            title = "playHeat",
             description = "playHeat"
     )
     private String playHeat;
 
     @Schema(
-            title = "OrderNo",
+            title = "orderNo",
             description = "orderNo"
     )
     private Integer orderNo;
@@ -123,23 +123,23 @@ public class AnimeInfoUpdater {
     private Long id;
 
     public void updateAnimeInfo(AnimeInfo param) {
-        Optional.ofNullable(getName()).ifPresent(v -> param.setName(v));
-        Optional.ofNullable(getInstruction()).ifPresent(v -> param.setInstruction(v));
-        Optional.ofNullable(getDistrictId()).ifPresent(v -> param.setDistrictId(v));
-        Optional.ofNullable(getDistrictName()).ifPresent(v -> param.setDistrictName(v));
-        Optional.ofNullable(getCoverUrl()).ifPresent(v -> param.setCoverUrl(v));
-        Optional.ofNullable(getTypeId()).ifPresent(v -> param.setTypeId(v));
-        Optional.ofNullable(getTypeName()).ifPresent(v -> param.setTypeName(v));
-        Optional.ofNullable(getOriginalName()).ifPresent(v -> param.setOriginalName(v));
-        Optional.ofNullable(getOtherName()).ifPresent(v -> param.setOtherName(v));
-        Optional.ofNullable(getAuthor()).ifPresent(v -> param.setAuthor(v));
-        Optional.ofNullable(getCompany()).ifPresent(v -> param.setCompany(v));
-        Optional.ofNullable(getPremiereDate()).ifPresent(v -> param.setPremiereDate(v));
-        Optional.ofNullable(getPlayStatus()).ifPresent(v -> param.setPlayStatus(v));
-        Optional.ofNullable(getPlotType()).ifPresent(v -> param.setPlotType(v));
-        Optional.ofNullable(getTags()).ifPresent(v -> param.setTags(v));
-        Optional.ofNullable(getOfficialWebsite()).ifPresent(v -> param.setOfficialWebsite(v));
-        Optional.ofNullable(getPlayHeat()).ifPresent(v -> param.setPlayHeat(v));
-        Optional.ofNullable(getOrderNo()).ifPresent(v -> param.setOrderNo(v));
+      Optional.ofNullable(getName()).ifPresent(param::setName);
+      Optional.ofNullable(getInstruction()).ifPresent(param::setInstruction);
+      Optional.ofNullable(getDistrictId()).ifPresent(param::setDistrictId);
+      Optional.ofNullable(getDistrictName()).ifPresent(param::setDistrictName);
+      Optional.ofNullable(getCoverUrl()).ifPresent(param::setCoverUrl);
+      Optional.ofNullable(getTypeId()).ifPresent(param::setTypeId);
+      Optional.ofNullable(getTypeName()).ifPresent(param::setTypeName);
+      Optional.ofNullable(getOriginalName()).ifPresent(param::setOriginalName);
+      Optional.ofNullable(getOtherName()).ifPresent(param::setOtherName);
+      Optional.ofNullable(getAuthor()).ifPresent(param::setAuthor);
+      Optional.ofNullable(getCompany()).ifPresent(param::setCompany);
+      Optional.ofNullable(getPremiereDate()).ifPresent(param::setPremiereDate);
+      Optional.ofNullable(getPlayStatus()).ifPresent(param::setPlayStatus);
+      Optional.ofNullable(getPlotType()).ifPresent(param::setPlotType);
+      Optional.ofNullable(getTags()).ifPresent(param::setTags);
+      Optional.ofNullable(getOfficialWebsite()).ifPresent(param::setOfficialWebsite);
+      Optional.ofNullable(getPlayHeat()).ifPresent(param::setPlayHeat);
+      Optional.ofNullable(getOrderNo()).ifPresent(param::setOrderNo);
     }
 }

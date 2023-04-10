@@ -3,39 +3,42 @@ package cn.chenyunlong.qing.domain.sign.updater;
 
 import cn.chenyunlong.qing.domain.sign.Sign;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Integer;
+import java.lang.Long;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class SignUpdater {
     @Schema(
-            title = "UserId"
+            title = "userId"
     )
     private Long userId;
 
     @Schema(
-            title = "DateMonth"
+            title = "dateMonth"
     )
     private Long dateMonth;
 
     @Schema(
-            title = "Mask"
+            title = "mask"
     )
     private Integer mask;
 
     @Schema(
-            title = "ContinueSignMonth"
+            title = "continueSignMonth"
     )
     private Integer continueSignMonth;
 
     private Long id;
 
     public void updateSign(Sign param) {
-        Optional.ofNullable(getUserId()).ifPresent(v -> param.setUserId(v));
-        Optional.ofNullable(getDateMonth()).ifPresent(v -> param.setDateMonth(v));
-        Optional.ofNullable(getMask()).ifPresent(v -> param.setMask(v));
-        Optional.ofNullable(getContinueSignMonth()).ifPresent(v -> param.setContinueSignMonth(v));
+        Optional.ofNullable(getUserId()).ifPresent(param::setUserId);
+        Optional.ofNullable(getDateMonth()).ifPresent(param::setDateMonth);
+        Optional.ofNullable(getMask()).ifPresent(param::setMask);
+        Optional.ofNullable(getContinueSignMonth()).ifPresent(param::setContinueSignMonth);
     }
 }

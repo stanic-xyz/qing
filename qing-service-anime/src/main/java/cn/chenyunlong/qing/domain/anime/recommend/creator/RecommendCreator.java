@@ -2,19 +2,23 @@
 package cn.chenyunlong.qing.domain.anime.recommend.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class RecommendCreator {
     @Schema(
-            title = "Aid",
+            title = "aid",
             description = "aid"
     )
     private Long aid;
 
     @Schema(
-            title = "Reason",
+            title = "reason",
             description = "reason"
     )
     private String reason;

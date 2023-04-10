@@ -15,12 +15,10 @@ import cn.chenyunlong.qing.domain.system.version.service.IVersionService;
 import cn.chenyunlong.qing.domain.system.version.updater.VersionUpdater;
 import cn.chenyunlong.qing.domain.system.version.vo.VersionVO;
 import com.querydsl.core.BooleanBuilder;
-
 import java.lang.Long;
 import java.lang.Override;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

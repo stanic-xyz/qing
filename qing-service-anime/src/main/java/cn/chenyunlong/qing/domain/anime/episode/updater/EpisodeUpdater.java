@@ -3,57 +3,61 @@ package cn.chenyunlong.qing.domain.anime.episode.updater;
 
 import cn.chenyunlong.qing.domain.anime.episode.Episode;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class EpisodeUpdater {
     @Schema(
-            title = "AnimeId",
+            title = "animeId",
             description = "animeId"
     )
     private Long animeId;
 
     @Schema(
-            title = "ListId",
+            title = "listId",
             description = "listId"
     )
     private Long listId;
 
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Status",
+            title = "status",
             description = "status"
     )
     private Integer status;
 
     @Schema(
-            title = "UploaderName",
+            title = "uploaderName",
             description = "uploaderName"
     )
     private String uploaderName;
 
     @Schema(
-            title = "UploaderId",
+            title = "uploaderId",
             description = "uploaderId"
     )
     private Long uploaderId;
 
     @Schema(
-            title = "Url",
+            title = "url",
             description = "url"
     )
     private String url;
 
     @Schema(
-            title = "OrderNo",
+            title = "orderNo",
             description = "orderNo"
     )
     private Integer orderNo;
@@ -61,13 +65,13 @@ public class EpisodeUpdater {
     private Long id;
 
     public void updateEpisode(Episode param) {
-        Optional.ofNullable(getAnimeId()).ifPresent(v -> param.setAnimeId(v));
-        Optional.ofNullable(getListId()).ifPresent(v -> param.setListId(v));
-        Optional.ofNullable(getName()).ifPresent(v -> param.setName(v));
-        Optional.ofNullable(getStatus()).ifPresent(v -> param.setStatus(v));
-        Optional.ofNullable(getUploaderName()).ifPresent(v -> param.setUploaderName(v));
-        Optional.ofNullable(getUploaderId()).ifPresent(v -> param.setUploaderId(v));
-        Optional.ofNullable(getUrl()).ifPresent(v -> param.setUrl(v));
-        Optional.ofNullable(getOrderNo()).ifPresent(v -> param.setOrderNo(v));
+        Optional.ofNullable(getAnimeId()).ifPresent(param::setAnimeId);
+        Optional.ofNullable(getListId()).ifPresent(param::setListId);
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+        Optional.ofNullable(getStatus()).ifPresent(param::setStatus);
+        Optional.ofNullable(getUploaderName()).ifPresent(param::setUploaderName);
+        Optional.ofNullable(getUploaderId()).ifPresent(param::setUploaderId);
+        Optional.ofNullable(getUrl()).ifPresent(param::setUrl);
+        Optional.ofNullable(getOrderNo()).ifPresent(param::setOrderNo);
     }
 }

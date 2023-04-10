@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.sign.creator.SignCreator;
 import cn.chenyunlong.qing.domain.sign.query.SignQuery;
 import cn.chenyunlong.qing.domain.sign.updater.SignUpdater;
 import cn.chenyunlong.qing.domain.sign.vo.SignVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface ISignService {

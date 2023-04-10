@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.anime.recommend.creator.RecommendCreator;
 import cn.chenyunlong.qing.domain.anime.recommend.query.RecommendQuery;
 import cn.chenyunlong.qing.domain.anime.recommend.updater.RecommendUpdater;
 import cn.chenyunlong.qing.domain.anime.recommend.vo.RecommendVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IRecommendService {

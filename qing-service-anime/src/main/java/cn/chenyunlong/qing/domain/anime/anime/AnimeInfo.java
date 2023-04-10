@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.domain.anime.anime;
 
 import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
@@ -32,6 +33,7 @@ import java.util.Objects;
  * @author Stan
  */
 
+@GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.anime")
 @GenVo
 @GenCreator
 @GenUpdater
@@ -46,15 +48,22 @@ import java.util.Objects;
 @GenResponse
 @GenFeign
 @GenMapper
-@GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.anime")
 @Data
 @Entity
 @Table(name = "anime_info")
 @EqualsAndHashCode(callSuper = true)
 public class AnimeInfo extends BaseEntity {
+
+    @FieldDesc(description = "动漫名称")
     private String name;
+
+    @FieldDesc(description = "介绍信息")
     private String instruction;
+
+    @FieldDesc(description = "区域Id")
     private Long districtId;
+
+    @FieldDesc(description = "区域名称")
     private String districtName;
     private String coverUrl;
     private Long typeId;
