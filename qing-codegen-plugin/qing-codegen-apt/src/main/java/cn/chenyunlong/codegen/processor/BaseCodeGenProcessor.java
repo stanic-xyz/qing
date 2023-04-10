@@ -63,19 +63,13 @@ public abstract class BaseCodeGenProcessor extends CodeGenProcessor {
 
     private ProcessingEnvironment processingEnvironment;
 
-    public void generateSource() {
-        System.out.println("processingEnv = " + processingEnvironment.getLocale().getLanguage());
-    }
-
     /**
      * 获取生成的包路径
      *
      * @param typeElement 类型元素
      * @return {@link String}
      */
-    public String generatePackage(TypeElement typeElement) {
-        return null;
-    }
+    public abstract String generatePackage(TypeElement typeElement);
 
     /**
      * 生成Class
@@ -401,7 +395,7 @@ public abstract class BaseCodeGenProcessor extends CodeGenProcessor {
      * @param packageName     生成的包名
      * @param typeSpecBuilder 类型规范施工
      */
-    protected void genJavaFile(String packageName, TypeSpec.Builder typeSpecBuilder) {
+    public void genJavaFile(String packageName, TypeSpec.Builder typeSpecBuilder) {
         ProcessingEnvironment processingEnvironment = ProcessingEnvironmentHolder.getEnvironment();
         try {
             JavaFile javaFile = JavaFile.builder(packageName, typeSpecBuilder.build())

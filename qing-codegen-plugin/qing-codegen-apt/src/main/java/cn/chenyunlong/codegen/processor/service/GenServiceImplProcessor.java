@@ -44,7 +44,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * @author gim 获取名称时可以先获取上下文再取，不用一个个的取，这样更方便
+ * 获取名称时可以先获取上下文再取，不用一个个的取，这样更方便
+ *
+ * @author gim
  */
 @SupportedGenTypes(types = GenServiceImpl.class)
 public class GenServiceImplProcessor extends BaseCodeGenProcessor {

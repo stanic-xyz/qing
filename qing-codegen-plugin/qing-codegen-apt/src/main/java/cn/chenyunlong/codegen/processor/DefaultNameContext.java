@@ -14,7 +14,6 @@
 package cn.chenyunlong.codegen.processor;
 
 import com.google.common.base.Strings;
-import lombok.Data;
 
 /**
  * 默认名称名称上下文，便于其他引入类方便使用
@@ -22,7 +21,6 @@ import lombok.Data;
  * @author Gim
  * @since 2022/11/06
  */
-@Data
 public class DefaultNameContext {
 
 
@@ -123,5 +121,181 @@ public class DefaultNameContext {
 
     private String getFinalPackage(String relativePackage) {
         return !Strings.isNullOrEmpty(basePackage) ? basePackage + "." + relativePackage : relativePackage;
+    }
+
+    public String getBasePackage() {
+        return basePackage;
+    }
+
+    public void setBasePackage(String basePackage) {
+        this.basePackage = basePackage;
+    }
+
+    public String getVoClassName() {
+        return voClassName;
+    }
+
+    public void setVoClassName(String voClassName) {
+        this.voClassName = voClassName;
+    }
+
+    public void setVoPackageName(String voPackageName) {
+        this.voPackageName = voPackageName;
+    }
+
+    public String getQueryClassName() {
+        return queryClassName;
+    }
+
+    public void setQueryClassName(String queryClassName) {
+        this.queryClassName = queryClassName;
+    }
+
+    public void setUpdaterPackageName(String updaterPackageName) {
+        this.updaterPackageName = updaterPackageName;
+    }
+
+    public void setQueryPackageName(String queryPackageName) {
+        this.queryPackageName = queryPackageName;
+    }
+
+    public String getImplClassName() {
+        return implClassName;
+    }
+
+    public void setImplClassName(String implClassName) {
+        this.implClassName = implClassName;
+    }
+
+    public String getUpdaterClassName() {
+        return updaterClassName;
+    }
+
+    public void setUpdaterClassName(String updaterClassName) {
+        this.updaterClassName = updaterClassName;
+    }
+
+    public String getControllerClassName() {
+        return controllerClassName;
+    }
+
+    public void setControllerClassName(String controllerClassName) {
+        this.controllerClassName = controllerClassName;
+    }
+
+    public void setCreatorPackageName(String creatorPackageName) {
+        this.creatorPackageName = creatorPackageName;
+    }
+
+    public String getCreatorClassName() {
+        return creatorClassName;
+    }
+
+    public void setCreatorClassName(String creatorClassName) {
+        this.creatorClassName = creatorClassName;
+    }
+
+    public void setMapperPackageName(String mapperPackageName) {
+        this.mapperPackageName = mapperPackageName;
+    }
+
+    public String getMapperClassName() {
+        return mapperClassName;
+    }
+
+    public void setMapperClassName(String mapperClassName) {
+        this.mapperClassName = mapperClassName;
+    }
+
+    public void setRepositoryPackageName(String repositoryPackageName) {
+        this.repositoryPackageName = repositoryPackageName;
+    }
+
+    public String getRepositoryClassName() {
+        return repositoryClassName;
+    }
+
+    public void setRepositoryClassName(String repositoryClassName) {
+        this.repositoryClassName = repositoryClassName;
+    }
+
+    public void setServicePackageName(String servicePackageName) {
+        this.servicePackageName = servicePackageName;
+    }
+
+    public String getServiceClassName() {
+        return serviceClassName;
+    }
+
+    public void setServiceClassName(String serviceClassName) {
+        this.serviceClassName = serviceClassName;
+    }
+
+    public void setImplPackageName(String implPackageName) {
+        this.implPackageName = implPackageName;
+    }
+
+    public void setControllerPackageName(String controllerPackageName) {
+        this.controllerPackageName = controllerPackageName;
+    }
+
+    public void setCreatePackageName(String createPackageName) {
+        this.createPackageName = createPackageName;
+    }
+
+    public String getCreateClassName() {
+        return createClassName;
+    }
+
+    public void setCreateClassName(String createClassName) {
+        this.createClassName = createClassName;
+    }
+
+    public void setUpdatePackageName(String updatePackageName) {
+        this.updatePackageName = updatePackageName;
+    }
+
+    public String getUpdateClassName() {
+        return updateClassName;
+    }
+
+    public void setUpdateClassName(String updateClassName) {
+        this.updateClassName = updateClassName;
+    }
+
+    public void setQueryRequestPackageName(String queryRequestPackageName) {
+        this.queryRequestPackageName = queryRequestPackageName;
+    }
+
+    public String getQueryRequestClassName() {
+        return queryRequestClassName;
+    }
+
+    public void setQueryRequestClassName(String queryRequestClassName) {
+        this.queryRequestClassName = queryRequestClassName;
+    }
+
+    public void setResponsePackageName(String responsePackageName) {
+        this.responsePackageName = responsePackageName;
+    }
+
+    public String getResponseClassName() {
+        return responseClassName;
+    }
+
+    public void setResponseClassName(String responseClassName) {
+        this.responseClassName = responseClassName;
+    }
+
+    public void setFeignPackageName(String feignPackageName) {
+        this.feignPackageName = feignPackageName;
+    }
+
+    public String getFeignClassName() {
+        return feignClassName;
+    }
+
+    public void setFeignClassName(String feignClassName) {
+        this.feignClassName = feignClassName;
     }
 }
