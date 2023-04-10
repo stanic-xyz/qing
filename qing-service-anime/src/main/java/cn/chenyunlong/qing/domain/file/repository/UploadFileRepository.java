@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.file.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.file.UploadFile;
 
+import java.lang.Long;
+
 public interface UploadFileRepository extends BaseRepository<UploadFile, Long> {
 }

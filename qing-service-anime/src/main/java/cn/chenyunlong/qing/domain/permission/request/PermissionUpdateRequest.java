@@ -3,19 +3,23 @@ package cn.chenyunlong.qing.domain.permission.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class PermissionUpdateRequest implements Request {
     @Schema(
-            title = "Name",
+            title = "name",
             description = "name"
     )
     private String name;
 
     @Schema(
-            title = "Description",
+            title = "description",
             description = "description"
     )
     private String description;

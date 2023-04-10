@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.sign.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.sign.Sign;
 
+import java.lang.Long;
+
 public interface SignRepository extends BaseRepository<Sign, Long> {
 }

@@ -3,48 +3,53 @@ package cn.chenyunlong.qing.domain.activity.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class ActivityUpdateRequest implements Request {
     @Schema(
-            title = "ActivityId"
+            title = "activityId"
     )
     private String activityId;
 
     @Schema(
-            title = "Username",
+            title = "username",
             description = "username"
     )
     private String username;
 
     @Schema(
-            title = "ActivityName",
+            title = "activityName",
             description = "activityName"
     )
     private String activityName;
 
     @Schema(
-            title = "ActivityContent",
+            title = "activityContent",
             description = "activityContent"
     )
     private String activityContent;
 
     @Schema(
-            title = "AttachmentAddress",
+            title = "attachmentAddress",
             description = "attachmentAddress"
     )
     private String attachmentAddress;
 
     @Schema(
-            title = "AttachmentType",
+            title = "attachmentType",
             description = "attachmentType"
     )
     private Integer attachmentType;
 
     @Schema(
-            title = "PublishState",
+            title = "publishState",
             description = "publishState"
     )
     private Integer publishState;

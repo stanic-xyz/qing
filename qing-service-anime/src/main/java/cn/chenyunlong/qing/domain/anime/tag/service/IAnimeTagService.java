@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.anime.tag.creator.AnimeTagCreator;
 import cn.chenyunlong.qing.domain.anime.tag.query.AnimeTagQuery;
 import cn.chenyunlong.qing.domain.anime.tag.updater.AnimeTagUpdater;
 import cn.chenyunlong.qing.domain.anime.tag.vo.AnimeTagVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IAnimeTagService {

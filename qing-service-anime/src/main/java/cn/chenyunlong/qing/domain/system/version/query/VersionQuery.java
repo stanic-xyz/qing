@@ -2,16 +2,14 @@
 package cn.chenyunlong.qing.domain.system.version.query;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.lang.String;
-
 import lombok.Data;
 
 @Schema
 @Data
 public class VersionQuery {
     @Schema(
-            title = "Name"
+            title = "name"
     )
     private String name;
 }

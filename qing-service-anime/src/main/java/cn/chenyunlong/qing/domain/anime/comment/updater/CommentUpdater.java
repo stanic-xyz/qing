@@ -3,33 +3,36 @@ package cn.chenyunlong.qing.domain.anime.comment.updater;
 
 import cn.chenyunlong.qing.domain.anime.comment.Comment;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
+import java.lang.Long;
+import java.lang.String;
 import java.util.Optional;
+
+import lombok.Data;
 
 @Schema
 @Data
 public class CommentUpdater {
     @Schema(
-            title = "Cid",
+            title = "cid",
             description = "cid"
     )
     private Long cid;
 
     @Schema(
-            title = "Username",
+            title = "username",
             description = "username"
     )
     private String username;
 
     @Schema(
-            title = "Content",
+            title = "content",
             description = "content"
     )
     private String content;
 
     @Schema(
-            title = "IpAddress",
+            title = "ipAddress",
             description = "ipAddress"
     )
     private String ipAddress;
@@ -37,9 +40,9 @@ public class CommentUpdater {
     private Long id;
 
     public void updateComment(Comment param) {
-        Optional.ofNullable(getCid()).ifPresent(v -> param.setCid(v));
-        Optional.ofNullable(getUsername()).ifPresent(v -> param.setUsername(v));
-        Optional.ofNullable(getContent()).ifPresent(v -> param.setContent(v));
-        Optional.ofNullable(getIpAddress()).ifPresent(v -> param.setIpAddress(v));
+        Optional.ofNullable(getCid()).ifPresent(param::setCid);
+        Optional.ofNullable(getUsername()).ifPresent(param::setUsername);
+        Optional.ofNullable(getContent()).ifPresent(param::setContent);
+        Optional.ofNullable(getIpAddress()).ifPresent(param::setIpAddress);
     }
 }

@@ -28,7 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @GenVo
 @GenCreator
 @GenUpdater

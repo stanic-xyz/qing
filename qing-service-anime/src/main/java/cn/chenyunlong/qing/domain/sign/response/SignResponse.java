@@ -19,27 +19,29 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
 @Schema
+@Data
+@EqualsAndHashCode(
+        callSuper = true
+)
 public class SignResponse extends AbstractJpaResponse {
     @Schema(
-            title = "UserId"
+            title = "userId"
     )
     private Long userId;
 
     @Schema(
-            title = "DateMonth"
+            title = "dateMonth"
     )
     private Long dateMonth;
 
     @Schema(
-            title = "Mask"
+            title = "mask"
     )
     private Integer mask;
 
     @Schema(
-            title = "ContinueSignMonth"
+            title = "continueSignMonth"
     )
     private Integer continueSignMonth;
 }

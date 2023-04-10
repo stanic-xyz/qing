@@ -33,6 +33,7 @@ import javax.persistence.Table;
 @GenCreator
 @GenUpdater
 @GenRepository
+@GenController
 @GenService
 @GenServiceImpl
 @GenQuery
@@ -42,7 +43,7 @@ import javax.persistence.Table;
 @GenResponse
 @GenFeign
 @GenMapper
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "anime_episode")

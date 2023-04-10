@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.district.creator.DistrictCreator;
 import cn.chenyunlong.qing.domain.district.query.DistrictQuery;
 import cn.chenyunlong.qing.domain.district.updater.DistrictUpdater;
 import cn.chenyunlong.qing.domain.district.vo.DistrictVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IDistrictService {

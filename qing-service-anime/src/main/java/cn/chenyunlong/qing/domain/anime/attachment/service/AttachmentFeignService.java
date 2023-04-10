@@ -8,6 +8,10 @@ import cn.chenyunlong.qing.domain.anime.attachment.request.AttachmentCreateReque
 import cn.chenyunlong.qing.domain.anime.attachment.request.AttachmentQueryRequest;
 import cn.chenyunlong.qing.domain.anime.attachment.request.AttachmentUpdateRequest;
 import cn.chenyunlong.qing.domain.anime.attachment.response.AttachmentResponse;
+
+import java.lang.Long;
+import java.lang.String;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

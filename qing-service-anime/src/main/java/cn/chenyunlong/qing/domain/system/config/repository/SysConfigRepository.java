@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.system.config.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.system.config.SysConfig;
 
+import java.lang.Long;
+
 public interface SysConfigRepository extends BaseRepository<SysConfig, Long> {
 }

@@ -15,6 +15,12 @@ import cn.chenyunlong.qing.domain.district.service.IDistrictService;
 import cn.chenyunlong.qing.domain.district.updater.DistrictUpdater;
 import cn.chenyunlong.qing.domain.district.vo.DistrictVO;
 import com.querydsl.core.BooleanBuilder;
+
+import java.lang.Long;
+import java.lang.Override;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,9 +29,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service

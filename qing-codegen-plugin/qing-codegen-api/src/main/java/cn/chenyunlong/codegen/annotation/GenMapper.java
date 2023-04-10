@@ -16,9 +16,10 @@ package cn.chenyunlong.codegen.annotation;
 import java.lang.annotation.*;
 
 /**
- * @Author: Gim
- * @Date: 2019/11/25 14:14
- * @Description:
+ * 生成Mapper注解
+ *
+ * @author StanChen
+ * @date 2022/10/24
  */
 
 @Target(ElementType.TYPE)
