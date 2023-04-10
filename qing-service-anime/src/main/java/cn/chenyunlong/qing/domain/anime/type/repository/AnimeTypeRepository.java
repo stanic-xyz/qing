@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.anime.type.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.anime.type.AnimeType;
 
+import java.lang.Long;
+
 public interface AnimeTypeRepository extends BaseRepository<AnimeType, Long> {
 }

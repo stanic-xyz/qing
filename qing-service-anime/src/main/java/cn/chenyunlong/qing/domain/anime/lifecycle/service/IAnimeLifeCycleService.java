@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.anime.lifecycle.creator.AnimeLifeCycleCreator;
 import cn.chenyunlong.qing.domain.anime.lifecycle.query.AnimeLifeCycleQuery;
 import cn.chenyunlong.qing.domain.anime.lifecycle.updater.AnimeLifeCycleUpdater;
 import cn.chenyunlong.qing.domain.anime.lifecycle.vo.AnimeLifeCycleVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface IAnimeLifeCycleService {

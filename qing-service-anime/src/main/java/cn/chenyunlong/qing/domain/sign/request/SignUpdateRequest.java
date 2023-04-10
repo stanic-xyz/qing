@@ -3,28 +3,32 @@ package cn.chenyunlong.qing.domain.sign.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.Long;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class SignUpdateRequest implements Request {
     @Schema(
-            title = "UserId"
+            title = "userId"
     )
     private Long userId;
 
     @Schema(
-            title = "DateMonth"
+            title = "dateMonth"
     )
     private Long dateMonth;
 
     @Schema(
-            title = "Mask"
+            title = "mask"
     )
     private Integer mask;
 
     @Schema(
-            title = "ContinueSignMonth"
+            title = "continueSignMonth"
     )
     private Integer continueSignMonth;
 

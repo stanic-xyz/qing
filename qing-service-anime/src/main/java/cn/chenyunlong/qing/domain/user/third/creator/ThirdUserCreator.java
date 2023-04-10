@@ -2,37 +2,42 @@
 package cn.chenyunlong.qing.domain.user.third.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.Integer;
+import java.lang.Long;
+import java.lang.String;
+
 import lombok.Data;
 
 @Schema
 @Data
 public class ThirdUserCreator {
     @Schema(
-            title = "UserId",
+            title = "userId",
             description = "userId"
     )
     private Long userId;
 
     @Schema(
-            title = "Uid",
+            title = "uid",
             description = "uid"
     )
     private String uid;
 
     @Schema(
-            title = "AppType",
+            title = "appType",
             description = "appType"
     )
     private String appType;
 
     @Schema(
-            title = "AccessToken",
+            title = "accessToken",
             description = "accessToken"
     )
     private String accessToken;
 
     @Schema(
-            title = "AccessExpire",
+            title = "accessExpire",
             description = "accessExpire"
     )
     private Integer accessExpire;

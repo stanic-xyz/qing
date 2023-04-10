@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.system.job.job.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.system.job.job.SysJob;
 
+import java.lang.Long;
+
 public interface SysJobRepository extends BaseRepository<SysJob, Long> {
 }

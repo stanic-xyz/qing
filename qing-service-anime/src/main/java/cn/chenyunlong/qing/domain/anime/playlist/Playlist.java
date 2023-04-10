@@ -17,6 +17,7 @@ import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -25,6 +26,7 @@ import javax.persistence.Table;
 /**
  * @author Stan
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.playlist")
 @GenVo

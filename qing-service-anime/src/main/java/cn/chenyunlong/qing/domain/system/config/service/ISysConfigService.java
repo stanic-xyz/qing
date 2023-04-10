@@ -6,6 +6,9 @@ import cn.chenyunlong.qing.domain.system.config.creator.SysConfigCreator;
 import cn.chenyunlong.qing.domain.system.config.query.SysConfigQuery;
 import cn.chenyunlong.qing.domain.system.config.updater.SysConfigUpdater;
 import cn.chenyunlong.qing.domain.system.config.vo.SysConfigVO;
+
+import java.lang.Long;
+
 import org.springframework.data.domain.Page;
 
 public interface ISysConfigService {

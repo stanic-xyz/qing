@@ -8,6 +8,10 @@ import cn.chenyunlong.qing.domain.file.request.UploadFileCreateRequest;
 import cn.chenyunlong.qing.domain.file.request.UploadFileQueryRequest;
 import cn.chenyunlong.qing.domain.file.request.UploadFileUpdateRequest;
 import cn.chenyunlong.qing.domain.file.response.UploadFileResponse;
+
+import java.lang.Long;
+import java.lang.String;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

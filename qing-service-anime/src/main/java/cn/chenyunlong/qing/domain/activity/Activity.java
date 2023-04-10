@@ -29,6 +29,7 @@ import javax.persistence.Table;
 @GenVo
 @GenCreator
 @GenUpdater
+@GenController
 @GenRepository
 @GenService
 @GenServiceImpl

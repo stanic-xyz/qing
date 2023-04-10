@@ -4,5 +4,7 @@ package cn.chenyunlong.qing.domain.anime.comment.repository;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.anime.comment.Comment;
 
+import java.lang.Long;
+
 public interface CommentRepository extends BaseRepository<Comment, Long> {
 }

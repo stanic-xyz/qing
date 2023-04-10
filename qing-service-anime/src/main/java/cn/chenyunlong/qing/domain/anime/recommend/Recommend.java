@@ -17,6 +17,7 @@ import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -47,6 +48,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "anime_recommend")
+@EqualsAndHashCode(callSuper = true)
 public class Recommend extends BaseEntity {
 
     /**
