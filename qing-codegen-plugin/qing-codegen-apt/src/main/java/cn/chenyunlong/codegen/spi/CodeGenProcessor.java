@@ -13,19 +13,15 @@
 
 package cn.chenyunlong.codegen.spi;
 
-import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-
-import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
-import java.util.Set;
 
 /**
  * @author chenyunlong
  */
-public abstract class CodeGenProcessor extends AbstractProcessor {
-
+public interface CodeGenProcessor {
 
     /**
      * 支持方法
@@ -33,11 +29,7 @@ public abstract class CodeGenProcessor extends AbstractProcessor {
      * @param annotationClassName 支持方法
      * @return 是否支持处理该方法
      */
-    public boolean support(String annotationClassName) {
-        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
-        return supportedGenTypes != null && supportedGenTypes.types().getName().equals(annotationClassName);
-
-    }
+    boolean support(String annotationClassName);
 
     /**
      * 生成类
@@ -47,21 +39,27 @@ public abstract class CodeGenProcessor extends AbstractProcessor {
      * @param roundEnvironment 周围环境
      * @param useLombok        是否使用lombok
      */
-    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok);
 
-    }
+    /**
+     * 获取支持注释
+     *
+     * @return {@link Class}<{@link ?} {@link extends} {@link Annotation}>
+     */
+    Class<? extends Annotation> getSupportedAnnotation();
 
-    @Override
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        return false;
-    }
+    /**
+     * 是否重写文件
+     *
+     * @return true，重写文件，false不支持重写
+     */
+    boolean overwrite();
 
+    /**
+     * 初始化
+     *
+     * @param processingEnvironment 处理环境
+     */
+    void init(ProcessingEnvironment processingEnvironment);
 
-    public Class<? extends Annotation> getSupportedAnnotation() {
-        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
-        if (supportedGenTypes != null) {
-            return supportedGenTypes.types();
-        }
-        return null;
-    }
 }

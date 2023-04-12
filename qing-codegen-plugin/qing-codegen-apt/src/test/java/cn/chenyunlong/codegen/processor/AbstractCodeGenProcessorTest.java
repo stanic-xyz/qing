@@ -34,7 +34,7 @@ import static com.google.testing.compile.Compiler.javac;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 @Schema
-public class BaseCodeGenProcessorTest extends TestCase {
+public class AbstractCodeGenProcessorTest extends TestCase {
 
 
     @Rule

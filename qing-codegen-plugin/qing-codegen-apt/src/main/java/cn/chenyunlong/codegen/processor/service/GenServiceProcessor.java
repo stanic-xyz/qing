@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.service;
 
 import cn.chenyunlong.codegen.annotation.GenService;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import com.squareup.javapoet.ClassName;
@@ -35,7 +35,7 @@ import java.util.Optional;
  * @author gim
  */
 @SupportedGenTypes(types = GenService.class)
-public class GenServiceProcessor extends BaseCodeGenProcessor {
+public class GenServiceProcessor extends AbstractCodeGenProcessor {
 
     public static final String SERVICE_SUFFIX = "Service";
 
@@ -44,7 +44,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
 
         String className = SERVICE_PREFIX + typeElement.getSimpleName() + SERVICE_SUFFIX;
         TypeSpec.Builder typeSpecBuilder;
@@ -59,7 +59,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
 
         String packageName = nameContext.getServicePackageName();
         GenService annotation = typeElement.getAnnotation(GenService.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> createMethod(TypeElement typeElement,
-                                              DefaultNameContext nameContext) {
+                                              NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getCreatorPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("create" + typeElement.getSimpleName())
@@ -83,7 +83,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> updateMethod(TypeElement typeElement,
-                                              DefaultNameContext nameContext) {
+                                              NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getUpdaterPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("update" + typeElement.getSimpleName())
@@ -113,7 +113,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
                 .build());
     }
 
-    private Optional<MethodSpec> findByIdMethod(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findByIdMethod(NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getVoPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("findById")
@@ -126,7 +126,7 @@ public class GenServiceProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> findByPageMethod(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findByPageMethod(NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryPackageName(),
                 nameContext.getVoPackageName());
         if (!containsNull) {

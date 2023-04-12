@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.updater;
 import cn.chenyunlong.codegen.annotation.GenUpdater;
 import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
@@ -42,7 +42,7 @@ import java.util.Set;
  */
 
 @SupportedGenTypes(types = GenUpdater.class)
-public class GenUpdaterProcessor extends BaseCodeGenProcessor {
+public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
 
     public static final String SUFFIX = "Updater";
 
@@ -87,10 +87,10 @@ public class GenUpdaterProcessor extends BaseCodeGenProcessor {
 
         addIdField(classBuilder, useLombok);
 
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
         String packageName = nameContext.getUpdaterPackageName();
         GenUpdater annotation = typeElement.getAnnotation(GenUpdater.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
+        genJavaSourceFile(classBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
     }
 
     @Override

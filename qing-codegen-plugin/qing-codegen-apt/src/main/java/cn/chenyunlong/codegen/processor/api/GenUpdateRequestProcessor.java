@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.api;
 import cn.chenyunlong.codegen.annotation.GenUpdateRequest;
 import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.common.model.Request;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,13 +38,13 @@ import java.util.Set;
  */
 //@AutoService(value = CodeGenProcessor.class)
 @SupportedGenTypes(types = GenUpdateRequest.class)
-public class GenUpdateRequestProcessor extends BaseCodeGenProcessor {
+public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
 
     public static String UPDATE_REQUEST_SUFFIX = "UpdateRequest";
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getUpdateClassName())
@@ -58,7 +58,7 @@ public class GenUpdateRequestProcessor extends BaseCodeGenProcessor {
         addIdField(typeSpecBuilder, useLombok);
         String packageName = nameContext.getQueryRequestPackageName();
         GenUpdateRequest annotation = typeElement.getAnnotation(GenUpdateRequest.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
     }
 
     @Override
