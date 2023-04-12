@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.service;
 
 import cn.chenyunlong.codegen.annotation.GenServiceImpl;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
@@ -49,13 +49,13 @@ import java.util.stream.Collectors;
  * @author gim
  */
 @SupportedGenTypes(types = GenServiceImpl.class)
-public class GenServiceImplProcessor extends BaseCodeGenProcessor {
+public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
 
     public static final String IMPL_SUFFIX = "ServiceImpl";
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
                 .addSuperinterface(ClassName.get(nameContext.getServicePackageName(),
@@ -88,7 +88,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
         String implPackageName = nameContext.getImplPackageName();
         GenServiceImpl annotation = typeElement.getAnnotation(GenServiceImpl.class);
-        genJavaSourceFile(implPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), implPackageName, annotation.overrideSource());
     }
 
     @Override
@@ -105,7 +105,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
      * @param classFieldName      类字段名称，作为参数的Class信息，默认：typeElement.getSimpleName().toString()
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> createMethod(TypeElement typeElement, DefaultNameContext nameContext,
+    private Optional<MethodSpec> createMethod(TypeElement typeElement, NameContext nameContext,
                                               String repositoryFieldName, String classFieldName) {
         String creatorPackageName = nameContext.getCreatorPackageName();
         String creatorClassName = nameContext.getCreatorClassName();
@@ -145,7 +145,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> updateMethod(TypeElement typeElement, DefaultNameContext nameContext,
+    private Optional<MethodSpec> updateMethod(TypeElement typeElement, NameContext nameContext,
                                               String repositoryFieldName) {
         boolean containsNull = StringUtils.containsNull(nameContext.getUpdaterPackageName());
         if (!containsNull) {
@@ -204,7 +204,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> findByIdMethod(TypeElement typeElement,
-                                                DefaultNameContext nameContext, String repositoryFieldName,
+                                                NameContext nameContext, String repositoryFieldName,
                                                 String classFieldName) {
         boolean containsNull = StringUtils.containsNull(nameContext.getVoPackageName());
         if (!containsNull) {
@@ -234,7 +234,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> findByPageMethod(TypeElement typeElement,
-                                                  DefaultNameContext nameContext, String repositoryFieldName) {
+                                                  NameContext nameContext, String repositoryFieldName) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryPackageName(),
                 nameContext.getVoPackageName());
         if (!containsNull) {

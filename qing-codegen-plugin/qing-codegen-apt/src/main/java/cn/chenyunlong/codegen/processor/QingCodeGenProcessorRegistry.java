@@ -17,10 +17,7 @@ import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.registry.CodeGenProcessorRegistry;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -36,7 +33,7 @@ import java.util.Set;
  */
 @SupportedOptions({})
 @SupportedAnnotationTypes({})
-public class QingCodeGenProcessorRegistry extends CodeGenProcessor {
+public class QingCodeGenProcessorRegistry extends AbstractProcessor {
 
     /**
      * 过程
@@ -63,7 +60,7 @@ public class QingCodeGenProcessorRegistry extends CodeGenProcessor {
                         }));
             });
         } catch (Exception exception) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, "生成异常了");
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, "Qing：代码生成器异常！");
         }
         return false;
     }
@@ -75,8 +72,8 @@ public class QingCodeGenProcessorRegistry extends CodeGenProcessor {
      */
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
-        CodeGenProcessorRegistry.initProcessors(processingEnvironment);
         super.init(processingEnvironment);
+        CodeGenProcessorRegistry.initProcessors(processingEnvironment);
         ProcessingEnvironmentHolder.setEnvironment(processingEnvironment);
     }
 

@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.codegen.processor;
+package cn.chenyunlong.codegen.context;
 
 import com.google.common.base.Strings;
 
@@ -21,7 +21,7 @@ import com.google.common.base.Strings;
  * @author Gim
  * @since 2022/11/06
  */
-public class DefaultNameContext {
+public class NameContext {
 
 
     /**

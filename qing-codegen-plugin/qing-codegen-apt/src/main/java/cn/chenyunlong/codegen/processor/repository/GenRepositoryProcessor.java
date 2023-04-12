@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.repository;
 
 import cn.chenyunlong.codegen.annotation.GenRepository;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
@@ -34,7 +34,7 @@ import javax.lang.model.element.TypeElement;
  * @date 2022/12/22
  */
 @SupportedGenTypes(types = GenRepository.class)
-public class GenRepositoryProcessor extends BaseCodeGenProcessor {
+public class GenRepositoryProcessor extends AbstractCodeGenProcessor {
 
     public static final String REPOSITORY_SUFFIX = "Repository";
 
@@ -46,10 +46,10 @@ public class GenRepositoryProcessor extends BaseCodeGenProcessor {
                         ClassName.get(typeElement), ClassName.get(Long.class)))
                 .addModifiers(Modifier.PUBLIC);
 
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
         String packageName = nameContext.getRepositoryPackageName();
         GenRepository annotation = typeElement.getAnnotation(GenRepository.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
     }
 
     @Override

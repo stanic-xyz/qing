@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.controller;
 
 import cn.chenyunlong.codegen.annotation.GenController;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
@@ -41,13 +41,13 @@ import java.util.stream.Collectors;
  * 获取名称时可以先获取上下文再取，不用一个个的取，这样更方便
  */
 @SupportedGenTypes(types = GenController.class)
-public class GenControllerProcessor extends BaseCodeGenProcessor {
+public class GenControllerProcessor extends AbstractCodeGenProcessor {
 
     public static final String CONTROLLER_SUFFIX = "Controller";
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
 
         String serviceFieldName = StringUtils.lowerCamel(typeElement.getSimpleName().toString()) + "Service";
         String serviceClassName = nameContext.getServiceClassName();
@@ -84,7 +84,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
         findById(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
         findByPage(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
         GenController annotation = typeElement.getAnnotation(GenController.class);
-        genJavaSourceFile(controllerPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), controllerPackageName, annotation.overrideSource());
     }
 
     @Override
@@ -101,7 +101,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> createMethod(String serviceFieldName, TypeElement typeElement,
-                                              DefaultNameContext nameContext) {
+                                              NameContext nameContext) {
         String creatorPackageName = nameContext.getCreatorPackageName();
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -148,7 +148,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> updateMethod(String serviceFieldName, TypeElement typeElement,
-                                              DefaultNameContext nameContext) {
+                                              NameContext nameContext) {
         String updatePackageName = nameContext.getUpdatePackageName();
         String updaterPackageName = nameContext.getUpdaterPackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -239,7 +239,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @param nameContext      命名上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> findById(String serviceFieldName, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findById(String serviceFieldName, NameContext nameContext) {
         String voPackageName = nameContext.getVoPackageName();
         String responsePackageName = nameContext.getResponsePackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -280,7 +280,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @param nameContext      命名上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> findByPage(String serviceFieldName, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findByPage(String serviceFieldName, NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(),
                 nameContext.getQueryPackageName(), nameContext.getMapperPackageName(), nameContext.getVoPackageName()
                 , nameContext.getResponsePackageName());

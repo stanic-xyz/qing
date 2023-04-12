@@ -16,7 +16,7 @@ package cn.chenyunlong.codegen.processor.creator;
 import cn.chenyunlong.codegen.annotation.GenCreator;
 import cn.chenyunlong.codegen.annotation.IgnoreCreator;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
@@ -37,7 +37,7 @@ import java.util.Objects;
  * @author cyl Creator 代码生成器
  */
 @SupportedGenTypes(types = GenCreator.class)
-public class GenCreatorProcessor extends BaseCodeGenProcessor {
+public class GenCreatorProcessor extends AbstractCodeGenProcessor {
 
     public static final String SUFFIX = "Creator";
 
@@ -77,7 +77,7 @@ public class GenCreatorProcessor extends BaseCodeGenProcessor {
                         -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)), useLombok);
         String packageName = getNameContext(typeElement).getCreatorPackageName();
         GenCreator annotation = typeElement.getAnnotation(GenCreator.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
+        genJavaSourceFile(classBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
     }
 
     /**

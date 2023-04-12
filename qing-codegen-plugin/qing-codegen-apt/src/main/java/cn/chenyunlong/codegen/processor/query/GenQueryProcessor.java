@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.query;
 import cn.chenyunlong.codegen.annotation.GenQuery;
 import cn.chenyunlong.codegen.annotation.QueryItem;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -34,7 +34,7 @@ import java.util.Objects;
  * @date 2019-10-08 17:14
  */
 @SupportedGenTypes(types = GenQuery.class)
-public class GenQueryProcessor extends BaseCodeGenProcessor {
+public class GenQueryProcessor extends AbstractCodeGenProcessor {
 
     public static String QUERY_SUFFIX = "Query";
 
@@ -49,7 +49,7 @@ public class GenQueryProcessor extends BaseCodeGenProcessor {
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
 
         String sourceClassName = typeElement.getSimpleName() + QUERY_SUFFIX;
         String queryPackageName = nameContext.getQueryPackageName();
@@ -65,7 +65,7 @@ public class GenQueryProcessor extends BaseCodeGenProcessor {
                 variableElement -> Objects.nonNull(variableElement.getAnnotation(
                         QueryItem.class))), useLombok);
         GenQuery annotation = typeElement.getAnnotation(GenQuery.class);
-        genJavaSourceFile(queryPackageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
+        genJavaSourceFile(classBuilder, annotation.sourcePath(), queryPackageName, annotation.overrideSource());
     }
 
     @Override
