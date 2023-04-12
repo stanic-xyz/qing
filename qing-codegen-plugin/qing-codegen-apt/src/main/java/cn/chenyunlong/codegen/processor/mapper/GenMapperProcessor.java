@@ -15,8 +15,8 @@ package cn.chenyunlong.codegen.processor.mapper;
 
 import cn.chenyunlong.codegen.annotation.GenMapper;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.hutool.core.bean.BeanUtil;
 import com.squareup.javapoet.*;
@@ -34,14 +34,14 @@ import java.util.Optional;
  * @date 2022/11/29
  */
 @SupportedGenTypes(types = GenMapper.class)
-public class GenMapperProcessor extends BaseCodeGenProcessor {
+public class GenMapperProcessor extends AbstractCodeGenProcessor {
 
     public static final String SUFFIX = "Mapper";
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
 
         String className = typeElement.getSimpleName() + SUFFIX;
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -68,7 +68,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         Optional<MethodSpec> vo2CustomResponseMethod = vo2CustomResponseMethod(nameContext);
         vo2CustomResponseMethod.ifPresent(typeSpecBuilder::addMethod);
         GenMapper annotation = typeElement.getAnnotation(GenMapper.class);
-        genJavaSourceFile(mapperPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), mapperPackageName, annotation.overrideSource());
     }
 
     @Override
@@ -76,7 +76,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         return typeElement.getAnnotation(GenMapper.class).pkgName();
     }
 
-    private Optional<MethodSpec> dtoToEntityMethod(TypeElement typeElement, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> dtoToEntityMethod(TypeElement typeElement, NameContext nameContext) {
         String packageName = nameContext.getCreatorPackageName();
         boolean containsNull = StringUtils.containsNull(packageName);
         if (!containsNull) {
@@ -94,7 +94,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> request2UpdaterMethod(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> request2UpdaterMethod(NameContext nameContext) {
         String updaterPackageName = nameContext.getUpdaterPackageName();
         String updatePackageName = nameContext.getUpdatePackageName();
         boolean containsNull = StringUtils.containsNull(updaterPackageName, updatePackageName);
@@ -115,7 +115,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> request2DtoMethod(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> request2DtoMethod(NameContext nameContext) {
         String createPackageName = nameContext.getCreatePackageName();
         String creatorPackageName = nameContext.getCreatorPackageName();
         boolean containsNull = StringUtils.containsNull(creatorPackageName, createPackageName);
@@ -135,7 +135,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> request2QueryMethod(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> request2QueryMethod(NameContext nameContext) {
         String requestPackageName = nameContext.getQueryRequestPackageName();
         String packageName = nameContext.getQueryPackageName();
         boolean containsNull = StringUtils.containsNull(packageName, requestPackageName);
@@ -155,7 +155,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> vo2ResponseMethod(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> vo2ResponseMethod(NameContext nameContext) {
         String responsePackageName = nameContext.getResponsePackageName();
         String voPackageName = nameContext.getVoPackageName();
         boolean containsNull = StringUtils.containsNull(responsePackageName, voPackageName);
@@ -175,7 +175,7 @@ public class GenMapperProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> vo2CustomResponseMethod(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> vo2CustomResponseMethod(NameContext nameContext) {
         String responsePackageName = nameContext.getResponsePackageName();
         boolean containsNull = StringUtils.containsNull(responsePackageName, nameContext.getVoPackageName());
         if (!containsNull) {

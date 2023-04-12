@@ -14,6 +14,7 @@
 package cn.chenyunlong.codegen.processor;
 
 import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.processor.api.*;
 import cn.chenyunlong.codegen.processor.controller.GenControllerProcessor;
@@ -35,11 +36,8 @@ import com.squareup.javapoet.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.annotation.processing.Completion;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
@@ -47,6 +45,8 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,9 +59,82 @@ import java.util.function.Predicate;
  * @author Stan
  * @since 2022/11/27
  */
-public abstract class BaseCodeGenProcessor extends CodeGenProcessor {
+public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
 
-    private ProcessingEnvironment processingEnvironment;
+
+    protected ProcessingEnvironment processingEnvironment;
+
+    protected NameContext nameContext;
+
+    /**
+     * 初始化
+     *
+     * @param processingEnvironment 处理环境
+     */
+    public void init(ProcessingEnvironment processingEnvironment) {
+        this.processingEnvironment = processingEnvironment;
+    }
+
+
+    /**
+     * 支持方法
+     *
+     * @param annotationClassName 支持方法
+     * @return 是否支持处理该方法
+     */
+    @Override
+    public boolean support(String annotationClassName) {
+        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
+        if (supportedGenTypes == null) return false;
+        return supportedGenTypes.types().getName().equals(annotationClassName);
+    }
+
+    /**
+     * 生成类
+     * 生成Class
+     *
+     * @param typeElement      顶层元素
+     * @param roundEnvironment 周围环境
+     * @param useLombok        是否使用lombok
+     */
+    @Override
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+
+    }
+
+    /**
+     * 获取支持的注解
+     *
+     * @return {@link Class}<{@link ?} {@link extends} {@link Annotation}>
+     */
+    @Override
+    public Class<? extends Annotation> getSupportedAnnotation() {
+        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
+        if (supportedGenTypes != null) {
+            return supportedGenTypes.types();
+        }
+        return null;
+    }
+
+    /**
+     * 是否重写文件
+     *
+     * @return true，重写文件，false不支持重写
+     */
+    @Override
+    public boolean overwrite() {
+        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
+        if (supportedGenTypes == null) {
+            return false;
+        }
+        Class<? extends Annotation> aClass = supportedGenTypes.types();
+        try {
+            Field field = aClass.getField("");
+            return field.getBoolean(aClass);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return false;
+        }
+    }
 
     /**
      * 获取生成的包路径
@@ -106,10 +179,10 @@ public abstract class BaseCodeGenProcessor extends CodeGenProcessor {
      * 获取名称默认上下文
      *
      * @param typeElement 类型元素
-     * @return {@link DefaultNameContext}
+     * @return {@link NameContext}
      */
-    public DefaultNameContext getNameContext(TypeElement typeElement) {
-        DefaultNameContext context = new DefaultNameContext();
+    public NameContext getNameContext(TypeElement typeElement) {
+        NameContext context = new NameContext();
         Name domainName = typeElement.getSimpleName();
 
         ProcessingEnvironment processingEnvironment = ProcessingEnvironmentHolder.getEnvironment();
@@ -410,70 +483,33 @@ public abstract class BaseCodeGenProcessor extends CodeGenProcessor {
     /**
      * 生成Java源文件
      *
-     * @param packageName     包名
-     * @param pathStr         生成文件路径
-     * @param typeSpecBuilder 类型规范施工
-     * @param overrideSource  是否覆盖源文件
+     * @param builder     类型规范创建器
+     * @param genPath     生成文件路径
+     * @param packageName 包名
+     * @param override    是否覆盖源文件
      */
-    public void genJavaSourceFile(String packageName, String pathStr, TypeSpec.Builder typeSpecBuilder,
-                                  boolean overrideSource) {
-        ProcessingEnvironment processingEnvironment = ProcessingEnvironmentHolder.getEnvironment();
-        TypeSpec typeSpec = typeSpecBuilder.build();
+    public void genJavaSourceFile(TypeSpec.Builder builder, String genPath, String packageName, boolean override) {
         // 生成.java文件
+        TypeSpec typeSpec = builder.build();
         JavaFile javaFile = JavaFile
                 .builder(packageName, typeSpec)
                 .addFileComment("---Auto Generated by Qing-Generator ---")
                 .build();
         String packagePath = packageName.replace(".", File.separator) + File.separator + typeSpec.name + ".java";
         try {
-            Path path = Paths.get(pathStr);
+            Path path = Paths.get(genPath);
             File file = new File(path.toFile().getAbsolutePath());
             if (!file.exists()) {
                 return;
             }
             String sourceFileName = path.toFile().getAbsolutePath() + File.separator + packagePath;
             File sourceFile = new File(sourceFileName);
-            if (!sourceFile.exists() || overrideSource) {
+            if (!sourceFile.exists() || override) {
                 Files.deleteIfExists(sourceFile.toPath());
                 javaFile.writeTo(file);
             }
         } catch (IOException exception) {
             processingEnvironment.getMessager().printMessage(Kind.ERROR, exception.getMessage());
         }
-    }
-
-    @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return Collections.emptySet();
-    }
-
-    /**
-     * {@return the latest source version supported by this annotation
-     * processor}
-     *
-     * @see SupportedSourceVersion
-     * @see ProcessingEnvironment#getSourceVersion
-     */
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latestSupported();
-    }
-
-    /**
-     * Initializes the processor with the processing environment.
-     *
-     * @param processingEnv environment for facilities the tool framework
-     *                      provides to the processor
-     */
-    @Override
-    public void init(ProcessingEnvironment processingEnv) {
-        this.processingEnvironment = processingEnv;
-    }
-
-
-    @Override
-    public Iterable<? extends Completion> getCompletions(Element element, AnnotationMirror annotation,
-                                                         ExecutableElement member, String userText) {
-        return Collections.emptyList();
     }
 }

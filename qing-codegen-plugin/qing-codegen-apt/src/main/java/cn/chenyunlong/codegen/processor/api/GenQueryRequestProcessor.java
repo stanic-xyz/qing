@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.api;
 import cn.chenyunlong.codegen.annotation.GenQueryRequest;
 import cn.chenyunlong.codegen.annotation.QueryItem;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.common.model.Request;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,13 +37,13 @@ import java.util.Set;
  * @date 2022/11/28
  */
 @SupportedGenTypes(types = GenQueryRequest.class)
-public class GenQueryRequestProcessor extends BaseCodeGenProcessor {
+public class GenQueryRequestProcessor extends AbstractCodeGenProcessor {
 
     public static String QUERY_REQUEST_SUFFIX = "QueryRequest";
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
 
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
 
@@ -57,8 +57,10 @@ public class GenQueryRequestProcessor extends BaseCodeGenProcessor {
             typeSpecBuilder.addAnnotation(Data.class);
         }
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
-        genJavaSourceFile(queryRequestPackageName,
-                typeElement.getAnnotation(GenQueryRequest.class).sourcePath(), typeSpecBuilder, true);
+        String sourcePath = typeElement.getAnnotation(GenQueryRequest.class).sourcePath();
+        genJavaSourceFile(typeSpecBuilder, sourcePath,
+                queryRequestPackageName,
+                true);
     }
 
     @Override

@@ -14,11 +14,23 @@
 package cn.chenyunlong.codegen.processor.test;
 
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.lang.model.element.TypeElement;
+
 @SupportedGenTypes(types = Schema.class)
-public class TestSchemaProcessor extends BaseCodeGenProcessor {
+public class TestSchemaProcessor extends AbstractCodeGenProcessor {
 
 
+    /**
+     * 获取生成的包路径
+     *
+     * @param typeElement 类型元素
+     * @return {@link String}
+     */
+    @Override
+    public String generatePackage(TypeElement typeElement) {
+        return null;
+    }
 }

@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.codegen.processor.api;
 
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.QingCodeGenProcessorRegistry;
 import cn.hutool.core.io.resource.ClassPathResource;
 import com.google.testing.compile.Compilation;
@@ -57,7 +57,7 @@ public class GenCreateRequestProcessorTest extends TestCase {
                         """
         );
         Compilation compilation = javac()
-                .withProcessors(updateRequestProcessor, qingCodeGenProcessorRegistry)
+                .withProcessors(qingCodeGenProcessorRegistry)
                 .withClasspath(objects)
                 .compile(javaFileObject);
 
@@ -67,7 +67,7 @@ public class GenCreateRequestProcessorTest extends TestCase {
 
     public void testClassLoader() {
         ServiceLoader<QingCodeGenProcessorRegistry> loaded = ServiceLoader.load(QingCodeGenProcessorRegistry.class,
-                BaseCodeGenProcessor.class.getClassLoader());
+                AbstractCodeGenProcessor.class.getClassLoader());
         loaded.forEach(baseCodeGenProcessor -> {System.out.println("baseCodeGenProcessor = " + baseCodeGenProcessor);});
     }
 

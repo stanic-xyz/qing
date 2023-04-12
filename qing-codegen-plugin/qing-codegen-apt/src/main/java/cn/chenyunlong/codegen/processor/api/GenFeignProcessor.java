@@ -15,8 +15,8 @@ package cn.chenyunlong.codegen.processor.api;
 
 import cn.chenyunlong.codegen.annotation.GenFeign;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
@@ -40,13 +40,13 @@ import java.util.Optional;
  * @date 2022/11/28
  */
 @SupportedGenTypes(types = GenFeign.class)
-public class GenFeignProcessor extends BaseCodeGenProcessor {
+public class GenFeignProcessor extends AbstractCodeGenProcessor {
 
     public static String FEIGN_SUFFIX = "FeignService";
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
         String classFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
                 typeElement.getSimpleName().toString());
         GenFeign annotation = typeElement.getAnnotation(GenFeign.class);
@@ -71,7 +71,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
         Optional<MethodSpec> findByPage = findByPage(nameContext);
         findByPage.ifPresent(builder::addMethod);
         String feignPackageName = nameContext.getFeignPackageName();
-        genJavaSourceFile(feignPackageName, annotation.sourcePath(), builder, annotation.overrideSource());
+        genJavaSourceFile(builder, annotation.sourcePath(), feignPackageName, annotation.overrideSource());
     }
 
     @Override
@@ -86,7 +86,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
      * @param nameContext 名称上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> createMethod(TypeElement typeElement, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> createMethod(TypeElement typeElement, NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getCreatePackageName());
         if (!containsNull) {
             ClassName requestBody = ClassName.get("org.springframework.web.bind.annotation", "RequestBody");
@@ -113,7 +113,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
      * @param nameContext 名称上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> updateMethod(TypeElement typeElement, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> updateMethod(TypeElement typeElement, NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getUpdatePackageName());
         if (!containsNull) {
             ClassName requestBody = ClassName.get("org.springframework.web.bind.annotation", "RequestBody");
@@ -168,7 +168,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
      * @param nameContext 名称上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> findById(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findById(NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getResponsePackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("findById")
@@ -195,7 +195,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
      * @param nameContext 代码生成器上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> findByPage(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findByPage(NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(),
                 nameContext.getResponsePackageName());
         if (!containsNull) {

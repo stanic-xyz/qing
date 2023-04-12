@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.api;
 import cn.chenyunlong.codegen.annotation.GenCreateRequest;
 import cn.chenyunlong.codegen.annotation.IgnoreCreator;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.common.model.Request;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,13 +38,13 @@ import java.util.Set;
  */
 
 @SupportedGenTypes(types = GenCreateRequest.class)
-public class GenCreateRequestProcessor extends BaseCodeGenProcessor {
+public class GenCreateRequestProcessor extends AbstractCodeGenProcessor {
 
     public static final String CREATE_REQUEST_SUFFIX = "CreateRequest";
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
 
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
 
@@ -60,8 +60,9 @@ public class GenCreateRequestProcessor extends BaseCodeGenProcessor {
         }
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
 
-        genJavaSourceFile(queryRequestPackageName,
-                typeElement.getAnnotation(GenCreateRequest.class).sourcePath(), typeSpecBuilder, true);
+        genJavaSourceFile(typeSpecBuilder, typeElement.getAnnotation(GenCreateRequest.class).sourcePath(),
+                queryRequestPackageName,
+                true);
     }
 
 

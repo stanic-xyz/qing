@@ -16,8 +16,8 @@ package cn.chenyunlong.codegen.processor.api;
 import cn.chenyunlong.codegen.annotation.GenResponse;
 import cn.chenyunlong.codegen.annotation.IgnoreVo;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,13 +36,13 @@ import java.util.Set;
  * @date 2022/11/28
  */
 @SupportedGenTypes(types = GenResponse.class)
-public class GenResponseProcessor extends BaseCodeGenProcessor {
+public class GenResponseProcessor extends AbstractCodeGenProcessor {
 
     public static String RESPONSE_SUFFIX = "Response";
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+        NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getResponseClassName())
@@ -52,7 +52,7 @@ public class GenResponseProcessor extends BaseCodeGenProcessor {
         addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
         String packageName = nameContext.getResponsePackageName();
         GenResponse annotation = typeElement.getAnnotation(GenResponse.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
     }
 
     @Override
