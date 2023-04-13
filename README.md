@@ -2,12 +2,24 @@
 
 [![License](https://img.shields.io/badge/licence-MulanPSL2-blue)](http://license.coscl.org.cn/MulanPSL2)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/yunlongChen/qing/maven.yml?branch=main)
+[![star](https://gitee.com/stanChen/qing/badge/star.svg?theme=dark)](https://gitee.com/stanChen/qing)
+
+##### 代码仓库
+
+<p>
+  <a href="https://gitee.com/stanChen/qing">
+    <img alt="Gitee" src="https://img.shields.io/badge/-Gitee-C71D23?style=flat&logo=gitee&logoColor=white" />
+  </a>
+  <a href="https://github.com/stanic-xyz/qing">
+    <img alt="Github" src="https://img.shields.io/badge/-Github-181717?style=flat&logo=Github&logoColor=white" />
+  </a>
+</p>
 
 ##### 前端项目
 
 <p>
   <a href="https://gitee.com/stanChen/qing-frontend">
-    <img alt="Gitee" src="https://img.shields.io/badge/-Gitee-C71D23?style=flat&logo=gitee&logoColor=white" />
+    <img alt="Qing-Front" src="https://img.shields.io/badge/-Gitee-C71D23?style=flat&logo=gitee&logoColor=white" />
   </a>
   <a href="https://github.com/stanic-xyz/qing-frontend">
     <img alt="Github" src="https://img.shields.io/badge/-Github-181717?style=flat&logo=Github&logoColor=white" />
