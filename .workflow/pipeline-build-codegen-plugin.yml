@@ -21,7 +21,7 @@ stages:
         jdkVersion: '17'
         mavenVersion: 3.6.3
         commands:
-          - sh mvnw install  -Dmaven.test.skip=true
+          - pwd
         artifacts:
           - name: BUILD_ARTIFACT
             path:
