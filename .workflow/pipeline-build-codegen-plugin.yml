@@ -28,15 +28,15 @@ stages:
           - '#    -e -X ：打印调试信息，定位疑难构建问题时建议使用此参数构建'
           - '#    -B：以batch模式运行，可避免日志打印时出现ArrayIndexOutOfBoundsException异常'
           - '# 使用场景：打包项目且不需要执行单元测试时使用'
-          - cd qing-bom && mvn install
-          - '# 使用场景：Build qing-commons'
-          - cd qing-commons && mvn clean install
-          - '#Build qing-common-starters'
-          - cd qing-common-starters && mvn clean install
-          - '#Build qing-codegen-plugin'
-          - cd qing-codegen-plugin && mvn clean install
-          - '#Build Docker Image and Push to Docker Hub'
-          - cd qing-service-anime && mvn clean package -B
+          - cd ${GITEE_REPO}/qing-bom && mvn install  -Dmaven.test.skip=true
+          - # 使用场景：Build qing-commons
+          - cd ${GITEE_REPO}/qing-commons && mvn clean install -Dmaven.test.skip=true
+          - #Build qing-common-starters
+          - cd ${GITEE_REPO}/qing-common-starters && mvn clean install -Dmaven.test.skip=true
+          - #Build qing-codegen-plugin
+          - cd ${GITEE_REPO}/qing-codegen-plugin && mvn clean install -Dmaven.test.skip=true
+          - #Build Docker Image and Push to Docker Hub
+          - cd ${GITEE_REPO}/qing-service-anime && mvn clean package -Dmaven.test.skip=true -B
           - ''
           - '# 功能：自定义settings配置'
           - '# 使用场景：如需手工指定settings.xml，可使用如下方式'
