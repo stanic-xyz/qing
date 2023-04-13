@@ -22,10 +22,8 @@ stages:
         mavenVersion: 3.6.3
         commands:
           - pwd
-        artifacts:
-          - name: BUILD_ARTIFACT
-            path:
-              - ./target
+          - ''
+          - cd ~/
         settings: []
         caches:
           - ~/.m2
