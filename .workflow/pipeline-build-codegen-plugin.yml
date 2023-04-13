@@ -24,6 +24,13 @@ stages:
           - pwd
           - ''
           - cd ~/
+          - ''
+          - cd ~/workspace/${GITEE_REPO}/
+          - cd ~/workspace/${GITEE_REPO}/qing-bom && mvn install -Dmaven.test.skip=true
+          - cd ~/workspace/${GITEE_REPO}/qing-commons && mvn clean install -Dmaven.test.skip=true
+          - cd ~/workspace/${GITEE_REPO}/qing-common-starters && mvn clean install -Dmaven.test.skip=true
+          - cd ~/workspace/${GITEE_REPO}/qing-codegen-plugin && mvn clean install -Dmaven.test.skip=true
+          - cd ~/workspace/${GITEE_REPO}/qing-service-anime && mvn clean package -Dmaven.test.skip=true -B
         settings: []
         caches:
           - ~/.m2
