@@ -45,18 +45,12 @@ public class GenResponseProcessor extends AbstractCodeGenProcessor {
         NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getResponseClassName())
+        TypeSpec.Builder builder = TypeSpec.classBuilder(nameContext.getResponseClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(AbstractJpaResponse.class)
                 .addAnnotation(Schema.class);
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
-        String packageName = nameContext.getResponsePackageName();
-        GenResponse annotation = typeElement.getAnnotation(GenResponse.class);
-        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
+        addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
+        genJavaSourceFile(typeElement, builder);
     }
 
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenResponse.class).pkgName();
-    }
 }

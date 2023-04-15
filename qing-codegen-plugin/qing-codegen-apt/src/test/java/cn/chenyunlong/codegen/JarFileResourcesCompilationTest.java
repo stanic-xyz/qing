@@ -41,7 +41,7 @@ public class JarFileResourcesCompilationTest {
 
     @Before
     public void createJarFile() throws IOException {
-        this.jarFile = new ClassPathResource("lib/swagger-annotations-2.2.7.jar").getFile();
+        this.jarFile = new ClassPathResource("lib/swagger-annotations-2.2.8.jar").getFile();
         JarOutputStream out = new JarOutputStream(new FileOutputStream(jarFile));
         JarEntry helloWorldEntry = new JarEntry("test/HelloWorld.java");
         out.putNextEntry(helloWorldEntry);

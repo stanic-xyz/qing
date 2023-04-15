@@ -59,7 +59,7 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
             return;
         }
 
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(controllerClassName)
+        TypeSpec.Builder builder = TypeSpec.classBuilder(controllerClassName)
                 .addAnnotation(RestController.class)
                 .addAnnotation(Slf4j.class)
                 .addAnnotation(AnnotationSpec
@@ -77,19 +77,13 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
                         .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
                         .build());
 
-        createMethod(serviceFieldName, typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        updateMethod(serviceFieldName, typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        validMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
-        inValidMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
-        findById(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        findByPage(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        GenController annotation = typeElement.getAnnotation(GenController.class);
-        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), controllerPackageName, annotation.overrideSource());
-    }
-
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenController.class).pkgName();
+        createMethod(serviceFieldName, typeElement, nameContext).ifPresent(builder::addMethod);
+        updateMethod(serviceFieldName, typeElement, nameContext).ifPresent(builder::addMethod);
+        validMethod(serviceFieldName, typeElement).ifPresent(builder::addMethod);
+        inValidMethod(serviceFieldName, typeElement).ifPresent(builder::addMethod);
+        findById(serviceFieldName, nameContext).ifPresent(builder::addMethod);
+        findByPage(serviceFieldName, nameContext).ifPresent(builder::addMethod);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

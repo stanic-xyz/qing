@@ -50,11 +50,6 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
     }
 
 
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenCreator.class).pkgName();
-    }
-
     /**
      * 生成类
      *
@@ -66,18 +61,16 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         // lombok - mapstruct 集成
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        Builder classBuilder = TypeSpec.classBuilder(sourceClassName)
+        Builder builder = TypeSpec.classBuilder(sourceClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
         if (useLombok) {
-            classBuilder.addAnnotation(Data.class);
+            builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethod(classBuilder,
+        addSetterAndGetterMethod(builder,
                 findFields(typeElement, variableElement
                         -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)), useLombok);
-        String packageName = getNameContext(typeElement).getCreatorPackageName();
-        GenCreator annotation = typeElement.getAnnotation(GenCreator.class);
-        genJavaSourceFile(classBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

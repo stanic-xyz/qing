@@ -16,7 +16,6 @@ package cn.chenyunlong.codegen.processor.updater;
 import cn.chenyunlong.codegen.annotation.GenUpdater;
 import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import com.squareup.javapoet.CodeBlock;
@@ -56,22 +55,22 @@ public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
-        Set<VariableElement> variableElements;
-        variableElements = findFields(typeElement,
-                element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
+        Set<VariableElement> variableElements =
+                findFields(typeElement,
+                        element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        TypeSpec.Builder classBuilder = TypeSpec.classBuilder(sourceClassName)
+        TypeSpec.Builder builder = TypeSpec.classBuilder(sourceClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
 
         if (useLombok) {
-            classBuilder.addAnnotation(Data.class);
+            builder.addAnnotation(Data.class);
         }
 
-        addSetterAndGetterMethod(classBuilder, variableElements, useLombok);
-        CodeBlock.Builder builder = CodeBlock.builder();
+        addSetterAndGetterMethod(builder, variableElements, useLombok);
+        CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
         for (VariableElement variableElement : variableElements) {
-            builder.addStatement("$T.ofNullable($L()).ifPresent(param::$L)",
+            codeBlockBuilder.addStatement("$T.ofNullable($L()).ifPresent(param::$L)",
                     Optional.class,
                     StringUtils.getterName(variableElement.getSimpleName().toString()),
                     StringUtils.setterName(variableElement.getSimpleName().toString()));
@@ -81,20 +80,12 @@ public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
                         "update" + typeElement.getSimpleName())
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(TypeName.get(typeElement.asType()), "param")
-                .addCode(builder.build())
+                .addCode(codeBlockBuilder.build())
                 .returns(void.class);
-        classBuilder.addMethod(methodBuilder.build());
+        builder.addMethod(methodBuilder.build());
 
-        addIdField(classBuilder, useLombok);
-
-        NameContext nameContext = getNameContext(typeElement);
-        String packageName = nameContext.getUpdaterPackageName();
-        GenUpdater annotation = typeElement.getAnnotation(GenUpdater.class);
-        genJavaSourceFile(classBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
+        addIdField(builder, useLombok);
+        genJavaSourceFile(typeElement, builder);
     }
 
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenUpdater.class).pkgName();
-    }
 }

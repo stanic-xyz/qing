@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
+
 import java.lang.annotation.*;
 
 /**
@@ -20,8 +22,10 @@ import java.lang.annotation.*;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
+@BaseGen
 @Documented
 public @interface GenFeign {
+
 
     String pkgName() default "service";
 

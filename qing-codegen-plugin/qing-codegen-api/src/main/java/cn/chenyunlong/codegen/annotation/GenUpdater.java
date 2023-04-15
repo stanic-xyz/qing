@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
+
 import java.lang.annotation.*;
 
 /**
@@ -24,6 +26,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 @Documented
+@BaseGen
 public @interface GenUpdater {
 
     String pkgName() default "updater";
