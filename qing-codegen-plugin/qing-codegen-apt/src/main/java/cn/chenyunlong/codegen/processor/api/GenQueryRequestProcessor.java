@@ -45,26 +45,17 @@ public class GenQueryRequestProcessor extends AbstractCodeGenProcessor {
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
 
-        String queryRequestPackageName = nameContext.getQueryRequestPackageName();
-
         Set<VariableElement> fields = findFields(typeElement,
                 element -> Objects.nonNull(element.getAnnotation(QueryItem.class)));
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getQueryRequestClassName())
+        TypeSpec.Builder builder = TypeSpec.classBuilder(nameContext.getQueryRequestClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
                 .addAnnotation(Schema.class);
         if (useLombok) {
-            typeSpecBuilder.addAnnotation(Data.class);
+            builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
-        String sourcePath = typeElement.getAnnotation(GenQueryRequest.class).sourcePath();
-        genJavaSourceFile(typeSpecBuilder, sourcePath,
-                queryRequestPackageName,
-                true);
+        addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
+        genJavaSourceFile(typeElement, builder);
     }
 
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenQueryRequest.class).pkgName();
-    }
 }

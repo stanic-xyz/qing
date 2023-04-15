@@ -45,7 +45,7 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
 
         String className = typeElement.getSimpleName() + SUFFIX;
         String mapperPackageName = nameContext.getMapperPackageName();
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
+        TypeSpec.Builder builder = TypeSpec.interfaceBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
         FieldSpec instance;
         ClassName type = ClassName.get(mapperPackageName, className);
@@ -54,26 +54,20 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
                 .initializer("new $T() {}", type)
                 .build();
-        typeSpecBuilder.addField(instance);
+        builder.addField(instance);
         Optional<MethodSpec> dtoToEntityMethod = dtoToEntityMethod(typeElement, nameContext);
-        dtoToEntityMethod.ifPresent(typeSpecBuilder::addMethod);
+        dtoToEntityMethod.ifPresent(builder::addMethod);
         Optional<MethodSpec> request2UpdaterMethod = request2UpdaterMethod(nameContext);
-        request2UpdaterMethod.ifPresent(typeSpecBuilder::addMethod);
+        request2UpdaterMethod.ifPresent(builder::addMethod);
         Optional<MethodSpec> request2DtoMethod = request2DtoMethod(nameContext);
-        request2DtoMethod.ifPresent(typeSpecBuilder::addMethod);
+        request2DtoMethod.ifPresent(builder::addMethod);
         Optional<MethodSpec> request2QueryMethod = request2QueryMethod(nameContext);
-        request2QueryMethod.ifPresent(typeSpecBuilder::addMethod);
+        request2QueryMethod.ifPresent(builder::addMethod);
         Optional<MethodSpec> vo2ResponseMethod = vo2ResponseMethod(nameContext);
-        vo2ResponseMethod.ifPresent(typeSpecBuilder::addMethod);
+        vo2ResponseMethod.ifPresent(builder::addMethod);
         Optional<MethodSpec> vo2CustomResponseMethod = vo2CustomResponseMethod(nameContext);
-        vo2CustomResponseMethod.ifPresent(typeSpecBuilder::addMethod);
-        GenMapper annotation = typeElement.getAnnotation(GenMapper.class);
-        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), mapperPackageName, annotation.overrideSource());
-    }
-
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenMapper.class).pkgName();
+        vo2CustomResponseMethod.ifPresent(builder::addMethod);
+        genJavaSourceFile(typeElement, builder);
     }
 
     private Optional<MethodSpec> dtoToEntityMethod(TypeElement typeElement, NameContext nameContext) {

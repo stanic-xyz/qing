@@ -16,7 +16,6 @@ package cn.chenyunlong.codegen.processor.repository;
 
 import cn.chenyunlong.codegen.annotation.GenRepository;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import com.squareup.javapoet.ClassName;
@@ -41,19 +40,11 @@ public class GenRepositoryProcessor extends AbstractCodeGenProcessor {
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         String className = typeElement.getSimpleName() + REPOSITORY_SUFFIX;
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.interfaceBuilder(className)
+        TypeSpec.Builder builder = TypeSpec.interfaceBuilder(className)
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class),
                         ClassName.get(typeElement), ClassName.get(Long.class)))
                 .addModifiers(Modifier.PUBLIC);
-
-        NameContext nameContext = getNameContext(typeElement);
-        String packageName = nameContext.getRepositoryPackageName();
-        GenRepository annotation = typeElement.getAnnotation(GenRepository.class);
-        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
+        genJavaSourceFile(typeElement, builder);
     }
 
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenRepository.class).pkgName();
-    }
 }

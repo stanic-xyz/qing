@@ -15,6 +15,7 @@ package cn.chenyunlong.codegen.spi;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
 
@@ -26,10 +27,10 @@ public interface CodeGenProcessor {
     /**
      * 支持方法
      *
-     * @param annotationClassName 支持方法
+     * @param typeElement 支持方法
      * @return 是否支持处理该方法
      */
-    boolean support(String annotationClassName);
+    boolean support(TypeElement typeElement);
 
     /**
      * 生成类
@@ -62,4 +63,27 @@ public interface CodeGenProcessor {
      */
     void init(ProcessingEnvironment processingEnvironment);
 
+
+    /**
+     * 获取领域对象名称
+     *
+     * @param typeElement 处理的对象名称
+     * @return 领域对象名称
+     */
+    Name getDomainName(TypeElement typeElement);
+
+    /**
+     * 获取生成的文件package
+     *
+     * @return 生成的文件package
+     */
+    String getPackageName(TypeElement typeElement);
+
+    /**
+     * 获取源文件路径
+     *
+     * @param typeElement 元素类型
+     * @return 元素类型生成路径
+     */
+    String getSourcePath(TypeElement typeElement);
 }

@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.codegen.processor;
 
-import cn.chenyunlong.codegen.processor.test.TestSchemaProcessor;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.JavaFileObjects;
@@ -26,6 +26,7 @@ import javax.tools.JavaFileObject;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static com.google.common.truth.Truth.assert_;
@@ -60,34 +61,36 @@ public class AbstractCodeGenProcessorTest extends TestCase {
     public void testQingCodeGenProcessorRegistry() throws IOException {
 
         QingCodeGenProcessorRegistry qingCodeGenProcessorRegistry = new QingCodeGenProcessorRegistry();
-        qingCodeGenProcessorRegistry.addProcessor(new TestSchemaProcessor());
-        ArrayList<File> objects = new ArrayList<>();
-        objects.add(new ClassPathResource("lib/swagger-annotations-2.2.8.jar").getFile());
 
-//        JarOutputStream out = new JarOutputStream(new FileOutputStream(jarFile));
-//        JarEntry helloWorldEntry = new JarEntry("test/HelloWorld.java");
-//        out.putNextEntry(helloWorldEntry);
-//        out.write(Resources.toByteArray(Resources.getResource("test/HelloWorld.java")));
-//        out.close();
+        ArrayList<File> classpath = new ArrayList<>();
+        File swaggerAnnotationJar = new ClassPathResource("lib/swagger-annotations-2.2.8.jar").getFile();
 
+        // 创建classpath目录
+        folder.create();
+        folder.newFolder("META-INF/services");
+        File serviceFile = folder.newFile("cn.chenyunlong.codegen.spi.CodeGenProcessor");
+        FileUtil.writeBytes("cn.chenyunlong.codegen.processor.test.TestSchemaProcessor\n".getBytes(StandardCharsets.UTF_8), serviceFile);
 
-//        JavaFileObject fileObject = JavaFileObjects.forResource(
-//                new URL("jar:" + jarFile.toURI() + "!/test/HelloWorld.java"));
+        classpath.add(folder.getRoot());
+        classpath.add(swaggerAnnotationJar);
+
         String fullyQualifiedName = "HelloWorld";
         JavaFileObject javaFileObject = JavaFileObjects.forSourceString(
                 fullyQualifiedName,
                 """
                         import io.swagger.v3.oas.annotations.media.Schema;
+                        import cn.chenyunlong.codegen.annotation.GenResponse;
                                                         
                         final class HelloWorld {
                                        
                             @Schema
+                            @GenResponse
                             private String username;
                         }
                         """);
         Compilation compilation = javac()
                 .withProcessors(qingCodeGenProcessorRegistry)
-                .withClasspath(objects)
+                .withClasspath(classpath)
                 .compile(javaFileObject);
         assertThat(compilation).succeededWithoutWarnings();
     }

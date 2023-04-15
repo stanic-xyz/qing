@@ -38,4 +38,11 @@ public @interface SupportedGenTypes {
      * @return 类型信息
      */
     String annotationName() default "";
+
+    /**
+     * 是否默认覆盖
+     *
+     * @return 是否默认覆盖
+     */
+    boolean override() default false;
 }

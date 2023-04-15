@@ -16,7 +16,6 @@ package cn.chenyunlong.codegen.processor.vo;
 import cn.chenyunlong.codegen.annotation.GenVo;
 import cn.chenyunlong.codegen.annotation.IgnoreVo;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import com.squareup.javapoet.AnnotationSpec;
@@ -47,15 +46,7 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
 
 
     @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenVo.class).pkgName();
-    }
-
-    @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        //根据名称获取上下文
-        NameContext nameContext = getNameContext(typeElement);
-
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
@@ -84,9 +75,6 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
                         getFieldDefaultName(variableElement)
                 ));
         builder.addMethod(constructorSpecBuilder.build());
-
-        String packageName = nameContext.getVoPackageName();
-        GenVo annotation = typeElement.getAnnotation(GenVo.class);
-        genJavaSourceFile(builder, annotation.sourcePath(), packageName, annotation.overrideSource());
+        genJavaSourceFile(typeElement, builder);
     }
 }

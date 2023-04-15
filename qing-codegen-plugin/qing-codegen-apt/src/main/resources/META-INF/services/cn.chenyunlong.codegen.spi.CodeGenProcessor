@@ -11,3 +11,17 @@
 #
 #
 
+cn.chenyunlong.codegen.processor.api.GenCreateRequestProcessor
+cn.chenyunlong.codegen.processor.api.GenUpdateRequestProcessor
+cn.chenyunlong.codegen.processor.api.GenFeignProcessor
+cn.chenyunlong.codegen.processor.api.GenResponseProcessor
+cn.chenyunlong.codegen.processor.api.GenQueryRequestProcessor
+cn.chenyunlong.codegen.processor.controller.GenControllerProcessor
+cn.chenyunlong.codegen.processor.creator.GenCreatorProcessor
+cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor
+cn.chenyunlong.codegen.processor.query.GenQueryProcessor
+cn.chenyunlong.codegen.processor.repository.GenRepositoryProcessor
+cn.chenyunlong.codegen.processor.service.GenServiceImplProcessor
+cn.chenyunlong.codegen.processor.service.GenServiceProcessor
+cn.chenyunlong.codegen.processor.updater.GenUpdaterProcessor
+cn.chenyunlong.codegen.processor.vo.GenVoCodeProcessor
