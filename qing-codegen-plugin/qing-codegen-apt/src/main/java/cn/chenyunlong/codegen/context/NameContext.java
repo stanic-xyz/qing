@@ -298,4 +298,8 @@ public class NameContext {
     public void setFeignClassName(String feignClassName) {
         this.feignClassName = feignClassName;
     }
+
+    public void init() {
+
+    }
 }

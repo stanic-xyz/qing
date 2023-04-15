@@ -70,13 +70,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
         findById.ifPresent(builder::addMethod);
         Optional<MethodSpec> findByPage = findByPage(nameContext);
         findByPage.ifPresent(builder::addMethod);
-        String feignPackageName = nameContext.getFeignPackageName();
-        genJavaSourceFile(builder, annotation.sourcePath(), feignPackageName, annotation.overrideSource());
-    }
-
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenFeign.class).pkgName();
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

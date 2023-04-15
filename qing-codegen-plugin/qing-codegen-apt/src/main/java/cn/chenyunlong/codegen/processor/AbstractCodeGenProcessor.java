@@ -14,6 +14,8 @@
 package cn.chenyunlong.codegen.processor;
 
 import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
+import cn.chenyunlong.codegen.context.CodeGenProcessorContext;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.processor.api.*;
@@ -30,6 +32,7 @@ import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.common.annotation.TypeConverter;
+import cn.hutool.core.annotation.AnnotationUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.squareup.javapoet.*;
@@ -46,7 +49,6 @@ import javax.tools.Diagnostic.Kind;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,7 +66,6 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
 
     protected ProcessingEnvironment processingEnvironment;
 
-    protected NameContext nameContext;
 
     /**
      * 初始化
@@ -79,14 +80,27 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     /**
      * 支持方法
      *
-     * @param annotationClassName 支持方法
+     * @param typeElement 支持方法
      * @return 是否支持处理该方法
      */
     @Override
-    public boolean support(String annotationClassName) {
+    public boolean support(TypeElement typeElement) {
+        boolean support = false;
+        // 1、判断当前插件是否支持该对象的处理
         SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
-        if (supportedGenTypes == null) return false;
-        return supportedGenTypes.types().getName().equals(annotationClassName);
+        // 判断插件支持注解
+        if (supportedGenTypes != null) {
+            // 获取当前插件主持的注解类型
+            Class<? extends Annotation> aClass = supportedGenTypes.types();
+            // 该插件支持的注解类型为空，不支持处理
+            if (aClass != null) {
+                Annotation annotation = typeElement.getAnnotation(aClass);
+                if (annotation != null) {
+                    return true;
+                }
+            }
+        }
+        return support;
     }
 
     /**
@@ -100,6 +114,51 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
+    }
+
+    @Override
+    public Name getDomainName(TypeElement typeElement) {
+        return typeElement.getSimpleName();
+    }
+
+    /**
+     * 获取生成的文件package
+     *
+     * @return 生成的文件package
+     */
+    @Override
+    public String getPackageName(TypeElement typeElement) {
+        Class<? extends Annotation> annotation = getSupportedAnnotation();
+        String basePackage;
+        GenBase genBase = typeElement.getAnnotation(GenBase.class);
+        if (genBase != null) {
+            basePackage = genBase.basePackage();
+        } else {
+            basePackage =
+                    processingEnvironment.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
+        }
+        if (annotation != null) {
+            String pkgName = AnnotationUtil.getAnnotationValue(annotation, BaseGen::pkgName);
+            basePackage = "%s.%s".formatted(basePackage, pkgName);
+        }
+        return basePackage;
+    }
+
+    /**
+     * 获取源文件路径
+     *
+     * @param typeElement 元素类型
+     * @return 元素类型生成路径
+     */
+    @Override
+    public String getSourcePath(TypeElement typeElement) {
+        GenBase genBase = typeElement.getAnnotation(GenBase.class);
+        if (genBase != null) {
+//            Class<? extends Annotation> annotation = getSupportedAnnotation();
+            return genBase.sourcePath();
+        }
+        // 这里不应该进来的
+        return "";
     }
 
     /**
@@ -123,38 +182,17 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      */
     @Override
     public boolean overwrite() {
-        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
-        if (supportedGenTypes == null) {
-            return false;
+        boolean override = false;
+        if (AnnotationUtil.hasAnnotation(this.getClass(), SupportedGenTypes.class)) {
+            SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
+            override = supportedGenTypes.override();
+            Class<? extends Annotation> types = supportedGenTypes.types();
+            if (types != null) {
+                //获取覆盖值
+                Boolean annotationValue = AnnotationUtil.getAnnotationValue(types, GenUpdater::overrideSource);
+            }
         }
-        Class<? extends Annotation> aClass = supportedGenTypes.types();
-        try {
-            Field field = aClass.getField("");
-            return field.getBoolean(aClass);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            return false;
-        }
-    }
-
-    /**
-     * 获取生成的包路径
-     *
-     * @param typeElement 类型元素
-     * @return {@link String}
-     */
-    public abstract String generatePackage(TypeElement typeElement);
-
-    /**
-     * 生成Class
-     *
-     * @param typeElement 类型元素
-     * @param environment 周围环境
-     * @throws Exception 异常
-     */
-    public void generate(TypeElement typeElement, RoundEnvironment environment) throws Exception {
-        //添加其他逻辑扩展
-        boolean useLombok = true;
-        generateClass(typeElement, environment, useLombok);
+        return override;
     }
 
     /**
@@ -483,18 +521,20 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     /**
      * 生成Java源文件
      *
+     * @param typeElement 包名
      * @param builder     类型规范创建器
-     * @param genPath     生成文件路径
-     * @param packageName 包名
-     * @param override    是否覆盖源文件
      */
-    public void genJavaSourceFile(TypeSpec.Builder builder, String genPath, String packageName, boolean override) {
+    public void genJavaSourceFile(TypeElement typeElement, TypeSpec.Builder builder) {
+        String genPath = CodeGenProcessorContext.getSourcePath(typeElement, getSupportedAnnotation());
+        String packageName = CodeGenProcessorContext.getPackageName(typeElement, getSupportedAnnotation());
+
         // 生成.java文件
         TypeSpec typeSpec = builder.build();
         JavaFile javaFile = JavaFile
                 .builder(packageName, typeSpec)
                 .addFileComment("---Auto Generated by Qing-Generator ---")
                 .build();
+        boolean override = overwrite();
         String packagePath = packageName.replace(".", File.separator) + File.separator + typeSpec.name + ".java";
         try {
             Path path = Paths.get(genPath);

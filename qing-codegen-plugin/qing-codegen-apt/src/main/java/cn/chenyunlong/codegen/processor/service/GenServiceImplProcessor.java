@@ -57,7 +57,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
+        TypeSpec.Builder builder = TypeSpec.classBuilder(className)
                 .addSuperinterface(ClassName.get(nameContext.getServicePackageName(),
                         nameContext.getServiceClassName()))
                 .addAnnotation(Transactional.class)
@@ -78,22 +78,15 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                         nameContext.getRepositoryClassName()), repositoryFieldName)
                 .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
                 .build();
-        typeSpecBuilder.addField(repositoryField);
-        createMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
+        builder.addField(repositoryField);
+        createMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(builder::addMethod);
         Optional<MethodSpec> updateMethod = updateMethod(typeElement, nameContext, repositoryFieldName);
-        updateMethod.ifPresent(typeSpecBuilder::addMethod);
-        validMethod(typeElement, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
-        invalidMethod(typeElement, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
-        findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
-        findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
-        String implPackageName = nameContext.getImplPackageName();
-        GenServiceImpl annotation = typeElement.getAnnotation(GenServiceImpl.class);
-        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), implPackageName, annotation.overrideSource());
-    }
-
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenServiceImpl.class).pkgName();
+        updateMethod.ifPresent(builder::addMethod);
+        validMethod(typeElement, repositoryFieldName).ifPresent(builder::addMethod);
+        invalidMethod(typeElement, repositoryFieldName).ifPresent(builder::addMethod);
+        findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(builder::addMethod);
+        findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(builder::addMethod);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

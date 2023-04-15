@@ -14,7 +14,9 @@
 package cn.chenyunlong.codegen.annotation;
 
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import cn.chenyunlong.codegen.annotation.enumes.OrmType;
+import cn.hutool.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
@@ -29,6 +31,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 @Documented
+@BaseGen
 public @interface GenBase {
 
 
@@ -45,6 +48,7 @@ public @interface GenBase {
      *
      * @return {@link String}
      */
+    @AliasFor(annotation = BaseGen.class, attribute = "sourcePath")
     String sourcePath() default "src/main/java";
 
     /**

@@ -47,22 +47,16 @@ public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
         NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getUpdateClassName())
+        TypeSpec.Builder builder = TypeSpec.classBuilder(nameContext.getUpdateClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
                 .addAnnotation(Schema.class);
         if (useLombok) {
-            typeSpecBuilder.addAnnotation(Data.class);
+            builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
-        addIdField(typeSpecBuilder, useLombok);
-        String packageName = nameContext.getQueryRequestPackageName();
-        GenUpdateRequest annotation = typeElement.getAnnotation(GenUpdateRequest.class);
-        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
+        addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
+        addIdField(builder, useLombok);
+        genJavaSourceFile(typeElement, builder);
     }
 
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenUpdateRequest.class).pkgName();
-    }
 }

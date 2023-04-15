@@ -47,24 +47,17 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
         NameContext nameContext = getNameContext(typeElement);
 
         String className = SERVICE_PREFIX + typeElement.getSimpleName() + SERVICE_SUFFIX;
-        TypeSpec.Builder typeSpecBuilder;
-        typeSpecBuilder = TypeSpec.interfaceBuilder(className)
+        TypeSpec.Builder builder;
+        builder = TypeSpec.interfaceBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
-        createMethod(typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        updateMethod(typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        validMethod(typeElement).ifPresent(typeSpecBuilder::addMethod);
-        invalidMethod(typeElement).ifPresent(typeSpecBuilder::addMethod);
-        findByIdMethod(nameContext).ifPresent(typeSpecBuilder::addMethod);
-        findByPageMethod(nameContext).ifPresent(typeSpecBuilder::addMethod);
+        createMethod(typeElement, nameContext).ifPresent(builder::addMethod);
+        updateMethod(typeElement, nameContext).ifPresent(builder::addMethod);
+        validMethod(typeElement).ifPresent(builder::addMethod);
+        invalidMethod(typeElement).ifPresent(builder::addMethod);
+        findByIdMethod(nameContext).ifPresent(builder::addMethod);
+        findByPageMethod(nameContext).ifPresent(builder::addMethod);
 
-        String packageName = nameContext.getServicePackageName();
-        GenService annotation = typeElement.getAnnotation(GenService.class);
-        genJavaSourceFile(typeSpecBuilder, annotation.sourcePath(), packageName, annotation.overrideSource());
-    }
-
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenService.class).pkgName();
+        genJavaSourceFile(typeElement, builder);
     }
 
     private Optional<MethodSpec> createMethod(TypeElement typeElement,
