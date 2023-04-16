@@ -14,7 +14,6 @@
 package cn.chenyunlong.codegen.processor;
 
 import cn.chenyunlong.codegen.annotation.*;
-import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import cn.chenyunlong.codegen.context.CodeGenProcessorContext;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
@@ -127,7 +126,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      * @return 生成的文件package
      */
     @Override
-    public String getPackageName(TypeElement typeElement) {
+    public String getBasePackageName(TypeElement typeElement) {
         Class<? extends Annotation> annotation = getSupportedAnnotation();
         String basePackage;
         GenBase genBase = typeElement.getAnnotation(GenBase.class);
@@ -136,10 +135,6 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         } else {
             basePackage =
                     processingEnvironment.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
-        }
-        if (annotation != null) {
-            String pkgName = AnnotationUtil.getAnnotationValue(annotation, BaseGen::pkgName);
-            basePackage = "%s.%s".formatted(basePackage, pkgName);
         }
         return basePackage;
     }

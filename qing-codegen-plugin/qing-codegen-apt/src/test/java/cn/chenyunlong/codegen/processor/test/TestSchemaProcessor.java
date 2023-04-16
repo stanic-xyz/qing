@@ -17,8 +17,20 @@ import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.lang.model.element.TypeElement;
+
 @SupportedGenTypes(types = Schema.class)
 public class TestSchemaProcessor extends AbstractCodeGenProcessor {
 
 
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
+    @Override
+    public String getSubPackageName(TypeElement typeElement) {
+        return "test";
+    }
 }

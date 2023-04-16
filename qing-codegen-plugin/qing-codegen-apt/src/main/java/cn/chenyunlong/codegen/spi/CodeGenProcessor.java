@@ -77,7 +77,15 @@ public interface CodeGenProcessor {
      *
      * @return 生成的文件package
      */
-    String getPackageName(TypeElement typeElement);
+    String getBasePackageName(TypeElement typeElement);
+
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
+    String getSubPackageName(TypeElement typeElement);
 
     /**
      * 获取源文件路径
