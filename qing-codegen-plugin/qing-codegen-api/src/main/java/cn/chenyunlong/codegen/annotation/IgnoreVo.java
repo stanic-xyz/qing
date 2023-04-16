@@ -13,12 +13,17 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import java.lang.annotation.*;
+
 /**
  * 忽略VO对象的生成
  *
  * @author Gim
  * @date 2022/11/06
  */
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.SOURCE)
+@Documented
 public @interface IgnoreVo {
 
 }

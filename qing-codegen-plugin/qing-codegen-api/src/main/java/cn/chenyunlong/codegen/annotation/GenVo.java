@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
+
 import java.lang.annotation.*;
 
 /**
@@ -23,8 +25,9 @@ import java.lang.annotation.*;
  * @date 2022/11/06
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Documented
+@BaseGen
 public @interface GenVo {
 
     /**

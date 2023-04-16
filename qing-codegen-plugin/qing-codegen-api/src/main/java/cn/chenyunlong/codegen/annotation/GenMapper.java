@@ -13,13 +13,21 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
+
+import java.lang.annotation.*;
+
 /**
  * 生成Mapper注解
  *
  * @author StanChen
  * @date 2022/10/24
  */
-@GenBase
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.SOURCE)
+@Documented
+@BaseGen
 public @interface GenMapper {
 
     String pkgName() default "mapper";

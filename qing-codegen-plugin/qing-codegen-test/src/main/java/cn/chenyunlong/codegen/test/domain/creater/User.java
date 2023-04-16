@@ -18,6 +18,7 @@ import cn.chenyunlong.codegen.annotation.GenCreator;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 
@@ -28,7 +29,8 @@ import javax.persistence.Entity;
  * @date 2022/10/25
  */
 //
-@GenBase(basePackage = "cn.chenyunlong.codegen.test.domain.creater.gen")
+@EqualsAndHashCode(callSuper = true)
+@GenBase(basePackage = "cn.chenyunlong.codegen.test.domain.creater.gen.v2")
 @GenCreator
 @Data
 @Entity
