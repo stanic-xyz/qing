@@ -14,6 +14,8 @@
 package cn.chenyunlong.codegen.annotation;
 
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
+
 import java.lang.annotation.*;
 
 /**
@@ -21,8 +23,9 @@ import java.lang.annotation.*;
  * @apiNote : 实现这个代码可以自动生成创建器
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Documented
+@BaseGen
 public @interface GenCreator {
 
     String pkgName() default "creator";

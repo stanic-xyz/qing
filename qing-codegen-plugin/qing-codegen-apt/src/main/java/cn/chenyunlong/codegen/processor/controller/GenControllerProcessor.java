@@ -15,15 +15,14 @@ package cn.chenyunlong.codegen.processor.controller;
 
 
 import cn.chenyunlong.codegen.annotation.GenController;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +33,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,14 +40,14 @@ import java.util.stream.Collectors;
  * @author gim
  * 获取名称时可以先获取上下文再取，不用一个个的取，这样更方便
  */
-@AutoService(value = CodeGenProcessor.class)
-public class GenControllerProcessor extends BaseCodeGenProcessor {
+@SupportedGenTypes(types = GenController.class)
+public class GenControllerProcessor extends AbstractCodeGenProcessor {
 
     public static final String CONTROLLER_SUFFIX = "Controller";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+        NameContext nameContext = getNameContext(typeElement);
 
         String serviceFieldName = StringUtils.lowerCamel(typeElement.getSimpleName().toString()) + "Service";
         String serviceClassName = nameContext.getServiceClassName();
@@ -61,7 +59,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
             return;
         }
 
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(controllerClassName)
+        TypeSpec.Builder builder = TypeSpec.classBuilder(controllerClassName)
                 .addAnnotation(RestController.class)
                 .addAnnotation(Slf4j.class)
                 .addAnnotation(AnnotationSpec
@@ -79,24 +77,24 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
                         .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
                         .build());
 
-        createMethod(serviceFieldName, typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        updateMethod(serviceFieldName, typeElement, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        validMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
-        inValidMethod(serviceFieldName, typeElement).ifPresent(typeSpecBuilder::addMethod);
-        findById(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        findByPage(serviceFieldName, nameContext).ifPresent(typeSpecBuilder::addMethod);
-        GenController annotation = typeElement.getAnnotation(GenController.class);
-        genJavaSourceFile(controllerPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        createMethod(serviceFieldName, typeElement, nameContext).ifPresent(builder::addMethod);
+        updateMethod(serviceFieldName, typeElement, nameContext).ifPresent(builder::addMethod);
+        validMethod(serviceFieldName, typeElement).ifPresent(builder::addMethod);
+        inValidMethod(serviceFieldName, typeElement).ifPresent(builder::addMethod);
+        findById(serviceFieldName, nameContext).ifPresent(builder::addMethod);
+        findByPage(serviceFieldName, nameContext).ifPresent(builder::addMethod);
+        genJavaSourceFile(typeElement, builder);
     }
 
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
     @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenController.class;
-    }
-
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenController.class).pkgName();
+    public String getSubPackageName(TypeElement typeElement) {
+        return "controller";
     }
 
     /**
@@ -108,7 +106,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> createMethod(String serviceFieldName, TypeElement typeElement,
-                                              DefaultNameContext nameContext) {
+                                              NameContext nameContext) {
         String creatorPackageName = nameContext.getCreatorPackageName();
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -155,7 +153,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> updateMethod(String serviceFieldName, TypeElement typeElement,
-                                              DefaultNameContext nameContext) {
+                                              NameContext nameContext) {
         String updatePackageName = nameContext.getUpdatePackageName();
         String updaterPackageName = nameContext.getUpdaterPackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -246,7 +244,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @param nameContext      命名上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> findById(String serviceFieldName, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findById(String serviceFieldName, NameContext nameContext) {
         String voPackageName = nameContext.getVoPackageName();
         String responsePackageName = nameContext.getResponsePackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -287,7 +285,7 @@ public class GenControllerProcessor extends BaseCodeGenProcessor {
      * @param nameContext      命名上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> findByPage(String serviceFieldName, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findByPage(String serviceFieldName, NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(),
                 nameContext.getQueryPackageName(), nameContext.getMapperPackageName(), nameContext.getVoPackageName()
                 , nameContext.getResponsePackageName());

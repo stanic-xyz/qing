@@ -1,0 +1,6 @@
+server:
+  port: 9555
+logging:
+  level:
+    root: INFO
+    cn.chenyunlong.codegen: debug

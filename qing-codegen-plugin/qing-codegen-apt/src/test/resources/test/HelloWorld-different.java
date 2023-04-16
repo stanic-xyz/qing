@@ -11,26 +11,10 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.anime.domainservice;
+package test;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-
-@SpringBootTest
-@ActiveProfiles("test")
-class IAnimeDomainServiceTest {
-
-    @Test
-    void handleAnimeInfoRecommend() {
-
-    }
-
-    @Test
-    void handleAnimeInfoOut() {
-    }
-
-    @Test
-    void handleAnimeInfoTransfer() {
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.print("Hello World!\n");
     }
 }

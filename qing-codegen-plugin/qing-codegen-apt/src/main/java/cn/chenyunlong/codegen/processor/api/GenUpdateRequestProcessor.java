@@ -15,11 +15,10 @@ package cn.chenyunlong.codegen.processor.api;
 
 import cn.chenyunlong.codegen.annotation.GenUpdateRequest;
 import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.common.model.Request;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -28,7 +27,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.lang.annotation.Annotation;
 import java.util.Objects;
 import java.util.Set;
 
@@ -38,37 +36,38 @@ import java.util.Set;
  * @author Stan
  * @date 2022/11/29
  */
-@AutoService(value = CodeGenProcessor.class)
-public class GenUpdateRequestProcessor extends BaseCodeGenProcessor {
+//@AutoService(value = CodeGenProcessor.class)
+@SupportedGenTypes(types = GenUpdateRequest.class)
+public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
 
     public static String UPDATE_REQUEST_SUFFIX = "UpdateRequest";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+        NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getUpdateClassName())
+        TypeSpec.Builder builder = TypeSpec.classBuilder(nameContext.getUpdateClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
                 .addAnnotation(Schema.class);
         if (useLombok) {
-            typeSpecBuilder.addAnnotation(Data.class);
+            builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
-        addIdField(typeSpecBuilder, useLombok);
-        String packageName = nameContext.getQueryRequestPackageName();
-        GenUpdateRequest annotation = typeElement.getAnnotation(GenUpdateRequest.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
+        addIdField(builder, useLombok);
+        genJavaSourceFile(typeElement, builder);
     }
 
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
     @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenUpdateRequest.class;
+    public String getSubPackageName(TypeElement typeElement) {
+        return "request";
     }
 
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenUpdateRequest.class).pkgName();
-    }
 }
