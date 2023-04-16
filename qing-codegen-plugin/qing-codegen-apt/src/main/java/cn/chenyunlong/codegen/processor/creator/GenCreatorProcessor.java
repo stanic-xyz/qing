@@ -15,9 +15,8 @@ package cn.chenyunlong.codegen.processor.creator;
 
 import cn.chenyunlong.codegen.annotation.GenCreator;
 import cn.chenyunlong.codegen.annotation.IgnoreCreator;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import com.google.auto.service.AutoService;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
@@ -28,7 +27,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,10 +36,11 @@ import java.util.Objects;
 /**
  * @author cyl Creator 代码生成器
  */
-@AutoService(value = CodeGenProcessor.class)
-public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
+@SupportedGenTypes(types = GenCreator.class)
+public class GenCreatorProcessor extends AbstractCodeGenProcessor {
 
     public static final String SUFFIX = "Creator";
+
     // 这里为什么要忽略这些类型呢
     static final List<TypeName> dtoIgnoreFieldTypes = new ArrayList<>();
 
@@ -50,15 +49,6 @@ public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
         dtoIgnoreFieldTypes.add(TypeName.get(LocalDateTime.class));
     }
 
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenCreator.class;
-    }
-
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenCreator.class).pkgName();
-    }
 
     /**
      * 生成类
@@ -71,18 +61,27 @@ public class CreatorCodeGenProcessor extends BaseCodeGenProcessor {
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         // lombok - mapstruct 集成
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        Builder classBuilder = TypeSpec.classBuilder(sourceClassName)
+        Builder builder = TypeSpec.classBuilder(sourceClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
         if (useLombok) {
-            classBuilder.addAnnotation(Data.class);
+            builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethod(classBuilder,
+        addSetterAndGetterMethod(builder,
                 findFields(typeElement, variableElement
                         -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)), useLombok);
-        String packageName = getNameContext(typeElement).getCreatorPackageName();
-        GenCreator annotation = typeElement.getAnnotation(GenCreator.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
+        genJavaSourceFile(typeElement, builder);
+    }
+
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
+    @Override
+    public String getSubPackageName(TypeElement typeElement) {
+        return "creator";
     }
 
     /**

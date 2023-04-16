@@ -14,10 +14,8 @@
 package cn.chenyunlong.codegen.util;
 
 import com.google.common.base.CaseFormat;
-import com.google.common.collect.Lists;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -53,10 +51,7 @@ public final class StringUtils {
      * @return boolean
      */
     public static boolean containsNull(String... list) {
-        List<String> temp = Lists.newArrayList();
-        Collections.addAll(temp, list);
-        List<String> nullList = temp.stream().filter(Objects::isNull).toList();
-        return nullList.size() > 0;
+        return Arrays.stream(list).anyMatch(Objects::isNull);
     }
 
     /**
@@ -66,7 +61,17 @@ public final class StringUtils {
      * @return 字符串是否为空
      */
     public static boolean isNotBlank(String str) {
-        return org.springframework.util.StringUtils.hasText(str);
+        return (str != null && !str.isEmpty() && containsText(str));
+    }
+
+    private static boolean containsText(CharSequence str) {
+        int strLen = str.length();
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

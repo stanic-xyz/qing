@@ -13,15 +13,19 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
+
 import java.lang.annotation.*;
 
 /**
  * @author gim
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
+@BaseGen
 @Documented
 public @interface GenFeign {
+
 
     String pkgName() default "service";
 

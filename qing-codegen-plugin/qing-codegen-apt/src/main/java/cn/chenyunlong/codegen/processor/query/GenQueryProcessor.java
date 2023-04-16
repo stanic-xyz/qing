@@ -15,10 +15,8 @@ package cn.chenyunlong.codegen.processor.query;
 
 import cn.chenyunlong.codegen.annotation.GenQuery;
 import cn.chenyunlong.codegen.annotation.QueryItem;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import com.google.auto.service.AutoService;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -26,7 +24,6 @@ import lombok.Data;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.util.Objects;
 
 /**
@@ -35,8 +32,8 @@ import java.util.Objects;
  * @author cyl
  * @date 2019-10-08 17:14
  */
-@AutoService(value = CodeGenProcessor.class)
-public class GenQueryProcessor extends BaseCodeGenProcessor {
+@SupportedGenTypes(types = GenQuery.class)
+public class GenQueryProcessor extends AbstractCodeGenProcessor {
 
     public static String QUERY_SUFFIX = "Query";
 
@@ -49,34 +46,32 @@ public class GenQueryProcessor extends BaseCodeGenProcessor {
      * @param useLombok        是否使用lombok
      */
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-
-        DefaultNameContext nameContext = getNameContext(typeElement);
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         String sourceClassName = typeElement.getSimpleName() + QUERY_SUFFIX;
-        String queryPackageName = nameContext.getQueryPackageName();
 
-        TypeSpec.Builder classBuilder = TypeSpec.classBuilder(sourceClassName)
+        TypeSpec.Builder builder = TypeSpec.classBuilder(sourceClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
 
         if (useLombok) {
-            classBuilder.addAnnotation(Data.class);
+            builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethod(classBuilder, findFields(typeElement,
+        addSetterAndGetterMethod(builder, findFields(typeElement,
                 variableElement -> Objects.nonNull(variableElement.getAnnotation(
                         QueryItem.class))), useLombok);
-        GenQuery annotation = typeElement.getAnnotation(GenQuery.class);
-        genJavaSourceFile(queryPackageName, annotation.sourcePath(), classBuilder, annotation.overrideSource());
+        genJavaSourceFile(typeElement, builder);
     }
 
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
     @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenQuery.class;
+    public String getSubPackageName(TypeElement typeElement) {
+        return "query";
     }
 
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenQuery.class).pkgName();
-    }
 }

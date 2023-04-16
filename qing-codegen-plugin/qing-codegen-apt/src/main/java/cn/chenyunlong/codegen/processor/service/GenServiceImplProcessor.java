@@ -15,19 +15,17 @@ package cn.chenyunlong.codegen.processor.service;
 
 
 import cn.chenyunlong.codegen.annotation.GenServiceImpl;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
-import com.querydsl.core.BooleanBuilder;
 import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,23 +40,24 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * @author gim 获取名称时可以先获取上下文再取，不用一个个的取，这样更方便
+ * 获取名称时可以先获取上下文再取，不用一个个的取，这样更方便
+ *
+ * @author gim
  */
-@AutoService(value = CodeGenProcessor.class)
-public class GenServiceImplProcessor extends BaseCodeGenProcessor {
+@SupportedGenTypes(types = GenServiceImpl.class)
+public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
 
     public static final String IMPL_SUFFIX = "ServiceImpl";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+        NameContext nameContext = getNameContext(typeElement);
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(className)
+        TypeSpec.Builder builder = TypeSpec.classBuilder(className)
                 .addSuperinterface(ClassName.get(nameContext.getServicePackageName(),
                         nameContext.getServiceClassName()))
                 .addAnnotation(Transactional.class)
@@ -79,27 +78,26 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                         nameContext.getRepositoryClassName()), repositoryFieldName)
                 .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
                 .build();
-        typeSpecBuilder.addField(repositoryField);
-        createMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
+        builder.addField(repositoryField);
+        createMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(builder::addMethod);
         Optional<MethodSpec> updateMethod = updateMethod(typeElement, nameContext, repositoryFieldName);
-        updateMethod.ifPresent(typeSpecBuilder::addMethod);
-        validMethod(typeElement, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
-        invalidMethod(typeElement, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
-        findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(typeSpecBuilder::addMethod);
-        findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(typeSpecBuilder::addMethod);
-        String implPackageName = nameContext.getImplPackageName();
-        GenServiceImpl annotation = typeElement.getAnnotation(GenServiceImpl.class);
-        genJavaSourceFile(implPackageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        updateMethod.ifPresent(builder::addMethod);
+        validMethod(typeElement, repositoryFieldName).ifPresent(builder::addMethod);
+        invalidMethod(typeElement, repositoryFieldName).ifPresent(builder::addMethod);
+        findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(builder::addMethod);
+        findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(builder::addMethod);
+        genJavaSourceFile(typeElement, builder);
     }
 
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
     @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenServiceImpl.class;
-    }
-
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenServiceImpl.class).pkgName();
+    public String getSubPackageName(TypeElement typeElement) {
+        return "service.impl";
     }
 
     /**
@@ -111,7 +109,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
      * @param classFieldName      类字段名称，作为参数的Class信息，默认：typeElement.getSimpleName().toString()
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> createMethod(TypeElement typeElement, DefaultNameContext nameContext,
+    private Optional<MethodSpec> createMethod(TypeElement typeElement, NameContext nameContext,
                                               String repositoryFieldName, String classFieldName) {
         String creatorPackageName = nameContext.getCreatorPackageName();
         String creatorClassName = nameContext.getCreatorClassName();
@@ -151,7 +149,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> updateMethod(TypeElement typeElement, DefaultNameContext nameContext,
+    private Optional<MethodSpec> updateMethod(TypeElement typeElement, NameContext nameContext,
                                               String repositoryFieldName) {
         boolean containsNull = StringUtils.containsNull(nameContext.getUpdaterPackageName());
         if (!containsNull) {
@@ -210,7 +208,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
     }
 
     private Optional<MethodSpec> findByIdMethod(TypeElement typeElement,
-                                                DefaultNameContext nameContext, String repositoryFieldName,
+                                                NameContext nameContext, String repositoryFieldName,
                                                 String classFieldName) {
         boolean containsNull = StringUtils.containsNull(nameContext.getVoPackageName());
         if (!containsNull) {
@@ -235,8 +233,12 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
         return Optional.empty();
     }
 
+    private static ClassName getBooleanBuilder() {
+        return ClassName.get("com.querydsl.core", "BooleanBuilder");
+    }
+
     private Optional<MethodSpec> findByPageMethod(TypeElement typeElement,
-                                                  DefaultNameContext nameContext, String repositoryFieldName) {
+                                                  NameContext nameContext, String repositoryFieldName) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryPackageName(),
                 nameContext.getVoPackageName());
         if (!containsNull) {
@@ -246,8 +248,7 @@ public class GenServiceImplProcessor extends BaseCodeGenProcessor {
                             "query")
                     .addModifiers(Modifier.PUBLIC)
                     .addCode(
-                            CodeBlock.of("$T booleanBuilder = new $T();\n", BooleanBuilder.class,
-                                    BooleanBuilder.class)
+                            CodeBlock.of("$T booleanBuilder = new $T();\n", getBooleanBuilder(), getBooleanBuilder())
                     )
                     .addCode(
                             CodeBlock.of("""

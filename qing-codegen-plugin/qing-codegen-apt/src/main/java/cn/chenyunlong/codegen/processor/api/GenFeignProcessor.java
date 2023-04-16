@@ -14,27 +14,23 @@
 package cn.chenyunlong.codegen.processor.api;
 
 import cn.chenyunlong.codegen.annotation.GenFeign;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
-import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.squareup.javapoet.*;
 import com.squareup.javapoet.TypeSpec.Builder;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 /**
@@ -43,21 +39,21 @@ import java.util.Optional;
  * @author Stan
  * @date 2022/11/28
  */
-@AutoService(value = CodeGenProcessor.class)
-public class GenFeignProcessor extends BaseCodeGenProcessor {
+@SupportedGenTypes(types = GenFeign.class)
+public class GenFeignProcessor extends AbstractCodeGenProcessor {
 
     public static String FEIGN_SUFFIX = "FeignService";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+        NameContext nameContext = getNameContext(typeElement);
         String classFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
                 typeElement.getSimpleName().toString());
         GenFeign annotation = typeElement.getAnnotation(GenFeign.class);
         Builder builder = TypeSpec.interfaceBuilder(nameContext.getFeignClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(AnnotationSpec
-                        .builder(FeignClient.class)
+                        .builder(ClassName.get("org.springframework.cloud.openfeign", "FeignClient"))
                         .addMember("value", "$S", annotation.serverName())
                         .addMember("contextId", "$S", classFieldName + "Client")
                         .addMember("path", "$S", classFieldName + "/v1")
@@ -74,18 +70,18 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
         findById.ifPresent(builder::addMethod);
         Optional<MethodSpec> findByPage = findByPage(nameContext);
         findByPage.ifPresent(builder::addMethod);
-        String feignPackageName = nameContext.getFeignPackageName();
-        genJavaSourceFile(feignPackageName, annotation.sourcePath(), builder, annotation.overrideSource());
+        genJavaSourceFile(typeElement, builder);
     }
 
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
     @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenFeign.class;
-    }
-
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenFeign.class).pkgName();
+    public String getSubPackageName(TypeElement typeElement) {
+        return "service";
     }
 
     /**
@@ -95,14 +91,17 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
      * @param nameContext 名称上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> createMethod(TypeElement typeElement, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> createMethod(TypeElement typeElement, NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getCreatePackageName());
         if (!containsNull) {
+            ClassName requestBody = ClassName.get("org.springframework.web.bind.annotation", "RequestBody");
             return Optional.of(MethodSpec.methodBuilder("create" + typeElement.getSimpleName())
                     .addParameter(
-                            ParameterSpec.builder(ClassName.get(nameContext.getCreatePackageName(),
-                                    nameContext.getCreateClassName()), "request").addAnnotation(
-                                    RequestBody.class).build())
+                            ParameterSpec.builder(
+                                            ClassName.get(nameContext.getCreatePackageName(),
+                                                    nameContext.getCreateClassName()),
+                                            "request")
+                                    .addAnnotation(requestBody).build())
                     .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S",
                             "create" + typeElement.getSimpleName()).build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
@@ -119,12 +118,13 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
      * @param nameContext 名称上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> updateMethod(TypeElement typeElement, DefaultNameContext nameContext) {
+    private Optional<MethodSpec> updateMethod(TypeElement typeElement, NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getUpdatePackageName());
         if (!containsNull) {
+            ClassName requestBody = ClassName.get("org.springframework.web.bind.annotation", "RequestBody");
             return Optional.of(MethodSpec.methodBuilder("update" + typeElement.getSimpleName())
                     .addParameter(ParameterSpec.builder(ClassName.get(nameContext.getUpdatePackageName(),
-                            nameContext.getUpdateClassName()), "request").addAnnotation(RequestBody.class).build())
+                            nameContext.getUpdateClassName()), "request").addAnnotation(requestBody).build())
                     .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S",
                             "update" + typeElement.getSimpleName()).build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
@@ -173,7 +173,7 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
      * @param nameContext 名称上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> findById(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findById(NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getResponsePackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec.methodBuilder("findById")
@@ -200,14 +200,15 @@ public class GenFeignProcessor extends BaseCodeGenProcessor {
      * @param nameContext 代码生成器上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> findByPage(DefaultNameContext nameContext) {
+    private Optional<MethodSpec> findByPage(NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(),
                 nameContext.getResponsePackageName());
         if (!containsNull) {
+            ClassName requestBody = ClassName.get("org.springframework.web.bind.annotation", "RequestBody");
             return Optional.of(MethodSpec.methodBuilder("findByPage")
                     .addParameter(ParameterSpec.builder(ParameterizedTypeName.get(ClassName.get(
                             PageRequestWrapper.class), ClassName.get(nameContext.getQueryRequestPackageName(),
-                            nameContext.getQueryRequestClassName())), "request").addAnnotation(RequestBody.class).build())
+                            nameContext.getQueryRequestClassName())), "request").addAnnotation(requestBody).build())
                     .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "findByPage").build())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("findByPage request")

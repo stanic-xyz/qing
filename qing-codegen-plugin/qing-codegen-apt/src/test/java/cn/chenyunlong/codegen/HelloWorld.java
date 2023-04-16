@@ -11,15 +11,13 @@
  *
  */
 
-package cn.chenyunlong.codegen.test.domain;
+package cn.chenyunlong.codegen;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+final class HelloWorld {
 
-@SpringBootApplication
-public class CodeGenTestApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(CodeGenTestApplication.class, args);
-    }
+    @TestAnnotation
+    private String username;
+
+    @interface TestAnnotation {}
 }
