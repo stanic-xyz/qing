@@ -13,10 +13,15 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import java.lang.annotation.*;
+
 /**
  * @Author: Gim
  * @Description:
  */
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.SOURCE)
+@Documented
 public @interface IgnoreCreator {
 
 }

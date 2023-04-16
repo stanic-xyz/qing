@@ -13,36 +13,85 @@
 
 package cn.chenyunlong.codegen.spi;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
 
 /**
- * @author gim
+ * @author chenyunlong
  */
 public interface CodeGenProcessor {
 
     /**
-     * 需要解析的类上的注解
+     * 支持方法
+     *
+     * @param typeElement 支持方法
+     * @return 是否支持处理该方法
+     */
+    boolean support(TypeElement typeElement);
+
+    /**
+     * 生成类
+     * 生成Class
+     *
+     * @param typeElement      顶层元素
+     * @param roundEnvironment 周围环境
+     * @param useLombok        是否使用lombok
+     */
+    void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok);
+
+    /**
+     * 获取支持注释
      *
      * @return {@link Class}<{@link ?} {@link extends} {@link Annotation}>
      */
-    Class<? extends Annotation> getAnnotation();
+    Class<? extends Annotation> getSupportedAnnotation();
 
     /**
-     * 获取生成的包路径
+     * 是否重写文件
+     *
+     * @return true，重写文件，false不支持重写
+     */
+    boolean overwrite();
+
+    /**
+     * 初始化
+     *
+     * @param processingEnvironment 处理环境
+     */
+    void init(ProcessingEnvironment processingEnvironment);
+
+
+    /**
+     * 获取领域对象名称
+     *
+     * @param typeElement 处理的对象名称
+     * @return 领域对象名称
+     */
+    Name getDomainName(TypeElement typeElement);
+
+    /**
+     * 获取生成的文件package
+     *
+     * @return 生成的文件package
+     */
+    String getBasePackageName(TypeElement typeElement);
+
+    /**
+     * 获取子包名称
      *
      * @param typeElement 类型元素
-     * @return {@link String}
+     * @return 生成的文件package
      */
-    String generatePackage(TypeElement typeElement);
+    String getSubPackageName(TypeElement typeElement);
 
     /**
-     * 代码生成逻辑
+     * 获取源文件路径
      *
-     * @param typeElement      类型元素
-     * @param roundEnvironment 周围环境
-     * @throws Exception 异常
+     * @param typeElement 元素类型
+     * @return 元素类型生成路径
      */
-    void generate(TypeElement typeElement, RoundEnvironment roundEnvironment) throws Exception;
+    String getSourcePath(TypeElement typeElement);
 }

@@ -15,12 +15,9 @@ package cn.chenyunlong.codegen.processor.vo;
 
 import cn.chenyunlong.codegen.annotation.GenVo;
 import cn.chenyunlong.codegen.annotation.IgnoreVo;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
-import cn.hutool.core.bean.BeanUtil;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -36,33 +33,20 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.lang.annotation.Annotation;
 import java.util.Objects;
 import java.util.Set;
 
 /**
  * @author gim vo 代码生成器
  */
-@AutoService(value = CodeGenProcessor.class)
-public class VoCodeGenProcessor extends BaseCodeGenProcessor {
+@SupportedGenTypes(types = GenVo.class)
+public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
 
     public static final String SUFFIX = "VO";
 
-    @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenVo.class;
-    }
 
     @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenVo.class).pkgName();
-    }
-
-    @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        //根据名称获取上下文
-        DefaultNameContext nameContext = getNameContext(typeElement);
-
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
@@ -84,11 +68,24 @@ public class VoCodeGenProcessor extends BaseCodeGenProcessor {
                 .addParameter(TypeName.get(typeElement.asType()), "source")
                 .addModifiers(Modifier.PUBLIC);
         constructorSpecBuilder.addStatement("super()");
-        constructorSpecBuilder.addStatement("$T.copyProperties(source, this)", BeanUtil.class);
+        fields.forEach(variableElement -> constructorSpecBuilder
+                .addStatement(
+                        "this.set$L(source.get$L())",
+                        getFieldDefaultName(variableElement),
+                        getFieldDefaultName(variableElement)
+                ));
         builder.addMethod(constructorSpecBuilder.build());
+        genJavaSourceFile(typeElement, builder);
+    }
 
-        String packageName = nameContext.getVoPackageName();
-        GenVo annotation = typeElement.getAnnotation(GenVo.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), builder, annotation.overrideSource());
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
+    @Override
+    public String getSubPackageName(TypeElement typeElement) {
+        return "vo";
     }
 }
