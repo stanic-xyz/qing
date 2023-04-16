@@ -30,7 +30,7 @@ import javax.persistence.Entity;
  */
 //
 @EqualsAndHashCode(callSuper = true)
-@GenBase(basePackage = "cn.chenyunlong.codegen.test.domain.creater.gen")
+@GenBase(basePackage = "cn.chenyunlong.codegen.test.domain.creater.gen.v2")
 @GenCreator
 @Data
 @Entity

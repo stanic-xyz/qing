@@ -82,16 +82,18 @@ public final class CodeGenProcessorContext {
      */
     public static String getPackageName(TypeElement typeElement, Class<? extends Annotation> annotation) {
         String packageName = "";
+        String subPackageName = "";
         if (annotation != null) {
             if (PROCESSOR_MAP.containsKey(annotation.getName())) {
                 CodeGenProcessor codeGenProcessor = PROCESSOR_MAP.get(annotation.getName());
-                packageName = codeGenProcessor.getPackageName(typeElement);
+                packageName = codeGenProcessor.getBasePackageName(typeElement);
+                subPackageName = codeGenProcessor.getSubPackageName(typeElement);
             } else {
                 GenBase genBase = typeElement.getAnnotation(GenBase.class);
                 packageName = genBase.basePackage();
             }
         }
-        return packageName;
+        return packageName + "." + subPackageName;
     }
 
     /**
