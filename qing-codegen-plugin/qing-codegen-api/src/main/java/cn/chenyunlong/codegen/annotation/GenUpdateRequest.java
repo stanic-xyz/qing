@@ -13,14 +13,17 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
+
 import java.lang.annotation.*;
 
 /**
  * @author gim
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Documented
+@BaseGen
 public @interface GenUpdateRequest {
 
     String pkgName() default "request";

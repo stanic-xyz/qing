@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
+
 import java.lang.annotation.*;
 
 /**
@@ -21,8 +23,9 @@ import java.lang.annotation.*;
  * @Description:
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Documented
+@BaseGen
 public @interface GenQuery {
 
     String pkgName() default "query";

@@ -14,9 +14,11 @@
 package cn.chenyunlong.codegen.annotation;
 
 
+import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import cn.chenyunlong.codegen.annotation.enumes.OrmType;
+import cn.hutool.core.annotation.AliasFor;
 
-import java.lang.annotation.Inherited;
+import java.lang.annotation.*;
 
 /**
  * 代码生成器基础文件
@@ -26,6 +28,10 @@ import java.lang.annotation.Inherited;
  */
 
 @Inherited
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.SOURCE)
+@Documented
+@BaseGen
 public @interface GenBase {
 
 
@@ -42,6 +48,7 @@ public @interface GenBase {
      *
      * @return {@link String}
      */
+    @AliasFor(annotation = BaseGen.class, attribute = "sourcePath")
     String sourcePath() default "src/main/java";
 
     /**

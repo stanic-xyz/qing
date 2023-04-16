@@ -53,6 +53,8 @@
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
         <vavr.version>0.10.4</vavr.version>
         <fastjson.version>2.0.21</fastjson.version>
+        <javapoet.version>1.13.0</javapoet.version>
+        <auto.version>1.0.1</auto.version>
     </properties>
 
     <dependencyManagement>
@@ -91,12 +93,12 @@
             <dependency>
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
-                <version>1.0.1</version>
+                <version>${auto.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.squareup</groupId>
                 <artifactId>javapoet</artifactId>
-                <version>1.13.0</version>
+                <version>${javapoet.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
