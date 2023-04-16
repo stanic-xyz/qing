@@ -57,8 +57,6 @@ public final class ProcessingEnvironmentHolder {
      * @param exception 异常信息
      */
     public static void printErrorMessage(String message, Element element, Exception exception) {
-        System.out.println(message);
-        exception.printStackTrace();
         ENVIRONMENT.get().getMessager().printMessage(Diagnostic.Kind.ERROR, message, element);
     }
 
@@ -68,7 +66,9 @@ public final class ProcessingEnvironmentHolder {
      * @param message 消息
      */
     public static void printMessage(String message) {
-        System.out.println(message);
-        ENVIRONMENT.get().getMessager().printMessage(Diagnostic.Kind.NOTE, message);
+        ProcessingEnvironment processingEnvironment = ENVIRONMENT.get();
+        if (processingEnvironment != null) {
+            processingEnvironment.getMessager().printMessage(Diagnostic.Kind.NOTE, message);
+        }
     }
 }

@@ -15,22 +15,17 @@ package cn.chenyunlong.codegen.processor.api;
 
 import cn.chenyunlong.codegen.annotation.GenResponse;
 import cn.chenyunlong.codegen.annotation.IgnoreVo;
-import cn.chenyunlong.codegen.processor.BaseCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.DefaultNameContext;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.context.NameContext;
+import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
-import com.google.auto.service.AutoService;
-import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.lang.annotation.Annotation;
 import java.util.Objects;
 import java.util.Set;
 
@@ -40,42 +35,33 @@ import java.util.Set;
  * @author Stan
  * @date 2022/11/28
  */
-@AutoService(value = CodeGenProcessor.class)
-public class GenResponseProcessor extends BaseCodeGenProcessor {
+@SupportedGenTypes(types = GenResponse.class)
+public class GenResponseProcessor extends AbstractCodeGenProcessor {
 
     public static String RESPONSE_SUFFIX = "Response";
 
     @Override
-    protected void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        DefaultNameContext nameContext = getNameContext(typeElement);
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+        NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
-        TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(nameContext.getResponseClassName())
+        TypeSpec.Builder builder = TypeSpec.classBuilder(nameContext.getResponseClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(AbstractJpaResponse.class)
                 .addAnnotation(Schema.class);
-        if (useLombok) {
-            typeSpecBuilder.addAnnotation(Data.class);
-            typeSpecBuilder.addAnnotation(
-                    AnnotationSpec
-                            .builder(EqualsAndHashCode.class)
-                            .addMember("callSuper", "$L", true)
-                            .build()
-            );
-        }
-        addSetterAndGetterMethodWithConverter(typeSpecBuilder, fields, useLombok);
-        String packageName = nameContext.getResponsePackageName();
-        GenResponse annotation = typeElement.getAnnotation(GenResponse.class);
-        genJavaSourceFile(packageName, annotation.sourcePath(), typeSpecBuilder, annotation.overrideSource());
+        addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
+        genJavaSourceFile(typeElement, builder);
     }
 
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
     @Override
-    public Class<? extends Annotation> getAnnotation() {
-        return GenResponse.class;
+    public String getSubPackageName(TypeElement typeElement) {
+        return "response";
     }
 
-    @Override
-    public String generatePackage(TypeElement typeElement) {
-        return typeElement.getAnnotation(GenResponse.class).pkgName();
-    }
 }
