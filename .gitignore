@@ -54,3 +54,6 @@ local.env
 /upload/
 /qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/mapper/gen/
 /qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/testobject/gen/
+/qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/updater/gen/
+/qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/vo/gen/
+/qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/creater/gen/

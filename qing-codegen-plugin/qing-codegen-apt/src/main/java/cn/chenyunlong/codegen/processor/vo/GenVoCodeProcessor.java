@@ -77,4 +77,15 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
         builder.addMethod(constructorSpecBuilder.build());
         genJavaSourceFile(typeElement, builder);
     }
+
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
+    @Override
+    public String getSubPackageName(TypeElement typeElement) {
+        return "vo";
+    }
 }

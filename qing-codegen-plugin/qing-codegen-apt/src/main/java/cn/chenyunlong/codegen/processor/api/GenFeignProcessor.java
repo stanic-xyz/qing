@@ -74,6 +74,17 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
     }
 
     /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
+    @Override
+    public String getSubPackageName(TypeElement typeElement) {
+        return "service";
+    }
+
+    /**
      * 生成create方法
      *
      * @param typeElement 类型元素

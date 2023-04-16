@@ -70,6 +70,17 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
         genJavaSourceFile(typeElement, builder);
     }
 
+    /**
+     * 获取子包名称
+     *
+     * @param typeElement 类型元素
+     * @return 生成的文件package
+     */
+    @Override
+    public String getSubPackageName(TypeElement typeElement) {
+        return "mapper";
+    }
+
     private Optional<MethodSpec> dtoToEntityMethod(TypeElement typeElement, NameContext nameContext) {
         String packageName = nameContext.getCreatorPackageName();
         boolean containsNull = StringUtils.containsNull(packageName);
