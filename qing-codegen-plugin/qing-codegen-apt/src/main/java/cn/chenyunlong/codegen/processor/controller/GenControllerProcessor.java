@@ -82,7 +82,7 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
         validMethod(serviceFieldName, typeElement).ifPresent(builder::addMethod);
         inValidMethod(serviceFieldName, typeElement).ifPresent(builder::addMethod);
         findById(serviceFieldName, nameContext).ifPresent(builder::addMethod);
-        findByPage(serviceFieldName, nameContext).ifPresent(builder::addMethod);
+        page(serviceFieldName, nameContext).ifPresent(builder::addMethod);
         genJavaSourceFile(typeElement, builder);
     }
 
@@ -285,12 +285,12 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
      * @param nameContext      命名上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> findByPage(String serviceFieldName, NameContext nameContext) {
+    private Optional<MethodSpec> page(String serviceFieldName, NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(),
                 nameContext.getQueryPackageName(), nameContext.getMapperPackageName(), nameContext.getVoPackageName()
                 , nameContext.getResponsePackageName());
         if (!containsNull) {
-            return Optional.of(MethodSpec.methodBuilder("findByPage")
+            return Optional.of(MethodSpec.methodBuilder("page")
                     .addParameter(ParameterSpec.builder(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class), ClassName.get(nameContext.getQueryRequestPackageName(), nameContext.getQueryRequestClassName())), "request").addAnnotation(RequestBody.class).build())
                     .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "findByPage").build())
                     .addModifiers(Modifier.PUBLIC)
