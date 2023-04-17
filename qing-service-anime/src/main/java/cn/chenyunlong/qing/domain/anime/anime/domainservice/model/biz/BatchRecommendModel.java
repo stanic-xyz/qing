@@ -23,7 +23,7 @@ import java.util.List;
  * 批量出入库模型
  */
 @Data
-public class BatchInOutModel {
+public class BatchRecommendModel {
 
     private String name;
 
@@ -35,6 +35,9 @@ public class BatchInOutModel {
 
     @Schema(name = "仓库Id")
     private Long houseId;
+
+    @Schema(name = "推荐理由")
+    private String reason;
 
     @Schema(name = "动漫唯一编码")
     private List<Long> animeIds;

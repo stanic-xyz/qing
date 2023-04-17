@@ -13,9 +13,23 @@
 
 package cn.chenyunlong.qing.domain.anime.anime.domainservice;
 
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.BatchInOutModel;
+import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
+import cn.chenyunlong.qing.domain.anime.anime.creator.AnimeInfoCreator;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.BatchRecommendModel;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.TransferModel;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizType;
+import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeInfoRepository;
+import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeInfoService;
+import cn.chenyunlong.qing.domain.anime.attachment.service.IAttachmentService;
+import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
+import cn.chenyunlong.qing.domain.anime.playlist.service.IPlaylistService;
+import cn.chenyunlong.qing.domain.anime.recommend.Recommend;
+import cn.chenyunlong.qing.domain.anime.recommend.creator.RecommendCreator;
+import cn.chenyunlong.qing.domain.anime.recommend.mapper.RecommendMapper;
+import cn.chenyunlong.qing.domain.anime.recommend.repository.RecommendRepository;
+import cn.chenyunlong.qing.domain.anime.tag.service.IAnimeTagService;
+import cn.chenyunlong.qing.domain.anime.type.service.IAnimeTypeService;
+import cn.chenyunlong.qing.domain.district.service.IDistrictService;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,81 +37,68 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AnimeDomainServiceImpl implements IAnimeDomainService {
 
-//    private final AnimeInfoRepository animeInfoRepository;
-//    private final RecommendRepository recommendRepository;
-//
-//    @Override
-//    @Transactional
-//    public void handleAnimeInfoRecommend(BatchInOutModel batchInOutModel) {
-//        Assert.notEmpty(batchInOutModel.getAnimeIds());
-//        String genBatchNo = IdUtil.simpleUUID();
-//        AnimeInfoBizInfo animeInfoBizInfo = AnimeInfoBizInfo
-//                .builder()
-//                .batchNo(batchInOutModel.getBatchNo())
-//                .genBatchNo(genBatchNo)
-//                .inOutBizType(batchInOutModel.getInOutBizType())
-//                .uniqueCodes(batchInOutModel.getAnimeIds())
-//                .operateUser(batchInOutModel.getOperateUser())
-//                .build();
-//
-//        //查询所有的动漫信息
-//        animeInfoRepository.findAllById(batchInOutModel.getAnimeIds()).forEach(animeInfo -> {
-//            // 判断是否存在
-//            Optional<AnimeInfo> animeInfoOptional = animeInfoRepository.findById(animeInfo.getId());
-//            animeInfoOptional.ifPresent(info -> {
-//                //如果已经存在则更新入库
-//                EntityOperations
-//                        .doUpdate(animeInfoRepository)
-//                        .load(animeInfoOptional::get)
-//                        .update(asset -> asset.in(animeInfoBizInfo))
-//                        .execute();
-//            });
-//            if (animeInfoOptional.isEmpty()) {
-//                //不存在则直接入库
-//                AnimeInfoCreator creator = new AnimeInfoCreator();
-////                        creator.setName(batchInOutModel.getHouseId());
-//                creator.setName(batchInOutModel.getName());
-////                        creator.setSkuId(batchInOutModel.getSkuId());
-////                        creator.setUniqueCode(animeInfo);
-//
-//                AnimeInfo dtoToEntity = AnimeInfoMapper.INSTANCE.dtoToEntity(creator);
-//
-//                EntityOperations
-//                        .doCreate(animeInfoRepository)
-//                        .create(() -> dtoToEntity)
-//                        .update(anime -> anime.in(animeInfoBizInfo))
-//                        .execute();
-//            }
-//        });
-//    }
+    private final IAnimeInfoService animeInfoService;
+    private final AnimeInfoRepository animeInfoRepository;
+    private final RecommendRepository recommendRepository;
+    private final IAnimeTagService animeTagService;
+    private final IAnimeTypeService animeTypeService;
+    private final IEpisodeService episodeService;
+    private final IPlaylistService playlistService;
+    private final IAttachmentService attachmentService;
+    private final IDistrictService districtService;
 
-    /**
-     * 资产入库
-     *
-     * @param batchInOutModel 订单信息
-     */
-    @Override
-    public void handleAnimeInfoRecommend(BatchInOutModel batchInOutModel) {
-
-    }
 
     @Override
     @Transactional
-    public void handleAnimeInfoOut(BatchInOutModel batchInOutModel) {
-        Assert.notEmpty(batchInOutModel.getAnimeIds());
+    public void handleAnimeInfoRecommend(BatchRecommendModel batchRecommendModel) {
+        Assert.notEmpty(batchRecommendModel.getAnimeIds());
+        String genBatchNo = IdUtil.simpleUUID();
+        AnimeInfoBizInfo animeInfoBizInfo = AnimeInfoBizInfo
+                .builder()
+                .batchNo(batchRecommendModel.getBatchNo())
+                .genBatchNo(genBatchNo)
+                .inOutBizType(batchRecommendModel.getInOutBizType())
+                .uniqueCodes(batchRecommendModel.getAnimeIds())
+                .operateUser(batchRecommendModel.getOperateUser())
+                .build();
+
+        //查询所有的动漫信息
+        List<AnimeInfo> animeInfoList = animeInfoRepository.findAllById(batchRecommendModel.getAnimeIds());
+
+
+        Set<RecommendCreator> creatorSet = animeInfoList.stream().map(animeInfo -> {
+            RecommendCreator recommendCreator = new RecommendCreator();
+            recommendCreator.setAid(animeInfo.getId());
+            recommendCreator.setReason("推荐理由");
+            return recommendCreator;
+        }).collect(Collectors.toSet());
+        Set<Recommend> recommendSet =
+                creatorSet.stream().map(RecommendMapper.INSTANCE::dtoToEntity).collect(Collectors.toSet());
+        List<Recommend> list = recommendRepository.saveAll(recommendSet);
+    }
+
+
+    @Override
+    @Transactional
+    public void handleAnimeInfoOut(BatchRecommendModel batchRecommendModel) {
+        Assert.notEmpty(batchRecommendModel.getAnimeIds());
         String genBatchNo = IdUtil.simpleUUID();
         AnimeInfoBizInfo bizInfo = AnimeInfoBizInfo
                 .builder()
-                .batchNo(batchInOutModel.getBatchNo())
+                .batchNo(batchRecommendModel.getBatchNo())
                 .genBatchNo(genBatchNo)
-                .inOutBizType(batchInOutModel.getInOutBizType())
-                .uniqueCodes(batchInOutModel.getAnimeIds())
-                .operateUser(batchInOutModel.getOperateUser())
+                .inOutBizType(batchRecommendModel.getInOutBizType())
+                .uniqueCodes(batchRecommendModel.getAnimeIds())
+                .operateUser(batchRecommendModel.getOperateUser())
                 .build();
 //        batchInOutModel.getUniqueCodes()
 //                .stream()
@@ -124,7 +125,7 @@ public class AnimeDomainServiceImpl implements IAnimeDomainService {
     public void handleAnimeInfoTransfer(TransferModel transferModel) {
         Assert.notEmpty(transferModel.getUniqueCodes());
         String genBatchNo = IdUtil.simpleUUID();
-        BatchInOutModel outModel = new BatchInOutModel();
+        BatchRecommendModel outModel = new BatchRecommendModel();
         outModel.setBatchNo(transferModel.getBatchNo());
         outModel.setInOutBizType(InOutBizType.OUT_TRANSFER);
         outModel.setOperateUser(transferModel.getOperateUser());
@@ -149,5 +150,16 @@ public class AnimeDomainServiceImpl implements IAnimeDomainService {
 //                transferModel.getTransferOutHouseId(),
 //                transferModel.getBatchNo(),
 //                genBatchNo);
+    }
+
+    /**
+     * 添加动漫信息
+     *
+     * @param animeInfoCreator 转移模型
+     * @return 创建动漫信息
+     */
+    @Override
+    public Long create(AnimeInfoCreator animeInfoCreator) {
+        return animeInfoService.createAnimeInfo(animeInfoCreator);
     }
 }

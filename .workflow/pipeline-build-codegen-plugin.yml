@@ -7,6 +7,10 @@ triggers:
     branches:
       precise:
         - main
+  pr:
+    branches:
+      prefix:
+        - main
 stages:
   - name: stage-baa998e4
     displayName: 拉取代码
@@ -31,10 +35,10 @@ stages:
           - cd ~/workspace/${GITEE_REPO}/qing-common-starters && mvn clean install -Dmaven.test.skip=true
           - cd ~/workspace/${GITEE_REPO}/qing-codegen-plugin && mvn clean install -Dmaven.test.skip=true
           - cd ~/workspace/${GITEE_REPO}/qing-service-anime && mvn clean package -Dmaven.test.skip=true -B
-        settings: []
+        settings: [ ]
         caches:
           - ~/.m2
-        notify: []
+        notify: [ ]
         strategy:
           retry: '0'
 strategy:
