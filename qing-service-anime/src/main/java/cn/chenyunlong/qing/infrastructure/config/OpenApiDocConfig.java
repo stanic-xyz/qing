@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class ApiDocConfig {
+public class OpenApiDocConfig {
 
     private final SwaggerProperties swaggerProperties;
 
@@ -40,7 +40,10 @@ public class ApiDocConfig {
                 .version(swaggerProperties.getVersion())
                 .license(new License().name(swaggerProperties.getLicense()).url(swaggerProperties.getLicenseUrl()));
         SecurityRequirement securityItem = new SecurityRequirement();
-        return new OpenAPI().info(info).externalDocs(documentation).addSecurityItem(securityItem);
+        final String securitySchemeName = "bearerAuth";
+        return new OpenAPI().info(info)
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                .externalDocs(documentation).addSecurityItem(securityItem);
     }
 
     @Bean
