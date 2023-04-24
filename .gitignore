@@ -28,7 +28,7 @@ HELP.md
 
 ### IntelliJ IDEA ###
 .idea
-
+settings.xml
 
 ### VS Code ###
 .vscode/
