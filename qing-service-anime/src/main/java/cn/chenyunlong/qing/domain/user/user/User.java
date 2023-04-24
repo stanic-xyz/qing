@@ -52,7 +52,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "user")
+@Table(name = "tb_user")
 public class User extends BaseEntity {
     private Long uid;
     private String username;

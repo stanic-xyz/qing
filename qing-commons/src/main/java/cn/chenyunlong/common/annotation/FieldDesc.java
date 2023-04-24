@@ -17,9 +17,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
 /**
- * @Author: Gim
- * @Date: 2019/11/25 16:20
- * @Description:
+ * 字段描述信息
+ *
+ * @author : Gim
+ * @since : 2019/11/25 16:20
  */
 @Target(ElementType.FIELD)
 public @interface FieldDesc {

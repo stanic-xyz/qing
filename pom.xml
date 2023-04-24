@@ -114,7 +114,6 @@
                     <configuration>
                         <source>17</source>
                         <target>17</target>
-                        <compilerArgument>-Xlint:all</compilerArgument>
                         <showWarnings>true</showWarnings>
                         <showDeprecation>true</showDeprecation>
                     </configuration>
@@ -226,14 +225,40 @@
                     </plugin>
                 </plugins>
             </build>
+            <repositories>
+                <repository>
+                    <id>stanic-qing-stanic</id>
+                    <name>stanic</name>
+                    <url>https://stanic-maven.pkg.coding.net/repository/qing/stanic/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>stanic-qing-plugin</id>
+                    <name>plugin</name>
+                    <url>https://stanic-maven.pkg.coding.net/repository/qing/plugin/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
 
             <!-- omitted xml -->
             <distributionManagement>
                 <repository>
                     <!--必须与 settings.xml 的 id 一致-->
-                    <id>stanic-zhangli-stanic</id>
+                    <id>stanic-qing-stanic</id>
                     <name>stanic</name>
-                    <url>https://stanic-maven.pkg.coding.net/repository/zhangli/stanic/</url>
+                    <url>https://stanic-maven.pkg.coding.net/repository/qing/stanic/</url>
                 </repository>
             </distributionManagement>
         </profile>

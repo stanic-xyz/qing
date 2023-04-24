@@ -13,26 +13,28 @@
 
 package cn.chenyunlong.qing.infrastructure.security.config;
 
-import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.security.MyAccessDeniedHandler;
 import cn.chenyunlong.qing.infrastructure.security.MyAuthenticationEntryPoint;
 import cn.chenyunlong.qing.infrastructure.security.filter.MyTokenFilter;
 import cn.chenyunlong.qing.infrastructure.security.support.TokenProvider;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author Stan
  */
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@RequiredArgsConstructor
+public class SecurityConfig {
 
     private final MyAccessDeniedHandler myAccessDeniedHandler;
     private final TokenProvider tokenProvider;
@@ -40,29 +42,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 
 
-    public SecurityConfig(AuthenticationSuccessHandler authenticationSuccessHandler,
-                          AuthenticationFailureHandler authenticationFailureHandler,
-                          QingProperties qingProperties,
-                          MyAccessDeniedHandler myAccessDeniedHandler,
-                          TokenProvider tokenProvider,
-                          UserDetailsService myUserDetailService,
-                          MyAuthenticationEntryPoint myAuthenticationEntryPoint) {
-        this.myAccessDeniedHandler = myAccessDeniedHandler;
-        this.tokenProvider = tokenProvider;
-        this.userDetailsService = myUserDetailService;
-        this.myAuthenticationEntryPoint = myAuthenticationEntryPoint;
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+    @Bean
+    AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+                .getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder())
+                .and()
+                .build();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        //禁用CSRF 开启跨域
-        http
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
                 .cors()
                 .and()
                 .csrf().disable()
@@ -73,9 +70,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/actuator/**", "/authorize/**", "/file/**", "/swagger-resources/**", "/swagger-ui.html"
-                        , "/v2/api-docs", "/webjars/**").permitAll()
-                .antMatchers("/easyui/**", "detail/**").permitAll()
+                .antMatchers(
+                        "/actuator/**",
+                        "/authorize/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/webjars/**")
+                .permitAll()
+                .antMatchers(
+                        "/easyui/**",
+                        "detail/**")
+                .permitAll()
                 .antMatchers("/js/**", "/css/**", "/img/*").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/static/**").permitAll()
@@ -85,5 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new MyTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
     }
+
 }

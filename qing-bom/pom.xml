@@ -218,5 +218,44 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>coding</id>
+            <repositories>
+                <repository>
+                    <id>stanic-qing-stanic</id>
+                    <name>stanic</name>
+                    <url>https://stanic-maven.pkg.coding.net/repository/qing/stanic/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>stanic-qing-plugin</id>
+                    <name>plugin</name>
+                    <url>https://stanic-maven.pkg.coding.net/repository/qing/plugin/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+
+            <!-- omitted xml -->
+            <distributionManagement>
+                <repository>
+                    <!--必须与 settings.xml 的 id 一致-->
+                    <id>stanic-qing-stanic</id>
+                    <name>stanic</name>
+                    <url>https://stanic-maven.pkg.coding.net/repository/qing/stanic/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
     </profiles>
 </project>
