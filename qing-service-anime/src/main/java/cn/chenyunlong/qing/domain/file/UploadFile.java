@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.domain.file;
 
 import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,9 +47,17 @@ import javax.persistence.Table;
 public class UploadFile extends BaseEntity {
 
     private Long fileId;
+
+    @FieldDesc(name = "文件名称")
     private String fileName;
+
+    @FieldDesc(name = "文件类型", description = "文件描述信息")
     private String mimeType;
+
+    @FieldDesc(name = "文件地址", description = "文件上传地址")
     private String url;
+
+    @FieldDesc(name = "文件大小")
     private Long fileSize;
 
 }

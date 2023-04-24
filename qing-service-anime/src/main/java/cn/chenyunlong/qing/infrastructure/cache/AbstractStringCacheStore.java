@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author johnniang
  */
+@SuppressWarnings("unckeked")
 @Slf4j
 public abstract class AbstractStringCacheStore extends AbstractCacheStore<String, String> {
     protected Optional<CacheWrapper<String>> jsonToCacheWrapper(String json) {

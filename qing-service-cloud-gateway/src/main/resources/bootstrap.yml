@@ -1,13 +1,8 @@
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${server.port}:@project.version@
-    prefer-ip-address: true
-  client:
-    use-dns-for-fetching-service-urls: true
-    eureka-server-d-n-s-name: chenyunlong.cn
-    eureka-server-u-r-l-context: eureka
-    eureka-server-port: 8761
-    prefer-same-zone-eureka: true
-    region: zhangli
-    fetch-registry: true
-    register-with-eureka: true
+spring:
+  application:
+    name: qing-service-cloud-gateway
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: 127.0.0.1:8848

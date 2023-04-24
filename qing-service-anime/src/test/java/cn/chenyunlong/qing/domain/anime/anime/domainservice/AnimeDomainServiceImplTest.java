@@ -17,6 +17,7 @@ import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import cn.chenyunlong.qing.domain.anime.anime.creator.AnimeInfoCreator;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.BatchRecommendModel;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizType;
+import cn.chenyunlong.qing.domain.anime.attachment.creator.AttachmentCreator;
 import cn.chenyunlong.qing.domain.anime.attachment.service.IAttachmentService;
 import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
 import cn.chenyunlong.qing.domain.anime.playlist.service.IPlaylistService;
@@ -72,6 +73,16 @@ class AnimeDomainServiceImplTest {
     }
 
     @Test
+    void testAddAttachment() {
+        AttachmentCreator attachmentCreator = new AttachmentCreator();
+        attachmentCreator.setAttachmentUrl("https://i0.hdslb" +
+                ".com/bfs/bangumi/image/95d2881427fd43431f6a696a05623675ecdce9d9\n" +
+                ".jpg@450w_600h.webp");
+        attachmentCreator.setAttachmentName("凡人修仙传封面");
+        attachmentService.createAttachment(attachmentCreator);
+    }
+
+    @Test
     void testAddTag() {
         AnimeTagCreator creator = new AnimeTagCreator();
         creator.setName("玄幻");
@@ -121,7 +132,7 @@ class AnimeDomainServiceImplTest {
                 ".jpg@450w_600h.webp");
         animeInfoCreator.setPremiereDate(LocalDate.of(2022, 7, 5));
         animeInfoCreator.setPlayHeat(String.valueOf(1430000000));
-        Long aLong = animeDomainService.create(animeInfoCreator);
+        animeDomainService.create(animeInfoCreator);
 
 
     }

@@ -40,54 +40,54 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/upload-file")
 @RequiredArgsConstructor
 public class UploadFileController {
-  private final IUploadFileService uploadFileService;
+    private final IUploadFileService uploadFileService;
 
-  /**
-   * createRequest
-   */
-  @PostMapping
-  public JsonResult<Long> createUploadFile(@RequestBody UploadFileCreateRequest request) {
-      UploadFileCreator creator = UploadFileMapper.INSTANCE.request2Dto(request);
-      return JsonResult.success(uploadFileService.createUploadFile(creator));
-  }
+    /**
+     * createRequest
+     */
+    @PostMapping
+    public JsonResult<Long> createUploadFile(@RequestBody UploadFileCreateRequest request) {
+        UploadFileCreator creator = UploadFileMapper.INSTANCE.request2Dto(request);
+        return JsonResult.success(uploadFileService.createUploadFile(creator));
+    }
 
-  /**
-   * update request
-   */
-  @PostMapping("updateUploadFile")
-  public JsonResult<String> updateUploadFile(@RequestBody UploadFileUpdateRequest request) {
-      UploadFileUpdater updater = UploadFileMapper.INSTANCE.request2Updater(request);
-      uploadFileService.updateUploadFile(updater);
-      return JsonResult.success(CodeEnum.Success.getName());
-  }
+    /**
+     * update request
+     */
+    @PostMapping("updateUploadFile")
+    public JsonResult<String> updateUploadFile(@RequestBody UploadFileUpdateRequest request) {
+        UploadFileUpdater updater = UploadFileMapper.INSTANCE.request2Updater(request);
+        uploadFileService.updateUploadFile(updater);
+        return JsonResult.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * valid
-   */
-  @PostMapping("valid/{id}")
-  public JsonResult<String> validUploadFile(@PathVariable Long id) {
-      uploadFileService.validUploadFile(id);
-      return JsonResult.success(CodeEnum.Success.getName());
-  }
+    /**
+     * valid
+     */
+    @PostMapping("valid/{id}")
+    public JsonResult<String> validUploadFile(@PathVariable Long id) {
+        uploadFileService.validUploadFile(id);
+        return JsonResult.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * invalid
-   */
-  @PostMapping("invalid/{id}")
-  public JsonResult<String> invalidUploadFile(@PathVariable Long id) {
-      uploadFileService.invalidUploadFile(id);
-      return JsonResult.success(CodeEnum.Success.getName());
-  }
+    /**
+     * invalid
+     */
+    @PostMapping("invalid/{id}")
+    public JsonResult<String> invalidUploadFile(@PathVariable Long id) {
+        uploadFileService.invalidUploadFile(id);
+        return JsonResult.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * findById
-   */
-  @GetMapping("findById/{id}")
-  public JsonResult<UploadFileResponse> findById(@PathVariable Long id) {
-      UploadFileVO vo = uploadFileService.findById(id);
-      UploadFileResponse response = UploadFileMapper.INSTANCE.vo2CustomResponse(vo);
-      return JsonResult.success(response);
-  }
+    /**
+     * findById
+     */
+    @GetMapping("findById/{id}")
+    public JsonResult<UploadFileResponse> findById(@PathVariable Long id) {
+        UploadFileVO vo = uploadFileService.findById(id);
+        UploadFileResponse response = UploadFileMapper.INSTANCE.vo2CustomResponse(vo);
+        return JsonResult.success(response);
+    }
 
     /**
      * findByPage request
@@ -110,5 +110,5 @@ public class UploadFileController {
                         page.getSize(),
                         page.getNumber())
         );
-  }
+    }
 }

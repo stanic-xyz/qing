@@ -38,8 +38,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -62,8 +60,6 @@ public class QingConfiguration implements InitializingBean {
     private final QingProperties qingProperties;
 
     private final SwaggerProperties swaggerProperties;
-
-    private final AuthingConfig authing;
 
     @Override
     public void afterPropertiesSet() {
@@ -114,11 +110,6 @@ public class QingConfiguration implements InitializingBean {
         // 打印记录
         restTemplate.setInterceptors(Collections.singletonList(new LoggingRequestInterceptor(qingProperties.getLogTimeoutMs())));
         return restTemplate;
-    }
-
-    @Bean
-    PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean

@@ -232,6 +232,51 @@
             <artifactId>authing-java-sdk</artifactId>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+                <nacos.url>127.0.0.1:8848</nacos.url>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${basedir}/src/main/assembly/dev.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <profiles.active>pro</profiles.active>
+                <nacos.url>127.0.0.1:8848</nacos.url>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${basedir}/src/main/assembly/pro.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>${project.name}</finalName>
         <plugins>
@@ -286,6 +331,24 @@
                             <outputDirectory>target/generated-sources/java</outputDirectory>
                             <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>${project.artifactId}</finalName>
+                    <outputDirectory>${project.basedir}/target</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
