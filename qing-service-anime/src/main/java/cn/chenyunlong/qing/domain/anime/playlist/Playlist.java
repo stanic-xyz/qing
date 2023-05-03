@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.domain.anime.playlist;
 
 import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,7 +36,7 @@ import javax.persistence.Table;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenController
+@GenController(name = "播放列表")
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest
@@ -49,7 +50,12 @@ import javax.persistence.Table;
 @Table(name = "anime_playlist")
 public class Playlist extends BaseEntity {
 
+    @FieldDesc(name = "动漫ID", description = "关联的动漫ID")
     private Long animeId;
+
+    @FieldDesc(name = "播放列表名称", description = "播放列表名称")
     private String name;
+
+    @FieldDesc(name = "播放列表描述信息")
     private String description;
 }

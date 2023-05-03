@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.domain.anime.episode;
 
 import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,37 +50,45 @@ import javax.persistence.Table;
 @Table(name = "anime_episode")
 public class Episode extends BaseEntity {
 
+    @FieldDesc(name = "动漫ID")
     private Long animeId;
 
+    @FieldDesc(name = "播放列表ID")
     private Long listId;
 
     /**
      * 视频标题名称
      */
+    @FieldDesc(name = "视频标题名称")
     private String name;
 
     /**
      * 视频状态，0正常
      */
+    @FieldDesc(name = "视频状态")
     private Integer status;
 
     /**
      * 上传者名称
      */
+    @FieldDesc(name = "上传者名称")
     private String uploaderName;
 
     /**
      * 上传用户ID
      */
+    @FieldDesc(name = "上传用户ID")
     private Long uploaderId;
 
     /**
      * 视频地址
      */
+    @FieldDesc(name = "视频地址")
     private String url;
 
     /**
      * 视频排序
      */
+    @FieldDesc(name = "视频排序")
     private Integer orderNo = 0;
 }

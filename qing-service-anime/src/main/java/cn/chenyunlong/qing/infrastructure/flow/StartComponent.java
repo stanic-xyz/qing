@@ -11,17 +11,17 @@
  *
  */
 
-package cn.chenyunlong.qing.controller.api.system.model;
+package cn.chenyunlong.qing.infrastructure.flow;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import com.yomahub.liteflow.core.NodeComponent;
+import org.springframework.stereotype.Component;
 
-@Data
-public class LoginRequest {
+@Component("start")
+public class StartComponent extends NodeComponent {
 
-    @Schema(description = "授权码")
-    private String code;
-    @Schema(description = "状态信息")
-    private String state;
-
+    @Override
+    public void process() {
+        //do your business
+        System.out.println("StartComponent.process");
+    }
 }

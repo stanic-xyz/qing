@@ -96,6 +96,10 @@
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos-sts_api</artifactId>
+        </dependency>
         <!-- knife4j文档支持 -->
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -231,6 +235,11 @@
             <groupId>cn.authing</groupId>
             <artifactId>authing-java-sdk</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.yomahub</groupId>
+            <artifactId>liteflow-spring-boot-starter</artifactId>
+        </dependency>
+
     </dependencies>
 
     <profiles>
