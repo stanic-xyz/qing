@@ -55,6 +55,7 @@
         <fastjson.version>2.0.21</fastjson.version>
         <javapoet.version>1.13.0</javapoet.version>
         <auto.version>1.0.1</auto.version>
+        <liteflow.version>2.10.2</liteflow.version>
     </properties>
 
     <dependencyManagement>
@@ -182,6 +183,16 @@
                 <groupId>com.qcloud</groupId>
                 <artifactId>cos_api</artifactId>
                 <version>5.6.139</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qcloud</groupId>
+                <artifactId>cos-sts_api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yomahub</groupId>
+                <artifactId>liteflow-spring-boot-starter</artifactId>
+                <version>${liteflow.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
