@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.domain.anime.menu;
 
+import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +29,16 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "menu")
 public class Menu extends BaseEntity {
+
+    @FieldDesc(name = "菜单名称")
     private String name;
+
+    @FieldDesc(name = "菜单路径")
     private String path;
+
+    @FieldDesc(name = "父级菜单名称")
+    private String parentId;
+
+    @FieldDesc(name = "完整的路径", description = "完整的路径，通过:进行分隔，便于查询")
+    private String qualifyPath;
 }
