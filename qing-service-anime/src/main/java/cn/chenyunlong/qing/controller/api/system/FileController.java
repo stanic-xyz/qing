@@ -69,7 +69,7 @@ public class FileController {
 
     @Log(title = "获取存储桶列表")
     @Operation(summary = "获取存储桶列表")
-    @GetMapping("getTempSecret")
+    @GetMapping("createTempSecret")
     public ApiResult<TempSecret> getTempSecret() throws IOException {
         TreeMap<String, Object> config = new TreeMap<>();
         //这里的 SecretId 和 SecretKey 代表了用于申请临时密钥的永久身份（主账号、子账号等），子账号需要具有操作存储桶的权限。
@@ -99,7 +99,7 @@ public class FileController {
         // 3、允许访问指定前缀的对象："a*", "a/*", "b/*"
         // 如果填写了“*”，将允许用户访问所有资源；除非业务需要，否则请按照最小权限原则授予用户相应的访问权限范围。
         config.put("allowPrefixes", new String[]{
-                "exampleobject",
+                "*",
                 "exampleobject2"
         });
 
@@ -118,41 +118,33 @@ public class FileController {
                 "name/cos:CompleteMultipartUpload"
         };
         config.put("allowActions", allowActions);
-        /**
-         * 设置condition（如有需要）
-         //# 临时密钥生效条件，关于condition的详细设置规则和COS支持的condition类型可以参考 https://cloud.tencent.com/document/product/436/71307
-         final String raw_policy = "{\n" +
-         "  \"version\":\"2.0\",\n" +
-         "  \"statement\":[\n" +
-         "    {\n" +
-         "      \"effect\":\"allow\",\n" +
-         "      \"action\":[\n" +
-         "          \"name/cos:PutObject\",\n" +
-         "          \"name/cos:PostObject\",\n" +
-         "          \"name/cos:InitiateMultipartUpload\",\n" +
-         "          \"name/cos:ListMultipartUploads\",\n" +
-         "          \"name/cos:ListParts\",\n" +
-         "          \"name/cos:UploadPart\",\n" +
-         "          \"name/cos:CompleteMultipartUpload\"\n" +
-         "        ],\n" +
-         "      \"resource\":[\n" +
-         "          \"qcs::cos:ap-shanghai:uid/1250000000:examplebucket-1250000000/*\"\n" +
-         "      ],\n" +
-         "      \"condition\": {\n" +
-         "        \"ip_equal\": {\n" +
-         "            \"qcs:ip\": [\n" +
-         "                \"192.168.1.0/24\",\n" +
-         "                \"101.226.100.185\",\n" +
-         "                \"101.226.100.186\"\n" +
-         "            ]\n" +
-         "        }\n" +
-         "      }\n" +
-         "    }\n" +
-         "  ]\n" +
-         "}";
+//        设置condition（如有需要）
+        //# 临时密钥生效条件，关于condition的详细设置规则和COS支持的condition类型可以参考 https://cloud.tencent.com/document/product/436/71307
+        final String raw_policy = """
+                {
+                  "version":"2.0",
+                  "statement":[
+                    {
+                      "effect":"allow",
+                      "action":[
+                          "name/cos:PutObject",
+                          "name/cos:PostObject",
+                          "name/cos:InitiateMultipartUpload",
+                          "name/cos:ListMultipartUploads",
+                          "name/cos:ListParts",
+                          "name/cos:UploadPart",
+                          "name/cos:CompleteMultipartUpload"
+                        ],
+                      "resource":[
+                          "*"
+                      ],
+                      "condition": {}
+                    }
+                  ]
+                }
+                """;
 
-         config.put("policy", raw_policy);
-         */
+        config.put("policy", raw_policy);
         Response response = CosStsClient.getCredential(config);
         TempSecret tempSecret = new TempSecret();
         tempSecret.setTmpSecretId(response.credentials.tmpSecretId);
