@@ -12,7 +12,7 @@
  */
 
 pipeline {
-    agent any
+    agent none
     stages {
         stage('阶段-1 拉取代码') {
             steps {
@@ -24,8 +24,16 @@ pipeline {
         }
 
         stage('阶段-2 打包') {
+            agent {
+                docker {
+                    reuseNode true
+                    registryUrl 'https://coding-public-docker.pkg.coding.net'
+                    image 'public/docker/openjdk:17'
+                    args '-v /root/.gradle/:/root/.gradle/ -v /root/.m2/:/root/.m2/'
+                }
+            }
             steps {
-                sh 'mvn package --file qing-service-anime/pom.xml -DskipTests=true  -B'
+                sh 'mvn package --file qing-service-anime/pom.xml -DskipTests=true  -B -s settings.xml'
             }
         }
 
@@ -41,7 +49,7 @@ pipeline {
                     // 请修改 build/my-api 为你的制品库名称和镜像名称
                     CODING_DOCKER_IMAGE_NAME = "${env.PROJECT_NAME.toLowerCase()}/qing/qing-service-anime"
                     docker.withRegistry("https://${env.CCI_CURRENT_TEAM}-docker.pkg.coding.net", "${env.CODING_ARTIFACTS_CREDENTIALS_ID}") {
-                        docker.build("${CODING_DOCKER_IMAGE_NAME}:${ARTIFACT_VERSION}", '-f Dockerfile ./qing-service-anime').push()
+                        docker.build("${CODING_DOCKER_IMAGE_NAME}:${ARTIFACT_VERSION}", '-f ./qing-service-anime/Dockerfile ./qing-service-anime').push()
                     }
                 }
             }

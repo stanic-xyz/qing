@@ -20,7 +20,7 @@ spring:
       maximum-pool-size: 2
       minimum-idle: 1
       read-only: false
-      connection-test-query: select 1
+      connection-test-query: values 1
       initialization-fail-timeout: 1000
   servlet:
     multipart:
@@ -40,7 +40,7 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     generate-ddl: true
     open-in-view: false
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.DerbyDialect
     properties:
       hibernate:
         generate_statistics: false
