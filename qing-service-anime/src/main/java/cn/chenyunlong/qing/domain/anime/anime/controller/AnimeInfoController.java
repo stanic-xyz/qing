@@ -40,75 +40,75 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/anime-info")
 @RequiredArgsConstructor
 public class AnimeInfoController {
-  private final IAnimeInfoService animeInfoService;
+    private final IAnimeInfoService animeInfoService;
 
-  /**
-   * createRequest
-   */
-  @PostMapping
-  public JsonResult<Long> createAnimeInfo(@RequestBody AnimeInfoCreateRequest request) {
-    AnimeInfoCreator creator = AnimeInfoMapper.INSTANCE.request2Dto(request);
-    return JsonResult.success(animeInfoService.createAnimeInfo(creator));
-  }
+    /**
+     * createRequest
+     */
+    @PostMapping
+    public JsonResult<Long> createAnimeInfo(@RequestBody AnimeInfoCreateRequest request) {
+        AnimeInfoCreator creator = AnimeInfoMapper.INSTANCE.request2Dto(request);
+        return JsonResult.success(animeInfoService.createAnimeInfo(creator));
+    }
 
-  /**
-   * update request
-   */
-  @PostMapping("updateAnimeInfo")
-  public JsonResult<String> updateAnimeInfo(@RequestBody AnimeInfoUpdateRequest request) {
-    AnimeInfoUpdater updater = AnimeInfoMapper.INSTANCE.request2Updater(request);
-    animeInfoService.updateAnimeInfo(updater);
-    return JsonResult.success(CodeEnum.Success.getName());
-  }
+    /**
+     * update request
+     */
+    @PostMapping("updateAnimeInfo")
+    public JsonResult<String> updateAnimeInfo(@RequestBody AnimeInfoUpdateRequest request) {
+        AnimeInfoUpdater updater = AnimeInfoMapper.INSTANCE.request2Updater(request);
+        animeInfoService.updateAnimeInfo(updater);
+        return JsonResult.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * valid
-   */
-  @PostMapping("valid/{id}")
-  public JsonResult<String> validAnimeInfo(@PathVariable Long id) {
-    animeInfoService.validAnimeInfo(id);
-    return JsonResult.success(CodeEnum.Success.getName());
-  }
+    /**
+     * valid
+     */
+    @PostMapping("valid/{id}")
+    public JsonResult<String> validAnimeInfo(@PathVariable Long id) {
+        animeInfoService.validAnimeInfo(id);
+        return JsonResult.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * invalid
-   */
-  @PostMapping("invalid/{id}")
-  public JsonResult<String> invalidAnimeInfo(@PathVariable Long id) {
-    animeInfoService.invalidAnimeInfo(id);
-    return JsonResult.success(CodeEnum.Success.getName());
-  }
+    /**
+     * invalid
+     */
+    @PostMapping("invalid/{id}")
+    public JsonResult<String> invalidAnimeInfo(@PathVariable Long id) {
+        animeInfoService.invalidAnimeInfo(id);
+        return JsonResult.success(CodeEnum.Success.getName());
+    }
 
-  /**
-   * findById
-   */
-  @GetMapping("findById/{id}")
-  public JsonResult<AnimeInfoResponse> findById(@PathVariable Long id) {
-    AnimeInfoVO vo = animeInfoService.findById(id);
-    AnimeInfoResponse response = AnimeInfoMapper.INSTANCE.vo2CustomResponse(vo);
-    return JsonResult.success(response);
-  }
+    /**
+     * findById
+     */
+    @GetMapping("findById/{id}")
+    public JsonResult<AnimeInfoResponse> findById(@PathVariable Long id) {
+        AnimeInfoVO vo = animeInfoService.findById(id);
+        AnimeInfoResponse response = AnimeInfoMapper.INSTANCE.vo2CustomResponse(vo);
+        return JsonResult.success(response);
+    }
 
-  /**
-   * findByPage request
-   */
-  @PostMapping("findByPage")
-  public JsonResult<PageResult<AnimeInfoResponse>> findByPage(
-          @RequestBody PageRequestWrapper<AnimeInfoQueryRequest> request) {
-    PageRequestWrapper<AnimeInfoQuery> wrapper = new PageRequestWrapper<>();
-    wrapper.setBean(AnimeInfoMapper.INSTANCE.request2Query(request.getBean()));
-    wrapper.setSorts(request.getSorts());
-    wrapper.setPageSize(request.getPageSize());
-    wrapper.setPage(request.getPage());
-    Page<AnimeInfoVO> page = animeInfoService.findByPage(wrapper);
-    return JsonResult.success(
-            PageResult.of(
-                    page.getContent().stream()
-                            .map(AnimeInfoMapper.INSTANCE::vo2CustomResponse)
-                            .collect(Collectors.toList()),
-                    page.getTotalElements(),
-                    page.getSize(),
-                    page.getNumber())
-    );
-  }
+    /**
+     * findByPage request
+     */
+    @PostMapping("findByPage")
+    public JsonResult<PageResult<AnimeInfoResponse>> findByPage(
+            @RequestBody PageRequestWrapper<AnimeInfoQueryRequest> request) {
+        PageRequestWrapper<AnimeInfoQuery> wrapper = new PageRequestWrapper<>();
+        wrapper.setBean(AnimeInfoMapper.INSTANCE.request2Query(request.getBean()));
+        wrapper.setSorts(request.getSorts());
+        wrapper.setPageSize(request.getPageSize());
+        wrapper.setPage(request.getPage());
+        Page<AnimeInfoVO> page = animeInfoService.findByPage(wrapper);
+        return JsonResult.success(
+                PageResult.of(
+                        page.getContent().stream()
+                                .map(AnimeInfoMapper.INSTANCE::vo2CustomResponse)
+                                .collect(Collectors.toList()),
+                        page.getTotalElements(),
+                        page.getSize(),
+                        page.getNumber())
+        );
+    }
 }

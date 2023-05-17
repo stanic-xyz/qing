@@ -69,6 +69,7 @@ public class QingCodeGenProcessorRegistry extends AbstractProcessor {
                         }
                     });
         } catch (Exception exception) {
+            exception.printStackTrace();
             processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, "Qing：代码生成器异常！");
         }
         return false;
