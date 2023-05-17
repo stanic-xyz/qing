@@ -5,6 +5,7 @@ spring:
       username: sa
       password:
     driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:qing;Mode=MYSQL
   mail:
     host: smtp.qq.com
     username: 1576302867@qq.com

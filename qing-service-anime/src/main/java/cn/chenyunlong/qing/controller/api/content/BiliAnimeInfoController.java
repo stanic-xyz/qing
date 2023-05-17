@@ -17,6 +17,7 @@ import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
 import cn.chenyunlong.qing.domain.third.bilibili.service.BiliAnimeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ import java.util.List;
  */
 @Tag(name = "哔哩哔哩动画服务")
 @RestController
-@RequestMapping("api/anime/bilibili")
+@RequestMapping("api/anime/bili")
 @RequiredArgsConstructor
 public class BiliAnimeInfoController {
 
@@ -48,7 +49,11 @@ public class BiliAnimeInfoController {
      * @return {@link List}<{@link BilibiliAnimeScoreEntity}>
      */
     @GetMapping("scores")
-    public List<BilibiliAnimeScoreEntity> getScoreList(Long animeId, LocalDateTime startTime, LocalDateTime endTime) {
+    public List<BilibiliAnimeScoreEntity> getScoreList(Long animeId,
+                                                       @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                                       LocalDateTime startTime,
+                                                       @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                                       LocalDateTime endTime) {
         return animeInfoService.getScoreInfoList(animeId, startTime, endTime);
     }
 

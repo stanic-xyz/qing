@@ -46,7 +46,7 @@ public class EntityUpdater<T, ID> extends BaseEntityOperation implements Loader<
         try {
             T save = repository.save(entity);
             successHook.accept(save);
-            return Optional.ofNullable(save);
+            return Optional.of(save);
         } catch (Exception exception) {
             errorHook.accept(exception);
         }

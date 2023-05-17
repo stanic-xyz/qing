@@ -21,7 +21,6 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -44,6 +43,19 @@ public class CustomExceptionHandler {
         return ResponseEntity.badRequest().body(jsonResult);
     }
 
+    /**
+     * 参数校验异常
+     *
+     * @param exception 异常信息
+     * @return 公共返回值
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<JsonResult> illegalArgumentException(IllegalArgumentException exception) {
+        JsonResult jsonResult;
+        jsonResult = JsonResult.fail("参数校验错误：" + exception.getMessage()).setDevMessage(exception.getMessage());
+        return ResponseEntity.badRequest().body(jsonResult);
+    }
+
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<JsonResult> messageConversionException(BusinessException exception) {
         JsonResult jsonResult = JsonResult.fail(exception.getMessage()).setDevMessage(exception.getMessage());
@@ -55,16 +67,14 @@ public class CustomExceptionHandler {
      * 运行时异常处理程序
      * 捕获  RuntimeException 异常
      *
-     * @param request   request
      * @param exception 异常
      * @param response  response
      * @return 响应结果
      */
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<JsonResult> runtimeExceptionHandler(HttpServletRequest request, final Exception exception,
-                                                              HttpServletResponse response) {
+    public ResponseEntity<JsonResult> runtimeExceptionHandler(final Exception exception, HttpServletResponse response) {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
-        JsonResult<Long> longJsonResult = JsonResult.fail("消息错误了" + exception.getMessage());
+        JsonResult<Long> longJsonResult = JsonResult.fail("参数校验错误：" + exception.getMessage());
         return ResponseEntity.internalServerError().body(longJsonResult);
     }
 }

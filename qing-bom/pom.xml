@@ -26,7 +26,7 @@
 
     <groupId>cn.chenyunlong</groupId>
     <artifactId>qing-bom</artifactId>
-    <version>1.0.0.RELEASE</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <name>qing-bom</name>
     <packaging>pom</packaging>

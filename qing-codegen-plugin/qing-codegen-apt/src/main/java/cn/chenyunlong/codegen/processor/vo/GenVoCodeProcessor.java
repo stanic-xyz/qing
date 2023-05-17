@@ -56,7 +56,7 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
                 .addAnnotation(Schema.class);
         if (useLombok) {
             builder.addAnnotation(Data.class);
-            builder.addAnnotation(
+            builder.addAnnotation(///////////
                     AnnotationSpec.builder(EqualsAndHashCode.class)
                             .addMember("callSuper", "$L", true).build());
             builder.addAnnotation(
