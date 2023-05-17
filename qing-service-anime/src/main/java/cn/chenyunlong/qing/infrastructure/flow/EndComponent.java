@@ -22,6 +22,6 @@ public class EndComponent extends NodeComponent {
     @Override
     public void process() {
         //do your business
-        System.out.println("EndComponent.process");
+//        System.out.println("EndComponent.process");
     }
 }

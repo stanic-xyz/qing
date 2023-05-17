@@ -22,7 +22,7 @@ public class SendComponent extends NodeComponent {
     @Override
     public void process() {
         //do your business
-        System.out.println("true = " + true);
+//        System.out.println("true = " + true);
     }
 
     @Override

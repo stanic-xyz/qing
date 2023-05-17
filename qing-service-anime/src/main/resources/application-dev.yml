@@ -17,14 +17,6 @@ spring:
     host: ${QING_MAIL_HOST:smtp.qq.com}
     username: ${QING_MAIL_USERNAME:your_mail_count}
     password: ${QING_MAIL_PASSWORD:your_mail_token}
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${server.port}:@project.version@
-    appname: ${spring.application.name}
-    hostname: ${QING_SERVICE_ANIME_HOST:localhost}
-  client:
-    service-url:
-      defaultZone: ${QING_EUREKA_ADDR:http://localhost:8761}/eureka/
 mp:
   wx:
     appId: ${QING_WECHAT_APPID}

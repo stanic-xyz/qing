@@ -22,6 +22,6 @@ public class StartComponent extends NodeComponent {
     @Override
     public void process() {
         //do your business
-        System.out.println("StartComponent.process");
+//        System.out.println("StartComponent.process");
     }
 }

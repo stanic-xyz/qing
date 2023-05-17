@@ -244,18 +244,24 @@ public class FileController {
             }
             // common prefix表示表示被delimiter截断的路径, 如delimiter设置为/, common prefix则表示所有子目录的路径
             List<String> commonPrefix = objectListing.getCommonPrefixes();
+            System.out.println("commonPrefix = " + commonPrefix);
 
             // object summary表示所有列出的object列表
             List<COSObjectSummary> cosObjectSummaries = objectListing.getObjectSummaries();
             for (COSObjectSummary cosObjectSummary : cosObjectSummaries) {
                 // 文件的路径key
                 String key = cosObjectSummary.getKey();
+                System.out.println("key = " + key);
                 // 文件的etag
                 String etag = cosObjectSummary.getETag();
+                System.out.println("etag = " + etag);
                 // 文件的长度
                 long fileSize = cosObjectSummary.getSize();
+                System.out.println("fileSize = " + fileSize);
                 // 文件的存储类型
                 String storageClasses = cosObjectSummary.getStorageClass();
+
+                System.out.println("storageClasses = " + storageClasses);
             }
 
             cosObjects.addAll(cosObjectSummaries);

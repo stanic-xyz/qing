@@ -19,7 +19,9 @@ import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.BatchRecom
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizType;
 import cn.chenyunlong.qing.domain.anime.attachment.creator.AttachmentCreator;
 import cn.chenyunlong.qing.domain.anime.attachment.service.IAttachmentService;
+import cn.chenyunlong.qing.domain.anime.episode.creator.EpisodeCreator;
 import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
+import cn.chenyunlong.qing.domain.anime.playlist.creator.PlaylistCreator;
 import cn.chenyunlong.qing.domain.anime.playlist.service.IPlaylistService;
 import cn.chenyunlong.qing.domain.anime.tag.creator.AnimeTagCreator;
 import cn.chenyunlong.qing.domain.anime.tag.service.IAnimeTagService;
@@ -39,7 +41,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 
 @SpringBootTest
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 @Rollback
 class AnimeDomainServiceImplTest {
 
@@ -76,8 +78,7 @@ class AnimeDomainServiceImplTest {
     void testAddAttachment() {
         AttachmentCreator attachmentCreator = new AttachmentCreator();
         attachmentCreator.setAttachmentUrl("https://i0.hdslb" +
-                ".com/bfs/bangumi/image/95d2881427fd43431f6a696a05623675ecdce9d9\n" +
-                ".jpg@450w_600h.webp");
+                ".com/bfs/bangumi/image/95d2881427fd43431f6a696a05623675ecdce9d9.jpg@450w_600h.webp");
         attachmentCreator.setAttachmentName("凡人修仙传封面");
         attachmentService.createAttachment(attachmentCreator);
     }
@@ -98,10 +99,28 @@ class AnimeDomainServiceImplTest {
         animeTagService.createAnimeTag(creator);
     }
 
-
     @Test
-    void testAddAnimeInfo() {
+    void testPlayList() {
+        Long animeId = createAnime();
 
+        PlaylistCreator playlistCreator = new PlaylistCreator();
+        playlistCreator.setAnimeId(animeId);
+        playlistCreator.setDescription("播放列表的描述信息");
+        Long listId = playlistService.createPlaylist(playlistCreator);
+
+        EpisodeCreator episodeCreator = new EpisodeCreator();
+        episodeCreator.setAnimeId(animeId);
+        episodeCreator.setName("播放列表1");
+        episodeCreator.setListId(listId);
+        episodeCreator.setOrderNo(Integer.MAX_VALUE);
+        episodeCreator.setUploaderId(1L);
+        episodeCreator.setUploaderName("上传着名称");
+        episodeCreator.setUrl("https://www.bilibili.com/bangumi/media/md28223043");
+        episodeCreator.setStatus(1);
+        Long episode = episodeService.createEpisode(episodeCreator);
+    }
+
+    private Long createAnime() {
         AnimeTypeCreator typeCreator = new AnimeTypeCreator();
         typeCreator.setName("玄幻");
         typeCreator.setDescription("玄幻 ");
@@ -132,9 +151,12 @@ class AnimeDomainServiceImplTest {
                 ".jpg@450w_600h.webp");
         animeInfoCreator.setPremiereDate(LocalDate.of(2022, 7, 5));
         animeInfoCreator.setPlayHeat(String.valueOf(1430000000));
-        animeDomainService.create(animeInfoCreator);
+        return animeDomainService.create(animeInfoCreator);
+    }
 
-
+    @Test
+    void testAddAnimeInfo() {
+        createAnime();
     }
 
     @Test

@@ -18,7 +18,7 @@
 
     <groupId>cn.chenyunlong</groupId>
     <artifactId>qing-project</artifactId>
-    <version>1.0.0.RELEASE</version>
+    <version>0.0.1-SNAPSHOT</version>
     <description>个人网站信息</description>
 
     <modelVersion>4.0.0</modelVersion>
