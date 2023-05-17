@@ -12,15 +12,7 @@
  */
 
 pipeline {
-    agent {
-        docker {
-            reuseNode true
-            registryUrl 'https://coding-public-docker.pkg.coding.net'
-            image 'public/docker/openjdk:17'
-            args '-v /root/.gradle/:/root/.gradle/ -v /root/.m2/:/root/.m2/'
-        }
-
-    }
+    agent any
     stages {
         stage('阶段-1 拉取代码') {
             steps {
@@ -33,10 +25,6 @@ pipeline {
 
         stage('阶段-2 打包') {
             steps {
-                sh 'mvn clean install --file qing-bom/pom.xml -DskipTests=true -B'
-                sh 'mvn clean install --file qing-commons/pom.xml -DskipTests=true  -B'
-                sh 'mvn clean install --file qing-common-starters/pom.xml -DskipTests=true  -B'
-                sh 'mvn clean install --file qing-codegen-plugin/pom.xml -DskipTests=true  -B'
                 sh 'mvn package --file qing-service-anime/pom.xml -DskipTests=true  -B'
             }
         }
