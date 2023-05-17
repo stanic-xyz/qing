@@ -32,7 +32,6 @@
         <module>qing-commons</module>
         <module>qing-config-git</module>
         <module>qing-service-cloud-gateway</module>
-        <module>qing-service-nat</module>
         <module>qing-service-anime</module>
         <module>qing-admin-server</module>
         <module>qing-bus-server</module>
