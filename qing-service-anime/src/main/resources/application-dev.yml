@@ -6,7 +6,7 @@ spring:
       enabled: false
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://127.0.0.1:3306/qing?serverTimezone=GMT%2B8
+    url: jdbc:mariadb://127.0.0.1:3306/qing?serverTimezone=GMT%2B8&
     hikari:
       username: root
       password: 123456
