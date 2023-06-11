@@ -59,6 +59,11 @@
     <!-- 阿里云镜像 -->
     <mirrors>
         <mirror>
+            <id>huaweicloud</id>
+            <mirrorOf>*</mirrorOf>
+            <url>https://repo.huaweicloud.com/repository/maven/</url>
+        </mirror>
+        <mirror>
             <id>alimaven</id>
             <name>aliyun maven</name>
             <url>https://repo.huaweicloud.com/repository/maven/</url>

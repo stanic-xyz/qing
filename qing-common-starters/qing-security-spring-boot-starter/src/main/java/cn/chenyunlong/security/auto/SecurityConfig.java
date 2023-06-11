@@ -14,20 +14,16 @@
 package cn.chenyunlong.security.auto;
 
 import cn.chenyunlong.security.base.JwtAuthenticationEntryPoint;
-import cn.chenyunlong.security.base.JwtAuthenticationProvider;
 import cn.chenyunlong.security.base.JwtAuthenticationTokenFilter;
 import cn.chenyunlong.security.base.extension.DummyUserContextAware;
 import cn.chenyunlong.security.base.extension.UserContextAware;
 import cn.chenyunlong.security.config.SecurityCommonProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -42,14 +38,9 @@ import org.springframework.web.cors.CorsUtils;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-@EnableConfigurationProperties(SecurityCommonProperties.class)
 public class SecurityConfig {
 
-
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
-
-    private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
     private final SecurityCommonProperties commonProperties;
 
@@ -62,17 +53,6 @@ public class SecurityConfig {
 
     public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
         return new JwtAuthenticationTokenFilter();
-    }
-
-    /**
-     * @param webSecurity the instance of {@link WebSecurity} to apply to customizations to
-     */
-    public void customize(WebSecurity webSecurity) {
-        webSecurity
-                .ignoring()
-                .requestMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**")
-                // 忽略前端文件
-                .requestMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js");
     }
 
     @Bean

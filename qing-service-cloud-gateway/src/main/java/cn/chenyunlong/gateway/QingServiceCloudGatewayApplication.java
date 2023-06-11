@@ -16,7 +16,6 @@ package cn.chenyunlong.gateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author Stan
@@ -27,13 +26,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class QingServiceCloudGatewayApplication {
 
     public static void main(String[] args) {
-        String username;
-        try (ConfigurableApplicationContext applicationContext =
-                     SpringApplication.run(QingServiceCloudGatewayApplication.class, args)) {
-            username = applicationContext.getEnvironment().getProperty("spring.application.name");
-        }
-        System.out.println(username);
-        System.out.println("=================================================");
+        SpringApplication.run(QingServiceCloudGatewayApplication.class, args);
     }
 
 }
