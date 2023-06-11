@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023  YunLong Chen
+ * Copyright (c) 2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -11,8 +11,21 @@
  *
  */
 
-/**
- * 控制器
- */
-package cn.chenyunlong.qing.registry.controller;
+package cn.chenyunlong.qing.web.content;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@RequestMapping("api/test/graphql")
+public class GraphqlController {
+
+    /**
+     * 发布信息了
+     *
+     * @return 获取用户名
+     */
+    @GetMapping("test")
+    public String username() {
+        return "";
+    }
+}

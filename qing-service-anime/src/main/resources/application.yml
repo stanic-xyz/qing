@@ -44,16 +44,10 @@ spring:
           batch_size: 1000
         order_inserts: true
         dialect: org.hibernate.dialect.MariaDBDialect
-mybatis-plus:
-  configuration:
-    cache-enabled: true
-    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
-    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
-  global-config:
-    banner: false
-  type-aliases-package: cn.chenyunlong.qing.**.domain,cn.chenyunlong.qing.**.entities
-  mapper-locations: classpath*:mapper/**/*Mapper.xml
-  # 是否异步记录用户操作日志
+  graphql:
+    schema:
+      printer:
+        enabled: true
 qing:
   openAopLog: true
   api:
@@ -79,6 +73,9 @@ management:
       exposure:
         include:
           - "*"
+  metrics:
+    tags:
+      application: ${spring.application.name}
   endpoint:
     health:
       show-details: always
@@ -89,9 +86,5 @@ springdoc:
     doc-expansion: none
     default-model-expand-depth: 20
   show-actuator: true
-eureka:
-  client:
-    service-url:
-      defaultUrl: ${QING_EUREKA_ADDR:http://localhost:8761}/eureka
 liteflow:
   rule-source: flow/flow.el.xml

@@ -15,7 +15,9 @@ package cn.chenyunlong.qing.infrastructure.exception;
 
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.infrastructure.enums.ResponseCode;
+import cn.chenyunlong.qing.infrastructure.monitor.PrometheusCustomMonitor;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
@@ -27,13 +29,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @SuppressWarnings("rawtypes")
 @ControllerAdvice
+@RequiredArgsConstructor
 public class CustomExceptionHandler {
+
+    private final PrometheusCustomMonitor monitor;
 
 
     @ExceptionHandler(value = AbstractException.class)
     public ResponseEntity<JsonResult> errorHandler(Exception exception) {
         JsonResult<Exception> jsonResult = JsonResult.res(ResponseCode.PARAM_FAIL, exception);
-        return ResponseEntity.badRequest().body(jsonResult);
+        return ResponseEntity
+                .badRequest()
+                .body(jsonResult);
     }
 
     @ExceptionHandler(value = HttpMessageConversionException.class)
@@ -74,6 +81,22 @@ public class CustomExceptionHandler {
     public ResponseEntity<JsonResult> runtimeExceptionHandler(final Exception exception, HttpServletResponse response) {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         JsonResult<Long> longJsonResult = JsonResult.fail("参数校验错误：" + exception.getMessage());
-        return ResponseEntity.internalServerError().body(longJsonResult);
+        return ResponseEntity
+                .internalServerError()
+                .body(longJsonResult);
+    }
+
+    /**
+     * 更新请求异常的
+     *
+     * @param e 更新请求异常信息
+     * @return 退出信息
+     */
+    @ExceptionHandler(value = Exception.class)
+    public String handle(Exception e) {
+        monitor
+                .getRequestErrorCount()
+                .increment();
+        return "error, message: " + e.getMessage();
     }
 }
