@@ -14,12 +14,11 @@
 package cn.chenyunlong.qing.infrastructure.intercepter;
 
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 添加的cdn服务器

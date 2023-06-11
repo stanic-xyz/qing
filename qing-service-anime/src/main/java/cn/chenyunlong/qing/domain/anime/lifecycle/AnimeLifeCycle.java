@@ -20,12 +20,11 @@ import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizT
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizTypeConverter;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutType;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutTypeConverter;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

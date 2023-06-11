@@ -13,10 +13,10 @@
 
 package cn.chenyunlong.qing.infrastructure.model.params.authing;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.validation.constraints.NotBlank;
 
 /**
  * Login param.

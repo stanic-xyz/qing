@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.controller;
 
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,7 +24,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import redis.embedded.RedisServer;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.net.ServerSocket;
 

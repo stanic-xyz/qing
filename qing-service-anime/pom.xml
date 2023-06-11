@@ -19,7 +19,7 @@
     <parent>
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-bom</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
         <relativePath>../qing-bom/pom.xml</relativePath>
     </parent>
 
@@ -181,7 +181,6 @@
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
-            <version>3.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -203,8 +202,8 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.kstyrc</groupId>

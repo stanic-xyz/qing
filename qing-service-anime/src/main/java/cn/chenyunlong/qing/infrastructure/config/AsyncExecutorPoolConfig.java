@@ -13,10 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
@@ -26,14 +24,17 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author Stan
  */
 @Configuration
-public class AsyncExecutorPoolConfig extends AsyncConfigurerSupport {
+public class AsyncExecutorPoolConfig implements AsyncConfigurer {
 
-    @Bean
-    @Primary
-    public Executor taskExecutor() {
+    @Override
+    public Executor getAsyncExecutor() {
+        Executor asyncExecutor = AsyncConfigurer.super.getAsyncExecutor();
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(8);
-        executor.setMaxPoolSize(16);
+        int corePoolSize = Runtime
+                .getRuntime()
+                .availableProcessors();
+        executor.setCorePoolSize(corePoolSize);
+        executor.setMaxPoolSize(corePoolSize * 2);
         executor.setQueueCapacity(100);
         executor.setKeepAliveSeconds(30);
         executor.setThreadNamePrefix("thread-async-");

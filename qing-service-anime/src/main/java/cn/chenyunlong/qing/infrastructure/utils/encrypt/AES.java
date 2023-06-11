@@ -26,14 +26,18 @@ public class AES {
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, keySpec);
         byte[] encrypted = cipher.doFinal(plaintext.getBytes());
-        return Base64.getEncoder().encodeToString(encrypted);
+        return Base64
+                .getEncoder()
+                .encodeToString(encrypted);
     }
 
     public static String decrypt(String key, String ciphertext) throws Exception {
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), ALGORITHM);
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, keySpec);
-        byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(ciphertext));
+        byte[] decrypted = cipher.doFinal(Base64
+                .getDecoder()
+                .decode(ciphertext));
         return new String(decrypted);
     }
 }

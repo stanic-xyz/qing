@@ -15,14 +15,14 @@ package cn.chenyunlong.qing.domain.anime.recommend;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**

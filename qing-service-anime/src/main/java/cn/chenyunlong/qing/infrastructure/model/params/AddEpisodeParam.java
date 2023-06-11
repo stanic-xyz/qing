@@ -15,9 +15,9 @@ package cn.chenyunlong.qing.infrastructure.model.params;
 
 import cn.chenyunlong.qing.domain.anime.episode.Episode;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.InputConverter;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 
 @Data
 public class AddEpisodeParam implements InputConverter<Episode> {

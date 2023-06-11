@@ -14,11 +14,10 @@
 package cn.chenyunlong.qing;
 
 import cn.chenyunlong.qing.controller.BaseApiTest;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.Assert;
-
-import javax.annotation.Resource;
 
 public class RedisTest extends BaseApiTest {
 

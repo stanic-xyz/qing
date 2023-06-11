@@ -14,8 +14,7 @@
 package cn.chenyunlong.qing.infrastructure.converter;
 
 import cn.chenyunlong.qing.domain.anime.anime.TaskStatus;
-
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 
 /**
  * 对象转换器

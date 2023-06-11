@@ -24,111 +24,107 @@ import java.time.LocalDate;
 @Schema
 @Data
 public class AnimeInfoCreateRequest implements Request {
-  @Schema(
-          title = "name",
-          description = "name"
-  )
-  private String name;
+    @Schema(
+            title = "name",
+            description = "name"
+    )
+    private String name;
 
-  @Schema(
-          title = "instruction",
-          description = "instruction"
-  )
-  private String instruction;
+    @Schema(
+            title = "instruction",
+            description = "instruction"
+    )
+    private String instruction;
 
-  @Schema(
-          title = "districtId",
-          description = "districtId"
-  )
-  private Long districtId;
+    @Schema(
+            title = "districtId",
+            description = "districtId"
+    )
+    private Long districtId;
 
-  @Schema(
-          title = "districtName",
-          description = "districtName"
-  )
-  private String districtName;
+    @Schema(
+            title = "districtName",
+            description = "districtName"
+    )
+    private String districtName;
 
-  @Schema(
-          title = "coverUrl",
-          description = "coverUrl"
-  )
-  private String coverUrl;
+    @Schema(
+            title = "coverUrl",
+            description = "coverUrl"
+    )
+    private String coverUrl;
 
-  @Schema(
-          title = "typeId",
-          description = "typeId"
-  )
-  private Long typeId;
+    @Schema(
+            title = "typeId",
+            description = "typeId"
+    )
+    private Long typeId;
 
-  @Schema(
-          title = "typeName",
-          description = "typeName"
-  )
-  private String typeName;
+    @Schema(
+            title = "typeName",
+            description = "typeName"
+    )
+    private String typeName;
 
-  @Schema(
-          title = "originalName",
-          description = "originalName"
-  )
-  private String originalName;
+    @Schema(
+            title = "originalName",
+            description = "originalName")
+    private String originalName;
 
-  @Schema(
-          title = "otherName",
-          description = "otherName"
-  )
-  private String otherName;
+    @Schema(title = "otherName", description = "otherName")
+    private String otherName;
 
-  @Schema(
-          title = "author",
-          description = "author"
-  )
-  private String author;
+    @Schema(
+            title = "author",
+            description = "author"
+    )
+    private String author;
 
-  @Schema(
-          title = "company",
-          description = "company"
-  )
-  private String company;
+    @Schema(
+            title = "company",
+            description = "company"
+    )
+    private String company;
 
-  @Schema(
-          title = "premiereDate",
-          description = "premiereDate"
-  )
-  private LocalDate premiereDate;
+    @Schema(
+            title = "premiereDate",
+            description = "premiereDate"
+    )
+    private LocalDate premiereDate;
 
-  @Schema(
-          title = "playStatus",
-          description = "playStatus"
-  )
-  private PlayStatus playStatus;
+    @Schema(
+            title = "playStatus",
+            description = "playStatus"
+    )
+    private PlayStatus playStatus;
 
-  @Schema(
-          title = "plotType",
-          description = "plotType"
-  )
-  private String plotType;
+    @Schema(
+            title = "plotType",
+            description = "plotType"
+    )
+    private String plotType;
 
-  @Schema(
-          title = "tags",
-          description = "tags"
-  )
-  private String tags;
+    @Schema(
+            title = "tags",
+            description = "tags"
+    )
+    private String tags;
 
-  @Schema(
-          title = "officialWebsite",
-          description = "officialWebsite"
-  )
-  private String officialWebsite;
+    @Schema(
+            title = "officialWebsite",
+            description = "officialWebsite"
+    )
+    private String officialWebsite;
 
-  @Schema(
-          title = "playHeat",
-          description = "playHeat"
-  )
-  private String playHeat;
+    @Schema(
+            title = "playHeat",
+            description = "playHeat"
+    )
+    private String playHeat;
 
-  @Schema(
-          title = "orderNo",
-          description = "orderNo"
-  )
-  private Integer orderNo;
+    @Schema(
+            title = "orderNo",
+            description = "orderNo"
+    )
+    private Integer orderNo;
 }

@@ -19,13 +19,15 @@ import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.AnimeInfoBizInfo;
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeInfoRecommendBizInfo;
 import cn.chenyunlong.qing.domain.anime.anime.events.AnimeInfoInEvent;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -48,10 +50,12 @@ import java.util.Objects;
 @GenResponse
 @GenFeign
 @GenMapper
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "anime_info")
-@EqualsAndHashCode(callSuper = true)
 public class AnimeInfo extends BaseEntity {
 
     @FieldDesc(description = "动漫名称")
@@ -119,12 +123,16 @@ public class AnimeInfo extends BaseEntity {
         registerEvent(new AnimeInfoInEvent(this, bizInfo));
     }
 
-    /**
-     * 添加到推荐
-     *
-     * @param recommendBizInfo 推荐信息
-     */
-    public void recommend(AnimeInfoRecommendBizInfo recommendBizInfo) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        AnimeInfo animeInfo = (AnimeInfo) o;
+        return getId() != null && Objects.equals(getId(), animeInfo.getId());
+    }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

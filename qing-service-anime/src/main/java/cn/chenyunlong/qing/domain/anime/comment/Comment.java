@@ -15,11 +15,15 @@ package cn.chenyunlong.qing.domain.anime.comment;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.Objects;
 
 /**
  * 用户评论信息
@@ -41,8 +45,10 @@ import javax.persistence.Table;
 @GenResponse
 @GenFeign
 @GenMapper
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "anime_comment")
 public class Comment extends BaseEntity {
@@ -50,4 +56,17 @@ public class Comment extends BaseEntity {
     private String username;
     private String content;
     private String ipAddress;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Comment comment = (Comment) o;
+        return getId() != null && Objects.equals(getId(), comment.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

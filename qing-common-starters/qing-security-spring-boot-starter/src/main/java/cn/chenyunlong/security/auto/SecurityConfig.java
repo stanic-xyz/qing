@@ -25,14 +25,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.cors.CorsUtils;
@@ -46,7 +44,7 @@ import org.springframework.web.cors.CorsUtils;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableConfigurationProperties(SecurityCommonProperties.class)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
 
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -55,39 +53,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SecurityCommonProperties commonProperties;
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(jwtAuthenticationProvider);
-    }
-
     @Bean
     @ConditionalOnMissingBean(UserContextAware.class)
     UserContextAware dummyUserContext() {
         return new DummyUserContextAware();
     }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
 
     public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
         return new JwtAuthenticationTokenFilter();
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web
+    /**
+     * @param webSecurity the instance of {@link WebSecurity} to apply to customizations to
+     */
+    public void customize(WebSecurity webSecurity) {
+        webSecurity
                 .ignoring()
-                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**")
+                .requestMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**")
                 // 忽略前端文件
-                .antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js");
+                .requestMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js");
     }
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .requiresChannel()
                 .anyRequest()
@@ -110,43 +99,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers()
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
                 .and()
-                .authorizeRequests()
+                .authorizeHttpRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest)
                 .permitAll()
                 //OPTIONS请求直接放行
-                .antMatchers(HttpMethod.OPTIONS)
+                .requestMatchers(HttpMethod.OPTIONS)
                 .permitAll()
                 //静态资源直接放行
-                .antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js")
+                .requestMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js")
                 .permitAll()
                 //Swagger相关直接放行
-                .antMatchers("/swagger-ui.html")
+                .requestMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/api-docs", "/configuration/ui", "/configuration/security", "/auth/**", "/public/**")
                 .permitAll()
-                .antMatchers("/swagger-resources/**")
+                .requestMatchers(commonProperties
+                        .getUnAuthUrls()
+                        .toArray(new String[0]))
                 .permitAll()
-                .antMatchers("/images/**")
-                .permitAll()
-                //webjar相关直接放行
-                .antMatchers("/webjars/**")
-                .permitAll()
-                .antMatchers("/v2/api-docs")
-                .permitAll()
-                .antMatchers("/configuration/ui")
-                .permitAll()
-                .antMatchers("/configuration/security")
-                .permitAll()
-                .antMatchers("/auth/**")
-                .permitAll()
-                .antMatchers("/public/**")
-                .permitAll()
-                .antMatchers(commonProperties.getUnAuthUrls().toArray(new String[0]))
-                .permitAll()
-                .antMatchers("/admin/**")
+                .requestMatchers("/admin/**)")
                 .hasRole("ADMIN")
                 .anyRequest()
                 .authenticated();
 
         httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.headers().cacheControl();
+        // 资源创建
+        httpSecurity
+                .headers()
+                .cacheControl();
+
+        return httpSecurity.build();
     }
+
 }

@@ -16,14 +16,14 @@ package cn.chenyunlong.jpa.support.domain;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
 
 /**
  * Base entity.

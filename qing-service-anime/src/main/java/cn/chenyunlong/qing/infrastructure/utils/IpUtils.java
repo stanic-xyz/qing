@@ -14,9 +14,9 @@
 package cn.chenyunlong.qing.infrastructure.utils;
 
 import cn.hutool.core.net.NetUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.ObjectUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 

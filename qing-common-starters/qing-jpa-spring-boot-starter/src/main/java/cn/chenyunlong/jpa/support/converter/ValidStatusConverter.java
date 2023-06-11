@@ -15,8 +15,8 @@ package cn.chenyunlong.jpa.support.converter;
 
 
 import cn.chenyunlong.common.constants.ValidStatus;
+import jakarta.persistence.AttributeConverter;
 
-import javax.persistence.AttributeConverter;
 import java.util.Arrays;
 
 /**

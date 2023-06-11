@@ -14,12 +14,11 @@
 package cn.chenyunlong.qing.domain.system.link;
 
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * @author 陈云龙

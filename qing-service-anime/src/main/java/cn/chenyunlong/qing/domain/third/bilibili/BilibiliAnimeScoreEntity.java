@@ -14,10 +14,10 @@
 package cn.chenyunlong.qing.domain.third.bilibili;
 
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**

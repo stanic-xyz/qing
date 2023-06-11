@@ -11,13 +11,26 @@
  *
  */
 
-package cn.chenyunlong.qing.infrastructure.config;
+package cn.chenyunlong.qing.web.system.model.response;
 
-import org.hibernate.dialect.MySQL5InnoDBDialect;
+import lombok.Data;
 
-public class MySQLConfig extends MySQL5InnoDBDialect {
-    @Override
-    public String getTableTypeString() {
-        return " ENGINE=InnoDB DEFAULT CHARSET=utf8";
-    }
+@Data
+public class TempSecret {
+
+    /**
+     * 临时密钥ID
+     */
+    private String tmpSecretId;
+
+    /**
+     * 临时密钥
+     */
+    private String tmpSecretKey;
+
+    /**
+     * 临时密钥的accessToken
+     */
+    private String sessionToken;
+
 }

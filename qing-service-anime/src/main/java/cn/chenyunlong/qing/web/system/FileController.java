@@ -11,13 +11,13 @@
  *
  */
 
-package cn.chenyunlong.qing.controller.api.system;
+package cn.chenyunlong.qing.web.system;
 
-import cn.chenyunlong.qing.controller.api.system.model.response.TempSecret;
 import cn.chenyunlong.qing.domain.file.UploadFile;
 import cn.chenyunlong.qing.infrastructure.annotation.Log;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.model.ApiResult;
+import cn.chenyunlong.qing.web.system.model.response.TempSecret;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.model.Bucket;
@@ -30,7 +30,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -76,9 +79,13 @@ public class FileController {
         //用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
         //用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
         // 替换为您的云 api 密钥 SecretId
-        config.put("secretId", qingProperties.getOss().getSecretId());
+        config.put("secretId", qingProperties
+                .getOss()
+                .getSecretId());
         // 替换为您的云 api 密钥 SecretKey
-        config.put("secretKey", qingProperties.getOss().getSecretKey());
+        config.put("secretKey", qingProperties
+                .getOss()
+                .getSecretKey());
 
         // 设置域名:
         // 如果您使用了腾讯云 cvm，可以设置内部域名
@@ -88,9 +95,13 @@ public class FileController {
         config.put("durationSeconds", 1800);
 
         // 换成您的 bucket
-        config.put("bucket", qingProperties.getOss().getBucketName());
+        config.put("bucket", qingProperties
+                .getOss()
+                .getBucketName());
         // 换成 bucket 所在地区
-        config.put("region", qingProperties.getOss().getRegion());
+        config.put("region", qingProperties
+                .getOss()
+                .getRegion());
 
         // 这里改成允许的路径前缀，可以根据自己网站的用户登录态判断允许上传的具体路径
         // 列举几种典型的前缀授权场景：
@@ -98,10 +109,7 @@ public class FileController {
         // 2、允许访问指定的对象："a/a1.txt", "b/b1.txt"
         // 3、允许访问指定前缀的对象："a*", "a/*", "b/*"
         // 如果填写了“*”，将允许用户访问所有资源；除非业务需要，否则请按照最小权限原则授予用户相应的访问权限范围。
-        config.put("allowPrefixes", new String[]{
-                "*",
-                "exampleobject2"
-        });
+        config.put("allowPrefixes", new String[]{"*", "exampleobject2"});
 
         // 密钥的权限列表。必须在这里指定本次临时密钥所需要的权限。
         // 简单上传、表单上传和分块上传需要以下的权限，其他权限列表请参见 https://cloud.tencent.com/document/product/436/31923
@@ -111,12 +119,7 @@ public class FileController {
                 // 表单上传、小程序上传
                 "name/cos:PostObject",
                 // 分块上传
-                "name/cos:InitiateMultipartUpload",
-                "name/cos:ListMultipartUploads",
-                "name/cos:ListParts",
-                "name/cos:UploadPart",
-                "name/cos:CompleteMultipartUpload"
-        };
+                "name/cos:InitiateMultipartUpload", "name/cos:ListMultipartUploads", "name/cos:ListParts", "name/cos:UploadPart", "name/cos:CompleteMultipartUpload"};
         config.put("allowActions", allowActions);
 //        设置condition（如有需要）
         //# 临时密钥生效条件，关于condition的详细设置规则和COS支持的condition类型可以参考 https://cloud.tencent.com/document/product/436/71307
@@ -164,20 +167,26 @@ public class FileController {
     @Log
     @Operation(summary = "上传文件", description = "上传文件")
     @PostMapping("upload")
-    public ApiResult<String> uploadFile(@RequestBody MultipartFile file) throws IOException {
+    public ApiResult<String> uploadFile(MultipartFile file) throws IOException {
         if (!file.isEmpty()) {
             UploadFile uploadFile = new UploadFile();
 
             String originalFilename = file.getOriginalFilename();
 
-            String filePath = LocalDate.now().toString();
+            String filePath = LocalDate
+                    .now()
+                    .toString();
 
-            String randomUUID = UUID.randomUUID().toString();
+            String randomUUID = UUID
+                    .randomUUID()
+                    .toString();
 
             assert originalFilename != null;
             String fileName = filePath + randomUUID + originalFilename.substring(originalFilename.lastIndexOf('.'));
 
-            String baseUploadDir = qingProperties.getFile().getBaseUploadDir();
+            String baseUploadDir = qingProperties
+                    .getFile()
+                    .getBaseUploadDir();
 
             File localFile = new File(baseUploadDir + filePath);
             if (!localFile.exists()) {
@@ -200,7 +209,9 @@ public class FileController {
 
 
             uploadFile.setFileName(file.getOriginalFilename());
-            uploadFile.setUrl(qingProperties.getFile().getImageServerUrl() + fileName);
+            uploadFile.setUrl(qingProperties
+                    .getFile()
+                    .getImageServerUrl() + fileName);
             uploadFile.setFileSize(file.getSize());
             uploadFile.setMimeType(file.getContentType());
 //            fileUploadService.saveFile(uploadFile);
@@ -227,7 +238,9 @@ public class FileController {
 
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
         // 设置bucket名称
-        listObjectsRequest.setBucketName(buckets.get(0).getName());
+        listObjectsRequest.setBucketName(buckets
+                .get(0)
+                .getName());
         // prefix表示列出的object的key以prefix开始
         listObjectsRequest.setPrefix("images/");
         // deliter表示分隔符, 设置为/表示列出当前目录下的object, 设置为空表示列出所有的object

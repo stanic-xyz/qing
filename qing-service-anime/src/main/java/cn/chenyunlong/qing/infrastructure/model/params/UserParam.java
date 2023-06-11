@@ -15,12 +15,11 @@ package cn.chenyunlong.qing.infrastructure.model.params;
 
 import cn.chenyunlong.qing.domain.user.user.User;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.InputConverter;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
 
 /**
  * 注册用户的参数信息
