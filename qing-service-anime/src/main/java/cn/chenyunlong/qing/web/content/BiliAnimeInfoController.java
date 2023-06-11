@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.controller.api.content;
+package cn.chenyunlong.qing.web.content;
 
 import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
 import cn.chenyunlong.qing.domain.third.bilibili.service.BiliAnimeService;

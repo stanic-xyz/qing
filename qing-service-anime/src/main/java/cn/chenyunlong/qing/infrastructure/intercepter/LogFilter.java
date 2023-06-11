@@ -13,7 +13,11 @@
 
 package cn.chenyunlong.qing.infrastructure.intercepter;
 
-import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -22,10 +26,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -43,10 +43,8 @@ public class LogFilter extends OncePerRequestFilter {
     /**
      * 排除敏感属性字段
      */
-    public static final String[] EXCLUDE_PATH_PATTERS = new String[]{
-            "/actuator/**", "/css/**", "/favicon.ico", "/file/**", "/img/**",
-            "/js/**", "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"
-    };
+    public static final String[] EXCLUDE_PATH_PATTERS =
+            new String[]{"/actuator/**", "/css/**", "/favicon.ico", "/file/**", "/img/**", "/js/**", "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"};
 
     /**
      * 执行控制器了
@@ -59,8 +57,7 @@ public class LogFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        String remoteAddr = ServletUtil.getClientIP(request);
+        String remoteAddr = JakartaServletUtil.getClientIP(request);
         // Set start time
         long startTime = System.currentTimeMillis();
         // Do filter
@@ -73,7 +70,9 @@ public class LogFilter extends OncePerRequestFilter {
         String servletPath = request.getServletPath();
         boolean shouldNotFilter = super.shouldNotFilter(request);
         if (!shouldNotFilter) {
-            return Arrays.stream(EXCLUDE_PATH_PATTERS).anyMatch(path -> new AntPathMatcher().match(path, servletPath));
+            return Arrays
+                    .stream(EXCLUDE_PATH_PATTERS)
+                    .anyMatch(path -> new AntPathMatcher().match(path, servletPath));
         } else {
             return false;
         }

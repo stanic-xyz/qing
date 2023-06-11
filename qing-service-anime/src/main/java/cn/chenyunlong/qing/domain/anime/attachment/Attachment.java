@@ -15,11 +15,15 @@ package cn.chenyunlong.qing.domain.anime.attachment;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.Objects;
 
 /**
  * @author Stan
@@ -40,12 +44,27 @@ import javax.persistence.Table;
 @GenFeign
 @GenMapper
 @GenBase(basePackage = "cn.chenyunlong.qing.domain.anime.attachment")
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "attachment")
 public class Attachment extends BaseEntity {
     private Integer attachmentId;
     private String attachmentName;
     private String attachmentUrl;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Attachment that = (Attachment) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

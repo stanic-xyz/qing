@@ -17,10 +17,9 @@ import cn.chenyunlong.codegen.annotation.GenBase;
 import cn.chenyunlong.codegen.annotation.GenUpdater;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.Entity;
 
 /**
  * 测试代码自动生成的结果

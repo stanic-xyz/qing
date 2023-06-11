@@ -15,11 +15,15 @@ package cn.chenyunlong.qing.domain.permission;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.Objects;
 
 
 @GenVo
@@ -37,8 +41,10 @@ import javax.persistence.Table;
 @GenFeign
 @GenMapper
 @GenBase(basePackage = "cn.chenyunlong.qing.domain.permission")
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "permission")
 public class Permission extends BaseEntity {
@@ -46,4 +52,16 @@ public class Permission extends BaseEntity {
     private String name;
     private String description;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Permission that = (Permission) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

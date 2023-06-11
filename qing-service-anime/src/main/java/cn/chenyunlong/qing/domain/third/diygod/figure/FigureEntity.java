@@ -14,11 +14,11 @@
 package cn.chenyunlong.qing.domain.third.diygod.figure;
 
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

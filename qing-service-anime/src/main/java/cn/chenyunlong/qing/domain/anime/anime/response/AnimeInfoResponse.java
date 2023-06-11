@@ -19,6 +19,7 @@ import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -98,6 +99,7 @@ public class AnimeInfoResponse extends AbstractJpaResponse {
             title = "premiereDate",
             description = "premiereDate"
     )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate premiereDate;
 
     @Schema(

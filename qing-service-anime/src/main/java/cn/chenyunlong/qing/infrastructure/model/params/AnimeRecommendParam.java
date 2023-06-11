@@ -16,11 +16,10 @@ package cn.chenyunlong.qing.infrastructure.model.params;
 import cn.chenyunlong.qing.domain.anime.recommend.Recommend;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.InputConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Schema(description = "查询推荐信息的请求参数信息")
 @Data

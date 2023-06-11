@@ -16,10 +16,9 @@ package cn.chenyunlong.qing.infrastructure.model.params;
 import cn.chenyunlong.qing.domain.anime.type.AnimeType;
 import cn.chenyunlong.qing.infrastructure.model.dto.base.InputConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Data
 public class AnimeTypeParam implements InputConverter<AnimeType> {

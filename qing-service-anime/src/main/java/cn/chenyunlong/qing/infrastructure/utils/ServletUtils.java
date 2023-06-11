@@ -14,16 +14,16 @@
 package cn.chenyunlong.qing.infrastructure.utils;
 
 import cn.chenyunlong.qing.infrastructure.utils.text.Convert;
-import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -103,7 +103,9 @@ public class ServletUtils {
         try {
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
-            response.getWriter().print(string);
+            response
+                    .getWriter()
+                    .print(string);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -156,7 +158,8 @@ public class ServletUtils {
 
     @NonNull
     public static Optional<HttpServletRequest> getCurrentRequest() {
-        return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
+        return Optional
+                .ofNullable(RequestContextHolder.getRequestAttributes())
                 .filter(requestAttributes -> requestAttributes instanceof ServletRequestAttributes)
                 .map(requestAttributes -> (ServletRequestAttributes) requestAttributes)
                 .map(ServletRequestAttributes::getRequest);
@@ -169,7 +172,9 @@ public class ServletUtils {
      */
     @Nullable
     public static String getRequestIp() {
-        return getCurrentRequest().map(ServletUtil::getClientIP).orElse(null);
+        return getCurrentRequest()
+                .map(JakartaServletUtil::getClientIP)
+                .orElse(null);
     }
 
     /**
@@ -180,6 +185,8 @@ public class ServletUtils {
      */
     @Nullable
     public static String getHeaderIgnoreCase(String header) {
-        return getCurrentRequest().map(request -> ServletUtil.getHeaderIgnoreCase(request, header)).orElse(null);
+        return getCurrentRequest()
+                .map(request -> JakartaServletUtil.getHeaderIgnoreCase(request, header))
+                .orElse(null);
     }
 }

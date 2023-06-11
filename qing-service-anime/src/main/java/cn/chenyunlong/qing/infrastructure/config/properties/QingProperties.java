@@ -52,7 +52,7 @@ public class QingProperties {
     /**
      * Swagger相关配置
      */
-    private SwaggerProperties swagger = new SwaggerProperties();
+    private DocProperties api;
 
     /**
      * 身份验证前缀

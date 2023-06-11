@@ -15,13 +15,12 @@ package cn.chenyunlong.qing.infrastructure.exception;
 
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.infrastructure.enums.ResponseCode;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Stan

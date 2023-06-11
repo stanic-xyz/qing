@@ -15,6 +15,9 @@ package cn.chenyunlong.qing.infrastructure.mail;
 
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.exception.EmailException;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -24,9 +27,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.util.Assert;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
@@ -75,8 +75,7 @@ public abstract class AbstractMailService implements MailService {
     @Override
     public void testConnection() {
         MailSender javaMailSender = getMailSender();
-        if (javaMailSender instanceof JavaMailSenderImpl) {
-            JavaMailSenderImpl mailSender = (JavaMailSenderImpl) javaMailSender;
+        if (javaMailSender instanceof JavaMailSenderImpl mailSender) {
             try {
                 mailSender.testConnection();
             } catch (MessagingException e) {
@@ -171,9 +170,8 @@ public abstract class AbstractMailService implements MailService {
     private synchronized InternetAddress getFromAddress(@NonNull JavaMailSender javaMailSender) throws UnsupportedEncodingException {
         Assert.notNull(javaMailSender, "Java mail sender must not be null");
 
-        if (javaMailSender instanceof JavaMailSenderImpl) {
+        if (javaMailSender instanceof JavaMailSenderImpl mailSender) {
             // get user name(email)
-            JavaMailSenderImpl mailSender = (JavaMailSenderImpl) javaMailSender;
             String username = mailSender.getUsername();
 
             // build internet address

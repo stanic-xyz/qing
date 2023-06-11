@@ -18,7 +18,7 @@
     <parent>
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-common-starters</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>qing-jpa-spring-boot-starter</artifactId>
@@ -45,8 +45,8 @@
             <artifactId>vavr</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

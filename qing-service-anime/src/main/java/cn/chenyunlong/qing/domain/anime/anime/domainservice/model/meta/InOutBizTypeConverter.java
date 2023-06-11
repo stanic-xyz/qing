@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta;
 
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 
 public class InOutBizTypeConverter implements AttributeConverter<InOutBizType, Integer> {
 

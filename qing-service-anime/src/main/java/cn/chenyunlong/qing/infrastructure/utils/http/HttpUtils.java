@@ -169,7 +169,9 @@ public class HttpUtils {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String ret;
             while ((ret = br.readLine()) != null) {
-                if (!ret.trim().equals("")) {
+                if (!ret
+                        .trim()
+                        .equals("")) {
                     result.append(new String(ret.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
                 }
             }
