@@ -45,6 +45,7 @@ import lombok.EqualsAndHashCode;
 @GenResponse
 @GenFeign
 @GenMapper
+@GenBase(basePackage = "cn.chenyunlong.qing.domain.system.job.job")
 @Entity
 @Table(name = "sys_job")
 public class SysJob extends BaseEntity {

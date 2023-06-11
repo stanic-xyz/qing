@@ -3,16 +3,15 @@ server:
 spring:
   application:
     name: qing-admin-server
-  profiles:
-    active: prod
   security:
     # 配置登录用户名和密码
     user:
       name: ${QING_ADMIN_USERNAME}
       password: ${QING_ADMIN_PASSWORD}
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${server.port}:@project.version@
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 management:
   endpoints:
     web:

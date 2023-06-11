@@ -44,6 +44,7 @@ import java.util.Date;
 @GenResponse
 @GenFeign
 @GenMapper
+@GenBase(basePackage = "cn.chenyunlong.qing.domain.system.job.log")
 @Entity
 @Table(name = "sys_job_log")
 public class SysJobLog extends BaseEntity {

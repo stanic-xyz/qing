@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023  YunLong Chen
+ * Copyright (c) 2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -11,16 +11,8 @@
  *
  */
 
-package cn.chenyunlong.qing.registry;
+package cn.chenyunlong.qing.infrastructure.statemechine;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-
-@Controller
-public class IndexController {
-
-    @GetMapping("/")
-    public String index() {
-        return "redirect:/dashboard";
-    }
+public enum States {
+    SI, S1, S2
 }
