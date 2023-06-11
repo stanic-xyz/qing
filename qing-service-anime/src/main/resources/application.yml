@@ -35,15 +35,11 @@ spring:
     scheduler-name: testName
   jpa:
     hibernate:
-      ddl-auto: update
-      naming:
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: none
     generate-ddl: true
     open-in-view: true
-    show-sql: true
     properties:
       hibernate:
-        generate_statistics: true
         jdbc:
           batch_size: 1000
         order_inserts: true
@@ -58,21 +54,25 @@ mybatis-plus:
   type-aliases-package: cn.chenyunlong.qing.**.domain,cn.chenyunlong.qing.**.entities
   mapper-locations: classpath*:mapper/**/*Mapper.xml
   # 是否异步记录用户操作日志
+qing:
   openAopLog: true
-  swagger:
-    author: Stan
-    basePackage: cn.chenyunlong.qing
-    description: My Rear Garden API Documentation.
+  api:
+    author: ChenYunLong
+    description: 后台API接口.
     email: 1576302867@qq.com
     license: MulanPSL-2.0
     licenseUrl: http://license.coscl.org.cn/MulanPSL2
     title: Application from Project Qing
     url: https://bangumi.chenyunlong.cn
-    version: V1.0.0
+    version: @version@
     doc-disabled: false
+    infoList:
+      - url: https://api.chenyunlong.cn
+        description: 正式接口文档地址
+      - url: http://localhost:8080
+        description: 本地测试环境
   security:
     secret-key: authentication_
-  index-size: 26
 management:
   endpoints:
     web:

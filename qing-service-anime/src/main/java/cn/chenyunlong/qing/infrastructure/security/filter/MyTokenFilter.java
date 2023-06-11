@@ -14,17 +14,17 @@
 package cn.chenyunlong.qing.infrastructure.security.filter;
 
 import cn.chenyunlong.qing.infrastructure.security.support.TokenProvider;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
@@ -53,7 +53,9 @@ public class MyTokenFilter extends GenericFilterBean {
             if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
                 try {
                     Authentication authentication = this.tokenProvider.getAuthentication(jwt);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(authentication);
                 } catch (Exception exp) {
                     logger.info("token验证错误！");
                 }
@@ -77,7 +79,14 @@ public class MyTokenFilter extends GenericFilterBean {
         if (cookies == null) {
             return null;
         }
-        Optional<Cookie> zhangliToken = Arrays.stream(cookies).filter(cookie -> cookie.getName().equals(AUTHORIZATION_COOKIES)).findFirst();
-        return zhangliToken.map(Cookie::getValue).orElse(null);
+        Optional<Cookie> zhangliToken = Arrays
+                .stream(cookies)
+                .filter(cookie -> cookie
+                        .getName()
+                        .equals(AUTHORIZATION_COOKIES))
+                .findFirst();
+        return zhangliToken
+                .map(Cookie::getValue)
+                .orElse(null);
     }
 }

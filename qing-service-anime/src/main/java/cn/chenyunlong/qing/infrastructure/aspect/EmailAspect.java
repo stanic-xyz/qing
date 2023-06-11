@@ -15,6 +15,9 @@ package cn.chenyunlong.qing.infrastructure.aspect;
 
 import cn.chenyunlong.qing.infrastructure.annotation.Email;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
+import net.bytebuddy.matcher.BooleanMatcher;
+import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -53,6 +56,12 @@ public class EmailAspect {
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
 
+        ElementMatcher<Object> test = new BooleanMatcher<>(false);
+
+        ElementMatcher.Junction<Object> junction = ElementMatchers
+                .any()
+                .or(ElementMatchers.is(false));
+
         //获取方法签名
         Method method = ((MethodSignature) point.getSignature()).getMethod();
         //获取方法注解
@@ -82,7 +91,9 @@ public class EmailAspect {
         public void run() {
             super.run();
             log.info(receiver, subject, content);
-            log.debug("发送一条邮件给指定账户" + qingProperties.getFile().getBaseUploadDir());
+            log.debug("发送一条邮件给指定账户" + qingProperties
+                    .getFile()
+                    .getBaseUploadDir());
         }
     }
 }

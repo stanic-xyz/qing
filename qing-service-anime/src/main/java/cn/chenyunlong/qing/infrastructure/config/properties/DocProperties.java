@@ -15,14 +15,23 @@ package cn.chenyunlong.qing.infrastructure.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author stan
  */
 @Data
-@ConfigurationProperties(prefix = "qing.swagger")
-public class SwaggerProperties {
-    private String basePackage;
+@Component
+@ConfigurationProperties(prefix = "qing.api")
+public class DocProperties {
+
+    /**
+     * 是否启用openDoc
+     */
+    private boolean docDisabled;
+
     private String title;
     private String description;
     private String version;
@@ -30,7 +39,25 @@ public class SwaggerProperties {
     private String url;
     private String email;
     private String license;
+
+
     private String licenseUrl;
-    private boolean docDisabled;
+
+    /**
+     * 联系人名称
+     */
     private String contactName;
+
+    /**
+     * 具体的服务的URL
+     */
+    private List<ServerInfo> infoList;
+
+    @Data
+    public static class ServerInfo {
+
+        private String url;
+
+        private String description;
+    }
 }

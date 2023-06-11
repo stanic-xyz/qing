@@ -16,13 +16,12 @@ package cn.chenyunlong.qing.domain.system.config;
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.infrastructure.annotation.Excel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
  * 参数配置表 sys_config

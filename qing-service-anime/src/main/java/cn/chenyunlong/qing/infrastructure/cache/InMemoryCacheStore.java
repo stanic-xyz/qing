@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.qing.infrastructure.cache;
 
+import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
-import javax.annotation.PreDestroy;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;

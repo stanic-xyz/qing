@@ -1,6 +1,8 @@
-# Project
-/docker/minio/minio/
-/docker/data/*
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea
 
 # Eclipse
 .classpath
@@ -9,51 +11,46 @@
 .metadata
 .settings
 
-# IntelliJ
-*.iml
-*.ipr
-*.iws
-.idea/
-out/
-
 # Maven
-target/
+target
 release.properties
 
 HELP.md
-/target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
 
-### IntelliJ IDEA ###
-.idea
+# 放置上传本地的settings文件
 settings.xml
 
 ### VS Code ###
 .vscode/
-/logs/
+
+# 日志文件
+logs
 
 doc/db/.back_Qing
 
 
 ### Local file
-**/application-local.yml
-**/application-local.yaml
-**/application-local.properties
-application-local.yml
-application-local.yaml
-application-local.properties
+**/**-local.yml
+**/**-local.yaml
+**/**-local.properties
+**-local.yml
+**-local.yaml
+**-local.properties
 
 **.local
 ### .env 配置文件
 local.env
 
 /qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/user/gen/
-/.jpb/
-/upload/
 /qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/mapper/gen/
 /qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/testobject/gen/
 /qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/updater/gen/
 /qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/vo/gen/
 /qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/creater/gen/
+
+
+# 本地上传文件测试
+/upload/

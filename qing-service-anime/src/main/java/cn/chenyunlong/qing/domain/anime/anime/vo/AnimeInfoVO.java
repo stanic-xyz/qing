@@ -18,11 +18,13 @@ import cn.chenyunlong.common.model.AbstractBaseJpaVO;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import cn.hutool.core.bean.BeanUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -105,6 +107,8 @@ public class AnimeInfoVO extends AbstractBaseJpaVO {
             title = "premiereDate",
             description = "premiereDate"
     )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate premiereDate;
 
     @Schema(

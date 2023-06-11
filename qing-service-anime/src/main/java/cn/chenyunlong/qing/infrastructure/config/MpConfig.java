@@ -15,12 +15,11 @@ package cn.chenyunlong.qing.infrastructure.config;
 
 import cn.chenyunlong.qing.infrastructure.config.properties.WxProperties;
 import com.riversoft.weixin.mp.base.AppSetting;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.Resource;
 
 /**
  * @author stan

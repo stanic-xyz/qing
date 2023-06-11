@@ -16,11 +16,10 @@ package cn.chenyunlong.qing.domain.anime.tag;
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * @author 标签信息

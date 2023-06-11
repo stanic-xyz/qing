@@ -19,6 +19,8 @@ import cn.chenyunlong.qing.infrastructure.enums.BusinessStatus;
 import cn.chenyunlong.qing.infrastructure.utils.HttpContextUtil;
 import cn.chenyunlong.qing.infrastructure.utils.IpUtils;
 import com.alibaba.fastjson.JSONObject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -30,8 +32,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
@@ -214,7 +214,7 @@ public class LogAspect {
      */
     private String argsArrayToString(Object[] paramsArray) {
         StringBuilder params = new StringBuilder();
-        if (paramsArray != null && paramsArray.length > 0) {
+        if (paramsArray != null) {
             for (Object obj : paramsArray) {
                 if (!isFilterObject(obj)) {
                     Object jsonObj = JSONObject.toJSONString(obj);

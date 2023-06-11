@@ -13,50 +13,101 @@
 
 package cn.chenyunlong.qing.infrastructure.config;
 
-import cn.chenyunlong.qing.infrastructure.config.properties.SwaggerProperties;
+import cn.chenyunlong.qing.infrastructure.config.properties.DocProperties;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
 public class OpenApiDocConfig {
 
-    private final SwaggerProperties swaggerProperties;
+    private final DocProperties docProperties;
+
+    @Bean
+    public Info info() {
+        return new Info()
+                .title(docProperties.getTitle())
+                .description(docProperties.getDescription())
+                .version(docProperties.getVersion())
+                .license(new License()
+                        .name(docProperties.getLicense())
+                        .url(docProperties.getLicenseUrl()));
+    }
+
 
     @Bean
     public OpenAPI springShopOpenAPI() {
         ExternalDocumentation documentation = new ExternalDocumentation()
-                .description(swaggerProperties.getDescription())
+                .description(docProperties.getDescription())
                 .url("https://wiki.chenyunlong/docs/qing");
-        Info info = new Info().title(swaggerProperties.getTitle())
-                .description(swaggerProperties.getDescription())
-                .version(swaggerProperties.getVersion())
-                .license(new License().name(swaggerProperties.getLicense()).url(swaggerProperties.getLicenseUrl()));
         SecurityRequirement securityItem = new SecurityRequirement();
         final String securitySchemeName = "bearerAuth";
-        return new OpenAPI().info(info)
+        List<Server> servers = docProperties
+                .getInfoList()
+                .stream()
+                .map(serverInfo -> {
+                    Server server = new Server();
+                    server.setUrl(serverInfo.getUrl());
+                    server.setDescription(serverInfo.getDescription());
+                    return server;
+                })
+                .collect(Collectors.toList());
+        return new OpenAPI()
+                .info(info())
+                .servers(servers)
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-                .externalDocs(documentation).addSecurityItem(securityItem);
-    }
-
-    @Bean
-    public GroupedOpenApi petOpenApi() {
-        String[] paths = {"/api/**"};
-        return GroupedOpenApi.builder().group("api").pathsToMatch(paths)
-                .build();
+                .externalDocs(documentation)
+                .addSecurityItem(securityItem)
+                // 添加令牌信息
+                .components(new Components().addParameters("token", new Parameter()
+                        .in(ParameterIn.HEADER.toString())
+                        .name("token")
+                        .description("令牌")
+                        .required(true)
+                        .example("123456")
+                        .schema(new StringSchema())));
     }
 
     @Bean
     public GroupedOpenApi totalOpenApi() {
         String[] paths = {"/**"};
-        return GroupedOpenApi.builder().group("全部").pathsToMatch(paths)
+        return GroupedOpenApi
+                .builder()
+                .group("全部")
+                .addOpenApiCustomiser(getResponseMessage())
+                .pathsToMatch(paths)
                 .build();
+    }
+
+    @Bean
+    public OpenApiCustomiser getResponseMessage() {
+        return openApi -> openApi
+                .getPaths()
+                .values()
+                .forEach(pathItem -> pathItem
+                        .readOperations()
+                        .forEach(operation -> {
+                            ApiResponses apiResponses = operation.getResponses();
+                            apiResponses.addApiResponse(String.valueOf(1), new ApiResponse().description("操作成功"));
+                            apiResponses.addApiResponse(String.valueOf(0), new ApiResponse().description("操作失败"));
+                        }));
     }
 }

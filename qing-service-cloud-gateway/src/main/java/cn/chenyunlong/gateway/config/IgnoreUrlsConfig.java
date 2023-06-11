@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,5 +34,5 @@ import java.util.List;
 public class IgnoreUrlsConfig {
 
     //    服务白名单
-    private List<String> urls = List.of();
+    private List<String> urls = new ArrayList<>();
 }

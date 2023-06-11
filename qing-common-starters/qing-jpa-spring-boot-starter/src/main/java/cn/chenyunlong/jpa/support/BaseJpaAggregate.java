@@ -14,13 +14,13 @@
 package cn.chenyunlong.jpa.support;
 
 import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
-import javax.persistence.*;
 import java.time.Instant;
 
 /**
@@ -66,4 +66,5 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
     public void preUpdate() {
         this.setUpdatedAt(Instant.now());
     }
+
 }

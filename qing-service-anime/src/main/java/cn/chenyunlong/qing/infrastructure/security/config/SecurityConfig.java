@@ -62,34 +62,34 @@ public class SecurityConfig {
         httpSecurity
                 .cors()
                 .and()
-                .csrf().disable()
+                .csrf()
+                .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(myAuthenticationEntryPoint)
                 .accessDeniedHandler(myAccessDeniedHandler)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
-                .antMatchers(
-                        "/actuator/**",
-                        "/authorize/**",
-                        "/swagger-resources/**",
-                        "/swagger-ui.html",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/webjars/**")
+                .authorizeHttpRequests()
+                .requestMatchers("/actuator/**", "/authorize/**", "/swagger- /**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**")
                 .permitAll()
-                .antMatchers(
-                        "/easyui/**",
-                        "detail/**")
+                .requestMatchers("/easyui/**", "/detail/**")
                 .permitAll()
-                .antMatchers("/js/**", "/css/**", "/img/*").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/static/**").permitAll()
-                .antMatchers("/favicon.ico").permitAll()
-                .antMatchers("/natcross/**").permitAll()
-                .antMatchers("/management/**").permitAll()
-                .anyRequest().permitAll()
+                .requestMatchers("/js/**", "/css/**", "/img/*")
+                .permitAll()
+                .requestMatchers("/login")
+                .permitAll()
+                .requestMatchers("/static/**")
+                .permitAll()
+                .requestMatchers("/favicon.ico")
+                .permitAll()
+                .requestMatchers("/natcross/**")
+                .permitAll()
+                .requestMatchers("/management/**")
+                .permitAll()
+                .anyRequest()
+                .permitAll()
                 .and()
                 .addFilterBefore(new MyTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

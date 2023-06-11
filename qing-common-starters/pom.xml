@@ -20,12 +20,12 @@
     <parent>
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-bom</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
         <relativePath>../qing-bom/pom.xml</relativePath>
     </parent>
 
     <artifactId>qing-common-starters</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
