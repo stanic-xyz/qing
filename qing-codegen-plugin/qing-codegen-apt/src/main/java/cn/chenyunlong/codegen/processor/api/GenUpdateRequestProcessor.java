@@ -47,7 +47,8 @@ public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
         NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields = findFields(typeElement,
                 element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
-        TypeSpec.Builder builder = TypeSpec.classBuilder(nameContext.getUpdateClassName())
+        TypeSpec.Builder builder = TypeSpec
+                .classBuilder(nameContext.getUpdateClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(Request.class)
                 .addAnnotation(Schema.class);

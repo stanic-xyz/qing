@@ -93,7 +93,7 @@
                         <annotationProcessorPath>
                             <groupId>cn.chenyunlong</groupId>
                             <artifactId>qing-codegen-apt</artifactId>
-                            <version>1.0.0.RELEASE</version>
+                            <version>0.0.2-SNAPSHOT</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>

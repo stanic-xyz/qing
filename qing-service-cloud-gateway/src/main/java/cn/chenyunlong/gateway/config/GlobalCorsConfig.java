@@ -58,7 +58,11 @@ public class GlobalCorsConfig {
      */
     @Bean
     public KeyResolver ipKeyResolver() {
-        return exchange -> Mono.just(Objects.requireNonNull(exchange.getRequest().getRemoteAddress()).getHostName());
+        return exchange -> Mono.just(Objects
+                .requireNonNull(exchange
+                        .getRequest()
+                        .getRemoteAddress())
+                .getHostName());
     }
 
 }

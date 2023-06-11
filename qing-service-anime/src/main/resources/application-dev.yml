@@ -10,9 +10,10 @@ spring:
     hikari:
       username: root
       password: 123456
-  redis:
-    host: ${REDIS_HOST:127.0.0.1}
-    port: 6379
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: 6379
   mail:
     host: ${QING_MAIL_HOST:smtp.qq.com}
     username: ${QING_MAIL_USERNAME:your_mail_count}
