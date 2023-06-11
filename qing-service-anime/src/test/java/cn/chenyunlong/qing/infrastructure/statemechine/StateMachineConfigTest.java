@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023  YunLong Chen
+ * Copyright (c) 2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -11,20 +11,24 @@
  *
  */
 
-package cn.chenyunlong.qing.registry;
+package cn.chenyunlong.qing.infrastructure.statemechine;
 
-import org.springframework.boot.SpringApplication;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.statemachine.StateMachine;
+import org.springframework.test.context.ActiveProfiles;
 
-/**
- * @author Stan
- */
 @SpringBootApplication
-@EnableEurekaServer
-public class QingEurekaServiceApplication {
+@ActiveProfiles("test")
+class StateMachineConfigTest {
 
-    public static void main(String[] args) {
-        SpringApplication.run(QingEurekaServiceApplication.class, args);
+    @Autowired
+    private StateMachine<States, Events> stateMachine;
+
+    @Test
+    void configure() {
+        stateMachine.sendEvent(Events.E1);
+        stateMachine.sendEvent(Events.E2);
     }
 }

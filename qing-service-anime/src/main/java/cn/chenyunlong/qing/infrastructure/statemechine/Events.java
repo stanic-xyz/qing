@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023  YunLong Chen
+ * Copyright (c) 2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -11,18 +11,8 @@
  *
  */
 
-package cn.chenyunlong.qing.registry;
+package cn.chenyunlong.qing.infrastructure.statemechine;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-
-@ActiveProfiles("test")
-@SpringBootTest
-public class QingEurekaServiceApplicationTests {
-
-    @Test
-    public void contextLoads() {
-    }
-
+public enum Events {
+    E1, E2
 }

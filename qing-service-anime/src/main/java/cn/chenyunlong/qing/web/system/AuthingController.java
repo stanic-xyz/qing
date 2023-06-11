@@ -20,6 +20,7 @@ import cn.authing.sdk.java.dto.authentication.UserInfo;
 import cn.authing.sdk.java.model.AuthenticationClientOptions;
 import cn.chenyunlong.qing.infrastructure.config.authing.AuthingConfig;
 import cn.chenyunlong.qing.infrastructure.model.params.authing.AuthingLoginParam;
+import cn.chenyunlong.qing.infrastructure.monitor.PrometheusCustomMonitor;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,11 +41,16 @@ import java.text.ParseException;
 public class AuthingController {
     private final AuthingConfig authing;
 
+    private final PrometheusCustomMonitor monitor;
+
 
     @Operation(summary = "跳转到登录地址")
     @GetMapping("/login")
     public ResponseEntity<Void> login(HttpServletResponse response) {
         try {
+            monitor
+                    .getLoginCount()
+                    .increment();
             // 设置初始化参数
             AuthenticationClientOptions clientOptions = new AuthenticationClientOptions();
             clientOptions.setAppId(authing.getAppId()); // Authing 应用 ID

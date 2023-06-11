@@ -44,6 +44,7 @@ import lombok.EqualsAndHashCode;
 @GenResponse
 @GenFeign
 @GenMapper
+@GenBase(basePackage = "cn.chenyunlong.qing.domain.system.config")
 @Table(name = "sys_config")
 @EqualsAndHashCode(callSuper = false)
 public class SysConfig extends BaseEntity {

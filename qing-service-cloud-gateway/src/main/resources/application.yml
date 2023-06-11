@@ -8,6 +8,9 @@ spring:
   profiles:
     active: prod
   cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
     gateway:
       routes:
         - id: qing-service-anime
@@ -42,7 +45,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: 'http://localhost:8201/auth/rsa/publicKey' #配置RSA的公钥访问地址
+          jwk-set-uri: 'http://localhost:8201/auth/rsa/publicKey'
   data:
     redis:
       database: 0
