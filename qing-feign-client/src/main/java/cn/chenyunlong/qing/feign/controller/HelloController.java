@@ -15,8 +15,7 @@ package cn.chenyunlong.qing.feign.controller;
 
 import cn.chenyunlong.qing.feign.remote.BaseService;
 import cn.chenyunlong.qing.feign.remote.RemoteHello;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,10 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Stan
  */
+@Slf4j
 @RestController
 public class HelloController {
-
-    private final Logger logger = LoggerFactory.getLogger(HelloController.class);
 
     private final RemoteHello remoteHello;
 
@@ -45,7 +43,7 @@ public class HelloController {
     @GetMapping("hello")
     public String hello(@RequestParam String name) {
         String value = remoteHello.getUserInfo(name);
-        logger.debug("来自远程的请求");
+        log.debug("来自远程的请求");
         return "this is hello world!" + test + ":" + value;
     }
 
