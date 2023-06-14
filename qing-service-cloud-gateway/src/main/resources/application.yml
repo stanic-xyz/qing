@@ -8,39 +8,11 @@ spring:
   profiles:
     active: prod
   cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
     gateway:
-      routes:
-        - id: qing-service-anime
-          uri: lb://qing-service-anime
-          filters:
-            - StripPrefix=2
-          predicates:
-            - Path=/anime/**
-        - id: qing-service-nat
-          uri: lb://qing-service-nat-provider
-          filters:
-            - StripPrefix=2
-          predicates:
-            - Path=/nat-cross/**
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
-      default-filters:
-        - PrefixPath=/**
-        - AddResponseHeader=X-Response-Default-Qing, Default-Qing
-      globalcors:
-        cors-configurations:
-          '[/**]': # 匹配所有请求
-            allowedOrigins: "*" #跨域处理 允许所有的域
-            allowedMethods: # 支持的方法
-              - GET
-              - POST
-              - PUT
-              - DELETE
   security:
     oauth2:
       resourceserver:
