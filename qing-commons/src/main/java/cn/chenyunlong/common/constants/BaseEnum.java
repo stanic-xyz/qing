@@ -19,14 +19,16 @@ import java.util.Objects;
 /**
  * 枚举基础类
  */
-public interface BaseEnum {
+public interface BaseEnum<T extends BaseEnum<T>> {
 
     static <T extends BaseEnum> T parseByCode(Class<T> typeClass, Integer code) {
         T[] enumConstants = typeClass.getEnumConstants();
-        return Arrays.stream(enumConstants)
+        return Arrays
+                .stream(enumConstants)
                 .filter(baseEnum
                         -> Objects.equals(baseEnum.getValue(), code))
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
     }
 
     /**

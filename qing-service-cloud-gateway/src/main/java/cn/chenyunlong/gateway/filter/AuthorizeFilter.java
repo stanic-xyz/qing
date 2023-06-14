@@ -26,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -39,7 +38,7 @@ import java.nio.charset.StandardCharsets;
  * @author Stan
  * @date 2021/01/21
  */
-@Component
+//@Component
 @RequiredArgsConstructor
 public class AuthorizeFilter implements GlobalFilter, Ordered {
 
@@ -60,10 +59,16 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
             JSONObject message = new JSONObject();
             message.put("code", 90002);
             message.put("message", "未登录");
-            byte[] bits = message.toString().getBytes(StandardCharsets.UTF_8);
-            DataBuffer buffer = response.bufferFactory().wrap(bits);
+            byte[] bits = message
+                    .toString()
+                    .getBytes(StandardCharsets.UTF_8);
+            DataBuffer buffer = response
+                    .bufferFactory()
+                    .wrap(bits);
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+            response
+                    .getHeaders()
+                    .setContentType(MediaType.APPLICATION_JSON);
             return response.writeWith(Mono.just(buffer));
         }
 
@@ -76,7 +81,9 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             // 封装响应数据
             String str = "test";
-            DataBuffer dataBuffer = response.bufferFactory().wrap(str.getBytes());
+            DataBuffer dataBuffer = response
+                    .bufferFactory()
+                    .wrap(str.getBytes());
             return response.writeWith(Mono.just(dataBuffer));
         }
         return chain.filter(exchange);

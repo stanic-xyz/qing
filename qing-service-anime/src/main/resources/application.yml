@@ -83,8 +83,10 @@ springdoc:
   api-docs:
     enabled: true
   swagger-ui:
-    doc-expansion: none
     default-model-expand-depth: 20
+    path: /swagger-ui.html
+    enabled: true
   show-actuator: true
+  use-management-port: false
 liteflow:
   rule-source: flow/flow.el.xml
