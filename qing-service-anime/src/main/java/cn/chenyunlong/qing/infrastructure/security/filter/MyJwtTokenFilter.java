@@ -14,38 +14,45 @@
 package cn.chenyunlong.qing.infrastructure.security.filter;
 
 import cn.chenyunlong.qing.infrastructure.security.support.TokenProvider;
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class MyTokenFilter extends GenericFilterBean {
+public class MyJwtTokenFilter extends AbstractAuthenticationProcessingFilter {
 
     private final static String AUTHORIZATION_HEADER = "Authorization";
     private final static String AUTHORIZATION_QUERY = "token";
-    private final static String AUTHORIZATION_COOKIES = "zhangli_token";
+    private final static String AUTHORIZATION_COOKIES = "qing_token";
     private final TokenProvider tokenProvider;
 
-
-    public MyTokenFilter(TokenProvider tokenProvider) {
+    public MyJwtTokenFilter(String defaultFilterProcessesUrl, TokenProvider tokenProvider) {
+        super(defaultFilterProcessesUrl);
         this.tokenProvider = tokenProvider;
     }
 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String jwt = resolveToken(httpServletRequest);
+    /**
+     * @param request  from which to extract parameters and perform the authentication
+     * @param response the response, which may be needed if the implementation has to do a
+     *                 redirect as part of a multi-stage authentication process (such as OIDC).
+     * @return
+     * @throws AuthenticationException
+     * @throws IOException
+     * @throws ServletException
+     */
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+        String jwt = resolveToken(request);
         if (StringUtils.hasText(jwt)) {
             // 从自定义tokenProvider中解析用户
             // 这里仍然是调用我们自定义的UserDetailsService，查库，检查用户名是否存在，
@@ -53,17 +60,14 @@ public class MyTokenFilter extends GenericFilterBean {
             if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
                 try {
                     Authentication authentication = this.tokenProvider.getAuthentication(jwt);
-                    SecurityContextHolder
-                            .getContext()
-                            .setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    return this.getAuthenticationManager().authenticate(authentication);
                 } catch (Exception exp) {
                     logger.info("token验证错误！");
                 }
             }
         }
-
-        // 调用后续的Filter,如果上面的代码逻辑未能复原“session”，SecurityContext中没有想过信息，后面的流程会检测出"需要登录"
-        filterChain.doFilter(servletRequest, servletResponse);
+        return null;
     }
 
     private String resolveToken(HttpServletRequest request) {
@@ -79,14 +83,8 @@ public class MyTokenFilter extends GenericFilterBean {
         if (cookies == null) {
             return null;
         }
-        Optional<Cookie> zhangliToken = Arrays
-                .stream(cookies)
-                .filter(cookie -> cookie
-                        .getName()
-                        .equals(AUTHORIZATION_COOKIES))
-                .findFirst();
-        return zhangliToken
-                .map(Cookie::getValue)
-                .orElse(null);
+        Optional<Cookie> optionalCookie =
+                Arrays.stream(cookies).filter(cookie -> cookie.getName().equals(AUTHORIZATION_COOKIES)).findFirst();
+        return optionalCookie.map(Cookie::getValue).orElse(null);
     }
 }

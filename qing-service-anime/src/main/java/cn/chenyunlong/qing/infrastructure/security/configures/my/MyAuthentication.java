@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.infrastructure.security;
+package cn.chenyunlong.qing.infrastructure.security.configures.my;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

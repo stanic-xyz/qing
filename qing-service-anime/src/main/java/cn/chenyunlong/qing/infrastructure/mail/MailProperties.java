@@ -59,16 +59,8 @@ public class MailProperties extends org.springframework.boot.autoconfigure.mail.
     @Override
     public String toString() {
         final String lineSuffix = ",\n";
-        final StringBuilder sb = new StringBuilder();
-        sb.append("MailProperties{").append(lineSuffix);
-        sb.append("host=").append(getHost()).append(lineSuffix);
-        sb.append("username=").append(getUsername()).append(lineSuffix);
-        sb.append("password=").append(StringUtils.isBlank(getPassword()) ? "<null>" : "<non-null>");
-        sb.append("port=").append(getPort()).append(lineSuffix);
-        sb.append("protocol=").append(getProtocol()).append(lineSuffix);
-        sb.append("defaultEncoding=").append(getDefaultEncoding()).append(lineSuffix);
-        sb.append("properties=").append(properties).append(lineSuffix);
-        sb.append('}');
-        return sb.toString();
+        String sb =
+                "MailProperties{" + lineSuffix + "host=" + getHost() + lineSuffix + "username=" + getUsername() + lineSuffix + "password=" + (StringUtils.isBlank(getPassword()) ? "<null>" : "<non-null>") + "port=" + getPort() + lineSuffix + "protocol=" + getProtocol() + lineSuffix + "defaultEncoding=" + getDefaultEncoding() + lineSuffix + "properties=" + properties + lineSuffix + '}';
+        return sb;
     }
 }

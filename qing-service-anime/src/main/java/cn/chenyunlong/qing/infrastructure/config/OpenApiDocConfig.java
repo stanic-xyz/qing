@@ -22,13 +22,9 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
-import io.swagger.v3.oas.models.responses.ApiResponse;
-import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.GroupedOpenApi;
-import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -47,9 +43,7 @@ public class OpenApiDocConfig {
                 .title(docProperties.getTitle())
                 .description(docProperties.getDescription())
                 .version(docProperties.getVersion())
-                .license(new License()
-                        .name(docProperties.getLicense())
-                        .url(docProperties.getLicenseUrl()));
+                .license(new License().name(docProperties.getLicense()).url(docProperties.getLicenseUrl()));
     }
 
 
@@ -60,16 +54,12 @@ public class OpenApiDocConfig {
                 .url("https://wiki.chenyunlong/docs/qing");
         SecurityRequirement securityItem = new SecurityRequirement();
         final String securitySchemeName = "bearerAuth";
-        List<Server> servers = docProperties
-                .getInfoList()
-                .stream()
-                .map(serverInfo -> {
-                    Server server = new Server();
-                    server.setUrl(serverInfo.getUrl());
-                    server.setDescription(serverInfo.getDescription());
-                    return server;
-                })
-                .collect(Collectors.toList());
+        List<Server> servers = docProperties.getInfoList().stream().map(serverInfo -> {
+            Server server = new Server();
+            server.setUrl(serverInfo.getUrl());
+            server.setDescription(serverInfo.getDescription());
+            return server;
+        }).collect(Collectors.toList());
         return new OpenAPI()
                 .info(info())
                 .servers(servers)
@@ -86,28 +76,28 @@ public class OpenApiDocConfig {
                         .schema(new StringSchema())));
     }
 
-    @Bean
-    public GroupedOpenApi totalOpenApi() {
-        String[] paths = {"/**"};
-        return GroupedOpenApi
-                .builder()
-                .group("全部")
-                .addOpenApiCustomiser(getResponseMessage())
-                .pathsToMatch(paths)
-                .build();
-    }
-
-    @Bean
-    public OpenApiCustomiser getResponseMessage() {
-        return openApi -> openApi
-                .getPaths()
-                .values()
-                .forEach(pathItem -> pathItem
-                        .readOperations()
-                        .forEach(operation -> {
-                            ApiResponses apiResponses = operation.getResponses();
-                            apiResponses.addApiResponse(String.valueOf(1), new ApiResponse().description("操作成功"));
-                            apiResponses.addApiResponse(String.valueOf(0), new ApiResponse().description("操作失败"));
-                        }));
-    }
+//    @Bean
+//    public GroupedOpenApi totalOpenApi() {
+//        String[] paths = {"/**"};
+//        return GroupedOpenApi
+//                .builder()
+//                .group("全部")
+//                .addOpenApiCustomiser(getResponseMessage())
+//                .pathsToMatch(paths)
+//                .build();
+//    }
+//
+//    @Bean
+//    public OpenApiCustomiser getResponseMessage() {
+//        return openApi -> openApi
+//                .getPaths()
+//                .values()
+//                .forEach(pathItem -> pathItem
+//                        .readOperations()
+//                        .forEach(operation -> {
+//                            ApiResponses apiResponses = operation.getResponses();
+//                            apiResponses.addApiResponse(String.valueOf(1), new ApiResponse().description("操作成功"));
+//                            apiResponses.addApiResponse(String.valueOf(0), new ApiResponse().description("操作失败"));
+//                        }));
+//    }
 }

@@ -103,9 +103,7 @@ public class ServletUtils {
         try {
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
-            response
-                    .getWriter()
-                    .print(string);
+            response.getWriter().print(string);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -172,9 +170,7 @@ public class ServletUtils {
      */
     @Nullable
     public static String getRequestIp() {
-        return getCurrentRequest()
-                .map(JakartaServletUtil::getClientIP)
-                .orElse(null);
+        return getCurrentRequest().map(JakartaServletUtil::getClientIP).orElse(null);
     }
 
     /**
@@ -185,8 +181,6 @@ public class ServletUtils {
      */
     @Nullable
     public static String getHeaderIgnoreCase(String header) {
-        return getCurrentRequest()
-                .map(request -> JakartaServletUtil.getHeaderIgnoreCase(request, header))
-                .orElse(null);
+        return getCurrentRequest().map(request -> JakartaServletUtil.getHeaderIgnoreCase(request, header)).orElse(null);
     }
 }

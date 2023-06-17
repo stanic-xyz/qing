@@ -131,7 +131,7 @@ public class InMemoryCacheStore extends AbstractStringCacheStore {
         @Override
         public void run() {
             CACHE_CONTAINER.keySet().forEach(key -> {
-                if (!InMemoryCacheStore.this.get(key).isPresent()) {
+                if (InMemoryCacheStore.this.get(key).isEmpty()) {
                     log.debug("Deleted the cache: [{}] for expiration", key);
                 }
             });

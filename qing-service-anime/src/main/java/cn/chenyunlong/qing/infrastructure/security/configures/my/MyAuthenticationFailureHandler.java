@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.infrastructure.security;
+package cn.chenyunlong.qing.infrastructure.security.configures.my;
 
 import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import com.fasterxml.jackson.databind.ObjectMapper;

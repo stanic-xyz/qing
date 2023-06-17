@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.infrastructure.security;
+package cn.chenyunlong.qing.infrastructure.security.configures.my;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +28,6 @@ import java.io.IOException;
 public class MyAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-
 //        返回json形式的错误信息
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");

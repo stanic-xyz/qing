@@ -45,70 +45,152 @@ import java.util.stream.Collectors;
  * @author Stan
  */
 public class ExcelUtil<T> {
-    private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
-
     /**
      * Excel sheet最大行数，默认65536
      */
     public static final int sheetSize = 65536;
-
+    private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
+    /**
+     * 数字格式
+     */
+    private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("######0.00");
+    /**
+     * 统计列表
+     */
+    private final Map<Integer, Double> statistics = new HashMap<Integer, Double>();
+    /**
+     * 实体对象
+     */
+    public Class<T> clazz;
     /**
      * 工作表名称
      */
     private String sheetName;
-
     /**
      * 导出类型（EXPORT:导出数据；IMPORT：导入模板）
      */
     private Excel.Type type;
-
     /**
      * 工作薄对象
      */
     private Workbook wb;
-
     /**
      * 工作表对象
      */
     private Sheet sheet;
-
     /**
      * 样式列表
      */
     private Map<String, CellStyle> styles;
-
     /**
      * 导入导出数据列表
      */
     private List<T> list;
-
     /**
      * 注解列表
      */
     private List<Object[]> fields;
-
     /**
      * 最大高度
      */
     private short maxHeight;
 
-    /**
-     * 统计列表
-     */
-    private final Map<Integer, Double> statistics = new HashMap<Integer, Double>();
-
-    /**
-     * 数字格式
-     */
-    private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("######0.00");
-
-    /**
-     * 实体对象
-     */
-    public Class<T> clazz;
-
     public ExcelUtil(Class<T> clazz) {
         this.clazz = clazz;
+    }
+
+    /**
+     * 获取画布
+     */
+    public static Drawing<?> getDrawingPatriarch(Sheet sheet) {
+        if (sheet.getDrawingPatriarch() == null) {
+            sheet.createDrawingPatriarch();
+        }
+        return sheet.getDrawingPatriarch();
+    }
+
+    /**
+     * 解析导出值 0=男,1=女,2=未知
+     *
+     * @param propertyValue 参数值
+     * @param converterExp  翻译注解
+     * @param separator     分隔符
+     * @return 解析后值
+     */
+    public static String convertByExp(String propertyValue, String converterExp, String separator) {
+        StringBuilder propertyString = new StringBuilder();
+        String[] convertSource = converterExp.split(",");
+        for (String item : convertSource) {
+            String[] itemArray = item.split("=");
+            if (StringUtils.containsAny(separator, propertyValue)) {
+                for (String value : propertyValue.split(separator)) {
+                    if (itemArray[0].equals(value)) {
+                        propertyString.append(itemArray[1]).append(separator);
+                        break;
+                    }
+                }
+            } else {
+                if (itemArray[0].equals(propertyValue)) {
+                    return itemArray[1];
+                }
+            }
+        }
+        return StringUtils.stripEnd(propertyString.toString(), separator);
+    }
+
+    /**
+     * 反向解析值 男=0,女=1,未知=2
+     *
+     * @param propertyValue 参数值
+     * @param converterExp  翻译注解
+     * @param separator     分隔符
+     * @return 解析后值
+     */
+    public static String reverseByExp(String propertyValue, String converterExp, String separator) {
+        StringBuilder propertyString = new StringBuilder();
+        String[] convertSource = converterExp.split(",");
+        for (String item : convertSource) {
+            String[] itemArray = item.split("=");
+            if (StringUtils.containsAny(separator, propertyValue)) {
+                for (String value : propertyValue.split(separator)) {
+                    if (itemArray[1].equals(value)) {
+                        propertyString.append(itemArray[0]).append(separator);
+                        break;
+                    }
+                }
+            } else {
+                if (itemArray[1].equals(propertyValue)) {
+                    return itemArray[0];
+                }
+            }
+        }
+        return StringUtils.stripEnd(propertyString.toString(), separator);
+    }
+
+    /**
+     * 解析字典值
+     *
+     * @param dictValue 字典值
+     * @param dictType  字典类型
+     * @param separator 分隔符
+     * @return 字典标签
+     */
+    public static String convertDictByExp(String dictValue, String dictType, String separator) {
+        //TODO 获取图片的label名称
+        return dictValue;
+    }
+
+    /**
+     * 反向解析值字典值
+     *
+     * @param dictLabel 字典标签
+     * @param dictType  字典类型
+     * @param separator 分隔符
+     * @return 字典值
+     */
+    public static String reverseDictByExp(String dictLabel, String dictType, String separator) {
+        //TODO 获取图片的label名称
+        return dictLabel;
     }
 
     public void init(List<T> list, String sheetName, Excel.Type type) {
@@ -339,7 +421,7 @@ public class ExcelUtil<T> {
         for (int i = startNo; i < endNo; i++) {
             row = sheet.createRow(i + 1 - startNo);
             // 得到导出对象.
-            T vo = (T) list.get(i);
+            T vo = list.get(i);
             int column = 0;
             for (Object[] os : fields) {
                 Field field = (Field) os[0];
@@ -446,25 +528,18 @@ public class ExcelUtil<T> {
                 cell.setCellValue(StringUtils.contains(Convert.toStr(value), ".") ? Convert.toDouble(value) : Convert.toInt(value));
             }
         } else if (Excel.ColumnType.IMAGE == attr.cellType()) {
-            ClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + 1),
-                    cell.getRow().getRowNum() + 1);
+            ClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell
+                    .getRow()
+                    .getRowNum(), (short) (cell.getColumnIndex() + 1), cell.getRow().getRowNum() + 1);
             String imagePath = Convert.toStr(value);
             if (StringUtils.isNotEmpty(imagePath)) {
                 byte[] data = ImageUtils.getImage(imagePath);
-                getDrawingPatriarch(cell.getSheet()).createPicture(anchor,
-                        cell.getSheet().getWorkbook().addPicture(data, getImageType(data)));
+                getDrawingPatriarch(cell.getSheet()).createPicture(anchor, cell
+                        .getSheet()
+                        .getWorkbook()
+                        .addPicture(data, getImageType(data)));
             }
         }
-    }
-
-    /**
-     * 获取画布
-     */
-    public static Drawing<?> getDrawingPatriarch(Sheet sheet) {
-        if (sheet.getDrawingPatriarch() == null) {
-            sheet.createDrawingPatriarch();
-        }
-        return sheet.getDrawingPatriarch();
     }
 
     /**
@@ -554,8 +629,7 @@ public class ExcelUtil<T> {
      * @param firstCol      开始列
      * @param endCol        结束列
      */
-    public void setXSSFPrompt(Sheet sheet, String promptTitle, String promptContent, int firstRow, int endRow,
-                              int firstCol, int endCol) {
+    public void setXSSFPrompt(Sheet sheet, String promptTitle, String promptContent, int firstRow, int endRow, int firstCol, int endCol) {
         DataValidationHelper helper = sheet.getDataValidationHelper();
         DataValidationConstraint constraint = helper.createCustomConstraint("DD1");
         CellRangeAddressList regions = new CellRangeAddressList(firstRow, endRow, firstCol, endCol);
@@ -593,90 +667,6 @@ public class ExcelUtil<T> {
         }
 
         sheet.addValidationData(dataValidation);
-    }
-
-    /**
-     * 解析导出值 0=男,1=女,2=未知
-     *
-     * @param propertyValue 参数值
-     * @param converterExp  翻译注解
-     * @param separator     分隔符
-     * @return 解析后值
-     */
-    public static String convertByExp(String propertyValue, String converterExp, String separator) {
-        StringBuilder propertyString = new StringBuilder();
-        String[] convertSource = converterExp.split(",");
-        for (String item : convertSource) {
-            String[] itemArray = item.split("=");
-            if (StringUtils.containsAny(separator, propertyValue)) {
-                for (String value : propertyValue.split(separator)) {
-                    if (itemArray[0].equals(value)) {
-                        propertyString.append(itemArray[1]).append(separator);
-                        break;
-                    }
-                }
-            } else {
-                if (itemArray[0].equals(propertyValue)) {
-                    return itemArray[1];
-                }
-            }
-        }
-        return StringUtils.stripEnd(propertyString.toString(), separator);
-    }
-
-    /**
-     * 反向解析值 男=0,女=1,未知=2
-     *
-     * @param propertyValue 参数值
-     * @param converterExp  翻译注解
-     * @param separator     分隔符
-     * @return 解析后值
-     */
-    public static String reverseByExp(String propertyValue, String converterExp, String separator) {
-        StringBuilder propertyString = new StringBuilder();
-        String[] convertSource = converterExp.split(",");
-        for (String item : convertSource) {
-            String[] itemArray = item.split("=");
-            if (StringUtils.containsAny(separator, propertyValue)) {
-                for (String value : propertyValue.split(separator)) {
-                    if (itemArray[1].equals(value)) {
-                        propertyString.append(itemArray[0]).append(separator);
-                        break;
-                    }
-                }
-            } else {
-                if (itemArray[1].equals(propertyValue)) {
-                    return itemArray[0];
-                }
-            }
-        }
-        return StringUtils.stripEnd(propertyString.toString(), separator);
-    }
-
-    /**
-     * 解析字典值
-     *
-     * @param dictValue 字典值
-     * @param dictType  字典类型
-     * @param separator 分隔符
-     * @return 字典标签
-     */
-    public static String convertDictByExp(String dictValue, String dictType, String separator) {
-        //TODO 获取图片的label名称
-        return dictValue;
-    }
-
-    /**
-     * 反向解析值字典值
-     *
-     * @param dictLabel 字典标签
-     * @param dictType  字典类型
-     * @param separator 分隔符
-     * @return 字典值
-     */
-    public static String reverseDictByExp(String dictLabel, String dictType, String separator) {
-        //TODO 获取图片的label名称
-        return dictLabel;
     }
 
     /**
@@ -721,7 +711,7 @@ public class ExcelUtil<T> {
      * 编码文件名
      */
     public String encodingFilename(String filename) {
-        filename = UUID.randomUUID().toString() + "_" + filename + ".xlsx";
+        filename = UUID.randomUUID() + "_" + filename + ".xlsx";
         return filename;
     }
 
@@ -808,7 +798,10 @@ public class ExcelUtil<T> {
                 }
             }
         }
-        this.fields = this.fields.stream().sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort())).collect(Collectors.toList());
+        this.fields = this.fields
+                .stream()
+                .sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort()))
+                .collect(Collectors.toList());
         this.maxHeight = getRowHeight();
     }
 
