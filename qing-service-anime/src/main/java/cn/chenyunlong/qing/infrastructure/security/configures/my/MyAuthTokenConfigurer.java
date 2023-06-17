@@ -11,12 +11,10 @@
  *
  */
 
-package cn.chenyunlong.qing.infrastructure.security;
+package cn.chenyunlong.qing.infrastructure.security.configures.my;
 
-import cn.chenyunlong.qing.infrastructure.security.support.TokenProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 
 /**
@@ -24,13 +22,17 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
  */
 public class MyAuthTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    public MyAuthTokenConfigurer(UserDetailsService detailsService, TokenProvider tokenProvider) {
+    public MyAuthTokenConfigurer() {
         /**
          * 也是我实现的UserDetailsService
          */
         /**
          * 我们之前自定义的 token功能类
          */
+    }
+
+    public static MyAuthTokenConfigurer myLogin() {
+        return new MyAuthTokenConfigurer();
     }
 
     @Override

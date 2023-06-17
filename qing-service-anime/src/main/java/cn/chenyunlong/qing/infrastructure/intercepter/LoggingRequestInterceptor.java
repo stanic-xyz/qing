@@ -57,12 +57,6 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
     private void trace(HttpRequest request, byte[] body, ClientHttpResponse response) throws IOException {
         // 记录日志
         String responseStr = IOUtils.toString(response.getBody(), StandardCharsets.UTF_8);
-        log.info("\n" + "URI             : {}, \n" +
-                        "Method       : {}, \n" +
-                        "Headers      : {}, \n" +
-                        "Param         : {}, \n" +
-                        "RespStatus  : {}, \n" +
-                        "Response    : {}", request.getURI(),
-                request.getMethod(), request.getHeaders(), new String(body, StandardCharsets.UTF_8), response.getStatusCode(), responseStr);
+        log.info("\n" + "URI             : {}, \n" + "Method       : {}, \n" + "Headers      : {}, \n" + "Param         : {}, \n" + "RespStatus  : {}, \n" + "Response    : {}", request.getURI(), request.getMethod(), request.getHeaders(), new String(body, StandardCharsets.UTF_8), response.getStatusCode(), responseStr);
     }
 }

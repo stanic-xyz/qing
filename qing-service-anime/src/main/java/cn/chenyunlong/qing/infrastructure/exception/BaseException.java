@@ -56,11 +56,11 @@ public class BaseException extends RuntimeException {
 
     }
 
-    public void setErrorData(String errorData) {
-        this.errorData = errorData;
-    }
-
     public String getErrorData() {
         return errorData;
+    }
+
+    public void setErrorData(String errorData) {
+        this.errorData = errorData;
     }
 }

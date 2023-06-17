@@ -530,8 +530,7 @@ public class Convert {
             return defaultValue;
         }
         if (clazz.isAssignableFrom(value.getClass())) {
-            @SuppressWarnings("unchecked")
-            E myE = (E) value;
+            @SuppressWarnings("unchecked") E myE = (E) value;
             return myE;
         }
         final String valueStr = toStr(value, null);
@@ -855,6 +854,11 @@ public class Convert {
             }
             s.insert(0, p.toString().replaceAll("(零.)*零$", "").replaceAll("^$", "零") + unit[0][i]);
         }
-        return head + s.toString().replaceAll("(零.)*零元", "元").replaceFirst("(零.)+", "").replaceAll("(零.)+", "零").replaceAll("^整$", "零元整");
+        return head + s
+                .toString()
+                .replaceAll("(零.)*零元", "元")
+                .replaceFirst("(零.)+", "")
+                .replaceAll("(零.)+", "零")
+                .replaceAll("^整$", "零元整");
     }
 }

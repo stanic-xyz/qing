@@ -104,8 +104,7 @@ public class CookieUtils {
      * @param isRemove 是否移除
      * @return 值
      */
-    public static String getCookie(HttpServletRequest request, HttpServletResponse response, String name,
-                                   boolean isRemove) {
+    public static String getCookie(HttpServletRequest request, HttpServletResponse response, String name, boolean isRemove) {
         String value = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {

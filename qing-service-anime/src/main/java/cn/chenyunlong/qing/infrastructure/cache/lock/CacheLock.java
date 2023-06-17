@@ -35,16 +35,14 @@ public @interface CacheLock {
      *
      * @return cache prefix
      */
-    @AliasFor("value")
-    String prefix() default "";
+    @AliasFor("value") String prefix() default "";
 
     /**
      * Alias of prefix, default is ""
      *
      * @return alias of prefix
      */
-    @AliasFor("prefix")
-    String value() default "";
+    @AliasFor("prefix") String value() default "";
 
     /**
      * Expired time, default is 5.

@@ -21,7 +21,8 @@ public class JwtUtil {
 
 
     public static String createJWT(String jwtId, String body, String secretKey, long timeOut) {
-        JwtBuilder builder = Jwts.builder()
+        JwtBuilder builder = Jwts
+                .builder()
                 .setId(jwtId)
                 .setAudience("")
                 .setClaims(null)
@@ -35,9 +36,6 @@ public class JwtUtil {
     }
 
     public static Claims parseJWT(String authToken, String jwtSecretKey) throws JwtException {
-        return Jwts.parser()
-                .setSigningKey(jwtSecretKey)
-                .parseClaimsJws(authToken)
-                .getBody();
+        return Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(authToken).getBody();
     }
 }
