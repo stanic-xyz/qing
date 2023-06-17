@@ -35,21 +35,18 @@ public class MimeTypeUtils {
 
     public static final String[] FLASH_EXTENSION = {"swf", "flv"};
 
-    public static final String[] MEDIA_EXTENSION = {"swf", "flv", "mp3", "wav", "wma", "wmv", "mid", "avi", "mpg",
-            "asf", "rm", "rmvb"};
+    public static final String[] MEDIA_EXTENSION =
+            {"swf", "flv", "mp3", "wav", "wma", "wmv", "mid", "avi", "mpg", "asf", "rm", "rmvb"};
 
     public static final String[] VIDEO_EXTENSION = {"mp4", "avi", "rmvb"};
 
     public static final String[] DEFAULT_ALLOWED_EXTENSION = {
             // 视频格式
-            "avi", "bmp", "bz2",
-            "doc", "docx",
+            "avi", "bmp", "bz2", "doc", "docx",
             // 图片
             "gif", "gz", "htm", "html", "jpeg", "jpg", "mp4", "pdf", "png",
             // word excel powerpoint
-            "ppt", "pptx", "rar", "rmvb",
-            "txt",
-            "xls", "xlsx",
+            "ppt", "pptx", "rar", "rmvb", "txt", "xls", "xlsx",
             // 压缩文件
             "zip"};
 

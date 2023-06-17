@@ -70,9 +70,7 @@ public class LogFilter extends OncePerRequestFilter {
         String servletPath = request.getServletPath();
         boolean shouldNotFilter = super.shouldNotFilter(request);
         if (!shouldNotFilter) {
-            return Arrays
-                    .stream(EXCLUDE_PATH_PATTERS)
-                    .anyMatch(path -> new AntPathMatcher().match(path, servletPath));
+            return Arrays.stream(EXCLUDE_PATH_PATTERS).anyMatch(path -> new AntPathMatcher().match(path, servletPath));
         } else {
             return false;
         }

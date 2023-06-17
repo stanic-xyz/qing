@@ -61,8 +61,7 @@ public class MailServiceImpl extends AbstractMailService {
     }
 
     @Override
-    public void sendTemplateMail(String to, String subject, Map<String, Object> content,
-                                 String templateName) {
+    public void sendTemplateMail(String to, String subject, Map<String, Object> content, String templateName) {
         sendMailTemplate(true, messageHelper -> {
             // build message content with freemarker
             try {
@@ -81,15 +80,13 @@ public class MailServiceImpl extends AbstractMailService {
     }
 
     @Override
-    public void sendAttachMail(String to, String subject, Map<String, Object> content,
-                               String templateName, String attachFilePath) {
+    public void sendAttachMail(String to, String subject, Map<String, Object> content, String templateName, String attachFilePath) {
         sendMailTemplate(true, messageHelper -> {
             try {
                 messageHelper.setSubject(subject);
                 messageHelper.setTo(to);
                 Path attachmentPath = Paths.get(attachFilePath);
-                messageHelper.addAttachment(attachmentPath.getFileName().toString(),
-                        attachmentPath.toFile());
+                messageHelper.addAttachment(attachmentPath.getFileName().toString(), attachmentPath.toFile());
             } catch (MessagingException e) {
                 throw new RuntimeException("Failed to set message subject, to or test", e);
             }

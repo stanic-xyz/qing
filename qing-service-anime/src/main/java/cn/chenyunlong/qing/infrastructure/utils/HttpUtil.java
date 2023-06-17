@@ -220,7 +220,7 @@ public class HttpUtil {
             if (response.isOk()) {
                 result = response.body();
                 if (log.isDebugEnabled()) {
-                    log.debug("URL   \t: {}", uri.toString());
+                    log.debug("URL   \t: {}", uri);
                     try {
                         log.debug("result\t:\n{}", JSONObject.toJSONString(JSONObject.parse(result), SerializerFeature.PrettyFormat));
                     } catch (Exception exception) {
@@ -231,7 +231,7 @@ public class HttpUtil {
             } else {
                 if (log.isErrorEnabled()) {
                     log.error("请求失败");
-                    log.error("url \t: {}", uri.toString());
+                    log.error("url \t: {}", uri);
                     log.error("code\t: {}", response.getStatus());
                     log.error("result\t:\n{}", response.body());
                 }

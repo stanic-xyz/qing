@@ -43,9 +43,7 @@ public class OpenApiDocConfig {
                 .title(docProperties.getTitle())
                 .description(docProperties.getDescription())
                 .version(docProperties.getVersion())
-                .license(new License()
-                        .name(docProperties.getLicense())
-                        .url(docProperties.getLicenseUrl()));
+                .license(new License().name(docProperties.getLicense()).url(docProperties.getLicenseUrl()));
     }
 
 
@@ -56,16 +54,12 @@ public class OpenApiDocConfig {
                 .url("https://wiki.chenyunlong/docs/qing");
         SecurityRequirement securityItem = new SecurityRequirement();
         final String securitySchemeName = "bearerAuth";
-        List<Server> servers = docProperties
-                .getInfoList()
-                .stream()
-                .map(serverInfo -> {
-                    Server server = new Server();
-                    server.setUrl(serverInfo.getUrl());
-                    server.setDescription(serverInfo.getDescription());
-                    return server;
-                })
-                .collect(Collectors.toList());
+        List<Server> servers = docProperties.getInfoList().stream().map(serverInfo -> {
+            Server server = new Server();
+            server.setUrl(serverInfo.getUrl());
+            server.setDescription(serverInfo.getDescription());
+            return server;
+        }).collect(Collectors.toList());
         return new OpenAPI()
                 .info(info())
                 .servers(servers)
