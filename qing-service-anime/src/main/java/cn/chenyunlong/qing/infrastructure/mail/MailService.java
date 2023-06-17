@@ -40,8 +40,7 @@ public interface MailService {
      * @param content      content
      * @param templateName template name
      */
-    void sendTemplateMail(String to, String subject, Map<String, Object> content,
-                          String templateName);
+    void sendTemplateMail(String to, String subject, Map<String, Object> content, String templateName);
 
     /**
      * Send mail with attachments
@@ -52,8 +51,7 @@ public interface MailService {
      * @param templateName   template name
      * @param attachFilePath attachment full path name
      */
-    void sendAttachMail(String to, String subject, Map<String, Object> content, String templateName,
-                        String attachFilePath);
+    void sendAttachMail(String to, String subject, Map<String, Object> content, String templateName, String attachFilePath);
 
     /**
      * Test email server connection.

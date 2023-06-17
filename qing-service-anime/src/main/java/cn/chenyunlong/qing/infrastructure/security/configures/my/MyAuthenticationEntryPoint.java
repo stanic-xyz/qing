@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.infrastructure.security;
+package cn.chenyunlong.qing.infrastructure.security.configures.my;
 
 import cn.chenyunlong.qing.infrastructure.model.ApiResult;
 import cn.hutool.json.JSONUtil;
@@ -33,23 +33,23 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @Component
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        String ajaxFlag = request.getHeader("X-Requested-With");
+        return "XMLHttpRequest".equals(ajaxFlag);
+    }
+
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                         AuthenticationException authException) throws IOException {
+    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException authException) throws IOException {
 
         if (isAjaxRequest(httpServletRequest)) {
             log.debug("临时申请");
         }
+        authException.printStackTrace();
 
         ApiResult<String> success = ApiResult.fail("没有登录");
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         httpServletResponse.getWriter().write(JSONUtil.toJsonStr(success));
-    }
-
-    public static boolean isAjaxRequest(HttpServletRequest request) {
-        String ajaxFlag = request.getHeader("X-Requested-With");
-        return "XMLHttpRequest".equals(ajaxFlag);
     }
 }

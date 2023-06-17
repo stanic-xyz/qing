@@ -72,7 +72,10 @@ public class ThreadPoolConfig {
      */
     @Bean(name = "scheduledExecutorService")
     protected ScheduledExecutorService scheduledExecutorService() {
-        return new ScheduledThreadPoolExecutor(CORE_POOL_SIZE, new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build()) {
+        return new ScheduledThreadPoolExecutor(CORE_POOL_SIZE, new BasicThreadFactory.Builder()
+                .namingPattern("schedule-pool-%d")
+                .daemon(true)
+                .build()) {
             @Override
             protected void afterExecute(Runnable runnable, Throwable throwable) {
                 super.afterExecute(runnable, throwable);

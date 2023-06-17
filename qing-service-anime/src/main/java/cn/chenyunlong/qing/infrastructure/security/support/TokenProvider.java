@@ -86,7 +86,9 @@ public class TokenProvider {
      * @return jwtToken信息
      */
     public String createJwtToken(Authentication authentication, boolean rememberMe) {
-        String authorities = authentication.getAuthorities().stream()
+        String authorities = authentication
+                .getAuthorities()
+                .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
@@ -103,7 +105,8 @@ public class TokenProvider {
             validity = new Date(now + security.getTokenValidityInMillisecondsForRememberMe());
         }
 
-        return Jwts.builder()
+        return Jwts
+                .builder()
                 .setSubject((String) authentication.getPrincipal())
                 .claim(AUTHORITIES_HEADER, authorities)
                 .claim(USER_INFO, authentication.getPrincipal())
@@ -131,7 +134,8 @@ public class TokenProvider {
         }
 
         try {
-            return Jwts.builder()
+            return Jwts
+                    .builder()
                     .setSubject(objectMapper.writeValueAsString(userinfoVo))
                     .claim(AUTHORITIES_HEADER, "authorities")
                     .claim(FIELD_USER_ID, "")
@@ -151,15 +155,13 @@ public class TokenProvider {
      * @param jwt jwt认证信息
      */
     public Authentication getAuthentication(String jwt) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(qingProperties.getSecurity().getSecretKey())
-                .parseClaimsJws(jwt)
-                .getBody();
+        Claims claims =
+                Jwts.parser().setSigningKey(qingProperties.getSecurity().getSecretKey()).parseClaimsJws(jwt).getBody();
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_HEADER).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+        Collection<? extends GrantedAuthority> authorities = Arrays
+                .stream(claims.get(AUTHORITIES_HEADER).toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
         return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
     }
 

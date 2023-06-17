@@ -1,13 +1,5 @@
 spring:
   cloud:
-    nacos:
-      discovery:
-        server-addr: http://localhost:8848
-        enabled: true
-      config:
-        server-addr: http://localhost:8848
-        enabled: false
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+    consul:
+      host: localhost
+      port: 8500

@@ -3,21 +3,11 @@ server:
 spring:
   application:
     name: qing-feign-client
-ribbon:
-  eureka:
-    enabled: true
-feign:
-  compression:
-    response:
-      enabled: true
-      useGzipDecoder: true
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-  hystrix:
-    enabled: true
+  cloud:
+    openfeign:
+      compression:
+        response:
+          enabled: true
 
 management:
   endpoints:
@@ -27,5 +17,4 @@ management:
   endpoint:
     health:
       show-details: always
-debug: true
 test: default

@@ -96,8 +96,7 @@ public abstract class AbstractMailService implements MailService {
         }
         if (!qingProperties.isMailEnabled()) {
             // If disabled
-            log.info("Email has been disabled by yourself, you can re-enable it through email settings"
-                    + " on admin page.");
+            log.info("Email has been disabled by yourself, you can re-enable it through email settings" + " on admin page.");
             return;
         }
 
@@ -118,10 +117,7 @@ public abstract class AbstractMailService implements MailService {
             // send email
             mailSender.send(mimeMessage);
 
-            log.info("Sent an email to [{}] successfully, subject: [{}], sent date: [{}]",
-                    Arrays.toString(mimeMessage.getAllRecipients()),
-                    mimeMessage.getSubject(),
-                    mimeMessage.getSentDate());
+            log.info("Sent an email to [{}] successfully, subject: [{}], sent date: [{}]", Arrays.toString(mimeMessage.getAllRecipients()), mimeMessage.getSubject(), mimeMessage.getSentDate());
         } catch (Exception e) {
             throw new EmailException("邮件发送失败，请检查 SMTP 服务配置是否正确", e);
         }
@@ -178,8 +174,7 @@ public abstract class AbstractMailService implements MailService {
             return new InternetAddress(username, this.cachedFromName, mailSender.getDefaultEncoding());
         }
 
-        throw new UnsupportedOperationException(
-                "Unsupported java mail sender: " + javaMailSender.getClass().getName());
+        throw new UnsupportedOperationException("Unsupported java mail sender: " + javaMailSender.getClass().getName());
     }
 
     /**

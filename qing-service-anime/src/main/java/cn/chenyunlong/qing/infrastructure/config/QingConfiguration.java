@@ -84,9 +84,7 @@ public class QingConfiguration implements InitializingBean {
     RestTemplate restTemplate() {
         SSLContext sslContext = null;
         try {
-            sslContext = new SSLContextBuilder()
-                    .loadTrustMaterial(null, (x509Certificates, s) -> true)
-                    .build();
+            sslContext = new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build();
         } catch (Exception exception) {
             log.error("初始RestTemplate上下文错误", exception);
         }

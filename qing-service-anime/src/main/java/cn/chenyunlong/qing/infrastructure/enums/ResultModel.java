@@ -33,6 +33,7 @@ public class ResultModel {
 
     private Integer code;
     private String message;
+    private Object data;
 
     private ResultModel(Integer code, String message, Object object) {
         this.code = code;
@@ -63,8 +64,6 @@ public class ResultModel {
     public static ResultModel ofSuccess(Object data) {
         return new ResultModel(ResponseCode.SUCCESS.getValue(), ResponseCode.SUCCESS.getName(), data);
     }
-
-    private Object data;
 
     public static ResultModel ofSuccess() {
         return new ResultModel(ResponseCode.SUCCESS.getValue(), ResponseCode.SUCCESS.getName(), null);

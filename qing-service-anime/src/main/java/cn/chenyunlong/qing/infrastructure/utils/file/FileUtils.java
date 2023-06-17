@@ -146,12 +146,8 @@ public class FileUtils extends FileTypeUtils {
     public static void setAttachmentResponseHeader(HttpServletResponse response, String realFileName) throws UnsupportedEncodingException {
         String percentEncodedFileName = percentEncode(realFileName);
 
-        String contentDispositionValue = "attachment; filename=" +
-                percentEncodedFileName +
-                ";" +
-                "filename*=" +
-                "utf-8''" +
-                percentEncodedFileName;
+        String contentDispositionValue =
+                "attachment; filename=" + percentEncodedFileName + ";" + "filename*=" + "utf-8''" + percentEncodedFileName;
         response.setHeader("Content-disposition", contentDispositionValue);
     }
 
