@@ -122,6 +122,11 @@ public @interface Excel {
      */
     Align align() default Align.AUTO;
 
+    /**
+     * 字段类型（0：导出导入；1：仅导出；2：仅导入）
+     */
+    Type type() default Type.ALL;
+
     enum Align {
         AUTO(0), LEFT(1), CENTER(2), RIGHT(3);
         private final int value;
@@ -134,11 +139,6 @@ public @interface Excel {
             return this.value;
         }
     }
-
-    /**
-     * 字段类型（0：导出导入；1：仅导出；2：仅导入）
-     */
-    Type type() default Type.ALL;
 
     enum Type {
         ALL(0), EXPORT(1), IMPORT(2);

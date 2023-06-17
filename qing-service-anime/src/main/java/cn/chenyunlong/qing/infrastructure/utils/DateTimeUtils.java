@@ -74,7 +74,8 @@ public class DateTimeUtils {
     /**
      * 横线分隔日期时间格式，精确到秒 {@link DateTimeFormatter}：yyyy-MM-dd-HH-mm-ss-
      */
-    public static final DateTimeFormatter HORIZONTAL_LINE_DATETIME_FORMATTER = DateTimeFormatter.ofPattern(HORIZONTAL_LINE_PATTERN);
+    public static final DateTimeFormatter HORIZONTAL_LINE_DATETIME_FORMATTER =
+            DateTimeFormatter.ofPattern(HORIZONTAL_LINE_PATTERN);
 
     /**
      * 上海时区格式

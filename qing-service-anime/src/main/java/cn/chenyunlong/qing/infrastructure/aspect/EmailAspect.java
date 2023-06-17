@@ -58,9 +58,7 @@ public class EmailAspect {
 
         ElementMatcher<Object> test = new BooleanMatcher<>(false);
 
-        ElementMatcher.Junction<Object> junction = ElementMatchers
-                .any()
-                .or(ElementMatchers.is(false));
+        ElementMatcher.Junction<Object> junction = ElementMatchers.any().or(ElementMatchers.is(false));
 
         //获取方法签名
         Method method = ((MethodSignature) point.getSignature()).getMethod();
@@ -91,9 +89,7 @@ public class EmailAspect {
         public void run() {
             super.run();
             log.info(receiver, subject, content);
-            log.debug("发送一条邮件给指定账户" + qingProperties
-                    .getFile()
-                    .getBaseUploadDir());
+            log.debug("发送一条邮件给指定账户" + qingProperties.getFile().getBaseUploadDir());
         }
     }
 }

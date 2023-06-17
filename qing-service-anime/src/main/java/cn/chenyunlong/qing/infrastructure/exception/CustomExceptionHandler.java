@@ -38,14 +38,13 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = AbstractException.class)
     public ResponseEntity<JsonResult> errorHandler(Exception exception) {
         JsonResult<Exception> jsonResult = JsonResult.res(ResponseCode.PARAM_FAIL, exception);
-        return ResponseEntity
-                .badRequest()
-                .body(jsonResult);
+        return ResponseEntity.badRequest().body(jsonResult);
     }
 
     @ExceptionHandler(value = HttpMessageConversionException.class)
     public ResponseEntity<JsonResult> messageConversionException(Exception exception) {
-        JsonResult<Object> jsonResult = JsonResult.fail("参数异常，请检查参数格式").setDevMessage(exception.getMessage());
+        JsonResult<Object> jsonResult =
+                JsonResult.fail("参数异常，请检查参数格式").setDevMessage(exception.getMessage());
         return ResponseEntity.badRequest().body(jsonResult);
     }
 
@@ -81,9 +80,7 @@ public class CustomExceptionHandler {
     public ResponseEntity<JsonResult> runtimeExceptionHandler(final Exception exception, HttpServletResponse response) {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         JsonResult<Long> longJsonResult = JsonResult.fail("参数校验错误：" + exception.getMessage());
-        return ResponseEntity
-                .internalServerError()
-                .body(longJsonResult);
+        return ResponseEntity.internalServerError().body(longJsonResult);
     }
 
     /**
@@ -94,9 +91,7 @@ public class CustomExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     public String handle(Exception e) {
-        monitor
-                .getRequestErrorCount()
-                .increment();
+        monitor.getRequestErrorCount().increment();
         return "error, message: " + e.getMessage();
     }
 }

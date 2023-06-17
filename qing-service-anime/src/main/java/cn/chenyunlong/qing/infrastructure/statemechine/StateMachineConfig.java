@@ -32,18 +32,12 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
 
     @Override
     public void configure(StateMachineConfigurationConfigurer<States, Events> config) throws Exception {
-        config
-                .withConfiguration()
-                .autoStartup(true)
-                .listener(listener());
+        config.withConfiguration().autoStartup(true).listener(listener());
     }
 
     @Override
     public void configure(StateMachineStateConfigurer<States, Events> states) throws Exception {
-        states
-                .withStates()
-                .initial(States.SI)
-                .states(EnumSet.allOf(States.class));
+        states.withStates().initial(States.SI).states(EnumSet.allOf(States.class));
     }
 
     @Override

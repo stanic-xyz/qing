@@ -99,9 +99,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         }
 
         // Transform in batch
-        return sources.stream()
-                .map(source -> transformFrom(source, targetClass))
-                .collect(Collectors.toList());
+        return sources.stream().map(source -> transformFrom(source, targetClass)).collect(Collectors.toList());
     }
 
     /**
