@@ -253,7 +253,6 @@ public class LogAspect {
             }
         }
         //单独的对象
-        return obj instanceof MultipartFile || obj instanceof HttpServletRequest || obj instanceof HttpServletResponse
-                || obj instanceof BindingResult;
+        return obj instanceof MultipartFile || obj instanceof HttpServletRequest || obj instanceof HttpServletResponse || obj instanceof BindingResult;
     }
 }

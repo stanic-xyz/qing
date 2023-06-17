@@ -65,12 +65,7 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
      * @return 请求的结果
      */
     @Override
-    public ApiResult beforeBodyWrite(ApiResult apiResult,
-                                     MethodParameter methodParameter,
-                                     @NonNull MediaType mediaType,
-                                     @NonNull Class<? extends HttpMessageConverter<?>> convertClass,
-                                     @NonNull ServerHttpRequest serverHttpRequest,
-                                     @NonNull ServerHttpResponse serverHttpResponse) {
+    public ApiResult beforeBodyWrite(ApiResult apiResult, MethodParameter methodParameter, @NonNull MediaType mediaType, @NonNull Class<? extends HttpMessageConverter<?>> convertClass, @NonNull ServerHttpRequest serverHttpRequest, @NonNull ServerHttpResponse serverHttpResponse) {
 
         //获取方法的相关注解
         JsonFieldFilter annotation = methodParameter.getMethodAnnotation(JsonFieldFilter.class);

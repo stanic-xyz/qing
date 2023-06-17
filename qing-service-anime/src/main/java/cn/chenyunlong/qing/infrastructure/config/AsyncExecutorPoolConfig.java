@@ -30,9 +30,7 @@ public class AsyncExecutorPoolConfig implements AsyncConfigurer {
     public Executor getAsyncExecutor() {
         Executor asyncExecutor = AsyncConfigurer.super.getAsyncExecutor();
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        int corePoolSize = Runtime
-                .getRuntime()
-                .availableProcessors();
+        int corePoolSize = Runtime.getRuntime().availableProcessors();
         executor.setCorePoolSize(corePoolSize);
         executor.setMaxPoolSize(corePoolSize * 2);
         executor.setQueueCapacity(100);

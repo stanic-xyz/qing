@@ -47,8 +47,7 @@ public class ReflectionUtils {
         ParameterizedType currentType = null;
 
         for (Type genericType : genericTypes) {
-            if (genericType instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType) genericType;
+            if (genericType instanceof ParameterizedType parameterizedType) {
                 if (parameterizedType.getRawType().getTypeName().equals(superType.getTypeName())) {
                     currentType = parameterizedType;
                     break;

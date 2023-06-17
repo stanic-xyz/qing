@@ -48,9 +48,7 @@ public class AuthingController {
     @GetMapping("/login")
     public ResponseEntity<Void> login(HttpServletResponse response) {
         try {
-            monitor
-                    .getLoginCount()
-                    .increment();
+            monitor.getLoginCount().increment();
             // 设置初始化参数
             AuthenticationClientOptions clientOptions = new AuthenticationClientOptions();
             clientOptions.setAppId(authing.getAppId()); // Authing 应用 ID
@@ -65,14 +63,10 @@ public class AuthingController {
             IOidcParams params = new IOidcParams();
             params.setRedirectUri(authing.getRedirectUrl());
             response.sendRedirect(authenticationClient.buildAuthorizeUrl(params));
-            return ResponseEntity
-                    .ok()
-                    .build();
+            return ResponseEntity.ok().build();
         } catch (IOException | ParseException exception) {
             log.error("跳转登录地址发生了异常", exception);
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
@@ -95,9 +89,7 @@ public class AuthingController {
                 authenticationClient.getUserInfoByAccessToken(accessTokenByCode.getAccessToken());
         response.addCookie(new Cookie("qing-token", accessTokenByCode.getAccessToken()));
         // 生成用于登录的一次性地址，之后可以引导用户访问此地址
-        return ResponseEntity
-                .ok()
-                .body(userInfoByAccessToken);
+        return ResponseEntity.ok().body(userInfoByAccessToken);
     }
 
     @Operation(summary = "根据AccessToken获取用户信息")
@@ -113,8 +105,6 @@ public class AuthingController {
         // 初始化 AuthenticationClient
         AuthenticationClient authenticationClient = new AuthenticationClient(clientOptions);
         UserInfo userInfo = authenticationClient.getUserInfoByAccessToken(accessToken);
-        return ResponseEntity
-                .ok()
-                .body(userInfo);
+        return ResponseEntity.ok().body(userInfo);
     }
 }

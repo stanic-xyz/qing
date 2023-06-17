@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.infrastructure.security;
+package cn.chenyunlong.qing.infrastructure.security.configures.my;
 
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import cn.chenyunlong.qing.infrastructure.model.ApiResult;
@@ -52,11 +52,13 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         JwtBuilder builder = Jwts.builder();
         //设置主体信息
         String token = builder.setSubject(username)
-                //设置过期时间
-                .setExpiration(new Date(System.currentTimeMillis() + qingProperties.getSecurity().getJwtTimeOut()))
-                .setId(authentication.getPrincipal().toString())
-                .signWith(SignatureAlgorithm.HS512, qingProperties.getSecurity().getSecretKey())
-                .compact();
+                              //设置过期时间
+                              .setExpiration(new Date(System.currentTimeMillis() + qingProperties
+                                      .getSecurity()
+                                      .getJwtTimeOut()))
+                              .setId(authentication.getPrincipal().toString())
+                              .signWith(SignatureAlgorithm.HS512, qingProperties.getSecurity().getSecretKey())
+                              .compact();
         ApiResult<String> success = ApiResult.success(token);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(success));

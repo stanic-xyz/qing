@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.infrastructure.security.filter;
 
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -23,13 +24,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * @author Stan
  */
 public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
-    private final Logger logger = LoggerFactory.getLogger(MyAuthenticationProcessingFilter.class);
     private static final String TOKEN = "Authorization";
+    private final static String AUTHORIZATION_HEADER = "Authorization";
+    private final static String AUTHORIZATION_QUERY = "token";
+    private final static String AUTHORIZATION_COOKIES = "zhangli_token";
+    private final Logger logger = LoggerFactory.getLogger(MyAuthenticationProcessingFilter.class);
 
 
     public MyAuthenticationProcessingFilter(QingProperties qingProperties) {
@@ -45,5 +53,22 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
         return this.getAuthenticationManager().authenticate(authRequest);
     }
 
+    private String resolveToken(HttpServletRequest request) {
+        String headerToken = request.getParameter(AUTHORIZATION_QUERY);
+        if (StringUtils.hasText(headerToken)) {
+            return headerToken;
+        }
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return null;
+        }
+        Optional<Cookie> zhangliToken =
+                Arrays.stream(cookies).filter(cookie -> cookie.getName().equals(AUTHORIZATION_COOKIES)).findFirst();
+        return zhangliToken.map(Cookie::getValue).orElse(null);
+    }
 
 }
