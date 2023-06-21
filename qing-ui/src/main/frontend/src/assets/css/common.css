@@ -1,0 +1,945 @@
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ *
+ */
+
+/*关于字体*/
+/*最好以Arial Black结尾，这种字体很通用，然后如果出现这种字体，说明找不到*/
+
+body {
+    /*英文字体会导致英文和中文不对齐*/
+    /*font-family: Arial,"Helvetica Neue",Helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif, "Arial Black";*/
+
+    /*被要求改回了v1*/
+    /*v2的*/
+    /*font-family: "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif, "Arial Black";*/
+    /*v1的*/
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    /*默认字体更好，但先用15，然后尽量变大*/
+    font-size: 15px;
+    /*会影响很多有换行的同一行的间隔*/
+    /*letter-spacing: 1.0px;*/
+    font-weight: normal;
+    padding: 0;
+    margin: 0;
+    -webkit-text-size-adjust: none;
+}
+
+.root {
+    width: 1024px;
+    margin: 0 auto;
+}
+
+.asciifont {
+    font-family: "Helvetica Neue", Helvetica, serif;
+}
+
+@font-face {
+    font-family: 'gamefont';
+    src: url('/age/static/font/gamefont.ttf');
+}
+
+
+/*避免意外，显式设置基本参数*/
+
+div, span, a, p, img, button, ul, li, table, tr, td, pre, strong, h1, h2, h3, h4, h5, h6, section {
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+input, textarea {
+    font-weight: normal;
+    margin: 0;
+}
+
+table, tr, td, img {
+    border: 0;
+}
+
+/*??*/
+div {
+    max-height: 999999px;
+}
+
+ul li {
+    list-style: none;
+}
+
+table {
+    border-collapse: collapse;
+    border: none;
+}
+
+
+#root {
+    width: 1024px;
+    margin: 0 auto;
+}
+
+.clear {
+    clear: both;
+}
+
+.block {
+    padding: 4px 4px;
+}
+
+.blocklr {
+    padding: 0 4px;
+}
+
+.blockbt {
+    padding: 4px 0;
+}
+
+.spaceblock {
+    padding: 6px 6px;
+}
+
+.spaceblock1 {
+    padding: 9px 8px;
+}
+
+.baseblock {
+}
+
+
+/*base ==== ==== ==== ==== ==== ==== ==== ==== */
+
+/*背景的背景#606061*/
+/*顶部#292929*/
+
+/*块背景#202020*/
+/*块背景轻微区分#232323*/
+
+/*子块背景#282828*/
+
+/*正文亮#e8e8e9*/
+/*正文中#e0e0e0*/
+/*正文暗#bbbbbb*/
+/*正文灰暗#888888*/
+/*正文下划线#bbbbbc*/
+
+/*高亮#fd9720*/
+/*输入框#212122*/
+/*强调#d0e0f0*/
+
+/*标题#888899*/
+/*标签#808081*/
+
+/*亮蓝#70c8dd*/
+/*暗蓝#60b8cc*/
+/*蓝下划线#4a94a3*/
+/*浅暗蓝#3d4f61*/
+/*zima blue #4BBEE3*/
+
+/*亮红#fe0101*/
+/*暗红#682121*/
+
+/*百搭灰#757175*/
+
+/*按钮亮#414142*/
+/*按钮暗#313132*/
+/*按钮高亮#757175*/
+
+/*导航灰#303030*/
+/*大边框灰#303030*/
+
+/*亮边框#505051*/
+/*暗边框#404041*/
+
+/*评论#b8b8e0*/
+
+/*纯白*/
+
+
+/*圆角2*/
+/*半透色(0,0,0,0.65)*/
+
+/*color*/
+
+body {
+    color: #e8e8e9;
+    background-color: #606061;
+}
+
+/*避免意外，显式设置基本参数*/
+div, span, a, p, img, button, ul, li, table, tr, td, input, textarea, pre, strong, h1, h2, h3, h4, h5, h6 {
+    color: #e8e8e9;
+    background-color: transparent;
+}
+
+input, textarea {
+    border-width: 1px;
+    border-color: #404041;
+    background: #212122;
+}
+
+/*字体*/
+/*正文暂时定15*/
+/*固定的字体以下*/
+/*nav 标题 动漫名字*/
+
+
+/*misc ==== ==== ==== ==== ==== ==== ==== ==== */
+
+li {
+    display: inline-block;
+}
+
+
+/*root ==== ==== ==== ==== ==== ==== ==== ==== */
+#root {
+    -moz-box-shadow: 0 1px 1px #202020;
+    -webkit-box-shadow: 0 1px 6px #202020;
+    box-shadow: 0 1px 1px #202020;
+}
+
+
+/*foot ==== ==== ==== ==== ==== ==== ==== ==== */
+
+footer {
+    /*height: 48px;*/
+    background-color: #303030;
+}
+
+#footer_container {
+    padding: 24px 12px;
+    margin: auto;
+}
+
+
+/*content ==== ==== ==== ==== ==== ==== ==== ==== */
+#container {
+    border: 4px solid #303030;
+    background-color: #202020;
+    min-height: calc(100vh - 160px - 56px - 128px - 8px);
+}
+
+
+/*baseblock ==== ==== ==== ==== ==== ==== ==== ==== */
+.baseblock .blocktitle {
+    padding: 6px 8px;
+    color: #888899;
+    font-size: 1.15em;
+}
+
+.baseblock .blocktitle * {
+    color: #888899;
+}
+
+/*很坑的写法*/
+.baseblock .blocktitle a {
+    color: #e8e8e9;
+    text-decoration-color: #bbbbbc;
+}
+
+.baseblock .blockcontent {
+    padding: 10px 8px;
+}
+
+.baseblock .line {
+    border-top: 1px dashed #404041;
+    margin: 0 8px;
+}
+
+.baseblock2 {
+    border: 1px solid #404041;
+    color: #e8e8e9;
+    border-radius: 1px;
+}
+
+.baseblock2 .blocktitle {
+    padding: 6px 8px;
+    color: #888899;
+    background-color: #232323;
+    border-bottom: 1px solid #404041;
+}
+
+/*很坑的写法*/
+/*.baseblock2 .blocktitle a {*/
+/*color: #888899;*/
+/*}*/
+.baseblock2 .blockline {
+    border-top: 1px dashed #404041;
+    margin: 0 0 6px;
+}
+
+.blockline1 {
+    border-bottom: 1px solid #404041;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+
+.baseblock2 .blockcontent {
+    padding: 8px 8px;
+    color: #e8e8e9;
+}
+
+/*align*/
+.ul_li_a2 :nth-child(2n) {
+    margin-right: 0;
+}
+
+.ul_li_a4 :nth-child(4n) {
+    margin-right: 0;
+}
+
+.ul_li_a5 :nth-child(5n) {
+    margin-right: 0;
+}
+
+.ul_li_a6 :nth-child(6n) {
+    margin-right: 0;
+}
+
+.x_x_a5 :nth-child(5n) {
+    margin-right: 0;
+}
+
+.x_x_a7 :nth-child(7n) {
+    margin-right: 0;
+}
+
+.x_x_a8 :nth-child(8n) {
+    margin-right: 0;
+}
+
+.x_x_a9 :nth-child(9n) {
+    margin-right: 0;
+}
+
+/*icon ==== ==== ==== ==== ==== ==== ==== ==== */
+.anime_icon1 {
+    width: 120px;
+    margin-right: 5px;
+    margin-bottom: 18px;
+    position: relative;
+}
+
+.anime_icon1 .anime_icon1_img {
+    width: 120px;
+    height: 165px;
+    border-radius: 1px;
+}
+
+.anime_icon1 .anime_icon1_name1 {
+    position: absolute;
+
+    right: 2px;
+    bottom: 29px;
+
+    font-weight: normal;
+    font-size: 0.9em;
+    vertical-align: middle;
+    text-align: right;
+
+    background-color: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    /*border: 0.5px solid rgba(0.1,0.1,0.1,0.5);*/
+    padding: 1px 5px;
+
+    border-radius: 3px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.anime_icon1 .anime_icon1_name {
+    width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 0;
+    line-height: 22px;
+    text-align: center;
+    font-size: 15px;
+    /*color: #ffffff;*/
+}
+
+.anime_icon1 .anime_icon1_name_a {
+    text-decoration-color: #bbbbbc;
+}
+
+/*button ==== ==== ==== ==== ==== ==== ==== ==== */
+.nbutton {
+    border-radius: 2px;
+    font-size: 0.9em;
+}
+
+.nbutton:hover, .nbutton:active {
+    background-color: #313132;
+}
+
+.nbutton_current {
+    background-color: #313132;
+}
+
+
+.nbutton2 {
+    background-color: #414142;
+    border: none;
+    font-size: 1.1em;
+    border-radius: 2px;
+    text-decoration: none;
+    padding: 8px;
+    display: inline-block;
+}
+
+.nbutton2:hover, .nbutton:active {
+    background-color: #757175;
+}
+
+
+.pbutton {
+    box-sizing: border-box;
+    display: inline-block;
+    /*font-size: 1.1em;*/
+    line-height: 24px;
+    min-width: 40px;
+    height: 32px;
+    padding: 4px 8px;
+    text-align: center;
+    text-align-last: center;
+    vertical-align: middle;
+    margin: 5px;
+    text-decoration: none;
+    background-color: transparent;
+    border-radius: 1px;
+    color: #e8e8e9;
+}
+
+.pbutton {
+    border: 1px solid #505051;
+}
+
+.pbutton_current {
+    background-color: #313132;
+}
+
+.pbutton_current:hover, .pbutton_current:active {
+    background-color: #313132;
+}
+
+
+.pbutton_select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+}
+
+
+.anime_icon2 {
+    width: 150px;
+    margin-right: 14px;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.anime_icon2 .anime_icon2_img {
+    width: 150px;
+    height: 208px;
+    border-radius: 1px;
+}
+
+.anime_icon2 .anime_icon1_name1 {
+    position: absolute;
+
+    right: 3px;
+    bottom: 30px;
+
+    font-weight: normal;
+    font-size: 1em;
+    vertical-align: middle;
+
+    text-align: right;
+
+    background-color: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    /*border: 0.5px solid rgba(0.1,0.1,0.1,0.5);*/
+    padding: 1px 5px;
+
+    border-radius: 3px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.anime_icon2 .anime_icon2_name {
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 0;
+    line-height: 22px;
+    text-align: center;
+    font-size: 15px;
+    /*font-weight: bold;*/
+    /*color: #ffffff;*/
+    text-decoration-color: #bbbbbc;
+}
+
+.hrspace {
+    margin-top: 6px;
+    margin-bottom: 8px;
+    height: 0;
+    border: none;
+    border-bottom: 1px solid #404041;
+    width: 99%;
+}
+
+.cell {
+    padding: 12px 8px;
+}
+
+.cell_poster {
+    width: 150px;
+    height: 208px;
+    display: inline-block;
+    position: relative;
+}
+
+.cell_poster img {
+    border-radius: 1px;
+
+}
+
+.cell_poster .newname {
+
+    position: absolute;
+
+    right: 3px;
+    bottom: 3px;
+
+    font-weight: normal;
+    font-size: 1em;
+    vertical-align: middle;
+
+    text-align: right;
+
+    background-color: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    /*border: 0.5px solid rgba(0.1,0.1,0.1,0.5);*/
+    padding: 1px 5px;
+
+    border-radius: 3px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cell_imform {
+    width: 828px;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 8px;
+}
+
+.cell_imform_name {
+    margin: 0 0 10px 0;
+    font-size: 1.15em;
+    display: inline-block;
+    text-decoration: none;
+    color: #d0e0f0;
+}
+
+.cell_imform_kvs {
+
+}
+
+.cell_imform_kv {
+    min-width: 270px;
+    margin: 3px 0;
+    display: inline-block;
+}
+
+.cell_imform_tag {
+    color: #808081;
+}
+
+.cell_imform_value {
+    color: #e0e0e0;
+}
+
+.cell_imform_kv_desc {
+    width: 100%;
+    /*override cell_imform_kv*/
+    display: block;
+}
+
+.cell_imform_kv_desc .cell_imform_tag {
+    float: left;
+    margin-right: -57px;
+}
+
+.cell_imform_desc {
+    color: #e0e0e0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-indent: 57px;
+    margin-bottom: 12px;
+}
+
+.cell_imform_btns {
+    margin-top: 16px;
+}
+
+.cell_res_button {
+    margin-right: 4px;
+}
+
+#result_count {
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 10px;
+    color: #d0e0f0;
+}
+
+#result_count1 {
+    margin-left: 10px;
+    margin-top: 10px;
+    color: #fe0101;
+}
+
+.comment {
+    font-size: 0.9em;
+}
+
+.comment {
+    position: relative;
+}
+
+li.comment {
+    display: block;
+}
+
+#comment_user {
+    color: #bbbbbb;
+}
+
+#comment_content {
+    width: 100%;
+    height: 4em;
+    margin-bottom: 8px;
+}
+
+#comment_list {
+}
+
+.comment_cell_content {
+    line-height: 1.5em;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.comment_cell_content div {
+    color: #b8b8e0;
+    word-wrap: break-word;
+}
+
+.comment_cell_content pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    /*比正常的小，奇怪*/
+    /*font-size: 1.1em;*/
+    /*color: #e0e0e0;*/
+    color: #b8b8e0;
+}
+
+.commentcell_animename, .commentcell_animename * {
+    line-height: 1.5em;
+    color: #bbbbbb;
+}
+
+.comment_cell_user {
+    line-height: 1.5em;
+    color: #a0a0a0;
+}
+
+.comment_cell_time {
+    color: grey !important;
+}
+
+.comment_imform_tag {
+    color: #808081;
+}
+
+.comment_submit {
+    float: right;
+}
+
+.comment_delete {
+    float: right;
+}
+
+.comment_delete a {
+    color: grey;
+}
+
+
+.blockdiff {
+    background-color: #303030;
+}
+
+.blockdiff2 {
+}
+
+.hrspace2 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    height: 0;
+    border: none;
+    border-top: 1px dashed #404041;
+}
+
+
+.res_links {
+    margin-right: 20px;
+    display: inline-block;
+    padding: 2px 0;
+}
+
+.res_links_a {
+    color: #60b8cc;
+    text-decoration-color: #4a94a3;
+}
+
+.loginout {
+    float: right;
+}
+
+.loginout_btn2 {
+    /*color: #d04040;*/
+}
+
+.loginout a {
+}
+
+.highlight {
+    color: #d0e0f0;
+}
+
+#to_login_tips {
+    font-size: 120%;
+    /*font-weight: bold;*/
+    color: red;
+    margin-left: 4px;
+    margin-top: 4px;
+    display: block;
+}
+
+#to_login_tips1 {
+    font-size: 120%;
+    /*font-weight: bold;*/
+    color: red;
+    margin-left: 4px;
+    margin-top: 4px;
+    display: block;
+}
+
+#to_wail_tips {
+    font-size: 120%;
+    /*font-weight: bold;*/
+    color: red;
+    margin-left: 4px;
+    margin-top: 4px;
+    display: block;
+}
+
+
+.account_form {
+}
+
+.account_form label {
+    font-size: 120%;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.account_form input {
+    font-size: 120%;
+    padding: 4px;
+    margin: 4px 4px 8px 0;
+}
+
+.account_form button {
+    font-size: 120%;
+    padding: 4px;
+    margin: 8px 4px 8px 0;
+}
+
+.account_form .helptext {
+    font-size: 0.8em;
+    color: #757175;
+}
+
+.account_form ul.errorlist {
+    color: #fe0101;
+}
+
+.account_form ul {
+    color: #757175;
+}
+
+.account_form ul li {
+    color: #fe0101;
+}
+
+
+#a_to_login {
+    /*display: inline-block;*/
+    /*font-size: 120%;*/
+    /*padding: 4px;*/
+    /*margin: 8px 4px 8px 48px;*/
+}
+
+#a_to_reg {
+    display: inline-block;
+    /*font-size: 120%;*/
+    padding: 4px;
+    margin: 8px 4px 8px 48px;
+}
+
+#id_username {
+}
+
+#id_username {
+}
+
+.svg_title {
+    padding-left: 1.4em;
+}
+
+.svg_title_user {
+    /*background-image: url(../img/user.svg); 不知怎么这个缓存不了*/
+
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 1.4em 1.4em;
+}
+
+.commentspage {
+    display: inline-block;
+}
+
+.favbtn {
+    float: right;
+    line-height: 1.2em;
+}
+
+.hidden {
+    display: none;
+}
+
+.safe {
+    display: none;
+}
+
+.flink {
+    color: #bbbbbb;
+}
+
+
+.comment_delete_btn {
+    position: absolute;
+    right: 0;
+    bottom: 30px;
+}
+
+@media only screen and (min-width: 0em) and (max-width: 40em) {
+    #root {
+        width: 100%;
+    }
+
+    #nav {
+        height: 40px;
+    }
+
+    .nav_button {
+        padding: 0 2%;
+        font-size: 1.1em;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .nav_button:nth-child(1) {
+        margin-left: 5px;
+    }
+
+    .nav_button:nth-child(n+6) {
+        display: none;
+    }
+
+    #top_search_from {
+        width: 96%;
+        float: left;
+        margin-top: 10px;
+    }
+
+    .search_input {
+        width: 80%;
+    }
+
+    .search_submit {
+        width: 36px;
+    }
+
+    .anime_icon2 {
+        width: 31%;
+        margin-right: 1%;
+        margin-bottom: 2%;
+        position: relative;
+    }
+
+    .anime_icon2 .anime_icon2_img {
+        width: 100%;
+        height: auto;
+        border-radius: 1px;
+    }
+
+    .anime_icon2 .anime_icon2_name {
+        width: auto;
+        max-width: 84%;
+    }
+
+    .anime_icon1 .anime_icon1_name1, .anime_icon2 .anime_icon1_name1 {
+        width: auto;
+        max-width: 84%;
+    }
+
+    #new_tip1 {
+        margin-top: 55px !important;
+    }
+}
+
+.comment_list_off .comment_cell_user {
+
+}
+
+.comment_list_off .comment_cell_content div {
+    color: #282828;
+}
+
+.comment_cell_content img {
+    max-height: 120px;
+}
+
+

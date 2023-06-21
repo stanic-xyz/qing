@@ -1,0 +1,187 @@
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ *
+ */
+
+/*over load*/
+.baseblock2 {
+    border: 1px solid #404041;
+}
+
+.baseblock2 .blocktitle {
+    background-color: transparent;
+    border: 0.5px solid #404041;
+}
+
+.blocktitlexx {
+    padding: 6px 8px;
+}
+
+.div_left {
+    width: 210px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.div_right {
+    width: 800px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.div_right_r {
+    width: 244px;
+    display: inline-block;
+    vertical-align: top;
+    border-right: 1px solid #232323;
+    margin-right: 11px;
+}
+
+.div_right_r_3 .div_right_r:nth-child(3n) {
+    border-right-color: transparent;
+    margin-right: 0;
+}
+
+.div_right_r_2 .div_right_r:nth-child(2n) {
+    border-right-color: transparent;
+    margin-right: 0;
+}
+
+.rank_text {
+    width: 238px;
+    margin: 2px 0;
+    padding-bottom: 1px;
+    border-bottom: 0.5px solid #232323;
+}
+
+.rank_text_name {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.9em;
+    line-height: 1.9em;
+    /*height: 1.9em;*/
+    vertical-align: middle;
+    color: #60b8cc;
+    margin-left: 4px;
+}
+
+.rank_text_name:hover {
+    text-decoration: underline;
+}
+
+.rank_text_idx {
+    display: inline-block;
+    box-sizing: border-box;
+    min-width: 2em;
+    font-size: 0.8em;
+    letter-spacing: 0;
+    padding-left: 2px;
+    padding-right: 2px;
+    text-align: center;
+    color: #bbbbbb;
+    border-radius: 1px;
+    border: 1px solid #3d4f61;
+}
+
+.rank_text_idx_top {
+    color: #fe0101;
+    border: 1px solid #682121;
+}
+
+.rank_tag {
+    text-decoration: none;
+    color: #808081;
+    vertical-align: middle;
+    line-height: 0.8em;
+    width: 0.8em;
+}
+
+.rank_tag_current {
+    color: #d0e0f0;
+}
+
+.rank_tag_value {
+    display: block;
+    padding: 4px;
+    color: #808081;
+    text-decoration: none;
+}
+
+.ran_tag_value_current {
+    color: #d0e0f0;
+}
+
+.rankyear {
+    display: block;
+}
+
+.rank_value {
+    color: #888888;
+    font-size: 0.7em;
+    line-height: 2.0em;
+    letter-spacing: 0;
+    text-align: right;
+    margin-right: 2px;
+    float: right;
+}
+
+#tagyears {
+    text-decoration: none;
+}
+
+.openorclose {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 0.8em;
+    height: 1.0em;
+    width: 0.9em;
+    background-color: #313132;
+    border: 1px solid #404041;
+    border-radius: 2px;
+    margin-right: 1px;
+}
+
+@media only screen and (min-width: 0em) and (max-width: 40em) {
+    .div_left {
+        width: 100%;
+    }
+
+    .div_right {
+        width: 100%;
+    }
+
+    #cats {
+        float: left;
+        padding: 10px 4px !important;
+    }
+
+    .rankyear {
+        float: left;
+        width: auto;
+    }
+
+    .div_right_r {
+        width: 100%;
+    }
+
+    .rank_text {
+        width: 100%;
+    }
+
+    .rank_value {
+        float: right;
+    }
+}
