@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2019-2022 YunLong Chen
+ * Project Qing is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ *
+ */
+
+.bgColor {
+    background-color: rgba(243, 66, 111, 0.15)
+}
+
+.divBorder {
+    border: solid 1px rgba(12, 24, 255, 0.15);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.divBorder2 {
+    border: solid 1px rgba(12, 24, 255, 0.15);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 3px;
+    border-radius: 5px;
+}
+
+.h4font {
+    margin-top: 0;
+    font-family: 微软雅黑;
+    font-weight: 600;
+}
+
+.left20 {
+    margin-left: 15px;
+}
