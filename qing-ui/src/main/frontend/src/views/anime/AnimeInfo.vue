@@ -3,7 +3,9 @@ import type { PropType } from "vue";
 import { onMounted } from "vue";
 import type { Anime } from "@/api/anime";
 
-onMounted(() => {});
+onMounted(() => {
+  console.log("加载成功");
+});
 
 const props = defineProps({
   anime: {
@@ -45,23 +47,20 @@ onMounted(() => {
 
 <template>
   <div>
-    <a :href="`/anime/${props.anime.animeId}/index.html'`">
+    <a :href="`/anime/index.html'`">
       <img
-        :alt="props.anime.anime"
-        :src="props.anime.coverUrl"
+        src="https://test/img.jpg"
         class="anime_icon1_img"
         height="165px"
         loading="lazy"
         referrerpolicy="no-referrer"
         title="props.anime.name"
         width="120px"
+        alt="test"
       />
       <span class="anime_icon1_name1"> {{ props.anime.name }}</span></a
     >
-    <a
-      :href="`detail/${props.anime.animeId}/index/index.html`"
-      class="anime_icon1_name_a"
-    >
+    <a :href="`detail//index/index.html`" class="anime_icon1_name_a">
       <div class="anime_icon1_name">{{ props.anime.name }}</div>
     </a>
   </div>
