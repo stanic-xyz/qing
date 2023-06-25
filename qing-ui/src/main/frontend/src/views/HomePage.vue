@@ -53,4 +53,10 @@ onMounted(() => {
   console.log("mounted");
 });
 </script>
-<style scoped></style>
+<style scoped lang="scss">
+.test {
+  .test {
+    color: red;
+  }
+}
+</style>
