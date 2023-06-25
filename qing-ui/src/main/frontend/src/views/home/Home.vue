@@ -3,6 +3,9 @@ import { onMounted, ref } from "vue";
 import type { Anime } from "@/api/anime";
 import { getAnimeList } from "@/api/anime";
 import AnimeInfo from "@/views/anime/AnimeInfo.vue";
+import { LayEmpty } from "@layui/layui-vue";
+import MyHeader from "@/views/common/MyHeader.vue";
+import MyFooter from "@/views/common/MyFooter.vue";
 
 const pagination = ref({ current: 1, pageSize: 12, total: 0 });
 
@@ -87,99 +90,115 @@ function changeWeek(id: Number) {
 </script>
 
 <template>
-  <div>
-    <div id="container">
-      <div class="spaceblock1"></div>
-      <div class="div_right baseblock">
-        <div class="blocktitle">周播列表</div>
-        <div class="blockcontent">
-          <ul id="new_anime_btns">
-            <li
-              v-for="(week, index) in weekList"
-              id="new_anime_page_btn_1"
-              :key="index"
-              :class="{
-                new_anime_btn_current: activeWeekIndex === index,
-              }"
-              class="new_anime_btn highlighttag"
-              @click="changeWeek(index)"
-            >
-              {{ week.name }}
-            </li>
-          </ul>
+  <lay-layout class="root">
+    <lay-header style="height: auto">
+      <MyHeader />
+    </lay-header>
+    <lay-body>
+      <lay-container fluid id="container">
+        <lay-layout>
+          <lay-body>
+            <div class="div_left baseblock">
+              <div class="blocktitle">
+                <a href="recommend">每日推荐</a>
+              </div>
+              <div class="blockcontent">
+                <ul class="ul_li_a5">
+                  <li
+                    v-for="(anime, index) in animeInfoList"
+                    :key="index"
+                    class="anime_icon1"
+                  >
+                    <AnimeInfo :anime="anime"></AnimeInfo>
+                  </li>
+                </ul>
+              </div>
+              <lay-empty
+                description="今日暂无推荐信息"
+                v-if="animeInfoList.length == 0"
+              ></lay-empty>
+              <BlockTitle name="最近播放">最近播放</BlockTitle>
+              <div class="blockcontent">
+                <ul class="ul_li_a5">
+                  <li
+                    v-for="(anime, index) in animeInfoList"
+                    :key="index"
+                    class="anime_icon1"
+                  >
+                    <AnimeInfo :anime="anime"></AnimeInfo>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </lay-body>
+          <lay-side>
+            <div class="div_right baseblock">
+              <div class="blocktitle">周播列表</div>
+              <div class="blockcontent">
+                <ul id="new_anime_btns">
+                  <li
+                    v-for="(week, index) in weekList"
+                    id="new_anime_page_btn_1"
+                    :key="index"
+                    :class="{
+                      new_anime_btn_current: activeWeekIndex === index,
+                    }"
+                    class="new_anime_btn highlighttag"
+                    @click="changeWeek(index)"
+                  >
+                    {{ week.name }}
+                  </li>
+                </ul>
 
-          <ul id="new_anime_page">
-            <li
-              v-for="(anime, index) in animeInfoList"
-              :key="index"
-              class="one_new_anime"
-            >
-              <a
-                :href="`/anime/${anime.animeId}/index.html'`"
-                class="one_new_anime_name"
-                >{{ anime.name }}</a
-              >
-              <a
-                :href="`/anime/${anime.id}/index.html'}`"
-                class="one_new_anime_ji"
-                >{{ anime.name }}</a
-              >
-              <div v-show="true" class="one_anime_new">new!</div>
-            </li>
-          </ul>
-        </div>
-        <hr class="hrspace clear" style="width: 95%" />
-        <div class="blocktitle">最近更新</div>
-        <div class="blockcontent">
-          <ul id="anime_update">
-            <li
-              v-for="(anime, index) in animeInfoList"
-              :key="index"
-              class="one_new_anime"
-            >
-              <a class="one_new_anime_name" style="width: 220px">
-                {{ anime.name }}
-              </a>
-              <span
-                class="anime_update_date asciifont"
-                style="margin-left: 12px"
-                >{{ anime.premiereDate }}</span
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="div_left baseblock">
-        <div class="blocktitle">
-          <a href="recommend">每日推荐</a>
-        </div>
-        <div class="blockcontent">
-          <ul class="ul_li_a5">
-            <li
-              v-for="(anime, index) in animeInfoList"
-              :key="index"
-              class="anime_icon1"
-            >
-              <AnimeInfo :anime="anime"></AnimeInfo>
-            </li>
-          </ul>
-        </div>
-        <BlockTitle name="最近播放">最近播放</BlockTitle>
-        <div class="blockcontent">
-          <ul class="ul_li_a5">
-            <li
-              v-for="(anime, index) in animeInfoList"
-              :key="index"
-              class="anime_icon1"
-            >
-              <AnimeInfo :anime="anime"></AnimeInfo>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="clear"></div>
-    </div>
-  </div>
+                <ul id="new_anime_page">
+                  <li
+                    v-for="(anime, index) in animeInfoList"
+                    :key="index"
+                    class="one_new_anime"
+                  >
+                    <a
+                      :href="`/anime/${anime.animeId}/index.html'`"
+                      class="one_new_anime_name"
+                      >{{ anime.name }}</a
+                    >
+                    <a
+                      :href="`/anime/${anime.id}/index.html'}`"
+                      class="one_new_anime_ji"
+                      >{{ anime.name }}</a
+                    >
+                    <div v-show="true" class="one_anime_new">new!</div>
+                  </li>
+                </ul>
+              </div>
+              <hr class="hrspace clear" style="width: 95%" />
+              <div class="blocktitle">最近更新</div>
+              <div class="blockcontent">
+                <ul id="anime_update">
+                  <li
+                    v-for="(anime, index) in animeInfoList"
+                    :key="index"
+                    class="one_new_anime"
+                  >
+                    <a class="one_new_anime_name" style="width: 220px">
+                      {{ anime.name }}
+                    </a>
+                    <span
+                      class="anime_update_date asciifont"
+                      style="margin-left: 12px"
+                      >{{ anime.premiereDate }}</span
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </lay-side>
+        </lay-layout>
+      </lay-container>
+    </lay-body>
+    <lay-footer>
+      <MyFooter />
+    </lay-footer>
+  </lay-layout>
 </template>
 
 <style scoped src="../../assets/css/index.css"></style>
