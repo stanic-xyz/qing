@@ -4,7 +4,7 @@
     <parent>
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-project</artifactId>
-        <version>0</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>qing-ui</artifactId>
     <name>qing-ui</name>
@@ -75,11 +75,10 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
-                        <descriptor>${basedir}/src/main/assembly/dev.xml</descriptor>
+                        <descriptor>${basedir}/src/main/assembly.xml</descriptor>
                     </descriptors>
                 </configuration>
             </plugin>

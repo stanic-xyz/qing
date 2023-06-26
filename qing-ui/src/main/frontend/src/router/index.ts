@@ -1,7 +1,6 @@
 import type { RouteLocationNormalized, Router } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import Activity from "@/views/Activity.vue";
-import LoginPage from "@/views/login/LoginPage.vue";
 import ExceptionPage from "@/views/exception/ExceptionPage.vue";
 import AuthingLogin from "@/views/login/AuthingLogin.vue";
 
@@ -72,7 +71,6 @@ const router: Router = createRouter({
     },
 
     { path: "/users/:id", component: Activity },
-    { path: "/login", component: LoginPage },
     { path: "/login/authing", component: AuthingLogin },
 
     {
