@@ -47,10 +47,12 @@ public final class CodeGenProcessorContext {
      * @return {@link CodeGenProcessor}
      */
     public static Set<CodeGenProcessor> find(Set<String> annotationClassName) {
-        return PROCESSOR_MAP.entrySet().stream()
-                .filter(stringCodeGenProcessorEntry ->
-                        annotationClassName.contains(stringCodeGenProcessorEntry.getKey()))
-                .map(Map.Entry::getValue).collect(Collectors.toSet());
+        return PROCESSOR_MAP
+                .entrySet()
+                .stream()
+                .filter(stringCodeGenProcessorEntry -> annotationClassName.contains(stringCodeGenProcessorEntry.getKey()))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
     }
 
 
@@ -103,9 +105,10 @@ public final class CodeGenProcessorContext {
     public static void init(ProcessingEnvironment processingEnvironment) {
         nameContext = new NameContext();
         nameContext.init();
-        for (CodeGenProcessor codeGenProcessor : ServiceLoader.load(CodeGenProcessor.class,
-                CodeGenProcessor.class.getClassLoader())) {
-            ProcessingEnvironmentHolder.printMessage("[codegen-plugin]：加载处理器：%s".formatted(codeGenProcessor.getClass().getName()));
+        for (CodeGenProcessor codeGenProcessor : ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader())) {
+            ProcessingEnvironmentHolder.printMessage("[codegen-plugin]：加载处理器：%s".formatted(codeGenProcessor
+                    .getClass()
+                    .getName()));
             codeGenProcessor.init(processingEnvironment);
             PROCESSOR_MAP.put(codeGenProcessor.getSupportedAnnotation().getName(), codeGenProcessor);
         }
