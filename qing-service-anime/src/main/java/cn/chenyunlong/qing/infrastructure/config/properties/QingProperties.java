@@ -77,7 +77,7 @@ public class QingProperties {
     /**
      * 邮件是否启用
      */
-    private boolean isMailEnabled = false;
+    private boolean isMailEnabled = true;
 
     /**
      * 登录超时女士

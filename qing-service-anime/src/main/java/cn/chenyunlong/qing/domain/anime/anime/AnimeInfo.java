@@ -42,7 +42,6 @@ import java.util.Objects;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenController(name = "动漫信息")
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest
