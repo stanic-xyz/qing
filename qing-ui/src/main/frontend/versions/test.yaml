@@ -1,0 +1,7 @@
+metadata:
+  name: zhangli-test
+apiVersion: oam.coding.net/v1alpha1
+kind: Version
+spec:
+  images: [
+    ]
