@@ -35,7 +35,6 @@ import java.util.Objects;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenController(name = "附件管理")
 @GenQuery
 @GenCreateRequest
 @GenUpdateRequest
