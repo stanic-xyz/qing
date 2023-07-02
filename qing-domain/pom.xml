@@ -53,15 +53,6 @@
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-codegen-api</artifactId>
         </dependency>
-        <!--配置Prometheus监控-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
-        </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
@@ -103,12 +94,6 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-        </dependency>
-        <!-- knife4j文档支持 -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-            <version>2.1.0</version>
         </dependency>
         <!--jwt 支持-->
         <dependency>
@@ -204,12 +189,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.kstyrc</groupId>
-            <artifactId>embedded-redis</artifactId>
-            <version>0.6</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
@@ -235,12 +214,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-graphql</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.geekhalo.lego</groupId>
-            <artifactId>lego-core</artifactId>
-            <version>0.1.23</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

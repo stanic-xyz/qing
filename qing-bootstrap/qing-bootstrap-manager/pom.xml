@@ -50,7 +50,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.chenyunlong.qing.bootstrap.service.QingBootstrapServiceApplication</mainClass>
+                    <mainClass>cn.chenyunlong.qing.bootstrap.manager.QingBootstrapServiceApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>
