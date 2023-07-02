@@ -17,7 +17,7 @@ package cn.chenyunlong.common.constants;
  * @author gim
  */
 
-public enum CodeEnum implements BaseEnum {
+public enum CodeEnum implements BaseEnum<Integer> {
     /**
      * 整个系统通用编码 xx_xx_xxxx (服务标识_业务_错误编号，便于错误快速定位
      */
