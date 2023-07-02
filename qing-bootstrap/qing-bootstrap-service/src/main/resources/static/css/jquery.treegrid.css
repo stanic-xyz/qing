@@ -27,9 +27,9 @@
 }
 
 .treegrid-expander-expanded {
-    background-image: url(../img/collapse.png);
+    background-image: url(collapse.png);
 }
 
 .treegrid-expander-collapsed {
-    background-image: url(../img/expand.png);
+    background-image: url(expand.png);
 }

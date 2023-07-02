@@ -1,2 +1,92 @@
 server:
-  port: 8888
+  port: 80
+spring:
+  profiles:
+    active: local
+  application:
+    name: qing-service-anime
+  messages:
+    encoding: UTF-8
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    hikari:
+      connection-timeout: 6000
+      validation-timeout: 1000
+      idle-timeout: 60000
+      login-timeout: 500
+      max-lifetime: 60000
+      maximum-pool-size: 2
+      minimum-idle: 1
+      read-only: false
+      connection-test-query: SELECT 1
+      initialization-fail-timeout: 1000
+  servlet:
+    multipart:
+      max-file-size: 4MB
+      max-request-size: 10MB
+  freemarker:
+    template-loader-path: classpath:/templates/mail/
+    suffix: .ftl
+  cache:
+    type: simple
+  quartz:
+    scheduler-name: testName
+  jpa:
+    hibernate:
+      ddl-auto: none
+    generate-ddl: true
+    open-in-view: true
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 1000
+        order_inserts: true
+        dialect: org.hibernate.dialect.MariaDBDialect
+  graphql:
+    schema:
+      printer:
+        enabled: true
+qing:
+  openAopLog: true
+  api:
+    author: ChenYunLong
+    description: 后台API接口.
+    email: 1576302867@qq.com
+    license: MulanPSL-2.0
+    licenseUrl: http://license.coscl.org.cn/MulanPSL2
+    title: Application from Project Qing
+    url: https://bangumi.chenyunlong.cn
+    version: @version@
+    doc-disabled: false
+    infoList:
+      - url: https://api.chenyunlong.cn
+        description: 正式接口文档地址
+      - url: http://localhost:8080
+        description: 本地测试环境
+  security:
+    secret-key: authentication_
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoint:
+    health:
+      show-details: always
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    default-model-expand-depth: 20
+    path: /swagger-ui.html
+    enabled: true
+  show-actuator: true
+  use-management-port: false
+liteflow:
+  rule-source: flow/flow.el.xml
