@@ -1,0 +1,20 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: qing-feign-client
+  cloud:
+    openfeign:
+      compression:
+        response:
+          enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "*" ]
+  endpoint:
+    health:
+      show-details: always
+test: default
