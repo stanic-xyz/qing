@@ -59,6 +59,7 @@
         <spring-boot.version>2.6.13</spring-boot.version>
         <spring-boot-admin.version>3.0.4</spring-boot-admin.version>
         <spring-statemachine.version>3.2.0</spring-statemachine.version>
+        <lego.version>0.1.23</lego.version>
     </properties>
 
     <dependencyManagement>
@@ -97,6 +98,16 @@
                 <version>${spring-statemachine.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-codegen-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.geekhalo.lego</groupId>
+                <artifactId>lego-starter</artifactId>
+                <version>${lego.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
