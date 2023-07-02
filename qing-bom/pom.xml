@@ -44,7 +44,7 @@
 
         <sentinel.version>1.7.2</sentinel.version>
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
-        <guava.version>31.1-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
         <lombok.version>1.18.24</lombok.version>
         <hutool.version>5.8.18</hutool.version>
         <authing.version>3.0.14</authing.version>
