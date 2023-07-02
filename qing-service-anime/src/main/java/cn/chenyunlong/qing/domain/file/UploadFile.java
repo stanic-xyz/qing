@@ -26,20 +26,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@GenVo
-@GenCreator
-@GenUpdater
-@GenRepository
-@GenService
-@GenServiceImpl
-@GenController(description = "创建服务")
-@GenQuery
-@GenCreateRequest
-@GenUpdateRequest
-@GenQueryRequest
-@GenResponse
-@GenFeign
-@GenMapper
 @GenBase(basePackage = "cn.chenyunlong.qing.domain.file")
 @Entity
 @Table(name = "upload_file")

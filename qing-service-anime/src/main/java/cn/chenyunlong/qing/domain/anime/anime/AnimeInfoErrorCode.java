@@ -17,7 +17,7 @@ import cn.chenyunlong.common.constants.BaseEnum;
 
 import java.util.Optional;
 
-public enum AnimeInfoErrorCode implements BaseEnum {
+public enum AnimeInfoErrorCode implements BaseEnum<Integer> {
 
     ASSET_HAS_IN(10010026, "动漫已经添加"),
     ASSET_HAS_OUT(10010027, "资产已经删除"),
@@ -32,7 +32,7 @@ public enum AnimeInfoErrorCode implements BaseEnum {
     }
 
     public static Optional<AnimeInfoErrorCode> of(Integer code) {
-        return Optional.ofNullable(BaseEnum.parseByCode(AnimeInfoErrorCode.class, code));
+        return Optional.ofNullable(BaseEnum.parseByCode(code, AnimeInfoErrorCode.class));
     }
 
     @Override

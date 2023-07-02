@@ -20,7 +20,7 @@ import lombok.Getter;
  * @author Stan
  */
 
-public enum MessageType implements BaseEnum {
+public enum MessageType implements BaseEnum<Integer> {
 
     /**
      * 普通消息

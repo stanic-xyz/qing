@@ -21,15 +21,6 @@ import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.TransferMo
 public interface IAnimeDomainService {
 
     /**
-     * 处理动漫信息推荐
-     * 资产入库
-     *
-     * @param batchRecommendModel 批量输入输出模型
-     */
-    void handleAnimeInfoRecommend(BatchRecommendModel batchRecommendModel);
-
-
-    /**
      * 处理动画信息输出
      * 资产出库
      *

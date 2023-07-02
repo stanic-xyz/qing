@@ -29,7 +29,7 @@ public enum TaskStatus implements BaseEnum {
     }
 
     public static Optional<TaskStatus> of(Integer value) {
-        return Optional.ofNullable(BaseEnum.parseByCode(TaskStatus.class, value));
+        return Optional.ofNullable(BaseEnum.parseByCode(value, TaskStatus.class));
     }
 
     /**

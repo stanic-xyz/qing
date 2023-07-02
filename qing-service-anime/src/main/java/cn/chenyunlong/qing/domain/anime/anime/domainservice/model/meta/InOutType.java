@@ -32,7 +32,7 @@ public enum InOutType implements BaseEnum {
     }
 
     public static Optional<InOutType> of(Integer code) {
-        return Optional.ofNullable(BaseEnum.parseByCode(InOutType.class, code));
+        return Optional.ofNullable(BaseEnum.parseByCode(code, InOutType.class));
     }
 
     @Override
