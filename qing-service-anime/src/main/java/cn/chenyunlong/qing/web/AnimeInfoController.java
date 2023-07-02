@@ -93,22 +93,17 @@ public class AnimeInfoController {
      * findByPage request
      */
     @PostMapping("findByPage")
-    public JsonResult<PageResult<AnimeInfoResponse>> findByPage(
-            @RequestBody PageRequestWrapper<AnimeInfoQueryRequest> request) {
+    public JsonResult<PageResult<AnimeInfoResponse>> findByPage(@RequestBody PageRequestWrapper<AnimeInfoQueryRequest> request) {
         PageRequestWrapper<AnimeInfoQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(AnimeInfoMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<AnimeInfoVO> page = animeInfoService.findByPage(wrapper);
-        return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(AnimeInfoMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
-        );
+        return JsonResult.success(PageResult.of(page
+                .getContent()
+                .stream()
+                .map(AnimeInfoMapper.INSTANCE::vo2CustomResponse)
+                .collect(Collectors.toList()), page.getTotalElements(), page.getSize(), page.getNumber()));
     }
 }

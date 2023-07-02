@@ -23,7 +23,7 @@ import cn.chenyunlong.common.constants.BaseEnum;
  * @author stan
  * @date 2022/11/27
  */
-public enum ResponseCode implements BaseEnum {
+public enum ResponseCode implements BaseEnum<Integer> {
     // 成功
     SUCCESS(1000, "成功"),
 

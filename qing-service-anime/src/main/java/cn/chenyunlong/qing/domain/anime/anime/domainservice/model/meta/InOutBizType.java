@@ -18,7 +18,7 @@ import cn.chenyunlong.common.constants.BaseEnum;
 
 import java.util.Optional;
 
-public enum InOutBizType implements BaseEnum {
+public enum InOutBizType implements BaseEnum<Integer> {
 
     IN_FIRST(1, "初始入库"),
     OUT_TRANSFER(2, "调拨出库"),
@@ -35,7 +35,7 @@ public enum InOutBizType implements BaseEnum {
     }
 
     public static Optional<InOutBizType> of(Integer code) {
-        return Optional.ofNullable(BaseEnum.parseByCode(InOutBizType.class, code));
+        return Optional.ofNullable(BaseEnum.parseByCode(code, InOutBizType.class));
     }
 
     /**

@@ -58,7 +58,7 @@ public final class JsonResult<T> {
         return jsonResult;
     }
 
-    public static <T> JsonResult<T> fail(BaseEnum codeEnum) {
+    public static <T,E> JsonResult<T> fail(BaseEnum<Integer> codeEnum) {
         JsonResult<T> jsonResult = new JsonResult<>();
         jsonResult.setMsg(codeEnum.getName());
         jsonResult.setCode(codeEnum.getValue());
@@ -80,7 +80,7 @@ public final class JsonResult<T> {
         return jsonResult;
     }
 
-    public static <E> JsonResult<E> res(BaseEnum codeEnum, E result) {
+    public static <E> JsonResult<E> res(BaseEnum<Integer> codeEnum, E result) {
         JsonResult<E> jsonResult = new JsonResult<>();
         jsonResult.setMsg(codeEnum.getName());
         jsonResult.setCode(codeEnum.getValue());

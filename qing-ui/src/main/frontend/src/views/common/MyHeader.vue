@@ -2,7 +2,10 @@
 import { onMounted, reactive } from "vue";
 import Notification from "@/views/common/Notification.vue";
 import { userInfoStore } from "@/stores/session";
+import { LayAvatar, LayButton } from "@layui/layui-vue";
 
+const src =
+  "https://foruda.gitee.com/avatar/1677022544584087390/4835367_jmysy_1578975358.png";
 const data = reactive({
   time: new Date(),
   activeIndex: 1,
@@ -10,7 +13,7 @@ const data = reactive({
     {
       name: "首页",
       index: 1,
-      path: "/index",
+      path: "/",
     },
     {
       name: "每日推荐",
@@ -61,16 +64,26 @@ function handleLogout() {
 <template>
   <div id="top">
     <div id="logo">
-      <router-link to="/index">AGE动漫</router-link>
+      <router-link to="/">AGE动漫</router-link>
     </div>
     <div class="loginOut">
-      <span class="svg_title svg_title_user"></span>
-      <button id="comment_user" class="loginOut_btn2" @click="handleLogin">
-        登陆
-      </button>
-      <button id="comment_user" class="loginOut_btn2" @click="handleLogout">
-        退出
-      </button>
+      <lay-dropdown trigger="hover" updateAtScroll>
+        <span class="svg_title svg_title_user"
+          ><lay-avatar :src="src" radius
+        /></span>
+        <template #content>
+          <lay-dropdown-menu>
+            <lay-space direction="vertical">
+              <lay-dropdown-menu-item class="item-btn">
+                <lay-button v-if="false" @click="handleLogout">登出</lay-button>
+              </lay-dropdown-menu-item>
+              <lay-dropdown-menu-item class="item-btn">
+                <lay-button border="blue" @click="handleLogin">登陆</lay-button>
+              </lay-dropdown-menu-item>
+            </lay-space>
+          </lay-dropdown-menu>
+        </template>
+      </lay-dropdown>
     </div>
   </div>
   <div id="nav">
@@ -86,4 +99,9 @@ function handleLogout() {
   </div>
   <Notification url="https://www.chenyunlong.cn"></Notification>
 </template>
-<style scoped src="../../assets/css/common/header.css"></style>
+<style scoped src="../../assets/css/common/header.css">
+.item-btn,
+.item-btn:active {
+  background-color: black;
+}
+</style>

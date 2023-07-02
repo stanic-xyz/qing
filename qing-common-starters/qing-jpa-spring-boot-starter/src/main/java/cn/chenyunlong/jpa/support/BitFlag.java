@@ -17,7 +17,7 @@ import cn.chenyunlong.common.constants.BaseEnum;
 
 import java.util.Optional;
 
-public enum BitFlag implements BaseEnum<BitFlag> {
+public enum BitFlag implements BaseEnum<Integer> {
     Y(1, "是"),
     N(0, "否");
 
@@ -30,7 +30,7 @@ public enum BitFlag implements BaseEnum<BitFlag> {
     }
 
     public static Optional<BitFlag> of(Integer code) {
-        return Optional.ofNullable(BaseEnum.parseByCode(BitFlag.class, code));
+        return Optional.ofNullable(BaseEnum.parseByCode(code, BitFlag.class));
     }
 
     public Integer getCode() {

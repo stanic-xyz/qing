@@ -19,7 +19,7 @@ import lombok.Getter;
 /**
  * 视频的状态
  */
-public enum VideoStatus implements BaseEnum {
+public enum VideoStatus implements BaseEnum<Integer> {
     /**
      * 正常
      */
