@@ -25,6 +25,10 @@
     float: right;
 }
 
+.item-btn {
+    background-color: black;
+}
+
 /*nav ==== ==== ==== ==== ==== ==== ==== ==== */
 
 #nav {
@@ -43,11 +47,13 @@
     margin-right: -4px;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
+    color: white;
 }
 
 .nav_button:hover,
 .nav_button:active {
     background-color: #303030;
+    color: #0d6aad;
 }
 
 .nav_button_current {
@@ -94,19 +100,4 @@
 #top_search_from {
     float: right;
     margin: 8px 8px;
-}
-
-.sublink {
-    box-sizing: border-box;
-    display: inline-block;
-    height: 56px;
-    line-height: 56px;
-    padding: 0 6px;
-    font-size: 1.2em;
-    color: #d0e0f0;
-    margin-right: 14px;
-}
-
-.sublink_float {
-    float: right;
 }

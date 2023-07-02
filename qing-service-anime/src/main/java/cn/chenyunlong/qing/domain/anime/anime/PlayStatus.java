@@ -19,7 +19,6 @@ public enum PlayStatus implements BaseEnum {
 
     FINISHED(1, "完结"),
 
-
     SERIALIZING(2, "连载中");
 
     private final Integer status;

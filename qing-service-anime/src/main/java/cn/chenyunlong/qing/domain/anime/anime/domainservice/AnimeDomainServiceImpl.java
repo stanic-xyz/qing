@@ -13,23 +13,11 @@
 
 package cn.chenyunlong.qing.domain.anime.anime.domainservice;
 
-import cn.chenyunlong.qing.domain.anime.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.anime.creator.AnimeInfoCreator;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.BatchRecommendModel;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.biz.TransferModel;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.meta.InOutBizType;
-import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeInfoRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeInfoService;
-import cn.chenyunlong.qing.domain.anime.attachment.service.IAttachmentService;
-import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
-import cn.chenyunlong.qing.domain.anime.playlist.service.IPlaylistService;
-import cn.chenyunlong.qing.domain.anime.recommend.Recommend;
-import cn.chenyunlong.qing.domain.anime.recommend.creator.RecommendCreator;
-import cn.chenyunlong.qing.domain.anime.recommend.mapper.RecommendMapper;
-import cn.chenyunlong.qing.domain.anime.recommend.repository.RecommendRepository;
-import cn.chenyunlong.qing.domain.anime.tag.service.IAnimeTagService;
-import cn.chenyunlong.qing.domain.anime.type.service.IAnimeTypeService;
-import cn.chenyunlong.qing.domain.district.service.IDistrictService;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,55 +25,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AnimeDomainServiceImpl implements IAnimeDomainService {
 
     private final IAnimeInfoService animeInfoService;
-    private final AnimeInfoRepository animeInfoRepository;
-    private final RecommendRepository recommendRepository;
-    private final IAnimeTagService animeTagService;
-    private final IAnimeTypeService animeTypeService;
-    private final IEpisodeService episodeService;
-    private final IPlaylistService playlistService;
-    private final IAttachmentService attachmentService;
-    private final IDistrictService districtService;
-
-
-    @Override
-    @Transactional
-    public void handleAnimeInfoRecommend(BatchRecommendModel batchRecommendModel) {
-        Assert.notEmpty(batchRecommendModel.getAnimeIds());
-        String genBatchNo = IdUtil.simpleUUID();
-        AnimeInfoBizInfo animeInfoBizInfo = AnimeInfoBizInfo
-                .builder()
-                .batchNo(batchRecommendModel.getBatchNo())
-                .genBatchNo(genBatchNo)
-                .inOutBizType(batchRecommendModel.getInOutBizType())
-                .uniqueCodes(batchRecommendModel.getAnimeIds())
-                .operateUser(batchRecommendModel.getOperateUser())
-                .build();
-
-        //查询所有的动漫信息
-        List<AnimeInfo> animeInfoList = animeInfoRepository.findAllById(batchRecommendModel.getAnimeIds());
-
-
-        Set<RecommendCreator> creatorSet = animeInfoList.stream().map(animeInfo -> {
-            RecommendCreator recommendCreator = new RecommendCreator();
-            recommendCreator.setAid(animeInfo.getId());
-            recommendCreator.setReason("推荐理由");
-            return recommendCreator;
-        }).collect(Collectors.toSet());
-        Set<Recommend> recommendSet =
-                creatorSet.stream().map(RecommendMapper.INSTANCE::dtoToEntity).collect(Collectors.toSet());
-        List<Recommend> list = recommendRepository.saveAll(recommendSet);
-    }
-
 
     @Override
     @Transactional
@@ -132,10 +77,7 @@ public class AnimeDomainServiceImpl implements IAnimeDomainService {
         outModel.setHouseId(transferModel.getTransferOutHouseId());
         outModel.setAnimeIds(transferModel.getUniqueCodes());
         handleAnimeInfoOut(outModel);
-        log.info("处理出库完成，仓库id:{},批次号:{},自动批号:{}",
-                transferModel.getTransferOutHouseId(),
-                transferModel.getBatchNo(),
-                genBatchNo);
+        log.info("处理出库完成，仓库id:{},批次号:{},自动批号:{}", transferModel.getTransferOutHouseId(), transferModel.getBatchNo(), genBatchNo);
 
 //        Optional<AnimeInfo> animeInfo = animeInfoRepository.findById(transferModel.getUniqueCodes().get(0));
 //        BatchInOutModel inModel = new BatchInOutModel();

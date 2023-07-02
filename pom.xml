@@ -27,6 +27,7 @@
     <modules>
         <module>qing-archetypes</module>
         <module>qing-bom</module>
+        <module>qing-bootstrap</module>
         <module>qing-feign-client</module>
         <module>qing-commons</module>
         <module>qing-config-git</module>

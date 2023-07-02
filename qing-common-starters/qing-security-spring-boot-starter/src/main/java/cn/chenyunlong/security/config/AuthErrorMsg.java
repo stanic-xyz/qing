@@ -15,7 +15,7 @@ package cn.chenyunlong.security.config;
 
 import cn.chenyunlong.common.constants.BaseEnum;
 
-public enum AuthErrorMsg implements BaseEnum {
+public enum AuthErrorMsg implements BaseEnum<Integer> {
     /**
      * 认证
      */
@@ -48,9 +48,7 @@ public enum AuthErrorMsg implements BaseEnum {
         return this.name;
     }
 
-    /**
-     * @return
-     */
+
     @Override
     public Integer getValue() {
         return code;
