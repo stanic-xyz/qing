@@ -49,15 +49,17 @@
         <hutool.version>5.8.18</hutool.version>
         <authing.version>3.0.14</authing.version>
         <swagger.version>2.2.8</swagger.version>
-        <springdoc.version>2.1.0</springdoc.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
         <vavr.version>0.10.4</vavr.version>
         <fastjson.version>2.0.21</fastjson.version>
         <javapoet.version>1.13.0</javapoet.version>
         <auto.version>1.0.1</auto.version>
         <liteflow.version>2.10.2</liteflow.version>
+        <spring-boot.version>2.6.13</spring-boot.version>
         <spring-boot-admin.version>3.0.4</spring-boot-admin.version>
         <spring-statemachine.version>3.2.0</spring-statemachine.version>
+        <lego.version>0.1.23</lego.version>
+        <knife4j.version>4.1.0</knife4j.version>
     </properties>
 
     <dependencyManagement>
@@ -96,6 +98,16 @@
                 <version>${spring-statemachine.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-codegen-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.geekhalo.lego</groupId>
+                <artifactId>lego-starter</artifactId>
+                <version>${lego.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
@@ -182,18 +194,11 @@
                 <artifactId>authing-java-sdk</artifactId>
                 <version>${authing.version}</version>
             </dependency>
-
             <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-ui</artifactId>
-                <version>${springdoc.version}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${kinfe4j.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-security</artifactId>
-                <version>${springdoc.version}</version>
-            </dependency>
-
             <!-- 第三方库依赖 -->
             <dependency>
                 <groupId>com.qcloud</groupId>

@@ -16,7 +16,7 @@ package cn.chenyunlong.common.constants;
 /**
  * @author gim
  **/
-public enum ValidStatus implements BaseEnum {
+public enum ValidStatus implements BaseEnum<Integer> {
     /**
      * 有效
      */
