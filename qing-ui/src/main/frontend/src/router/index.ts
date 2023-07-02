@@ -1,11 +1,11 @@
-import type { RouteLocationNormalized, Router } from "vue-router";
+import type {
+  NavigationGuardNext,
+  RouteLocationNormalized,
+  Router,
+} from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
-import Activity from "@/views/Activity.vue";
-import ExceptionPage from "@/views/exception/ExceptionPage.vue";
-import AuthingLogin from "@/views/login/AuthingLogin.vue";
-
-/** 原始静态路由（未做任何处理） */
-const routes = [];
+import routes from "./modules/base-routes";
+import { userStore } from "@/stores/user";
 
 /** 路由白名单 */
 const whiteList = ["/login"];
@@ -15,100 +15,36 @@ const whiteList = ["/login"];
  */
 const router: Router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: "/index",
-      name: "index",
-      component: () => import("../views/home/Home.vue"),
-    },
-    {
-      path: "/",
-      name: "home",
-      component: () => import("../views/home/Home.vue"),
-    },
-    {
-      path: "/recommend",
-      name: "recommend",
-      component: () => import("../views/Recommend.vue"),
-    },
-    {
-      path: "/update",
-      name: "update",
-      component: () => import("../views/UpdatePage.vue"),
-    },
-    {
-      path: "/catalog",
-      name: "catalog",
-      component: () => import("../views/catlog/Catalog.vue"),
-    },
-    {
-      path: "/rank",
-      name: "rank",
-      component: () => import("../views/RankPage.vue"),
-    },
-    {
-      path: "/anime/:animeId",
-      name: "anime",
-      component: () => import("../views/Detail.vue"),
-    },
-    {
-      path: "/play/:animeId",
-      name: "play",
-      component: () => import("../views/PlayPage.vue"),
-    },
-    {
-      path: "/profile",
-      name: "profile",
-      component: () => import("../views/about/About.vue"),
-    },
-    {
-      path: "/login",
-      name: "login",
-      meta: {
-        requiresAuth: false,
-      },
-      component: () => import("../views/login/LoginPage.vue"),
-    },
-
-    { path: "/users/:id", component: Activity },
-    { path: "/login/authing", component: AuthingLogin },
-
-    {
-      path: "/error/401",
-      component: () => import("../views/error/401.vue"),
-      meta: { title: "401" },
-    },
-    {
-      path: "/error/403",
-      component: () => import("../views/error/403.vue"),
-      meta: { title: "403" },
-    },
-    {
-      path: "/error/404",
-      component: () => import("../views/error/404.vue"),
-      meta: { title: "404" },
-    },
-    {
-      path: "/error/500",
-      component: () => import("../views/error/500.vue"),
-      meta: { title: "500" },
-    },
-    // 将匹配所有内容并将其放在 `$route.params.pathMatch` 下
-    { path: "/:pathMatch(.*)*", name: "NotFound", component: ExceptionPage },
-  ],
+  routes,
 });
 
-router.beforeEach((to, from) => {
-  // 我们想用这里的 store
-  console.log("检查路由：", to.meta.name != "login");
-  // const store = userInfoStore();
-  // // 检查用户是否已登录
-  // if (!store.isLoggedIn() && to.name !== "login") {
-  //   // 将用户重定向到登录页面
-  //   return { name: "login" };
-  // }
-  return true;
-});
+/**
+ * Router 前置拦截
+ *
+ * 1.验证 token 存在, 并且有效, 否则 -> login.vue
+ * 2.验证 permission 存在, 否则 -> 403.vue
+ * 3.验证 router 是否存在, 否则 -> 404.vue
+ *
+ * @param to 目标
+ * @param from 来至
+ */
+router.beforeEach(
+  (
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+    next: NavigationGuardNext
+  ): void => {
+    var store = userStore();
+
+    if (to.meta.requireAuth) {
+      next();
+    } else if (to.matched.length == 0) {
+      next({ path: "/error/404" });
+    } else {
+      next();
+    }
+  }
+);
 
 router.onError(
   (error: any, to: RouteLocationNormalized, from: RouteLocationNormalized) => {

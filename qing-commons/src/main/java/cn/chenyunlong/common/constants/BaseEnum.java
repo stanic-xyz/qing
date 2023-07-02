@@ -19,14 +19,13 @@ import java.util.Objects;
 /**
  * 枚举基础类
  */
-public interface BaseEnum<T extends BaseEnum<T>> {
+public interface BaseEnum<T> {
 
-    static <T extends BaseEnum> T parseByCode(Class<T> typeClass, Integer code) {
-        T[] enumConstants = typeClass.getEnumConstants();
+    static <T extends BaseEnum> T parseByCode(Integer code, Class<T> clazz) {
+        T[] enumConstants = clazz.getEnumConstants();
         return Arrays
                 .stream(enumConstants)
-                .filter(baseEnum
-                        -> Objects.equals(baseEnum.getValue(), code))
+                .filter(baseEnum -> Objects.equals(baseEnum.getValue(), code))
                 .findFirst()
                 .orElse(null);
     }
@@ -36,7 +35,7 @@ public interface BaseEnum<T extends BaseEnum<T>> {
      *
      * @return 获取编码
      */
-    Integer getValue();
+    T getValue();
 
     /**
      * 获取编码名称，便于维护

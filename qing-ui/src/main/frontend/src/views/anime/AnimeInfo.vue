@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import type { PropType } from "vue";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import type { Anime } from "@/api/anime";
 
 onMounted(() => {
   console.log("加载成功");
 });
+
+const img = ref("https://cdn.aqdstatic.com:966/age/20180073_small.jpg");
 
 const props = defineProps({
   anime: {
@@ -41,29 +43,26 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  console.log("加载成功");
+  console.log("单个动漫信息加载成功");
 });
 </script>
 
 <template>
-  <div>
-    <a :href="`/anime/index.html'`">
-      <img
-        src="https://test/img.jpg"
-        class="anime_icon1_img"
-        height="165px"
-        loading="lazy"
-        referrerpolicy="no-referrer"
-        title="props.anime.name"
-        width="120px"
-        alt="test"
-      />
-      <span class="anime_icon1_name1"> {{ props.anime.name }}</span></a
-    >
-    <a :href="`detail//index/index.html`" class="anime_icon1_name_a">
-      <div class="anime_icon1_name">{{ props.anime.name }}</div>
-    </a>
+  <div class="card-container">
+    <router-link :to="anime.id">
+      <lay-card>
+        <img :src="img" alt="图片" />
+        <template #footer>
+          <div class="button-list">图片信息</div>
+        </template>
+      </lay-card>
+    </router-link>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.card-container {
+  background: whitesmoke;
+  padding: 0;
+}
+</style>

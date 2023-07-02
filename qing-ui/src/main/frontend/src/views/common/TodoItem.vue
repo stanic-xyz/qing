@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import LoginVue from "../login/LoginPage.vue";
+import LoginVue from "../login/Login.vue";
 
 const props = defineProps({
   todo: String,
