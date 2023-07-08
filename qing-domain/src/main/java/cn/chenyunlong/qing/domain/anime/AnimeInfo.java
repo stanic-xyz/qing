@@ -15,17 +15,14 @@ package cn.chenyunlong.qing.domain.anime;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 /**
  * @author Stan
@@ -34,9 +31,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
-@Entity
-@Table(name = "anime_info")
+@Entity(name = "anime_info")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class AnimeInfo extends BaseEntity {
 
     @FieldDesc(description = "动漫名称")
@@ -45,7 +41,6 @@ public class AnimeInfo extends BaseEntity {
     @FieldDesc(description = "介绍信息")
     private String instruction;
 
-    @Schema
     @FieldDesc(description = "区域Id")
     private Long districtId;
 
@@ -93,18 +88,4 @@ public class AnimeInfo extends BaseEntity {
 
     @FieldDesc(description = "排序号")
     private Integer orderNo;
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        AnimeInfo animeInfo = (AnimeInfo) o;
-        return getId() != null && Objects.equals(getId(), animeInfo.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

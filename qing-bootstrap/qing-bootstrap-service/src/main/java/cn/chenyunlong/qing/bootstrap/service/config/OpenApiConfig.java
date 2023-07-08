@@ -45,11 +45,8 @@ public class OpenApiConfig {
         return new OpenAPI().info(new Info()
                 .title("XXX用户系统API")
                 .version("1.0")
-
                 .description("Knife4j集成springdoc-openapi示例")
                 .termsOfService("http://doc.xiaominfo.com")
                 .license(new License().name("Mulan PSL v2").url("https://license.coscl.org.cn/MulanPSL2")));
     }
-
-
 }
