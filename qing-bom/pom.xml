@@ -111,7 +111,12 @@
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-codegen-api</artifactId>
+                <artifactId>qing-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -190,11 +195,6 @@
                 <version>${fastjson.version}</version>
             </dependency>
             <dependency>
-                <groupId>cn.authing</groupId>
-                <artifactId>authing-java-sdk</artifactId>
-                <version>${authing.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${kinfe4j.version}</version>
@@ -214,6 +214,11 @@
                 <groupId>com.yomahub</groupId>
                 <artifactId>liteflow-spring-boot-starter</artifactId>
                 <version>${liteflow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.authing</groupId>
+                <artifactId>authing-java-sdk</artifactId>
+                <version>3.0.14</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
