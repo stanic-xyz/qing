@@ -13,10 +13,14 @@
 
 package cn.chenyunlong.common.model;
 
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import javax.annotation.Nonnegative;
-import javax.annotation.Nullable;
 import java.util.Map;
 
 /**
@@ -34,7 +38,8 @@ public class PageRequestWrapper<T> {
     /**
      * 分页大小
      */
-    @Nonnegative
+    @Min(1)
+    @NotNull
     private Integer pageSize = 12;
 
     /**
@@ -49,4 +54,14 @@ public class PageRequestWrapper<T> {
      */
     @Nullable
     private Map<String, String> sorts;
+
+    /**
+     * 获取分页信息
+     *
+     * @return
+     */
+    public PageRequest getWrapper() {
+        Sort sort = Sort.unsorted();
+        return PageRequest.of(page, pageSize, sort);
+    }
 }

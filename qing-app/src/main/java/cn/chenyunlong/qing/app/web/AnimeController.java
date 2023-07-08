@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.app.web;
 
+import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.creator.AnimeInfoCreator;
 import cn.chenyunlong.qing.domain.anime.mapper.AnimeInfoMapper;
@@ -12,9 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/v1/anime")
 @RequiredArgsConstructor
-public class AnimeController implements InitializingBean {
+public class AnimeController {
 
     private final IAnimeInfoService animeInfoService;
 
@@ -41,15 +40,11 @@ public class AnimeController implements InitializingBean {
 
     /**
      * 分页查询
-     *
-     * @param animeInfo   筛选条件
-     * @param pageRequest 分页对象
-     * @return 查询结果
      */
     @Operation(summary = "分页查询")
-    @GetMapping
-    public ResponseEntity<Page<AnimeInfoVO>> paginQuery(AnimeInfo animeInfo, PageRequest pageRequest) {
-        return ResponseEntity.ok(animeInfoService.findByPage(animeInfo, pageRequest));
+    @PostMapping("page")
+    public ResponseEntity<Page<AnimeInfoVO>> pageQuery(@RequestBody PageRequestWrapper<AnimeInfo> requestWrapper) {
+        return ResponseEntity.ok(animeInfoService.findByPage(requestWrapper.getBean(), requestWrapper.getWrapper()));
     }
 
     /**
@@ -90,10 +85,5 @@ public class AnimeController implements InitializingBean {
     public ResponseEntity<Boolean> deleteById(Long id) {
         animeInfoService.invalidAnimeInfo(id);
         return ResponseEntity.ok().build();
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        log.info("执行成功");
     }
 }
