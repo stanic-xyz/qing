@@ -13,7 +13,9 @@
 
 package cn.chenyunlong.jpa.support;
 
+import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
+import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -27,16 +29,17 @@ import java.time.Instant;
  * 基础jpa类型
  *
  * @author Stan
- * @date 2022/11/05
+ * @since 2022/11/05
  */
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@EqualsAndHashCode(callSuper = false)
+@Entity
+@Embeddable
 public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggregate> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.PROTECTED)
     @Column(name = "id")
     private Long id;
 
@@ -50,10 +53,20 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
     @Setter(AccessLevel.PROTECTED)
     private Instant updatedAt;
 
+    /**
+     * 数据状态
+     */
+    @Convert(converter = ValidStatusConverter.class)
+    private ValidStatus validStatus;
+
+    /**
+     * 乐观锁字段
+     */
     @Version
     @Column(name = "version")
     @Setter(AccessLevel.PRIVATE)
     private Integer version;
+
 
     @PrePersist
     public void prePersist() {
@@ -64,6 +77,19 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
     @PreUpdate
     public void preUpdate() {
         this.setUpdatedAt(Instant.now());
+    }
+
+
+    public void init() {
+        setValidStatus(ValidStatus.VALID);
+    }
+
+    public void valid() {
+        setValidStatus(ValidStatus.VALID);
+    }
+
+    public void invalid() {
+        setValidStatus(ValidStatus.INVALID);
     }
 
 }
