@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.jpa.support.domain;
 
-import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
-import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,7 +34,10 @@ import org.springframework.util.StringUtils;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Entity
+@Embeddable
 public class BaseEntity extends BaseJpaAggregate {
 
     /**
@@ -52,9 +55,6 @@ public class BaseEntity extends BaseJpaAggregate {
      */
     @Column
     private String remark;
-
-    @Convert(converter = ValidStatusConverter.class)
-    private ValidStatus validStatus;
 
 
     /**
@@ -78,17 +78,5 @@ public class BaseEntity extends BaseJpaAggregate {
         }
     }
 
-
-    public void init() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void valid() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void invalid() {
-        setValidStatus(ValidStatus.INVALID);
-    }
 
 }
