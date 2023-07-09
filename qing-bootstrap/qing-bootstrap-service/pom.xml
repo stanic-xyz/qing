@@ -42,12 +42,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.geekhalo.lego</groupId>
-            <artifactId>lego-core</artifactId>
-            <version>0.1.23</version>
-            <scope>compile</scope>
-        </dependency>
         <!--配置Prometheus监控-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
