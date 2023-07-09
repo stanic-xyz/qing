@@ -22,7 +22,7 @@ stages:
         commands:
           - '# 功能：打包'
           - cd ~/workspace/${GITEE_REPO}/
-          - mvn clean install -pl !qing-ui,!qing-codegen-plugin/qing-codegen-samples --offline -f pom.xml
+          - mvn clean install -pl !qing-ui,!qing-codegen-plugin/qing-codegen-samples -f pom.xml
           - ''
         artifacts:
           - name: BUILD_ARTIFACT
