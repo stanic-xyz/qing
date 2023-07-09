@@ -25,4 +25,4 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
       - name: Build Docker Image and Push to Docker Hub
-        run: mvn clean install -pl !qing-ui,!qing-codegen-plugin/qing-codegen-samples --offline -f pom.xml
+        run: mvn clean install -pl !qing-ui -f pom.xml

@@ -1,0 +1,23 @@
+FROM openjdk:17-slim AS qing-bootstrap-service
+USER root
+MAINTAINER Stan<1576302867@qq.com>
+ENV ENV prod
+EXPOSE 80
+WORKDIR /usr/local
+ENV QING_EUREKA_HOST localhost
+ENV QING_REGISTRY_EUREKA_PORT 8761
+ENV QING_MYSQL_HOST localhost
+ENV QING_MYSQL_PORT 3306
+ENV QING_MYSQL_USERNAME root
+ENV QING_MYSQL_PASSWORD password
+ENV QING_MAIL_HOST smtp.qq.com
+ENV QING_MAIL_USERNAME qq_mail
+ENV QING_MAIL_PASSWORD qq_mail_token
+ENV QING_WECHAT_APPID appId
+ENV QING_WECHAT_SECRET secret
+ENV QING_REDIS_HOST 127.0.0.1
+ENV QING_REDIS_PORT 6379
+ENV QING_SERVICE_ANIME_HOST=localhost
+
+COPY target/qing-bootstrap-service.jar app.jar
+ENTRYPOINT ["java","-jar","/usr/local/app.jar"]
