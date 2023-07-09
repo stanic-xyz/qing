@@ -14,7 +14,6 @@
 package cn.chenyunlong.qing.infrastructure.aspect;
 
 import cn.chenyunlong.qing.infrastructure.annotation.Email;
-import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import net.bytebuddy.matcher.BooleanMatcher;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
@@ -40,13 +39,6 @@ import java.lang.reflect.Method;
 public class EmailAspect {
 
     private final Logger log = LoggerFactory.getLogger(EmailAspect.class);
-    private final QingProperties qingProperties;
-
-
-    public EmailAspect(QingProperties qingProperties) {
-        this.qingProperties = qingProperties;
-    }
-
 
     @Pointcut("@annotation(cn.chenyunlong.qing.infrastructure.annotation.Email)")
     public void pointcut() {
@@ -89,7 +81,6 @@ public class EmailAspect {
         public void run() {
             super.run();
             log.info(receiver, subject, content);
-            log.debug("发送一条邮件给指定账户" + qingProperties.getFile().getBaseUploadDir());
         }
     }
 }

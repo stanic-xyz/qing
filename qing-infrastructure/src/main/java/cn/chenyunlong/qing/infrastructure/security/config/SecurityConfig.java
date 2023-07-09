@@ -15,7 +15,6 @@ package cn.chenyunlong.qing.infrastructure.security.config;
 
 import cn.chenyunlong.qing.infrastructure.security.configures.my.MyAccessDeniedHandler;
 import cn.chenyunlong.qing.infrastructure.security.configures.my.MyAuthenticationEntryPoint;
-import cn.chenyunlong.qing.infrastructure.security.support.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,8 +37,6 @@ import static cn.chenyunlong.qing.infrastructure.security.configures.authing.Aut
 public class SecurityConfig {
 
     private final MyAccessDeniedHandler myAccessDeniedHandler;
-    private final TokenProvider tokenProvider;
-    private final UserDetailsService userDetailsService;
     private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 
 
@@ -55,7 +51,6 @@ public class SecurityConfig {
         manager.createUser(User
                 // TODO 测试阶段暂时使用这个来做登录
                 .withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
-
         return httpSecurity
                 .getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(manager)

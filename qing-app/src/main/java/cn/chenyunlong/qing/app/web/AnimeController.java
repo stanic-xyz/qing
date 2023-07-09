@@ -17,13 +17,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "发布信息")
+@Tag(name = "动漫信息管理")
 @Slf4j
 @RestController
 @RequestMapping("api/v1/anime")
 @RequiredArgsConstructor
 public class AnimeController {
 
+    // 发布信息
     private final IAnimeInfoService animeInfoService;
 
     /**
@@ -34,7 +35,7 @@ public class AnimeController {
      */
     @Operation(summary = "通过ID查询单条数据")
     @GetMapping("{id}")
-    public ResponseEntity<AnimeInfoVO> queryById(Long id) {
+    public ResponseEntity<AnimeInfoVO> queryById(@PathVariable Long id) {
         return ResponseEntity.ok(animeInfoService.findById(id));
     }
 
