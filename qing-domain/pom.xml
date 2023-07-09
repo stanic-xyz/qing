@@ -54,6 +54,10 @@
             <artifactId>qing-codegen-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-codegen-apt</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
         </dependency>
