@@ -17,6 +17,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,7 @@ import java.util.Map;
  * @author Stan
  * @date 2021/01/14
  */
+@ConditionalOnBean(KeyPair.class)
 @Tag(name = "RSA公钥")
 @RestController
 @RequestMapping("api/rsa")

@@ -34,8 +34,8 @@ import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
 @Embeddable
+@MappedSuperclass
 public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggregate> {
 
     @Id

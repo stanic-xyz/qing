@@ -31,6 +31,11 @@ qing:
   swagger:
     doc-disabled: false
   index-size: 26
+  authing:
+    appId: 6432d5c9e0502f0bb45319bf
+    appSecret: a599ddfc87b4478596b31a17e46d2360
+    appHost: https://stanic.authing.cn/6432d5c9e0502f0bb45319bf
+    redirectUrl: http://localhost:8080/auth/authingLogin
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl

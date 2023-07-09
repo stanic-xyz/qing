@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/qing?serverTimezone=GMT%2B8&
+    hikari:
+      username: root
+      password: 123456
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    hibernate:
+      ddl-auto: none
+  mail:
+    host: smtp.qq.com
+    username: example@qq.com
+    password: 1234567
+logging:
+  level:
+    root: info
+mp:
+  wx:
+    appId: wx09bf7e704a150a9c
+    secret: 9fdb9fa846356d32247a9aa68d758791
+qing:
+  authing:
+    app-id: 6409f47d8727378be3897cc7
+    app-secret: 5b35098a07dcce22d929ce4ad19b1b5f
+    app-host: https://stanic.authing.cn
+    redirect-url: http://localhost:8991/login/authing
+  mailEnabled: true
+  oss:
+    secretId: AKIDshIHBtNfjX7SWRCizNdePu85nHX1HG0V
+    secretKey: KOCjz0lG76xc6LPGvRjmaBbsjPtESUHp
+    region: ap-guangzhou
+    bucketName: anime-1255705827
+  file:
+    baseUploadDir: upload/
+    image-server-url: http://localhost:8080
+  # 是否异步记录用户操作日志
+  openAopLog: true
+  swagger:
+    doc-disabled: false
+  index-size: 26
+
