@@ -49,7 +49,7 @@ stages:
         displayName: 镜像构建
         type: cert
         certificate: 3d32d0e0-00aa-013c-8d3b-62e879a5badf
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: 0.0.2.${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./qing-bootstrap/qing-bootstrap-service/Dockerfile
         context: ./qing-bootstrap/qing-bootstrap-service
         artifacts: []
