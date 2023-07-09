@@ -27,10 +27,12 @@ stages:
         artifacts:
           - name: BUILD_ARTIFACT
             path:
-              - ./qing-bootstrap/qing-bootstrap-service/target
+              - ./qing-bootstrap/qing-bootstrap-service/target/qing-bootstrap-service.jar
         settings: []
         caches:
           - ~/.m2
         notify: []
         strategy:
           retry: '0'
+strategy:
+  blocking: true
