@@ -20,7 +20,7 @@ import cn.authing.sdk.java.dto.authentication.UserInfo;
 import cn.authing.sdk.java.model.AuthenticationClientOptions;
 import cn.chenyunlong.qing.app.monitor.PrometheusCustomMonitor;
 import cn.chenyunlong.qing.domain.user.dto.params.authing.AuthingLoginParam;
-import cn.chenyunlong.qing.infrastructure.config.authing.AuthingConfig;
+import cn.chenyunlong.qing.infrastructure.config.properties.AuthingConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
