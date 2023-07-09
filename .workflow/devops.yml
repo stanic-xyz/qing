@@ -47,8 +47,10 @@ stages:
       - step: build@docker
         name: build_docker
         displayName: 镜像构建
-        type: cert
-        certificate: 3d32d0e0-00aa-013c-8d3b-62e879a5badf
+        type: account
+        repository: stanic-docker.pkg.coding.net
+        username: qing-1688924172946
+        password: cb618ff5047b1b563b93472431ce9a4104ddc7b8
         tag: stanic-docker.pkg.coding.net/qing/qing/qing-bootstrap-service:0.0.2.${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./qing-bootstrap/qing-bootstrap-service/Dockerfile
         context: ./qing-bootstrap/qing-bootstrap-service
