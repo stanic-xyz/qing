@@ -27,8 +27,7 @@ stages:
         artifacts:
           - name: BUILD_ARTIFACT
             path:
-              - ./target
-              - qing-bootstrap/qing-bootstrap-service/target
+              - ./qing-bootstrap/qing-bootstrap-service/target
         settings: []
         caches:
           - ~/.m2
