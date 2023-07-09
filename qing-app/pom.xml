@@ -35,11 +35,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.geekhalo.lego</groupId>
-            <artifactId>lego-starter</artifactId>
-            <version>0.1.23</version>
-        </dependency>
-        <dependency>
             <groupId>cn.authing</groupId>
             <artifactId>authing-java-sdk</artifactId>
         </dependency>
