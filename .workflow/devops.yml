@@ -25,7 +25,7 @@ stages:
         mavenVersion: 3.6.3
         commands:
           - '# 功能：打包'
-          - mvn clean install -pl !qing-ui -f pom.xml
+          - mvn clean package -pl qing-bootstrap/qing-bootstrap-service -am -f pom.xml
           - ''
         artifacts:
           - name: BUILD_ARTIFACT
@@ -44,7 +44,7 @@ stages:
         certificate: 3d32d0e0-00aa-013c-8d3b-62e879a5badf
         tag: qing-bootstrap-service:0.0.2.${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: qing-bootstrap/qing-bootstrap-service/Dockerfile
-        context: ''
+        context: qing-bootstrap/qing-bootstrap-service
         artifacts:
           - ${BUILD_ARTIFACT}
         isCache: true
