@@ -51,7 +51,7 @@ stages:
         repository: stanic-docker.pkg.coding.net
         username: qing-1688924172946
         password: cb618ff5047b1b563b93472431ce9a4104ddc7b8
-        tag: stanic-docker.pkg.coding.net/qing/qing/qing-bootstrap-service:0.0.2.${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: qing/qing-bootstrap-service:0.0.2.${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./qing-bootstrap/qing-bootstrap-service/Dockerfile
         context: ./qing-bootstrap/qing-bootstrap-service
         artifacts: []
