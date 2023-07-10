@@ -38,12 +38,6 @@ stages:
         notify: []
         strategy:
           retry: '0'
-  - name: build-docker-image
-    displayName: build-docker-image
-    strategy: naturally
-    trigger: auto
-    executor: []
-    steps:
       - step: build@docker
         name: build_docker
         displayName: 镜像构建
@@ -54,12 +48,12 @@ stages:
         tag: qing-bootstrap-service:0.0.2.${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./qing-bootstrap/qing-bootstrap-service/Dockerfile
         context: ./qing-bootstrap/qing-bootstrap-service
-        artifacts:
-          - ${BUILD_ARTIFACT}
+        artifacts: []
         isCache: true
         parameter: {}
         notify: []
         strategy:
           retry: '0'
+        dependsOn: build_maven
 strategy:
   blocking: true
