@@ -54,7 +54,8 @@ stages:
         tag: qing-bootstrap-service:0.0.2.${GITEE_PIPELINE_BUILD_NUMBER}
         dockerfile: ./qing-bootstrap/qing-bootstrap-service/Dockerfile
         context: ./qing-bootstrap/qing-bootstrap-service
-        artifacts: []
+        artifacts:
+          - ${BUILD_ARTIFACT}
         isCache: true
         parameter: {}
         notify: []
