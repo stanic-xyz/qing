@@ -2,7 +2,7 @@ server:
   port: 80
 spring:
   profiles:
-    active: local
+    active: prod
   application:
     name: qing-service-anime
   messages:
