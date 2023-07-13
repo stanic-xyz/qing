@@ -41,8 +41,8 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
     }
 
     @Override
-    public void configure(StateMachineTransitionConfigurer<States, Events> transitions) throws Exception {
-        transitions
+    public void configure(StateMachineTransitionConfigurer<States, Events> transitionConfigurer) throws Exception {
+        transitionConfigurer
                 .withExternal()
                 .source(States.SI)
                 .target(States.S1)

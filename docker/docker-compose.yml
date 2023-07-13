@@ -1,0 +1,73 @@
+version: "3"
+
+#自定义网络
+networks:
+  qing-network:
+services:
+  redis:
+    image: redis
+    container_name: redis                                                             # 容器名为'redis'
+    restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
+    #    command: redis-server /etc/redis/redis.conf --requirepass 123456 --appendonly no # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
+    #    command: redis-server --requirepass 123456 --appendonly yes # 启动redis服务并添加密码为：123456,并开启redis持久化配置
+    environment: # 设置环境变量,相当于docker run命令中的-e
+      TZ: Asia/Shanghai
+      LANG: zh_CN.UTF-8
+    volumes: # 数据卷挂载路径设置,将本机目录映射到容器目录
+      - "./redis/data:/data"
+      - "./redis/config/redis.conf:/etc/redis/redis.conf"  # `redis.conf`文件内容`http://download.redis.io/redis-stable/redis.conf`
+    ports: # 映射端口
+      - "6379:6379"
+    expose:
+      - 6379
+    networks:
+      - qing-network
+  consul:
+    image: consul:latest
+    container_name: consul-registration
+    hostname: consul
+    ports:
+      - "8500:8500"
+    networks:
+      - qing-network
+    restart: unless-stopped
+  qing-app:
+    container_name: qing-web-end
+    image: stanic-docker.pkg.coding.net/qing/qing/qing-bootstrap-service:0.0.2.25
+    expose:
+      - 80
+    ports:
+      - "8080:80"
+    hostname: qing-backend-service
+    depends_on:
+      - redis
+      - consul
+    links:
+      - redis
+      - consul
+    environment:
+      TZ: Asia/Shanghai
+      LANG: zh_CN.UTF-8
+      QING_LOCALHOST: redis
+      QING_EUREKA_HOST: localhost
+      QING_REGISTRY_EUREKA_PORT: 8761
+      QING_MYSQL_HOST: mysql
+      QING_MYSQL_PORT: 3306
+      QING_MYSQL_USERNAME: root
+      QING_MYSQL_PASSWORD: password
+      QING_MAIL_HOST: smtp.qq.com
+      QING_MAIL_USERNAME: qq_mail
+      QING_MAIL_PASSWORD: qq_mail_token
+      QING_WECHAT_APPID: appId
+      QING_WECHAT_SECRET: secret
+      QING_REDIS_HOST: redis
+      QING_REDIS_PORT: 6379
+      QING_SERVICE_ANIME_HOST: localhost
+      AUTHING_APP_ID: AUTHING_APP_ID
+      AUTHING_APP_SECRET: AUTHING_APP_SECRET
+      AUTHING_APP_HOST: https://authing.cn/AUTHING_APP_HOST
+      AUTHING_APP_REDIRECT_URL: http://localhost:8080/auth/authingLogin
+      ACCESS_ID: ACCESS_ID
+      ACCESS_KEY: ACCESS_KEY
+    networks:
+      - qing-network
