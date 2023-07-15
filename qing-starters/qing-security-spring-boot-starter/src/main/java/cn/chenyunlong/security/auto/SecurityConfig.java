@@ -91,9 +91,7 @@ public class SecurityConfig {
                 //Swagger相关直接放行
                 .requestMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/api-docs", "/configuration/ui", "/configuration/security", "/auth/**", "/public/**")
                 .permitAll()
-                .requestMatchers(commonProperties
-                        .getUnAuthUrls()
-                        .toArray(new String[0]))
+                .requestMatchers(commonProperties.getUnAuthUrls().toArray(new String[0]))
                 .permitAll()
                 .requestMatchers("/admin/**)")
                 .hasRole("ADMIN")
@@ -102,9 +100,7 @@ public class SecurityConfig {
 
         httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
         // 资源创建
-        httpSecurity
-                .headers()
-                .cacheControl();
+        httpSecurity.headers().cacheControl();
 
         return httpSecurity.build();
     }
