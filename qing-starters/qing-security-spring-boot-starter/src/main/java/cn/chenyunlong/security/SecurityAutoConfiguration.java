@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Import;
  * @author gim
  */
 @Configuration
-@ConditionalOnProperty(prefix = "lancoo.security", name = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "qing.security", name = "enable", havingValue = "true")
 @ComponentScan(value = {"cn.chenyunlong.security.base", "cn.chenyunlong.security.base"})
 @Import(value = {SecurityConfig.class})
 public class SecurityAutoConfiguration {
