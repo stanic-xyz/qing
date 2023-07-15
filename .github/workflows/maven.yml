@@ -5,9 +5,9 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ devops-github ]
   pull_request:
-    branches: [ main ]
+    branches: [ devops-github ]
 
 jobs:
   build:
@@ -18,11 +18,11 @@ jobs:
       REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 17
+      - name: Set up JDK 17 fgj
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'adopt-hotspot'
           cache: maven
       - name: Build Docker Image and Push to Docker Hub
-        run: mvn clean install -pl !qing-ui -f pom.xml
+        run: mvn clean package -pl qing-bootstrap/qing-bootstrap-service -am -f pom.xml
