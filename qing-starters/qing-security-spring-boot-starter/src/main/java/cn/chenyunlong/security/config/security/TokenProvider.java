@@ -14,12 +14,12 @@
 package cn.chenyunlong.security.config.security;
 
 import cn.chenyunlong.common.utils.JwtUtil;
-import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
-import cn.chenyunlong.qing.infrastructure.config.properties.SecurityProperties;
-import cn.chenyunlong.qing.infrastructure.security.dto.UserInfoVO;
+import cn.chenyunlong.security.config.SecurityProperties;
+import cn.chenyunlong.security.config.security.dto.UserInfoVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,18 +37,14 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
+@AllArgsConstructor
 public class TokenProvider {
 
     private static final String AUTHORITIES_HEADER = "auth";
     private static final String FIELD_USER_ID = "userId";
     private static final String USER_INFO = "userInfo";
-    private final QingProperties qingProperties;
+    private final SecurityProperties securityProperties;
     private final ObjectMapper objectMapper;
-
-    public TokenProvider(QingProperties qingProperties, ObjectMapper objectMapper) {
-        this.qingProperties = qingProperties;
-        this.objectMapper = objectMapper;
-    }
 
 
     /**
@@ -60,7 +56,7 @@ public class TokenProvider {
     @SuppressWarnings("unused")
     public UserInfoVO getUserNameFromToken(String jwtToken) {
         try {
-            Claims claims = JwtUtil.parseJWT(jwtToken, qingProperties.getSecurity().getSecretKey());
+            Claims claims = JwtUtil.parseJWT(jwtToken, securityProperties.getSecretKey());
             return objectMapper.readValue(claims.getSubject(), UserInfoVO.class);
         } catch (SecurityException | MalformedJwtException e) {
             log.debug("Invalid JWT signature.");
@@ -94,15 +90,11 @@ public class TokenProvider {
 
         long now = System.currentTimeMillis();
         Date validity;
-        SecurityProperties security = qingProperties.getSecurity();
-        if (security == null) {
-            security = new SecurityProperties();
-        }
         //是否颁发一个长久的令牌
         if (rememberMe) {
-            validity = new Date(now + security.getTokenValidityInMilliseconds());
+            validity = new Date(now + securityProperties.getTokenValidityInMilliseconds());
         } else {
-            validity = new Date(now + security.getTokenValidityInMillisecondsForRememberMe());
+            validity = new Date(now + securityProperties.getTokenValidityInMillisecondsForRememberMe());
         }
 
         return Jwts
@@ -110,7 +102,7 @@ public class TokenProvider {
                 .setSubject((String) authentication.getPrincipal())
                 .claim(AUTHORITIES_HEADER, authorities)
                 .claim(USER_INFO, authentication.getPrincipal())
-                .signWith(SignatureAlgorithm.HS256, security.getSecretKey())
+                .signWith(SignatureAlgorithm.HS256, securityProperties.getSecretKey())
                 .setExpiration(validity)
                 .compact();
     }
@@ -125,12 +117,11 @@ public class TokenProvider {
     public String createJwtToken(UserInfoVO userinfoVo, boolean rememberMe) {
         long now = System.currentTimeMillis();
         Date validity;
-        SecurityProperties security = qingProperties.getSecurity();
         //是否颁发一个长久的令牌
         if (rememberMe) {
-            validity = new Date(now + security.getTokenValidityInMilliseconds());
+            validity = new Date(now + securityProperties.getTokenValidityInMilliseconds());
         } else {
-            validity = new Date(now + security.getTokenValidityInMillisecondsForRememberMe());
+            validity = new Date(now + securityProperties.getTokenValidityInMillisecondsForRememberMe());
         }
 
         try {
@@ -140,7 +131,7 @@ public class TokenProvider {
                     .claim(AUTHORITIES_HEADER, "authorities")
                     .claim(FIELD_USER_ID, "")
                     .claim("userAgent", "")
-                    .signWith(SignatureAlgorithm.HS512, security.getSecretKey())
+                    .signWith(SignatureAlgorithm.HS512, securityProperties.getSecretKey())
                     .setExpiration(validity)
                     .compact();
         } catch (JsonProcessingException e) {
@@ -155,8 +146,7 @@ public class TokenProvider {
      * @param jwt jwt认证信息
      */
     public Authentication getAuthentication(String jwt) {
-        Claims claims =
-                Jwts.parser().setSigningKey(qingProperties.getSecurity().getSecretKey()).parseClaimsJws(jwt).getBody();
+        Claims claims = Jwts.parser().setSigningKey(securityProperties.getSecretKey()).parseClaimsJws(jwt).getBody();
 
         Collection<? extends GrantedAuthority> authorities = Arrays
                 .stream(claims.get(AUTHORITIES_HEADER).toString().split(","))
@@ -173,7 +163,7 @@ public class TokenProvider {
      */
     public boolean validateToken(String jwtToken) {
         try {
-            Jwts.parser().setSigningKey(qingProperties.getSecurity().getSecretKey()).parseClaimsJws(jwtToken);
+            Jwts.parser().setSigningKey(securityProperties.getSecretKey()).parseClaimsJws(jwtToken);
             return true;
         } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | ExpiredJwtException |
                  IllegalArgumentException ignore) {

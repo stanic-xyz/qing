@@ -1,0 +1,4 @@
+camunda:
+  bpm:
+    webapp:
+      application-path: /camunda

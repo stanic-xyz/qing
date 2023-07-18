@@ -34,7 +34,6 @@
         <module>qing-config-git</module>
         <module>qing-service-cloud-gateway</module>
         <module>qing-domain</module>
-        <module>qing-admin-server</module>
         <module>qing-bus-server</module>
         <module>qing-codegen-plugin</module>
         <module>qing-starters</module>
