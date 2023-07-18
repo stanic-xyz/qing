@@ -25,9 +25,13 @@ services:
   consul:
     image: consul:latest
     container_name: consul-registration
-    hostname: consul
+    hostname: consul.chenyunlong.cn
+    expose:
+      - 8500
+      - 8300
     ports:
       - "8500:8500"
+      - "8300:8300"
     networks:
       - qing-network
     restart: unless-stopped
@@ -35,10 +39,10 @@ services:
     container_name: qing-web-end
     image: stanic-docker.pkg.coding.net/qing/qing/qing-bootstrap-service:0.0.2.25
     expose:
-      - 80
+      - 8080
     ports:
-      - "8080:80"
-    hostname: qing-backend-service
+      - "8080:8080"
+    hostname: bangumi.chenyunlong.cn
     depends_on:
       - redis
       - consul
@@ -55,9 +59,9 @@ services:
       QING_MYSQL_PORT: 3306
       QING_MYSQL_USERNAME: root
       QING_MYSQL_PASSWORD: password
-      QING_MAIL_HOST: smtp.qq.com
-      QING_MAIL_USERNAME: qq_mail
-      QING_MAIL_PASSWORD: qq_mail_token
+      QING_MAIL_HOST: smtp.exmail.qq.com
+      QING_MAIL_USERNAME: noreply@stanic.xyz
+      QING_MAIL_PASSWORD: yPYjemgoLziygt53
       QING_WECHAT_APPID: appId
       QING_WECHAT_SECRET: secret
       QING_REDIS_HOST: redis
@@ -69,5 +73,25 @@ services:
       AUTHING_APP_REDIRECT_URL: http://localhost:8080/auth/authingLogin
       ACCESS_ID: ACCESS_ID
       ACCESS_KEY: ACCESS_KEY
+    networks:
+      - qing-network
+  qing-admin-monitor:
+    container_name: qing-admin-monitor
+    image: stanic-docker.pkg.coding.net/qing/qing/qing-bootstrap-admin:0.0.1-SNAPSHOT
+    expose:
+      - 10086
+    ports:
+      - "10086:10086"
+    hostname: admin.chenyunlong.cn
+    depends_on:
+      - consul
+    links:
+      - consul
+      - qing-app
+    environment:
+      TZ: Asia/Shanghai
+      LANG: zh_CN.UTF-8
+      QING_CONSUL_HOST: consul
+      QING_CONSUL_PORT: 8500
     networks:
       - qing-network

@@ -1,0 +1,28 @@
+server:
+  port: 10086
+spring:
+  profiles:
+    active: prod
+  application:
+    name: qing-bootstrap-monitor
+  boot:
+    admin:
+      discovery:
+        ignored-services:
+          - consul
+management:
+  health:
+    redis:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+info:
+  version: '@project.version@'
+  name: '@project.artifactId@'
+  group: '@project.groupId@'
+  description: '@project.description@'

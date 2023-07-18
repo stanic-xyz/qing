@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.security.config.security.filter;
 
-import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,11 +35,11 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
     private static final String TOKEN = "Authorization";
     private final static String AUTHORIZATION_HEADER = "Authorization";
     private final static String AUTHORIZATION_QUERY = "token";
-    private final static String AUTHORIZATION_COOKIES = "zhangli_token";
+    private final static String AUTHORIZATION_COOKIES = "qing-x-token";
     private final Logger logger = LoggerFactory.getLogger(MyAuthenticationProcessingFilter.class);
 
 
-    public MyAuthenticationProcessingFilter(QingProperties qingProperties) {
+    public MyAuthenticationProcessingFilter() {
         super(new AntPathRequestMatcher("/login", "POST"));
     }
 

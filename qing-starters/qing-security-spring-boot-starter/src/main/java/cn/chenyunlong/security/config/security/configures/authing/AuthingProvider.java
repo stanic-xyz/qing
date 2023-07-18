@@ -16,7 +16,7 @@ package cn.chenyunlong.security.config.security.configures.authing;
 import cn.authing.sdk.java.client.AuthenticationClient;
 import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
 import cn.authing.sdk.java.model.AuthenticationClientOptions;
-import cn.chenyunlong.qing.infrastructure.config.properties.AuthingConfig;
+import cn.chenyunlong.security.config.security.AuthingConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

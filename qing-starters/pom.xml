@@ -34,9 +34,12 @@
         <module>qing-mybatis-spring-boot-starter</module>
         <module>qing-oss-spring-boot-starter</module>
         <module>qing-security-spring-boot-starter</module>
+        <module>qing-camunda-spring-boot-starter</module>
+        <module>qing-flowable-spring-boot-starter</module>
     </modules>
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
