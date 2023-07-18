@@ -67,7 +67,8 @@ public class OssAutoConfiguration {
         if (nullSize > 0) {
             throw new RuntimeException("oss 配置错误,请检查");
         }
-        AWSCredentials awsCredentials = new BasicAWSCredentials(ossProperties.getAccessKey(), ossProperties.getAccessSecret());
+        AWSCredentials awsCredentials =
+                new BasicAWSCredentials(ossProperties.getAccessKey(), ossProperties.getAccessSecret());
         AWSCredentialsProvider awsCredentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
         return AmazonS3Client
                 .builder()

@@ -64,5 +64,9 @@
             <artifactId>qing-commons</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>cn.authing</groupId>
+            <artifactId>authing-java-sdk</artifactId>
+        </dependency>
     </dependencies>
 </project>

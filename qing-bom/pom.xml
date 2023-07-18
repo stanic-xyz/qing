@@ -199,6 +199,11 @@
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${kinfe4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>2.2.7</version>
+            </dependency>
             <!-- 第三方库依赖 -->
             <dependency>
                 <groupId>com.qcloud</groupId>
@@ -218,7 +223,7 @@
             <dependency>
                 <groupId>cn.authing</groupId>
                 <artifactId>authing-java-sdk</artifactId>
-                <version>3.0.14</version>
+                <version>3.0.15</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

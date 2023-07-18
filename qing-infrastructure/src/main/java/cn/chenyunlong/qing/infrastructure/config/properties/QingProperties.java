@@ -15,8 +15,6 @@ package cn.chenyunlong.qing.infrastructure.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,30 +22,13 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@Configuration
 @ConfigurationProperties(prefix = "qing")
-@EnableConfigurationProperties(value = {FileProperties.class, SecurityProperties.class, OssProperties.class})
 public class QingProperties {
 
     /**
      * 是否开启aop日志
      */
     private boolean openAopLog = true;
-
-    /**
-     * 文件相关配置
-     */
-    private FileProperties file = new FileProperties();
-
-    /**
-     * 对象存储相关配置
-     */
-    private OssProperties oss = new OssProperties();
-
-    /**
-     * web安全配置
-     */
-    private SecurityProperties security = new SecurityProperties();
 
     /**
      * Swagger相关配置
