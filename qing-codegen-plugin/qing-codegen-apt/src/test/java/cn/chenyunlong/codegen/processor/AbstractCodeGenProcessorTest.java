@@ -43,12 +43,9 @@ public class AbstractCodeGenProcessorTest extends TestCase {
 
     public void testCompilesResourcesInJarFiles() throws IOException {
         File jarFile = new ClassPathResource("cn.chenyunlong.codegen.annotation.TestAnnotation").getFile();
-        JavaFileObject javaFileObject = JavaFileObjects.forResource(new URL("jar:" + jarFile.toURI() + "!/test" +
-                "/HelloWorld.java"));
-        assert_()
-                .about(javaSource())
-                .that(javaFileObject)
-                .compilesWithoutError();
+        JavaFileObject javaFileObject =
+                JavaFileObjects.forResource(new URL("jar:" + jarFile.toURI() + "!/test" + "/HelloWorld.java"));
+        assert_().about(javaSource()).that(javaFileObject).compilesWithoutError();
     }
 
     public void testGenerateSource() {
@@ -75,23 +72,19 @@ public class AbstractCodeGenProcessorTest extends TestCase {
         classpath.add(swaggerAnnotationJar);
 
         String fullyQualifiedName = "HelloWorld";
-        JavaFileObject javaFileObject = JavaFileObjects.forSourceString(
-                fullyQualifiedName,
-                """
-                        import io.swagger.v3.oas.annotations.media.Schema;
-                        import cn.chenyunlong.codegen.annotation.GenResponse;
-                                                        
-                        final class HelloWorld {
-                                       
-                            @Schema
-                            @GenResponse
-                            private String username;
-                        }
-                        """);
-        Compilation compilation = javac()
-                .withProcessors(qingCodeGenProcessorRegistry)
-                .withClasspath(classpath)
-                .compile(javaFileObject);
+        JavaFileObject javaFileObject = JavaFileObjects.forSourceString(fullyQualifiedName, """
+                import io.swagger.v3.oas.annotations.media.Schema;
+                import cn.chenyunlong.codegen.annotation.GenResponse;
+                                                
+                final class HelloWorld {
+                               
+                    @Schema
+                    @GenResponse
+                    private String username;
+                }
+                """);
+        Compilation compilation =
+                javac().withProcessors(qingCodeGenProcessorRegistry).withClasspath(classpath).compile(javaFileObject);
         assertThat(compilation).succeededWithoutWarnings();
     }
 

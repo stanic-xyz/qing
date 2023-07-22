@@ -48,8 +48,7 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
 
         String className = SERVICE_PREFIX + typeElement.getSimpleName() + SERVICE_SUFFIX;
         TypeSpec.Builder builder;
-        builder = TypeSpec.interfaceBuilder(className)
-                .addModifiers(Modifier.PUBLIC);
+        builder = TypeSpec.interfaceBuilder(className).addModifiers(Modifier.PUBLIC);
         createMethod(typeElement, nameContext).ifPresent(builder::addMethod);
         updateMethod(typeElement, nameContext).ifPresent(builder::addMethod);
         validMethod(typeElement).ifPresent(builder::addMethod);
@@ -71,29 +70,26 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
         return "service";
     }
 
-    private Optional<MethodSpec> createMethod(TypeElement typeElement,
-                                              NameContext nameContext) {
+    private Optional<MethodSpec> createMethod(TypeElement typeElement, NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getCreatorPackageName());
         if (!containsNull) {
-            return Optional.of(MethodSpec.methodBuilder("create" + typeElement.getSimpleName())
-                    .addParameter(
-                            ClassName.get(nameContext.getCreatorPackageName(), nameContext.getCreatorClassName()),
-                            "creator")
+            return Optional.of(MethodSpec
+                    .methodBuilder("create" + typeElement.getSimpleName())
+                    .addParameter(ClassName.get(nameContext.getCreatorPackageName(), nameContext.getCreatorClassName()), "creator")
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("create")
-                    .returns(Long.class).build());
+                    .returns(Long.class)
+                    .build());
         }
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> updateMethod(TypeElement typeElement,
-                                              NameContext nameContext) {
+    private Optional<MethodSpec> updateMethod(TypeElement typeElement, NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getUpdaterPackageName());
         if (!containsNull) {
-            return Optional.of(MethodSpec.methodBuilder("update" + typeElement.getSimpleName())
-                    .addParameter(
-                            ClassName.get(nameContext.getUpdaterPackageName(), nameContext.getUpdaterClassName()),
-                            "updater")
+            return Optional.of(MethodSpec
+                    .methodBuilder("update" + typeElement.getSimpleName())
+                    .addParameter(ClassName.get(nameContext.getUpdaterPackageName(), nameContext.getUpdaterClassName()), "updater")
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("update")
                     .build());
@@ -102,7 +98,8 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
     }
 
     private Optional<MethodSpec> validMethod(TypeElement typeElement) {
-        return Optional.of(MethodSpec.methodBuilder("valid" + typeElement.getSimpleName())
+        return Optional.of(MethodSpec
+                .methodBuilder("valid" + typeElement.getSimpleName())
                 .addParameter(Long.class, "id")
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .addJavadoc("valid")
@@ -110,7 +107,8 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
     }
 
     private Optional<MethodSpec> invalidMethod(TypeElement typeElement) {
-        return Optional.of(MethodSpec.methodBuilder("invalid" + typeElement.getSimpleName())
+        return Optional.of(MethodSpec
+                .methodBuilder("invalid" + typeElement.getSimpleName())
                 .addParameter(Long.class, "id")
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .addJavadoc("invalid")
@@ -120,7 +118,8 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
     private Optional<MethodSpec> findByIdMethod(NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getVoPackageName());
         if (!containsNull) {
-            return Optional.of(MethodSpec.methodBuilder("findById")
+            return Optional.of(MethodSpec
+                    .methodBuilder("findById")
                     .addParameter(Long.class, "id")
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("findById")
@@ -131,17 +130,15 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
     }
 
     private Optional<MethodSpec> findByPageMethod(NameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getQueryPackageName(),
-                nameContext.getVoPackageName());
+        boolean containsNull =
+                StringUtils.containsNull(nameContext.getQueryPackageName(), nameContext.getVoPackageName());
         if (!containsNull) {
-            return Optional.of(MethodSpec.methodBuilder("findByPage")
-                    .addParameter(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class),
-                                    ClassName.get(nameContext.getQueryPackageName(), nameContext.getQueryClassName())),
-                            "query")
+            return Optional.of(MethodSpec
+                    .methodBuilder("findByPage")
+                    .addParameter(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class), ClassName.get(nameContext.getQueryPackageName(), nameContext.getQueryClassName())), "query")
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                     .addJavadoc("findByPage")
-                    .returns(ParameterizedTypeName.get(ClassName.get(Page.class),
-                            ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName())))
+                    .returns(ParameterizedTypeName.get(ClassName.get(Page.class), ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName())))
                     .build());
         }
         return Optional.empty();

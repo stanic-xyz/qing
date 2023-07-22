@@ -45,8 +45,8 @@ public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
-        Set<VariableElement> fields = findFields(typeElement,
-                element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
+        Set<VariableElement> fields =
+                findFields(typeElement, element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         TypeSpec.Builder builder = TypeSpec
                 .classBuilder(nameContext.getUpdateClassName())
                 .addModifiers(Modifier.PUBLIC)

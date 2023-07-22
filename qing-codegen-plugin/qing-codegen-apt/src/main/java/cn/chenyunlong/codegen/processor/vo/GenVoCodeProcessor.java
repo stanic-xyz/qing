@@ -47,33 +47,30 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
-        Set<VariableElement> fields = findFields(typeElement,
-                variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
+        Set<VariableElement> fields =
+                findFields(typeElement, variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        Builder builder = TypeSpec.classBuilder(sourceClassName)
+        Builder builder = TypeSpec
+                .classBuilder(sourceClassName)
                 .superclass(AbstractBaseJpaVO.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
         if (useLombok) {
             builder.addAnnotation(Data.class);
             builder.addAnnotation(///////////
-                    AnnotationSpec.builder(EqualsAndHashCode.class)
-                            .addMember("callSuper", "$L", true).build());
-            builder.addAnnotation(
-                    AnnotationSpec.builder(NoArgsConstructor.class)
-                            .addMember("access", "$T.PROTECTED", AccessLevel.class).build());
+                    AnnotationSpec.builder(EqualsAndHashCode.class).addMember("callSuper", "$L", true).build());
+            builder.addAnnotation(AnnotationSpec
+                    .builder(NoArgsConstructor.class)
+                    .addMember("access", "$T.PROTECTED", AccessLevel.class)
+                    .build());
         }
         addSetterAndGetterMethod(builder, fields, useLombok);
-        MethodSpec.Builder constructorSpecBuilder = MethodSpec.constructorBuilder()
+        MethodSpec.Builder constructorSpecBuilder = MethodSpec
+                .constructorBuilder()
                 .addParameter(TypeName.get(typeElement.asType()), "source")
                 .addModifiers(Modifier.PUBLIC);
         constructorSpecBuilder.addStatement("super()");
-        fields.forEach(variableElement -> constructorSpecBuilder
-                .addStatement(
-                        "this.set$L(source.get$L())",
-                        getFieldDefaultName(variableElement),
-                        getFieldDefaultName(variableElement)
-                ));
+        fields.forEach(variableElement -> constructorSpecBuilder.addStatement("this.set$L(source.get$L())", getFieldDefaultName(variableElement), getFieldDefaultName(variableElement)));
         builder.addMethod(constructorSpecBuilder.build());
         genJavaSourceFile(typeElement, builder);
     }

@@ -1,0 +1,16 @@
+server:
+  port: 7001
+app:
+  agentId: 2663154420
+  appSecret: F87KyKwRr7ttl3LzEUik_g60Gs3M-7LUXQCmnyczrc5wR6Oj6UkRi6FL8GLJPEQU
+  appKey: dingw62wlk1nqh9gosdt
+  # you can get appSecret and appKey from https://open.dingtalk.com/document/orgapp-server/obtain-the-access_token-of-an-internal-app
+robot:
+  code: dingw62wlk1nqh9gosdt
+leave:
+  code: PROC-80ADFE6C-0329-4E7E-B11E-0BE8024D1ADF
+coolApp:
+  code: COOLAPP-1-102442E712AE212B1066000L
+card:
+  messageCardTemplateId001: dde980a2-fb8a-446e-9b72-70c45317b076
+  topCardTemplateId001: e03f3551-f3b4-4a0d-8183-981ee70b1b41

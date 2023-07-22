@@ -43,9 +43,10 @@ public class GenResponseProcessor extends AbstractCodeGenProcessor {
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
-        Set<VariableElement> fields = findFields(typeElement,
-                variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
-        TypeSpec.Builder builder = TypeSpec.classBuilder(nameContext.getResponseClassName())
+        Set<VariableElement> fields =
+                findFields(typeElement, variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
+        TypeSpec.Builder builder = TypeSpec
+                .classBuilder(nameContext.getResponseClassName())
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(AbstractJpaResponse.class)
                 .addAnnotation(Schema.class);

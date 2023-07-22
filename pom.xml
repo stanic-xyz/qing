@@ -25,9 +25,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>qing-bom</module>
         <module>qing-archetypes</module>
         <module>qing-app</module>
-        <module>qing-bom</module>
         <module>qing-bootstrap</module>
         <module>qing-feign</module>
         <module>qing-commons</module>
@@ -37,6 +37,7 @@
         <module>qing-bus-server</module>
         <module>qing-codegen-plugin</module>
         <module>qing-starters</module>
+        <module>qing-starters-samples</module>
         <module>qing-infrastructure</module>
         <module>qing-ui</module>
     </modules>

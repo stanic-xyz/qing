@@ -56,12 +56,10 @@ public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
 
         Set<VariableElement> variableElements =
-                findFields(typeElement,
-                        element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
+                findFields(typeElement, element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        TypeSpec.Builder builder = TypeSpec.classBuilder(sourceClassName)
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class);
+        TypeSpec.Builder builder =
+                TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC).addAnnotation(Schema.class);
 
         if (useLombok) {
             builder.addAnnotation(Data.class);
@@ -70,14 +68,13 @@ public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
         addSetterAndGetterMethod(builder, variableElements, useLombok);
         CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
         for (VariableElement variableElement : variableElements) {
-            codeBlockBuilder.addStatement("$T.ofNullable($L()).ifPresent(param::$L)",
-                    Optional.class,
-                    StringUtils.getterName(variableElement.getSimpleName().toString()),
-                    StringUtils.setterName(variableElement.getSimpleName().toString()));
+            codeBlockBuilder.addStatement("$T.ofNullable($L()).ifPresent(param::$L)", Optional.class, StringUtils.getterName(variableElement
+                    .getSimpleName()
+                    .toString()), StringUtils.setterName(variableElement.getSimpleName().toString()));
         }
         MethodSpec.Builder methodBuilder;
-        methodBuilder = MethodSpec.methodBuilder(
-                        "update" + typeElement.getSimpleName())
+        methodBuilder = MethodSpec
+                .methodBuilder("update" + typeElement.getSimpleName())
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(TypeName.get(typeElement.asType()), "param")
                 .addCode(codeBlockBuilder.build())

@@ -225,6 +225,11 @@
                 <artifactId>authing-java-sdk</artifactId>
                 <version>3.0.15</version>
             </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-camunda-spring-boot-starter</artifactId>
+                <version>0.0.2-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
