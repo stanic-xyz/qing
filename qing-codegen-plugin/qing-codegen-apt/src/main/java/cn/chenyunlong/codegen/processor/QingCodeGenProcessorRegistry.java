@@ -52,22 +52,24 @@ public class QingCodeGenProcessorRegistry extends AbstractProcessor {
             elements.forEach(element -> typeElements.addAll(environment.getElementsAnnotatedWith(element)));
             // 对每个对象进行生成操作
             // 加载需要处理的类的所有注解
-            Collections.unmodifiableSet(ElementFilter.typesIn(typeElements))
-                    .forEach(element -> {
-                        List<? extends AnnotationMirror> mirrors =
-                                processingEnv.getElementUtils().getAllAnnotationMirrors(element);
-                        Set<String> annotationNames =
-                                mirrors.stream().map(annotationMirror -> annotationMirror.getAnnotationType().toString()).collect(Collectors.toSet());
-                        Set<CodeGenProcessor> codeGenProcessors = CodeGenProcessorContext.find(annotationNames);
-                        for (CodeGenProcessor codeGenProcessor : codeGenProcessors) {
-                            if (codeGenProcessor.support(element)) {
-                                codeGenProcessor.generateClass(element, environment, true);
-                            } else {
-                                ProcessingEnvironmentHolder.printMessage(("[codegen-plugin]》》》》》初始化代码生成器【%s" +
-                                        "】逻辑未执行》》》》》").formatted(codeGenProcessor.getSupportedAnnotation().getName()));
-                            }
-                        }
-                    });
+            Collections.unmodifiableSet(ElementFilter.typesIn(typeElements)).forEach(element -> {
+                List<? extends AnnotationMirror> mirrors =
+                        processingEnv.getElementUtils().getAllAnnotationMirrors(element);
+                Set<String> annotationNames = mirrors
+                        .stream()
+                        .map(annotationMirror -> annotationMirror.getAnnotationType().toString())
+                        .collect(Collectors.toSet());
+                Set<CodeGenProcessor> codeGenProcessors = CodeGenProcessorContext.find(annotationNames);
+                for (CodeGenProcessor codeGenProcessor : codeGenProcessors) {
+                    if (codeGenProcessor.support(element)) {
+                        codeGenProcessor.generateClass(element, environment, true);
+                    } else {
+                        ProcessingEnvironmentHolder.printMessage(("[codegen-plugin]》》》》》初始化代码生成器【%s" + "】逻辑未执行》》》》》").formatted(codeGenProcessor
+                                .getSupportedAnnotation()
+                                .getName()));
+                    }
+                }
+            });
         } catch (Exception exception) {
             exception.printStackTrace();
             processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, "Qing：代码生成器异常！");

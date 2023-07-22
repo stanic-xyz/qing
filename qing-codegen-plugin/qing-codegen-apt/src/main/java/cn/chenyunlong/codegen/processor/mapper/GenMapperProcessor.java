@@ -45,8 +45,7 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
 
         String className = typeElement.getSimpleName() + SUFFIX;
         String mapperPackageName = nameContext.getMapperPackageName();
-        TypeSpec.Builder builder = TypeSpec.interfaceBuilder(className)
-                .addModifiers(Modifier.PUBLIC);
+        TypeSpec.Builder builder = TypeSpec.interfaceBuilder(className).addModifiers(Modifier.PUBLIC);
         FieldSpec instance;
         ClassName type = ClassName.get(mapperPackageName, className);
         instance = FieldSpec
@@ -91,9 +90,7 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
                     .returns(returnType)
                     .addParameter(ClassName.get(packageName, nameContext.getCreatorClassName()), "dto")
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
-                    .addCode(
-                            CodeBlock.of("return $T.copyProperties(dto, $T.class);",
-                                    BeanUtil.class, returnType))
+                    .addCode(CodeBlock.of("return $T.copyProperties(dto, $T.class);", BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();
@@ -112,9 +109,7 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
                     .returns(returnType)
                     .addParameter(ClassName.get(updatePackageName, updateClassName), "request")
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
-                    .addCode(
-                            CodeBlock.of("return $T.copyProperties(request, $T.class);",
-                                    BeanUtil.class, returnType))
+                    .addCode(CodeBlock.of("return $T.copyProperties(request, $T.class);", BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();
@@ -132,9 +127,7 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
                     .returns(returnType)
                     .addParameter(ClassName.get(createPackageName, nameContext.getCreateClassName()), "request")
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
-                    .addCode(
-                            CodeBlock.of("return $T.copyProperties(request, $T.class);",
-                                    BeanUtil.class, returnType))
+                    .addCode(CodeBlock.of("return $T.copyProperties(request, $T.class);", BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();
@@ -152,9 +145,7 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
                     .returns(returnType)
                     .addParameter(ClassName.get(requestPackageName, queryRequestClassName), "request")
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
-                    .addCode(
-                            CodeBlock.of("return $T.copyProperties(request, $T.class);",
-                                    BeanUtil.class, returnType))
+                    .addCode(CodeBlock.of("return $T.copyProperties(request, $T.class);", BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();
@@ -172,9 +163,7 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
                     .returns(returnType)
                     .addParameter(ClassName.get(voPackageName, nameContext.getVoClassName()), "vo")
                     .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
-                    .addCode(
-                            CodeBlock.of("return $T.copyProperties(vo, $T.class);",
-                                    BeanUtil.class, returnType))
+                    .addCode(CodeBlock.of("return $T.copyProperties(vo, $T.class);", BeanUtil.class, returnType))
                     .build());
         }
         return Optional.empty();

@@ -53,6 +53,10 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
 
     public static final String IMPL_SUFFIX = "ServiceImpl";
 
+    private static ClassName getBooleanBuilder() {
+        return ClassName.get("com.querydsl.core", "BooleanBuilder");
+    }
+
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
@@ -196,10 +200,6 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                     .build());
         }
         return Optional.empty();
-    }
-
-    private static ClassName getBooleanBuilder() {
-        return ClassName.get("com.querydsl.core", "BooleanBuilder");
     }
 
     private Optional<MethodSpec> findByPageMethod(TypeElement typeElement, NameContext nameContext, String repositoryFieldName) {

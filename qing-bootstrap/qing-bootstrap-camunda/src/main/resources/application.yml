@@ -1,0 +1,6 @@
+server:
+  port: 8595
+camunda:
+  bpm:
+    webapp:
+      application-path: /camunda

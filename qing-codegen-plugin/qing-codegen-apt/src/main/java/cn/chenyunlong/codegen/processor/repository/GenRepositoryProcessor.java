@@ -40,9 +40,9 @@ public class GenRepositoryProcessor extends AbstractCodeGenProcessor {
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         String className = typeElement.getSimpleName() + REPOSITORY_SUFFIX;
-        TypeSpec.Builder builder = TypeSpec.interfaceBuilder(className)
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class),
-                        ClassName.get(typeElement), ClassName.get(Long.class)))
+        TypeSpec.Builder builder = TypeSpec
+                .interfaceBuilder(className)
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class), ClassName.get(typeElement), ClassName.get(Long.class)))
                 .addModifiers(Modifier.PUBLIC);
         genJavaSourceFile(typeElement, builder);
     }

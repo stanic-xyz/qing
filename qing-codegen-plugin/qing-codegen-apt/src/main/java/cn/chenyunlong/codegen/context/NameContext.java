@@ -67,56 +67,112 @@ public class NameContext {
         return getFinalPackage(voPackageName);
     }
 
+    public void setVoPackageName(String voPackageName) {
+        this.voPackageName = voPackageName;
+    }
+
     public String getQueryPackageName() {
         return getFinalPackage(queryPackageName);
+    }
+
+    public void setQueryPackageName(String queryPackageName) {
+        this.queryPackageName = queryPackageName;
     }
 
     public String getUpdaterPackageName() {
         return getFinalPackage(updaterPackageName);
     }
 
+    public void setUpdaterPackageName(String updaterPackageName) {
+        this.updaterPackageName = updaterPackageName;
+    }
+
     public String getCreatorPackageName() {
         return getFinalPackage(creatorPackageName);
+    }
+
+    public void setCreatorPackageName(String creatorPackageName) {
+        this.creatorPackageName = creatorPackageName;
     }
 
     public String getMapperPackageName() {
         return getFinalPackage(mapperPackageName);
     }
 
+    public void setMapperPackageName(String mapperPackageName) {
+        this.mapperPackageName = mapperPackageName;
+    }
+
     public String getRepositoryPackageName() {
         return getFinalPackage(repositoryPackageName);
+    }
+
+    public void setRepositoryPackageName(String repositoryPackageName) {
+        this.repositoryPackageName = repositoryPackageName;
     }
 
     public String getServicePackageName() {
         return getFinalPackage(servicePackageName);
     }
 
+    public void setServicePackageName(String servicePackageName) {
+        this.servicePackageName = servicePackageName;
+    }
+
     public String getImplPackageName() {
         return getFinalPackage(implPackageName);
+    }
+
+    public void setImplPackageName(String implPackageName) {
+        this.implPackageName = implPackageName;
     }
 
     public String getControllerPackageName() {
         return getFinalPackage(controllerPackageName);
     }
 
+    public void setControllerPackageName(String controllerPackageName) {
+        this.controllerPackageName = controllerPackageName;
+    }
+
     public String getCreatePackageName() {
         return getFinalPackage(createPackageName);
+    }
+
+    public void setCreatePackageName(String createPackageName) {
+        this.createPackageName = createPackageName;
     }
 
     public String getUpdatePackageName() {
         return getFinalPackage(updatePackageName);
     }
 
+    public void setUpdatePackageName(String updatePackageName) {
+        this.updatePackageName = updatePackageName;
+    }
+
     public String getQueryRequestPackageName() {
         return getFinalPackage(queryRequestPackageName);
+    }
+
+    public void setQueryRequestPackageName(String queryRequestPackageName) {
+        this.queryRequestPackageName = queryRequestPackageName;
     }
 
     public String getResponsePackageName() {
         return getFinalPackage(responsePackageName);
     }
 
+    public void setResponsePackageName(String responsePackageName) {
+        this.responsePackageName = responsePackageName;
+    }
+
     public String getFeignPackageName() {
         return getFinalPackage(feignPackageName);
+    }
+
+    public void setFeignPackageName(String feignPackageName) {
+        this.feignPackageName = feignPackageName;
     }
 
     private String getFinalPackage(String relativePackage) {
@@ -139,24 +195,12 @@ public class NameContext {
         this.voClassName = voClassName;
     }
 
-    public void setVoPackageName(String voPackageName) {
-        this.voPackageName = voPackageName;
-    }
-
     public String getQueryClassName() {
         return queryClassName;
     }
 
     public void setQueryClassName(String queryClassName) {
         this.queryClassName = queryClassName;
-    }
-
-    public void setUpdaterPackageName(String updaterPackageName) {
-        this.updaterPackageName = updaterPackageName;
-    }
-
-    public void setQueryPackageName(String queryPackageName) {
-        this.queryPackageName = queryPackageName;
     }
 
     public String getImplClassName() {
@@ -183,20 +227,12 @@ public class NameContext {
         this.controllerClassName = controllerClassName;
     }
 
-    public void setCreatorPackageName(String creatorPackageName) {
-        this.creatorPackageName = creatorPackageName;
-    }
-
     public String getCreatorClassName() {
         return creatorClassName;
     }
 
     public void setCreatorClassName(String creatorClassName) {
         this.creatorClassName = creatorClassName;
-    }
-
-    public void setMapperPackageName(String mapperPackageName) {
-        this.mapperPackageName = mapperPackageName;
     }
 
     public String getMapperClassName() {
@@ -207,20 +243,12 @@ public class NameContext {
         this.mapperClassName = mapperClassName;
     }
 
-    public void setRepositoryPackageName(String repositoryPackageName) {
-        this.repositoryPackageName = repositoryPackageName;
-    }
-
     public String getRepositoryClassName() {
         return repositoryClassName;
     }
 
     public void setRepositoryClassName(String repositoryClassName) {
         this.repositoryClassName = repositoryClassName;
-    }
-
-    public void setServicePackageName(String servicePackageName) {
-        this.servicePackageName = servicePackageName;
     }
 
     public String getServiceClassName() {
@@ -231,28 +259,12 @@ public class NameContext {
         this.serviceClassName = serviceClassName;
     }
 
-    public void setImplPackageName(String implPackageName) {
-        this.implPackageName = implPackageName;
-    }
-
-    public void setControllerPackageName(String controllerPackageName) {
-        this.controllerPackageName = controllerPackageName;
-    }
-
-    public void setCreatePackageName(String createPackageName) {
-        this.createPackageName = createPackageName;
-    }
-
     public String getCreateClassName() {
         return createClassName;
     }
 
     public void setCreateClassName(String createClassName) {
         this.createClassName = createClassName;
-    }
-
-    public void setUpdatePackageName(String updatePackageName) {
-        this.updatePackageName = updatePackageName;
     }
 
     public String getUpdateClassName() {
@@ -263,10 +275,6 @@ public class NameContext {
         this.updateClassName = updateClassName;
     }
 
-    public void setQueryRequestPackageName(String queryRequestPackageName) {
-        this.queryRequestPackageName = queryRequestPackageName;
-    }
-
     public String getQueryRequestClassName() {
         return queryRequestClassName;
     }
@@ -275,20 +283,12 @@ public class NameContext {
         this.queryRequestClassName = queryRequestClassName;
     }
 
-    public void setResponsePackageName(String responsePackageName) {
-        this.responsePackageName = responsePackageName;
-    }
-
     public String getResponseClassName() {
         return responseClassName;
     }
 
     public void setResponseClassName(String responseClassName) {
         this.responseClassName = responseClassName;
-    }
-
-    public void setFeignPackageName(String feignPackageName) {
-        this.feignPackageName = feignPackageName;
     }
 
     public String getFeignClassName() {

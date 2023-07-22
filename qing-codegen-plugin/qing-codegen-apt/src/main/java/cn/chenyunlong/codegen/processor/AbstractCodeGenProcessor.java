@@ -86,9 +86,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     public boolean support(TypeElement typeElement) {
         boolean support = false;
         // 1、判断当前插件是否支持该对象的处理
-        SupportedGenTypes supportedGenTypes = this
-                .getClass()
-                .getAnnotation(SupportedGenTypes.class);
+        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
         // 判断插件支持注解
         if (supportedGenTypes != null) {
             // 获取当前插件主持的注解类型
@@ -135,11 +133,8 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         if (genBase != null) {
             basePackage = genBase.basePackage();
         } else {
-            basePackage = processingEnvironment
-                    .getElementUtils()
-                    .getPackageOf(typeElement)
-                    .getQualifiedName()
-                    .toString();
+            basePackage =
+                    processingEnvironment.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
         }
         return basePackage;
     }
@@ -168,9 +163,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      */
     @Override
     public Class<? extends Annotation> getSupportedAnnotation() {
-        SupportedGenTypes supportedGenTypes = this
-                .getClass()
-                .getAnnotation(SupportedGenTypes.class);
+        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
         if (supportedGenTypes != null) {
             return supportedGenTypes.types();
         }
@@ -186,9 +179,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     public boolean overwrite() {
         boolean override = false;
         if (AnnotationUtil.hasAnnotation(this.getClass(), SupportedGenTypes.class)) {
-            SupportedGenTypes supportedGenTypes = this
-                    .getClass()
-                    .getAnnotation(SupportedGenTypes.class);
+            SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
             override = supportedGenTypes.override();
             Class<? extends Annotation> types = supportedGenTypes.types();
         }
@@ -224,20 +215,16 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         Name domainName = typeElement.getSimpleName();
 
         ProcessingEnvironment processingEnvironment = ProcessingEnvironmentHolder.getEnvironment();
-        PackageElement packageElement = processingEnvironment
-                .getElementUtils()
-                .getPackageOf(typeElement);
+        PackageElement packageElement = processingEnvironment.getElementUtils().getPackageOf(typeElement);
 
         Name qualifiedName = packageElement.getQualifiedName();
         String packageName = qualifiedName.toString();
         context.setBasePackage(packageName);
-        Optional
-                .ofNullable(typeElement.getAnnotation(GenBase.class))
-                .ifPresent(anno -> {
-                    if (StringUtils.isNotBlank(anno.basePackage())) {
-                        context.setBasePackage(anno.basePackage());
-                    }
-                });
+        Optional.ofNullable(typeElement.getAnnotation(GenBase.class)).ifPresent(anno -> {
+            if (StringUtils.isNotBlank(anno.basePackage())) {
+                context.setBasePackage(anno.basePackage());
+            }
+        });
 
 //        System.out.println("文件生成根路径： " + context.getBasePackage());
 
@@ -362,18 +349,13 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      */
     private void getDescriptionInfoBuilder(TypeSpec.Builder builder, VariableElement element, TypeName typeName, boolean useLombok) {
         String fieldDescription = getFieldDesc(element);
-        AnnotationSpec.Builder schemaAnnotationBuilder = AnnotationSpec
-                .builder(Schema.class)
-                .addMember("title", "$S", element
-                        .getSimpleName()
-                        .toString());
+        AnnotationSpec.Builder schemaAnnotationBuilder =
+                AnnotationSpec.builder(Schema.class).addMember("title", "$S", element.getSimpleName().toString());
         if (StringUtils.isNotBlank(fieldDescription)) {
             schemaAnnotationBuilder.addMember("description", "$S", fieldDescription);
         }
         FieldSpec.Builder fieldSpec = FieldSpec
-                .builder(typeName, element
-                        .getSimpleName()
-                        .toString(), Modifier.PRIVATE)
+                .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
                 .addAnnotation(schemaAnnotationBuilder.build());
         builder.addField(fieldSpec.build());
         if (!useLombok) {
@@ -383,19 +365,13 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
                     .methodBuilder("get" + fieldName)
                     .returns(typeName)
                     .addModifiers(Modifier.PUBLIC)
-                    .addStatement("return $L", element
-                            .getSimpleName()
-                            .toString());
+                    .addStatement("return $L", element.getSimpleName().toString());
             MethodSpec.Builder setMethod = MethodSpec
                     .methodBuilder("set" + fieldName)
                     .returns(void.class)
                     .addModifiers(Modifier.PUBLIC)
-                    .addParameter(typeName, element
-                            .getSimpleName()
-                            .toString())
-                    .addStatement("this.$L = $L", element
-                            .getSimpleName()
-                            .toString(), element
+                    .addParameter(typeName, element.getSimpleName().toString())
+                    .addStatement("this.$L = $L", element.getSimpleName().toString(), element
                             .getSimpleName()
                             .toString());
             builder.addMethod(getMethod.build());
@@ -416,12 +392,8 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
             TypeName typeName;
             if (Objects.nonNull(variableElement.getAnnotation(TypeConverter.class))) {
                 //这里处理下泛型的情况，比如List<String> 这种，TypeConverter FullName 用逗号分隔"java.lang.List
-                String fullName = variableElement
-                        .getAnnotation(TypeConverter.class)
-                        .toTypeFullName();
-                Iterable<String> classes = Splitter
-                        .on(",")
-                        .split(fullName);
+                String fullName = variableElement.getAnnotation(TypeConverter.class).toTypeFullName();
+                Iterable<String> classes = Splitter.on(",").split(fullName);
                 int size = Iterables.size(classes);
                 if (size > 1) {
                     //泛型生成像这样
@@ -429,9 +401,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
                     typeName =
                             ParameterizedTypeName.get(ClassName.bestGuess(Iterables.get(classes, 0)), ClassName.bestGuess(Iterables.get(classes, 1)));
                 } else {
-                    typeName = ClassName.bestGuess(variableElement
-                            .getAnnotation(TypeConverter.class)
-                            .toTypeFullName());
+                    typeName = ClassName.bestGuess(variableElement.getAnnotation(TypeConverter.class).toTypeFullName());
                 }
             } else {
                 typeName = TypeName.get(variableElement.asType());
@@ -448,9 +418,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      * @param useLombok 使用启用lombok
      */
     protected void addIdField(TypeSpec.Builder builder, boolean useLombok) {
-        builder.addField(FieldSpec
-                .builder(ClassName.get(Long.class), "id", Modifier.PRIVATE)
-                .build());
+        builder.addField(FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
         if (!useLombok) {
             // 如果没有使用lombok，需要添加getter setter方法
             MethodSpec.Builder getMethod = MethodSpec
@@ -479,9 +447,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         return Optional
                 .ofNullable(element.getAnnotation(FieldDesc.class))
                 .map(FieldDesc::name)
-                .orElse(element
-                        .getSimpleName()
-                        .toString());
+                .orElse(element.getSimpleName().toString());
     }
 
     /**
@@ -491,9 +457,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      * @return {@link String}
      */
     protected String getFieldDefaultName(VariableElement variableElement) {
-        return StringUtils.bigCamel(variableElement
-                .getSimpleName()
-                .toString());
+        return StringUtils.bigCamel(variableElement.getSimpleName().toString());
     }
 
 
@@ -532,10 +496,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
                 .classBuilder(sourceName)
                 .superclass(ClassName.get(packageName, superClassName))
                 .addModifiers(Modifier.PUBLIC)
-                .addMethod(MethodSpec
-                        .constructorBuilder()
-                        .addModifiers(Modifier.PUBLIC)
-                        .build())
+                .addMethod(MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC).build())
                 .addMethod(constructorSpecBuilder.build())
                 .addAnnotation(Schema.class)
                 .addAnnotation(Data.class);
@@ -557,9 +518,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
                     .build();
             javaFile.writeTo(processingEnvironment.getFiler());
         } catch (IOException exception) {
-            processingEnvironment
-                    .getMessager()
-                    .printMessage(Kind.ERROR, exception.getMessage());
+            processingEnvironment.getMessager().printMessage(Kind.ERROR, exception.getMessage());
         }
     }
 
@@ -583,24 +542,18 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         String packagePath = packageName.replace(".", File.separator) + File.separator + typeSpec.name + ".java";
         try {
             Path path = Paths.get(genPath);
-            File file = new File(path
-                    .toFile()
-                    .getAbsolutePath());
+            File file = new File(path.toFile().getAbsolutePath());
             if (!file.exists()) {
                 return;
             }
-            String sourceFileName = path
-                    .toFile()
-                    .getAbsolutePath() + File.separator + packagePath;
+            String sourceFileName = path.toFile().getAbsolutePath() + File.separator + packagePath;
             File sourceFile = new File(sourceFileName);
             if (!sourceFile.exists() || override) {
                 Files.deleteIfExists(sourceFile.toPath());
                 javaFile.writeTo(file);
             }
         } catch (IOException exception) {
-            processingEnvironment
-                    .getMessager()
-                    .printMessage(Kind.ERROR, exception.getMessage());
+            processingEnvironment.getMessager().printMessage(Kind.ERROR, exception.getMessage());
         }
     }
 }

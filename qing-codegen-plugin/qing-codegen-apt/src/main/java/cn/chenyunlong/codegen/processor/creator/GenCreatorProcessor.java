@@ -61,15 +61,12 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
         // lombok - mapstruct 集成
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        Builder builder = TypeSpec.classBuilder(sourceClassName)
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class);
+        Builder builder =
+                TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC).addAnnotation(Schema.class);
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethod(builder,
-                findFields(typeElement, variableElement
-                        -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)), useLombok);
+        addSetterAndGetterMethod(builder, findFields(typeElement, variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)), useLombok);
         genJavaSourceFile(typeElement, builder);
     }
 
@@ -91,7 +88,8 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
      * @return boolean
      */
     private boolean dtoIgnore(Element element) {
-        return dtoIgnoreFieldTypes.contains(TypeName.get(element.asType())) || element.getModifiers()
+        return dtoIgnoreFieldTypes.contains(TypeName.get(element.asType())) || element
+                .getModifiers()
                 .contains(Modifier.STATIC);
     }
 

@@ -59,21 +59,20 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
             return;
         }
 
-        TypeSpec.Builder builder = TypeSpec.classBuilder(controllerClassName)
+        TypeSpec.Builder builder = TypeSpec
+                .classBuilder(controllerClassName)
                 .addAnnotation(RestController.class)
                 .addAnnotation(Slf4j.class)
                 .addAnnotation(AnnotationSpec
                         .builder(RequestMapping.class)
-                        .addMember(
-                                "value",
-                                "$S",
-                                "api/v1/" + StringUtils.lowerUnderscore(typeElement.getSimpleName().toString()))
+                        .addMember("value", "$S", "api/v1/" + StringUtils.lowerUnderscore(typeElement
+                                .getSimpleName()
+                                .toString()))
                         .build())
                 .addAnnotation(RequiredArgsConstructor.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addField(FieldSpec
-                        .builder(ClassName
-                                .get(servicePackageName, serviceClassName), serviceFieldName)
+                        .builder(ClassName.get(servicePackageName, serviceClassName), serviceFieldName)
                         .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
                         .build());
 
@@ -105,8 +104,7 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
      * @param nameContext      命名上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> createMethod(String serviceFieldName, TypeElement typeElement,
-                                              NameContext nameContext) {
+    private Optional<MethodSpec> createMethod(String serviceFieldName, TypeElement typeElement, NameContext nameContext) {
         String creatorPackageName = nameContext.getCreatorPackageName();
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -124,19 +122,12 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
                             .builder(ClassName.get(queryRequestPackageName, createClassName), "request")
                             .addAnnotation(RequestBody.class)
                             .build())
-                    .addAnnotation(AnnotationSpec
-                            .builder(PostMapping.class)
-                            .build())
+                    .addAnnotation(AnnotationSpec.builder(PostMapping.class).build())
                     .addModifiers(Modifier.PUBLIC)
-                    .addCode(CodeBlock
-                            .of("$T creator = $T.INSTANCE.request2Dto(request);",
-                                    ClassName.get(creatorPackageName, creatorClassName),
-                                    ClassName.get(mapperPackageName, mapperClassName)))
-                    .addCode(CodeBlock
-                            .of("return $T.success($L.create$L(creator));",
-                                    JsonResult.class,
-                                    serviceFieldName,
-                                    typeElement.getSimpleName().toString()))
+                    .addCode(CodeBlock.of("$T creator = $T.INSTANCE.request2Dto(request);", ClassName.get(creatorPackageName, creatorClassName), ClassName.get(mapperPackageName, mapperClassName)))
+                    .addCode(CodeBlock.of("return $T.success($L.create$L(creator));", JsonResult.class, serviceFieldName, typeElement
+                            .getSimpleName()
+                            .toString()))
                     .addJavadoc("createRequest")
                     .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(Long.class)));
             return Optional.of(createMethodBuilder.build());
@@ -152,8 +143,7 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
      * @param nameContext      命名上下文
      * @return {@link Optional}<{@link MethodSpec}>
      */
-    private Optional<MethodSpec> updateMethod(String serviceFieldName, TypeElement typeElement,
-                                              NameContext nameContext) {
+    private Optional<MethodSpec> updateMethod(String serviceFieldName, TypeElement typeElement, NameContext nameContext) {
         String updatePackageName = nameContext.getUpdatePackageName();
         String updaterPackageName = nameContext.getUpdaterPackageName();
         String mapperPackageName = nameContext.getMapperPackageName();
@@ -163,7 +153,8 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
             String updaterClassName = nameContext.getUpdaterClassName();
             String mapperClassName = nameContext.getMapperClassName();
             Name className = typeElement.getSimpleName();
-            return Optional.of(MethodSpec.methodBuilder("update" + className)
+            return Optional.of(MethodSpec
+                    .methodBuilder("update" + className)
                     .addParameter(ParameterSpec
                             .builder(ClassName.get(updatePackageName, updateClassName), "request")
                             .addAnnotation(RequestBody.class)
@@ -173,10 +164,7 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
                             .addMember("value", "$S", "update" + className)
                             .build())
                     .addModifiers(Modifier.PUBLIC)
-                    .addCode(CodeBlock.of("$T updater = $T.INSTANCE.request2Updater(request);",
-                            ClassName.get(updaterPackageName, updaterClassName),
-                            ClassName.get(mapperPackageName, mapperClassName))
-                    )
+                    .addCode(CodeBlock.of("$T updater = $T.INSTANCE.request2Updater(request);", ClassName.get(updaterPackageName, updaterClassName), ClassName.get(mapperPackageName, mapperClassName)))
                     .addCode(CodeBlock.of("$L.update$L(updater);\n", serviceFieldName, className.toString()))
                     .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonResult.class, CodeEnum.class))
                     .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(String.class)))
@@ -194,15 +182,10 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> validMethod(String serviceFieldName, TypeElement typeElement) {
-        return Optional.of(MethodSpec.methodBuilder("valid" + typeElement.getSimpleName())
-                .addParameter(ParameterSpec
-                        .builder(Long.class, "id")
-                        .addAnnotation(PathVariable.class)
-                        .build())
-                .addAnnotation(AnnotationSpec
-                        .builder(PostMapping.class)
-                        .addMember("value", "$S", "valid/{id}")
-                        .build())
+        return Optional.of(MethodSpec
+                .methodBuilder("valid" + typeElement.getSimpleName())
+                .addParameter(ParameterSpec.builder(Long.class, "id").addAnnotation(PathVariable.class).build())
+                .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "valid/{id}").build())
                 .addModifiers(Modifier.PUBLIC)
                 .addCode(CodeBlock.of("$L.valid$L(id);", serviceFieldName, typeElement.getSimpleName().toString()))
                 .addCode(CodeBlock.of("return $T.success($T.Success.getName());", JsonResult.class, CodeEnum.class))
@@ -221,10 +204,7 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
     private Optional<MethodSpec> inValidMethod(String serviceFieldName, TypeElement typeElement) {
         return Optional.of(MethodSpec
                 .methodBuilder("invalid" + typeElement.getSimpleName())
-                .addParameter(ParameterSpec
-                        .builder(Long.class, "id")
-                        .addAnnotation(PathVariable.class)
-                        .build())
+                .addParameter(ParameterSpec.builder(Long.class, "id").addAnnotation(PathVariable.class).build())
                 .addAnnotation(AnnotationSpec
                         .builder(PostMapping.class)
                         .addMember("value", "$S", "invalid/{id}")
@@ -252,27 +232,19 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
         if (!containsNull) {
             String voClassName = nameContext.getVoClassName();
             String responseClassName = nameContext.getResponseClassName();
-            return Optional.of(MethodSpec.methodBuilder("findById")
-                    .addParameter(ParameterSpec
-                            .builder(Long.class, "id")
-                            .addAnnotation(PathVariable.class)
-                            .build())
+            return Optional.of(MethodSpec
+                    .methodBuilder("findById")
+                    .addParameter(ParameterSpec.builder(Long.class, "id").addAnnotation(PathVariable.class).build())
                     .addAnnotation(AnnotationSpec
                             .builder(GetMapping.class)
                             .addMember("value", "$S", "findById/{id}")
                             .build())
                     .addModifiers(Modifier.PUBLIC)
-                    .addCode(CodeBlock
-                            .of("$T vo = $L.findById(id);", ClassName.get(voPackageName, voClassName),
-                                    serviceFieldName))
-                    .addCode(CodeBlock.of("$T response = $T.INSTANCE.vo2CustomResponse(vo);",
-                            ClassName.get(responsePackageName, responseClassName),
-                            ClassName.get(mapperPackageName, nameContext.getMapperClassName())))
+                    .addCode(CodeBlock.of("$T vo = $L.findById(id);", ClassName.get(voPackageName, voClassName), serviceFieldName))
+                    .addCode(CodeBlock.of("$T response = $T.INSTANCE.vo2CustomResponse(vo);", ClassName.get(responsePackageName, responseClassName), ClassName.get(mapperPackageName, nameContext.getMapperClassName())))
                     .addCode(CodeBlock.of("return $T.success(response);", JsonResult.class))
                     .addJavadoc("findById")
-                    .returns(ParameterizedTypeName
-                            .get(ClassName.get(JsonResult.class), ClassName.get(responsePackageName,
-                                    responseClassName)))
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ClassName.get(responsePackageName, responseClassName)))
                     .build());
         }
         return Optional.empty();
@@ -286,55 +258,41 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
      * @return {@link Optional}<{@link MethodSpec}>
      */
     private Optional<MethodSpec> page(String serviceFieldName, NameContext nameContext) {
-        boolean containsNull = StringUtils.containsNull(nameContext.getQueryRequestPackageName(),
-                nameContext.getQueryPackageName(), nameContext.getMapperPackageName(), nameContext.getVoPackageName()
-                , nameContext.getResponsePackageName());
+        boolean containsNull =
+                StringUtils.containsNull(nameContext.getQueryRequestPackageName(), nameContext.getQueryPackageName(), nameContext.getMapperPackageName(), nameContext.getVoPackageName(), nameContext.getResponsePackageName());
         if (!containsNull) {
-            return Optional.of(MethodSpec.methodBuilder("page")
-                    .addParameter(ParameterSpec.builder(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class), ClassName.get(nameContext.getQueryRequestPackageName(), nameContext.getQueryRequestClassName())), "request").addAnnotation(RequestBody.class).build())
-                    .addAnnotation(AnnotationSpec.builder(PostMapping.class).addMember("value", "$S", "findByPage").build())
+            return Optional.of(MethodSpec
+                    .methodBuilder("page")
+                    .addParameter(ParameterSpec
+                            .builder(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class), ClassName.get(nameContext.getQueryRequestPackageName(), nameContext.getQueryRequestClassName())), "request")
+                            .addAnnotation(RequestBody.class)
+                            .build())
+                    .addAnnotation(AnnotationSpec
+                            .builder(PostMapping.class)
+                            .addMember("value", "$S", "findByPage")
+                            .build())
                     .addModifiers(Modifier.PUBLIC)
-                    .addCode(
-                            CodeBlock.of("$T<$T> wrapper = new $T<>();\n"
-                                    , PageRequestWrapper.class, ClassName.get(nameContext.getQueryPackageName(),
-                                            nameContext.getQueryClassName()), PageRequestWrapper.class)
-                    )
-                    .addCode(
-                            CodeBlock.of("wrapper.setBean($T.INSTANCE.request2Query(request.getBean()));\n",
-                                    ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()))
-                    )
-                    .addCode(
-                            CodeBlock.of("""
-                                    wrapper.setSorts(request.getSorts());
-                                        wrapper.setPageSize(request.getPageSize());
-                                        wrapper.setPage(request.getPage());
-                                    """)
-                    )
-                    .addCode(CodeBlock.of("$T<$T> page = $L.findByPage(wrapper);\n"
-                            , Page.class, ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName())
-                            , serviceFieldName))
-                    .addCode(
-                            CodeBlock.of("""
-                                            return $T.success(
-                                                    $T.of(
-                                                        page.getContent().stream()
-                                                            .map($T.INSTANCE::vo2CustomResponse)
-                                                            .collect($T.toList()),
-                                                        page.getTotalElements(),
-                                                        page.getSize(),
-                                                        page.getNumber())
-                                                );
-                                            """,
-                                    JsonResult.class,
-                                    PageResult.class,
-                                    ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()),
-                                    Collectors.class)
-                    )
+                    .addCode(CodeBlock.of("$T<$T> wrapper = new $T<>();\n", PageRequestWrapper.class, ClassName.get(nameContext.getQueryPackageName(), nameContext.getQueryClassName()), PageRequestWrapper.class))
+                    .addCode(CodeBlock.of("wrapper.setBean($T.INSTANCE.request2Query(request.getBean()));\n", ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName())))
+                    .addCode(CodeBlock.of("""
+                            wrapper.setSorts(request.getSorts());
+                                wrapper.setPageSize(request.getPageSize());
+                                wrapper.setPage(request.getPage());
+                            """))
+                    .addCode(CodeBlock.of("$T<$T> page = $L.findByPage(wrapper);\n", Page.class, ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), serviceFieldName))
+                    .addCode(CodeBlock.of("""
+                            return $T.success(
+                                    $T.of(
+                                        page.getContent().stream()
+                                            .map($T.INSTANCE::vo2CustomResponse)
+                                            .collect($T.toList()),
+                                        page.getTotalElements(),
+                                        page.getSize(),
+                                        page.getNumber())
+                                );
+                            """, JsonResult.class, PageResult.class, ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName()), Collectors.class))
                     .addJavadoc("findByPage request")
-                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
-                            ParameterizedTypeName.get(ClassName.get(
-                                    PageResult.class), ClassName.get(nameContext.getResponsePackageName(),
-                                    nameContext.getResponseClassName()))))
+                    .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class), ParameterizedTypeName.get(ClassName.get(PageResult.class), ClassName.get(nameContext.getResponsePackageName(), nameContext.getResponseClassName()))))
                     .build());
         }
         return Optional.empty();

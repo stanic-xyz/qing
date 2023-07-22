@@ -50,16 +50,13 @@ public class GenQueryProcessor extends AbstractCodeGenProcessor {
 
         String sourceClassName = typeElement.getSimpleName() + QUERY_SUFFIX;
 
-        TypeSpec.Builder builder = TypeSpec.classBuilder(sourceClassName)
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class);
+        TypeSpec.Builder builder =
+                TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC).addAnnotation(Schema.class);
 
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethod(builder, findFields(typeElement,
-                variableElement -> Objects.nonNull(variableElement.getAnnotation(
-                        QueryItem.class))), useLombok);
+        addSetterAndGetterMethod(builder, findFields(typeElement, variableElement -> Objects.nonNull(variableElement.getAnnotation(QueryItem.class))), useLombok);
         genJavaSourceFile(typeElement, builder);
     }
 

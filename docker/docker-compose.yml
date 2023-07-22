@@ -7,7 +7,7 @@ services:
   redis:
     image: redis
     container_name: redis                                                             # 容器名为'redis'
-    restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
+    restart: always
     #    command: redis-server /etc/redis/redis.conf --requirepass 123456 --appendonly no # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
     #    command: redis-server --requirepass 123456 --appendonly yes # 启动redis服务并添加密码为：123456,并开启redis持久化配置
     environment: # 设置环境变量,相当于docker run命令中的-e
@@ -34,7 +34,7 @@ services:
       - "8300:8300"
     networks:
       - qing-network
-    restart: unless-stopped
+    restart: always
   qing-app:
     container_name: qing-web-end
     image: stanic-docker.pkg.coding.net/qing/qing/qing-bootstrap-service:0.0.2.25
@@ -83,6 +83,7 @@ services:
     ports:
       - "10086:10086"
     hostname: admin.chenyunlong.cn
+    restart: always
     depends_on:
       - consul
     links:
