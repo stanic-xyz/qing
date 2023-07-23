@@ -29,15 +29,15 @@ public final class ProcessingEnvironmentHolder {
     /**
      * 环境
      */
-    public static final ThreadLocal<ProcessingEnvironment> ENVIRONMENT = new ThreadLocal<>();
+    public static final ThreadLocal<ProcessingEnvironment> PROCESSING_ENVIRONMENT = new ThreadLocal<>();
 
     /**
      * 获取工具类上下文
      *
      * @return {@link ProcessingEnvironment}
      */
-    public static ProcessingEnvironment getEnvironment() {
-        return ENVIRONMENT.get();
+    public static ProcessingEnvironment getProcessingEnvironment() {
+        return PROCESSING_ENVIRONMENT.get();
     }
 
     /**
@@ -45,8 +45,8 @@ public final class ProcessingEnvironmentHolder {
      *
      * @param processingEnvironment 上下文
      */
-    public static void setEnvironment(ProcessingEnvironment processingEnvironment) {
-        ENVIRONMENT.set(processingEnvironment);
+    public static void setProcessingEnvironment(ProcessingEnvironment processingEnvironment) {
+        PROCESSING_ENVIRONMENT.set(processingEnvironment);
     }
 
     /**
@@ -57,7 +57,7 @@ public final class ProcessingEnvironmentHolder {
      * @param exception 异常信息
      */
     public static void printErrorMessage(String message, Element element, Exception exception) {
-        ENVIRONMENT.get().getMessager().printMessage(Diagnostic.Kind.ERROR, message, element);
+        PROCESSING_ENVIRONMENT.get().getMessager().printMessage(Diagnostic.Kind.ERROR, message, element);
     }
 
     /**
@@ -66,7 +66,7 @@ public final class ProcessingEnvironmentHolder {
      * @param message 消息
      */
     public static void printMessage(String message) {
-        ProcessingEnvironment processingEnvironment = ENVIRONMENT.get();
+        ProcessingEnvironment processingEnvironment = PROCESSING_ENVIRONMENT.get();
         if (processingEnvironment != null) {
             processingEnvironment.getMessager().printMessage(Diagnostic.Kind.NOTE, message);
         }

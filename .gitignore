@@ -55,3 +55,4 @@ local.env
 # 本地上传文件测试
 /upload/
 /.fastRequest/
+/docker/redis/data/

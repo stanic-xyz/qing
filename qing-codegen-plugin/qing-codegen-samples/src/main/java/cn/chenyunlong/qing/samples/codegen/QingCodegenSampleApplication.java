@@ -1,11 +1,9 @@
-package cn.chenyunlong.qing.starter.samples;
+package cn.chenyunlong.qing.samples.codegen;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(value = {"cn.chenyunlong.qing"})
 public class QingCodegenSampleApplication {
 
     public static void main(String[] args) {
