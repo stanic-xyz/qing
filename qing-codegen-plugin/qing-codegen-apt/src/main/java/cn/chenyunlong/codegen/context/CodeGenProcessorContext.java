@@ -15,11 +15,11 @@ package cn.chenyunlong.codegen.context;
 
 import cn.chenyunlong.codegen.annotation.GenBase;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import com.google.common.collect.Maps;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import java.lang.annotation.Annotation;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  */
 public final class CodeGenProcessorContext {
 
-    private static final Map<String, CodeGenProcessor> PROCESSOR_MAP = Maps.newLinkedHashMap();
+    private static final Map<String, CodeGenProcessor> PROCESSOR_MAP = new LinkedHashMap<>();
     private static NameContext nameContext;
 
     private CodeGenProcessorContext() {

@@ -27,10 +27,11 @@ public interface CodeGenProcessor {
     /**
      * 支持方法
      *
-     * @param typeElement 支持方法
+     * @param typeElement      支持方法
+     * @param roundEnvironment 周围环境
      * @return 是否支持处理该方法
      */
-    boolean support(TypeElement typeElement);
+    boolean support(TypeElement typeElement, RoundEnvironment roundEnvironment);
 
     /**
      * 生成类
@@ -94,4 +95,13 @@ public interface CodeGenProcessor {
      * @return 元素类型生成路径
      */
     String getSourcePath(TypeElement typeElement);
+
+    /**
+     * 执行至的执行顺序
+     *
+     * @return 执行器执行顺序
+     */
+    default int getOrder() {
+        return Integer.MIN_VALUE;
+    }
 }

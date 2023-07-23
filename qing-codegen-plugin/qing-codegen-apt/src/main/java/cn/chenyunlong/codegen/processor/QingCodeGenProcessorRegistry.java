@@ -15,7 +15,6 @@ package cn.chenyunlong.codegen.processor;
 
 import cn.chenyunlong.codegen.context.CodeGenProcessorContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
-import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -41,15 +40,24 @@ public class QingCodeGenProcessorRegistry extends AbstractProcessor {
     /**
      * 过程
      *
-     * @param elements    文档元素列表
-     * @param environment 当前编译环境（相当于上下文）
+     * @param elements         文档元素列表
+     * @param roundEnvironment 当前编译环境（相当于上下文）
      * @return boolean
      */
     @Override
-    public boolean process(Set<? extends TypeElement> elements, RoundEnvironment environment) {
+    public boolean process(Set<? extends TypeElement> elements, RoundEnvironment roundEnvironment) {
+        if (elements.isEmpty()) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "空注解不需要处理");
+            return false;
+        }
         try {
+            System.out.println("正在处理注解：" + elements
+                    .stream()
+                    .map(TypeElement::getQualifiedName)
+                    .collect(Collectors.joining(",")));
+
             final Set<Element> typeElements = new HashSet<>();
-            elements.forEach(element -> typeElements.addAll(environment.getElementsAnnotatedWith(element)));
+            elements.forEach(element -> typeElements.addAll(roundEnvironment.getElementsAnnotatedWith(element)));
             // 对每个对象进行生成操作
             // 加载需要处理的类的所有注解
             Collections.unmodifiableSet(ElementFilter.typesIn(typeElements)).forEach(element -> {
@@ -59,22 +67,19 @@ public class QingCodeGenProcessorRegistry extends AbstractProcessor {
                         .stream()
                         .map(annotationMirror -> annotationMirror.getAnnotationType().toString())
                         .collect(Collectors.toSet());
-                Set<CodeGenProcessor> codeGenProcessors = CodeGenProcessorContext.find(annotationNames);
-                for (CodeGenProcessor codeGenProcessor : codeGenProcessors) {
-                    if (codeGenProcessor.support(element)) {
-                        codeGenProcessor.generateClass(element, environment, true);
-                    } else {
-                        ProcessingEnvironmentHolder.printMessage(("[codegen-plugin]》》》》》初始化代码生成器【%s" + "】逻辑未执行》》》》》").formatted(codeGenProcessor
-                                .getSupportedAnnotation()
-                                .getName()));
-                    }
-                }
+                CodeGenProcessorContext
+                        // 根据注解类型生成代码
+                        .find(annotationNames)
+                        .stream()
+                        .filter(codeGenProcessor -> codeGenProcessor.support(element, roundEnvironment))
+                        .forEach(codeGenProcessor -> codeGenProcessor.generateClass(element, roundEnvironment, true));
             });
         } catch (Exception exception) {
             exception.printStackTrace();
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, "Qing：代码生成器异常！");
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, "CodeGen：代码生成器异常！");
         }
-        return false;
+        // 只需要执行一次
+        return true;
     }
 
     /**
@@ -84,9 +89,9 @@ public class QingCodeGenProcessorRegistry extends AbstractProcessor {
      */
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
-        super.init(processingEnvironment);
-        ProcessingEnvironmentHolder.setEnvironment(processingEnvironment);
         ProcessingEnvironmentHolder.printMessage("》》》》》初始化代码生成器》》》》》");
+        super.init(processingEnvironment);
+        ProcessingEnvironmentHolder.setProcessingEnvironment(processingEnvironment);
         CodeGenProcessorContext.init(processingEnvironment);
         ProcessingEnvironmentHolder.printMessage("》》》》》初始化代码生成器完毕》》》》》");
     }

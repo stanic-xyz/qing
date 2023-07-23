@@ -30,10 +30,8 @@ import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +39,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * 获取名称时可以先获取上下文再取，不用一个个的取，这样更方便
@@ -52,10 +49,6 @@ import java.util.stream.Collectors;
 public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
 
     public static final String IMPL_SUFFIX = "ServiceImpl";
-
-    private static ClassName getBooleanBuilder() {
-        return ClassName.get("com.querydsl.core", "BooleanBuilder");
-    }
 
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
@@ -88,7 +81,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
         validMethod(typeElement, repositoryFieldName).ifPresent(builder::addMethod);
         invalidMethod(typeElement, repositoryFieldName).ifPresent(builder::addMethod);
         findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(builder::addMethod);
-        findByPageMethod(typeElement, nameContext, repositoryFieldName).ifPresent(builder::addMethod);
+        findByPageMethod(nameContext, repositoryFieldName).ifPresent(builder::addMethod);
         genJavaSourceFile(typeElement, builder);
     }
 
@@ -202,7 +195,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
         return Optional.empty();
     }
 
-    private Optional<MethodSpec> findByPageMethod(TypeElement typeElement, NameContext nameContext, String repositoryFieldName) {
+    private Optional<MethodSpec> findByPageMethod(NameContext nameContext, String repositoryFieldName) {
         boolean containsNull =
                 StringUtils.containsNull(nameContext.getQueryPackageName(), nameContext.getVoPackageName());
         if (!containsNull) {
@@ -210,17 +203,10 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                     .methodBuilder("findByPage")
                     .addParameter(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class), ClassName.get(nameContext.getQueryPackageName(), nameContext.getQueryClassName())), "query")
                     .addModifiers(Modifier.PUBLIC)
-                    .addCode(CodeBlock.of("$T booleanBuilder = new $T();\n", getBooleanBuilder(), getBooleanBuilder()))
                     .addCode(CodeBlock.of("""
-                            $T<$T> page = $L.findAll(booleanBuilder,
-                                    $T.of(query.getPage() - 1, query.getPageSize(), $T.by(
-                                        $T.DESC, "createdAt")));
-                            """, Page.class, typeElement, repositoryFieldName, PageRequest.class, Sort.class, Direction.class))
-                    .addCode(CodeBlock.of("""
-                            return new $T<>(page.getContent()
-                            .stream().map($T::new)
-                            .collect($T.toList()), page.getPageable(), page.getTotalElements());
-                            """, PageImpl.class, ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()), Collectors.class))
+                            $T pageRequest = $T.of(query.getPage(), query.getPageSize(), $T.Direction.DESC, "createdAt");
+                            """, PageRequest.class, PageRequest.class, Sort.class))
+                    .addCode(CodeBlock.of("return $L.findAll(pageRequest).map($T::new);", repositoryFieldName, ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName())))
                     .addJavadoc("findByPage")
                     .addAnnotation(Override.class)
                     .returns(ParameterizedTypeName.get(ClassName.get(Page.class), ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName())))

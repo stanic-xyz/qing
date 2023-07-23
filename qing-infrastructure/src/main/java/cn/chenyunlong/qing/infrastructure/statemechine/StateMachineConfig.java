@@ -56,9 +56,9 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
 
     @Bean
     public StateMachineListener<States, Events> listener() {
-        return new StateMachineListenerAdapter<>() {
+        return new StateMachineListenerAdapter<States, Events>() {
             @Override
-            public void stateChanged(State<States, Events> from, State<States, Events> to) {
+            public void stateChanged(State from, State to) {
                 System.out.println("State change to " + to.getId());
             }
         };
