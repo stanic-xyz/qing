@@ -26,9 +26,9 @@ import org.junit.rules.TemporaryFolder;
 import javax.tools.JavaFileObject;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.truth.Truth.assert_;
 import static com.google.testing.compile.CompilationSubject.assertThat;
@@ -42,11 +42,9 @@ public class AbstractCodeGenProcessorTest extends TestCase {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    public void testCompilesResourcesInJarFiles() throws IOException {
-        File jarFile = new ClassPathResource("cn.chenyunlong.codegen.annotation.TestAnnotation").getFile();
-        JavaFileObject javaFileObject =
-                JavaFileObjects.forResource(new URL("jar:" + jarFile.toURI() + "!/test" + "/HelloWorld.java"));
-        assert_().about(javaSource()).that(javaFileObject).compilesWithoutError();
+    public void testCompilesResourcesInJarFiles() {
+        JavaFileObject fileObject = JavaFileObjects.forResource("test/TestAnnotation.java");
+        assert_().about(javaSource()).that(fileObject).compilesWithoutError();
     }
 
     public void testGenerateSource() {
@@ -60,7 +58,7 @@ public class AbstractCodeGenProcessorTest extends TestCase {
 
         QingCodeGenProcessorRegistry qingCodeGenProcessorRegistry = new QingCodeGenProcessorRegistry();
 
-        ArrayList<File> classpath = new ArrayList<>();
+        List<File> classpath = new ArrayList<>();
         File swaggerAnnotationJar = new ClassPathResource("lib/swagger-annotations-2.2.8.jar").getFile();
 
         // 创建classpath目录
@@ -90,9 +88,10 @@ public class AbstractCodeGenProcessorTest extends TestCase {
                 }
                 """);
         ClassLoader classLoader = this.getClass().getClassLoader();
-        Compiler compiler = javac();
+        Compiler compiler = javac().withClasspath(classpath);
         Compiler classpathFrom = compiler.withClasspathFrom(classLoader);
-        Compilation compilation = classpathFrom.withProcessors(qingCodeGenProcessorRegistry).compile(javaFileObject);
+        Compiler withProcessors = classpathFrom.withProcessors(qingCodeGenProcessorRegistry);
+        Compilation compilation = withProcessors.compile(javaFileObject);
         assertThat(compilation).succeededWithoutWarnings();
     }
 
