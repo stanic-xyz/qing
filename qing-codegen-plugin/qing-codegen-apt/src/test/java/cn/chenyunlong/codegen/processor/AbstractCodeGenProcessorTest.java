@@ -16,6 +16,7 @@ package cn.chenyunlong.codegen.processor;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import com.google.testing.compile.Compilation;
+import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
 import io.swagger.v3.oas.annotations.media.Schema;
 import junit.framework.TestCase;
@@ -73,18 +74,25 @@ public class AbstractCodeGenProcessorTest extends TestCase {
 
         String fullyQualifiedName = "HelloWorld";
         JavaFileObject javaFileObject = JavaFileObjects.forSourceString(fullyQualifiedName, """
+                                
+                package cn.chenyunlong.coded;
+                                
                 import io.swagger.v3.oas.annotations.media.Schema;
-                import cn.chenyunlong.codegen.annotation.GenResponse;
-                                                
+                import cn.chenyunlong.codegen.annotation.GenDto;
+                import cn.chenyunlong.codegen.annotation.GenCreator;
+                                
+                @GenDto
+                @GenCreator
                 final class HelloWorld {
                                
                     @Schema
-                    @GenResponse
                     private String username;
                 }
                 """);
-        Compilation compilation =
-                javac().withProcessors(qingCodeGenProcessorRegistry).withClasspath(classpath).compile(javaFileObject);
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        Compiler compiler = javac();
+        Compiler classpathFrom = compiler.withClasspathFrom(classLoader);
+        Compilation compilation = classpathFrom.withProcessors(qingCodeGenProcessorRegistry).compile(javaFileObject);
         assertThat(compilation).succeededWithoutWarnings();
     }
 
