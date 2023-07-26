@@ -28,27 +28,40 @@
 
 ---
 
-#### 📚介绍
+#### 📚项目简介
 
-最新潮的`领域驱动思想`（`DDD`）的落地实践！
+最终目标`DDD`（`领域驱动思想`）的落地实践！
+
+该项目是本人在学习微服务中的一些实践，可以简单的作为参考（目前还没有完全实现，所以参考意义不大）
 
 该项目是我关于SpringCloud的一次实践 通过该项目我希望能够对SpringCloud更加了解的同时 不光是对我们本人技术的一点锻炼
 
 还有一个目的就是系统通过自己的这点小小手一来做一些对自己有意义的事情
 
-保住这美好的回忆。爱不爱了不说，至少回忆在这里。 还希望能够保管我自己的小秘密，留住自己喜欢的人的所有回忆
+~~希望能够保管我自己的小秘密，留住自己喜欢的人的所有回忆。~~
+已经是公开项目了，再来做这种事情不太合适 吧~ （保留可能性）
 
-以后还能拿出来作为小小的谈资呢。
+#### ✈️安装运行
 
-#### 以下是关于项目的运行
+- 演示地址： [https://bangumi.chenyunlong.cn/index.html](https://bangumi.chenyunlong.cn/index.html)
+- eureka作为配置中心：
+    - 设置注册中心的地址https://eureka.chenyunlong.cn/eureka/
+    - 域名解析中添加两条TXT记录
+        - txt.zhangli.chenyunlong.cn
+        - txt.defaultZone.chenyunlong.cn
+    - 使用自建DNS服务器
+- 使用NACOS作为注册中心
+    - 设置注册中心地址：http://nacos.chenyunlong.cn/nacos/
+    - 域名解析设置：
 
-目前的计划是集成到自动构建自动部署中，使用的构建工具是Coding的devops平台
+#### 🔁 CI/CD
 
-地址地址：[CODING项目协同管理平台](https://stanic.coding.net/p/qing)
-
-项目演示地址： [https://bangumi.chenyunlong.cn/index.html](https://bangumi.chenyunlong.cn/index.html)
-
-该项目是本人在学习微服务中的一些实践，可以简单的作为参考（目前还没有完全实现，所以参考意义不大）
+- Coding 流水线
+    - 地址地址：[CODING项目协同管理平台](https://stanic.coding.net/p/qing)
+- GitHub Actions
+    - 设置注册中心地址：http://nacos.chenyunlong.cn/nacos/
+- Gitee GO
+    - 流水线地址：[链接](https://gitee.com/stanChen/qing/gitee_go/pipelines)
 
 ---
 
@@ -78,25 +91,11 @@
 * [ ] elasticjob (分布式任务调度)
 * [ ] drools （规则引擎）
 
-#### 📚安装说明
-
-##### Docker
-
-- eureka作为配置中心：
-    - 设置注册中心的地址https://eureka.chenyunlong.cn/eureka/
-    - 域名解析中添加两条TXT记录
-        - txt.zhangli.chenyunlong.cn
-        - txt.defaultZone.chenyunlong.cn
-    - 使用自建DNS服务器
-- 使用NACOS作为注册中心
-    - 设置注册中心地址：http://nacos.chenyunlong.cn/nacos/
-    - 域名解析设置：
-
 ---
 
 #### 🏗️参与贡献
 
-如果您感觉我们的代码有需要优化的地方或者有更好的方案欢迎随时提pr，步骤如下：
+项目路线图请见文档：[ROADMAP.MD](./Roadmap.md)，如果您感觉我们的代码有需要优化的地方或者有更好的方案欢迎随时提pr，步骤如下：
 
 1. 在`Gitee`或者`Github`上`fork`项目到自己的`repo`
 2. 把`fork`过去的项目也就是你的项目`clone`到你的本地
