@@ -17,7 +17,9 @@ package cn.chenyunlong.codegen.processor.repository;
 import cn.chenyunlong.codegen.annotation.GenRepository;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.jpa.support.BaseRepository;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
@@ -32,6 +34,7 @@ import javax.lang.model.element.TypeElement;
  * @author gim
  * @date 2022/12/22
  */
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenRepository.class)
 public class GenRepositoryProcessor extends AbstractCodeGenProcessor {
 
@@ -44,7 +47,7 @@ public class GenRepositoryProcessor extends AbstractCodeGenProcessor {
                 .interfaceBuilder(className)
                 .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class), ClassName.get(typeElement), ClassName.get(Long.class)))
                 .addModifiers(Modifier.PUBLIC);
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**

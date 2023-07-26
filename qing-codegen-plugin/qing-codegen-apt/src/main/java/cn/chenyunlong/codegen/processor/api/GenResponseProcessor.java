@@ -18,7 +18,9 @@ import cn.chenyunlong.codegen.annotation.IgnoreVo;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -35,6 +37,7 @@ import java.util.Set;
  * @author Stan
  * @date 2022/11/28
  */
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenResponse.class)
 public class GenResponseProcessor extends AbstractCodeGenProcessor {
 
@@ -51,7 +54,7 @@ public class GenResponseProcessor extends AbstractCodeGenProcessor {
                 .superclass(AbstractJpaResponse.class)
                 .addAnnotation(Schema.class);
         addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**

@@ -18,8 +18,10 @@ import cn.chenyunlong.codegen.annotation.GenService;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
@@ -34,6 +36,7 @@ import java.util.Optional;
 /**
  * @author gim
  */
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenService.class)
 public class GenServiceProcessor extends AbstractCodeGenProcessor {
 
@@ -55,8 +58,7 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
         invalidMethod(typeElement).ifPresent(builder::addMethod);
         findByIdMethod(nameContext).ifPresent(builder::addMethod);
         findByPageMethod(nameContext).ifPresent(builder::addMethod);
-
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**

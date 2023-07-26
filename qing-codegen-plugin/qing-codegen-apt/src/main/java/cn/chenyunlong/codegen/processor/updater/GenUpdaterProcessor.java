@@ -17,7 +17,9 @@ import cn.chenyunlong.codegen.annotation.GenUpdater;
 import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -39,7 +41,7 @@ import java.util.Set;
  * @author Gim
  * @date 2019/11/28 19:33
  */
-
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenUpdater.class)
 public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
 
@@ -82,7 +84,7 @@ public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
         builder.addMethod(methodBuilder.build());
 
         addIdField(builder, useLombok);
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**

@@ -17,7 +17,9 @@ import cn.chenyunlong.codegen.annotation.GenVo;
 import cn.chenyunlong.codegen.annotation.IgnoreVo;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractBaseJpaVO;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -39,6 +41,7 @@ import java.util.Set;
 /**
  * @author gim vo 代码生成器
  */
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenVo.class)
 public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
 
@@ -72,7 +75,7 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
         constructorSpecBuilder.addStatement("super()");
         fields.forEach(variableElement -> constructorSpecBuilder.addStatement("this.set$L(source.get$L())", getFieldDefaultName(variableElement), getFieldDefaultName(variableElement)));
         builder.addMethod(constructorSpecBuilder.build());
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**

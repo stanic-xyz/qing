@@ -1,8 +1,8 @@
 # Project-青
 
 [![License](https://img.shields.io/badge/licence-MulanPSL2-blue)](http://license.coscl.org.cn/MulanPSL2)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/yunlongChen/qing/maven.yml?branch=main)
 [![star](https://gitee.com/stanChen/qing/badge/star.svg?theme=dark)](https://gitee.com/stanChen/qing)
+[![Build](https://github.com/stanic-xyz/qing/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/stanic-xyz/qing/actions/workflows/build.yml)
 
 ##### 代码仓库
 
@@ -30,7 +30,7 @@
 
 #### 📚项目简介
 
-最终目标`DDD`（`领域驱动思想`）的落地实践！
+最终目标：`DDD`（`领域驱动思想`）的落地实践！
 
 该项目是本人在学习微服务中的一些实践，可以简单的作为参考（目前还没有完全实现，所以参考意义不大）
 

@@ -71,13 +71,13 @@
                     <source>17</source>
                     <target>17</target>
                     <encoding>UTF-8</encoding>
-                    <annotationProcessorPaths>
-                        <annotationProcessorPath>
-                            <groupId>cn.chenyunlong</groupId>
-                            <artifactId>qing-codegen-apt</artifactId>
-                            <version>0.0.2-SNAPSHOT</version>
-                        </annotationProcessorPath>
-                    </annotationProcessorPaths>
+                    <!--                    <annotationProcessorPaths>-->
+                    <!--                        <annotationProcessorPath>-->
+                    <!--                            <groupId>cn.chenyunlong</groupId>-->
+                    <!--                            <artifactId>qing-codegen-apt</artifactId>-->
+                    <!--                            <version>0.0.2-SNAPSHOT</version>-->
+                    <!--                        </annotationProcessorPath>-->
+                    <!--                    </annotationProcessorPaths>-->
                 </configuration>
             </plugin>
             <plugin>
