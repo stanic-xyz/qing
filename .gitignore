@@ -3,6 +3,7 @@
 *.ipr
 *.iws
 .idea
+.fastRequest
 
 # Eclipse
 .classpath
@@ -15,7 +16,6 @@
 target
 release.properties
 
-HELP.md
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
@@ -44,15 +44,5 @@ doc/db/.back_Qing
 ### .env 配置文件
 local.env
 
-/qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/user/gen/
-/qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/mapper/gen/
-/qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/testobject/gen/
-/qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/updater/gen/
-/qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/vo/gen/
-/qing-codegen-plugin/qing-codegen-test/src/main/java/cn/chenyunlong/codegen/test/domain/creater/gen/
-
-
 # 本地上传文件测试
-/upload/
-/.fastRequest/
 /docker/redis/data/

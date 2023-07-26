@@ -53,7 +53,7 @@
         <vavr.version>0.10.4</vavr.version>
         <fastjson.version>2.0.21</fastjson.version>
         <javapoet.version>1.13.0</javapoet.version>
-        <auto.version>1.0.1</auto.version>
+        <auto.version>1.1.1</auto.version>
         <liteflow.version>2.10.2</liteflow.version>
         <spring-boot.version>2.6.13</spring-boot.version>
         <spring-boot-admin.version>3.0.4</spring-boot-admin.version>
@@ -123,6 +123,11 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service-annotations</artifactId>
+                <version>${auto.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.auto.service</groupId>

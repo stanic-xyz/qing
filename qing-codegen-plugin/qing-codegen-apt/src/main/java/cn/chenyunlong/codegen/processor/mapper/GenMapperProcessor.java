@@ -17,8 +17,10 @@ import cn.chenyunlong.codegen.annotation.GenMapper;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.hutool.core.bean.BeanUtil;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -33,6 +35,7 @@ import java.util.Optional;
  * @author Stan
  * @date 2022/11/29
  */
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenMapper.class)
 public class GenMapperProcessor extends AbstractCodeGenProcessor {
 
@@ -66,7 +69,7 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
         vo2ResponseMethod.ifPresent(builder::addMethod);
         Optional<MethodSpec> vo2CustomResponseMethod = vo2CustomResponseMethod(nameContext);
         vo2CustomResponseMethod.ifPresent(builder::addMethod);
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**

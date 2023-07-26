@@ -17,6 +17,8 @@ import cn.chenyunlong.codegen.annotation.GenQuery;
 import cn.chenyunlong.codegen.annotation.QueryItem;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -32,6 +34,7 @@ import java.util.Objects;
  * @author cyl
  * @date 2019-10-08 17:14
  */
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenQuery.class)
 public class GenQueryProcessor extends AbstractCodeGenProcessor {
 
@@ -57,7 +60,7 @@ public class GenQueryProcessor extends AbstractCodeGenProcessor {
             builder.addAnnotation(Data.class);
         }
         addSetterAndGetterMethod(builder, findFields(typeElement, variableElement -> Objects.nonNull(variableElement.getAnnotation(QueryItem.class))), useLombok);
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**

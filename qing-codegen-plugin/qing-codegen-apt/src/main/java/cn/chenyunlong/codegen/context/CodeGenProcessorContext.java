@@ -105,7 +105,9 @@ public final class CodeGenProcessorContext {
     public static void init(ProcessingEnvironment processingEnvironment) {
         nameContext = new NameContext();
         nameContext.init();
-        for (CodeGenProcessor codeGenProcessor : ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader())) {
+        ServiceLoader<CodeGenProcessor> codeGenProcessors =
+                ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader());
+        for (CodeGenProcessor codeGenProcessor : codeGenProcessors) {
             ProcessingEnvironmentHolder.printMessage("[codegen-plugin]：加载处理器：%s".formatted(codeGenProcessor
                     .getClass()
                     .getName()));

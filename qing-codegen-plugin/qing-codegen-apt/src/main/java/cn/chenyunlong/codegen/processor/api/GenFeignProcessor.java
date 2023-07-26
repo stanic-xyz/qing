@@ -17,10 +17,12 @@ import cn.chenyunlong.codegen.annotation.GenFeign;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
+import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.squareup.javapoet.*;
 import com.squareup.javapoet.TypeSpec.Builder;
@@ -39,6 +41,7 @@ import java.util.Optional;
  * @author Stan
  * @date 2022/11/28
  */
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenFeign.class)
 public class GenFeignProcessor extends AbstractCodeGenProcessor {
 
@@ -71,7 +74,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
         findById.ifPresent(builder::addMethod);
         Optional<MethodSpec> findByPage = findByPage(nameContext);
         findByPage.ifPresent(builder::addMethod);
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**

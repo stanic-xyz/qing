@@ -17,6 +17,8 @@ import cn.chenyunlong.codegen.annotation.GenCreator;
 import cn.chenyunlong.codegen.annotation.IgnoreCreator;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
@@ -36,6 +38,7 @@ import java.util.Objects;
 /**
  * @author cyl Creator 代码生成器
  */
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenCreator.class)
 public class GenCreatorProcessor extends AbstractCodeGenProcessor {
 
@@ -67,7 +70,7 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
             builder.addAnnotation(Data.class);
         }
         addSetterAndGetterMethod(builder, findFields(typeElement, variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)), useLombok);
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**

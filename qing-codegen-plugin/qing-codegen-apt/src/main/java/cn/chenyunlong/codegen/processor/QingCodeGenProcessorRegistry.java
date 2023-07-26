@@ -15,26 +15,24 @@ package cn.chenyunlong.codegen.processor;
 
 import cn.chenyunlong.codegen.context.CodeGenProcessorContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 
-import javax.annotation.processing.*;
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author gim
  * @since 2023-10-24
  */
-@SupportedOptions({})
-@SupportedAnnotationTypes({})
 public class QingCodeGenProcessorRegistry extends AbstractProcessor {
 
     /**
@@ -47,8 +45,8 @@ public class QingCodeGenProcessorRegistry extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> elements, RoundEnvironment roundEnvironment) {
         if (elements.isEmpty()) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "空注解不需要处理");
-            return false;
+            System.out.println("空注解不需要处理");
+            return true;
         }
         try {
             System.out.println("正在处理注解：" + elements
@@ -60,19 +58,21 @@ public class QingCodeGenProcessorRegistry extends AbstractProcessor {
             elements.forEach(element -> typeElements.addAll(roundEnvironment.getElementsAnnotatedWith(element)));
             // 对每个对象进行生成操作
             // 加载需要处理的类的所有注解
-            Collections.unmodifiableSet(ElementFilter.typesIn(typeElements)).forEach(element -> {
+            Collections.unmodifiableSet(ElementFilter.typesIn(typeElements)).forEach(typeElement -> {
                 List<? extends AnnotationMirror> mirrors =
-                        processingEnv.getElementUtils().getAllAnnotationMirrors(element);
+                        processingEnv.getElementUtils().getAllAnnotationMirrors(typeElement);
                 Set<String> annotationNames = mirrors
                         .stream()
                         .map(annotationMirror -> annotationMirror.getAnnotationType().toString())
                         .collect(Collectors.toSet());
-                CodeGenProcessorContext
+                List<CodeGenProcessor> codeGenProcessorList = CodeGenProcessorContext
                         // 根据注解类型生成代码
                         .find(annotationNames)
                         .stream()
-                        .filter(codeGenProcessor -> codeGenProcessor.support(element, roundEnvironment))
-                        .forEach(codeGenProcessor -> codeGenProcessor.generateClass(element, roundEnvironment, true));
+                        .filter(codeGenProcessor -> codeGenProcessor.support(typeElement, roundEnvironment))
+                        .toList();
+                // 执行代码生成逻辑
+                doGenerate(typeElement, codeGenProcessorList, roundEnvironment);
             });
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -80,6 +80,20 @@ public class QingCodeGenProcessorRegistry extends AbstractProcessor {
         }
         // 只需要执行一次
         return true;
+    }
+
+    /**
+     * 执行具体的代码生成逻辑
+     *
+     * @param typeElement          需要处理的元素信息
+     * @param codeGenProcessorList 代码生成器列表
+     * @param roundEnvironment     执行环境
+     */
+    private void doGenerate(TypeElement typeElement, List<CodeGenProcessor> codeGenProcessorList, RoundEnvironment roundEnvironment) {
+        codeGenProcessorList.stream()
+                            // 根据执行顺序来
+                            .sorted(Comparator.comparing(CodeGenProcessor::getOrder))
+                            .forEach(codeGenProcessor -> codeGenProcessor.generateClass(typeElement, roundEnvironment, true));
     }
 
     /**

@@ -19,12 +19,14 @@ import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.processor.mapper.GenMapperProcessor;
+import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,7 @@ import java.util.Optional;
  *
  * @author gim
  */
+@AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenServiceImpl.class)
 public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
 
@@ -82,7 +85,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
         invalidMethod(typeElement, repositoryFieldName).ifPresent(builder::addMethod);
         findByIdMethod(typeElement, nameContext, repositoryFieldName, classFieldName).ifPresent(builder::addMethod);
         findByPageMethod(nameContext, repositoryFieldName).ifPresent(builder::addMethod);
-        genJavaSourceFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder, true);
     }
 
     /**
