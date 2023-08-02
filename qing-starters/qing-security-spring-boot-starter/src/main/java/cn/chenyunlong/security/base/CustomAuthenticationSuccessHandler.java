@@ -18,14 +18,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 /**
  * 定制登录成功处理，返回系统颁发的token
@@ -34,7 +33,8 @@ import java.io.IOException;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException {
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         LoginSuccessToken token = (LoginSuccessToken) authentication;
@@ -42,7 +42,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         successResponse.setToken(token.getPrincipal().toString());
         successResponse.setUsername(token.getUsername());
         ObjectMapper objectMapper = new ObjectMapper();
-        response.getOutputStream().write(objectMapper.writeValueAsBytes(JsonResult.success(successResponse)));
+        response.getOutputStream()
+            .write(objectMapper.writeValueAsBytes(JsonResult.success(successResponse)));
         clearAuthenticationAttributes(request);
     }
 

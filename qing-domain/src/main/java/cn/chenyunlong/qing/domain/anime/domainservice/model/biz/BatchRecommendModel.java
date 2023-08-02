@@ -15,9 +15,8 @@ package cn.chenyunlong.qing.domain.anime.domainservice.model.biz;
 
 import cn.chenyunlong.qing.domain.anime.domainservice.model.meta.InOutBizType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 /**
  * 批量出入库模型

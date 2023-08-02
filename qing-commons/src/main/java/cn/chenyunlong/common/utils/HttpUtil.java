@@ -18,6 +18,8 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.http.Method;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import java.net.URI;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,9 +28,6 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
-import java.util.Map;
 
 /**
  * @author 陈云龙
@@ -66,17 +65,6 @@ public class HttpUtil {
      * Get请求，Map参数
      *
      * @param url          URL地址
-     * @param parameterMap 参数信息（query参数）
-     * @return 请求结果
-     */
-    public static String sendGet(String url, Map<String, String> parameterMap) {
-        return sendGet(url, null, parameterMap, null);
-    }
-
-    /**
-     * Get请求，Map参数
-     *
-     * @param url          URL地址
      * @param parameterMap 参数信息
      * @param body         请求实体（请求体）
      * @return 请求结果
@@ -92,99 +80,11 @@ public class HttpUtil {
      * @param parameterMap 请求路径参数
      * @param headerMap    请求头
      */
-    public static String sendGet(String url, Map<String, String> headerMap, Map<String, String> parameterMap, Object body) {
+    public static String sendGet(String url, Map<String, String> headerMap,
+                                 Map<String, String> parameterMap, Object body) {
         return execute(Method.GET, url, headerMap, parameterMap, body);
     }
 
-
-    /**
-     * Post请求
-     *
-     * @param url 请求地址
-     */
-    public static String sendPost(String url) {
-        return sendPost(url, null, null);
-    }
-
-    /**
-     * Get请求，Map参数
-     *
-     * @param url          URL地址
-     * @param parameterMap 参数信息（query参数）
-     * @return 请求结果
-     */
-    public static String sendPost(String url, Map<String, String> parameterMap) {
-        return sendPost(url, null, parameterMap, null);
-    }
-
-    /**
-     * Post请求，Map参数
-     *
-     * @param url          URL地址
-     * @param parameterMap 参数信息
-     * @param body         请求实体（请求体）
-     * @return 请求结果
-     */
-    public static String sendPost(String url, Map<String, String> parameterMap, Object body) {
-        return sendPost(url, null, parameterMap, body);
-    }
-
-    /**
-     * Post请求，Map参数
-     *
-     * @param url          主接口地址
-     * @param parameterMap 请求路径参数
-     * @param headerMap    请求头
-     */
-    public static String sendPost(String url, Map<String, String> headerMap, Map<String, String> parameterMap, Object body) {
-        return execute(Method.POST, url, headerMap, parameterMap, body);
-    }
-
-
-    /**
-     * Post请求
-     *
-     * @param url 请求地址
-     */
-    public static String sendPut(String url) {
-        return sendPut(url, null, null);
-    }
-
-    /**
-     * Get请求，Map参数
-     *
-     * @param url          URL地址
-     * @param parameterMap 参数信息（query参数）
-     * @return 请求结果
-     */
-    public static String sendPut(String url, Map<String, String> parameterMap) {
-        return sendPut(url, null, parameterMap, null);
-    }
-
-    /**
-     * Post请求，Map参数
-     *
-     * @param url          URL地址
-     * @param parameterMap 参数信息
-     * @param body         请求实体（请求体）
-     * @return 请求结果
-     */
-    public static String sendPut(String url, Map<String, String> parameterMap, Object body) {
-        return sendPut(url, null, parameterMap, body);
-    }
-
-    /**
-     * Post请求，Map参数
-     *
-     * @param url          主接口地址
-     * @param parameterMap 请求路径参数
-     * @param headerMap    请求头
-     */
-    public static String sendPut(String url, Map<String, String> headerMap, Map<String, String> parameterMap, Object body) {
-        return execute(Method.PUT, url, headerMap, parameterMap, body);
-    }
-
-
     /**
      * Get请求，Map参数
      *
@@ -192,7 +92,8 @@ public class HttpUtil {
      * @param parameterMap 请求路径参数
      * @param headerMap    请求头
      */
-    public static String execute(Method method, String url, Map<String, String> headerMap, Map<String, String> parameterMap, Object body) {
+    public static String execute(Method method, String url, Map<String, String> headerMap,
+                                 Map<String, String> parameterMap, Object body) {
 
         HttpHeaders headers = new HttpHeaders();
         if (headerMap != null) {
@@ -210,7 +111,8 @@ public class HttpUtil {
         String result = "";
         try {
 
-            cn.hutool.http.HttpRequest httpRequest = cn.hutool.http.HttpUtil.createRequest(method, uri.toString());
+            cn.hutool.http.HttpRequest httpRequest =
+                cn.hutool.http.HttpUtil.createRequest(method, uri.toString());
             httpRequest.body(stringHttpEntity.getBody());
             httpRequest.addHeaders(headerMap);
             httpRequest.contentType(MediaType.APPLICATION_JSON_VALUE);
@@ -222,7 +124,8 @@ public class HttpUtil {
                 if (log.isDebugEnabled()) {
                     log.debug("URL   \t: {}", uri);
                     try {
-                        log.debug("result\t:\n{}", JSONObject.toJSONString(JSONObject.parse(result), SerializerFeature.PrettyFormat));
+                        log.debug("result\t:\n{}", JSONObject.toJSONString(JSONObject.parse(result),
+                            SerializerFeature.PrettyFormat));
                     } catch (Exception exception) {
                         //不是json结构的数据直接输出
                         log.debug("result\t:\n{}", result);
@@ -257,5 +160,104 @@ public class HttpUtil {
             urlComponent.queryParams(parameterValueMap);
         }
         return urlComponent.build().toUri();
+    }
+
+    /**
+     * Get请求，Map参数
+     *
+     * @param url          URL地址
+     * @param parameterMap 参数信息（query参数）
+     * @return 请求结果
+     */
+    public static String sendGet(String url, Map<String, String> parameterMap) {
+        return sendGet(url, null, parameterMap, null);
+    }
+
+    /**
+     * Post请求
+     *
+     * @param url 请求地址
+     */
+    public static String sendPost(String url) {
+        return sendPost(url, null, null);
+    }
+
+    /**
+     * Post请求，Map参数
+     *
+     * @param url          URL地址
+     * @param parameterMap 参数信息
+     * @param body         请求实体（请求体）
+     * @return 请求结果
+     */
+    public static String sendPost(String url, Map<String, String> parameterMap, Object body) {
+        return sendPost(url, null, parameterMap, body);
+    }
+
+    /**
+     * Post请求，Map参数
+     *
+     * @param url          主接口地址
+     * @param parameterMap 请求路径参数
+     * @param headerMap    请求头
+     */
+    public static String sendPost(String url, Map<String, String> headerMap,
+                                  Map<String, String> parameterMap, Object body) {
+        return execute(Method.POST, url, headerMap, parameterMap, body);
+    }
+
+    /**
+     * Get请求，Map参数
+     *
+     * @param url          URL地址
+     * @param parameterMap 参数信息（query参数）
+     * @return 请求结果
+     */
+    public static String sendPost(String url, Map<String, String> parameterMap) {
+        return sendPost(url, null, parameterMap, null);
+    }
+
+    /**
+     * Post请求
+     *
+     * @param url 请求地址
+     */
+    public static String sendPut(String url) {
+        return sendPut(url, null, null);
+    }
+
+    /**
+     * Post请求，Map参数
+     *
+     * @param url          URL地址
+     * @param parameterMap 参数信息
+     * @param body         请求实体（请求体）
+     * @return 请求结果
+     */
+    public static String sendPut(String url, Map<String, String> parameterMap, Object body) {
+        return sendPut(url, null, parameterMap, body);
+    }
+
+    /**
+     * Post请求，Map参数
+     *
+     * @param url          主接口地址
+     * @param parameterMap 请求路径参数
+     * @param headerMap    请求头
+     */
+    public static String sendPut(String url, Map<String, String> headerMap,
+                                 Map<String, String> parameterMap, Object body) {
+        return execute(Method.PUT, url, headerMap, parameterMap, body);
+    }
+
+    /**
+     * Get请求，Map参数
+     *
+     * @param url          URL地址
+     * @param parameterMap 参数信息（query参数）
+     * @return 请求结果
+     */
+    public static String sendPut(String url, Map<String, String> parameterMap) {
+        return sendPut(url, null, parameterMap, null);
     }
 }

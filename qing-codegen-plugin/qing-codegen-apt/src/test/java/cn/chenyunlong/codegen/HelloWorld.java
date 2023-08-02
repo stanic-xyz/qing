@@ -19,5 +19,6 @@ final class HelloWorld {
     @TestAnnotation
     private String username;
 
-    @interface TestAnnotation {}
+    @interface TestAnnotation {
+    }
 }

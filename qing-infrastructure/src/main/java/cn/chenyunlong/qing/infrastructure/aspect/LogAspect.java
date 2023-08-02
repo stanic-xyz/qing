@@ -20,6 +20,9 @@ import cn.chenyunlong.qing.infrastructure.annotation.Log;
 import com.alibaba.fastjson.JSONObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -30,10 +33,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * 日志记录切面
@@ -79,16 +78,6 @@ public class LogAspect {
     @AfterThrowing(value = "pointcut()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Exception e) {
         handleLog(joinPoint, e, null);
-    }
-
-    /**
-     * 处理完请求后执行
-     *
-     * @param joinPoint 切点
-     */
-    @AfterReturning(pointcut = "pointcut()", returning = "jsonResult")
-    public void doAfterReturning(JoinPoint joinPoint, Object jsonResult) {
-        handleLog(joinPoint, null, jsonResult);
     }
 
     /**
@@ -155,7 +144,8 @@ public class LogAspect {
      * @param log      日志
      * @param operaLog 操作日志
      */
-    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, SysOperateLog operaLog) {
+    public void getControllerMethodDescription(JoinPoint joinPoint, Log log,
+                                               SysOperateLog operaLog) {
         // 设置action动作
         operaLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
@@ -186,23 +176,6 @@ public class LogAspect {
                 sysLog.setOperParam(params);
             }
         }
-    }
-
-    /**
-     * 是否存在注解，如果存在就获取
-     *
-     * @param joinPoint 连接点
-     * @return {@link Log}
-     */
-    private Log getAnnotationLog(JoinPoint joinPoint) {
-        Signature signature = joinPoint.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
-        Method method = methodSignature.getMethod();
-
-        if (method != null) {
-            return method.getAnnotation(Log.class);
-        }
-        return null;
     }
 
     /**
@@ -252,6 +225,34 @@ public class LogAspect {
             }
         }
         //单独的对象
-        return obj instanceof MultipartFile || obj instanceof HttpServletRequest || obj instanceof HttpServletResponse || obj instanceof BindingResult;
+        return obj instanceof MultipartFile || obj instanceof HttpServletRequest ||
+            obj instanceof HttpServletResponse || obj instanceof BindingResult;
+    }
+
+    /**
+     * 是否存在注解，如果存在就获取
+     *
+     * @param joinPoint 连接点
+     * @return {@link Log}
+     */
+    private Log getAnnotationLog(JoinPoint joinPoint) {
+        Signature signature = joinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature) signature;
+        Method method = methodSignature.getMethod();
+
+        if (method != null) {
+            return method.getAnnotation(Log.class);
+        }
+        return null;
+    }
+
+    /**
+     * 处理完请求后执行
+     *
+     * @param joinPoint 切点
+     */
+    @AfterReturning(pointcut = "pointcut()", returning = "jsonResult")
+    public void doAfterReturning(JoinPoint joinPoint, Object jsonResult) {
+        handleLog(joinPoint, null, jsonResult);
     }
 }

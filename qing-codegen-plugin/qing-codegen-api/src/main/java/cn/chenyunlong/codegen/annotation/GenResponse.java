@@ -14,7 +14,6 @@
 package cn.chenyunlong.codegen.annotation;
 
 import cn.chenyunlong.codegen.annotation.base.BaseGen;
-
 import java.lang.annotation.*;
 
 /**

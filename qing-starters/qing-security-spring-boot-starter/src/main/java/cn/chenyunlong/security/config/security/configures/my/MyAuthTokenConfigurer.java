@@ -20,7 +20,8 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 /**
  * @author Stan
  */
-public class MyAuthTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class MyAuthTokenConfigurer
+    extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     public MyAuthTokenConfigurer() {
         /**

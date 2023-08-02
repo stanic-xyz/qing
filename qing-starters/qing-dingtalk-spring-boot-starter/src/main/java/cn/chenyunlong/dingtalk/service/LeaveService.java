@@ -8,13 +8,12 @@ import com.aliyun.tea.TeaException;
 import com.aliyun.teautil.Common;
 import com.aliyun.teautil.models.RuntimeOptions;
 import jakarta.annotation.PostConstruct;
+import java.util.Collections;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * 钉钉机器人消息服务
@@ -56,24 +55,29 @@ public class LeaveService {
     public String startProcessInstance() {
         StartProcessInstanceHeaders startProcessInstanceHeaders = new StartProcessInstanceHeaders();
         startProcessInstanceHeaders.xAcsDingtalkAccessToken = accessTokenService.getAccessToken();
-        StartProcessInstanceRequest.StartProcessInstanceRequestFormComponentValues formComponentValues0 =
-                new StartProcessInstanceRequest.StartProcessInstanceRequestFormComponentValues()
-                        .setName("请假理由")
-                        .setValue("测试理由")
-                        .setBizAlias("123");
-        StartProcessInstanceRequest.StartProcessInstanceRequestTargetSelectActioners targetSelectActioners0 =
-                new StartProcessInstanceRequest.StartProcessInstanceRequestTargetSelectActioners().setActionerKey("cc");
+        StartProcessInstanceRequest.StartProcessInstanceRequestFormComponentValues
+            formComponentValues0 =
+            new StartProcessInstanceRequest.StartProcessInstanceRequestFormComponentValues()
+                .setName("请假理由")
+                .setValue("测试理由")
+                .setBizAlias("123");
+        StartProcessInstanceRequest.StartProcessInstanceRequestTargetSelectActioners
+            targetSelectActioners0 =
+            new StartProcessInstanceRequest.StartProcessInstanceRequestTargetSelectActioners().setActionerKey(
+                "cc");
         StartProcessInstanceRequest.StartProcessInstanceRequestApprovers requestApprovers =
-                new StartProcessInstanceRequest.StartProcessInstanceRequestApprovers().setUserIds(List.of("091669630637635952"));
+            new StartProcessInstanceRequest.StartProcessInstanceRequestApprovers().setUserIds(
+                List.of("091669630637635952"));
         StartProcessInstanceRequest startProcessInstanceRequest = new StartProcessInstanceRequest()
-                .setApprovers(Collections.singletonList(requestApprovers))
-                .setOriginatorUserId("091669630637635952")
-                .setProcessCode("PROC-C529B8E3-92D4-42F6-93A0-5CCDE0BABA0A")
-                .setTargetSelectActioners(Collections.singletonList(targetSelectActioners0))
-                .setFormComponentValues(Collections.singletonList(formComponentValues0));
+            .setApprovers(Collections.singletonList(requestApprovers))
+            .setOriginatorUserId("091669630637635952")
+            .setProcessCode("PROC-C529B8E3-92D4-42F6-93A0-5CCDE0BABA0A")
+            .setTargetSelectActioners(Collections.singletonList(targetSelectActioners0))
+            .setFormComponentValues(Collections.singletonList(formComponentValues0));
         try {
             StartProcessInstanceResponse processInstanceResponse =
-                    client.startProcessInstanceWithOptions(startProcessInstanceRequest, startProcessInstanceHeaders, new RuntimeOptions());
+                client.startProcessInstanceWithOptions(startProcessInstanceRequest,
+                    startProcessInstanceHeaders, new RuntimeOptions());
             return processInstanceResponse.getBody().getInstanceId();
         } catch (TeaException err) {
             if (!Common.empty(err.code) && !Common.empty(err.message)) {

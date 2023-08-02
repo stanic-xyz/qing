@@ -15,10 +15,9 @@ package cn.chenyunlong.qing.domain.third.bilibili;
 
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.LocalDateTime;
 
 /**
  * @TableName bilibili_anime_score

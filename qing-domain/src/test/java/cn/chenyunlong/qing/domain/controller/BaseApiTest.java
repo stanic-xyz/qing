@@ -45,12 +45,6 @@ public class BaseApiTest {
         System.out.println("在所有测试之前执行");
     }
 
-    @BeforeEach
-    void installBlog() {
-        System.out.println("在每个测试开始之前执行");
-    }
-
-
     @BeforeAll
     protected static void init() {
 //        try {
@@ -73,5 +67,10 @@ public class BaseApiTest {
 //        if (redisServer != null && redisServer.isActive()) {
 //            redisServer.stop();
 //        }
+    }
+
+    @BeforeEach
+    void installBlog() {
+        System.out.println("在每个测试开始之前执行");
     }
 }

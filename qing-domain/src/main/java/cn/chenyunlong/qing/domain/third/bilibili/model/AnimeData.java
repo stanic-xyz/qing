@@ -15,7 +15,6 @@ package cn.chenyunlong.qing.domain.third.bilibili.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
-
 import java.util.List;
 
 public class AnimeData {

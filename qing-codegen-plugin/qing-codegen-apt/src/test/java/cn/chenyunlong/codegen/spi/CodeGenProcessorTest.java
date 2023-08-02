@@ -13,9 +13,8 @@
 
 package cn.chenyunlong.codegen.spi;
 
-import junit.framework.TestCase;
-
 import java.util.ServiceLoader;
+import junit.framework.TestCase;
 
 public class CodeGenProcessorTest extends TestCase {
 

@@ -13,17 +13,18 @@
 
 package cn.chenyunlong.security.config.security.configures.my;
 
+import java.util.Collection;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 
-import java.util.Collection;
-
 public class MyAccessDecisionManager implements AccessDecisionManager {
     @Override
-    public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
+    public void decide(Authentication authentication, Object object,
+                       Collection<ConfigAttribute> configAttributes)
+        throws AccessDeniedException, InsufficientAuthenticationException {
 
     }
 

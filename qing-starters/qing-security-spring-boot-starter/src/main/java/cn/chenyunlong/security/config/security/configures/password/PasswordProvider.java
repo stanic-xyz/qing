@@ -25,11 +25,14 @@ import org.springframework.util.Assert;
 public class PasswordProvider implements AuthenticationProvider {
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        Assert.isInstanceOf(PasswordToken.class, authentication, () -> "Only AuthingToken is supported");
+    public Authentication authenticate(Authentication authentication)
+        throws AuthenticationException {
+        Assert.isInstanceOf(PasswordToken.class, authentication,
+            () -> "Only AuthingToken is supported");
         PasswordToken passwordToken = (PasswordToken) authentication;
         log.info("用户密码登录逻辑开始");
-        log.info("username:{},password:{}", passwordToken.getUsername(), passwordToken.getPassword());
+        log.info("username:{},password:{}", passwordToken.getUsername(),
+            passwordToken.getPassword());
         return null;
     }
 

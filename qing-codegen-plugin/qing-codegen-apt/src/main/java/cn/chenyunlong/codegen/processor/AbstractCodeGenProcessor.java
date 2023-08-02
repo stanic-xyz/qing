@@ -13,8 +13,10 @@
 
 package cn.chenyunlong.codegen.processor;
 
+import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.fatalError;
+import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.log;
+
 import cn.chenyunlong.codegen.annotation.*;
-import cn.chenyunlong.codegen.context.CodeGenProcessorContext;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.processor.api.*;
@@ -36,8 +38,12 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.squareup.javapoet.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.util.*;
+import java.util.function.Predicate;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -46,12 +52,10 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
+import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.annotation.Annotation;
-import java.util.*;
-import java.util.function.Predicate;
+import javax.tools.StandardLocation;
+import lombok.Data;
 
 /**
  * 基础代码一代处理器
@@ -63,6 +67,8 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
 
 
     protected ProcessingEnvironment processingEnvironment;
+    private Filer filer;
+    private Elements elementUtils;
 
 
     /**
@@ -72,6 +78,9 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      */
     public void init(ProcessingEnvironment processingEnvironment) {
         this.processingEnvironment = processingEnvironment;
+        filer = processingEnvironment.getFiler();
+        // 获取当前类的模块相对路径
+        elementUtils = processingEnvironment.getElementUtils();
     }
 
 
@@ -85,7 +94,8 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     @Override
     public boolean support(TypeElement typeElement, RoundEnvironment roundEnvironment) {
         // 1、判断当前插件是否支持该对象的处理
-        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
+        SupportedGenTypes supportedGenTypes =
+            this.getClass().getAnnotation(SupportedGenTypes.class);
         // 判断插件支持注解
         if (supportedGenTypes == null) {
             return false;
@@ -96,11 +106,11 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         if (aClass != null) {
             Elements elementUtils = processingEnvironment.getElementUtils();
             return elementUtils
-                    .getAllAnnotationMirrors(typeElement)
-                    .stream()
-                    .anyMatch(annotationMirror -> aClass
-                            .getTypeName()
-                            .equals(annotationMirror.getAnnotationType().toString()));
+                .getAllAnnotationMirrors(typeElement)
+                .stream()
+                .anyMatch(annotationMirror -> aClass
+                    .getTypeName()
+                    .equals(annotationMirror.getAnnotationType().toString()));
         }
         return false;
     }
@@ -109,12 +119,13 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      * 生成类
      * 生成Class
      *
-     * @param typeElement      顶层元素
-     * @param roundEnvironment 周围环境
-     * @param useLombok        是否使用lombok
+     * @param typeElement 顶层元素
+     * @param roundEnv    周围环境
+     * @param useLombok   是否使用lombok
      */
     @Override
-    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
+                              boolean useLombok) {
 
     }
 
@@ -124,26 +135,38 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     }
 
     /**
-     * 获取生成的文件package
+     * 获取生成的文件package。
      *
      * @return 生成的文件package
      */
     @Override
     public String getBasePackageName(TypeElement typeElement) {
-        Class<? extends Annotation> annotation = getSupportedAnnotation();
-        String basePackage;
-        GenBase genBase = typeElement.getAnnotation(GenBase.class);
-        if (genBase != null) {
-            basePackage = genBase.basePackage();
-        } else {
-            basePackage =
-                    processingEnvironment.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
-        }
-        return basePackage;
+//        Class<? extends Annotation> annotation = getSupportedAnnotation();
+//        String basePackage;
+//        GenBase genBase = typeElement.getAnnotation(GenBase.class);
+//        if (genBase != null) {
+//            basePackage = genBase.basePackage();
+//        }
+        return elementUtils.getPackageOf(typeElement).getQualifiedName().toString();
     }
 
     /**
-     * 获取源文件路径
+     * 获取支持的注解。
+     *
+     * @return {@link Class}<{@link ?} {@link extends} {@link Annotation}>
+     */
+    @Override
+    public Class<? extends Annotation> getSupportedAnnotation() {
+        SupportedGenTypes supportedGenTypes =
+            this.getClass().getAnnotation(SupportedGenTypes.class);
+        if (supportedGenTypes != null) {
+            return supportedGenTypes.types();
+        }
+        return null;
+    }
+
+    /**
+     * 获取源文件路径。
      *
      * @param typeElement 元素类型
      * @return 元素类型生成路径
@@ -152,7 +175,6 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     public String getSourcePath(TypeElement typeElement) {
         GenBase genBase = typeElement.getAnnotation(GenBase.class);
         if (genBase != null) {
-//            Class<? extends Annotation> annotation = getSupportedAnnotation();
             return genBase.sourcePath();
         }
         // 这里不应该进来的
@@ -160,21 +182,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     }
 
     /**
-     * 获取支持的注解
-     *
-     * @return {@link Class}<{@link ?} {@link extends} {@link Annotation}>
-     */
-    @Override
-    public Class<? extends Annotation> getSupportedAnnotation() {
-        SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
-        if (supportedGenTypes != null) {
-            return supportedGenTypes.types();
-        }
-        return null;
-    }
-
-    /**
-     * 是否重写文件
+     * 是否重写文件。
      *
      * @return true，重写文件，false不支持重写
      */
@@ -182,7 +190,8 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     public boolean overwrite() {
         boolean override = false;
         if (AnnotationUtil.hasAnnotation(this.getClass(), SupportedGenTypes.class)) {
-            SupportedGenTypes supportedGenTypes = this.getClass().getAnnotation(SupportedGenTypes.class);
+            SupportedGenTypes supportedGenTypes =
+                this.getClass().getAnnotation(SupportedGenTypes.class);
             override = supportedGenTypes.override();
             Class<? extends Annotation> types = supportedGenTypes.types();
         }
@@ -190,13 +199,14 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     }
 
     /**
-     * 获取字段信息
+     * 获取字段信息。
      *
      * @param typeElement 类型元素
      * @param predicate   谓词
      * @return {@link Set}<{@link VariableElement}>
      */
-    public Set<VariableElement> findFields(TypeElement typeElement, Predicate<VariableElement> predicate) {
+    public Set<VariableElement> findFields(TypeElement typeElement,
+                                           Predicate<VariableElement> predicate) {
         List<? extends Element> fieldTypes = typeElement.getEnclosedElements();
         Set<VariableElement> variableElements = new LinkedHashSet<>();
         for (VariableElement element : ElementFilter.fieldsIn(fieldTypes)) {
@@ -208,7 +218,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     }
 
     /**
-     * 获取名称默认上下文
+     * 获取名称默认上下文。
      *
      * @param typeElement 类型元素
      * @return {@link NameContext}
@@ -217,8 +227,10 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         NameContext context = new NameContext();
         Name domainName = typeElement.getSimpleName();
 
-        ProcessingEnvironment processingEnvironment = ProcessingEnvironmentHolder.getProcessingEnvironment();
-        PackageElement packageElement = processingEnvironment.getElementUtils().getPackageOf(typeElement);
+        ProcessingEnvironment processingEnvironment =
+            ProcessingEnvironmentHolder.getProcessingEnvironment();
+        PackageElement packageElement =
+            processingEnvironment.getElementUtils().getPackageOf(typeElement);
 
         Name qualifiedName = packageElement.getQualifiedName();
         String packageName = qualifiedName.toString();
@@ -231,7 +243,8 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
 
 //        System.out.println("文件生成根路径： " + context.getBasePackage());
 
-        String serviceName = GenServiceProcessor.SERVICE_PREFIX + domainName + GenServiceProcessor.SERVICE_SUFFIX;
+        String serviceName =
+            GenServiceProcessor.SERVICE_PREFIX + domainName + GenServiceProcessor.SERVICE_SUFFIX;
         String implName = domainName + GenServiceImplProcessor.IMPL_SUFFIX;
         String repositoryName = domainName + GenRepositoryProcessor.REPOSITORY_SUFFIX;
         String mapperName = domainName + GenMapperProcessor.SUFFIX;
@@ -264,52 +277,52 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
 
         //  生成代码
         Optional
-                .ofNullable(typeElement.getAnnotation(GenCreator.class))
-                .ifPresent(creator -> context.setCreatorPackageName(creator.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenCreator.class))
+            .ifPresent(creator -> context.setCreatorPackageName(creator.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenUpdater.class))
-                .ifPresent(updater -> context.setUpdaterPackageName(updater.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenUpdater.class))
+            .ifPresent(updater -> context.setUpdaterPackageName(updater.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenQuery.class))
-                .ifPresent(query -> context.setQueryPackageName(query.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenQuery.class))
+            .ifPresent(query -> context.setQueryPackageName(query.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenVo.class))
-                .ifPresent(genVo -> context.setVoPackageName(genVo.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenVo.class))
+            .ifPresent(genVo -> context.setVoPackageName(genVo.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenRepository.class))
-                .ifPresent(repository -> context.setRepositoryPackageName(repository.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenRepository.class))
+            .ifPresent(repository -> context.setRepositoryPackageName(repository.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenMapper.class))
-                .ifPresent(mapper -> context.setMapperPackageName(mapper.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenMapper.class))
+            .ifPresent(mapper -> context.setMapperPackageName(mapper.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenService.class))
-                .ifPresent(service -> context.setServicePackageName(service.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenService.class))
+            .ifPresent(service -> context.setServicePackageName(service.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenServiceImpl.class))
-                .ifPresent(service -> context.setImplPackageName(service.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenServiceImpl.class))
+            .ifPresent(service -> context.setImplPackageName(service.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenCreateRequest.class))
-                .ifPresent(createRequest -> context.setCreatePackageName(createRequest.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenCreateRequest.class))
+            .ifPresent(createRequest -> context.setCreatePackageName(createRequest.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenUpdateRequest.class))
-                .ifPresent(updateRequest -> context.setUpdatePackageName(updateRequest.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenUpdateRequest.class))
+            .ifPresent(updateRequest -> context.setUpdatePackageName(updateRequest.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenQueryRequest.class))
-                .ifPresent(queryRequest -> context.setQueryRequestPackageName(queryRequest.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenQueryRequest.class))
+            .ifPresent(queryRequest -> context.setQueryRequestPackageName(queryRequest.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenResponse.class))
-                .ifPresent(response -> context.setResponsePackageName(response.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenResponse.class))
+            .ifPresent(response -> context.setResponsePackageName(response.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenFeign.class))
-                .ifPresent(feign -> context.setFeignPackageName(feign.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenFeign.class))
+            .ifPresent(feign -> context.setFeignPackageName(feign.pkgName()));
         Optional
-                .ofNullable(typeElement.getAnnotation(GenController.class))
-                .ifPresent(controller -> context.setControllerPackageName(controller.pkgName()));
+            .ofNullable(typeElement.getAnnotation(GenController.class))
+            .ifPresent(controller -> context.setControllerPackageName(controller.pkgName()));
         return context;
     }
 
     /**
-     * 获取父类
+     * 获取父类。
      *
      * @param element 元素
      * @return {@link TypeElement}
@@ -328,13 +341,14 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
 
     /**
      * 添加setter和getter方法
-     * 添加setter和getter方法，这个和上面的addSetterAndGetterMethodWithConverter只能调用一个
+     * 添加setter和getter方法，这个和上面的addSetterAndGetterMethodWithConverter只能调用一个。
      *
      * @param builder          构建器
      * @param variableElements 变量元素
      * @param useLombok        使用lombok
      */
-    public void addSetterAndGetterMethod(TypeSpec.Builder builder, Set<VariableElement> variableElements, boolean useLombok) {
+    public void addSetterAndGetterMethod(TypeSpec.Builder builder,
+                                         Set<VariableElement> variableElements, boolean useLombok) {
         for (VariableElement variableElement : variableElements) {
             TypeName typeName = TypeName.get(variableElement.asType());
             getDescriptionInfoBuilder(builder, variableElement, typeName, useLombok);
@@ -342,119 +356,62 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     }
 
     /**
-     * 获取描述信息生成器
-     * 得到描述信息构建器
+     * 获取描述信息生成器，得到描述信息构建器。
      *
      * @param builder   构建器
      * @param element   已经
      * @param typeName  类型名称
      * @param useLombok 使用lombok
      */
-    private void getDescriptionInfoBuilder(TypeSpec.Builder builder, VariableElement element, TypeName typeName, boolean useLombok) {
+    private void getDescriptionInfoBuilder(TypeSpec.Builder builder, VariableElement element,
+                                           TypeName typeName, boolean useLombok) {
         String fieldDescription = getFieldDesc(element);
         AnnotationSpec.Builder schemaAnnotationBuilder =
-                AnnotationSpec.builder(Schema.class).addMember("title", "$S", element.getSimpleName().toString());
+            AnnotationSpec.builder(Schema.class)
+                .addMember("title", "$S", element.getSimpleName().toString());
         if (StringUtils.isNotBlank(fieldDescription)) {
             schemaAnnotationBuilder.addMember("description", "$S", fieldDescription);
         }
         FieldSpec.Builder fieldSpec = FieldSpec
-                .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
-                .addAnnotation(schemaAnnotationBuilder.build());
+            .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
+            .addAnnotation(schemaAnnotationBuilder.build());
         builder.addField(fieldSpec.build());
         if (!useLombok) {
             // 不使用lombok
             String fieldName = getFieldDefaultName(element);
             MethodSpec.Builder getMethod = MethodSpec
-                    .methodBuilder("get" + fieldName)
-                    .returns(typeName)
-                    .addModifiers(Modifier.PUBLIC)
-                    .addStatement("return $L", element.getSimpleName().toString());
+                .methodBuilder("get" + fieldName)
+                .returns(typeName)
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("return $L", element.getSimpleName().toString());
             MethodSpec.Builder setMethod = MethodSpec
-                    .methodBuilder("set" + fieldName)
-                    .returns(void.class)
-                    .addModifiers(Modifier.PUBLIC)
-                    .addParameter(typeName, element.getSimpleName().toString())
-                    .addStatement("this.$L = $L", element.getSimpleName().toString(), element
-                            .getSimpleName()
-                            .toString());
+                .methodBuilder("set" + fieldName)
+                .returns(void.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(typeName, element.getSimpleName().toString())
+                .addStatement("this.$L = $L", element.getSimpleName().toString(), element
+                    .getSimpleName()
+                    .toString());
             builder.addMethod(getMethod.build());
             builder.addMethod(setMethod.build());
         }
     }
 
     /**
-     * 使用转换器添加setter和getter方法
-     * 应用转化器
-     *
-     * @param builder          构建器
-     * @param variableElements 变量元素
-     * @param useLombok        是否使用lombok
-     */
-    public void addSetterAndGetterMethodWithConverter(TypeSpec.Builder builder, Set<VariableElement> variableElements, boolean useLombok) {
-        for (VariableElement variableElement : variableElements) {
-            TypeName typeName;
-            if (Objects.nonNull(variableElement.getAnnotation(TypeConverter.class))) {
-                //这里处理下泛型的情况，比如List<String> 这种，TypeConverter FullName 用逗号分隔"java.lang.List
-                String fullName = variableElement.getAnnotation(TypeConverter.class).toTypeFullName();
-                Iterable<String> classes = Splitter.on(",").split(fullName);
-                int size = Iterables.size(classes);
-                if (size > 1) {
-                    //泛型生成像这样
-                    //ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class))
-                    typeName =
-                            ParameterizedTypeName.get(ClassName.bestGuess(Iterables.get(classes, 0)), ClassName.bestGuess(Iterables.get(classes, 1)));
-                } else {
-                    typeName = ClassName.bestGuess(variableElement.getAnnotation(TypeConverter.class).toTypeFullName());
-                }
-            } else {
-                typeName = TypeName.get(variableElement.asType());
-            }
-            getDescriptionInfoBuilder(builder, variableElement, typeName, useLombok);
-        }
-    }
-
-
-    /**
-     * 添加id setter和getter
-     *
-     * @param builder   构建器
-     * @param useLombok 使用启用lombok
-     */
-    protected void addIdField(TypeSpec.Builder builder, boolean useLombok) {
-        builder.addField(FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
-        if (!useLombok) {
-            // 如果没有使用lombok，需要添加getter setter方法
-            MethodSpec.Builder getMethod = MethodSpec
-                    .methodBuilder("getId")
-                    .returns(ClassName.get(Long.class))
-                    .addModifiers(Modifier.PUBLIC)
-                    .addStatement("return $L", "id");
-            MethodSpec.Builder setMethod = MethodSpec
-                    .methodBuilder("setId")
-                    .returns(void.class)
-                    .addModifiers(Modifier.PUBLIC)
-                    .addParameter(TypeName.LONG, "id")
-                    .addStatement("this.$L = $L", "id", "id");
-            builder.addMethod(getMethod.build());
-            builder.addMethod(setMethod.build());
-        }
-    }
-
-    /**
-     * 得到字段描述信息
+     * 得到字段描述信息。
      *
      * @param element 已经
      * @return {@link String}
      */
     protected String getFieldDesc(VariableElement element) {
         return Optional
-                .ofNullable(element.getAnnotation(FieldDesc.class))
-                .map(FieldDesc::name)
-                .orElse(element.getSimpleName().toString());
+            .ofNullable(element.getAnnotation(FieldDesc.class))
+            .map(FieldDesc::name)
+            .orElse(element.getSimpleName().toString());
     }
 
     /**
-     * 获取字段默认名称
+     * 获取字段默认名称。
      *
      * @param variableElement 变量元素
      * @return {@link String}
@@ -463,25 +420,88 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         return StringUtils.bigCamel(variableElement.getSimpleName().toString());
     }
 
+    /**
+     * 使用转换器添加setter和getter方法
+     * 应用转化器。
+     *
+     * @param builder          构建器
+     * @param variableElements 变量元素
+     * @param useLombok        是否使用lombok
+     */
+    public void addSetterAndGetterMethodWithConverter(TypeSpec.Builder builder,
+                                                      Set<VariableElement> variableElements,
+                                                      boolean useLombok) {
+        for (VariableElement variableElement : variableElements) {
+            TypeName typeName;
+            if (Objects.nonNull(variableElement.getAnnotation(TypeConverter.class))) {
+                //这里处理下泛型的情况，比如List<String> 这种，TypeConverter FullName 用逗号分隔"java.lang.List
+                String fullName =
+                    variableElement.getAnnotation(TypeConverter.class).toTypeFullName();
+                Iterable<String> classes = Splitter.on(",").split(fullName);
+                int size = Iterables.size(classes);
+                if (size > 1) {
+                    //泛型生成像这样
+                    //ParameterizedTypeName.get(ClassName.get(JsonObject.class), ClassName.get(String.class))
+                    typeName =
+                        ParameterizedTypeName.get(ClassName.bestGuess(Iterables.get(classes, 0)),
+                            ClassName.bestGuess(Iterables.get(classes, 1)));
+                } else {
+                    typeName = ClassName.bestGuess(
+                        variableElement.getAnnotation(TypeConverter.class).toTypeFullName());
+                }
+            } else {
+                typeName = TypeName.get(variableElement.asType());
+            }
+            getDescriptionInfoBuilder(builder, variableElement, typeName, useLombok);
+        }
+    }
 
     /**
-     * 获取生成源的类型信息类型
+     * 添加id setter和getter。
+     *
+     * @param builder   构建器
+     * @param useLombok 使用启用lombok
+     */
+    protected void addIdField(TypeSpec.Builder builder, boolean useLombok) {
+        builder.addField(
+            FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
+        if (!useLombok) {
+            // 如果没有使用lombok，需要添加getter setter方法
+            MethodSpec.Builder getMethod = MethodSpec
+                .methodBuilder("getId")
+                .returns(ClassName.get(Long.class))
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("return $L", "id");
+            MethodSpec.Builder setMethod = MethodSpec
+                .methodBuilder("setId")
+                .returns(void.class)
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(TypeName.LONG, "id")
+                .addStatement("this.$L = $L", "id", "id");
+            builder.addMethod(getMethod.build());
+            builder.addMethod(setMethod.build());
+        }
+    }
+
+    /**
+     * 获取生成源的类型信息类型。
      *
      * @param sourceName     源名称
      * @param packageName    包名
      * @param superClassName 超类名字
      * @return {@link TypeSpec.Builder}
      */
-    public TypeSpec.Builder getSourceType(String sourceName, String packageName, String superClassName) {
+    public TypeSpec.Builder getSourceType(String sourceName, String packageName,
+                                          String superClassName) {
         return TypeSpec
-                .classBuilder(sourceName)
-                .superclass(ClassName.get(packageName, superClassName))
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class);
+            .classBuilder(sourceName)
+            .superclass(ClassName.get(packageName, superClassName))
+            .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(Schema.class);
     }
 
     /**
-     * 源类型与构造
+     * 源类型与构造。
      *
      * @param typeElement    typeElement
      * @param sourceName     源名称
@@ -489,67 +509,89 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      * @param superClassName 父类名称
      * @return {@link TypeSpec.Builder}
      */
-    public TypeSpec.Builder getSourceTypeWithConstruct(TypeElement typeElement, String sourceName, String packageName, String superClassName) {
+    public TypeSpec.Builder getSourceTypeWithConstruct(TypeElement typeElement, String sourceName,
+                                                       String packageName, String superClassName) {
         MethodSpec.Builder constructorSpecBuilder = MethodSpec
-                .constructorBuilder()
-                .addParameter(TypeName.get(typeElement.asType()), "source")
-                .addModifiers(Modifier.PUBLIC);
+            .constructorBuilder()
+            .addParameter(TypeName.get(typeElement.asType()), "source")
+            .addModifiers(Modifier.PUBLIC);
         constructorSpecBuilder.addStatement("super(source)");
         return TypeSpec
-                .classBuilder(sourceName)
-                .superclass(ClassName.get(packageName, superClassName))
-                .addModifiers(Modifier.PUBLIC)
-                .addMethod(MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC).build())
-                .addMethod(constructorSpecBuilder.build())
-                .addAnnotation(Schema.class)
-                .addAnnotation(Data.class);
+            .classBuilder(sourceName)
+            .superclass(ClassName.get(packageName, superClassName))
+            .addModifiers(Modifier.PUBLIC)
+            .addMethod(MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC).build())
+            .addMethod(constructorSpecBuilder.build())
+            .addAnnotation(Schema.class)
+            .addAnnotation(Data.class);
     }
 
 
     /**
-     * 生成Java源文件
+     * 生成Java源文件。
      *
-     * @param typeElement    包名
-     * @param builder        类型规范创建器
-     * @param generateSource
+     * @param typeElement 包名
+     * @param builder     类型规范创建器
      */
-    public void genJavaSourceFile(TypeElement typeElement, TypeSpec.Builder builder, boolean generateSource) {
-        // 获取Filer对象
-        Filer filer = processingEnvironment.getFiler();
-        // 创建并写入文件
-        String genPath = CodeGenProcessorContext.getSourcePath(typeElement, getSupportedAnnotation());
-        String packageName = CodeGenProcessorContext.getPackageName(typeElement, getSupportedAnnotation());
+    public void genJavaSourceFile(TypeElement typeElement, TypeSpec.Builder builder) {
+        String basePackageName = getBasePackageName(typeElement);
+        String subPackageName = getSubPackageName(typeElement);
+
+        StringBuilder stringBuilder = new StringBuilder(basePackageName);
+        if (StringUtils.isNotBlank(subPackageName)) {
+            stringBuilder.append(".").append(subPackageName);
+        }
+        String packageName = stringBuilder.toString();
 
         // 生成.java文件
-        TypeSpec typeSpec = builder.build();
+        TypeSpec typeSpec = builder
+            .build();
         JavaFile javaFile = JavaFile
-                .builder(packageName, typeSpec)
-                .addFileComment("---Auto Generated by Qing-Generator ---")
-                .build();
-//        boolean override = overwrite();
-//        String packagePath = packageName.replace(".", File.separator) + File.separator + typeSpec.name + ".java";
-//        try {
-//            Path path = Paths.get(genPath);
-//            File file = new File(path.toFile().getAbsolutePath());
-//            if (!file.exists()) {
-//                return;
-//            }
-//            String sourceFileName = path.toFile().getAbsolutePath() + File.separator + packagePath;
-//            File sourceFile = new File(sourceFileName);
-//            if (!sourceFile.exists() || override) {
-//
-//            }
-//        } catch (IOException exception) {
-//            processingEnvironment.getMessager().printMessage(Kind.ERROR, exception.getMessage());
-//        }
+            .builder(packageName, typeSpec)
+            .indent("    ")
+            .addFileComment("---Auto Generated by Qing-Generator --")
+            .build();
+        // 生成Java文件
         try {
-            JavaFileObject sourceFile = filer.createSourceFile(javaFile.packageName + "." + typeSpec.name, typeElement);
+            String sourceFile = typeSpec.name + ".java";
+            FileObject fileObject;
+            fileObject =
+                filer.getResource(StandardLocation.SOURCE_PATH, packageName, sourceFile);
+            if (fileObject != null) {
+                try {
+                    CharSequence charContent = fileObject.getCharContent(true);
+                    if (!charContent.isEmpty()) {
+                        if (!overwrite()) {
+                            // 不能覆盖文件
+                            return;
+                        } else {
+                            // 需要覆盖文件，然后重新生成
+                            log(String.format("[删除文件]：%s", sourceFile));
+                            fileObject.delete();
+                        }
+                    } else {
+                        return;
+                    }
+                } catch (Exception exception) {
+                    fatalError(exception.getMessage());
+                }
+            }
+        } catch (FileNotFoundException ignored) {
+            System.out.println("文件不存在，需要重新生成");
+        } catch (IOException exception) {
+            fatalError(exception.getMessage());
+        }
+        // 生成源文件
+        try {
+            JavaFileObject sourceFile;
+            sourceFile = filer.createSourceFile(packageName + "." + typeSpec.name, typeElement);
             try (Writer writer = sourceFile.openWriter()) {
                 javaFile.writeTo(writer);
+            } catch (IOException exception) {
+                fatalError(exception.getMessage());
             }
-        } catch (IOException e) {
-            System.out.println("生成代码错误，原始类型：" + typeElement.getQualifiedName());
-            e.printStackTrace();
+        } catch (IOException exception) {
+            fatalError(exception.getMessage());
         }
     }
 }

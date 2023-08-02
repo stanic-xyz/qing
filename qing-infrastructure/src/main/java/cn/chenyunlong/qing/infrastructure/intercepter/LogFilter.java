@@ -18,6 +18,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -25,9 +27,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Filter for logging.
@@ -44,7 +43,8 @@ public class LogFilter extends OncePerRequestFilter {
      * 排除敏感属性字段
      */
     public static final String[] EXCLUDE_PATH_PATTERS =
-            new String[]{"/actuator/**", "/css/**", "/favicon.ico", "/file/**", "/img/**", "/js/**", "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"};
+        new String[] {"/actuator/**", "/css/**", "/favicon.ico", "/file/**", "/img/**", "/js/**",
+            "/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"};
 
     /**
      * 执行控制器了
@@ -56,13 +56,17 @@ public class LogFilter extends OncePerRequestFilter {
      * @throws IOException      io异常
      */
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                    @NonNull HttpServletResponse response, FilterChain filterChain)
+        throws ServletException, IOException {
         String remoteAddr = JakartaServletUtil.getClientIP(request);
         // Set start time
         long startTime = System.currentTimeMillis();
         // Do filter
         filterChain.doFilter(request, response);
-        log.debug("path: {}, method: {}, ip: {}, status: {}, usage: {} ms", request.getServletPath(), request.getMethod(), remoteAddr, response.getStatus(), System.currentTimeMillis() - startTime);
+        log.debug("path: {}, method: {}, ip: {}, status: {}, usage: {} ms",
+            request.getServletPath(), request.getMethod(), remoteAddr, response.getStatus(),
+            System.currentTimeMillis() - startTime);
     }
 
     @Override
@@ -70,7 +74,8 @@ public class LogFilter extends OncePerRequestFilter {
         String servletPath = request.getServletPath();
         boolean shouldNotFilter = super.shouldNotFilter(request);
         if (!shouldNotFilter) {
-            return Arrays.stream(EXCLUDE_PATH_PATTERS).anyMatch(path -> new AntPathMatcher().match(path, servletPath));
+            return Arrays.stream(EXCLUDE_PATH_PATTERS)
+                .anyMatch(path -> new AntPathMatcher().match(path, servletPath));
         } else {
             return false;
         }

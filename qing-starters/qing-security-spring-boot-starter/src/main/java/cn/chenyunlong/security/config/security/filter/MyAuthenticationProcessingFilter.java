@@ -16,6 +16,8 @@ package cn.chenyunlong.security.config.security.filter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,9 +26,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StringUtils;
-
-import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * @author Stan
@@ -45,7 +44,9 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest,
+                                                HttpServletResponse httpServletResponse)
+        throws AuthenticationException {
         //TODO 完善认证过程
         UsernamePasswordAuthenticationToken authRequest;
         authRequest = new UsernamePasswordAuthenticationToken("", "", null);
@@ -66,7 +67,8 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
             return null;
         }
         Optional<Cookie> zhangliToken =
-                Arrays.stream(cookies).filter(cookie -> cookie.getName().equals(AUTHORIZATION_COOKIES)).findFirst();
+            Arrays.stream(cookies).filter(cookie -> cookie.getName().equals(AUTHORIZATION_COOKIES))
+                .findFirst();
         return zhangliToken.map(Cookie::getValue).orElse(null);
     }
 

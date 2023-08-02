@@ -19,11 +19,10 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
-import lombok.RequiredArgsConstructor;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import lombok.RequiredArgsConstructor;
 
 /**
  * s3 是一个协议
@@ -54,11 +53,13 @@ public class S3OssClient implements OssClient {
     }
 
     @Override
-    public PutObjectResult putObject(String bucketName, String objectName, InputStream stream, long size, String contextType) throws IOException {
+    public PutObjectResult putObject(String bucketName, String objectName, InputStream stream,
+                                     long size, String contextType) throws IOException {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(size);
         objectMetadata.setContentType(contextType);
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, objectName, stream, objectMetadata);
+        PutObjectRequest putObjectRequest =
+            new PutObjectRequest(bucketName, objectName, stream, objectMetadata);
         putObjectRequest.getRequestClientOptions().setReadLimit(Long.valueOf(size).intValue() + 1);
         return amazonS3.putObject(putObjectRequest);
     }

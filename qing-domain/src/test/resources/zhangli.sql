@@ -35,15 +35,17 @@
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
-create database if not exists zhangli;
-use zhangli;
+create
+database if not exists zhangli;
+use
+zhangli;
 
 DROP TABLE IF EXISTS `activity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
 CREATE TABLE `activity`
 (
-    `activity_id`   bigint(20)   not null AUTO_INCREMENT,
+    `activity_id`   bigint(20) not null AUTO_INCREMENT,
     `activity_name` varchar(100) not null,
     `create_time`   datetime     not null default NOW() comment '创建时间',
     `update_time`   datetime     not null default NOW() comment '创建时间',
@@ -61,11 +63,11 @@ DROP TABLE IF EXISTS anime_comment;
 
 CREATE TABLE `anime_comment`
 (
-    `id`           bigint(20)   not null AUTO_INCREMENT COMMENT '评论ID',
-    `cid`          bigint(20)   not null COMMENT '番剧ID',
+    `id`           bigint(20) not null AUTO_INCREMENT COMMENT '评论ID',
+    `cid`          bigint(20) not null COMMENT '番剧ID',
     `username`     varchar(255) not null COMMENT '评论者昵称',
     `content`      text         not null COMMENT '评论内容',
-    `ip_address`   varchar(15)  null     DEFAULT NULL COMMENT 'ip地址',
+    `ip_address`   varchar(15) null DEFAULT NULL COMMENT 'ip地址',
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
     `search_value` varchar(20)  not null default '' comment '查询参数',
@@ -81,7 +83,7 @@ DROP TABLE IF EXISTS `anime_district`;
 
 CREATE TABLE `anime_district`
 (
-    `id`           bigint(20)   not null AUTO_INCREMENT COMMENT '主键ID',
+    `id`           bigint(20) not null AUTO_INCREMENT COMMENT '主键ID',
     `name`         varchar(50)           DEFAULT NULL COMMENT '地区名称',
     `code`         varchar(10)           DEFAULT NULL COMMENT '地区编码',
     `description`  varchar(255)          DEFAULT NULL COMMENT '描述信息',
@@ -97,7 +99,8 @@ CREATE TABLE `anime_district`
   DEFAULT CHARSET = utf8mb4,
   collate utf8mb4_general_ci;
 
-LOCK TABLES `anime_district` WRITE;
+LOCK
+TABLES `anime_district` WRITE;
 /*!40000 ALTER TABLE `anime_district`
     DISABLE KEYS */;
 INSERT INTO `anime_district`(`id`, `name`, `code`, `description`)
@@ -106,19 +109,20 @@ VALUES (1, '日本', 'jp', '日本地区'),
        (3, '欧美', 'eu', '欧美地区');
 /*!40000 ALTER TABLE `anime_district`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 
 DROP TABLE IF EXISTS `anime_feedback`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
 CREATE TABLE `anime_feedback`
 (
-    `id`                bigint(20)   not null AUTO_INCREMENT,
-    `type`              int(11)               DEFAULT NULL COMMENT '反馈类型\n1、链接失效\n2、资源质量差\n3、集数缺失\n4、其他',
+    `id`                bigint(20) not null AUTO_INCREMENT,
+    `type`              int(11) DEFAULT NULL COMMENT '反馈类型\n1、链接失效\n2、资源质量差\n3、集数缺失\n4、其他',
     `detail`            text         not null COMMENT '详细信息',
-    `mid`               bigint(20)   not null COMMENT '番剧ID',
-    `uid`               bigint(20)            DEFAULT NULL COMMENT '用户ID',
-    `processing_status` int(11)      not null COMMENT '处理状态\n0、未处理\n1、处理中\n2、已处理',
+    `mid`               bigint(20) not null COMMENT '番剧ID',
+    `uid`               bigint(20) DEFAULT NULL COMMENT '用户ID',
+    `processing_status` int(11) not null COMMENT '处理状态\n0、未处理\n1、处理中\n2、已处理',
     `create_time`       datetime     not null default NOW() comment '创建时间',
     `update_time`       datetime     not null default NOW() comment '创建时间',
     `search_value`      varchar(20)  not null default '' comment '查询参数',
@@ -139,22 +143,22 @@ create table anime_info
     id               bigint auto_increment
         primary key,
     name             varchar(255)                           not null,
-    district_id      int                                    null,
-    district_name    varchar(255)                           null comment '地区(日本、中国、欧美）',
+    district_id      int null,
+    district_name    varchar(255) null comment '地区(日本、中国、欧美）',
     cover_url        varchar(255)                           not null comment '封面地址',
-    type_id          int(10)                                null comment '类型信息',
-    type_name        varchar(255)                           null comment 'OVA TV 剧场版(theater_version)',
-    instruction      text                                   null comment '番剧介绍',
-    other_name       varchar(255)                           null comment '其它名称',
-    author           varchar(255)                           null comment '原作',
-    premiere_date    date                                   null comment '首播时间',
-    company          varchar(255)                           null comment '制作公司',
-    play_status      varchar(255) default '0'               null comment '0 未播放 1 连载 2 完结',
-    plot_type        varchar(255)                           null comment '剧情类型',
-    tags             varchar(255)                           null comment '标签',
-    official_website varchar(255)                           null comment '官方网站',
-    play_heat        varchar(255)                           null comment '播放热度',
-    original_name    varchar(255)                           null comment '原版名称',
+    type_id          int(10) null comment '类型信息',
+    type_name        varchar(255) null comment 'OVA TV 剧场版(theater_version)',
+    instruction      text null comment '番剧介绍',
+    other_name       varchar(255) null comment '其它名称',
+    author           varchar(255) null comment '原作',
+    premiere_date    date null comment '首播时间',
+    company          varchar(255) null comment '制作公司',
+    play_status      varchar(255) default '0' null comment '0 未播放 1 连载 2 完结',
+    plot_type        varchar(255) null comment '剧情类型',
+    tags             varchar(255) null comment '标签',
+    official_website varchar(255) null comment '官方网站',
+    play_heat        varchar(255) null comment '播放热度',
+    original_name    varchar(255) null comment '原版名称',
     create_time      datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
     update_time      datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
     search_value     varchar(20)  default ''                not null comment '查询参数',
@@ -162,8 +166,7 @@ create table anime_info
     update_by        varchar(255) default ''                not null comment '最后更新人',
     remark           varchar(255) default ''                not null comment '创建时间',
     order_no         int          default 0                 not null
-)
-    comment
+) comment
         '番剧信息' charset = utf8;
 
 create index anime_info_premiere_date_index
@@ -174,7 +177,7 @@ DROP TABLE IF EXISTS `anime_menu`;
 
 CREATE TABLE `anime_menu`
 (
-    `id`           bigint(20)            DEFAULT NULL COMMENT 'id',
+    `id`           bigint(20) DEFAULT NULL COMMENT 'id',
     `name`         varchar(30)  not null DEFAULT '' COMMENT '名称',
     `path`         varchar(100) not null DEFAULT '' COMMENT '路径',
     `create_time`  datetime     not null default NOW() comment '创建时间',
@@ -192,9 +195,9 @@ drop table if exists anime_playlist;
 create table anime_playlist
 (
     `id`           bigint auto_increment comment '播放列表主键ID',
-    `name`         nvarchar(255)              not null comment '播放列表名称',
+    `name`         nvarchar(255) not null comment '播放列表名称',
     `anime_id`     bigint                     not null comment '所属动漫主键ID',
-    `description`  text                       null comment '描述信息',
+    `description`  text null comment '描述信息',
     `create_time`  datetime     default NOW() not null comment '创建时间',
     `update_time`  datetime     default NOW() not null comment '创建时间',
     `search_value` varchar(20)  default ''    not null comment '查询参数',
@@ -211,14 +214,14 @@ DROP TABLE IF EXISTS `anime_episode`;
 
 CREATE TABLE `anime_episode`
 (
-    `id`            bigint(20)   not null AUTO_INCREMENT COMMENT '视频ID',
+    `id`            bigint(20) not null AUTO_INCREMENT COMMENT '视频ID',
     `anime_id`      bigint       not null comment '所属动漫主键ID',
     `name`          varchar(255) not null COMMENT '视频标题名称',
-    `status`        int(11)               DEFAULT '0' COMMENT '视频状态，0正常',
+    `status`        int(11) DEFAULT '0' COMMENT '视频状态，0正常',
     `uploader_name` varchar(100)          DEFAULT NULL COMMENT '上传者名称',
-    `uploader_id`   bigint(20)            DEFAULT NULL COMMENT '上传用户ID',
+    `uploader_id`   bigint(20) DEFAULT NULL COMMENT '上传用户ID',
     `url`           varchar(255) not null COMMENT '视频地址',
-    `order_no`      int(11)      not null COMMENT '视频排序',
+    `order_no`      int(11) not null COMMENT '视频排序',
     `create_time`   datetime     not null default NOW() comment '创建时间',
     `update_time`   datetime     not null default NOW() comment '创建时间',
     `search_value`  varchar(20)  not null default '' comment '查询参数',
@@ -257,8 +260,8 @@ DROP TABLE IF EXISTS `anime_resource`;
 
 CREATE TABLE `anime_resource`
 (
-    `id`           bigint(20)   not null AUTO_INCREMENT,
-    `mid`          bigint(20)   not null COMMENT '番剧ID',
+    `id`           bigint(20) not null AUTO_INCREMENT,
+    `mid`          bigint(20) not null COMMENT '番剧ID',
     `name`         varchar(255) not null COMMENT '播放资源列表名称',
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
@@ -276,10 +279,10 @@ DROP TABLE IF EXISTS `anime_recommend`;
 
 CREATE TABLE `anime_recommend`
 (
-    `id`           bigint(20)   not null AUTO_INCREMENT,
-    `aid`          bigint(20)   not null COMMENT '番剧ID',
+    `id`           bigint(20) not null AUTO_INCREMENT,
+    `aid`          bigint(20) not null COMMENT '番剧ID',
     `reason`       varchar(255) not null COMMENT '推荐理由',
-    `order_no`     int(11)      not null COMMENT '视频排序',
+    `order_no`     int(11) not null COMMENT '视频排序',
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
     `search_value` varchar(20)  not null default '' comment '查询参数',
@@ -297,10 +300,10 @@ DROP TABLE IF EXISTS `anime_type`;
 
 CREATE TABLE `anime_type`
 (
-    `id`           bigint(20)   not null AUTO_INCREMENT COMMENT '主键ID',
+    `id`           bigint(20) not null AUTO_INCREMENT COMMENT '主键ID',
     `name`         varchar(10)  not null COMMENT '类型名称',
     `description`  text COMMENT '详细介绍信息',
-    `order_no`     int(11)               DEFAULT NULL COMMENT '排序号',
+    `order_no`     int(11) DEFAULT NULL COMMENT '排序号',
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
     `search_value` varchar(20)  not null default '' comment '查询参数',
@@ -317,7 +320,8 @@ CREATE TABLE `anime_type`
 -- Dumping data for table `anime_type`
 --
 
-LOCK TABLES `anime_type` WRITE;
+LOCK
+TABLES `anime_type` WRITE;
 /*!40000 ALTER TABLE `anime_type`
     DISABLE KEYS */;
 INSERT INTO `anime_type`(`id`, `name`, `description`, `order_no`)
@@ -368,14 +372,15 @@ VALUES (1, '欢乐向', '欢乐向', 1),
        (68, '欢乐向', '欢乐向', 68);
 /*!40000 ALTER TABLE `anime_type`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 
 DROP TABLE IF EXISTS `anime_version`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
 CREATE TABLE `anime_version`
 (
-    `vid`          bigint(20)   not null AUTO_INCREMENT COMMENT '自增ID',
+    `vid`          bigint(20) not null AUTO_INCREMENT COMMENT '自增ID',
     `code`         varchar(10)  not null,
     `name`         varchar(50)  not null COMMENT '名称',
     `description`  varchar(255)          DEFAULT NULL COMMENT '描述信息',
@@ -395,7 +400,8 @@ CREATE TABLE `anime_version`
 -- Dumping data for table `anime_version`
 --
 
-LOCK TABLES `anime_version` WRITE;
+LOCK
+TABLES `anime_version` WRITE;
 /*!40000 ALTER TABLE `anime_version`
     DISABLE KEYS */;
 INSERT INTO `anime_version`
@@ -408,7 +414,8 @@ VALUES (1, 'TV', 'TV版本', '描述信息', now(), now(), 'stan', '', '', ''),
        (7, 'MOVIE', '电影', '电影', now(), now(), 'stan', '', '', '');
 /*!40000 ALTER TABLE `anime_version`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 
 --
 -- Table structure for table `car`
@@ -419,11 +426,11 @@ DROP TABLE IF EXISTS `car`;
 
 CREATE TABLE `car`
 (
-    `id`           bigint(20)   not null AUTO_INCREMENT,
+    `id`           bigint(20) not null AUTO_INCREMENT,
     `car_img`      varchar(255)          DEFAULT NULL,
     `car_number`   varchar(255)          DEFAULT NULL,
-    `car_status`   int(11)               DEFAULT NULL,
-    `user_userid`  bigint(20)            DEFAULT NULL,
+    `car_status`   int(11) DEFAULT NULL,
+    `user_userid`  bigint(20) DEFAULT NULL,
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
     `search_value` varchar(20)  not null default '' comment '查询参数',
@@ -431,7 +438,7 @@ CREATE TABLE `car`
     `update_by`    varchar(255) not null default '' comment '最后更新人',
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`),
-    KEY `username_index` (`user_userid`)
+    KEY            `username_index` (`user_userid`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
@@ -440,11 +447,11 @@ DROP TABLE IF EXISTS `course`;
 
 CREATE TABLE `course`
 (
-    `id`           bigint(20)   not null AUTO_INCREMENT,
+    `id`           bigint(20) not null AUTO_INCREMENT,
     `course_name`  varchar(255)          DEFAULT NULL,
     `course_time`  date                  DEFAULT NULL,
-    `car_id`       bigint(20)            DEFAULT NULL,
-    `user_userid`  bigint(20)            DEFAULT NULL,
+    `car_id`       bigint(20) DEFAULT NULL,
+    `user_userid`  bigint(20) DEFAULT NULL,
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
     `search_value` varchar(20)  not null default '' comment '查询参数',
@@ -452,30 +459,33 @@ CREATE TABLE `course`
     `update_by`    varchar(255) not null default '' comment '最后更新人',
     `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`id`),
-    KEY `car_index` (`car_id`)
+    KEY            `car_index` (`car_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
-LOCK TABLES `course` WRITE;
+LOCK
+TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `course`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 
 DROP TABLE IF EXISTS `permission`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
 CREATE TABLE `permission`
 (
-    `id`          bigint(20)   not null,
+    `id`          bigint(20) not null,
     `name`        varchar(32)  not null,
     `description` varchar(255) not null,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-LOCK TABLES `permission` WRITE;
+LOCK
+TABLES `permission` WRITE;
 /*!40000 ALTER TABLE `permission`
     DISABLE KEYS */;
 INSERT INTO `permission`
@@ -483,14 +493,15 @@ VALUES (1, 'read', '读取'),
        (2, 'write', '写入');
 /*!40000 ALTER TABLE `permission`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 
 DROP TABLE IF EXISTS `role`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
 CREATE TABLE `role`
 (
-    `role_id`          bigint(20)   not null,
+    `role_id`          bigint(20) not null,
     `role_name`        varchar(255) not null,
     `role_description` varchar(255) not null,
     `create_time`      datetime     not null default NOW() comment '创建时间',
@@ -503,7 +514,8 @@ CREATE TABLE `role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-LOCK TABLES `role` WRITE;
+LOCK
+TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role`
     DISABLE KEYS */;
 INSERT INTO `role`
@@ -511,7 +523,8 @@ VALUES (1, 'admin', '管理团', now(), now(), 'stan', '', '', ''),
        (2, 'user', '普通用户', now(), now(), 'stan', '', '', '');
 /*!40000 ALTER TABLE `role`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 
 DROP TABLE IF EXISTS `role_permission`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
@@ -525,7 +538,8 @@ CREATE TABLE `role_permission`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-LOCK TABLES `role_permission` WRITE;
+LOCK
+TABLES `role_permission` WRITE;
 /*!40000 ALTER TABLE `role_permission`
     DISABLE KEYS */;
 INSERT INTO `role_permission`
@@ -534,14 +548,15 @@ VALUES (1, 1, 1),
        (3, 2, 1);
 /*!40000 ALTER TABLE `role_permission`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 
 DROP TABLE IF EXISTS `school_info`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
 CREATE TABLE `school_info`
 (
-    `school_id`    bigint(20)   not null,
+    `school_id`    bigint(20) not null,
     `school_code`  varchar(255)          DEFAULT NULL,
     `school_name`  varchar(255)          DEFAULT NULL,
     `create_time`  datetime     not null default NOW() comment '创建时间',
@@ -559,12 +574,12 @@ DROP TABLE IF EXISTS `t_listen_port`;
 
 CREATE TABLE `t_listen_port`
 (
-    `listen_port`   int(11)               DEFAULT NULL,
+    `listen_port`   int(11) DEFAULT NULL,
     `port_describe` varchar(255)          DEFAULT NULL,
     `dest_ip`       varchar(255)          DEFAULT NULL,
-    `dest_port`     int(11)               DEFAULT NULL,
-    `on_start`      tinyint(1)            DEFAULT NULL,
-    `port_type`     int(11)               DEFAULT NULL,
+    `dest_port`     int(11) DEFAULT NULL,
+    `on_start`      tinyint(1) DEFAULT NULL,
+    `port_type`     int(11) DEFAULT NULL,
     `cert_path`     varchar(255)          DEFAULT NULL,
     `cert_password` varchar(255)          DEFAULT NULL,
     `gmt_create`    datetime              DEFAULT NULL,
@@ -583,11 +598,11 @@ DROP TABLE IF EXISTS `t_sign_record`;
 
 CREATE TABLE `t_sign_record`
 (
-    `id`                  bigint(20)   not null AUTO_INCREMENT COMMENT '自增键',
-    `user_id`             bigint(20)   not null COMMENT '索引，用户表的id',
+    `id`                  bigint(20) not null AUTO_INCREMENT COMMENT '自增键',
+    `user_id`             bigint(20) not null COMMENT '索引，用户表的id',
     `date_month`          date         not null COMMENT '索引，月份，形如2019-02',
-    `mask`                int(32)               DEFAULT NULL COMMENT '用户签到的数据',
-    `continue_sign_month` int(11)               DEFAULT '0' COMMENT '连续签到天数',
+    `mask`                int(32) DEFAULT NULL COMMENT '用户签到的数据',
+    `continue_sign_month` int(11) DEFAULT '0' COMMENT '连续签到天数',
     `create_time`         datetime     not null default NOW() comment '创建时间',
     `update_time`         datetime     not null default NOW() comment '创建时间',
     `search_value`        varchar(20)  not null default '' comment '查询参数',
@@ -604,9 +619,9 @@ DROP TABLE IF EXISTS `upload_file`;
 
 CREATE TABLE `upload_file`
 (
-    `file_id`      bigint(20)   not null AUTO_INCREMENT,
+    `file_id`      bigint(20) not null AUTO_INCREMENT,
     `file_name`    varchar(255)          DEFAULT NULL,
-    `file_size`    bigint(20)            DEFAULT NULL,
+    `file_size`    bigint(20) DEFAULT NULL,
     `mime_type`    varchar(255)          DEFAULT NULL,
     `url`          varchar(255)          DEFAULT NULL,
     `create_time`  datetime     not null default NOW() comment '创建时间',
@@ -626,21 +641,21 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user`
 (
-    `userid`       bigint(20)    not null AUTO_INCREMENT,
-    `username`     varchar(10)            DEFAULT NULL COMMENT '用户登录的账号，长度为十位字符',
-    `nickname`     nvarchar(20)  not null UNIQUE COMMENT '用户界面上展示的昵称',
-    `avatar`       varchar(255)  not null DEFAULT '' COMMENT '用户的头像地址',
+    `userid`       bigint(20) not null AUTO_INCREMENT,
+    `username`     varchar(10)           DEFAULT NULL COMMENT '用户登录的账号，长度为十位字符',
+    `nickname`     nvarchar(20) not null UNIQUE COMMENT '用户界面上展示的昵称',
+    `avatar`       varchar(255) not null DEFAULT '' COMMENT '用户的头像地址',
     `description`  nvarchar(200) not null DEFAULT '' COMMENT '个人简介',
-    `email`        varchar(255)           DEFAULT NULL,
-    `open_id`      varchar(30)            DEFAULT NULL,
-    `password`     varchar(255)           DEFAULT NULL,
-    `phone`        varchar(255)           DEFAULT NULL,
-    `create_time`  datetime      not null default NOW() comment '创建时间',
-    `update_time`  datetime      not null default NOW() comment '创建时间',
-    `search_value` varchar(20)   not null default '' comment '查询参数',
-    `create_by`    varchar(255)  not null default '' comment '创建人',
-    `update_by`    varchar(255)  not null default '' comment '最后更新人',
-    `remark`       varchar(255)  not null default '' comment '创建时间',
+    `email`        varchar(255)          DEFAULT NULL,
+    `open_id`      varchar(30)           DEFAULT NULL,
+    `password`     varchar(255)          DEFAULT NULL,
+    `phone`        varchar(255)          DEFAULT NULL,
+    `create_time`  datetime     not null default NOW() comment '创建时间',
+    `update_time`  datetime     not null default NOW() comment '创建时间',
+    `search_value` varchar(20)  not null default '' comment '查询参数',
+    `create_by`    varchar(255) not null default '' comment '创建人',
+    `update_by`    varchar(255) not null default '' comment '最后更新人',
+    `remark`       varchar(255) not null default '' comment '创建时间',
     PRIMARY KEY (`userid`),
     UNIQUE KEY `username_index` (`username`)
 ) ENGINE = InnoDB
@@ -652,8 +667,8 @@ DROP TABLE IF EXISTS `user_third`;
 
 CREATE TABLE `user_third`
 (
-    `id`            bigint(20)   not null AUTO_INCREMENT,
-    `userid`        bigint(20)   not null comment '账号ID',
+    `id`            bigint(20) not null AUTO_INCREMENT,
+    `userid`        bigint(20) not null comment '账号ID',
     `uid`           varchar(10)           DEFAULT NULL COMMENT '用户登录的账号，长度为十位字符',
     `app_type`      varchar(30)  not null comment '应用类型',
     `access_token`  nvarchar(20) not null UNIQUE COMMENT '用户界面上展示的昵称',
@@ -682,9 +697,9 @@ DROP TABLE IF EXISTS `user_role`;
 
 CREATE TABLE `user_role`
 (
-    `id`           bigint(20)   not null,
-    `role_id`      bigint(20)   not null,
-    `user_id`      bigint(20)   not null,
+    `id`           bigint(20) not null,
+    `role_id`      bigint(20) not null,
+    `user_id`      bigint(20) not null,
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',
     `search_value` varchar(20)  not null default '' comment '查询参数',
@@ -699,15 +714,15 @@ DROP TABLE IF EXISTS `wechat_content`;
 
 CREATE TABLE `wechat_content`
 (
-    `id`               bigint(20)   not null AUTO_INCREMENT,
-    `x_create_userid`  bigint(20)   not null,
-    `x_last_edit_time` bigint(20)   not null,
-    `x_create_time`    bigint(20)   not null,
+    `id`               bigint(20) not null AUTO_INCREMENT,
+    `x_create_userid`  bigint(20) not null,
+    `x_last_edit_time` bigint(20) not null,
+    `x_create_time`    bigint(20) not null,
     `x_data_flag`      bit(1)       not null,
     `content`          varchar(255)          DEFAULT NULL,
     `head_img_url`     varchar(255)          DEFAULT NULL,
-    `message_type`     int(11)               DEFAULT NULL,
-    `user_id`          bigint(20)   not null,
+    `message_type`     int(11) DEFAULT NULL,
+    `user_id`          bigint(20) not null,
     `username`         varchar(255)          DEFAULT NULL,
     `create_time`      datetime     not null default NOW() comment '创建时间',
     `update_time`      datetime     not null default NOW() comment '创建时间',
@@ -719,20 +734,22 @@ CREATE TABLE `wechat_content`
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
-LOCK TABLES `wechat_content` WRITE;
+LOCK
+TABLES `wechat_content` WRITE;
 /*!40000 ALTER TABLE `wechat_content`
     DISABLE KEYS */;
 /*!40000 ALTER TABLE `wechat_content`
     ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 
 DROP TABLE IF EXISTS `wechat_content_wechat_images`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
 CREATE TABLE `wechat_content_wechat_images`
 (
-    `wechat_content_id` bigint(20)   not null,
-    `wechat_images_id`  bigint(20)   not null,
+    `wechat_content_id` bigint(20) not null,
+    `wechat_images_id`  bigint(20) not null,
     `create_time`       datetime     not null default NOW() comment '创建时间',
     `update_time`       datetime     not null default NOW() comment '创建时间',
     `search_value`      varchar(20)  not null default '' comment '查询参数',
@@ -740,7 +757,7 @@ CREATE TABLE `wechat_content_wechat_images`
     `update_by`         varchar(255) not null default '' comment '最后更新人',
     `remark`            varchar(255) not null default '' comment '创建时间',
     UNIQUE KEY message_index (`wechat_images_id`),
-    KEY `content_id_index` (`wechat_content_id`)
+    KEY                 `content_id_index` (`wechat_content_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
@@ -749,14 +766,14 @@ DROP TABLE IF EXISTS `wechat_images`;
 
 CREATE TABLE `wechat_images`
 (
-    `id`                bigint(20)   not null AUTO_INCREMENT,
-    `x_create_userid`   bigint(20)   not null,
-    `x_last_edit_time`  bigint(20)   not null,
-    `x_create_time`     bigint(20)   not null,
+    `id`                bigint(20) not null AUTO_INCREMENT,
+    `x_create_userid`   bigint(20) not null,
+    `x_last_edit_time`  bigint(20) not null,
+    `x_create_time`     bigint(20) not null,
     `x_data_flag`       bit(1)       not null,
     `image_url`         varchar(255)          DEFAULT NULL,
     `image_name`        varchar(255)          DEFAULT NULL,
-    `wechat_content_id` bigint(20)            DEFAULT NULL,
+    `wechat_content_id` bigint(20) DEFAULT NULL,
     `create_time`       datetime     not null default NOW() comment '创建时间',
     `update_time`       datetime     not null default NOW() comment '创建时间',
     `search_value`      varchar(20)  not null default '' comment '查询参数',
@@ -765,7 +782,7 @@ CREATE TABLE `wechat_images`
     `remark`            varchar(255) not null default '' comment '创建时间',
     `order_no`          int                   default 0 not null comment '排序号',
     PRIMARY KEY (`id`),
-    KEY `content_id_index` (`wechat_content_id`)
+    KEY                 `content_id_index` (`wechat_content_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
@@ -776,12 +793,12 @@ DROP TABLE IF EXISTS `bilibili_anime`;
 CREATE TABLE `bilibili_anime`
 (
     `id`           bigint       not null AUTO_INCREMENT,
-    `media_id`     bigint(20)   not null,
+    `media_id`     bigint(20) not null,
     `title`        varchar(255) not null default '',
-    `season_id`    bigint(20)   not null default 0,
+    `season_id`    bigint(20) not null default 0,
     `cover`        varchar(255) not null default '',
     `is_finished`  int          not null DEFAULT 0,
-    `score`        double       not null default 0,
+    `score` double not null default 0,
     `index_show`   varchar(255) not null default '',
     `link`         varchar(255) not null default '',
     `create_time`  datetime     not null default NOW() comment '创建时间',
@@ -792,7 +809,7 @@ CREATE TABLE `bilibili_anime`
     `remark`       varchar(255) not null default '' comment '创建时间',
     `order_no`     int                   default 0 not null comment '排序号',
     PRIMARY KEY (`id`),
-    KEY `content_id_index` (`media_id`)
+    KEY            `content_id_index` (`media_id`)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 
@@ -800,8 +817,8 @@ DROP TABLE IF EXISTS `bilibili_anime_score`;
 create table `bilibili_anime_score`
 (
     `id`           bigint auto_increment,
-    `anime_id`     bigint       null comment '动漫ID',
-    `score`        double                default 0 not null,
+    `anime_id`     bigint null comment '动漫ID',
+    `score` double default 0 not null,
     `record_time`  datetime              default now() not null comment '记录时间',
     `create_time`  datetime     not null default NOW() comment '创建时间',
     `update_time`  datetime     not null default NOW() comment '创建时间',

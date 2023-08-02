@@ -38,24 +38,24 @@ public class SecurityConfig {
     private final MyAccessDeniedHandler myAccessDeniedHandler;
     private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User
-                // TODO 测试阶段暂时使用这个来做登录
-                .withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
+            // TODO 测试阶段暂时使用这个来做登录
+            .withDefaultPasswordEncoder().username("user").password("password").roles("USER")
+            .build());
         return httpSecurity
-                .getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(manager)
-                .passwordEncoder(passwordEncoder())
-                .and()
-                .build();
+            .getSharedObject(AuthenticationManagerBuilder.class)
+            .userDetailsService(manager)
+            .passwordEncoder(passwordEncoder())
+            .and()
+            .build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     /**
@@ -65,45 +65,47 @@ public class SecurityConfig {
     public SecurityFilterChain authingLoginFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                // 其他相关的处理器
-                .exceptionHandling()
-                .authenticationEntryPoint(myAuthenticationEntryPoint)
-                .accessDeniedHandler(myAccessDeniedHandler)
-                .and()
-                // 取消表单登录
-                .formLogin()
-                .disable()
-                // 管理认证
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests(authorize -> {
-                    authorize
-                            .requestMatchers("/actuator/**", "/authorize/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**")
-                            .permitAll()
-                            .requestMatchers("/easyui/**", "/detail/**")
-                            .permitAll();
-                    authorize
-                            .requestMatchers("/actuator/**", "/authorize/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**")
-                            .permitAll()
-                            .requestMatchers("/js/**", "/css/**", "/img/*")
-                            .permitAll()
-                            .requestMatchers("/login")
-                            .permitAll()
-                            .requestMatchers("/static/**")
-                            .permitAll()
-                            .requestMatchers("/favicon.ico")
-                            .permitAll()
-                            .requestMatchers("/natcross/**")
-                            .permitAll()
-                            .requestMatchers("/management/**")
-                            .permitAll();
-                    authorize.anyRequest().permitAll();
-                });
+            .cors()
+            .and()
+            .csrf()
+            .disable()
+            // 其他相关的处理器
+            .exceptionHandling()
+            .authenticationEntryPoint(myAuthenticationEntryPoint)
+            .accessDeniedHandler(myAccessDeniedHandler)
+            .and()
+            // 取消表单登录
+            .formLogin()
+            .disable()
+            // 管理认证
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeHttpRequests(authorize -> {
+                authorize
+                    .requestMatchers("/actuator/**", "/authorize/**", "/swagger-ui.html",
+                        "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**")
+                    .permitAll()
+                    .requestMatchers("/easyui/**", "/detail/**")
+                    .permitAll();
+                authorize
+                    .requestMatchers("/actuator/**", "/authorize/**", "/swagger-ui.html",
+                        "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**")
+                    .permitAll()
+                    .requestMatchers("/js/**", "/css/**", "/img/*")
+                    .permitAll()
+                    .requestMatchers("/login")
+                    .permitAll()
+                    .requestMatchers("/static/**")
+                    .permitAll()
+                    .requestMatchers("/favicon.ico")
+                    .permitAll()
+                    .requestMatchers("/natcross/**")
+                    .permitAll()
+                    .requestMatchers("/management/**")
+                    .permitAll();
+                authorize.anyRequest().permitAll();
+            });
 
         httpSecurity.apply(AuthingLoginConfigurer.authingLogin());
         return httpSecurity.build();

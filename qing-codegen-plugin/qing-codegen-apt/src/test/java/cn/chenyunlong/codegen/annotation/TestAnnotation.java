@@ -13,4 +13,5 @@
 
 package cn.chenyunlong.codegen.annotation;
 
-@interface TestAnnotation {}
+@interface TestAnnotation {
+}

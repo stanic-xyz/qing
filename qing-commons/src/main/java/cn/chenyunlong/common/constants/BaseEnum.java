@@ -24,10 +24,10 @@ public interface BaseEnum<T> {
     static <T extends BaseEnum> T parseByCode(Integer code, Class<T> clazz) {
         T[] enumConstants = clazz.getEnumConstants();
         return Arrays
-                .stream(enumConstants)
-                .filter(baseEnum -> Objects.equals(baseEnum.getValue(), code))
-                .findFirst()
-                .orElse(null);
+            .stream(enumConstants)
+            .filter(baseEnum -> Objects.equals(baseEnum.getValue(), code))
+            .findFirst()
+            .orElse(null);
     }
 
     /**

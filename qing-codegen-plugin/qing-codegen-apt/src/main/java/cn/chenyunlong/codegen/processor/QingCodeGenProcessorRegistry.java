@@ -13,106 +13,145 @@
 
 package cn.chenyunlong.codegen.processor;
 
-import cn.chenyunlong.codegen.context.CodeGenProcessorContext;
+import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.fatalError;
+import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.log;
+import static com.google.common.base.Throwables.getStackTraceAsString;
+
+import cn.chenyunlong.codegen.context.CodeGenContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
+import cn.hutool.core.map.MapUtil;
+import com.google.common.annotations.VisibleForTesting;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic;
-import java.util.*;
-import java.util.stream.Collectors;
+import javax.lang.model.util.Elements;
 
 /**
+ * 代码生成器注册器。
+ *
  * @author gim
  * @since 2023-10-24
  */
+@SupportedOptions({"debug", "verify"})
 public class QingCodeGenProcessorRegistry extends AbstractProcessor {
 
+    @VisibleForTesting
+    static final String MISSING_SERVICES_ERROR = "No service interfaces provided for element!";
+
+    private final List<String> exceptionStacks = Collections.synchronizedList(new ArrayList<>());
+
+    // 每一个类需要生成的类型
+    private final Map<TypeElement, Set<CodeGenProcessor>> providers =
+        MapUtil.newConcurrentHashMap();
+
+
     /**
-     * 过程
+     * 注解处理器主要处理逻辑。
      *
-     * @param elements         文档元素列表
-     * @param roundEnvironment 当前编译环境（相当于上下文）
+     * @param annotations 文档元素列表
+     * @param roundEnv    当前编译环境（相当于上下文）
      * @return boolean
      */
     @Override
-    public boolean process(Set<? extends TypeElement> elements, RoundEnvironment roundEnvironment) {
-        if (elements.isEmpty()) {
-            System.out.println("空注解不需要处理");
-            return true;
-        }
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         try {
-            System.out.println("正在处理注解：" + elements
-                    .stream()
-                    .map(TypeElement::getQualifiedName)
-                    .collect(Collectors.joining(",")));
+            processImpl(annotations, roundEnv);
+        } catch (RuntimeException exception) {
+            // We don't allow exceptions to any kind to propagate to the compiler
+            String stackTraceString = getStackTraceAsString(exception);
+            exceptionStacks.add(stackTraceString);
+            fatalError(stackTraceString);
+        }
+        return false;
+    }
 
-            final Set<Element> typeElements = new HashSet<>();
-            elements.forEach(element -> typeElements.addAll(roundEnvironment.getElementsAnnotatedWith(element)));
-            // 对每个对象进行生成操作
-            // 加载需要处理的类的所有注解
-            Collections.unmodifiableSet(ElementFilter.typesIn(typeElements)).forEach(typeElement -> {
-                List<? extends AnnotationMirror> mirrors =
-                        processingEnv.getElementUtils().getAllAnnotationMirrors(typeElement);
-                Set<String> annotationNames = mirrors
-                        .stream()
+    private void processImpl(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        if (!roundEnv.processingOver()) {
+            processAnnotations(annotations, roundEnv);
+        } else {
+            generateSourceFiles(roundEnv);
+        }
+    }
+
+    /**
+     * 生成文件。
+     */
+    private void generateSourceFiles(RoundEnvironment roundEnv) {
+        providers.forEach((className, genProcessorList) -> doGenerate(className, genProcessorList, roundEnv));
+    }
+
+    /**
+     * 处理注解。
+     *
+     * @param annotations 注解列表
+     * @param roundEnv    周围环境
+     */
+    private void processAnnotations(Set<? extends TypeElement> annotations,
+                                    RoundEnvironment roundEnv) {
+
+        log(annotations.toString());
+
+        annotations.forEach(annotation -> {
+            Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(annotation);
+            ElementFilter.typesIn(elements)
+                .forEach(typeElement -> {
+                    Elements elementUtils = processingEnv.getElementUtils();
+                    HashSet<CodeGenProcessor> processorHashSet =
+                        new HashSet<>(CodeGenContext.find(
+                            Collections.singleton(annotation.getQualifiedName().toString())));
+
+                    if (providers.containsKey(typeElement)) {
+                        Set<CodeGenProcessor> codeGenProcessorList = providers.get(typeElement);
+                        codeGenProcessorList.addAll(processorHashSet);
+                    } else {
+                        providers.put(typeElement, processorHashSet);
+                    }
+                    List<? extends AnnotationMirror> mirrors =
+                        elementUtils.getAllAnnotationMirrors(typeElement);
+                    Set<String> annotationNames = mirrors.stream()
                         .map(annotationMirror -> annotationMirror.getAnnotationType().toString())
                         .collect(Collectors.toSet());
-                List<CodeGenProcessor> codeGenProcessorList = CodeGenProcessorContext
-                        // 根据注解类型生成代码
-                        .find(annotationNames)
-                        .stream()
-                        .filter(codeGenProcessor -> codeGenProcessor.support(typeElement, roundEnvironment))
-                        .toList();
-                // 执行代码生成逻辑
-                doGenerate(typeElement, codeGenProcessorList, roundEnvironment);
-            });
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.MANDATORY_WARNING, "CodeGen：代码生成器异常！");
-        }
-        // 只需要执行一次
-        return true;
+
+                });
+        });
     }
 
     /**
      * 执行具体的代码生成逻辑
      *
-     * @param typeElement          需要处理的元素信息
+     * @param className            元素名称
      * @param codeGenProcessorList 代码生成器列表
      * @param roundEnvironment     执行环境
      */
-    private void doGenerate(TypeElement typeElement, List<CodeGenProcessor> codeGenProcessorList, RoundEnvironment roundEnvironment) {
+    private void doGenerate(TypeElement className, Set<CodeGenProcessor> codeGenProcessorList, RoundEnvironment roundEnvironment) {
         codeGenProcessorList.stream()
-                            // 根据执行顺序来
-                            .sorted(Comparator.comparing(CodeGenProcessor::getOrder))
-                            .forEach(codeGenProcessor -> codeGenProcessor.generateClass(typeElement, roundEnvironment, true));
+            // 根据执行顺序来
+            .sorted(Comparator.comparing(CodeGenProcessor::getOrder))
+            .forEach(codeGenProcessor -> codeGenProcessor.generateClass(className, roundEnvironment, true));
     }
 
     /**
-     * 初始化
+     * 初始化。
      *
      * @param processingEnvironment 加工环境
      */
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
-        ProcessingEnvironmentHolder.printMessage("》》》》》初始化代码生成器》》》》》");
-        super.init(processingEnvironment);
         ProcessingEnvironmentHolder.setProcessingEnvironment(processingEnvironment);
-        CodeGenProcessorContext.init(processingEnvironment);
-        ProcessingEnvironmentHolder.printMessage("》》》》》初始化代码生成器完毕》》》》》");
+        log("》》》》》初始化代码生成器》》》》》");
+        super.init(processingEnvironment);
+        CodeGenContext.init(processingEnvironment);
+        log("》》》》》初始化代码生成器完毕》》》》》");
     }
 
-
     /**
-     * 获取支持的源版本
+     * 获取支持的源版本。
      *
      * @return {@link SourceVersion}
      */
@@ -123,7 +162,7 @@ public class QingCodeGenProcessorRegistry extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return CodeGenProcessorContext.getSupportedAnnotationTypes();
+        return CodeGenContext.getSupportedAnnotationTypes();
     }
 
     @Override

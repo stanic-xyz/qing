@@ -18,14 +18,13 @@ import cn.hutool.extra.servlet.JakartaServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Optional;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import java.io.IOException;
-import java.util.Optional;
 
 /**
  * 客户端工具类
@@ -36,13 +35,26 @@ public class ServletUtils {
     /**
      * 定义移动端请求的所有可能类型
      */
-    private final static String[] agent = {"Android", "iPhone", "iPod", "iPad", "Windows Phone", "MQQBrowser"};
+    private final static String[] agent =
+        {"Android", "iPhone", "iPod", "iPad", "Windows Phone", "MQQBrowser"};
 
     /**
      * 获取String参数
      */
     public static String getParameter(String name) {
         return getRequest().getParameter(name);
+    }
+
+    /**
+     * 获取request
+     */
+    public static HttpServletRequest getRequest() {
+        return getRequestAttributes().getRequest();
+    }
+
+    public static ServletRequestAttributes getRequestAttributes() {
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        return (ServletRequestAttributes) attributes;
     }
 
     /**
@@ -67,13 +79,6 @@ public class ServletUtils {
     }
 
     /**
-     * 获取request
-     */
-    public static HttpServletRequest getRequest() {
-        return getRequestAttributes().getRequest();
-    }
-
-    /**
      * 获取response
      */
     public static HttpServletResponse getResponse() {
@@ -85,11 +90,6 @@ public class ServletUtils {
      */
     public static HttpSession getSession() {
         return getRequest().getSession();
-    }
-
-    public static ServletRequestAttributes getRequestAttributes() {
-        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
-        return (ServletRequestAttributes) attributes;
     }
 
     /**
@@ -140,7 +140,8 @@ public class ServletUtils {
      */
     public static boolean checkAgentIsMobile(String ua) {
         boolean flag = false;
-        if (!ua.contains("Windows NT") || (ua.contains("Windows NT") && ua.contains("compatible; MSIE 9.0;"))) {
+        if (!ua.contains("Windows NT") ||
+            (ua.contains("Windows NT") && ua.contains("compatible; MSIE 9.0;"))) {
             // 排除 苹果桌面系统
             if (!ua.contains("Windows NT") && !ua.contains("Macintosh")) {
                 for (String item : agent) {
@@ -154,15 +155,6 @@ public class ServletUtils {
         return flag;
     }
 
-    @NonNull
-    public static Optional<HttpServletRequest> getCurrentRequest() {
-        return Optional
-                .ofNullable(RequestContextHolder.getRequestAttributes())
-                .filter(requestAttributes -> requestAttributes instanceof ServletRequestAttributes)
-                .map(requestAttributes -> (ServletRequestAttributes) requestAttributes)
-                .map(ServletRequestAttributes::getRequest);
-    }
-
     /**
      * Gets request ip.
      *
@@ -173,6 +165,15 @@ public class ServletUtils {
         return getCurrentRequest().map(JakartaServletUtil::getClientIP).orElse(null);
     }
 
+    @NonNull
+    public static Optional<HttpServletRequest> getCurrentRequest() {
+        return Optional
+            .ofNullable(RequestContextHolder.getRequestAttributes())
+            .filter(requestAttributes -> requestAttributes instanceof ServletRequestAttributes)
+            .map(requestAttributes -> (ServletRequestAttributes) requestAttributes)
+            .map(ServletRequestAttributes::getRequest);
+    }
+
     /**
      * Gets request header.
      *
@@ -181,6 +182,7 @@ public class ServletUtils {
      */
     @Nullable
     public static String getHeaderIgnoreCase(String header) {
-        return getCurrentRequest().map(request -> JakartaServletUtil.getHeaderIgnoreCase(request, header)).orElse(null);
+        return getCurrentRequest().map(
+            request -> JakartaServletUtil.getHeaderIgnoreCase(request, header)).orElse(null);
     }
 }

@@ -15,6 +15,9 @@ package cn.chenyunlong.qing.infrastructure.aspect;
 
 import cn.chenyunlong.common.model.ApiResult;
 import cn.chenyunlong.qing.infrastructure.annotation.JsonFieldFilter;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -24,10 +27,6 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-
-import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -48,9 +47,11 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
      * @return boolean
      */
     @Override
-    public boolean supports(MethodParameter methodParameter, @NonNull Class<? extends HttpMessageConverter<?>> converterClass) {
+    public boolean supports(MethodParameter methodParameter,
+                            @NonNull Class<? extends HttpMessageConverter<?>> converterClass) {
         List<Annotation> annotations = Arrays.asList(methodParameter.getMethodAnnotations());
-        return annotations.stream().anyMatch(annotation -> annotation.annotationType().equals(JsonFieldFilter.class));
+        return annotations.stream()
+            .anyMatch(annotation -> annotation.annotationType().equals(JsonFieldFilter.class));
     }
 
     /**
@@ -65,7 +66,11 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
      * @return 请求的结果
      */
     @Override
-    public ApiResult beforeBodyWrite(ApiResult apiResult, MethodParameter methodParameter, @NonNull MediaType mediaType, @NonNull Class<? extends HttpMessageConverter<?>> convertClass, @NonNull ServerHttpRequest serverHttpRequest, @NonNull ServerHttpResponse serverHttpResponse) {
+    public ApiResult beforeBodyWrite(ApiResult apiResult, MethodParameter methodParameter,
+                                     @NonNull MediaType mediaType,
+                                     @NonNull Class<? extends HttpMessageConverter<?>> convertClass,
+                                     @NonNull ServerHttpRequest serverHttpRequest,
+                                     @NonNull ServerHttpResponse serverHttpResponse) {
 
         //获取方法的相关注解
         JsonFieldFilter annotation = methodParameter.getMethodAnnotation(JsonFieldFilter.class);
@@ -78,7 +83,8 @@ public class JsonFilterAdvice implements ResponseBodyAdvice<ApiResult> {
             }
             apiResult.setMsg(apiResult.getMsg() + "：Modified");
         }
-        serverHttpResponse.getHeaders().setContentType(MediaType.parseMediaType(MediaType.APPLICATION_JSON_VALUE));
+        serverHttpResponse.getHeaders()
+            .setContentType(MediaType.parseMediaType(MediaType.APPLICATION_JSON_VALUE));
         // 这里暂时不需要进行处理
         return apiResult;
     }

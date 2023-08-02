@@ -14,15 +14,14 @@
 package cn.chenyunlong.qing.bootstrap.service.config.thread;
 
 import cn.chenyunlong.common.utils.Threads;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 线程池配置
@@ -73,9 +72,9 @@ public class ThreadPoolConfig {
     @Bean(name = "scheduledExecutorService")
     protected ScheduledExecutorService scheduledExecutorService() {
         return new ScheduledThreadPoolExecutor(CORE_POOL_SIZE, new BasicThreadFactory.Builder()
-                .namingPattern("schedule-pool-%d")
-                .daemon(true)
-                .build()) {
+            .namingPattern("schedule-pool-%d")
+            .daemon(true)
+            .build()) {
             @Override
             protected void afterExecute(Runnable runnable, Throwable throwable) {
                 super.afterExecute(runnable, throwable);

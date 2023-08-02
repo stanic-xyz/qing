@@ -14,9 +14,6 @@
 package cn.chenyunlong.common.utils;
 
 import cn.hutool.core.lang.Assert;
-import lombok.NonNull;
-import org.apache.commons.lang3.time.DateFormatUtils;
-
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +22,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import lombok.NonNull;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * 时间工具类
@@ -33,7 +32,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     private static final String[] parsePatterns =
-            {"yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM", "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM", "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"};
+        {"yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM", "yyyy/MM/dd",
+            "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM", "yyyy.MM.dd",
+            "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"};
     public static String YYYY = "yyyy";
     public static String YYYY_MM = "yyyy-MM";
     public static String YYYY_MM_DD = "yyyy-MM-dd";
@@ -58,6 +59,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return dateTimeNow(YYYY_MM_DD);
     }
 
+    public static final String dateTimeNow(final String format) {
+        return parseDateToStr(format, new Date());
+    }
+
+    public static final String parseDateToStr(final String format, final Date date) {
+        return new SimpleDateFormat(format).format(date);
+    }
+
     public static final String getTime() {
         return dateTimeNow(YYYY_MM_DD_HH_MM_SS);
     }
@@ -66,16 +75,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return dateTimeNow(YYYYMMDDHHMMSS);
     }
 
-    public static final String dateTimeNow(final String format) {
-        return parseDateToStr(format, new Date());
-    }
-
     public static final String dateTime(final Date date) {
         return parseDateToStr(YYYY_MM_DD, date);
-    }
-
-    public static final String parseDateToStr(final String format, final Date date) {
-        return new SimpleDateFormat(format).format(date);
     }
 
     public static final Date dateTime(final String format, final String ts) {
@@ -183,7 +184,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param timeUnit time unit must not be null
      * @return added dateTime
      */
-    public static LocalDateTime add(@NonNull LocalDateTime dateTime, long time, @NonNull TimeUnit timeUnit) {
+    public static LocalDateTime add(@NonNull LocalDateTime dateTime, long time,
+                                    @NonNull TimeUnit timeUnit) {
         Assert.notNull(dateTime, "Date must not be null");
         Assert.isTrue(time >= 0, "Addition time must not be less than 1");
         Assert.notNull(timeUnit, "Time unit must not be null");

@@ -17,13 +17,12 @@ import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
 import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
 import jakarta.persistence.*;
+import java.time.Instant;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import org.springframework.data.domain.AbstractAggregateRoot;
-
-import java.time.Instant;
 
 /**
  * 基础jpa类型

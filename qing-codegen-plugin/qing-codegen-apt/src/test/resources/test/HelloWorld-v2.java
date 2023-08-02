@@ -21,10 +21,10 @@ public class HelloWorld {
 
     // don't matter
     public static void main(
-            String[] args) {
+        String[] args) {
         // formatting doesn't matter
         System
-                .out
-                .println("Hello World!");
+            .out
+            .println("Hello World!");
     }
 }

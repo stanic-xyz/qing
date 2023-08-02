@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MainController {
 
     @RequestMapping("/")
-    public String index(@RequestParam(name = "corpId") String corpId, @RequestParam(name = "openConversationId") String openConversationId) {
+    public String index(@RequestParam(name = "corpId") String corpId,
+                        @RequestParam(name = "openConversationId") String openConversationId) {
         log.info("index corpId={}, openConversationId={}.", corpId, openConversationId);
         return "index.html";
     }

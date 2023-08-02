@@ -15,11 +15,10 @@ package cn.chenyunlong.security.config.security.dto;
 
 
 import cn.chenyunlong.common.enums.MFAType;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 /**
  * 用户信息

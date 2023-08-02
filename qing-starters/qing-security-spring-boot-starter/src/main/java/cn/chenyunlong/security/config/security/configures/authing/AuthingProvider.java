@@ -17,6 +17,8 @@ import cn.authing.sdk.java.client.AuthenticationClient;
 import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
 import cn.authing.sdk.java.model.AuthenticationClientOptions;
 import cn.chenyunlong.security.config.security.AuthingConfig;
+import java.io.IOException;
+import java.text.ParseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -24,9 +26,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.text.ParseException;
 
 @Component
 @Slf4j
@@ -36,7 +35,8 @@ public class AuthingProvider implements AuthenticationProvider {
     private final AuthingConfig authing;
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication)
+        throws AuthenticationException {
         AuthingToken authingToken = (AuthingToken) authentication;
         log.info("密码登录逻辑开始");
         log.info("code:{},state:{}", authingToken.getToken(), authingToken.getState());
@@ -47,7 +47,8 @@ public class AuthingProvider implements AuthenticationProvider {
         AuthenticationClientOptions clientOptions = new AuthenticationClientOptions();
         clientOptions.setAppId(authing.getAppId()); // Authing 应用 ID
         clientOptions.setAppSecret(authing.getAppSecret()); // Authing 应用密钥
-        clientOptions.setAppHost(authing.getAppHost()); // Authing 应用域名，如 https://example.authing.cn。注意：Host
+        clientOptions.setAppHost(
+            authing.getAppHost()); // Authing 应用域名，如 https://example.authing.cn。注意：Host
         // 地址为示例样式，不同版本用户池的应用 Host 地址形式有所差异，实际地址以 自建应用->应用配置->认证配置 下 `认证地址 `字段为准。
         clientOptions.setRedirectUri(authing.getRedirectUrl()); // Authing 应用配置的登录回调地址
         // 初始化 AuthenticationClient
@@ -59,7 +60,8 @@ public class AuthingProvider implements AuthenticationProvider {
         }
         try {
             OIDCTokenResponse accessTokenByCode =
-                    authenticationClient.getAccessTokenByCode(((AuthingToken) authentication).getToken());
+                authenticationClient.getAccessTokenByCode(
+                    ((AuthingToken) authentication).getToken());
             ((AuthingToken) authentication).setResponse(accessTokenByCode);
         } catch (Exception e) {
             throw new RuntimeException(e);

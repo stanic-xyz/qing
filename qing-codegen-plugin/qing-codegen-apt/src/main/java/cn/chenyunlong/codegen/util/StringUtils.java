@@ -14,7 +14,6 @@
 package cn.chenyunlong.codegen.util;
 
 import com.google.common.base.CaseFormat;
-
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -38,10 +37,6 @@ public final class StringUtils {
      */
     public static String lowerUnderscore(String source) {
         return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, source).replace("_", "-");
-    }
-
-    public static String bigCamel(String source) {
-        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, source);
     }
 
     /**
@@ -82,6 +77,10 @@ public final class StringUtils {
      */
     public static String getterName(String fieldName) {
         return "get" + bigCamel(fieldName);
+    }
+
+    public static String bigCamel(String source) {
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, source);
     }
 
     /**

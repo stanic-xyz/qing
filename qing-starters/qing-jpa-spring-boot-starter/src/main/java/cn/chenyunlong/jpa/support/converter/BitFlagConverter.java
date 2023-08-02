@@ -26,7 +26,7 @@ public class BitFlagConverter implements AttributeConverter<BitFlag, Integer> {
 
     public BitFlag convertToEntityAttribute(Integer code) {
         return BitFlag
-                .of(code)
-                .orElse(null);
+            .of(code)
+            .orElse(null);
     }
 }

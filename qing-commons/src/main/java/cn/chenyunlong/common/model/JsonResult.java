@@ -15,11 +15,10 @@ package cn.chenyunlong.common.model;
 
 import cn.chenyunlong.common.constants.BaseEnum;
 import cn.chenyunlong.common.constants.CodeEnum;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
-
-import java.util.Objects;
 
 /**
  * 公共返回结构
@@ -44,6 +43,12 @@ public final class JsonResult<T> {
     private JsonResult() {
     }
 
+    public static <E> JsonResult<E> success(E result, String msg) {
+        JsonResult<E> jsonResult = success(result);
+        jsonResult.setMsg(msg);
+        return jsonResult;
+    }
+
     public static <E> JsonResult<E> success(E result) {
         JsonResult<E> jsonResult = new JsonResult<>();
         jsonResult.setCode(CodeEnum.Success.getValue());
@@ -52,13 +57,7 @@ public final class JsonResult<T> {
         return jsonResult;
     }
 
-    public static <E> JsonResult<E> success(E result, String msg) {
-        JsonResult<E> jsonResult = success(result);
-        jsonResult.setMsg(msg);
-        return jsonResult;
-    }
-
-    public static <T,E> JsonResult<T> fail(BaseEnum<Integer> codeEnum) {
+    public static <T, E> JsonResult<T> fail(BaseEnum<Integer> codeEnum) {
         JsonResult<T> jsonResult = new JsonResult<>();
         jsonResult.setMsg(codeEnum.getName());
         jsonResult.setCode(codeEnum.getValue());

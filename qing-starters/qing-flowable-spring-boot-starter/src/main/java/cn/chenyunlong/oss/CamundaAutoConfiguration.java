@@ -15,6 +15,8 @@ package cn.chenyunlong.oss;
 
 import cn.chenyunlong.oss.config.OssProperties;
 import jakarta.annotation.Resource;
+import java.util.Arrays;
+import java.util.HashMap;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,9 +26,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-import java.util.HashMap;
 
 @Configuration
 @EnableConfigurationProperties(OssProperties.class)

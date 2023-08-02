@@ -10,8 +10,8 @@ Cloud 编程模型轻松使用这些组件来开发分布式应用服务。
 ## 🔧安装部署
 
 - Docker
-  - Docker镜像打包
-  - Docker-Compose
+    - Docker镜像打包
+    - Docker-Compose
 - Helm
 
 ## 🛠内容

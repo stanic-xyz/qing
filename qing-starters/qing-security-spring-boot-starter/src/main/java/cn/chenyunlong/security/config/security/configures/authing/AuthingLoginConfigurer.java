@@ -23,7 +23,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<AuthingLoginConfigurer, HttpSecurity> {
+public final class AuthingLoginConfigurer
+    extends AbstractHttpConfigurer<AuthingLoginConfigurer, HttpSecurity> {
 
     public static AuthingLoginConfigurer authingLogin() {
         return new AuthingLoginConfigurer();
@@ -32,12 +33,12 @@ public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<Authing
     @Override
     public void init(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .cors()
+            .and()
+            .csrf()
+            .disable()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
@@ -46,9 +47,12 @@ public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<Authing
         ApplicationContext context = httpSecurity.getSharedObject(ApplicationContext.class);
         httpSecurity.authenticationProvider(context.getBean(AuthingProvider.class));
         AuthenticationManagerBuilder authenticationManagerBuilder =
-                httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
-        AuthingLoginFilter authingLoginFilter = new AuthingLoginFilter(authenticationManagerBuilder.getObject());
-        authingLoginFilter.setAuthenticationFailureHandler((request, response, exception) -> System.out.println("AuthingLoginConfigurer.onAuthenticationFailure"));
+            httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+        AuthingLoginFilter authingLoginFilter =
+            new AuthingLoginFilter(authenticationManagerBuilder.getObject());
+        authingLoginFilter.setAuthenticationFailureHandler(
+            (request, response, exception) -> System.out.println(
+                "AuthingLoginConfigurer.onAuthenticationFailure"));
         authingLoginFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
             ObjectMapper objectMapper = new ObjectMapper();
             AuthingToken authingToken = (AuthingToken) authentication;

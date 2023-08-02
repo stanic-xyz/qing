@@ -45,7 +45,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = HttpMessageConversionException.class)
     public ResponseEntity<JsonResult> messageConversionException(Exception exception) {
         JsonResult<Object> jsonResult =
-                JsonResult.fail("参数异常，请检查参数格式").setDevMessage(exception.getMessage());
+            JsonResult.fail("参数异常，请检查参数格式").setDevMessage(exception.getMessage());
         return ResponseEntity.badRequest().body(jsonResult);
     }
 
@@ -58,13 +58,15 @@ public class CustomExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<JsonResult> illegalArgumentException(IllegalArgumentException exception) {
         JsonResult jsonResult;
-        jsonResult = JsonResult.fail("参数校验错误：" + exception.getMessage()).setDevMessage(exception.getMessage());
+        jsonResult = JsonResult.fail("参数校验错误：" + exception.getMessage())
+            .setDevMessage(exception.getMessage());
         return ResponseEntity.badRequest().body(jsonResult);
     }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<JsonResult> messageConversionException(BusinessException exception) {
-        JsonResult jsonResult = JsonResult.fail(exception.getMessage()).setDevMessage(exception.getMessage());
+        JsonResult jsonResult =
+            JsonResult.fail(exception.getMessage()).setDevMessage(exception.getMessage());
         return ResponseEntity.badRequest().body(jsonResult);
     }
 
@@ -78,7 +80,8 @@ public class CustomExceptionHandler {
      * @return 响应结果
      */
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<JsonResult> runtimeExceptionHandler(final Exception exception, HttpServletResponse response) {
+    public ResponseEntity<JsonResult> runtimeExceptionHandler(final Exception exception,
+                                                              HttpServletResponse response) {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         JsonResult<Long> longJsonResult = JsonResult.fail("参数校验错误：" + exception.getMessage());
         return ResponseEntity.internalServerError().body(longJsonResult);

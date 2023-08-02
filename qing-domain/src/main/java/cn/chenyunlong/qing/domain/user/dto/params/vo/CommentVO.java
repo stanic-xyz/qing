@@ -13,9 +13,8 @@
 
 package cn.chenyunlong.qing.domain.user.dto.params.vo;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
  * @author Stan

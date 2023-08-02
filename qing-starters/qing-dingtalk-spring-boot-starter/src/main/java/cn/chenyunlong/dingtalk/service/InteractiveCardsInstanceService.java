@@ -6,14 +6,13 @@ import com.aliyun.tea.TeaException;
 import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.models.RuntimeOptions;
 import jakarta.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * 吊顶卡片接口，详见https://open.dingtalk.com/document/orgapp-server/create-an-interactive-card-instance-1
@@ -55,10 +54,13 @@ public class InteractiveCardsInstanceService {
                 return false;
             }
 
-            log.info("InteractiveCardsInstanceService_createAndDeliverBox instance success," + " openConversationId={}, outTrackId={}.", openConversationId, outTrackId);
+            log.info("InteractiveCardsInstanceService_createAndDeliverBox instance success," +
+                " openConversationId={}, outTrackId={}.", openConversationId, outTrackId);
             return openTopBoxes(openConversationId, outTrackId);
         } catch (TeaException e) {
-            log.error("InteractiveCardsInstanceService_createAndDeliverBox throw TeaException, errCode={}, " + "errorMessage={}", e.getCode(), e.getMessage(), e);
+            log.error(
+                "InteractiveCardsInstanceService_createAndDeliverBox throw TeaException, errCode={}, " +
+                    "errorMessage={}", e.getCode(), e.getMessage(), e);
             throw e;
         } catch (Exception e) {
             log.error("InteractiveCardsInstanceService_createAndDeliverBox throw Exception", e);
@@ -78,15 +80,19 @@ public class InteractiveCardsInstanceService {
         request.setConversationType(CONVERSATION_GROUP_TYPE);
 
         InteractiveCardCreateInstanceRequest.InteractiveCardCreateInstanceRequestCardData cardData =
-                new InteractiveCardCreateInstanceRequest.InteractiveCardCreateInstanceRequestCardData();
+            new InteractiveCardCreateInstanceRequest.InteractiveCardCreateInstanceRequestCardData();
         cardData.setCardParamMap(new HashMap<>(1));
 
         request.setCardData(cardData);
 
         InteractiveCardCreateInstanceResponse response =
-                client.interactiveCardCreateInstanceWithOptions(request, headers, new RuntimeOptions());
-        if (Objects.isNull(response) || Objects.isNull(response.getBody()) || Objects.isNull(response.body.processQueryKey) || response.body.processQueryKey.isEmpty()) {
-            log.error("InteractiveCardsInstanceService_instance interactiveCardCreateInstanceWithOptions return" + " error, response={}", response);
+            client.interactiveCardCreateInstanceWithOptions(request, headers, new RuntimeOptions());
+        if (Objects.isNull(response) || Objects.isNull(response.getBody()) ||
+            Objects.isNull(response.body.processQueryKey) ||
+            response.body.processQueryKey.isEmpty()) {
+            log.error(
+                "InteractiveCardsInstanceService_instance interactiveCardCreateInstanceWithOptions return" +
+                    " error, response={}", response);
             return null;
         }
 
@@ -105,7 +111,8 @@ public class InteractiveCardsInstanceService {
         topboxOpenRequest.setExpiredTime(System.currentTimeMillis() + 5 * 60 * 1000);
 
         TopboxOpenResponse topboxOpenResponse =
-                client.topboxOpenWithOptions(topboxOpenRequest, topboxOpenHeaders, new RuntimeOptions());
+            client.topboxOpenWithOptions(topboxOpenRequest, topboxOpenHeaders,
+                new RuntimeOptions());
         return !Objects.isNull(topboxOpenResponse);
     }
 }

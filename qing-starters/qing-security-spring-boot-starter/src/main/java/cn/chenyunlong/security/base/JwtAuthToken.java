@@ -13,12 +13,11 @@
 
 package cn.chenyunlong.security.base;
 
+import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 /**
  *

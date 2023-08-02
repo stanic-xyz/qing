@@ -15,7 +15,6 @@ package cn.chenyunlong.qing.domain.anime.domainservice.model.meta;
 
 
 import cn.chenyunlong.common.constants.BaseEnum;
-
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,9 +37,9 @@ public enum InOutBizType implements BaseEnum {
 
     public static Optional<InOutBizType> of(Integer code) {
         return Arrays
-                .stream(InOutBizType.values())
-                .filter(inOutBizType -> Objects.equals(inOutBizType.getValue(), code))
-                .findAny();
+            .stream(InOutBizType.values())
+            .filter(inOutBizType -> Objects.equals(inOutBizType.getValue(), code))
+            .findAny();
     }
 
     /**

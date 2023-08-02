@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.intercepter;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpRequest;
@@ -20,9 +22,6 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.lang.NonNull;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * <br>日志拦截器</br>
@@ -41,7 +40,8 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
     @NonNull
     @Override
-    public ClientHttpResponse intercept(@NonNull HttpRequest request, @NonNull byte[] body, ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(@NonNull HttpRequest request, @NonNull byte[] body,
+                                        ClientHttpRequestExecution execution) throws IOException {
 
         long start = System.currentTimeMillis();
         ClientHttpResponse response = execution.execute(request, body);
@@ -54,7 +54,8 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
         return response;
     }
 
-    private void trace(HttpRequest request, byte[] body, ClientHttpResponse response) throws IOException {
+    private void trace(HttpRequest request, byte[] body, ClientHttpResponse response)
+        throws IOException {
         // 记录日志
         String responseStr = IOUtils.toString(response.getBody(), StandardCharsets.UTF_8);
         log.info(new StringBuilder()
@@ -65,6 +66,7 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
                 .append("Param         : {}, \n")
                 .append("RespStatus  : {}, \n")
                 .append("Response    : {}")
-                .toString(), request.getURI(), request.getMethod(), request.getHeaders(), new String(body, StandardCharsets.UTF_8), response.getStatusCode(), responseStr);
+                .toString(), request.getURI(), request.getMethod(), request.getHeaders(),
+            new String(body, StandardCharsets.UTF_8), response.getStatusCode(), responseStr);
     }
 }

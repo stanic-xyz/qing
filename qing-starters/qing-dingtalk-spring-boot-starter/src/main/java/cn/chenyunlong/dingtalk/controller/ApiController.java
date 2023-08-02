@@ -26,7 +26,10 @@ public class ApiController {
     private final UserService userService;
 
     @Autowired
-    public ApiController(RobotGroupMessagesService robotGroupMessagesService, RobotInteractiveCardsService robotInteractiveCardsService, InteractiveCardsInstanceService interactiveCardsInstanceService, UserService userService) {
+    public ApiController(RobotGroupMessagesService robotGroupMessagesService,
+                         RobotInteractiveCardsService robotInteractiveCardsService,
+                         InteractiveCardsInstanceService interactiveCardsInstanceService,
+                         UserService userService) {
         this.robotGroupMessagesService = robotGroupMessagesService;
         this.robotInteractiveCardsService = robotInteractiveCardsService;
         this.interactiveCardsInstanceService = interactiveCardsInstanceService;
@@ -40,7 +43,8 @@ public class ApiController {
      */
     @PostMapping(value = "/sendText")
     public String sendText(@RequestBody TextModel textModel) throws Exception {
-        String messageId = robotGroupMessagesService.send(textModel.getOpenConversationId(), textModel.getTxt());
+        String messageId =
+            robotGroupMessagesService.send(textModel.getOpenConversationId(), textModel.getTxt());
         log.info("sendText success {}, messageId={}", textModel, messageId);
         return "OK";
     }
@@ -69,7 +73,8 @@ public class ApiController {
     @PostMapping(value = "/sendTopCard")
     public String sendTopCard(@RequestBody TopCardModel topCardModel) throws Exception {
         log.info("sendTopCard {}", topCardModel);
-        Boolean success = interactiveCardsInstanceService.createAndDeliverBox(topCardModel.getOpenConversationId());
+        Boolean success = interactiveCardsInstanceService.createAndDeliverBox(
+            topCardModel.getOpenConversationId());
         log.info("sendTopCard success {}, model={}", success, topCardModel);
         return "OK";
     }
@@ -82,9 +87,11 @@ public class ApiController {
      * @throws Exception 内部异常
      */
     @GetMapping(value = "/getUserInfo")
-    public ServiceResponse<UserInfo> getUserInfo(@RequestParam("requestAuthCode") String authCode) throws Exception {
+    public ServiceResponse<UserInfo> getUserInfo(@RequestParam("requestAuthCode") String authCode)
+        throws Exception {
         UserInfo userInfo = userService.getUserInfo(authCode);
-        log.info("getUserInfo, md5AuthCode={}, userInfo={}", DigestUtils.md5DigestAsHex(authCode.getBytes()), userInfo);
+        log.info("getUserInfo, md5AuthCode={}, userInfo={}",
+            DigestUtils.md5DigestAsHex(authCode.getBytes()), userInfo);
         return ServiceResponse.buildSuccessServiceResponse(userInfo);
     }
 }

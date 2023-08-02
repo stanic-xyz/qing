@@ -14,7 +14,6 @@
 package cn.chenyunlong.qing.app.web.content;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Arrays;
 
 public enum ProjectStatus {
@@ -27,10 +26,10 @@ public enum ProjectStatus {
     @JsonCreator
     public static ProjectStatus fromName(String name) {
         return Arrays
-                .stream(ProjectStatus.values())
-                .filter(type -> type.name().equals(name))
-                .findFirst()
-                .orElse(ProjectStatus.ACTIVE);
+            .stream(ProjectStatus.values())
+            .filter(type -> type.name().equals(name))
+            .findFirst()
+            .orElse(ProjectStatus.ACTIVE);
     }
 
 }

@@ -16,7 +16,7 @@ stages:
     displayName: maven build
     strategy: naturally
     trigger: auto
-    executor: []
+    executor: [ ]
     steps:
       - step: build@maven
         name: build_maven
@@ -31,10 +31,10 @@ stages:
           - name: BUILD_ARTIFACT
             path:
               - qing-bootstrap/qing-bootstrap-service/target
-        settings: []
+        settings: [ ]
         caches:
           - ~/.m2
-        notify: []
+        notify: [ ]
         strategy:
           retry: '0'
       - step: build@docker
@@ -48,8 +48,8 @@ stages:
         artifacts:
           - ${BUILD_ARTIFACT}
         isCache: true
-        parameter: {}
-        notify: []
+        parameter: { }
+        notify: [ ]
         strategy:
           retry: '0'
         dependsOn: build_maven

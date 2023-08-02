@@ -20,14 +20,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * token 拦截器，加入上下文参数 user-agent ，也可以加入其它的扩展
@@ -40,7 +39,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private final static String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain chain)
+        throws ServletException, IOException {
         String authorization = resolveToken(request);
         String userAgent = request.getHeader(USER_AGENT);
         List<AntPathRequestMatcher> list = Lists.newArrayList();
@@ -56,8 +58,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             JwtAuthToken token = new JwtAuthToken(authorization);
             token.setUserAgent(userAgent);
             SecurityContextHolder
-                    .getContext()
-                    .setAuthentication(token);
+                .getContext()
+                .setAuthentication(token);
         }
         chain.doFilter(request, response);
     }

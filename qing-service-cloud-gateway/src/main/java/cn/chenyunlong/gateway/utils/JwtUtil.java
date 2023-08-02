@@ -17,13 +17,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * JWT工具类
@@ -49,12 +48,12 @@ public class JwtUtil {
         LocalDateTime expDate = now.plusNanos(ttlMillis);
         SecretKey secretKey = generalKey();
         JwtBuilder builder = Jwts.builder()
-                .setId(id)              //唯一的ID
-                .setSubject(subject)   // 主题  可以是JSON数据
-                .setIssuer("admin")     // 签发者
-                .setIssuedAt(new Date())      // 签发时间
-                .signWith(signatureAlgorithm, secretKey) //使用HS256对称加密算法签名, 第二个参数为秘钥
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TTL));// 设置过期时间
+            .setId(id)              //唯一的ID
+            .setSubject(subject)   // 主题  可以是JSON数据
+            .setIssuer("admin")     // 签发者
+            .setIssuedAt(new Date())      // 签发时间
+            .signWith(signatureAlgorithm, secretKey) //使用HS256对称加密算法签名, 第二个参数为秘钥
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TTL));// 设置过期时间
         return builder.compact();
     }
 
@@ -78,8 +77,8 @@ public class JwtUtil {
     public static Claims parseJWT(String jwt) throws Exception {
         SecretKey secretKey = generalKey();
         return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(jwt)
-                .getBody();
+            .setSigningKey(secretKey)
+            .parseClaimsJws(jwt)
+            .getBody();
     }
 }

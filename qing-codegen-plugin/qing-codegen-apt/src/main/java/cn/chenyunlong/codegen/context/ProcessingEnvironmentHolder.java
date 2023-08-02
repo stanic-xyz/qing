@@ -14,6 +14,7 @@
 package cn.chenyunlong.codegen.context;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
 
@@ -27,12 +28,19 @@ import javax.tools.Diagnostic;
 public final class ProcessingEnvironmentHolder {
 
     /**
-     * 环境
+     * 处理器。
      */
-    public static final ThreadLocal<ProcessingEnvironment> PROCESSING_ENVIRONMENT = new ThreadLocal<>();
+    public static final ThreadLocal<ProcessingEnvironment> PROCESSING_ENVIRONMENT;
+
+    static {
+        PROCESSING_ENVIRONMENT = new ThreadLocal<>();
+    }
+
+    public ProcessingEnvironmentHolder() {
+    }
 
     /**
-     * 获取工具类上下文
+     * 获取工具类上下文。
      *
      * @return {@link ProcessingEnvironment}
      */
@@ -49,16 +57,6 @@ public final class ProcessingEnvironmentHolder {
         PROCESSING_ENVIRONMENT.set(processingEnvironment);
     }
 
-    /**
-     * 错误消息
-     *
-     * @param message   消息
-     * @param element   错误的元素
-     * @param exception 异常信息
-     */
-    public static void printErrorMessage(String message, Element element, Exception exception) {
-        PROCESSING_ENVIRONMENT.get().getMessager().printMessage(Diagnostic.Kind.ERROR, message, element);
-    }
 
     /**
      * 输出提示信息
@@ -70,5 +68,46 @@ public final class ProcessingEnvironmentHolder {
         if (processingEnvironment != null) {
             processingEnvironment.getMessager().printMessage(Diagnostic.Kind.NOTE, message);
         }
+    }
+
+    /**
+     * 打印普通信息。
+     *
+     * @param msg 需要打印的消息
+     */
+    public static void log(String msg) {
+        if (PROCESSING_ENVIRONMENT.get().getOptions().containsKey("debug")) {
+            PROCESSING_ENVIRONMENT.get().getMessager().printMessage(Diagnostic.Kind.NOTE, msg);
+        }
+    }
+
+    /**
+     * 打印警告信息。
+     *
+     * @param msg 警告信息
+     */
+    public static void warning(String msg, Element element, AnnotationMirror annotation) {
+        PROCESSING_ENVIRONMENT.get().getMessager()
+            .printMessage(Diagnostic.Kind.WARNING, msg, element, annotation);
+    }
+
+    /**
+     * 打印错误信息。
+     *
+     * @param msg 错误信息
+     */
+    public static void error(String msg, Element element, AnnotationMirror annotation) {
+        PROCESSING_ENVIRONMENT.get().getMessager()
+            .printMessage(Diagnostic.Kind.ERROR, msg, element, annotation);
+    }
+
+    /**
+     * 处理错误信息。
+     *
+     * @param msg 错误信息
+     */
+    public static void fatalError(String msg) {
+        PROCESSING_ENVIRONMENT.get().getMessager()
+            .printMessage(Diagnostic.Kind.ERROR, "FATAL ERROR: " + msg);
     }
 }

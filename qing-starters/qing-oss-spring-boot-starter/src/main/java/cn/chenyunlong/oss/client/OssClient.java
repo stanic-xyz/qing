@@ -16,7 +16,6 @@ package cn.chenyunlong.oss.client;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -52,6 +51,11 @@ public interface OssClient {
      */
     S3Object getObjectInfo(String bucketName, String objectName);
 
+    default PutObjectResult putObject(String bucketName, String objectName, InputStream stream)
+        throws IOException {
+        return putObject(bucketName, objectName, stream, stream.available(),
+            "application/octet-stream");
+    }
 
     /**
      * 上传文件
@@ -64,12 +68,8 @@ public interface OssClient {
      * @return 对象信息
      * @throws IOException 异常
      */
-    PutObjectResult putObject(String bucketName, String objectName, InputStream stream, long size, String contextType) throws IOException;
-
-
-    default PutObjectResult putObject(String bucketName, String objectName, InputStream stream) throws IOException {
-        return putObject(bucketName, objectName, stream, stream.available(), "application/octet-stream");
-    }
+    PutObjectResult putObject(String bucketName, String objectName, InputStream stream, long size,
+                              String contextType) throws IOException;
 
     AmazonS3 getS3Client();
 }

@@ -19,7 +19,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-public final class PasswordLoginConfigurer extends AbstractHttpConfigurer<PasswordLoginConfigurer, HttpSecurity> {
+public final class PasswordLoginConfigurer
+    extends AbstractHttpConfigurer<PasswordLoginConfigurer, HttpSecurity> {
 
     public static PasswordLoginConfigurer passLogin() {
         return new PasswordLoginConfigurer();
@@ -30,8 +31,10 @@ public final class PasswordLoginConfigurer extends AbstractHttpConfigurer<Passwo
         super.configure(httpSecurity);
         ApplicationContext context = httpSecurity.getSharedObject(ApplicationContext.class);
         httpSecurity.authenticationProvider(context.getBean(PasswordProvider.class));
-        AuthenticationManagerBuilder builder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
-        httpSecurity.addFilterAfter(new PasswordLoginFilter(builder.getObject()), UsernamePasswordAuthenticationFilter.class);
+        AuthenticationManagerBuilder builder =
+            httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+        httpSecurity.addFilterAfter(new PasswordLoginFilter(builder.getObject()),
+            UsernamePasswordAuthenticationFilter.class);
     }
 
 }

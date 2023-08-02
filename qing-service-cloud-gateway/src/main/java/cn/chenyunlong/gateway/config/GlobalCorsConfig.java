@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.gateway.config;
 
+import java.util.Objects;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +22,6 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.util.pattern.PathPatternParser;
 import reactor.core.publisher.Mono;
-
-import java.util.Objects;
 
 /**
  * 全局跨域配置
@@ -46,7 +45,8 @@ public class GlobalCorsConfig {
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
+        UrlBasedCorsConfigurationSource source =
+            new UrlBasedCorsConfigurationSource(new PathPatternParser());
         source.registerCorsConfiguration("/**", config);
         return new CorsWebFilter(source);
     }
@@ -59,10 +59,10 @@ public class GlobalCorsConfig {
     @Bean
     public KeyResolver ipKeyResolver() {
         return exchange -> Mono.just(Objects
-                .requireNonNull(exchange
-                        .getRequest()
-                        .getRemoteAddress())
-                .getHostName());
+            .requireNonNull(exchange
+                .getRequest()
+                .getRemoteAddress())
+            .getHostName());
     }
 
 }

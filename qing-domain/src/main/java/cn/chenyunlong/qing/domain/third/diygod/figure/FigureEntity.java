@@ -16,11 +16,10 @@ package cn.chenyunlong.qing.domain.third.diygod.figure;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 手办模型 DIYGod

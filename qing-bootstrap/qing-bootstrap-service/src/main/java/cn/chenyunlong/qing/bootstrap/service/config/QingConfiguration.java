@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.security.KeyPair;
+import java.util.Collections;
+import javax.net.ssl.SSLContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.config.AuthConfig;
@@ -32,10 +35,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.web.client.RestTemplate;
-
-import javax.net.ssl.SSLContext;
-import java.security.KeyPair;
-import java.util.Collections;
 
 /**
  * 全局配置
@@ -72,25 +71,28 @@ public class QingConfiguration implements InitializingBean {
     @Bean
     public AuthGithubRequest getAuthRequest() {
         return new AuthGithubRequest(AuthConfig
-                .builder()
-                .clientId("c9391500bdf102edd70c")
-                .clientSecret("c2a9c47006fbc8d16b7e8186b10c89c6cc02ab7f")
-                .redirectUri("http://localhost:8080/authorize/callback")
-                .build());
+            .builder()
+            .clientId("c9391500bdf102edd70c")
+            .clientSecret("c2a9c47006fbc8d16b7e8186b10c89c6cc02ab7f")
+            .redirectUri("http://localhost:8080/authorize/callback")
+            .build());
     }
 
     @Bean
     RestTemplate restTemplate() {
         SSLContext sslContext = null;
         try {
-            sslContext = new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true).build();
+            sslContext =
+                new SSLContextBuilder().loadTrustMaterial(null, (x509Certificates, s) -> true)
+                    .build();
         } catch (Exception exception) {
             log.error("初始RestTemplate上下文错误", exception);
         }
         assert sslContext != null;
         RestTemplate restTemplate = new RestTemplate();
         // 打印记录
-        restTemplate.setInterceptors(Collections.singletonList(new LoggingRequestInterceptor(qingProperties.getLogTimeoutMs())));
+        restTemplate.setInterceptors(Collections.singletonList(
+            new LoggingRequestInterceptor(qingProperties.getLogTimeoutMs())));
         return restTemplate;
     }
 
@@ -98,7 +100,7 @@ public class QingConfiguration implements InitializingBean {
     public KeyPair keyPair() {
         //从classpath下的证书中获取秘钥对
         KeyStoreKeyFactory keyStoreKeyFactory =
-                new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "123456".toCharArray());
+            new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "123456".toCharArray());
         return keyStoreKeyFactory.getKeyPair("jwt", "123456".toCharArray());
     }
 }

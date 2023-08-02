@@ -15,7 +15,6 @@ package cn.chenyunlong.jpa.support.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-
 import java.time.Instant;
 
 /**

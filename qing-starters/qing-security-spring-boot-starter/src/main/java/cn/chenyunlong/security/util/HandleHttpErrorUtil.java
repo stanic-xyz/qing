@@ -17,12 +17,11 @@ import cn.chenyunlong.security.exception.CustomAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
-
-import java.io.Serializable;
 
 @Slf4j
 public class HandleHttpErrorUtil {
@@ -32,7 +31,8 @@ public class HandleHttpErrorUtil {
     private HandleHttpErrorUtil() {
     }
 
-    public static void handleHttpError(HttpServletRequest request, HttpServletResponse response, AuthenticationException message) throws Exception {
+    public static void handleHttpError(HttpServletRequest request, HttpServletResponse response,
+                                       AuthenticationException message) throws Exception {
         //设置http 返回请求错误码
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
