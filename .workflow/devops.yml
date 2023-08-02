@@ -55,3 +55,4 @@ stages:
         dependsOn: build_maven
 strategy:
   blocking: true
+  cloneDepth: 1
