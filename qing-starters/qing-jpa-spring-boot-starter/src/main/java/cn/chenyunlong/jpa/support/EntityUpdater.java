@@ -17,19 +17,19 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.validator.UpdateGroup;
 import com.google.common.base.Preconditions;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.CrudRepository;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author gim 2022/3/5 9:36 下午
  */
 @Slf4j
-public class EntityUpdater<T, ID> extends BaseEntityOperation implements Loader<T, ID>, UpdateHandler<T>, Executor<T> {
+public class EntityUpdater<T, ID> extends BaseEntityOperation
+    implements Loader<T, ID>, UpdateHandler<T>, Executor<T> {
 
     private final CrudRepository<T, ID> repository;
     private T entity;

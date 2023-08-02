@@ -31,13 +31,16 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public MyAuthenticationProvider(@Qualifier("myUserDetailService") UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public MyAuthenticationProvider(
+        @Qualifier("myUserDetailService") UserDetailsService userDetailsService,
+        PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication)
+        throws AuthenticationException {
 
         MyAuthentication myAuthentication = (MyAuthentication) authentication;
 

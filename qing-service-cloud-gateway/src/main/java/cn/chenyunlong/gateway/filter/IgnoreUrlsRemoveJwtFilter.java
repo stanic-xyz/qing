@@ -15,6 +15,8 @@ package cn.chenyunlong.gateway.filter;
 
 import cn.chenyunlong.gateway.config.IgnoreUrlsConfig;
 import cn.chenyunlong.gateway.constrant.AuthConstant;
+import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -26,9 +28,6 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
-import java.util.List;
 
 /**
  * 白名单路径访问时需要移除JWT请求头
@@ -58,7 +57,8 @@ public class IgnoreUrlsRemoveJwtFilter implements GlobalFilter, Ordered {
         List<String> ignoreUrls = ignoreUrlsConfig.getUrls();
         for (String ignoreUrl : ignoreUrls) {
             if (pathMatcher.match(ignoreUrl, uri.getPath())) {
-                request = exchange.getRequest().mutate().header(AuthConstant.JWT_TOKEN_HEADER, "").build();
+                request = exchange.getRequest().mutate().header(AuthConstant.JWT_TOKEN_HEADER, "")
+                    .build();
                 exchange = exchange.mutate().request(request).build();
                 return chain.filter(exchange);
             }

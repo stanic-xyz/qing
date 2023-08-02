@@ -23,17 +23,16 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
-import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import lombok.Data;
 
 /**
  * @author cyl Creator 代码生成器
@@ -56,21 +55,37 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
     /**
      * 生成类
      *
-     * @param typeElement      类型元素
-     * @param roundEnvironment 周围环境
-     * @param useLombok        使用lombok
+     * @param typeElement 类型元素
+     * @param roundEnv    周围环境
+     * @param useLombok   使用lombok
      */
     @Override
-    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
+                              boolean useLombok) {
         // lombok - mapstruct 集成
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         Builder builder =
-                TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC).addAnnotation(Schema.class);
+            TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC)
+                .addAnnotation(Schema.class);
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethod(builder, findFields(typeElement, variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) && !dtoIgnore(variableElement)), useLombok);
-        genJavaSourceFile(typeElement, builder, true);
+        addSetterAndGetterMethod(builder, findFields(typeElement,
+            variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) &&
+                !dtoIgnore(variableElement)), useLombok);
+        genJavaSourceFile(typeElement, builder);
+    }
+
+    /**
+     * 忽略dto生成
+     *
+     * @param element 元素
+     * @return boolean
+     */
+    private boolean dtoIgnore(Element element) {
+        return dtoIgnoreFieldTypes.contains(TypeName.get(element.asType())) || element
+            .getModifiers()
+            .contains(Modifier.STATIC);
     }
 
     /**
@@ -82,18 +97,6 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
     @Override
     public String getSubPackageName(TypeElement typeElement) {
         return "creator";
-    }
-
-    /**
-     * 忽略dto生成
-     *
-     * @param element 元素
-     * @return boolean
-     */
-    private boolean dtoIgnore(Element element) {
-        return dtoIgnoreFieldTypes.contains(TypeName.get(element.asType())) || element
-                .getModifiers()
-                .contains(Modifier.STATIC);
     }
 
 

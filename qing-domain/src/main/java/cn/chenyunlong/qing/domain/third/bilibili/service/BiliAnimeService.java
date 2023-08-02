@@ -14,7 +14,6 @@
 package cn.chenyunlong.qing.domain.third.bilibili.service;
 
 import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,5 +34,6 @@ public interface BiliAnimeService {
      * @param entTime   结束时间
      * @return 评分记录
      */
-    List<BilibiliAnimeScoreEntity> getScoreInfoList(Long animeId, LocalDateTime startTime, LocalDateTime entTime);
+    List<BilibiliAnimeScoreEntity> getScoreInfoList(Long animeId, LocalDateTime startTime,
+                                                    LocalDateTime entTime);
 }

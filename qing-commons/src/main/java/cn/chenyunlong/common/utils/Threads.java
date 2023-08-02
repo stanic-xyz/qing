@@ -13,10 +13,9 @@
 
 package cn.chenyunlong.common.utils;
 
+import java.util.concurrent.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.*;
 
 /**
  * 线程相关工具类.

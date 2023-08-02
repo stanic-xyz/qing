@@ -13,11 +13,10 @@
 
 package cn.chenyunlong.qing.domain.third.wechat.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
  * 微信消息

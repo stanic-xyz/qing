@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.infrastructure.aspect;
 
 import cn.chenyunlong.qing.infrastructure.annotation.Email;
+import java.lang.reflect.Method;
 import net.bytebuddy.matcher.BooleanMatcher;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
@@ -25,8 +26,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Method;
 
 /**
  * 异步发送邮件
@@ -50,7 +49,8 @@ public class EmailAspect {
 
         ElementMatcher<Object> test = new BooleanMatcher<>(false);
 
-        ElementMatcher.Junction<Object> junction = ElementMatchers.any().or(ElementMatchers.is(false));
+        ElementMatcher.Junction<Object> junction =
+            ElementMatchers.any().or(ElementMatchers.is(false));
 
         //获取方法签名
         Method method = ((MethodSignature) point.getSignature()).getMethod();
@@ -60,7 +60,8 @@ public class EmailAspect {
         Object[] args = point.getArgs();
         log.debug("发送邮件的位置：" + annotation.receiver());
         //创建一个邮件发送线程！
-        EmailThread emailThread = new EmailThread(annotation.receiver(), annotation.object(), annotation.content());
+        EmailThread emailThread =
+            new EmailThread(annotation.receiver(), annotation.object(), annotation.content());
         emailThread.start();
         return point.proceed(args);
     }

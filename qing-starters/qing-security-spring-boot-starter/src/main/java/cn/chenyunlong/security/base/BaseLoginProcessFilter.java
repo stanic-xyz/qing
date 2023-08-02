@@ -20,6 +20,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.Getter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
@@ -28,8 +29,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import java.io.IOException;
 
 /**
  * 通用登录处理器
@@ -42,7 +41,10 @@ public abstract class BaseLoginProcessFilter extends AbstractAuthenticationProce
     @Getter
     private final ObjectMapper mapper;
 
-    protected BaseLoginProcessFilter(String defaultFilterProcessesUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler, ObjectMapper mapper) {
+    protected BaseLoginProcessFilter(String defaultFilterProcessesUrl,
+                                     AuthenticationSuccessHandler successHandler,
+                                     AuthenticationFailureHandler failureHandler,
+                                     ObjectMapper mapper) {
         super(defaultFilterProcessesUrl);
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
@@ -51,12 +53,18 @@ public abstract class BaseLoginProcessFilter extends AbstractAuthenticationProce
 
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request,
+                                            HttpServletResponse response, FilterChain chain,
+                                            Authentication authResult)
+        throws IOException, ServletException {
         successHandler.onAuthenticationSuccess(request, response, authResult);
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request,
+                                              HttpServletResponse response,
+                                              AuthenticationException failed)
+        throws IOException, ServletException {
         SecurityContextHolder.clearContext();
         failureHandler.onAuthenticationFailure(request, response, failed);
     }

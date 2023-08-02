@@ -14,9 +14,8 @@
 package cn.chenyunlong.qing.domain.anime.domainservice.model.biz;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class TransferModel {

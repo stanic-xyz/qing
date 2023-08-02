@@ -14,11 +14,10 @@
 package cn.chenyunlong.security.util;
 
 import cn.chenyunlong.security.base.BaseJwtUser;
+import java.util.Objects;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.Objects;
 
 /**
  * Spring Security工具类
@@ -50,7 +49,8 @@ public class SpringSecurityUtils {
         if (authentication.getClass().isAssignableFrom(AnonymousAuthenticationToken.class)) {
             return null;
         } else {
-            return (BaseJwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return (BaseJwtUser) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         }
     }
 }

@@ -26,17 +26,16 @@ import com.tencent.cloud.CosStsClient;
 import com.tencent.cloud.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TreeMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeMap;
 
 /**
  * 文件控制器
@@ -91,43 +90,44 @@ public class FileController {
         // 2、允许访问指定的对象："a/a1.txt", "b/b1.txt"
         // 3、允许访问指定前缀的对象："a*", "a/*", "b/*"
         // 如果填写了“*”，将允许用户访问所有资源；除非业务需要，否则请按照最小权限原则授予用户相应的访问权限范围。
-        config.put("allowPrefixes", new String[]{"*", "exampleobject2"});
+        config.put("allowPrefixes", new String[] {"*", "exampleobject2"});
 
         // 密钥的权限列表。必须在这里指定本次临时密钥所需要的权限。
         // 简单上传、表单上传和分块上传需要以下的权限，其他权限列表请参见 https://cloud.tencent.com/document/product/436/31923
-        String[] allowActions = new String[]{
-                // 简单上传
-                "name/cos:PutObject",
-                // 表单上传、小程序上传
-                "name/cos:PostObject",
-                // 分块上传
-                "name/cos:InitiateMultipartUpload", "name/cos:ListMultipartUploads", "name/cos:ListParts", "name/cos:UploadPart", "name/cos:CompleteMultipartUpload"};
+        String[] allowActions = new String[] {
+            // 简单上传
+            "name/cos:PutObject",
+            // 表单上传、小程序上传
+            "name/cos:PostObject",
+            // 分块上传
+            "name/cos:InitiateMultipartUpload", "name/cos:ListMultipartUploads",
+            "name/cos:ListParts", "name/cos:UploadPart", "name/cos:CompleteMultipartUpload"};
         config.put("allowActions", allowActions);
 //        设置condition（如有需要）
         //# 临时密钥生效条件，关于condition的详细设置规则和COS支持的condition类型可以参考 https://cloud.tencent.com/document/product/436/71307
         final String raw_policy = """
+            {
+              "version":"2.0",
+              "statement":[
                 {
-                  "version":"2.0",
-                  "statement":[
-                    {
-                      "effect":"allow",
-                      "action":[
-                          "name/cos:PutObject",
-                          "name/cos:PostObject",
-                          "name/cos:InitiateMultipartUpload",
-                          "name/cos:ListMultipartUploads",
-                          "name/cos:ListParts",
-                          "name/cos:UploadPart",
-                          "name/cos:CompleteMultipartUpload"
-                        ],
-                      "resource":[
-                          "*"
-                      ],
-                      "condition": {}
-                    }
-                  ]
+                  "effect":"allow",
+                  "action":[
+                      "name/cos:PutObject",
+                      "name/cos:PostObject",
+                      "name/cos:InitiateMultipartUpload",
+                      "name/cos:ListMultipartUploads",
+                      "name/cos:ListParts",
+                      "name/cos:UploadPart",
+                      "name/cos:CompleteMultipartUpload"
+                    ],
+                  "resource":[
+                      "*"
+                  ],
+                  "condition": {}
                 }
-                """;
+              ]
+            }
+            """;
 
         config.put("policy", raw_policy);
         Response response = CosStsClient.getCredential(config);

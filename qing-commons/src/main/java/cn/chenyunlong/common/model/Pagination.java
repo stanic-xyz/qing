@@ -13,9 +13,8 @@
 
 package cn.chenyunlong.common.model;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 /**
  * @author ryanwang

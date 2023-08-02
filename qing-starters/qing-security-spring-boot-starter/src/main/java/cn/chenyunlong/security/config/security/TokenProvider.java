@@ -19,6 +19,10 @@ import cn.chenyunlong.security.config.security.dto.UserInfoVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,11 +30,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.stream.Collectors;
 
 /**
  * @author Stan
@@ -83,10 +82,10 @@ public class TokenProvider {
      */
     public String createJwtToken(Authentication authentication, boolean rememberMe) {
         String authorities = authentication
-                .getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining(","));
 
         long now = System.currentTimeMillis();
         Date validity;
@@ -94,17 +93,18 @@ public class TokenProvider {
         if (rememberMe) {
             validity = new Date(now + securityProperties.getTokenValidityInMilliseconds());
         } else {
-            validity = new Date(now + securityProperties.getTokenValidityInMillisecondsForRememberMe());
+            validity =
+                new Date(now + securityProperties.getTokenValidityInMillisecondsForRememberMe());
         }
 
         return Jwts
-                .builder()
-                .setSubject((String) authentication.getPrincipal())
-                .claim(AUTHORITIES_HEADER, authorities)
-                .claim(USER_INFO, authentication.getPrincipal())
-                .signWith(SignatureAlgorithm.HS256, securityProperties.getSecretKey())
-                .setExpiration(validity)
-                .compact();
+            .builder()
+            .setSubject((String) authentication.getPrincipal())
+            .claim(AUTHORITIES_HEADER, authorities)
+            .claim(USER_INFO, authentication.getPrincipal())
+            .signWith(SignatureAlgorithm.HS256, securityProperties.getSecretKey())
+            .setExpiration(validity)
+            .compact();
     }
 
     /**
@@ -121,19 +121,20 @@ public class TokenProvider {
         if (rememberMe) {
             validity = new Date(now + securityProperties.getTokenValidityInMilliseconds());
         } else {
-            validity = new Date(now + securityProperties.getTokenValidityInMillisecondsForRememberMe());
+            validity =
+                new Date(now + securityProperties.getTokenValidityInMillisecondsForRememberMe());
         }
 
         try {
             return Jwts
-                    .builder()
-                    .setSubject(objectMapper.writeValueAsString(userinfoVo))
-                    .claim(AUTHORITIES_HEADER, "authorities")
-                    .claim(FIELD_USER_ID, "")
-                    .claim("userAgent", "")
-                    .signWith(SignatureAlgorithm.HS512, securityProperties.getSecretKey())
-                    .setExpiration(validity)
-                    .compact();
+                .builder()
+                .setSubject(objectMapper.writeValueAsString(userinfoVo))
+                .claim(AUTHORITIES_HEADER, "authorities")
+                .claim(FIELD_USER_ID, "")
+                .claim("userAgent", "")
+                .signWith(SignatureAlgorithm.HS512, securityProperties.getSecretKey())
+                .setExpiration(validity)
+                .compact();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -146,12 +147,14 @@ public class TokenProvider {
      * @param jwt jwt认证信息
      */
     public Authentication getAuthentication(String jwt) {
-        Claims claims = Jwts.parser().setSigningKey(securityProperties.getSecretKey()).parseClaimsJws(jwt).getBody();
+        Claims claims =
+            Jwts.parser().setSigningKey(securityProperties.getSecretKey()).parseClaimsJws(jwt)
+                .getBody();
 
         Collection<? extends GrantedAuthority> authorities = Arrays
-                .stream(claims.get(AUTHORITIES_HEADER).toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+            .stream(claims.get(AUTHORITIES_HEADER).toString().split(","))
+            .map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toList());
         return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
     }
 
@@ -165,7 +168,8 @@ public class TokenProvider {
         try {
             Jwts.parser().setSigningKey(securityProperties.getSecretKey()).parseClaimsJws(jwtToken);
             return true;
-        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | ExpiredJwtException |
+        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException |
+                 ExpiredJwtException |
                  IllegalArgumentException ignore) {
             return false;
         }

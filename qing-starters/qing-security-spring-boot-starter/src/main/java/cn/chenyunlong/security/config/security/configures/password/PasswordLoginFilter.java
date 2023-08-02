@@ -16,13 +16,12 @@ package cn.chenyunlong.security.config.security.configures.password;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collections;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-
-import java.io.IOException;
-import java.util.Collections;
 
 public class PasswordLoginFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -31,9 +30,12 @@ public class PasswordLoginFilter extends AbstractAuthenticationProcessingFilter 
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response)
+        throws AuthenticationException, IOException {
         ObjectMapper mapper = new ObjectMapper();
-        PasswordLoginRequest loginRequest = mapper.readValue(request.getReader(), PasswordLoginRequest.class);
+        PasswordLoginRequest loginRequest =
+            mapper.readValue(request.getReader(), PasswordLoginRequest.class);
         PasswordToken passToken = new PasswordToken(Collections.emptyList());
         passToken.setUsername(loginRequest.getUsername());
         passToken.setPassword(loginRequest.getPassword());

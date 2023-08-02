@@ -13,11 +13,10 @@
 
 package cn.chenyunlong.security.base;
 
+import java.util.Collection;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 public abstract class BaseUsernamePasswordToken extends AbstractAuthenticationToken {
 
@@ -27,7 +26,8 @@ public abstract class BaseUsernamePasswordToken extends AbstractAuthenticationTo
     private final String password;
 
 
-    public BaseUsernamePasswordToken(Collection<? extends GrantedAuthority> authorities, String username, String password) {
+    public BaseUsernamePasswordToken(Collection<? extends GrantedAuthority> authorities,
+                                     String username, String password) {
         super(authorities);
         this.username = username;
         this.password = password;

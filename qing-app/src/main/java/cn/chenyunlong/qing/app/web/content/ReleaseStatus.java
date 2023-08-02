@@ -14,7 +14,6 @@
 package cn.chenyunlong.qing.app.web.content;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Arrays;
 
 public enum ReleaseStatus {
@@ -26,10 +25,10 @@ public enum ReleaseStatus {
     @JsonCreator
     public static ReleaseStatus fromName(String name) {
         return Arrays
-                .stream(ReleaseStatus.values())
-                .filter(type -> type.name().equals(name))
-                .findFirst()
-                .orElse(ReleaseStatus.GENERAL_AVAILABILITY);
+            .stream(ReleaseStatus.values())
+            .filter(type -> type.name().equals(name))
+            .findFirst()
+            .orElse(ReleaseStatus.GENERAL_AVAILABILITY);
     }
 
 }

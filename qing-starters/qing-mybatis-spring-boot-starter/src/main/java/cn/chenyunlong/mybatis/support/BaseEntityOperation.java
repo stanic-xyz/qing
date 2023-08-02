@@ -13,10 +13,11 @@
 
 package cn.chenyunlong.mybatis.support;
 
+import static org.springframework.util.CollectionUtils.isEmpty;
+
 import cn.chenyunlong.common.exception.ValidationException;
 import cn.chenyunlong.common.model.ValidateResult;
 import cn.chenyunlong.common.validator.ValidateGroup;
-
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -24,8 +25,6 @@ import jakarta.validation.groups.Default;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
  * 基础实体操作
@@ -44,11 +43,12 @@ public abstract class BaseEntityOperation implements EntityOperation {
      * @param group 校验分组
      */
     public <T> void doValidate(T t, Class<? extends ValidateGroup> group) {
-        Set<ConstraintViolation<T>> constraintViolations = validator.validate(t, group, Default.class);
+        Set<ConstraintViolation<T>> constraintViolations =
+            validator.validate(t, group, Default.class);
         if (!isEmpty(constraintViolations)) {
             List<ValidateResult> results = constraintViolations.stream()
-                    .map(cv -> new ValidateResult(cv.getPropertyPath().toString(), cv.getMessage()))
-                    .collect(Collectors.toList());
+                .map(cv -> new ValidateResult(cv.getPropertyPath().toString(), cv.getMessage()))
+                .collect(Collectors.toList());
             throw new ValidationException(results);
         }
     }

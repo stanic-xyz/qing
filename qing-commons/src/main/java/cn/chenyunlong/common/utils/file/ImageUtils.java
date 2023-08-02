@@ -16,9 +16,6 @@ package cn.chenyunlong.common.utils.file;
 import cn.chenyunlong.common.constants.Constants;
 import cn.chenyunlong.common.utils.StringUtils;
 import cn.hutool.core.io.IoUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -26,6 +23,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 图片处理工具类
@@ -81,7 +80,8 @@ public class ImageUtils {
             } else {
                 // 本机地址
                 String localPath = FileUploadUtils.defaultBaseDir;
-                String downloadPath = localPath + StringUtils.substringAfter(url, Constants.RESOURCE_PREFIX);
+                String downloadPath =
+                    localPath + StringUtils.substringAfter(url, Constants.RESOURCE_PREFIX);
                 in = new FileInputStream(downloadPath);
             }
             return IoUtil.readBytes(in);

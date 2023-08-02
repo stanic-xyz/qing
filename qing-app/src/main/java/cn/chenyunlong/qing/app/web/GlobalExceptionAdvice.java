@@ -46,7 +46,8 @@ public class GlobalExceptionAdvice {
      * @return 返回空的信息
      */
     @ExceptionHandler(cn.chenyunlong.common.exception.BusinessException.class)
-    public JsonResult<Void> handleBusinessException(cn.chenyunlong.common.exception.BusinessException exception) {
+    public JsonResult<Void> handleBusinessException(
+        cn.chenyunlong.common.exception.BusinessException exception) {
         return JsonResult.res(CodeEnum.NotFindError, null);
     }
 

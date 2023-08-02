@@ -13,10 +13,9 @@
 
 package cn.chenyunlong.common.enums;
 
+import java.lang.reflect.Field;
 import lombok.Data;
 import org.slf4j.Logger;
-
-import java.lang.reflect.Field;
 
 /**
  * <p>
@@ -62,11 +61,13 @@ public class ResultModel {
     }
 
     public static ResultModel ofSuccess(Object data) {
-        return new ResultModel(ResponseCode.SUCCESS.getValue(), ResponseCode.SUCCESS.getName(), data);
+        return new ResultModel(ResponseCode.SUCCESS.getValue(), ResponseCode.SUCCESS.getName(),
+            data);
     }
 
     public static ResultModel ofSuccess() {
-        return new ResultModel(ResponseCode.SUCCESS.getValue(), ResponseCode.SUCCESS.getName(), null);
+        return new ResultModel(ResponseCode.SUCCESS.getValue(), ResponseCode.SUCCESS.getName(),
+            null);
     }
 
     /**

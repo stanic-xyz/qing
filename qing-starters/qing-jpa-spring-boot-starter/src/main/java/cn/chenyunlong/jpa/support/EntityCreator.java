@@ -15,19 +15,19 @@ package cn.chenyunlong.jpa.support;
 
 import cn.chenyunlong.common.validator.CreateGroup;
 import com.google.common.base.Preconditions;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.CrudRepository;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.CrudRepository;
 
 /**
  * @author gim 2022/3/5 9:54 下午
  */
 @Slf4j
-public class EntityCreator<T, ID> extends BaseEntityOperation implements Create<T>, UpdateHandler<T>, Executor<T> {
+public class EntityCreator<T, ID> extends BaseEntityOperation
+    implements Create<T>, UpdateHandler<T>, Executor<T> {
 
     private final CrudRepository<T, ID> repository;
     private T data;

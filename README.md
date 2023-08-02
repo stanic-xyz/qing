@@ -65,6 +65,31 @@
 
 ---
 
+#### 项目结构
+
+```shell
+├── README.md
+├── AppScope
+├── entry
+│   ├── ets
+│   │   ├── model     数据模型          
+│   │   ├── network   网络请求
+│   │   ├── pages     ui界面
+│   │   ├── player    播放器封装
+│   │   ├── utils     工具集
+│   │   ├── view      视图组件
+│   │   └── workers   异步线程  
+│   ├── configuration
+│   └── resources
+└── lib   
+    ├── DanmakuFlameMaster.har  弹幕支持库
+    ├── ijkplayer.har           视频播放器
+    ├── imageknife.har          图片缓存库
+    ├── PullToRefresh.har       下拉刷新库
+    ├── retrofit.har            网络请求库
+    └── xlog.har                日志框架库
+```
+
 #### 软件选型
 
 - Spring Boot ：应用层容器
@@ -114,7 +139,7 @@
 
 - 注释完备：尤其每个新增的方法应按照Java文档规范标明方法说明、参数说明、返回值说明等信息，必要时请添加单元测试，如果愿意，也可以加上你的大名。
 - 风格统一：本项目使用 checkstyle
-  插件，来保证每位提交者代码的风格保持一致，减少无效代码的修改。详细部署文档请查阅：[HELP.MD](./checkstyle/help.md)
+  插件，来保证每位提交者代码的风格保持一致，减少无效代码的修改。详细部署文档请查阅：[HELP.MD](doc/checkstyle.md)
 - 最小依赖：新加的方法尽可能不要使用额外的第三方库方法
 - 友好讨论：我们如果关闭了你的issue或pr，请不要诧异，这是我们保持问题处理整洁的一种方式，你依旧可以继续讨论，当有讨论结果时我们会重新打开。
 

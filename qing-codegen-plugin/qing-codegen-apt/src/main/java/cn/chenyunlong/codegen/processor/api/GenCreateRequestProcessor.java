@@ -23,14 +23,13 @@ import cn.chenyunlong.common.model.Request;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
+import java.util.Objects;
+import java.util.Set;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.util.Objects;
-import java.util.Set;
+import lombok.Data;
 
 /**
  * 支持创建器的生成器
@@ -46,20 +45,22 @@ public class GenCreateRequestProcessor extends AbstractCodeGenProcessor {
     public static final String CREATE_REQUEST_SUFFIX = "CreateRequest";
 
     @Override
-    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
+                              boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields =
-                findFields(typeElement, element -> Objects.isNull(element.getAnnotation(IgnoreCreator.class)));
+            findFields(typeElement,
+                element -> Objects.isNull(element.getAnnotation(IgnoreCreator.class)));
         TypeSpec.Builder builder = TypeSpec
-                .classBuilder(nameContext.getCreateClassName())
-                .addModifiers(Modifier.PUBLIC)
-                .addSuperinterface(Request.class)
-                .addAnnotation(Schema.class);
+            .classBuilder(nameContext.getCreateClassName())
+            .addModifiers(Modifier.PUBLIC)
+            .addSuperinterface(Request.class)
+            .addAnnotation(Schema.class);
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }
         addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
-        genJavaSourceFile(typeElement, builder, true);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

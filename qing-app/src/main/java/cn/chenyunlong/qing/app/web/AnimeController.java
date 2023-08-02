@@ -44,8 +44,10 @@ public class AnimeController {
      */
     @Operation(summary = "分页查询")
     @PostMapping("page")
-    public ResponseEntity<Page<AnimeInfoVO>> pageQuery(@RequestBody PageRequestWrapper<AnimeInfo> requestWrapper) {
-        return ResponseEntity.ok(animeInfoService.findByPage(requestWrapper.getBean(), requestWrapper.getWrapper()));
+    public ResponseEntity<Page<AnimeInfoVO>> pageQuery(
+        @RequestBody PageRequestWrapper<AnimeInfo> requestWrapper) {
+        return ResponseEntity.ok(
+            animeInfoService.findByPage(requestWrapper.getBean(), requestWrapper.getWrapper()));
     }
 
     /**

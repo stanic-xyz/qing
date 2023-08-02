@@ -9,13 +9,12 @@ import com.aliyun.tea.TeaException;
 import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.models.RuntimeOptions;
 import jakarta.annotation.PostConstruct;
+import java.util.Objects;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * 互动卡片服务
@@ -64,23 +63,30 @@ public class RobotInteractiveCardsService {
         request.setRobotCode(robotCode);
 
         JSONObject cardData = new JSONObject();
-        cardData.put("videoUrl", "https://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/d/ud/352793594610.mp4");
+        cardData.put("videoUrl",
+            "https://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/d/ud/352793594610.mp4");
         request.setCardData(cardData.toJSONString(cardData));
 
         try {
             SendRobotInteractiveCardResponse response =
-                    client.sendRobotInteractiveCardWithOptions(request, headers, new RuntimeOptions());
+                client.sendRobotInteractiveCardWithOptions(request, headers, new RuntimeOptions());
             if (Objects.isNull(response) || Objects.isNull(response.getBody())) {
-                log.error("RobotInteractiveCardsService_send sendRobotInteractiveCardWithOptions return null, " + "response={}", response);
+                log.error(
+                    "RobotInteractiveCardsService_send sendRobotInteractiveCardWithOptions return null, " +
+                        "response={}", response);
                 return null;
             }
 
             return response.getBody().processQueryKey;
         } catch (TeaException e) {
-            log.error("RobotInteractiveCardsService_send sendRobotInteractiveCardWithOptions throw TeaException," + " errCode={}, errorMessage={}", e.getCode(), e.getMessage(), e);
+            log.error(
+                "RobotInteractiveCardsService_send sendRobotInteractiveCardWithOptions throw TeaException," +
+                    " errCode={}, errorMessage={}", e.getCode(), e.getMessage(), e);
             throw e;
         } catch (Exception e) {
-            log.error("RobotInteractiveCardsService_send sendRobotInteractiveCardWithOptions throw Exception", e);
+            log.error(
+                "RobotInteractiveCardsService_send sendRobotInteractiveCardWithOptions throw Exception",
+                e);
             throw e;
         }
     }

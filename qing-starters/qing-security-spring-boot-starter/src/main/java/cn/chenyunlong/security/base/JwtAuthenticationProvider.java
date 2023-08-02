@@ -17,6 +17,7 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.security.base.extension.UserContextAware;
 import cn.chenyunlong.security.exception.CustomAuthenticationException;
 import cn.chenyunlong.security.exception.ParseTokenException;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,11 +26,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
 @Slf4j
-public class JwtAuthenticationProvider extends BaseAuthenticationProvider implements AuthenticationProvider {
+public class JwtAuthenticationProvider extends BaseAuthenticationProvider
+    implements AuthenticationProvider {
 
     private final UserContextAware userContextAware;
 
@@ -38,7 +38,8 @@ public class JwtAuthenticationProvider extends BaseAuthenticationProvider implem
     }
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication)
+        throws AuthenticationException {
         String token = (String) authentication.getCredentials();
         BaseJwtUser jwtUser;
         if (Objects.isNull(userContextAware)) {
@@ -49,9 +50,11 @@ public class JwtAuthenticationProvider extends BaseAuthenticationProvider implem
             } catch (ParseTokenException e) {
                 throw new CustomAuthenticationException(e.getCode(), e.getMsg());
             } catch (Exception e) {
-                throw new CustomAuthenticationException(CodeEnum.SystemError.getValue(), CodeEnum.SystemError.getName());
+                throw new CustomAuthenticationException(CodeEnum.SystemError.getValue(),
+                    CodeEnum.SystemError.getName());
             }
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(jwtUser, token, jwtUser.getAuthorities());
+            UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(jwtUser, token, jwtUser.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authToken);
             return authToken;
         }

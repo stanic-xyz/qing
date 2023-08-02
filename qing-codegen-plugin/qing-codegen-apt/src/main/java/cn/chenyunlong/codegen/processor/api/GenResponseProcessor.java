@@ -21,15 +21,15 @@ import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import com.google.auto.service.AutoService;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-
+import java.util.Objects;
+import java.util.Set;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * 处理Response的代码生成
@@ -44,17 +44,20 @@ public class GenResponseProcessor extends AbstractCodeGenProcessor {
     public static String RESPONSE_SUFFIX = "Response";
 
     @Override
-    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
+                              boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields =
-                findFields(typeElement, variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
+            findFields(typeElement,
+                variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
         TypeSpec.Builder builder = TypeSpec
-                .classBuilder(nameContext.getResponseClassName())
-                .addModifiers(Modifier.PUBLIC)
-                .superclass(AbstractJpaResponse.class)
-                .addAnnotation(Schema.class);
+            .classBuilder(nameContext.getResponseClassName())
+            .addModifiers(Modifier.PUBLIC)
+            .superclass(AbstractJpaResponse.class)
+            .addAnnotation(Schema.class)
+            .addStaticBlock(CodeBlock.builder().build());
         addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
-        genJavaSourceFile(typeElement, builder, true);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

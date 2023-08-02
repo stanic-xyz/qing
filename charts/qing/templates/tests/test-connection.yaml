@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: "{{ include "qing.fullname" . }}-test-connection"
   labels:
-    {{- include "qing.labels" . | nindent 4 }}
+    { { - include "qing.labels" . | nindent 4 } }
   annotations:
     "helm.sh/hook": test
 spec:

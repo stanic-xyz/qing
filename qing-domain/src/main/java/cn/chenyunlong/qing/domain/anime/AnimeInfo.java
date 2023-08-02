@@ -18,11 +18,10 @@ import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.time.LocalDate;
 
 /**
  * @author Stan

@@ -6,14 +6,13 @@ import com.aliyun.dingtalkoauth2_1_0.models.GetAccessTokenResponse;
 import com.aliyun.dingtalkoauth2_1_0.models.GetAccessTokenResponseBody;
 import com.aliyun.tea.TeaException;
 import jakarta.annotation.PostConstruct;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * 获取token服务
@@ -63,7 +62,50 @@ public class AccessTokenService {
         }
 
         if (maxTryTimes <= 0) {
-            throw new RuntimeException("fail to get accessToken from remote, try 3 times, please check your appKey" + " and appSecret");
+            throw new RuntimeException(
+                "fail to get accessToken from remote, try 3 times, please check your appKey" +
+                    " and appSecret");
+        }
+    }
+
+    private Boolean refreshAccessToken() {
+        GetAccessTokenRequest getAccessTokenRequest =
+            new GetAccessTokenRequest().setAppKey(appKey).setAppSecret(appSecret);
+
+        try {
+            GetAccessTokenResponse getAccessTokenResponse =
+                auth2Client.getAccessToken(getAccessTokenRequest);
+            if (Objects.isNull(getAccessTokenResponse) ||
+                Objects.isNull(getAccessTokenResponse.body)) {
+                log.error(
+                    "AccessTokenService_getTokenFromRemoteServer getAccessToken return error," +
+                        " response={}", getAccessTokenResponse);
+                return false;
+            }
+
+            GetAccessTokenResponseBody body = getAccessTokenResponse.body;
+            if (Objects.isNull(body.accessToken) || Objects.isNull(body.expireIn)) {
+                log.error(
+                    "AccessTokenService_getTokenFromRemoteServer getAccessToken invalid token, token or expireIn" +
+                        " maybe null, accessToken={}, expireIn={}", body.accessToken,
+                    body.expireIn);
+                return false;
+            }
+
+            AccessToken accessToken = new AccessToken();
+            accessToken.setAccessToken(body.accessToken);
+            accessToken.setExpireTimestamp(System.currentTimeMillis() + body.expireIn * 1000);
+            this.accessToken = accessToken;
+            log.info("refresh access token success, expireIn={}", body.expireIn);
+            return true;
+        } catch (TeaException e) {
+            log.error("AccessTokenService_getTokenFromRemoteServer getAccessToken throw " +
+                "TeaException, errCode={}, errorMessage={}", e.getCode(), e.getMessage(), e);
+            return false;
+        } catch (Exception e) {
+            log.error("AccessTokenService_getTokenFromRemoteServer getAccessToken throw Exception",
+                e);
+            return false;
         }
     }
 
@@ -83,38 +125,6 @@ public class AccessTokenService {
         }
 
         refreshAccessToken();
-    }
-
-    private Boolean refreshAccessToken() {
-        GetAccessTokenRequest getAccessTokenRequest =
-                new GetAccessTokenRequest().setAppKey(appKey).setAppSecret(appSecret);
-
-        try {
-            GetAccessTokenResponse getAccessTokenResponse = auth2Client.getAccessToken(getAccessTokenRequest);
-            if (Objects.isNull(getAccessTokenResponse) || Objects.isNull(getAccessTokenResponse.body)) {
-                log.error("AccessTokenService_getTokenFromRemoteServer getAccessToken return error," + " response={}", getAccessTokenResponse);
-                return false;
-            }
-
-            GetAccessTokenResponseBody body = getAccessTokenResponse.body;
-            if (Objects.isNull(body.accessToken) || Objects.isNull(body.expireIn)) {
-                log.error("AccessTokenService_getTokenFromRemoteServer getAccessToken invalid token, token or expireIn" + " maybe null, accessToken={}, expireIn={}", body.accessToken, body.expireIn);
-                return false;
-            }
-
-            AccessToken accessToken = new AccessToken();
-            accessToken.setAccessToken(body.accessToken);
-            accessToken.setExpireTimestamp(System.currentTimeMillis() + body.expireIn * 1000);
-            this.accessToken = accessToken;
-            log.info("refresh access token success, expireIn={}", body.expireIn);
-            return true;
-        } catch (TeaException e) {
-            log.error("AccessTokenService_getTokenFromRemoteServer getAccessToken throw " + "TeaException, errCode={}, errorMessage={}", e.getCode(), e.getMessage(), e);
-            return false;
-        } catch (Exception e) {
-            log.error("AccessTokenService_getTokenFromRemoteServer getAccessToken throw Exception", e);
-            return false;
-        }
     }
 
     public String getAccessToken() {

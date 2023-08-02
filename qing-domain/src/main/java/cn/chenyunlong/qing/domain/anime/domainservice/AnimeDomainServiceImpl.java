@@ -22,12 +22,11 @@ import cn.chenyunlong.qing.domain.anime.repository.AnimeInfoRepository;
 import cn.chenyunlong.qing.domain.anime.service.IAnimeInfoService;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -44,18 +43,48 @@ public class AnimeDomainServiceImpl implements IAnimeDomainService {
         Assert.notEmpty(batchRecommendModel.getAnimeIds());
         String genBatchNo = IdUtil.simpleUUID();
         AnimeInfoBizInfo animeInfoBizInfo = AnimeInfoBizInfo
-                .builder()
-                .batchNo(batchRecommendModel.getBatchNo())
-                .genBatchNo(genBatchNo)
-                .inOutBizType(batchRecommendModel.getInOutBizType())
-                .uniqueCodes(batchRecommendModel.getAnimeIds())
-                .operateUser(batchRecommendModel.getOperateUser())
-                .build();
+            .builder()
+            .batchNo(batchRecommendModel.getBatchNo())
+            .genBatchNo(genBatchNo)
+            .inOutBizType(batchRecommendModel.getInOutBizType())
+            .uniqueCodes(batchRecommendModel.getAnimeIds())
+            .operateUser(batchRecommendModel.getOperateUser())
+            .build();
 
         //查询所有的动漫信息
-        List<AnimeInfo> animeInfoList = animeInfoRepository.findAllById(batchRecommendModel.getAnimeIds());
+        List<AnimeInfo> animeInfoList =
+            animeInfoRepository.findAllById(batchRecommendModel.getAnimeIds());
     }
 
+    @Override
+    @Transactional
+    public void handleAnimeInfoTransfer(TransferModel transferModel) {
+        Assert.notEmpty(transferModel.getUniqueCodes());
+        String genBatchNo = IdUtil.simpleUUID();
+        BatchRecommendModel outModel = new BatchRecommendModel();
+        outModel.setBatchNo(transferModel.getBatchNo());
+        outModel.setInOutBizType(InOutBizType.OUT_TRANSFER);
+        outModel.setOperateUser(transferModel.getOperateUser());
+        outModel.setHouseId(transferModel.getTransferOutHouseId());
+        outModel.setAnimeIds(transferModel.getUniqueCodes());
+        handleAnimeInfoOut(outModel);
+        log.info("处理出库完成，仓库id:{},批次号:{},自动批号:{}",
+            transferModel.getTransferOutHouseId(), transferModel.getBatchNo(), genBatchNo);
+
+//        Optional<AnimeInfo> animeInfo = animeInfoRepository.findById(transferModel.getUniqueCodes().get(0));
+//        BatchInOutModel inModel = new BatchInOutModel();
+//        inModel.setAnimeIds(transferModel.getUniqueCodes());
+//        inModel.setName(animeInfo.get().getName());
+//        inModel.setInOutBizType(InOutBizType.IN_TRANSFER);
+//        inModel.setSkuId(transferModel.getSkuId());
+//        inModel.setOperateUser(transferModel.getOperateUser());
+//        inModel.setBatchNo(transferModel.getBatchNo());
+//        handleAnimeInfoRecommend(inModel);
+//        log.info("处理入库完成，仓库id:{},批次号:{},自动批号:{}",
+//                transferModel.getTransferOutHouseId(),
+//                transferModel.getBatchNo(),
+//                genBatchNo);
+    }
 
     @Override
     @Transactional
@@ -63,13 +92,13 @@ public class AnimeDomainServiceImpl implements IAnimeDomainService {
         Assert.notEmpty(batchRecommendModel.getAnimeIds());
         String genBatchNo = IdUtil.simpleUUID();
         AnimeInfoBizInfo bizInfo = AnimeInfoBizInfo
-                .builder()
-                .batchNo(batchRecommendModel.getBatchNo())
-                .genBatchNo(genBatchNo)
-                .inOutBizType(batchRecommendModel.getInOutBizType())
-                .uniqueCodes(batchRecommendModel.getAnimeIds())
-                .operateUser(batchRecommendModel.getOperateUser())
-                .build();
+            .builder()
+            .batchNo(batchRecommendModel.getBatchNo())
+            .genBatchNo(genBatchNo)
+            .inOutBizType(batchRecommendModel.getInOutBizType())
+            .uniqueCodes(batchRecommendModel.getAnimeIds())
+            .operateUser(batchRecommendModel.getOperateUser())
+            .build();
 //        batchInOutModel.getUniqueCodes()
 //                .stream()
 //                .forEach(code -> {
@@ -88,35 +117,6 @@ public class AnimeDomainServiceImpl implements IAnimeDomainService {
 //                                .execute();
 //                    }
 //                });
-    }
-
-    @Override
-    @Transactional
-    public void handleAnimeInfoTransfer(TransferModel transferModel) {
-        Assert.notEmpty(transferModel.getUniqueCodes());
-        String genBatchNo = IdUtil.simpleUUID();
-        BatchRecommendModel outModel = new BatchRecommendModel();
-        outModel.setBatchNo(transferModel.getBatchNo());
-        outModel.setInOutBizType(InOutBizType.OUT_TRANSFER);
-        outModel.setOperateUser(transferModel.getOperateUser());
-        outModel.setHouseId(transferModel.getTransferOutHouseId());
-        outModel.setAnimeIds(transferModel.getUniqueCodes());
-        handleAnimeInfoOut(outModel);
-        log.info("处理出库完成，仓库id:{},批次号:{},自动批号:{}", transferModel.getTransferOutHouseId(), transferModel.getBatchNo(), genBatchNo);
-
-//        Optional<AnimeInfo> animeInfo = animeInfoRepository.findById(transferModel.getUniqueCodes().get(0));
-//        BatchInOutModel inModel = new BatchInOutModel();
-//        inModel.setAnimeIds(transferModel.getUniqueCodes());
-//        inModel.setName(animeInfo.get().getName());
-//        inModel.setInOutBizType(InOutBizType.IN_TRANSFER);
-//        inModel.setSkuId(transferModel.getSkuId());
-//        inModel.setOperateUser(transferModel.getOperateUser());
-//        inModel.setBatchNo(transferModel.getBatchNo());
-//        handleAnimeInfoRecommend(inModel);
-//        log.info("处理入库完成，仓库id:{},批次号:{},自动批号:{}",
-//                transferModel.getTransferOutHouseId(),
-//                transferModel.getBatchNo(),
-//                genBatchNo);
     }
 
     /**

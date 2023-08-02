@@ -3,6 +3,10 @@ package cn.chenyunlong.dingtalk.controller.interceptor;
 import cn.chenyunlong.dingtalk.service.AccessTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
@@ -14,11 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import java.lang.reflect.Method;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 拦截所有需要Token的请求，统一提前验证Token的有效性
@@ -38,7 +37,9 @@ public class AuthInterceptor implements HandlerInterceptor, BeanPostProcessor {
     }
 
     @Override
-    public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
+    public boolean preHandle(@NotNull HttpServletRequest request,
+                             @NotNull HttpServletResponse response, @NotNull Object handler)
+        throws Exception {
         if (!isNeedAuthRequest(request)) {
             return true;
         }
@@ -59,7 +60,8 @@ public class AuthInterceptor implements HandlerInterceptor, BeanPostProcessor {
     }
 
     @Override
-    public Object postProcessBeforeInitialization(@NotNull Object bean, @NotNull String beanName) throws BeansException {
+    public Object postProcessBeforeInitialization(@NotNull Object bean, @NotNull String beanName)
+        throws BeansException {
         Class<?> beanClass = bean.getClass();
         if (!beanClass.isAnnotationPresent(RestController.class)) {
             return bean;

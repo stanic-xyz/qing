@@ -16,11 +16,10 @@ package cn.chenyunlong.common.utils.file;
 import cn.chenyunlong.common.utils.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * 文件处理工具类
@@ -117,7 +116,8 @@ public class FileUtils extends FileTypeUtils {
      * @param fileName 文件名
      * @return 编码后的文件名
      */
-    public static String setFileDownloadHeader(HttpServletRequest request, String fileName) throws UnsupportedEncodingException {
+    public static String setFileDownloadHeader(HttpServletRequest request, String fileName)
+        throws UnsupportedEncodingException {
         final String agent = request.getHeader("USER-AGENT");
         String filename = fileName;
         if (agent.contains("MSIE")) {
@@ -143,12 +143,41 @@ public class FileUtils extends FileTypeUtils {
      * @param response     响应对象
      * @param realFileName 真实文件名
      */
-    public static void setAttachmentResponseHeader(HttpServletResponse response, String realFileName) throws UnsupportedEncodingException {
+    public static void setAttachmentResponseHeader(HttpServletResponse response,
+                                                   String realFileName)
+        throws UnsupportedEncodingException {
         String percentEncodedFileName = percentEncode(realFileName);
 
         String contentDispositionValue =
-                "attachment; filename=" + percentEncodedFileName + ";" + "filename*=" + "utf-8''" + percentEncodedFileName;
+            "attachment; filename=" + percentEncodedFileName + ";" + "filename*=" + "utf-8''" +
+                percentEncodedFileName;
         response.setHeader("Content-disposition", contentDispositionValue);
+    }
+
+    /**
+     * 百分号编码工具方法
+     *
+     * @param s 需要百分号编码的字符串
+     * @return 百分号编码后的字符串
+     */
+    public static String percentEncode(String s) throws UnsupportedEncodingException {
+        String encode = URLEncoder.encode(s, StandardCharsets.UTF_8);
+        return encode.replaceAll("\\+", "%20");
+    }
+
+    /**
+     * 读取文本文件内容
+     *
+     * @param filePath 文件所在路径
+     * @return 文本内容
+     * @throws IOException 异常
+     * @author cn.outofmemory
+     * @date 2013-1-7
+     */
+    public static String readFile(String filePath) throws IOException {
+        StringBuffer stringBuffer = new StringBuffer();
+        FileUtils.readToBuffer(stringBuffer, filePath);
+        return stringBuffer.toString();
     }
 
     /**
@@ -171,31 +200,5 @@ public class FileUtils extends FileTypeUtils {
         }
         reader.close();
         is.close();
-    }
-
-    /**
-     * 读取文本文件内容
-     *
-     * @param filePath 文件所在路径
-     * @return 文本内容
-     * @throws IOException 异常
-     * @author cn.outofmemory
-     * @date 2013-1-7
-     */
-    public static String readFile(String filePath) throws IOException {
-        StringBuffer stringBuffer = new StringBuffer();
-        FileUtils.readToBuffer(stringBuffer, filePath);
-        return stringBuffer.toString();
-    }
-
-    /**
-     * 百分号编码工具方法
-     *
-     * @param s 需要百分号编码的字符串
-     * @return 百分号编码后的字符串
-     */
-    public static String percentEncode(String s) throws UnsupportedEncodingException {
-        String encode = URLEncoder.encode(s, StandardCharsets.UTF_8);
-        return encode.replaceAll("\\+", "%20");
     }
 }

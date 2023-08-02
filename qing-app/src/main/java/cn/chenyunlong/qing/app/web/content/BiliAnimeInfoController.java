@@ -16,14 +16,13 @@ package cn.chenyunlong.qing.app.web.content;
 import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
 import cn.chenyunlong.qing.domain.third.bilibili.service.BiliAnimeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 外部接口-哔哩哔哩动漫接口
@@ -49,7 +48,11 @@ public class BiliAnimeInfoController {
      * @return {@link List}<{@link BilibiliAnimeScoreEntity}>
      */
     @GetMapping("scores")
-    public List<BilibiliAnimeScoreEntity> getScoreList(Long animeId, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startTime, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime) {
+    public List<BilibiliAnimeScoreEntity> getScoreList(Long animeId,
+                                                       @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                                       LocalDateTime startTime,
+                                                       @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                                       LocalDateTime endTime) {
         return animeInfoService.getScoreInfoList(animeId, startTime, endTime);
     }
 

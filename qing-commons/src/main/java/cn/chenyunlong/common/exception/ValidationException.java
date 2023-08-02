@@ -14,9 +14,8 @@
 package cn.chenyunlong.common.exception;
 
 import cn.chenyunlong.common.model.ValidateResult;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 /**
  * @author gim

@@ -16,12 +16,11 @@ package cn.chenyunlong.common.model;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import java.util.Map;
+import javax.annotation.Nonnegative;
 import lombok.Data;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
-import javax.annotation.Nonnegative;
-import java.util.Map;
 
 /**
  * @author gim

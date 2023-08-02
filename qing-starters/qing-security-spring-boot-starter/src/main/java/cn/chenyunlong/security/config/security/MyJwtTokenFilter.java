@@ -17,15 +17,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.util.StringUtils;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Optional;
 
 public class MyJwtTokenFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -50,7 +49,9 @@ public class MyJwtTokenFilter extends AbstractAuthenticationProcessingFilter {
      * @throws ServletException
      */
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response)
+        throws AuthenticationException, IOException, ServletException {
         String jwt = resolveToken(request);
         if (StringUtils.hasText(jwt)) {
             // 从自定义tokenProvider中解析用户
@@ -83,7 +84,8 @@ public class MyJwtTokenFilter extends AbstractAuthenticationProcessingFilter {
             return null;
         }
         Optional<Cookie> optionalCookie =
-                Arrays.stream(cookies).filter(cookie -> cookie.getName().equals(AUTHORIZATION_COOKIES)).findFirst();
+            Arrays.stream(cookies).filter(cookie -> cookie.getName().equals(AUTHORIZATION_COOKIES))
+                .findFirst();
         return optionalCookie.map(Cookie::getValue).orElse(null);
     }
 }

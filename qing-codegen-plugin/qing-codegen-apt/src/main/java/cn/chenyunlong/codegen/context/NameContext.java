@@ -16,7 +16,7 @@ package cn.chenyunlong.codegen.context;
 import com.google.common.base.Strings;
 
 /**
- * 默认名称名称上下文，便于其他引入类方便使用
+ * 默认名称名称上下文，便于其他引入类方便使用大赛东
  *
  * @author Gim
  * @since 2022/11/06
@@ -69,6 +69,11 @@ public class NameContext {
 
     public void setVoPackageName(String voPackageName) {
         this.voPackageName = voPackageName;
+    }
+
+    private String getFinalPackage(String relativePackage) {
+        return !Strings.isNullOrEmpty(basePackage) ? basePackage + "." + relativePackage :
+            relativePackage;
     }
 
     public String getQueryPackageName() {
@@ -173,10 +178,6 @@ public class NameContext {
 
     public void setFeignPackageName(String feignPackageName) {
         this.feignPackageName = feignPackageName;
-    }
-
-    private String getFinalPackage(String relativePackage) {
-        return !Strings.isNullOrEmpty(basePackage) ? basePackage + "." + relativePackage : relativePackage;
     }
 
     public String getBasePackage() {

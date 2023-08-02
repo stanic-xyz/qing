@@ -23,14 +23,13 @@ import cn.chenyunlong.common.model.Request;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
+import java.util.Objects;
+import java.util.Set;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import java.util.Objects;
-import java.util.Set;
+import lombok.Data;
 
 /**
  * 处理QueryRequest的代码生成
@@ -45,21 +44,23 @@ public class GenQueryRequestProcessor extends AbstractCodeGenProcessor {
     public static String QUERY_REQUEST_SUFFIX = "QueryRequest";
 
     @Override
-    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
+                              boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
 
         Set<VariableElement> fields =
-                findFields(typeElement, element -> Objects.nonNull(element.getAnnotation(QueryItem.class)));
+            findFields(typeElement,
+                element -> Objects.nonNull(element.getAnnotation(QueryItem.class)));
         TypeSpec.Builder builder = TypeSpec
-                .classBuilder(nameContext.getQueryRequestClassName())
-                .addModifiers(Modifier.PUBLIC)
-                .addSuperinterface(Request.class)
-                .addAnnotation(Schema.class);
+            .classBuilder(nameContext.getQueryRequestClassName())
+            .addModifiers(Modifier.PUBLIC)
+            .addSuperinterface(Request.class)
+            .addAnnotation(Schema.class);
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }
         addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
-        genJavaSourceFile(typeElement, builder, true);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

@@ -14,12 +14,11 @@
 package cn.chenyunlong.security.config.security.configures.authing;
 
 import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
+import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 
 public class AuthingToken extends AbstractAuthenticationToken {

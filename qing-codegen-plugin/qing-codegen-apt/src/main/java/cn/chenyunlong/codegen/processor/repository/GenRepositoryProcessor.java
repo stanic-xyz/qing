@@ -23,7 +23,6 @@ import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
-
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -41,13 +40,15 @@ public class GenRepositoryProcessor extends AbstractCodeGenProcessor {
     public static final String REPOSITORY_SUFFIX = "Repository";
 
     @Override
-    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
+                              boolean useLombok) {
         String className = typeElement.getSimpleName() + REPOSITORY_SUFFIX;
         TypeSpec.Builder builder = TypeSpec
-                .interfaceBuilder(className)
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class), ClassName.get(typeElement), ClassName.get(Long.class)))
-                .addModifiers(Modifier.PUBLIC);
-        genJavaSourceFile(typeElement, builder, true);
+            .interfaceBuilder(className)
+            .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class),
+                ClassName.get(typeElement), ClassName.get(Long.class)))
+            .addModifiers(Modifier.PUBLIC);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

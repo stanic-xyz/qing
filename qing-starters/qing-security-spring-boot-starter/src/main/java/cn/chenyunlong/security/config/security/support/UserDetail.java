@@ -14,10 +14,9 @@
 package cn.chenyunlong.security.config.security.support;
 
 import cn.chenyunlong.security.config.security.dto.User;
+import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
 
 /**
  * 用户详细信息

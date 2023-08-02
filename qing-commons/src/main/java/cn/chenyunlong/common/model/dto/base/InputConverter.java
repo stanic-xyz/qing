@@ -16,10 +16,9 @@ package cn.chenyunlong.common.model.dto.base;
 
 import cn.chenyunlong.common.utils.BeanUtils;
 import cn.chenyunlong.common.utils.ReflectionUtils;
-
-import javax.annotation.Nullable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
+import javax.annotation.Nullable;
 
 /**
  * Converter interface for input DTO.
@@ -39,20 +38,12 @@ public interface InputConverter<DOMAIN> {
         ParameterizedType currentType = parameterizedType();
 
         // Assert not equal
-        Objects.requireNonNull(currentType, "Cannot fetch actual type because parameterized type is null");
+        Objects.requireNonNull(currentType,
+            "Cannot fetch actual type because parameterized type is null");
 
         Class<DOMAIN> domainClass = (Class<DOMAIN>) currentType.getActualTypeArguments()[0];
 
         return BeanUtils.transformFrom(this, domainClass);
-    }
-
-    /**
-     * Update a domain by dto.(shallow)
-     *
-     * @param domain updated domain
-     */
-    default void update(DOMAIN domain) {
-        BeanUtils.updateProperties(this, domain);
     }
 
     /**
@@ -63,6 +54,15 @@ public interface InputConverter<DOMAIN> {
     @Nullable
     default ParameterizedType parameterizedType() {
         return ReflectionUtils.getParameterizedType(InputConverter.class, this.getClass());
+    }
+
+    /**
+     * Update a domain by dto.(shallow)
+     *
+     * @param domain updated domain
+     */
+    default void update(DOMAIN domain) {
+        BeanUtils.updateProperties(this, domain);
     }
 }
 

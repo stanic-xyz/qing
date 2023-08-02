@@ -29,12 +29,11 @@ import com.riversoft.weixin.mp.care.CareMessages;
 import com.riversoft.weixin.mp.message.MpXmlMessages;
 import com.riversoft.weixin.mp.oauth2.MpOAuth2s;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 /**
  * 对接微信公众平台
@@ -56,11 +55,13 @@ public class WxMpController {
     }
 
     @GetMapping("oauth/mp")
-    public void mp(@RequestParam(value = "code") String code, @RequestParam(value = "state", required = false) String state) {
+    public void mp(@RequestParam(value = "code") String code,
+                   @RequestParam(value = "state", required = false) String state) {
 
         log.info("code:{}, state:{}", code, state);
         AccessToken accessToken = MpOAuth2s.defaultOAuth2s().getAccessToken(code);
-        OpenUser openUser = MpOAuth2s.defaultOAuth2s().userInfo(accessToken.getAccessToken(), accessToken.getOpenId());
+        OpenUser openUser = MpOAuth2s.defaultOAuth2s()
+            .userInfo(accessToken.getAccessToken(), accessToken.getOpenId());
         //do your logic
         log.debug("这里就是相应的消息了！");
         log.debug("登录{}", openUser.getNickName());
@@ -83,9 +84,17 @@ public class WxMpController {
      */
     @RequestMapping("/wx/mp")
     @ResponseBody
-    public String mp(@RequestParam(value = "signature") String signature, @RequestParam(value = "msg_signature", required = false) String msgSignature, @RequestParam(value = "timestamp") String timestamp, @RequestParam(value = "nonce") String nonce, @RequestParam(value = "echostr", required = false) String echoStr, @RequestParam(value = "encrypt_type", required = false) String encryptType, @RequestBody(required = false) String content) {
+    public String mp(@RequestParam(value = "signature") String signature,
+                     @RequestParam(value = "msg_signature", required = false) String msgSignature,
+                     @RequestParam(value = "timestamp") String timestamp,
+                     @RequestParam(value = "nonce") String nonce,
+                     @RequestParam(value = "echostr", required = false) String echoStr,
+                     @RequestParam(value = "encrypt_type", required = false) String encryptType,
+                     @RequestBody(required = false) String content) {
 
-        log.info("signature={}, msg_signature={}, timestamp={}, nonce={}, echostr={}, encrypt_type={}", signature, msgSignature, timestamp, nonce, echoStr, encryptType);
+        log.info(
+            "signature={}, msg_signature={}, timestamp={}, nonce={}, echostr={}, encrypt_type={}",
+            signature, msgSignature, timestamp, nonce, echoStr, encryptType);
 
         AppSetting appSetting = AppSetting.defaultSettings();
         try {
@@ -106,13 +115,16 @@ public class WxMpController {
         if ("aes".equals(encryptType)) {
             try {
                 MessageDecryption messageDecryption =
-                        new MessageDecryption(appSetting.getToken(), appSetting.getAesKey(), appSetting.getAppId());
-                xmlRequest = MpXmlMessages.fromXml(messageDecryption.decrypt(msgSignature, timestamp, nonce, content));
+                    new MessageDecryption(appSetting.getToken(), appSetting.getAesKey(),
+                        appSetting.getAppId());
+                xmlRequest = MpXmlMessages.fromXml(
+                    messageDecryption.decrypt(msgSignature, timestamp, nonce, content));
                 XmlMessageHeader xmlResponse = mpDispatch(xmlRequest);
 
                 if (xmlResponse != null) {
                     try {
-                        return messageDecryption.encrypt(MpXmlMessages.toXml(xmlResponse), timestamp, nonce);
+                        return messageDecryption.encrypt(MpXmlMessages.toXml(xmlResponse),
+                            timestamp, nonce);
                     } catch (WxRuntimeException e) {
                         log.error("发生了议程", e);
                     }
@@ -136,7 +148,8 @@ public class WxMpController {
 
     private XmlMessageHeader mpDispatch(XmlMessageHeader xmlRequest) {
         try {
-            if (!weChatMessageService.isDuplicated(xmlRequest.getFromUser() + xmlRequest.getCreateTime().getTime())) {
+            if (!weChatMessageService.isDuplicated(
+                xmlRequest.getFromUser() + xmlRequest.getCreateTime().getTime())) {
                 String welcome = "您好:" + xmlRequest.getFromUser();
                 log.info("后台收到了消息：" + welcome);
                 CareMessages.defaultCareMessages().text(xmlRequest.getFromUser(), welcome);
@@ -144,16 +157,19 @@ public class WxMpController {
                 if (xmlRequest instanceof EventRequest eventRequest) {
                     log.debug("事件请求[{}]", eventRequest.getEventType().name());
                     CareMessages
-                            .defaultCareMessages()
-                            .text(xmlRequest.getFromUser(), "事件请求:" + eventRequest.getEventType().name());
+                        .defaultCareMessages()
+                        .text(xmlRequest.getFromUser(),
+                            "事件请求:" + eventRequest.getEventType().name());
                 } else {
                     log.debug("消息请求[{}]", xmlRequest.getMsgType().name());
                     CareMessages
-                            .defaultCareMessages()
-                            .text(xmlRequest.getFromUser(), "消息请求:" + xmlRequest.getMsgType().name());
+                        .defaultCareMessages()
+                        .text(xmlRequest.getFromUser(),
+                            "消息请求:" + xmlRequest.getMsgType().name());
                 }
             } else {
-                log.warn("Duplicated message: {} @ {}", xmlRequest.getMsgType(), xmlRequest.getFromUser());
+                log.warn("Duplicated message: {} @ {}", xmlRequest.getMsgType(),
+                    xmlRequest.getFromUser());
             }
         } catch (Exception exp) {
             return null;

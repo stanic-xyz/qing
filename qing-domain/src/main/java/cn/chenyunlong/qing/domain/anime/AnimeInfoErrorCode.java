@@ -14,7 +14,6 @@
 package cn.chenyunlong.qing.domain.anime;
 
 import cn.chenyunlong.common.constants.BaseEnum;
-
 import java.util.Optional;
 
 public enum AnimeInfoErrorCode implements BaseEnum<Integer> {

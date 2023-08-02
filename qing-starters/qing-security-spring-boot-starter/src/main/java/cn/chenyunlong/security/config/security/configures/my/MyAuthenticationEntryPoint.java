@@ -17,14 +17,13 @@ import cn.chenyunlong.common.model.ApiResult;
 import cn.hutool.json.JSONUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author Stan
@@ -33,13 +32,10 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @Component
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    public static boolean isAjaxRequest(HttpServletRequest request) {
-        String ajaxFlag = request.getHeader("X-Requested-With");
-        return "XMLHttpRequest".equals(ajaxFlag);
-    }
-
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException authException) throws IOException {
+    public void commence(HttpServletRequest httpServletRequest,
+                         HttpServletResponse httpServletResponse,
+                         AuthenticationException authException) throws IOException {
 
         if (isAjaxRequest(httpServletRequest)) {
             log.debug("临时申请");
@@ -51,5 +47,10 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         httpServletResponse.getWriter().write(JSONUtil.toJsonStr(success));
+    }
+
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        String ajaxFlag = request.getHeader("X-Requested-With");
+        return "XMLHttpRequest".equals(ajaxFlag);
     }
 }

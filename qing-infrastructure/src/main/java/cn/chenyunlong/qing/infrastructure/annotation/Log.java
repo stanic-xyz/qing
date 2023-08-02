@@ -16,7 +16,6 @@ package cn.chenyunlong.qing.infrastructure.annotation;
 
 import cn.chenyunlong.common.enums.BusinessType;
 import cn.chenyunlong.common.enums.OperatorType;
-
 import java.lang.annotation.*;
 
 /**

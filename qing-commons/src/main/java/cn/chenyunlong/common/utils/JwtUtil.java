@@ -14,7 +14,6 @@
 package cn.chenyunlong.common.utils;
 
 import io.jsonwebtoken.*;
-
 import java.util.Date;
 
 public class JwtUtil {
@@ -22,16 +21,16 @@ public class JwtUtil {
 
     public static String createJWT(String jwtId, String body, String secretKey, long timeOut) {
         JwtBuilder builder = Jwts
-                .builder()
-                .setId(jwtId)
-                .setAudience("")
-                .setClaims(null)
-                .setSubject(body)
-                .setIssuer("")
-                .setIssuedAt(new Date())
-                .setNotBefore(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + timeOut))
-                .signWith(SignatureAlgorithm.HS512, secretKey);
+            .builder()
+            .setId(jwtId)
+            .setAudience("")
+            .setClaims(null)
+            .setSubject(body)
+            .setIssuer("")
+            .setIssuedAt(new Date())
+            .setNotBefore(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + timeOut))
+            .signWith(SignatureAlgorithm.HS512, secretKey);
         return builder.compact();
     }
 

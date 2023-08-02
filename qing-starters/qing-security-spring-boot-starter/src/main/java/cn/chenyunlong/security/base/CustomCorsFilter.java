@@ -13,12 +13,11 @@
 
 package cn.chenyunlong.security.base;
 
+import java.util.Arrays;
+import java.util.Collections;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * 自定义CORS过滤器

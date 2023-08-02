@@ -10,6 +10,7 @@
  * See the Mulan PSL v2 for more details.
  *
  */
+
 package cn.chenyunlong.qing.domain.third.agefans.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

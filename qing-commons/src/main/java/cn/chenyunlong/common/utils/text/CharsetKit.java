@@ -14,7 +14,6 @@
 package cn.chenyunlong.common.utils.text;
 
 import cn.chenyunlong.common.utils.StringUtils;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 

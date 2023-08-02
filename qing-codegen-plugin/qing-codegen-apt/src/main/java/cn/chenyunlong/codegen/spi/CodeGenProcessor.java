@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.codegen.spi;
 
+import java.lang.annotation.Annotation;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
 
 /**
  * @author chenyunlong
@@ -37,11 +37,12 @@ public interface CodeGenProcessor {
      * 生成类
      * 生成Class
      *
-     * @param typeElement      顶层元素
-     * @param roundEnvironment 周围环境
-     * @param useLombok        是否使用lombok
+     * @param typeElement 顶层元素
+     * @param roundEnv    周围环境
+     * @param useLombok   是否使用lombok
      */
-    void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok);
+    void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
+                       boolean useLombok);
 
     /**
      * 获取支持注释

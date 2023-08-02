@@ -15,10 +15,9 @@ package cn.chenyunlong.qing.domain.anime.domainservice;
 
 import cn.chenyunlong.qing.domain.anime.domainservice.model.meta.InOutBizType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.List;
 
 @Builder
 @Getter

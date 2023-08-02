@@ -13,27 +13,26 @@
 
 package cn.chenyunlong.codegen.processor;
 
+import static com.google.common.truth.Truth.assert_;
+import static com.google.testing.compile.CompilationSubject.assertThat;
+import static com.google.testing.compile.Compiler.javac;
+import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
+
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
 import io.swagger.v3.oas.annotations.media.Schema;
-import junit.framework.TestCase;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-
-import javax.tools.JavaFileObject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.common.truth.Truth.assert_;
-import static com.google.testing.compile.CompilationSubject.assertThat;
-import static com.google.testing.compile.Compiler.javac;
-import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
+import javax.tools.JavaFileObject;
+import junit.framework.TestCase;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 
 @Schema
 public class AbstractCodeGenProcessorTest extends TestCase {
@@ -56,37 +55,40 @@ public class AbstractCodeGenProcessorTest extends TestCase {
      */
     public void testQingCodeGenProcessorRegistry() throws IOException {
 
-        QingCodeGenProcessorRegistry qingCodeGenProcessorRegistry = new QingCodeGenProcessorRegistry();
+        QingCodeGenProcessorRegistry qingCodeGenProcessorRegistry =
+            new QingCodeGenProcessorRegistry();
 
         List<File> classpath = new ArrayList<>();
-        File swaggerAnnotationJar = new ClassPathResource("lib/swagger-annotations-2.2.8.jar").getFile();
+        File swaggerAnnotationJar =
+            new ClassPathResource("lib/swagger-annotations-2.2.8.jar").getFile();
 
         // 创建classpath目录
         folder.create();
         folder.newFolder("META-INF/services");
         File serviceFile = folder.newFile("cn.chenyunlong.codegen.spi.CodeGenProcessor");
-        FileUtil.writeBytes("cn.chenyunlong.codegen.processor.test.TestSchemaProcessor\n".getBytes(StandardCharsets.UTF_8), serviceFile);
+        FileUtil.writeBytes("cn.chenyunlong.codegen.processor.test.TestSchemaProcessor\n".getBytes(
+            StandardCharsets.UTF_8), serviceFile);
 
         classpath.add(folder.getRoot());
         classpath.add(swaggerAnnotationJar);
 
         String fullyQualifiedName = "HelloWorld";
         JavaFileObject javaFileObject = JavaFileObjects.forSourceString(fullyQualifiedName, """
-                                
-                package cn.chenyunlong.coded;
-                                
-                import io.swagger.v3.oas.annotations.media.Schema;
-                import cn.chenyunlong.codegen.annotation.GenDto;
-                import cn.chenyunlong.codegen.annotation.GenCreator;
-                                
-                @GenDto
-                @GenCreator
-                final class HelloWorld {
-                               
-                    @Schema
-                    private String username;
-                }
-                """);
+                            
+            package cn.chenyunlong.coded;
+                            
+            import io.swagger.v3.oas.annotations.media.Schema;
+            import cn.chenyunlong.codegen.annotation.GenDto;
+            import cn.chenyunlong.codegen.annotation.GenCreator;
+                            
+            @GenDto
+            @GenCreator
+            final class HelloWorld {
+                           
+                @Schema
+                private String username;
+            }
+            """);
         ClassLoader classLoader = this.getClass().getClassLoader();
         Compiler compiler = javac().withClasspath(classpath);
         Compiler classpathFrom = compiler.withClasspathFrom(classLoader);

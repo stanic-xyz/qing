@@ -50,59 +50,63 @@ public class SecurityConfig {
         return new DummyUserContextAware();
     }
 
-
-    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
-        return new JwtAuthenticationTokenFilter();
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .requiresChannel()
-                .anyRequest()
-                .requiresInsecure()
-                .and()
-                .csrf()
-                .disable()//csrf取消
-                .cors()
-                .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(unauthorizedHandler)
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()//不再存储session
-                .headers()
-                .frameOptions()
-                .disable()
-                .and()
-                .headers()
-                .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers(CorsUtils::isPreFlightRequest)
-                .permitAll()
-                //OPTIONS请求直接放行
-                .requestMatchers(HttpMethod.OPTIONS)
-                .permitAll()
-                //静态资源直接放行
-                .requestMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js")
-                .permitAll()
-                //Swagger相关直接放行
-                .requestMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/api-docs", "/configuration/ui", "/configuration/security", "/auth/**", "/public/**")
-                .permitAll()
-                .requestMatchers(commonProperties.getUnAuthUrls().toArray(new String[0]))
-                .permitAll()
-                .requestMatchers("/admin/**)")
-                .hasRole("ADMIN")
-                .anyRequest()
-                .authenticated();
+            .requiresChannel()
+            .anyRequest()
+            .requiresInsecure()
+            .and()
+            .csrf()
+            .disable()//csrf取消
+            .cors()
+            .disable()
+            .exceptionHandling()
+            .authenticationEntryPoint(unauthorizedHandler)
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()//不再存储session
+            .headers()
+            .frameOptions()
+            .disable()
+            .and()
+            .headers()
+            .addHeaderWriter(new XFrameOptionsHeaderWriter(
+                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+            .and()
+            .authorizeHttpRequests()
+            .requestMatchers(CorsUtils::isPreFlightRequest)
+            .permitAll()
+            //OPTIONS请求直接放行
+            .requestMatchers(HttpMethod.OPTIONS)
+            .permitAll()
+            //静态资源直接放行
+            .requestMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html",
+                "/**/*.css", "/**/*.js")
+            .permitAll()
+            //Swagger相关直接放行
+            .requestMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**",
+                "/v2/api-docs", "/configuration/ui", "/configuration/security", "/auth/**",
+                "/public/**")
+            .permitAll()
+            .requestMatchers(commonProperties.getUnAuthUrls().toArray(new String[0]))
+            .permitAll()
+            .requestMatchers("/admin/**)")
+            .hasRole("ADMIN")
+            .anyRequest()
+            .authenticated();
 
-        httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(authenticationTokenFilterBean(),
+            UsernamePasswordAuthenticationFilter.class);
         // 资源创建
         httpSecurity.headers().cacheControl();
 
         return httpSecurity.build();
+    }
+
+    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
+        return new JwtAuthenticationTokenFilter();
     }
 
 }

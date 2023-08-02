@@ -17,13 +17,12 @@ import cn.chenyunlong.common.model.ApiResult;
 import cn.hutool.json.JSONUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * 退出成功处理器
@@ -34,7 +33,8 @@ import java.nio.charset.StandardCharsets;
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+                                Authentication authentication) throws IOException {
         ApiResult<Object> success = ApiResult.success("退出成功");
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

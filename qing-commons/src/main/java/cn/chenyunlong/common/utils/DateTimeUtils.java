@@ -14,7 +14,6 @@
 package cn.chenyunlong.common.utils;
 
 import cn.hutool.core.date.DatePattern;
-
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -31,7 +30,8 @@ public class DateTimeUtils {
     /**
      * 标准日期格式 {@link DateTimeFormatter}：yyyyMMddHHmmssSSS
      */
-    public static final DateTimeFormatter PURE_DATETIME_MS_FORMATTER = new DateTimeFormatterBuilder()
+    public static final DateTimeFormatter PURE_DATETIME_MS_FORMATTER =
+        new DateTimeFormatterBuilder()
             .appendPattern(DatePattern.PURE_DATETIME_PATTERN)
             .appendValue(ChronoField.MILLI_OF_SECOND, 3)
             .toFormatter();
@@ -39,12 +39,12 @@ public class DateTimeUtils {
      * 标准日期格式 {@link DateTimeFormatter}：yyyyMMdd
      */
     public static final DateTimeFormatter PURE_DATE_FORMATTER =
-            DateTimeFormatter.ofPattern(DatePattern.PURE_DATE_PATTERN);
+        DateTimeFormatter.ofPattern(DatePattern.PURE_DATE_PATTERN);
     /**
      * 标准日期格式 {@link DateTimeFormatter}：yyyy-MM-dd
      */
     public static final DateTimeFormatter NORM_DATE_FORMATTER =
-            DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN);
+        DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN);
     /**
      * 标准日期格式：HHmm
      */
@@ -52,7 +52,8 @@ public class DateTimeUtils {
     /**
      * 标准日期格式 {@link DateTimeFormatter} HHmm
      */
-    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_PATTERN);
+    public static final DateTimeFormatter TIME_FORMATTER =
+        DateTimeFormatter.ofPattern(TIME_PATTERN);
     /**
      * 标准日期格式：HH:mm
      */
@@ -61,13 +62,14 @@ public class DateTimeUtils {
     /**
      * 标准日期格式 {@link DateTimeFormatter} HH:mm
      */
-    public static final DateTimeFormatter NORM_TIME_FORMATTER = DateTimeFormatter.ofPattern(NORM_TIME_PATTERN);
+    public static final DateTimeFormatter NORM_TIME_FORMATTER =
+        DateTimeFormatter.ofPattern(NORM_TIME_PATTERN);
 
     /**
      * 标准日期时间格式，精确到秒 {@link DateTimeFormatter}：yyyy-MM-dd HH:mm:ss
      */
     public static final DateTimeFormatter NORM_DATETIME_FORMATTER =
-            DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN);
+        DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN);
 
     /**
      * 横线分隔日期时间格式：yyyy-MM-dd-HH-mm-ss-
@@ -78,7 +80,7 @@ public class DateTimeUtils {
      * 横线分隔日期时间格式，精确到秒 {@link DateTimeFormatter}：yyyy-MM-dd-HH-mm-ss-
      */
     public static final DateTimeFormatter HORIZONTAL_LINE_DATETIME_FORMATTER =
-            DateTimeFormatter.ofPattern(HORIZONTAL_LINE_PATTERN);
+        DateTimeFormatter.ofPattern(HORIZONTAL_LINE_PATTERN);
 
     /**
      * 上海时区格式
@@ -124,6 +126,17 @@ public class DateTimeUtils {
     }
 
     /**
+     * 根据日期格式化时间
+     *
+     * @param localDateTime 时间
+     * @param formatter     时间格式
+     * @return Result
+     */
+    public static String format(LocalDateTime localDateTime, DateTimeFormatter formatter) {
+        return localDateTime.format(formatter);
+    }
+
+    /**
      * 按 yyyyMMdd 格式化
      *
      * @param localDate 日期
@@ -131,6 +144,17 @@ public class DateTimeUtils {
      */
     public static String formatDate(LocalDate localDate) {
         return format(localDate, PURE_DATE_FORMATTER);
+    }
+
+    /**
+     * 根据日期格式，格式化日期
+     *
+     * @param localDate 日期
+     * @param formatter 日期格式
+     * @return Result
+     */
+    public static String format(LocalDate localDate, DateTimeFormatter formatter) {
+        return localDate.format(formatter);
     }
 
     /**
@@ -154,27 +178,6 @@ public class DateTimeUtils {
     }
 
     /**
-     * 按 yyyy-MM-dd HH:mm:ss 格式格式化
-     *
-     * @param localDateTime 时间
-     * @return Result
-     */
-    public static String formatDateTime(LocalDateTime localDateTime) {
-        return format(localDateTime, NORM_DATETIME_FORMATTER);
-    }
-
-    /**
-     * 根据日期格式化时间
-     *
-     * @param localDateTime 时间
-     * @param formatter     时间格式
-     * @return Result
-     */
-    public static String format(LocalDateTime localDateTime, DateTimeFormatter formatter) {
-        return localDateTime.format(formatter);
-    }
-
-    /**
      * 根据时间格式，格式化时间
      *
      * @param localTime 时间
@@ -186,14 +189,13 @@ public class DateTimeUtils {
     }
 
     /**
-     * 根据日期格式，格式化日期
+     * 按 yyyy-MM-dd HH:mm:ss 格式格式化
      *
-     * @param localDate 日期
-     * @param formatter 日期格式
+     * @param localDateTime 时间
      * @return Result
      */
-    public static String format(LocalDate localDate, DateTimeFormatter formatter) {
-        return localDate.format(formatter);
+    public static String formatDateTime(LocalDateTime localDateTime) {
+        return format(localDateTime, NORM_DATETIME_FORMATTER);
     }
 
     /**
@@ -220,6 +222,16 @@ public class DateTimeUtils {
     }
 
     /**
+     * 将 localDateTime 转为秒
+     *
+     * @param localDateTime 时间
+     * @return 秒
+     */
+    public static long getEpochSecond(LocalDateTime localDateTime) {
+        return toInstant(localDateTime).getEpochSecond();
+    }
+
+    /**
      * to instant by default zoneId(Shanghai)
      *
      * @param localDateTime 时间
@@ -237,16 +249,6 @@ public class DateTimeUtils {
      */
     public static Instant toInstant(LocalDateTime localDateTime, ZoneId zoneId) {
         return localDateTime.atZone(zoneId).toInstant();
-    }
-
-    /**
-     * 将 localDateTime 转为秒
-     *
-     * @param localDateTime 时间
-     * @return 秒
-     */
-    public static long getEpochSecond(LocalDateTime localDateTime) {
-        return toInstant(localDateTime).getEpochSecond();
     }
 
     /**
@@ -280,6 +282,17 @@ public class DateTimeUtils {
     }
 
     /**
+     * 根据days新增天数
+     *
+     * @param localDateTime 日期时间
+     * @param days          天数
+     * @return 新增 days 后的 LocalDateTime
+     */
+    public static LocalDateTime plusDays(LocalDateTime localDateTime, long days) {
+        return localDateTime.plusDays(days);
+    }
+
+    /**
      * 增加一天时间
      *
      * @param localDateTime 日期时间
@@ -302,7 +315,6 @@ public class DateTimeUtils {
         return plusDays(localDateTime, 1);
     }
 
-
     /**
      * 增加一天时间
      *
@@ -311,17 +323,6 @@ public class DateTimeUtils {
      */
     public static LocalDate plusOneDayToDate(LocalDateTime localDateTime) {
         return plusDays(localDateTime, 1).toLocalDate();
-    }
-
-    /**
-     * 根据days新增天数
-     *
-     * @param localDateTime 日期时间
-     * @param days          天数
-     * @return 新增 days 后的 LocalDateTime
-     */
-    public static LocalDateTime plusDays(LocalDateTime localDateTime, long days) {
-        return localDateTime.plusDays(days);
     }
 
     /**
@@ -367,6 +368,16 @@ public class DateTimeUtils {
         return plusMinutes(localDateTime, 1);
     }
 
+    /**
+     * 根据 minutes 新增分钟
+     *
+     * @param localDateTime 日期时间
+     * @param minutes       分钟数
+     * @return 返回新增的 LocalDateTime
+     */
+    public static LocalDateTime plusMinutes(LocalDateTime localDateTime, long minutes) {
+        return localDateTime.plusMinutes(minutes);
+    }
 
     /**
      * 增加1分钟
@@ -409,27 +420,6 @@ public class DateTimeUtils {
     }
 
     /**
-     * 增加30分钟
-     *
-     * @param localTime 日期时间
-     * @return 返回新增的 LocalTime
-     */
-    public static LocalTime plusThirtyMinute(LocalTime localTime) {
-        return plusMinutes(localTime, 30);
-    }
-
-    /**
-     * 根据 minutes 新增分钟
-     *
-     * @param localDateTime 日期时间
-     * @param minutes       分钟数
-     * @return 返回新增的 LocalDateTime
-     */
-    public static LocalDateTime plusMinutes(LocalDateTime localDateTime, long minutes) {
-        return localDateTime.plusMinutes(minutes);
-    }
-
-    /**
      * 根据 minutes 新增分钟
      *
      * @param localTime 时间
@@ -438,6 +428,16 @@ public class DateTimeUtils {
      */
     public static LocalTime plusMinutes(LocalTime localTime, long minutes) {
         return localTime.plusMinutes(minutes);
+    }
+
+    /**
+     * 增加30分钟
+     *
+     * @param localTime 日期时间
+     * @return 返回新增的 LocalTime
+     */
+    public static LocalTime plusThirtyMinute(LocalTime localTime) {
+        return plusMinutes(localTime, 30);
     }
 
     /**
@@ -465,16 +465,6 @@ public class DateTimeUtils {
     }
 
     /**
-     * 减少 1 分钟
-     *
-     * @param localDateTime 日期时间
-     * @return 返回新增的 LocalTime
-     */
-    public static LocalDateTime minusOneMinutes(LocalDateTime localDateTime) {
-        return minusMinutes(localDateTime, 1);
-    }
-
-    /**
      * 根据 minutes 减少分钟
      *
      * @param localDateTime 日期时间
@@ -483,6 +473,16 @@ public class DateTimeUtils {
      */
     public static LocalDateTime minusMinutes(LocalDateTime localDateTime, long minutes) {
         return localDateTime.minusMinutes(minutes);
+    }
+
+    /**
+     * 减少 1 分钟
+     *
+     * @param localDateTime 日期时间
+     * @return 返回新增的 LocalTime
+     */
+    public static LocalDateTime minusOneMinutes(LocalDateTime localDateTime) {
+        return minusMinutes(localDateTime, 1);
     }
 
     /**

@@ -13,15 +13,14 @@
 
 package cn.chenyunlong.qing.infrastructure.runner;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * @author Stan
@@ -40,7 +39,8 @@ public class StartedUpRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (context.isActive()) {
-            log.info("启动完毕，时间：" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            log.info("启动完毕，时间：" +
+                LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         }
     }
 }

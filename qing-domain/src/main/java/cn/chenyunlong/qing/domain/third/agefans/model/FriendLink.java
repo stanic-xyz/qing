@@ -13,9 +13,8 @@
 
 package cn.chenyunlong.qing.domain.third.agefans.model;
 
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * 友链

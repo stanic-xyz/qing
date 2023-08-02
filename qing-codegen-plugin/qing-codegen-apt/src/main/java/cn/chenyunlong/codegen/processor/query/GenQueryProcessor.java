@@ -21,12 +21,11 @@ import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
+import java.util.Objects;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import java.util.Objects;
+import lombok.Data;
 
 /**
  * 生成Query方法
@@ -44,23 +43,27 @@ public class GenQueryProcessor extends AbstractCodeGenProcessor {
      * 生成类
      * 生成Class
      *
-     * @param typeElement      顶层元素
-     * @param roundEnvironment 周围环境
-     * @param useLombok        是否使用lombok
+     * @param typeElement 顶层元素
+     * @param roundEnv    周围环境
+     * @param useLombok   是否使用lombok
      */
     @Override
-    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnvironment, boolean useLombok) {
+    public void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
+                              boolean useLombok) {
 
         String sourceClassName = typeElement.getSimpleName() + QUERY_SUFFIX;
 
         TypeSpec.Builder builder =
-                TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC).addAnnotation(Schema.class);
+            TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC)
+                .addAnnotation(Schema.class);
 
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethod(builder, findFields(typeElement, variableElement -> Objects.nonNull(variableElement.getAnnotation(QueryItem.class))), useLombok);
-        genJavaSourceFile(typeElement, builder, true);
+        addSetterAndGetterMethod(builder, findFields(typeElement,
+                variableElement -> Objects.nonNull(variableElement.getAnnotation(QueryItem.class))),
+            useLombok);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

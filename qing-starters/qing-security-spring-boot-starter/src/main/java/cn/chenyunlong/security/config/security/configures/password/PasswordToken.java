@@ -13,12 +13,11 @@
 
 package cn.chenyunlong.security.config.security.configures.password;
 
+import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 
 public class PasswordToken extends AbstractAuthenticationToken {

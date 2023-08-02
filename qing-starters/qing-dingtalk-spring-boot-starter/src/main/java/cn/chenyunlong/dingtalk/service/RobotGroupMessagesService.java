@@ -7,12 +7,11 @@ import com.aliyun.dingtalkrobot_1_0.models.OrgGroupSendRequest;
 import com.aliyun.dingtalkrobot_1_0.models.OrgGroupSendResponse;
 import com.aliyun.tea.TeaException;
 import jakarta.annotation.PostConstruct;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * 钉钉机器人消息服务
@@ -67,15 +66,21 @@ public class RobotGroupMessagesService {
 
         try {
             OrgGroupSendResponse orgGroupSendResponse =
-                    robotClient.orgGroupSendWithOptions(orgGroupSendRequest, orgGroupSendHeaders, new com.aliyun.teautil.models.RuntimeOptions());
-            if (Objects.isNull(orgGroupSendResponse) || Objects.isNull(orgGroupSendResponse.getBody())) {
-                log.error("RobotGroupMessagesService_send orgGroupSendWithOptions return error, response={}", orgGroupSendResponse);
+                robotClient.orgGroupSendWithOptions(orgGroupSendRequest, orgGroupSendHeaders,
+                    new com.aliyun.teautil.models.RuntimeOptions());
+            if (Objects.isNull(orgGroupSendResponse) ||
+                Objects.isNull(orgGroupSendResponse.getBody())) {
+                log.error(
+                    "RobotGroupMessagesService_send orgGroupSendWithOptions return error, response={}",
+                    orgGroupSendResponse);
                 return null;
             }
 
             return orgGroupSendResponse.getBody().getProcessQueryKey();
         } catch (TeaException e) {
-            log.error("RobotGroupMessagesService_send orgGroupSendWithOptions throw TeaException, errCode={}, " + "errorMessage={}", e.getCode(), e.getMessage(), e);
+            log.error(
+                "RobotGroupMessagesService_send orgGroupSendWithOptions throw TeaException, errCode={}, " +
+                    "errorMessage={}", e.getCode(), e.getMessage(), e);
             throw e;
         } catch (Exception e) {
             log.error("RobotGroupMessagesService_send orgGroupSendWithOptions throw Exception", e);

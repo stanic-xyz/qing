@@ -13,12 +13,11 @@
 
 package cn.chenyunlong.qing.domain.third.agefans.model;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class AgePlayList {
-    private Integer index;
     List<AgeAnimeEpisode> episodeList;
+    private Integer index;
 }

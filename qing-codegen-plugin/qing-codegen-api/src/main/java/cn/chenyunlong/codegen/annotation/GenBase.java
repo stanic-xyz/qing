@@ -17,7 +17,6 @@ package cn.chenyunlong.codegen.annotation;
 import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import cn.chenyunlong.codegen.annotation.enumes.OrmType;
 import cn.hutool.core.annotation.AliasFor;
-
 import java.lang.annotation.*;
 
 /**
