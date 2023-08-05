@@ -1,4 +1,4 @@
-import { qingHttp } from "@/utils/service";
+import {qingHttp} from "@/utils/service";
 
 /** 登录 */
 export const getLogin = (username: string, password: string) => {
@@ -17,7 +17,7 @@ export const getAnimeList = (data?: object) => {
 };
 
 export interface Anime {
-  id: Number;
+  id: number;
   animeId?: string;
   name?: string;
   coverUrl?: string;
