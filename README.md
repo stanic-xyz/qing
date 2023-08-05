@@ -68,26 +68,23 @@
 #### 项目结构
 
 ```shell
-├── README.md
-├── AppScope
-├── entry
-│   ├── ets
-│   │   ├── model     数据模型          
-│   │   ├── network   网络请求
-│   │   ├── pages     ui界面
-│   │   ├── player    播放器封装
-│   │   ├── utils     工具集
-│   │   ├── view      视图组件
-│   │   └── workers   异步线程  
-│   ├── configuration
-│   └── resources
-└── lib   
-    ├── DanmakuFlameMaster.har  弹幕支持库
-    ├── ijkplayer.har           视频播放器
-    ├── imageknife.har          图片缓存库
-    ├── PullToRefresh.har       下拉刷新库
-    ├── retrofit.har            网络请求库
-    └── xlog.har                日志框架库
+Qing
+├── .github               GitHub流水线
+├── .workflow             Gitee流水线
+├── README.md             README文件
+├── Roadmap.md            项目路线图
+├── doc                   项目文档
+├── checkstyle            代码风格约束
+├── charts                Helm部署相关
+├── qing-bom              依赖管理项目
+├── qing-commons          公共包
+├── qing-app              应用能力层
+├── qing-bootstrap        服务层
+├── qing-domain           领域服务层
+├── qing-starters-samples 各种能力的starter
+├── qing-starters-samples 各种能力的starter
+├── qing-ui               前端工程集成
+└── ...                   其他工程文件
 ```
 
 #### 软件选型
