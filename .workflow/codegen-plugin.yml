@@ -1,0 +1,39 @@
+version: '1.0'
+name: codegen-plugin
+displayName: 构建代码生成器
+triggers:
+  trigger: auto
+  push:
+    branches:
+      prefix:
+        - generator-plugin
+  pr:
+    branches:
+      prefix:
+        - generator-plugin
+stages:
+  - name: maven_build
+    displayName: maven build
+    strategy: naturally
+    trigger: auto
+    executor: [ ]
+    steps:
+      - step: build@maven
+        name: build_maven
+        displayName: Maven Build
+        jdkVersion: '17'
+        mavenVersion: 3.6.3
+        commands:
+          - '# 功能：打包'
+          - mvn clean install -pl qing-codegen-plugin/qing-codegen-apt -am -f pom.xml
+          - mvn clean test -pl qing-codegen-plugin/qing-codegen-samples -f pom.xml
+          - ''
+        settings: [ ]
+        caches:
+          - ~/.m2
+        notify: [ ]
+        strategy:
+          retry: '0'
+strategy:
+  blocking: true
+  cloneDepth: 1
