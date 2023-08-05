@@ -1,6 +1,8 @@
+annotations:
+  category: Qing
 apiVersion: v2
 name: qing
-description: A Helm chart for Kubernetes
+description: A Helm chart to deploy Qing for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -22,3 +24,11 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
+
+
+maintainers:
+  - name: chenyunlong
+    email: 1576302867@qq.com
+sources:
+  - https://gitee.com/stanChen/qing
+  -
