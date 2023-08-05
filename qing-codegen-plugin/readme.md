@@ -81,7 +81,7 @@ public class TestDomain {
                 </annotationProcessorPath>
             </annotationProcessorPaths>
             <annotationProcessors>
-                <processor>cn.chenyunlong.codegen.processor.QingCodeGenProcessorRegistry</processor>
+                <processor>cn.chenyunlong.codegen.processor.QingCodeGenProcessor</processor>
             </annotationProcessors>
         </configuration>
     </plugin>

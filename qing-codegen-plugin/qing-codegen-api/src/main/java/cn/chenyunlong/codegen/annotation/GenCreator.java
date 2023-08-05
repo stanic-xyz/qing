@@ -18,6 +18,8 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
+ * 生产创建器。
+ *
  * @author : Gim
  * @apiNote : 实现这个代码可以自动生成创建器
  */
@@ -27,9 +29,24 @@ import java.lang.annotation.*;
 @BaseGen
 public @interface GenCreator {
 
+    /**
+     * 包名。
+     *
+     * @return 包名
+     */
     String pkgName() default "creator";
 
+    /**
+     * 生成源代码的目录。
+     *
+     * @return 源代码生成目录
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 是否需要覆盖源文件。
+     *
+     * @return 是否覆盖源文件
+     */
     boolean overrideSource() default false;
 }

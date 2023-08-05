@@ -81,6 +81,11 @@
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.errorprone</groupId>
+            <artifactId>javac</artifactId>
+            <version>9+181-r4173-1</version>
+        </dependency>
     </dependencies>
 
     <build>

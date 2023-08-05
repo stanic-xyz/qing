@@ -55,8 +55,8 @@ public class AbstractCodeGenProcessorTest extends TestCase {
      */
     public void testQingCodeGenProcessorRegistry() throws IOException {
 
-        QingCodeGenProcessorRegistry qingCodeGenProcessorRegistry =
-            new QingCodeGenProcessorRegistry();
+        QingCodeGenProcessor qingCodeGenProcessorRegistry =
+            new QingCodeGenProcessor();
 
         List<File> classpath = new ArrayList<>();
         File swaggerAnnotationJar =
@@ -65,7 +65,7 @@ public class AbstractCodeGenProcessorTest extends TestCase {
         // 创建classpath目录
         folder.create();
         folder.newFolder("META-INF/services");
-        File serviceFile = folder.newFile("cn.chenyunlong.codegen.spi.CodeGenProcessor");
+        File serviceFile = folder.newFile("cn.chenyunlong.codegen.handller.spi.CodeGenProcessor");
         FileUtil.writeBytes("cn.chenyunlong.codegen.processor.test.TestSchemaProcessor\n".getBytes(
             StandardCharsets.UTF_8), serviceFile);
 

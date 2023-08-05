@@ -14,7 +14,7 @@
 package cn.chenyunlong.codegen.processor.test;
 
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
-import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.lang.model.element.TypeElement;
 
