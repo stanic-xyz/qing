@@ -46,3 +46,4 @@ local.env
 
 # 本地上传文件测试
 /docker/redis/data/
+/codegen/

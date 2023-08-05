@@ -11,4 +11,4 @@
 #
 #
 
-cn.chenyunlong.codegen.processor.QingCodeGenProcessorRegistry
+cn.chenyunlong.codegen.processor.QingCodeGenProcessor

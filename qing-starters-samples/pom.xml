@@ -46,7 +46,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>cn.chenyunlong.qing.starter.samples.QingStarterSamplesApplication</mainClass>
                     <skip>true</skip>

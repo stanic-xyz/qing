@@ -64,42 +64,11 @@
                     <source>17</source>
                     <target>17</target>
                     <encoding>UTF-8</encoding>
-                    <!-- 重要配置-->
-                    <generatedSourcesDirectory>
-                        ${project.basedir}/src/main/java
-                    </generatedSourcesDirectory>
-                    <!--                    <annotationProcessorPaths>-->
-                    <!--                        &lt;!&ndash; Lombok 在编译时会通过这个插件生成代码 &ndash;&gt;-->
-                    <!--                        <path>-->
-                    <!--                            <groupId>org.projectlombok</groupId>-->
-                    <!--                            <artifactId>lombok</artifactId>-->
-                    <!--                            <version>${lombok.version}</version>-->
-                    <!--                        </path>-->
-                    <!--                        &lt;!&ndash; MapStruct 在编译时会通过这个插件生成代码 &ndash;&gt;-->
-                    <!--                        <path>-->
-                    <!--                            <groupId>cn.chenyunlong</groupId>-->
-                    <!--                            <artifactId>qing-codegen-apt</artifactId>-->
-                    <!--                            <version>${project.version}</version>-->
-                    <!--                        </path>-->
-                    <!--                    </annotationProcessorPaths>-->
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <configuration>
-                    <mainClass>cn.chenyunlong.qing.samples.codegen.QingCodegenSampleApplication</mainClass>
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -16,8 +16,9 @@ package cn.chenyunlong.codegen.processor.api;
 import static com.google.testing.compile.CompilationSubject.assertThat;
 import static com.google.testing.compile.Compiler.javac;
 
-import cn.chenyunlong.codegen.processor.AbstractCodeGenProcessor;
-import cn.chenyunlong.codegen.processor.QingCodeGenProcessorRegistry;
+import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
+import cn.chenyunlong.codegen.handller.api.GenUpdateRequestProcessor;
+import cn.chenyunlong.codegen.processor.QingCodeGenProcessor;
 import cn.hutool.core.io.resource.ClassPathResource;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.Compiler;
@@ -39,8 +40,8 @@ public class GenCreateRequestProcessorTest extends TestCase {
 
         ClassPathResource test = new ClassPathResource("test");
         GenUpdateRequestProcessor updateRequestProcessor = new GenUpdateRequestProcessor();
-        QingCodeGenProcessorRegistry qingCodeGenProcessorRegistry =
-            new QingCodeGenProcessorRegistry();
+        QingCodeGenProcessor qingCodeGenProcessorRegistry =
+            new QingCodeGenProcessor();
         ArrayList<File> objects = new ArrayList<>();
         objects.add(test.getFile());
         JavaFileObject javaFileObject = JavaFileObjects.forSourceString("HelloWorld",
@@ -62,8 +63,8 @@ public class GenCreateRequestProcessorTest extends TestCase {
     }
 
     public void testClassLoader() {
-        ServiceLoader<QingCodeGenProcessorRegistry> loaded =
-            ServiceLoader.load(QingCodeGenProcessorRegistry.class,
+        ServiceLoader<QingCodeGenProcessor> loaded =
+            ServiceLoader.load(QingCodeGenProcessor.class,
                 AbstractCodeGenProcessor.class.getClassLoader());
         loaded.forEach(baseCodeGenProcessor -> {
             System.out.println("baseCodeGenProcessor = " + baseCodeGenProcessor);
@@ -75,8 +76,8 @@ public class GenCreateRequestProcessorTest extends TestCase {
      */
     public void testQingCodeGenProcessorRegistry() {
         ClassPathResource pathResource = new ClassPathResource("test");
-        QingCodeGenProcessorRegistry qingCodeGenProcessorRegistry =
-            new QingCodeGenProcessorRegistry();
+        QingCodeGenProcessor qingCodeGenProcessorRegistry =
+            new QingCodeGenProcessor();
         ArrayList<File> objects = new ArrayList<>();
         objects.add(pathResource.getFile());
         JavaFileObject javaFileObject = JavaFileObjects.forSourceString("HelloWorld",
