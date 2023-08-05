@@ -32,4 +32,9 @@ public class TestSchemaProcessor extends AbstractCodeGenProcessor {
     public String getSubPackageName(TypeElement typeElement) {
         return "test";
     }
+
+    @Override
+    public String getSourcePath(TypeElement typeElement) {
+        return null;
+    }
 }
