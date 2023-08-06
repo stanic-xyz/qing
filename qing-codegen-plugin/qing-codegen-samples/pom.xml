@@ -78,7 +78,9 @@
                     <target>17</target>
                     <encoding>UTF-8</encoding>
                     <compilerArgs>
+                        <!-- 指定源文件生成目录 ${project.basedir} 表示当前项目（子模块）的项目绝对地址-->
                         <arg>-AbaseDir=${project.basedir}</arg>
+                        <!-- 打印注解处理器信息-->
                         <arg>-XprintProcessorInfo</arg>
                     </compilerArgs>
                 </configuration>

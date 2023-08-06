@@ -13,7 +13,11 @@
 
 package cn.chenyunlong.codegen.context;
 
+import cn.chenyunlong.codegen.constraint.CondeGenConstant;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.util.StringUtils;
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -31,6 +35,7 @@ public final class CodeGenContext {
 
     private static final Map<String, CodeGenProcessor> PROCESSOR_MAP = new LinkedHashMap<>();
     private static NameContext nameContext;
+    private static File baseDirFile = null;
 
     private CodeGenContext() {
         throw new UnsupportedOperationException();
@@ -70,9 +75,26 @@ public final class CodeGenContext {
             PROCESSOR_MAP.put(codeGenProcessor.getSupportedAnnotation().getName(),
                 codeGenProcessor);
         }
+        String baseDir =
+            processingEnvironment.getOptions().get(CondeGenConstant.SOURCE_PATH_ARG_NAME);
+        if (StringUtils.isNotBlank(baseDir)) {
+            File file = Paths.get(baseDir).toFile();
+            if (file.exists()) {
+                baseDirFile = file;
+            }
+        }
     }
 
     public static Set<String> getSupportedAnnotationTypes() {
         return PROCESSOR_MAP.keySet();
+    }
+
+    /**
+     * 获取文件生成根路径
+     *
+     * @return 文件生成根路径
+     */
+    public static File getBaseDir() {
+        return baseDirFile == null ? null : new File(baseDirFile, "src/main/java");
     }
 }
