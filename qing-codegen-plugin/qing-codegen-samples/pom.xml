@@ -77,7 +77,6 @@
                     <source>17</source>
                     <target>17</target>
                     <encoding>UTF-8</encoding>
-                    <verbose>true</verbose>
                     <compilerArgs>
                         <arg>-AbaseDir=${project.basedir}</arg>
                         <arg>-XprintProcessorInfo</arg>
