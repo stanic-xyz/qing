@@ -72,7 +72,7 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
         }
         addSetterAndGetterMethod(builder, findFields(typeElement,
             variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) &&
-                !dtoIgnore(variableElement)), useLombok);
+                               !dtoIgnore(variableElement)), useLombok);
         genJavaFile(typeElement, builder);
     }
 
@@ -103,6 +103,4 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
     public String getSourcePath(TypeElement typeElement) {
         return typeElement.getAnnotation(GenCreator.class).sourcePath();
     }
-
-
 }

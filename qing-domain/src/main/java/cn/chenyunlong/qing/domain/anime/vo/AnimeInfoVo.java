@@ -15,7 +15,7 @@
 
 package cn.chenyunlong.qing.domain.anime.vo;
 
-import cn.chenyunlong.common.model.AbstractBaseJpaVO;
+import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(
     access = AccessLevel.PROTECTED
 )
-public class AnimeInfoVO extends AbstractBaseJpaVO {
+public class AnimeInfoVo extends AbstractBaseJpaVo {
     @Schema(
         title = "name"
     )
@@ -124,7 +124,7 @@ public class AnimeInfoVO extends AbstractBaseJpaVO {
     )
     private Integer orderNo;
 
-    public AnimeInfoVO(AnimeInfo source) {
+    public AnimeInfoVo(AnimeInfo source) {
         super();
         this.setName(source.getName());
         this.setInstruction(source.getInstruction());

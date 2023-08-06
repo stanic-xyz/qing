@@ -29,7 +29,7 @@ import javax.lang.model.element.TypeElement;
 
 
 /**
- * 生成Mapper
+ * 生成Mapper。
  *
  * @author Stan
  * @date 2022/11/29
@@ -70,7 +70,7 @@ public class GenMapperProcessor extends AbstractCodeGenProcessor {
         vo2ResponseMethod.ifPresent(builder::addMethod);
         Optional<MethodSpec> vo2CustomResponseMethod = vo2CustomResponseMethod(nameContext);
         vo2CustomResponseMethod.ifPresent(builder::addMethod);
-        genJavaFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder);
     }
 
     private Optional<MethodSpec> dtoToEntityMethod(TypeElement typeElement,

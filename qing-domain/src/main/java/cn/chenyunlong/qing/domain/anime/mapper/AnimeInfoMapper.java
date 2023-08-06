@@ -23,7 +23,7 @@ import cn.chenyunlong.qing.domain.anime.request.AnimeInfoQueryRequest;
 import cn.chenyunlong.qing.domain.anime.request.AnimeInfoUpdateRequest;
 import cn.chenyunlong.qing.domain.anime.response.AnimeInfoResponse;
 import cn.chenyunlong.qing.domain.anime.updater.AnimeInfoUpdater;
-import cn.chenyunlong.qing.domain.anime.vo.AnimeInfoVO;
+import cn.chenyunlong.qing.domain.anime.vo.AnimeInfoVo;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface AnimeInfoMapper {
@@ -34,8 +34,8 @@ public interface AnimeInfoMapper {
         return BeanUtil.copyProperties(dto, AnimeInfo.class);
     }
 
-    default AnimeInfoVO entityToVo(AnimeInfo animeInfo) {
-        return BeanUtil.copyProperties(animeInfo, AnimeInfoVO.class);
+    default AnimeInfoVo entityToVo(AnimeInfo animeInfo) {
+        return BeanUtil.copyProperties(animeInfo, AnimeInfoVo.class);
     }
 
     default AnimeInfoUpdater request2Updater(AnimeInfoUpdateRequest request) {
@@ -50,11 +50,11 @@ public interface AnimeInfoMapper {
         return BeanUtil.copyProperties(request, AnimeInfoQuery.class);
     }
 
-    default AnimeInfoResponse vo2CustomResponse(AnimeInfoVO vo) {
+    default AnimeInfoResponse vo2CustomResponse(AnimeInfoVo vo) {
         return vo2Response(vo);
     }
 
-    default AnimeInfoResponse vo2Response(AnimeInfoVO vo) {
+    default AnimeInfoResponse vo2Response(AnimeInfoVo vo) {
         return BeanUtil.copyProperties(vo, AnimeInfoResponse.class);
     }
 }

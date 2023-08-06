@@ -18,7 +18,7 @@ package cn.chenyunlong.qing.domain.anime.service;
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.creator.AnimeInfoCreator;
 import cn.chenyunlong.qing.domain.anime.updater.AnimeInfoUpdater;
-import cn.chenyunlong.qing.domain.anime.vo.AnimeInfoVO;
+import cn.chenyunlong.qing.domain.anime.vo.AnimeInfoVo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -46,10 +46,10 @@ public interface IAnimeInfoService {
     /**
      * findById
      */
-    AnimeInfoVO findById(Long id);
+    AnimeInfoVo findById(Long id);
 
     /**
      * findByPage
      */
-    Page<AnimeInfoVO> findByPage(AnimeInfo query, PageRequest pageRequest);
+    Page<AnimeInfoVo> findByPage(AnimeInfo query, PageRequest pageRequest);
 }
