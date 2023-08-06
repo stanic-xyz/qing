@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   profiles:
-    active: prod
+    active: dev
   application:
     name: qing-service-anime
   messages:
@@ -90,3 +90,4 @@ springdoc:
   use-management-port: false
 liteflow:
   rule-source: flow/flow.el.xml
+  enable: false

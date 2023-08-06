@@ -18,6 +18,10 @@ spring:
     host: ${QING_MAIL_HOST:smtp.qq.com}
     username: ${QING_MAIL_USERNAME:your_mail_count}
     password: ${QING_MAIL_PASSWORD:your_mail_token}
+  cloud:
+    consul:
+      discovery:
+        enabled: false
 mp:
   wx:
     appId: ${QING_WECHAT_APPID}
