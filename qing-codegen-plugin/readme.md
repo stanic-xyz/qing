@@ -1,5 +1,12 @@
 ## 使用方法
 
+### 编译插件
+
+```shell
+# 需要在项目根目录下执行install脚本
+mvn clean install -pl qing-codegen-plugin/qing-codegen-apt -am -f pom.xml
+```
+
 ### 导入依赖;
 
 ```xml
@@ -7,25 +14,12 @@
 <dependency>
     <groupId>cn.chenyunlong</groupId>
     <artifactId>qing-codegen-apt</artifactId>
-    <version>latest-version</version>
+    <version>0.0.2-SNAPSHOT</version>
 </dependency>
 
 ```
 
 ### 添加需要生成的代码的注解
-
-#### 配置文件生成路径
-
-```java
-// 静态常量
-public interface Constants {
-
-    // 测试中当前测试实体类所在的项目Java源文件目录作为生成地址，当前直接生成到示例项目的根目录
-    String GEN_API_SOURCE =
-        "D:\\workspace\\qing\\qing-codegen-plugin\\qing-codegen-samples\\src\\main\\java";
-
-}
-```
 
 #### 编辑需要自动生成代码的实体类
 
@@ -41,12 +35,11 @@ public interface Constants {
 @GenUpdateRequest
 @GenQueryRequest
 @GenResponse
-@GenRepository(sourcePath = Constants.GEN_API_SOURCE)
-@GenService(sourcePath = Constants.GEN_API_SOURCE)
-@GenServiceImpl(sourcePath = Constants.GEN_API_SOURCE)
-@GenFeign(sourcePath = Constants.GEN_API_SOURCE, serverName = "stanic")
-// Constants.GEN_API_SOURCE 表示源代码生成的目录
-@GenController(sourcePath = Constants.GEN_API_SOURCE)
+@GenRepository
+@GenService
+@GenServiceImpl
+@GenFeign(serverName = "stanic-feign-client")
+@GenController
 @GenMapper
 @Data
 @Entity
@@ -58,7 +51,7 @@ public class TestDomain extends BaseEntity {
 }
 ```
 
-### 配置Maven编译插件
+### 配置Maven编译插件（配置文件生成路径）
 
 ```xml
 
@@ -71,6 +64,7 @@ public class TestDomain extends BaseEntity {
             <executions>
                 <execution>
                     <id>compile</id>
+                    <!-- 生成源代码期间执行注解处理器-->
                     <phase>generate-sources</phase>
                     <goals>
                         <goal>
@@ -83,6 +77,12 @@ public class TestDomain extends BaseEntity {
                 <source>17</source>
                 <target>17</target>
                 <encoding>UTF-8</encoding>
+                <compilerArgs>
+                    <!-- 指定源文件生成目录 ${project.basedir} 表示当前项目（子模块）的项目绝对地址，-A表示使用自定义编译选项-->
+                    <arg>-AbaseDir=${project.basedir}</arg>
+                    <!-- 打印注解处理器信息-->
+                    <arg>-XprintProcessorInfo</arg>
+                </compilerArgs>
             </configuration>
         </plugin>
     </plugins>
