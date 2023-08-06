@@ -80,7 +80,7 @@ Qing
 ├── qing-commons          公共包
 ├── qing-app              应用能力层
 ├── qing-bootstrap        服务层
-├── qing-domain           领域服务层
+├── qing-domain           领域能力层
 ├── qing-starters-samples 各种能力的starter
 ├── qing-starters-samples 各种能力的starter
 ├── qing-ui               前端工程集成
