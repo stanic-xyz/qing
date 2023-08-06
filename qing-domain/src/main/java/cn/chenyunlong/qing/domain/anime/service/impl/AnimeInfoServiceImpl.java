@@ -25,7 +25,7 @@ import cn.chenyunlong.qing.domain.anime.mapper.AnimeInfoMapper;
 import cn.chenyunlong.qing.domain.anime.repository.AnimeInfoRepository;
 import cn.chenyunlong.qing.domain.anime.service.IAnimeInfoService;
 import cn.chenyunlong.qing.domain.anime.updater.AnimeInfoUpdater;
-import cn.chenyunlong.qing.domain.anime.vo.AnimeInfoVO;
+import cn.chenyunlong.qing.domain.anime.vo.AnimeInfoVo;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,9 +88,9 @@ public class AnimeInfoServiceImpl implements IAnimeInfoService {
      * findById
      */
     @Override
-    public AnimeInfoVO findById(Long id) {
+    public AnimeInfoVo findById(Long id) {
         Optional<AnimeInfo> animeInfo = animeInfoRepository.findById(id);
-        return new AnimeInfoVO(
+        return new AnimeInfoVo(
             animeInfo.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
@@ -98,7 +98,7 @@ public class AnimeInfoServiceImpl implements IAnimeInfoService {
      * findByPage
      */
     @Override
-    public Page<AnimeInfoVO> findByPage(AnimeInfo query, PageRequest pageRequest) {
+    public Page<AnimeInfoVo> findByPage(AnimeInfo query, PageRequest pageRequest) {
         Page<AnimeInfo> page = animeInfoRepository.findAll(pageRequest);
         return page.map(AnimeInfoMapper.INSTANCE::entityToVo);
     }

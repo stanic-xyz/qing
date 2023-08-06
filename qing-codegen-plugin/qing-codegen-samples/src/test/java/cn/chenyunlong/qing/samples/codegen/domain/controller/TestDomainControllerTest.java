@@ -14,7 +14,9 @@
 package cn.chenyunlong.qing.samples.codegen.domain.controller;
 
 import cn.chenyunlong.qing.samples.codegen.QingCodegenSampleApplication;
-import org.junit.jupiter.api.BeforeEach;
+import cn.chenyunlong.qing.samples.codegen.domain.TestDomain;
+import cn.chenyunlong.qing.samples.codegen.domain.repository.TestDomainRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,7 +29,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@SpringBootTest(classes = QingCodegenSampleApplication.class)
+@SpringBootTest(classes = QingCodegenSampleApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class TestDomainControllerTest {
     @Autowired
@@ -36,17 +38,21 @@ class TestDomainControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        jdbcTemplate.execute(
-            """
-                insert into test_domain(id,username,password,created_at,updated_at) 
-                values ('1','123','123','12313','12313')
-                """);
+    @Autowired
+    private TestDomainRepository testDomainRepository;
+
+    TestDomain mockData() {
+        TestDomain testDomain = new TestDomain();
+        testDomain.setId(1L);
+        testDomain.setUsername("testUsername");
+        testDomain.setPassword("testPassword");
+        return testDomainRepository.save(testDomain);
     }
 
     @Test
     void page() throws Exception {
+        TestDomain testDomain = mockData();
+        Assertions.assertNotNull(testDomain, "添加实体类失败！");
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/test-domain/findByPage")
                 .content("{}")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -59,7 +65,19 @@ class TestDomainControllerTest {
 
     @Test
     void findById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/test-domain/findById/1"))
+        TestDomain testDomain = mockData();
+        Assertions.assertNotNull(testDomain, "添加实体类失败！");
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/test-domain/findById/" + testDomain.getId()))
+            .andExpect(MockMvcResultMatchers.jsonPath("code").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("result.id")
+                .value(testDomain.getId()))
+            .andExpect(MockMvcResultMatchers.jsonPath("result.username")
+                .value(testDomain.getUsername()))
+            .andExpect(MockMvcResultMatchers.jsonPath("result.password")
+                .value(testDomain.getPassword()))
+            .andExpect(MockMvcResultMatchers.jsonPath("result.version")
+                .value(testDomain.getVersion()))
             .andDo(MockMvcResultHandlers.print());
     }
 }

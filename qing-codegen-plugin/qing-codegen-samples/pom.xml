@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2019-2023  YunLong Chen
+  ~ Project Qing is licensed under Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~          https://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+  ~ EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+  ~ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  ~
+  -->
+
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -64,6 +77,11 @@
                     <source>17</source>
                     <target>17</target>
                     <encoding>UTF-8</encoding>
+                    <verbose>true</verbose>
+                    <compilerArgs>
+                        <arg>-AbaseDir=${project.basedir}</arg>
+                        <arg>-XprintProcessorInfo</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

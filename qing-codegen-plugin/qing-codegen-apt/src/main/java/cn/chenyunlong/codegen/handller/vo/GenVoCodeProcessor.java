@@ -18,7 +18,7 @@ import cn.chenyunlong.codegen.annotation.IgnoreVo;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import cn.chenyunlong.common.model.AbstractBaseJpaVO;
+import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -56,7 +56,7 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         Builder builder = TypeSpec
             .classBuilder(sourceClassName)
-            .superclass(AbstractBaseJpaVO.class)
+            .superclass(AbstractBaseJpaVo.class)
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Schema.class);
         if (useLombok) {
@@ -74,7 +74,7 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
             .constructorBuilder()
             .addParameter(TypeName.get(typeElement.asType()), "source")
             .addModifiers(Modifier.PUBLIC);
-        constructorSpecBuilder.addStatement("super()");
+        constructorSpecBuilder.addStatement("super()").addStatement("this.setId(source.getId());");
         fields.forEach(
             variableElement -> constructorSpecBuilder.addStatement("this.set$L(source.get$L())",
                 getFieldDefaultName(variableElement), getFieldDefaultName(variableElement)));
