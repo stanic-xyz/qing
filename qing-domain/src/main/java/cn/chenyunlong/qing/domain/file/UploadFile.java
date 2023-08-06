@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.file;
 
-import cn.chenyunlong.codegen.annotation.GenBase;
+import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import jakarta.persistence.Entity;
@@ -26,7 +26,21 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@GenBase(basePackage = "cn.chenyunlong.qing.domain.file")
+@GenVo
+@GenCreator
+@GenUpdater
+@GenQuery
+@GenCreateRequest
+@GenUpdateRequest
+@GenQueryRequest
+@GenResponse
+@GenRepository
+@GenService
+@GenServiceImpl
+@GenFeign(serverName = "stanic")
+// Constants.GEN_API_SOURCE 表示源代码生成的目录
+@GenController
+@GenMapper
 @Entity
 @Table(name = "upload_file")
 public class UploadFile extends BaseEntity {

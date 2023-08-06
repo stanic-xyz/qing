@@ -16,6 +16,7 @@ package cn.chenyunlong.codegen.handller;
 import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.fatalError;
 
 import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.codegen.context.CodeGenContext;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.handller.api.*;
@@ -551,7 +552,9 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
             .build();
         packageNameBuilder.append(".");
 
-        String sourcePath = getSourcePath(typeElement);
+        File baseDir = CodeGenContext.getBaseDir();
+        String sourcePath =
+            baseDir != null ? baseDir.getAbsolutePath() : getSourcePath(typeElement);
 
         // 生成Java文件
         try {
