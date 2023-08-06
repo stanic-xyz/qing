@@ -63,6 +63,8 @@ public class QingCodeGenProcessor extends AbstractProcessor {
      */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+
+        log("未配置编译器参数：baseDir，请通过编译器命令：-AbaseDir=/path 指定代码生成路径");
         try {
             processImpl(annotations, roundEnv);
         } catch (RuntimeException exception) {

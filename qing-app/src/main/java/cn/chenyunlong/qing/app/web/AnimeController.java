@@ -71,7 +71,7 @@ public class AnimeController {
      */
     @Operation(summary = "新增数据")
     @PostMapping
-    public ResponseEntity<Long> add(AnimeInfoCreateRequest createRequest) {
+    public ResponseEntity<Long> add(@RequestBody AnimeInfoCreateRequest createRequest) {
         AnimeInfoCreator infoCreator = AnimeInfoMapper.INSTANCE.request2Dto(createRequest);
         return ResponseEntity.ok(animeInfoService.createAnimeInfo(infoCreator));
     }

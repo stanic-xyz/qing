@@ -47,8 +47,8 @@ public interface Constants {
 @GenFeign(sourcePath = Constants.GEN_API_SOURCE, serverName = "stanic")
 // Constants.GEN_API_SOURCE 表示源代码生成的目录
 @GenController(sourcePath = Constants.GEN_API_SOURCE)
-@Data
 @GenMapper
+@Data
 @Entity
 public class TestDomain extends BaseEntity {
 

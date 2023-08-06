@@ -9,14 +9,14 @@
  * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  *
- *//
+ */
 
 package cn.chenyunlong.common.model;
 
 import lombok.Data;
 
 /**
- * jpa-vo基础基
+ * jpa-vo基础基。
  *
  * @author Stan
  * @date 2022/11/28
