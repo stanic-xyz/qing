@@ -209,7 +209,7 @@
                 <executions>
                     <execution>
                         <id>compile</id>
-                        <phase>compile</phase>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>
                                 compile
@@ -221,13 +221,10 @@
                     <source>17</source>
                     <target>17</target>
                     <encoding>UTF-8</encoding>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>cn.chenyunlong</groupId>
-                            <artifactId>qing-codegen-apt</artifactId>
-                            <version>0.0.2-SNAPSHOT</version>
-                        </path>
-                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-AbaseDir=${project.basedir}</arg>
+                        <arg>-XprintProcessorInfo</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
