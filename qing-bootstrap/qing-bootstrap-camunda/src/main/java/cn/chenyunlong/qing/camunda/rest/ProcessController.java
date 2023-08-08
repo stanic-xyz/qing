@@ -19,4 +19,10 @@ public class ProcessController {
         ProcessInstance testKey = runtimeService.startProcessInstanceByKey("test_key");
         return testKey.getProcessInstanceId();
     }
+
+    @PostMapping("complete")
+    public String complete() {
+        ProcessInstance testKey = runtimeService.startProcessInstanceByKey("test_key");
+        return testKey.getProcessInstanceId();
+    }
 }
