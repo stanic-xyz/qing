@@ -48,9 +48,8 @@ public class GenQueryRequestProcessor extends AbstractCodeGenProcessor {
                               boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
 
-        Set<VariableElement> fields =
-            findFields(typeElement,
-                element -> Objects.nonNull(element.getAnnotation(QueryItem.class)));
+        Set<VariableElement> fields = findFields(typeElement,
+            element -> Objects.nonNull(element.getAnnotation(QueryItem.class)));
         TypeSpec.Builder builder = TypeSpec
             .classBuilder(nameContext.getQueryRequestClassName())
             .addModifiers(Modifier.PUBLIC)

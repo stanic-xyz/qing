@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.codegen.context;
 
+import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.log;
+
 import cn.chenyunlong.codegen.constraint.CondeGenConstant;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
@@ -78,6 +80,7 @@ public final class CodeGenContext {
         String baseDir =
             processingEnvironment.getOptions().get(CondeGenConstant.SOURCE_PATH_ARG_NAME);
         if (StringUtils.isNotBlank(baseDir)) {
+            log(String.format("编译选项：baseDir：%s", baseDir));
             File file = Paths.get(baseDir).toFile();
             if (file.exists()) {
                 baseDirFile = file;

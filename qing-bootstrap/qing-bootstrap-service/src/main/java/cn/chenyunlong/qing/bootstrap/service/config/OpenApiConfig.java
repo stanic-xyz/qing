@@ -43,7 +43,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI().info(new Info()
             .title("XXX用户系统API")
-            .version("1.0")
+            .version("0.0.2-SNAPSHOT")
             .description("Knife4j集成springdoc-openapi示例")
             .termsOfService("http://doc.xiaominfo.com")
             .license(
