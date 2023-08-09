@@ -76,9 +76,8 @@ public class QingCodeGenProcessor extends AbstractProcessor {
     }
 
     private boolean processImpl(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        if (!roundEnv.processingOver()) {
+        if (!annotations.isEmpty()) {
             processAnnotations(annotations, roundEnv);
-        } else {
             generateSourceFiles(roundEnv);
         }
         return false;
