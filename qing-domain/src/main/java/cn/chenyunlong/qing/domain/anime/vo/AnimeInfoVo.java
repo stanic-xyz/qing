@@ -18,6 +18,7 @@ package cn.chenyunlong.qing.domain.anime.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import cn.chenyunlong.qing.domain.anime.AnimeInfo;
 import cn.chenyunlong.qing.domain.anime.PlayStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.AccessLevel;
@@ -92,6 +93,7 @@ public class AnimeInfoVo extends AbstractBaseJpaVo {
     @Schema(
         title = "premiereDate"
     )
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate premiereDate;
 
     @Schema(
