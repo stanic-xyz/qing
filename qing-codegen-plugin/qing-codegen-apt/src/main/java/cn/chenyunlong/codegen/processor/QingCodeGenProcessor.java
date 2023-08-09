@@ -63,10 +63,9 @@ public class QingCodeGenProcessor extends AbstractProcessor {
      */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
         log("未配置编译器参数：baseDir，请通过编译器命令：-AbaseDir=/path 指定代码生成路径");
         try {
-            processImpl(annotations, roundEnv);
+            return processImpl(annotations, roundEnv);
         } catch (RuntimeException exception) {
             // We don't allow exceptions to any kind to propagate to the compiler
             String stackTraceString = getStackTraceAsString(exception);
@@ -76,12 +75,12 @@ public class QingCodeGenProcessor extends AbstractProcessor {
         return false;
     }
 
-    private void processImpl(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        if (!roundEnv.processingOver()) {
+    private boolean processImpl(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        if (!annotations.isEmpty()) {
             processAnnotations(annotations, roundEnv);
-        } else {
             generateSourceFiles(roundEnv);
         }
+        return false;
     }
 
     /**

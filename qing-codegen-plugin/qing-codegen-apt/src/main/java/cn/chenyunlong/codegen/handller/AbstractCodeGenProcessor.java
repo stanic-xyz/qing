@@ -180,8 +180,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      * @param predicate   谓词
      * @return {@link Set}<{@link VariableElement}>
      */
-    public Set<VariableElement> findFields(TypeElement typeElement,
-                                           Predicate<VariableElement> predicate) {
+    public Set<VariableElement> findFields(TypeElement typeElement, Predicate<VariableElement> predicate) {
         List<? extends Element> fieldTypes = typeElement.getEnclosedElements();
         Set<VariableElement> variableElements = new LinkedHashSet<>();
         for (VariableElement element : ElementFilter.fieldsIn(fieldTypes)) {
@@ -350,6 +349,8 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         FieldSpec.Builder fieldSpec = FieldSpec
             .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
             .addAnnotation(schemaAnnotationBuilder.build());
+
+
         builder.addField(fieldSpec.build());
 
         // 不使用lombok
