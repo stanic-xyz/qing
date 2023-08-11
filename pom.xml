@@ -17,7 +17,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <groupId>cn.chenyunlong</groupId>
-    <artifactId>qing-project</artifactId>
+    <artifactId>qing-parent</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <description>个人网站信息</description>
 
@@ -42,6 +42,7 @@
         <module>qing-ui</module>
     </modules>
 
+    <url>https://www.chenyunlong.cn</url>
     <inceptionYear>2019</inceptionYear>
     <licenses>
         <license>
@@ -67,13 +68,14 @@
             <timezone>+8</timezone>
         </developer>
     </developers>
+    <scm>
+        <connection>scm:git@gitee.com:stanChen/qing.git</connection>
+        <developerConnection>scm:git@gitee.com:stanChen/qing.git</developerConnection>
+        <url>git@gitee.com:stanChen/qing.git</url>
+    </scm>
 
     <properties>
         <my-version>1.0.0.RELEASE</my-version>
-        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
-        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -81,7 +83,30 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <sentinel.version>1.7.2</sentinel.version>
+        <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
+        <guava.version>31.1-jre</guava.version>
+        <lombok.version>1.18.24</lombok.version>
+        <hutool.version>5.8.18</hutool.version>
+        <authing.version>3.0.14</authing.version>
+        <swagger.version>2.2.8</swagger.version>
+        <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
+        <vavr.version>0.10.4</vavr.version>
+        <fastjson.version>2.0.21</fastjson.version>
+        <javapoet.version>1.13.0</javapoet.version>
+        <auto.version>1.1.1</auto.version>
+        <liteflow.version>2.10.2</liteflow.version>
+        <spring-boot-admin.version>3.0.4</spring-boot-admin.version>
+        <spring-statemachine.version>3.2.0</spring-statemachine.version>
+        <lego.version>0.1.23</lego.version>
+        <knife4j.version>4.1.0</knife4j.version>
     </properties>
+
+    <issueManagement>
+        <system>Gitee Issue</system>
+        <url>https://gitee.com/stanChen/qing/issues</url>
+    </issueManagement>
 
     <build>
         <pluginManagement>
@@ -134,9 +159,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.18.1</version>
-                    <configuration>
-                        <skipTests>false</skipTests>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -282,7 +304,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>${maven-source-plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>package</phase>
@@ -295,7 +316,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${maven-javadoc-plugin.version}</version>
                         <configuration>
                             <additionalJOptions>
                                 <additionalJOption>-Xdoclint:none</additionalJOption>
@@ -313,7 +333,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>verify</phase>
@@ -351,7 +370,6 @@
             </distributionManagement>
         </profile>
     </profiles>
-
 </project>
 
 

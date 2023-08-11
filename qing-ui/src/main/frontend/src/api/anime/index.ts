@@ -10,9 +10,9 @@ export const getLogin = (username: string, password: string) => {
 
 /** 卡片列表 */
 export const getAnimeList = (data?: object) => {
-  return qingHttp.get("/getCardList", {
-    page: 1,
-    pageSize: 2,
+  return qingHttp.post("/api/v1/anime/page", {
+    page: 0,
+    pageSize: 20,
   });
 };
 

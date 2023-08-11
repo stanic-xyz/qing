@@ -18,14 +18,17 @@ import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 /**
  * @author Stan
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @GenVo
 @GenCreator
 @GenUpdater
@@ -38,13 +41,13 @@ import lombok.EqualsAndHashCode;
 @GenService
 @GenServiceImpl
 @GenFeign(serverName = "stanic")
-// Constants.GEN_API_SOURCE 表示源代码生成的目录
 @GenController
 @GenMapper
 @Entity
 @Table(name = "upload_file")
 public class UploadFile extends BaseEntity {
 
+    @FieldDesc(name = "文件ID")
     private Long fileId;
 
     @FieldDesc(name = "文件名称")
@@ -59,4 +62,31 @@ public class UploadFile extends BaseEntity {
     @FieldDesc(name = "文件大小")
     private Long fileSize;
 
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ?
+            ((HibernateProxy) o).getHibernateLazyInitializer()
+                .getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
+            ((HibernateProxy) this).getHibernateLazyInitializer()
+                .getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) {
+            return false;
+        }
+        UploadFile that = (UploadFile) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ?
+            ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() :
+            getClass().hashCode();
+    }
 }
