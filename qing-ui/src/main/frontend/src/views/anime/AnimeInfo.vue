@@ -4,7 +4,7 @@ import {onMounted, ref} from "vue";
 import type {Anime} from "@/api/anime";
 
 onMounted(() => {
-  console.log("加载成功");
+  console.log("动漫详情加载成功");
 });
 
 const img = ref("https://cdn.aqdstatic.com:966/age/20180073_small.jpg");
@@ -43,7 +43,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  console.log("单个动漫信息加载成功");
+  console.debug("单个动漫信息加载成功",props.anime);
 });
 </script>
 
@@ -51,7 +51,7 @@ onMounted(() => {
   <div class="card-container">
     <router-link to="13123">
       <lay-card>
-        <img :src="img" alt="图片"/>
+        <img :src="anime.coverUrl" alt="图片"/>
         <template #footer>
           <div class="button-list">图片信息</div>
         </template>

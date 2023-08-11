@@ -9,7 +9,7 @@ import BlockTitle from "@/views/common/BlockTitle.vue";
 const pagination = ref({ current: 1, pageSize: 12, total: 0 });
 
 const animeInfoList = ref<Anime[]>([]);
-
+console.log("加载数据", "onMounted");
 const weekList = ref([
   {
     weekId: 1,
@@ -109,38 +109,19 @@ interface AnimeDetailInfo {
 }
 
 const getCardListData = async () => {
-  await getAnimeList();
-
+  console.log("获取动漫卡片数据");
+  var newVar = await getAnimeList();
+  console.log("取得值了", newVar.data.content);
   pagination.value = {
     ...pagination.value,
     total: 2,
   };
+  animeInfoList.value = newVar.data.content;
 };
 
 onMounted(() => {
+  console.debug("onMounted，", "加载动漫信息");
   getCardListData();
-  for (let i = 0; i < 14; i++) {
-    animeInfoList.value.push({
-      id: 3,
-      name: "金好理五候",
-      instruction: "ex est fugiat",
-      districtId: 90,
-      districtName: "持增该山克布",
-      coverUrl:
-        "http://localhost:8080/img/anime/%E4%BC%A4%E7%89%A9%E8%AF%AD.jpg",
-      typeId: 29,
-      typeName: "间大决据手阶",
-      originalName: "劳特五感长",
-      otherName: "联统系在置克",
-      author: "consectetur veniam adipisicing Lorem",
-      company: "magna ad sint id consequat",
-      playStatus: "FINISHED",
-      plotType: "pariatur sint sit",
-      tags: ["pariatur exercitation irure consequat ad"],
-      officialWebsite: "labore consectetur dolore ullamco culpa",
-      playHeat: "sit",
-    });
-  }
 });
 
 function changeWeek(id: Number) {

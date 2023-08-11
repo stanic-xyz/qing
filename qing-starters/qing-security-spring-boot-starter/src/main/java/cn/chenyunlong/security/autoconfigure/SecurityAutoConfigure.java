@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.security.auto;
+package cn.chenyunlong.security.autoconfigure;
 
 import cn.chenyunlong.security.base.JwtAuthenticationEntryPoint;
 import cn.chenyunlong.security.base.JwtAuthenticationTokenFilter;
@@ -38,7 +38,7 @@ import org.springframework.web.cors.CorsUtils;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityAutoConfigure {
 
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 

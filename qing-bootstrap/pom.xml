@@ -5,9 +5,8 @@
 
     <parent>
         <groupId>cn.chenyunlong</groupId>
-        <artifactId>qing-bom</artifactId>
+        <artifactId>qing-parent</artifactId>
         <version>0.0.2-SNAPSHOT</version>
-        <relativePath>../qing-bom/pom.xml</relativePath>
     </parent>
 
     <artifactId>qing-bootstrap</artifactId>

@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.security;
 
-import cn.chenyunlong.security.auto.SecurityConfig;
+import cn.chenyunlong.security.autoconfigure.SecurityAutoConfigure;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnProperty(prefix = "qing.security", name = "enable", havingValue = "true")
 @ComponentScan(value = {"cn.chenyunlong.security.base", "cn.chenyunlong.security.base"})
-@Import(value = {SecurityConfig.class})
+@Import(value = {SecurityAutoConfigure.class})
 public class SecurityAutoConfiguration {
 
 }
