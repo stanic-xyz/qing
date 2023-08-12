@@ -6,9 +6,9 @@
 
     <parent>
         <groupId>cn.chenyunlong</groupId>
-        <artifactId>qing-bom</artifactId>
+        <artifactId>qing-parent</artifactId>
         <version>0.0.2-SNAPSHOT</version>
-        <relativePath>../qing-bom/pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>qing-app</artifactId>
@@ -29,6 +29,10 @@
         <dependency>
             <groupId>cn.authing</groupId>
             <artifactId>authing-java-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-domain</artifactId>
         </dependency>
     </dependencies>
 </project>

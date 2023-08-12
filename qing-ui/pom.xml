@@ -18,6 +18,7 @@
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-parent</artifactId>
         <version>0.0.2-SNAPSHOT</version>
+        <relativePath/>
     </parent>
     <artifactId>qing-ui</artifactId>
     <name>qing-ui</name>

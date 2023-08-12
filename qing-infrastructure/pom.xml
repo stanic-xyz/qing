@@ -3,12 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
     <parent>
         <groupId>cn.chenyunlong</groupId>
-        <artifactId>qing-bom</artifactId>
+        <artifactId>qing-parent</artifactId>
         <version>0.0.2-SNAPSHOT</version>
-        <relativePath>../qing-bom/pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>qing-infrastructure</artifactId>
