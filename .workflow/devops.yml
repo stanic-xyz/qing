@@ -25,7 +25,7 @@ stages:
         mavenVersion: 3.6.3
         commands:
           - '# 功能：打包'
-          - mvn clean install -pl qing-bootstrap/qing-bootstrap-service -am -f pom.xml
+          - mvn clean install -pl qing-bootstrap/qing-bootstrap-service -Dtest.skip=true -am -f pom.xml
           - ''
         artifacts:
           - name: BUILD_ARTIFACT

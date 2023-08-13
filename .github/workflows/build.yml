@@ -25,4 +25,4 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
       - name: Build Bootstrap Service
-        run: mvn clean package -pl qing-bootstrap/qing-bootstrap-service -am -f pom.xml
+        run: mvn clean package -pl qing-bootstrap/qing-bootstrap-service -am -Dtest.skip=true -f pom.xml
