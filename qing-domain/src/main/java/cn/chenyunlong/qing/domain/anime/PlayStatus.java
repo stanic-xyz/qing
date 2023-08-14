@@ -15,7 +15,7 @@ package cn.chenyunlong.qing.domain.anime;
 
 import cn.chenyunlong.common.constants.BaseEnum;
 
-public enum PlayStatus implements BaseEnum {
+public enum PlayStatus implements BaseEnum<Integer> {
 
     FINISHED(1, "完结"),
 

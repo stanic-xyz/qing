@@ -18,10 +18,12 @@ import java.util.Objects;
 
 /**
  * 枚举基础类
+ *
+ * @param <VALUE> 数值类型
  */
-public interface BaseEnum<T> {
+public interface BaseEnum<VALUE> {
 
-    static <T extends BaseEnum> T parseByCode(Integer code, Class<T> clazz) {
+    static <T extends BaseEnum<?>> T parseByCode(Integer code, Class<T> clazz) {
         T[] enumConstants = clazz.getEnumConstants();
         return Arrays
             .stream(enumConstants)
@@ -35,7 +37,7 @@ public interface BaseEnum<T> {
      *
      * @return 获取编码
      */
-    T getValue();
+    VALUE getValue();
 
     /**
      * 获取编码名称，便于维护

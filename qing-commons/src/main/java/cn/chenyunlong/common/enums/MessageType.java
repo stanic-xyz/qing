@@ -14,7 +14,6 @@
 package cn.chenyunlong.common.enums;
 
 import cn.chenyunlong.common.constants.BaseEnum;
-import lombok.Getter;
 
 /**
  * @author Stan
@@ -32,10 +31,8 @@ public enum MessageType implements BaseEnum<Integer> {
     MESSAGE_WITH_IMG(1, "带图片的消息");
 
 
-    @Getter
     private final String typeName;
 
-    @Getter
     private final Integer value;
 
     MessageType(int typeId, String typeName) {
@@ -61,6 +58,6 @@ public enum MessageType implements BaseEnum<Integer> {
      */
     @Override
     public String getName() {
-        return getTypeName();
+        return typeName;
     }
 }

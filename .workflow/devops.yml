@@ -25,12 +25,12 @@ stages:
         mavenVersion: 3.6.3
         commands:
           - '# 功能：打包'
-          - mvn clean install -pl qing-bootstrap/qing-bootstrap-service -Dtest.skip=true -am -f pom.xml
+          - mvn clean install -pl qing-domain -am -f pom.xml
           - ''
         artifacts:
           - name: BUILD_ARTIFACT
             path:
-              - qing-bootstrap/qing-bootstrap-service/target
+              - qing-domain/target
         settings: [ ]
         caches:
           - ~/.m2
@@ -42,9 +42,9 @@ stages:
         displayName: Docker Build
         type: cert
         certificate: 3d32d0e0-00aa-013c-8d3b-62e879a5badf
-        tag: qing-bootstrap-service:0.0.2.${GITEE_PIPELINE_BUILD_NUMBER}
-        dockerfile: qing-bootstrap/qing-bootstrap-service/Dockerfile
-        context: qing-bootstrap/qing-bootstrap-service
+        tag: qing-domain-service:0.0.2.${GITEE_PIPELINE_BUILD_NUMBER}
+        dockerfile: qing-domain/Dockerfile
+        context: qing-domain
         artifacts:
           - ${BUILD_ARTIFACT}
         isCache: true

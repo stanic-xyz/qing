@@ -25,7 +25,6 @@
     </properties>
 
     <modules>
-        <module>qing-bootstrap-service</module>
         <module>qing-bootstrap-manager</module>
         <module>qing-bootstrap-monitor</module>
         <module>qing-bootstrap-camunda</module>

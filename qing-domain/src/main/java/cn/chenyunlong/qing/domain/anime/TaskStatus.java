@@ -16,7 +16,7 @@ package cn.chenyunlong.qing.domain.anime;
 import cn.chenyunlong.common.constants.BaseEnum;
 import java.util.Optional;
 
-public enum TaskStatus implements BaseEnum {
+public enum TaskStatus implements BaseEnum<Integer> {
     STARTED(1, "任务开始");
 
     private final int value;
