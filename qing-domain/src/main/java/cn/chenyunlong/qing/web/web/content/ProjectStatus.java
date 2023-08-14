@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023  YunLong Chen
+ * Copyright (c) 2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
@@ -11,18 +11,25 @@
  *
  */
 
-package cn.chenyunlong.qing.feign.remote;
+package cn.chenyunlong.qing.web.web.content;
 
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Arrays;
 
-/**
- * @author Stan
- */
-@Component
-public class BaseServiceFallBack implements BaseService {
+public enum ProjectStatus {
 
-    @Override
-    public String getUserInfo(String appid, String accessToken, String sysIDs, String schoolId) {
-        return "err:failed";
+    ACTIVE,
+    COMMUNITY,
+    INCUBATING,
+    ATTIC;
+
+    @JsonCreator
+    public static ProjectStatus fromName(String name) {
+        return Arrays
+            .stream(ProjectStatus.values())
+            .filter(type -> type.name().equals(name))
+            .findFirst()
+            .orElse(ProjectStatus.ACTIVE);
     }
+
 }

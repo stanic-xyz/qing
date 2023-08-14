@@ -46,15 +46,12 @@ public class BiliBiliService implements BiliAnimeService {
         while (hasNext != 0) {
             try {
                 BgngumeResponse response =
-                    restTemplate.getForObject("https://api.bilibili" +
-                            ".com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1" +
-                            "&season_status=-1&season_month=-1&year=-1&style_id=-1&order=4&st=1&sort=0&page={num" +
-                            "}&season_type=1&pagesize={pageSize}&type=1", BgngumeResponse.class, num,
+                    restTemplate.getForObject(
+                        "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=-1&style_id=-1&order=4&st=1&sort=0&page={num}&season_type=1&pagesize={pageSize}&type=1",
+                        BgngumeResponse.class, num,
                         pageSize);
-                if (response != null && response.getCode() == 0 && response.getData() != null &&
-                    response
-                        .getData()
-                        .getList() != null) {
+                if (response != null && response.getCode() == 0 && response.getData() != null
+                    && response.getData().getList() != null) {
                     AnimeData data = response.getData();
                     animeList.addAll(data.getList());
                     hasNext = data.getHasNext();

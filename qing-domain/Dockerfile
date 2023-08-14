@@ -1,4 +1,4 @@
-FROM openjdk:17-slim AS qing-service-anime
+FROM openjdk:17-slim AS qing-bootstrap-service
 USER root
 MAINTAINER Stan<1576302867@qq.com>
 ENV ENV prod
@@ -15,9 +15,18 @@ ENV QING_MAIL_USERNAME qq_mail
 ENV QING_MAIL_PASSWORD qq_mail_token
 ENV QING_WECHAT_APPID appId
 ENV QING_WECHAT_SECRET secret
-ENV QING_REDIS_HOST 127.0.0.1
+ENV QING_REDIS_HOST redis
 ENV QING_REDIS_PORT 6379
+ENV QING_REDIS_PASS ""
+ENV QING_REDIS_DATABASE 0
 ENV QING_SERVICE_ANIME_HOST=localhost
+ENV AUTHING_APP_ID=""
+ENV AUTHING_APP_SECRET=""
+ENV AUTHING_APP_HOST=""
+ENV AUTHING_APP_REDIRECT_URL=""
+ENV ACCESS_ID=""
+ENV ACCESS_KEY=""
+ENV CONSUL_HOST=consul
 
-COPY target/qing-service-anime.jar app.jar
-ENTRYPOINT ["java","-jar","/usr/local/app.jar"]
+COPY target/qing-domain.jar /app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]

@@ -23,6 +23,7 @@ import cn.chenyunlong.qing.domain.anime.service.IAnimeInfoService;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -71,19 +72,12 @@ public class AnimeDomainServiceImpl implements IAnimeDomainService {
         log.info("处理出库完成，仓库id:{},批次号:{},自动批号:{}",
             transferModel.getTransferOutHouseId(), transferModel.getBatchNo(), genBatchNo);
 
-//        Optional<AnimeInfo> animeInfo = animeInfoRepository.findById(transferModel.getUniqueCodes().get(0));
-//        BatchInOutModel inModel = new BatchInOutModel();
-//        inModel.setAnimeIds(transferModel.getUniqueCodes());
-//        inModel.setName(animeInfo.get().getName());
-//        inModel.setInOutBizType(InOutBizType.IN_TRANSFER);
-//        inModel.setSkuId(transferModel.getSkuId());
-//        inModel.setOperateUser(transferModel.getOperateUser());
-//        inModel.setBatchNo(transferModel.getBatchNo());
-//        handleAnimeInfoRecommend(inModel);
-//        log.info("处理入库完成，仓库id:{},批次号:{},自动批号:{}",
-//                transferModel.getTransferOutHouseId(),
-//                transferModel.getBatchNo(),
-//                genBatchNo);
+        Optional<AnimeInfo> animeInfo = animeInfoRepository.findById(transferModel.getUniqueCodes().get(0));
+
+        log.info("处理入库完成，仓库id:{},批次号:{},自动批号:{}",
+                transferModel.getTransferOutHouseId(),
+                transferModel.getBatchNo(),
+                genBatchNo);
     }
 
     @Override
@@ -99,24 +93,24 @@ public class AnimeDomainServiceImpl implements IAnimeDomainService {
             .uniqueCodes(batchRecommendModel.getAnimeIds())
             .operateUser(batchRecommendModel.getOperateUser())
             .build();
-//        batchInOutModel.getUniqueCodes()
-//                .stream()
-//                .forEach(code -> {
-//                    BooleanBuilder bb = new BooleanBuilder()
-//                            .and(QAsset.asset.houseId.eq(batchInOutModel.getHouseId()))
-//                            .and(QAsset.asset.uniqueCode.eq(code))
-//                            .and(QAsset.asset.skuId.eq(batchInOutModel.getSkuId()));
-//                    Optional<Asset> old = animeInfoRepository.findOne(bb);
-//                    if (!old.isPresent()) {
-//                        throw new BusinessException(AssetErrorCode.ASSET_CODE_NOT_EXIST, "资产编码:" + code);
-//                    } else {
-//                        EntityOperations
-//                                .doUpdate(animeInfoRepository)
-//                                .load(() -> old.get())
-//                                .update(asset -> asset.out(bizInfo))
-//                                .execute();
-//                    }
-//                });
+        //        batchInOutModel.getUniqueCodes()
+        //                .stream()
+        //                .forEach(code -> {
+        //                    BooleanBuilder bb = new BooleanBuilder()
+        //                            .and(QAsset.asset.houseId.eq(batchInOutModel.getHouseId()))
+        //                            .and(QAsset.asset.uniqueCode.eq(code))
+        //                            .and(QAsset.asset.skuId.eq(batchInOutModel.getSkuId()));
+        //                    Optional<Asset> old = animeInfoRepository.findOne(bb);
+        //                    if (!old.isPresent()) {
+        //                        throw new BusinessException(AssetErrorCode.ASSET_CODE_NOT_EXIST, "资产编码:" + code);
+        //                    } else {
+        //                        EntityOperations
+        //                                .doUpdate(animeInfoRepository)
+        //                                .load(() -> old.get())
+        //                                .update(asset -> asset.out(bizInfo))
+        //                                .execute();
+        //                    }
+        //                });
     }
 
     /**

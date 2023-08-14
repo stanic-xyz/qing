@@ -19,7 +19,10 @@ import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.util.Objects;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 /**
@@ -63,23 +66,23 @@ public class UploadFile extends BaseEntity {
     private Long fileSize;
 
     @Override
-    public final boolean equals(Object o) {
-        if (this == o) {
+    public final boolean equals(Object aClass) {
+        if (this == aClass) {
             return true;
         }
-        if (o == null) {
+        if (aClass == null) {
             return false;
         }
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ?
-            ((HibernateProxy) o).getHibernateLazyInitializer()
-                .getPersistentClass() : o.getClass();
+        Class<?> oEffectiveClass = aClass instanceof HibernateProxy
+            ? ((HibernateProxy) aClass).getHibernateLazyInitializer().getPersistentClass()
+            : aClass.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
             ((HibernateProxy) this).getHibernateLazyInitializer()
                 .getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) {
             return false;
         }
-        UploadFile that = (UploadFile) o;
+        UploadFile that = (UploadFile) aClass;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

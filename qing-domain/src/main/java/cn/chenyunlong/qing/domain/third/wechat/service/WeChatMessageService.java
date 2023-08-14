@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class WeChatMessageService {
     //构建一个队列
-    private final static Map<String, Long> messages = new ConcurrentHashMap<>();
+    private static final Map<String, Long> messages = new ConcurrentHashMap<>();
 
     /**
      * 查看消息是否重复了
