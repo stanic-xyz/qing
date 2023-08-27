@@ -4,7 +4,7 @@ import MyDPlayer from "@/components/MyDPlayer.vue";
 import type { Anime } from "@/api/anime";
 
 const el = ref();
-const animeInfo = ref<Anime>({
+const anime = ref<Anime>({
   id: 20000001,
   name: "海贼王",
   instruction:
@@ -67,8 +67,8 @@ function changeEpisode(episodeId: any) {
     <div class="baseblock">
       <div class="blocktitle">
         <h4 id="detailname">
-          <router-link :to="`/anime/${animeInfo.id}`"
-            >{{ animeInfo.name }}
+          <router-link :to="`/anime/${anime.id}`"
+            >{{ anime.name }}
           </router-link>
         </h4>
       </div>
@@ -78,7 +78,7 @@ function changeEpisode(episodeId: any) {
           <tbody>
             <tr>
               <td>
-                <router-link :to="`'/anime/${animeInfo.id}`">
+                <router-link :to="`'/anime/${anime.id}`">
                   <img
                     id="play_poster_img"
                     alt="番剧剧照"
@@ -94,61 +94,61 @@ function changeEpisode(episodeId: any) {
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">地区：</span>
                     <span class="play_imform_val">{{
-                      animeInfo.districtName
+                      anime.districtName
                     }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">动画种类：</span>
                     <span class="play_imform_val">{{
-                      animeInfo.typeName
+                      anime.typeName
                     }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">原作：</span>
-                    <span class="play_imform_val">{{ animeInfo.author }}</span>
+                    <span class="play_imform_val">{{ anime.author }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">原版名称：</span>
                     <span class="play_imform_val">{{
-                      animeInfo.originalName
+                      anime.originalName
                     }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">其它名称：</span>
                     <span class="play_imform_val">{{
-                      animeInfo.otherName
+                      anime.otherName
                     }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">制作公司：</span>
-                    <span class="play_imform_val">{{ animeInfo.company }}</span>
+                    <span class="play_imform_val">{{ anime.company }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">首播时间：</span>
                     <span class="play_imform_val">{{
-                      animeInfo.premiereDate
+                      anime.premiereDate
                     }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">播放状态：</span>
                     <span class="play_imform_val">{{
-                      animeInfo.playStatus
+                      anime.playStatus
                     }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">剧情类型：</span>
-                    <span class="play_imform_val">{{ animeInfo.tags }}</span>
+                    <span class="play_imform_val">{{ anime.tags }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">更新时间：</span>
                     <span class="play_imform_val">{{
-                      animeInfo.premiereDate
+                      anime.premiereDate
                     }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">官方网站：</span>
                     <span class="play_imform_val">{{
-                      animeInfo.officialWebsite
+                      anime.officialWebsite
                     }}</span>
                   </li>
                 </ul>
@@ -165,7 +165,7 @@ function changeEpisode(episodeId: any) {
       <div class="line"></div>
       <div class="blockcontent">
         <div class="play_desc">
-          <p>{{ animeInfo.instruction }}</p>
+          <p>{{ anime.instruction }}</p>
         </div>
       </div>
     </div>
@@ -226,7 +226,7 @@ function changeEpisode(episodeId: any) {
 
       <div class="spaceblock1"></div>
       <div class="baseblock">
-        <div class="blocktitle">看过《{{ animeInfo.name }}》的人还看过：</div>
+        <div class="blocktitle">看过《{{ anime.name }}》的人还看过：</div>
         <div class="line"></div>
         <div class="blockcontent">
           <ul class="ul_li_a8">

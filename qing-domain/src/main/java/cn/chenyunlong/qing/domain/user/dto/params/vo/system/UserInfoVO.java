@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.domain.user.dto.params.vo.system;
 
 import cn.chenyunlong.common.model.dto.base.OutputConverter;
-import cn.chenyunlong.qing.domain.user.user.User;
+import cn.chenyunlong.qing.domain.user.User;
 import lombok.Data;
 
 @Data

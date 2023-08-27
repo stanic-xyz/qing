@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.domain.anime;
 
 import cn.chenyunlong.common.constants.BaseEnum;
+import java.util.Optional;
 
 public enum PlayStatus implements BaseEnum<Integer> {
 
@@ -25,9 +26,12 @@ public enum PlayStatus implements BaseEnum<Integer> {
     private final String statusName;
 
     PlayStatus(int animeStatus, String statusName) {
-
         this.status = animeStatus;
         this.statusName = statusName;
+    }
+
+    public static Optional<PlayStatus> of(Integer dbData) {
+        return Optional.ofNullable(BaseEnum.parseByCode(dbData, PlayStatus.class));
     }
 
     /**

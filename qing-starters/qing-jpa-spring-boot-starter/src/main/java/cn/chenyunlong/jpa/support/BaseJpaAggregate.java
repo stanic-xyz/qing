@@ -16,6 +16,7 @@ package cn.chenyunlong.jpa.support;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
 import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.Instant;
 import lombok.AccessLevel;
@@ -47,6 +48,7 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
     @Setter(AccessLevel.PROTECTED)
     private Instant createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "updated_at", nullable = false)
     @Convert(converter = InstantLongConverter.class)
     @Setter(AccessLevel.PROTECTED)

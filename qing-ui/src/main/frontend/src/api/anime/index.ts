@@ -1,8 +1,12 @@
-import {qingHttp} from "@/utils/service";
+import { http } from "@/utils/service";
+import type { Anime } from "@/api/anime/types";
+import type { QingPageResponse, QingResponse } from "@/utils/http/types";
+import { useQuery } from "@vue/apollo-composable";
+import gql from "graphql-tag";
 
 /** 登录 */
 export const getLogin = (username: string, password: string) => {
-  return qingHttp.post("api/authorize/formLogin", {
+  return http.post("api/authorize/formLogin", {
     username: username,
     password: password,
   });
@@ -10,30 +14,18 @@ export const getLogin = (username: string, password: string) => {
 
 /** 卡片列表 */
 export const getAnimeList = (data?: object) => {
-  return qingHttp.post("/api/v1/anime/page", {
-    page: 0,
-    pageSize: 20,
-  });
-};
+  console.log("请求参数", data);
+  const { result } = useQuery(gql`
+      query getUsers {
+          artifactRepositories {
+              id,name
+          }
+      }
+  `);
 
-export interface Anime {
-  id: number;
-  animeId?: string;
-  name?: string;
-  coverUrl?: string;
-  premiereDate?: string;
-  districtId?: Number;
-  instruction?: string;
-  districtName?: string;
-  typeId?: Number;
-  typeName?: string;
-  originalName?: string;
-  otherName?: string;
-  author?: string;
-  company?: string;
-  playStatus?: string;
-  plotType?: string;
-  tags?: Array<string>;
-  officialWebsite?: string;
-  playHeat?: string;
-}
+  return http.request<QingResponse<QingPageResponse<Anime>>>(
+    "post",
+    "/api/v1/anime/page",
+    data
+  );
+};

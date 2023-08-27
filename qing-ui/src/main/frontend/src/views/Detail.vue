@@ -9,7 +9,7 @@ const data = ref({
   menuIndex: 0,
   time: "2020年01月15日 21时50分19秒",
   loading: true,
-  animeInfo: {
+  anime: {
     id: 20000001,
     name: "海贼王",
     instruction:
@@ -53,7 +53,7 @@ onMounted(() => {
   });
 
   instance
-    .get("/animeInfo/v1/findById/" + "123123")
+    .get("/anime/v1/findById/" + "123123")
     .then(function (response) {
       data.value = response.data.result;
       console.log(data.value);
@@ -166,7 +166,7 @@ function sendReport() {
       <div class="baseblock">
         <div class="blockcontent">
           <img
-            :alt="data.animeInfo.name"
+            :alt="data.anime.name"
             class="poster"
             height="356px"
             referrerpolicy="no-referrer"
@@ -183,7 +183,7 @@ function sendReport() {
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">地区：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.districtName
+                  data.anime.districtName
                 }}</span>
                 <a
                   class="detail_imform_show_full"
@@ -194,62 +194,62 @@ function sendReport() {
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">动画种类：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.typeName
+                  data.anime.typeName
                 }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">动画名称：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.name
+                  data.anime.name
                 }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">原版名称：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.originalName
+                  data.anime.originalName
                 }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">原作：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.author
+                  data.anime.author
                 }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">制作公司：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.company
+                  data.anime.company
                 }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">首播时间：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.premiereDate
+                  data.anime.premiereDate
                 }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">播放状态：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.playStatus
+                  data.anime.playStatus
                 }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">剧情类型：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.plotType
+                  data.anime.plotType
                 }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">标签：</span>
                 <span class="detail_imform_value">{{
-                  data.animeInfo.tags
+                  data.anime.tags
                 }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">官方网站：</span>
                 <span class="detail_imform_value">
-                  <a :href="data?.animeInfo?.officialWebsite" target="_blank">{{
-                    data?.animeInfo?.officialWebsite
+                  <a :href="data?.anime?.officialWebsite" target="_blank">{{
+                    data?.anime?.officialWebsite
                   }}</a>
                 </span>
               </li>
@@ -284,7 +284,7 @@ function sendReport() {
       <div class="baseblock">
         <div class="blockcontent">
           <h4 class="detail_imform_name">
-            {{ data.animeInfo.name }}
+            {{ data.anime.name }}
           </h4>
         </div>
       </div>
@@ -292,7 +292,7 @@ function sendReport() {
       <div class="baseblock">
         <div class="blockcontent">
           <div class="detail_imform_desc_pre">
-            <p>{{ data.animeInfo.instruction }}</p>
+            <p>{{ data.anime.instruction }}</p>
           </div>
         </div>
       </div>
@@ -327,7 +327,7 @@ function sendReport() {
               <li>
                 <router-link
                   :title="episode.name"
-                  :to="`/anime/${data.animeInfo.id}/play/{listId}/{episodeId}(animeId=${data.animeInfo.id}`"
+                  :to="`/anime/${data.anime.id}/play/{listId}/{episodeId}(animeId=${data.anime.id}`"
                   target="_self"
                   >{{ episode.name }}
                 </router-link>
@@ -360,7 +360,7 @@ function sendReport() {
             <div>
               <input
                 id="report_aid"
-                v-model="data.animeInfo.id"
+                v-model="data.anime.id"
                 name="cid"
                 type="hidden"
               />
@@ -417,11 +417,11 @@ function sendReport() {
           <div id="recommend_block" class="switchBlock">
             <ul class="ul_li_a4">
               <li
-                v-for="(animeInfo, index) in relevantList"
+                v-for="(anime, index) in relevantList"
                 :key="index"
                 class="anime_icon1"
               >
-                <router-link :to="`/anime/${animeInfo.id}`">
+                <router-link :to="`/anime/${anime.id}`">
                   <img
                     alt="暂无"
                     class="anime_icon1_img"
@@ -430,8 +430,8 @@ function sendReport() {
                     src="../assets/img/anime/伤物语_small.jpg"
                     width="148"
                 /></router-link>
-                <router-link :to="`/anime/${animeInfo.id}`">
-                  <div class="anime_icon1_name">{{ animeInfo.name }}</div>
+                <router-link :to="`/anime/${anime.id}`">
+                  <div class="anime_icon1_name">{{ anime.name }}</div>
                 </router-link>
               </li>
             </ul>
@@ -443,7 +443,7 @@ function sendReport() {
                   id="comment_id"
                   name="cid"
                   type="hidden"
-                  value="${data?.animeInfo?.id}"
+                  value="${data?.anime?.id}"
                 />
                 <label for="comment_content"></label>
                 <textarea
@@ -503,7 +503,7 @@ function sendReport() {
               <li>
                 <button
                   class="${data?.comments?.current == 1 ?'pbutton asciifont pbutton_current':'pbutton asciifont'}"
-                  data-cid="${data?.animeInfo?.id}"
+                  data-cid="${data?.anime?.id}"
                   data-pages="${data?.comments?.getPages()}"
                   data-size="${data?.comments?.size}"
                   href="javascript:void(0)"

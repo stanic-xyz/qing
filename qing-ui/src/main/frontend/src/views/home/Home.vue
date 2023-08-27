@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import type { Anime } from "@/api/anime";
 import { getAnimeList } from "@/api/anime";
 import AnimeInfo from "@/views/anime/AnimeInfo.vue";
 import { LayEmpty } from "@layui/layui-vue";
 import BlockTitle from "@/views/common/BlockTitle.vue";
+import { useGuard } from "@authing/guard-vue3";
+import type { Anime } from "@/api/anime/types";
 
-const pagination = ref({ current: 1, pageSize: 12, total: 0 });
-
+const pagination = ref({ current: 0, pageSize: 12, total: 0 });
 const animeInfoList = ref<Anime[]>([]);
-console.log("加载数据", "onMounted");
 const weekList = ref([
   {
     weekId: 1,
@@ -43,84 +42,28 @@ const weekList = ref([
 
 const activeWeekIndex = ref<Number>(0);
 
-const page = ref({ total: 100, limit: 10, current: 2 });
+const guard = useGuard();
 
-const dataSource = [
-  {
-    id: "1",
-    username: "shana",
-    password: "夏娜",
-    remark: "花开堪折直须折,莫待无花空折枝",
-    age: "22",
-  },
-  {
-    id: "2",
-    username: "shana",
-    password: "夏娜",
-    remark: "花开堪折直须折,莫待无花空折枝",
-    age: "22",
-  },
-  {
-    id: "3",
-    username: "shana",
-    password: "夏娜",
-    remark: "花开堪折直须折,莫待无花空折枝",
-    age: "22",
-  },
-  {
-    id: "4",
-    username: "shana",
-    password: "夏娜",
-    remark: "花开堪折直须折,莫待无花空折枝",
-    age: "22",
-  },
-  {
-    id: "5",
-    username: "shana",
-    password: "夏娜",
-    remark: "花开堪折直须折,莫待无花空折枝",
-    age: "22",
-  },
-  {
-    id: "6",
-    username: "shana",
-    password: "夏娜",
-    remark: "花开堪折直须折,莫待无花空折枝",
-    age: "22",
-  },
-  {
-    id: "7",
-    username: "shana",
-    password: "夏娜",
-    remark: "花开堪折直须折,莫待无花空折枝",
-    age: "22",
-  },
-  {
-    id: "8",
-    username: "shana",
-    password: "夏娜",
-    remark: "花开堪折直须折,莫待无花空折枝",
-    age: "22",
-  },
-];
-
-interface AnimeDetailInfo {
-  animeName?: string;
-}
+const getUserInfo = async () => {
+  console.log("用户当前登录状态", guard.checkLoginStatus());
+  // const promise = await guard.startWithRedirect();
+};
 
 const getCardListData = async () => {
   console.log("获取动漫卡片数据");
-  var newVar = await getAnimeList();
-  console.log("取得值了", newVar.data.content);
-  pagination.value = {
-    ...pagination.value,
-    total: 2,
-  };
-  animeInfoList.value = newVar.data.content;
+  const animeListResponse = await getAnimeList({
+    page: pagination.value.current,
+    pageSize: pagination.value.pageSize,
+  });
+  const result = animeListResponse.result;
+  pagination.value.total = result.total;
+  console.log("请求结束后的分页信息,总页数：", pagination.value.total);
+  animeInfoList.value = result.list;
 };
 
 onMounted(() => {
-  console.debug("onMounted，", "加载动漫信息");
+  getUserInfo();
+  console.debug("onMounted");
   getCardListData();
 });
 
@@ -133,17 +76,13 @@ function changeWeek(id: Number) {
   <lay-container fluid id="container">
     <lay-layout>
       <lay-body>
-        <div class="div_left baseblock">
+        <div>
           <div class="blocktitle">
             <a href="recommend">每日推荐</a>
           </div>
-          <div class="blockcontent">
-            <ul class="ul_li_a5">
-              <li
-                v-for="(anime, index) in animeInfoList"
-                :key="index"
-                class="anime_icon1"
-              >
+          <div>
+            <ul>
+              <li v-for="(anime, index) in animeInfoList" :key="index">
                 <AnimeInfo :anime="anime"></AnimeInfo>
               </li>
             </ul>
@@ -153,8 +92,8 @@ function changeWeek(id: Number) {
             v-if="animeInfoList.length == 0"
           ></lay-empty>
           <BlockTitle name="最近播放">最近播放</BlockTitle>
-          <div class="blockcontent">
-            <ul class="ul_li_a5">
+          <div>
+            <ul>
               <li
                 v-for="(anime, index) in animeInfoList"
                 :key="index"
@@ -167,9 +106,9 @@ function changeWeek(id: Number) {
         </div>
       </lay-body>
       <lay-side>
-        <div class="div_right baseblock">
+        <div>
           <div class="blocktitle">周播列表</div>
-          <div class="blockcontent">
+          <div>
             <ul id="new_anime_btns">
               <li
                 v-for="(week, index) in weekList"

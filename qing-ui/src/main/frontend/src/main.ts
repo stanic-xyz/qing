@@ -33,12 +33,23 @@ import LayUI, {
   LayTable,
 } from "@layui/layui-vue";
 import "@layui/layui-vue/lib/index.css";
+import "@authing/guard-vue3/dist/esm/guard.min.css";
+import { createGuard } from "@authing/guard-vue3";
+import { DefaultApolloClient } from "@vue/apollo-composable";
+import { apolloClient } from "@/utils/apollo";
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
 app.use(LayUI);
+app.use(
+  createGuard({
+    appId: "6432d5c9e0502f0bb45319bf",
+    redirectUri: "http://localhost:8080",
+  })
+);
+app.provide(DefaultApolloClient, apolloClient);
 
 app.component("LayButton", LayButton);
 app.component("LayTable", LayTable);

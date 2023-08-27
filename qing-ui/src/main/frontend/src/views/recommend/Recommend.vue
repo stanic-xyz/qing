@@ -13,7 +13,7 @@ onMounted(() => {
   });
 
   instance
-    .post("/animeInfo/v1/findByPage", {
+    .post("/anime/v1/findByPage", {
       page: 1,
       pageSize: 87,
       bean: {},
@@ -55,15 +55,15 @@ onMounted(() => {
       <div class="blockContent">
         <ul class="ul_li_a6">
           <li
-            v-for="(animeInfo, index) in animeInfoList"
+            v-for="(anime, index) in animeInfoList"
             :key="index"
             class="anime_icon2"
           >
-            <router-link :to="`/anime/${animeInfo.id}`">
+            <router-link :to="`/anime/${anime.id}`">
               <img
-                :alt="animeInfo.name"
-                :src="animeInfo.coverUrl"
-                :title="animeInfo.name"
+                :alt="anime.name"
+                :src="anime.coverUrl"
+                :title="anime.name"
                 class="anime_icon2_img"
                 height="208px"
                 referrerpolicy="no-referrer"
@@ -72,8 +72,8 @@ onMounted(() => {
               <span class="anime_icon1_name1">[TV 01-12]</span>
             </router-link>
             <h4 class="anime_icon2_name">
-              <router-link :to="`anime/${animeInfo.id}`"
-                >{{ animeInfo.name }}
+              <router-link :to="`anime/${anime.id}`"
+                >{{ anime.name }}
               </router-link>
             </h4>
           </li>

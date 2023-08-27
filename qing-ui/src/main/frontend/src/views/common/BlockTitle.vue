@@ -1,11 +1,15 @@
 <template>
   <hr class="hrspace clear" style="width: 98%" />
   <div class="blocktitle">
-    <router-link to="/update">最近更新</router-link>
+    <router-link to="/update">{{ name }}</router-link>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const props = defineProps({
+  name: String,
+});
+</script>
 
 <style scoped>
 .baseblock .blocktitle {
