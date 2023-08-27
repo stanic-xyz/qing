@@ -298,7 +298,7 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
                     .build())
                 .addAnnotation(AnnotationSpec
                     .builder(PostMapping.class)
-                    .addMember("value", "$S", "findByPage")
+                    .addMember("value", "$S", "page")
                     .build())
                 .addModifiers(Modifier.PUBLIC)
                 .addCode(CodeBlock.of("$T<$T> wrapper = new $T<>();\n", PageRequestWrapper.class,

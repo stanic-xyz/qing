@@ -34,7 +34,7 @@ router.beforeEach(
     from: RouteLocationNormalized,
     next: NavigationGuardNext
   ): void => {
-    var store = userStore();
+    const store = userStore();
 
     if (to.meta.requireAuth) {
       next();

@@ -1,12 +1,11 @@
 FROM openjdk:17-slim AS qing-bootstrap-service
 USER root
 MAINTAINER Stan<1576302867@qq.com>
-ENV ENV prod
-EXPOSE 80
+EXPOSE 8080
 WORKDIR /usr/local
 ENV QING_EUREKA_HOST localhost
 ENV QING_REGISTRY_EUREKA_PORT 8761
-ENV QING_MYSQL_HOST localhost
+ENV QING_DB_HOST localhost
 ENV QING_MYSQL_PORT 3306
 ENV QING_MYSQL_USERNAME root
 ENV QING_MYSQL_PASSWORD password
@@ -29,4 +28,4 @@ ENV ACCESS_KEY=""
 ENV CONSUL_HOST=consul
 
 COPY target/qing-domain.jar /app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/app.jar","--spring.profiles.active=prod"]

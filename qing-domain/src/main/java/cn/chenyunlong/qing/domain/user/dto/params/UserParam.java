@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.domain.user.dto.params;
 
 import cn.chenyunlong.common.model.dto.base.InputConverter;
-import cn.chenyunlong.qing.domain.user.user.User;
+import cn.chenyunlong.qing.domain.user.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Null;

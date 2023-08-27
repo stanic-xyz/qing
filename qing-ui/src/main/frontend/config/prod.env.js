@@ -1,11 +1,11 @@
 "use strict";
 
-let baseUrl = "http://localhost:8080/";
+let baseUrl = "https://api.chenyunlong.cn/";
 
 console.log("请求根路径", baseUrl);
 
-
 module.exports = {
-  NODE_ENV: "\"production\"",
-  SERVICE_URL: "https://bangumi.chenyunlong.cn/"
+  NODE_ENV: '"production"',
+  SERVICE_URL: baseUrl,
+  BASE_URL: baseUrl,
 };

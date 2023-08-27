@@ -33,7 +33,7 @@ public final class JsonResult<T> {
     private Integer code;
 
     @Setter(AccessLevel.PRIVATE)
-    private String msg;
+    private String message;
 
     @Setter(AccessLevel.PRIVATE)
     private T result;
@@ -45,28 +45,28 @@ public final class JsonResult<T> {
 
     public static <E> JsonResult<E> success(E result, String msg) {
         JsonResult<E> jsonResult = success(result);
-        jsonResult.setMsg(msg);
+        jsonResult.setMessage(msg);
         return jsonResult;
     }
 
     public static <E> JsonResult<E> success(E result) {
         JsonResult<E> jsonResult = new JsonResult<>();
         jsonResult.setCode(CodeEnum.Success.getValue());
-        jsonResult.setMsg(CodeEnum.Success.getName());
+        jsonResult.setMessage(CodeEnum.Success.getName());
         jsonResult.setResult(result);
         return jsonResult;
     }
 
     public static <T, E> JsonResult<T> fail(BaseEnum<Integer> codeEnum) {
         JsonResult<T> jsonResult = new JsonResult<>();
-        jsonResult.setMsg(codeEnum.getName());
+        jsonResult.setMessage(codeEnum.getName());
         jsonResult.setCode(codeEnum.getValue());
         return jsonResult;
     }
 
     public static <T> JsonResult<T> fail(String msg) {
         JsonResult<T> jsonResult = new JsonResult<>();
-        jsonResult.setMsg(msg);
+        jsonResult.setMessage(msg);
         jsonResult.setCode(CodeEnum.Fail.getValue());
         return jsonResult;
     }
@@ -74,14 +74,14 @@ public final class JsonResult<T> {
     public static <E> JsonResult<E> fail(E result, String msg) {
         JsonResult<E> jsonResult = new JsonResult<>();
         jsonResult.setCode(CodeEnum.Fail.getValue());
-        jsonResult.setMsg(msg);
+        jsonResult.setMessage(msg);
         jsonResult.setResult(result);
         return jsonResult;
     }
 
     public static <E> JsonResult<E> res(BaseEnum<Integer> codeEnum, E result) {
         JsonResult<E> jsonResult = new JsonResult<>();
-        jsonResult.setMsg(codeEnum.getName());
+        jsonResult.setMessage(codeEnum.getName());
         jsonResult.setCode(codeEnum.getValue());
         jsonResult.setResult(result);
         return jsonResult;

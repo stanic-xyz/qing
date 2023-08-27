@@ -1,5 +1,3 @@
-server:
-  port: 8080
 spring:
   profiles:
     active: dev
@@ -45,6 +43,8 @@ spring:
         order_inserts: true
         dialect: org.hibernate.dialect.MariaDBDialect
   graphql:
+    graphiql:
+      enabled: true
     schema:
       printer:
         enabled: true
@@ -81,6 +81,7 @@ management:
 springdoc:
   api-docs:
     enabled: true
+    resolve-schema-properties: true
   swagger-ui:
     default-model-expand-depth: 20
     path: /swagger-ui.html

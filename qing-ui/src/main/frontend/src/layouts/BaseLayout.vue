@@ -4,7 +4,7 @@ import MyHeader from "@/views/common/MyHeader.vue";
 </script>
 
 <template>
-  <lay-layout class="root">
+  <lay-layout class="root" style="width: 1140px; max-width: 1140px">
     <lay-header style="height: auto">
       <my-header></my-header>
     </lay-header>

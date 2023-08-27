@@ -6,6 +6,11 @@ import type {
   Method,
 } from "axios";
 
+export type RequestMethods = Extract<
+  Method,
+  "get" | "post" | "put" | "delete" | "patch" | "option" | "head"
+>;
+
 export interface RequestInterceptors {
   // 请求拦截
   requestInterceptors?: (config: AxiosRequestConfig) => AxiosRequestConfig;
@@ -18,11 +23,6 @@ export interface RequestInterceptors {
 export interface CancelRequestSource {
   [index: string]: () => void;
 }
-
-export type RequestMethods = Extract<
-  Method,
-  "get" | "post" | "put" | "delete" | "patch" | "option" | "head"
->;
 
 export interface QingHttpError extends AxiosError {
   isCancelRequest?: boolean;
@@ -37,4 +37,20 @@ export interface QingHttpRequestConfig extends AxiosRequestConfig {
   beforeResponseCallback?: (response: QingHttpResponse) => void;
   interceptors?: RequestInterceptors;
   timeout: 10000;
+}
+
+export interface QingResponse<T> {
+  code: number;
+  message: string;
+  devMessage: string;
+  success: boolean;
+  result: T;
+}
+
+export interface QingPageResponse<T> {
+  total: number;
+  totalPages: number;
+  pageSize: number;
+  pageNumber: number;
+  list: T[];
 }

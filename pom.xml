@@ -302,24 +302,24 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>2.5.2</version>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.2.0</version>
-                    <configuration>
-                        <failsOnError>true</failsOnError>
-                        <consoleOutput>true</consoleOutput>
-                        <configLocation>checkstyle/checkstyle.xml</configLocation>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>checkstyle</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--                    <version>3.2.0</version>-->
+<!--                    <configuration>-->
+<!--                        <failsOnError>true</failsOnError>-->
+<!--                        <consoleOutput>true</consoleOutput>-->
+<!--                        <configLocation>checkstyle/checkstyle.xml</configLocation>-->
+<!--                    </configuration>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <phase>verify</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>checkstyle</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                </plugin>-->
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>

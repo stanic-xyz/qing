@@ -1,22 +1,32 @@
-import { qingHttp } from "@/utils/service";
+import { http } from "@/utils/service";
+import type { RefreshTokenResult, UserResult } from "@/api/auth/types";
 
 /** 登录 */
 export const formLogin = (username: string, password: string) => {
-  return qingHttp.post("api/authorize/formLogin", {
+  return http.post("api/authorize/formLogin", {
     username: username,
     password: password,
   });
 };
 
 export const exchangeToken = (code: string, state: string) => {
-  return qingHttp.post("api/authorize/auth/accessToken", {
+  return http.post("api/authorize/auth/accessToken", {
     code: code,
     state: state,
   });
 };
 
 export const logOut = (accessToken: string) => {
-  return qingHttp.get("api/authorize/auth/logout", {
+  return http.get("api/authorize/auth/logout", {
     token: accessToken,
   });
+};
+/** 登录 */
+export const getLogin = (data?: object) => {
+  return http.request<UserResult>("post", "/login", { data });
+};
+
+/** 刷新token */
+export const refreshToken = (data?: object) => {
+  return http.request<RefreshTokenResult>("post", "api/refreshToken", { data });
 };
