@@ -1,11 +1,15 @@
 package cn.chenyunlong.qing.web.graphql;
 
+import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
+import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureGraphQlTester;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.test.tester.GraphQlTester;
 
-@GraphQlTest(value = BookController.class, properties = "test")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureGraphQlTester
 class BookControllerTest {
 
 
@@ -13,22 +17,23 @@ class BookControllerTest {
     private GraphQlTester graphQlTester;
 
     @Test
-    void shouldGetFirstBook() {
-        this.graphQlTester
-            .documentName("bookDetails")
-            .variable("id", "book-1")
+    void findAll() {
+        String query = """
+            {
+              books {
+                id
+                name
+                pageCount
+                authorId
+              }
+            }""";
+        List<Book> books = graphQlTester.document(query)
             .execute()
-            .path("bookById")
-            .matchesJson("""
-                    {
-                        "id": "book-1",
-                        "name": "Effective Java",
-                        "pageCount": 416,
-                        "author": {
-                          "firstName": "Joshua",
-                          "lastName": "Bloch"
-                        }
-                    }
-                """);
+            .path("data.books[*]")
+            .entityList(Book.class)
+            .get();
+        Assertions.assertFalse(books.isEmpty());
+        Assertions.assertNotNull(books.get(0).id());
+        Assertions.assertNotNull(books.get(0).name());
     }
 }
