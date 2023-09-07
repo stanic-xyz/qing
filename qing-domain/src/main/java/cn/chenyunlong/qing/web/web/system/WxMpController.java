@@ -30,6 +30,7 @@ import com.riversoft.weixin.mp.message.MpXmlMessages;
 import com.riversoft.weixin.mp.oauth2.MpOAuth2s;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Date;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -44,15 +45,15 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "微信公众平台对接")
 @RestController
 @RequestMapping("api/wx/mp")
+@RequiredArgsConstructor
 public class WxMpController {
+
+    private final AppSetting appSetting;
 
     private final Logger log = LoggerFactory.getLogger(WxMpController.class);
 
     private final WeChatMessageService weChatMessageService;
 
-    public WxMpController(WeChatMessageService weChatMessageService) {
-        this.weChatMessageService = weChatMessageService;
-    }
 
     @GetMapping("oauth/mp")
     public void mp(@RequestParam(value = "code") String code,
@@ -96,7 +97,6 @@ public class WxMpController {
             "signature={}, msg_signature={}, timestamp={}, nonce={}, echostr={}, encrypt_type={}",
             signature, msgSignature, timestamp, nonce, echoStr, encryptType);
 
-        AppSetting appSetting = AppSetting.defaultSettings();
         try {
             if (!SHA1.getSHA1(appSetting.getToken(), timestamp, nonce).equals(signature)) {
                 log.warn("非法请求.");

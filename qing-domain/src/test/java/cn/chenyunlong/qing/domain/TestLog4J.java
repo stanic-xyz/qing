@@ -14,7 +14,9 @@
 package cn.chenyunlong.qing.domain;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.MDC;
 
 @Slf4j
 public class TestLog4J {
@@ -23,5 +25,9 @@ public class TestLog4J {
     public void testLog4J() {
         String message = "${java:os}";
         log.info("message:{}", message);
+
+        MDC.put("test", "test");
+
+        Assertions.assertEquals("test", MDC.get("test"));
     }
 }

@@ -16,11 +16,12 @@ export const getLogin = (username: string, password: string) => {
 export const getAnimeList = (data?: object) => {
   console.log("请求参数", data);
   const { result } = useQuery(gql`
-      query getUsers {
-          artifactRepositories {
-              id,name
-          }
+    query getUsers {
+      artifactRepositories {
+        id
+        name
       }
+    }
   `);
 
   return http.request<QingResponse<QingPageResponse<Anime>>>(

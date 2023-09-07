@@ -47,3 +47,4 @@ local.env
 # 本地上传文件测试
 /docker/redis/data/
 /codegen/
+/qing-config-git/src/main/resources/config/zhangli-service-provider/

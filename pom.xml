@@ -87,7 +87,7 @@
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
         <guava.version>31.1-jre</guava.version>
         <lombok.version>1.18.24</lombok.version>
-        <hutool.version>5.8.18</hutool.version>
+        <hutool.version>5.8.21</hutool.version>
         <authing.version>3.0.14</authing.version>
         <swagger.version>2.2.8</swagger.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
@@ -302,24 +302,24 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>2.5.2</version>
                 </plugin>
-<!--                <plugin>-->
-<!--                    <groupId>org.apache.maven.plugins</groupId>-->
-<!--                    <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--                    <version>3.2.0</version>-->
-<!--                    <configuration>-->
-<!--                        <failsOnError>true</failsOnError>-->
-<!--                        <consoleOutput>true</consoleOutput>-->
-<!--                        <configLocation>checkstyle/checkstyle.xml</configLocation>-->
-<!--                    </configuration>-->
-<!--                    <executions>-->
-<!--                        <execution>-->
-<!--                            <phase>verify</phase>-->
-<!--                            <goals>-->
-<!--                                <goal>checkstyle</goal>-->
-<!--                            </goals>-->
-<!--                        </execution>-->
-<!--                    </executions>-->
-<!--                </plugin>-->
+                <!--                <plugin>-->
+                <!--                    <groupId>org.apache.maven.plugins</groupId>-->
+                <!--                    <artifactId>maven-checkstyle-plugin</artifactId>-->
+                <!--                    <version>3.2.0</version>-->
+                <!--                    <configuration>-->
+                <!--                        <failsOnError>true</failsOnError>-->
+                <!--                        <consoleOutput>true</consoleOutput>-->
+                <!--                        <configLocation>checkstyle/checkstyle.xml</configLocation>-->
+                <!--                    </configuration>-->
+                <!--                    <executions>-->
+                <!--                        <execution>-->
+                <!--                            <phase>verify</phase>-->
+                <!--                            <goals>-->
+                <!--                                <goal>checkstyle</goal>-->
+                <!--                            </goals>-->
+                <!--                        </execution>-->
+                <!--                    </executions>-->
+                <!--                </plugin>-->
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>

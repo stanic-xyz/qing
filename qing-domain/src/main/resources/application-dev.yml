@@ -28,8 +28,8 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
 mp:
   wx:
-    appId: ${QING_WECHAT_APPID}
-    secret: ${QING_WECHAT_SECRET}
+    appId: ${QING_WECHAT_APPID:test}
+    secret: ${QING_WECHAT_SECRET:test}
 qing:
   file:
     baseUploadDir: upload/

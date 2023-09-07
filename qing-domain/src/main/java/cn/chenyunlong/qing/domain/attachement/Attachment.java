@@ -47,8 +47,8 @@ import org.hibernate.proxy.HibernateProxy;
 @GenController
 @GenMapper
 @Entity
-@Table(name = "attachement")
-public class Attachement extends BaseEntity {
+@Table(name = "attachment")
+public class Attachment extends BaseEntity {
 
     @FieldDesc(name = "文件ID")
     private Long fileId;
@@ -82,7 +82,7 @@ public class Attachement extends BaseEntity {
         if (thisEffectiveClass != oEffectiveClass) {
             return false;
         }
-        Attachement that = (Attachement) aClass;
+        Attachment that = (Attachment) aClass;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

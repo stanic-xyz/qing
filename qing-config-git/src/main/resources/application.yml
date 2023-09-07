@@ -5,21 +5,16 @@ spring:
     name: qing-config-git
   profiles:
     active: prod
-eureka:
-  instance:
-    leaseRenewalIntervalInSeconds: 10
-    health-check-url-path: /actuator/health
-    instance-id: ${spring.application.name}
-    metadata-map:
-      startup: ${random.int}
-  client:
-    registryFetchIntervalSeconds: 30
-    register-with-eureka: true
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:1.15.242.253}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        register-health-check: true
+        prefer-ip-address: true
+        ip-address: ${CONFIG_IP:127.0.0.1}
+    config:
+      server:
+        default-label: master
+        git:
+          search-paths: config-repo
