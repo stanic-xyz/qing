@@ -34,7 +34,7 @@ public class MpConfig implements InitializingBean {
     private WxProperties wxProperties;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
     }
 

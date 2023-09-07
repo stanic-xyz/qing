@@ -18,7 +18,6 @@ public class IUserServiceTest extends AbstractDomainTests {
     @Test
     @DisplayName("添加用户（注册）")
     void createUser() {
-
         UserCreator userCreator = new UserCreator();
         userCreator.setAvatar(RandomUtil.randomString(100));
         userCreator.setDescription(RandomUtil.randomString(100));

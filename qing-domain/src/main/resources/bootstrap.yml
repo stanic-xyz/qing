@@ -1,7 +1,17 @@
 spring:
   application:
-    name: qing-service-provider
+    name: qing-service-anime
   cloud:
-    consul:
+    config:
+      label: master
+      profile: prod
       discovery:
-        enabled: false
+        enabled: true
+        service-id: qing-config-git
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: 8500
+      discovery:
+        register-health-check: false
+        prefer-ip-address: true
+        ip-address: ${HOST_IP:127.0.0.1}

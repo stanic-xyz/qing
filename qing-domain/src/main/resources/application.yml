@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: dev
   application:
     name: qing-service-anime
   messages:
@@ -57,7 +55,7 @@ qing:
     license: MulanPSL-2.0
     licenseUrl: http://license.coscl.org.cn/MulanPSL2
     title: Application from Project Qing
-    url: https://bangumi.chenyunlong.cn
+    url: https://www.chenyunlong.cn
     doc-disabled: false
     infoList:
       - url: https://api.chenyunlong.cn

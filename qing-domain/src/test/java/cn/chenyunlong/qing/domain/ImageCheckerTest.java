@@ -58,19 +58,17 @@ public class ImageCheckerTest {
     @Test
     @DisplayName("从diyGod获取手办信息")
     public void getGkFromDiyGod() {
-
-        HttpComponentsClientHttpRequestFactory httpRequestFactory =
+        HttpComponentsClientHttpRequestFactory factory =
             new HttpComponentsClientHttpRequestFactory();
-        httpRequestFactory.setConnectionRequestTimeout(1000);
-        httpRequestFactory.setConnectTimeout(1000);
-        httpRequestFactory.setReadTimeout(10000);
+        factory.setConnectionRequestTimeout(1000);
+        factory.setConnectTimeout(1000);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         String url = "https://diygod.me/gk/";
         httpHeaders.add("Referer", url);
         HttpEntity<String> httpEntity = new HttpEntity<>("", httpHeaders);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(httpRequestFactory);
+        restTemplate.setRequestFactory(factory);
         ResponseEntity<String> responseEntity;
         responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
