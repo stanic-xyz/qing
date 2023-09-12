@@ -73,7 +73,7 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
         addSetterAndGetterMethod(builder, findFields(typeElement,
             variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) &&
                                !dtoIgnore(variableElement)), useLombok);
-        genJavaFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**
