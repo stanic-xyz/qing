@@ -81,8 +81,6 @@ public class AbstractCodeGenProcessorTest extends TestCase {
             import cn.chenyunlong.codegen.annotation.GenDto;
             import cn.chenyunlong.codegen.annotation.GenCreator;
                             
-            @GenDto
-            @GenCreator
             final class HelloWorld {
                            
                 @Schema
