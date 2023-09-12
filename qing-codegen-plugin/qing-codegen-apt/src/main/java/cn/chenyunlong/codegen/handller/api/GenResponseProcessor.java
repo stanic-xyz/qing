@@ -57,7 +57,7 @@ public class GenResponseProcessor extends AbstractCodeGenProcessor {
             .addAnnotation(Schema.class)
             .addStaticBlock(CodeBlock.builder().build());
         addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
-        genJavaFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

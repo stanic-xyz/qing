@@ -60,7 +60,7 @@ public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
         }
         addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
         addIdField(builder, useLombok);
-        genJavaFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**

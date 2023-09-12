@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: qing-service-anime
+  cloud:
+    config:
+      label: master
+      profile: prod
+      enabled: false
+      discovery:
+        enabled: false
+        service-id: qing-config-git
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: 8500
+      enabled: false
+      discovery:
+        enabled: false
