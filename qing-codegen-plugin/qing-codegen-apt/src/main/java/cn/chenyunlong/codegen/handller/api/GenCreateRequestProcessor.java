@@ -60,7 +60,7 @@ public class GenCreateRequestProcessor extends AbstractCodeGenProcessor {
             builder.addAnnotation(Data.class);
         }
         addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
-        genJavaFile(typeElement, builder);
+        genJavaSourceFile(typeElement, builder);
     }
 
     /**
