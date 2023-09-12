@@ -17,6 +17,9 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+  cloud:
+    consul:
+      enabled: false
 logging:
   level:
     root: info
