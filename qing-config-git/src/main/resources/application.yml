@@ -7,12 +7,11 @@ spring:
     active: prod
   cloud:
     consul:
-      host: ${CONSUL_HOST:1.15.242.253}
+      host: ${CONSUL_HOST:localhost}
       port: ${CONSUL_PORT:8500}
       discovery:
         register-health-check: true
         prefer-ip-address: true
-        ip-address: ${CONFIG_IP:127.0.0.1}
     config:
       server:
         default-label: master
