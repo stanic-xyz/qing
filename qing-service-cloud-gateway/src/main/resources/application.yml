@@ -1,10 +1,8 @@
 server:
   port: 9527
 spring:
-  jmx:
-    enabled: false
   application:
-    name: qing-service-cloud-gateway
+    name: qing-service-gateway
   profiles:
     active: prod
   cloud:
@@ -20,9 +18,9 @@ spring:
           jwk-set-uri: 'http://localhost:8201/auth/rsa/publicKey'
   data:
     redis:
-      database: 0
+      host: ${REDIS_HOST}
       port: 6379
-      host: localhost
+      database: 0
       password:
 secure:
   ignore:

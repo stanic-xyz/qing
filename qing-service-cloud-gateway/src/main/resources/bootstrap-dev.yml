@@ -1,13 +1,18 @@
 spring:
   application:
-    name: qing-service-anime
+    name: qing-service-gateway
   cloud:
     config:
+      enabled: false
       label: master
       profile: prod
       discovery:
         enabled: true
         service-id: qing-config-git
     consul:
-      host: ${CONSUL_HOST:localhost}
+      enabled: false
+      host: $localhost
       port: 8500
+      discovery:
+        register-health-check: true
+        prefer-ip-address: true
