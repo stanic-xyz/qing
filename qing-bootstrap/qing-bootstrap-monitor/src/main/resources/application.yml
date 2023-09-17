@@ -5,6 +5,10 @@ spring:
     active: prod
   application:
     name: qing-bootstrap-monitor
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
   boot:
     admin:
       discovery:

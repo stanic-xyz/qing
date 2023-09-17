@@ -1,6 +1,6 @@
 spring:
   application:
-    name: qing-service-anime
+    name: qing-service-gateway
   cloud:
     config:
       label: master
@@ -11,3 +11,6 @@ spring:
     consul:
       host: ${CONSUL_HOST:localhost}
       port: 8500
+      discovery:
+        register-health-check: true
+        prefer-ip-address: true
