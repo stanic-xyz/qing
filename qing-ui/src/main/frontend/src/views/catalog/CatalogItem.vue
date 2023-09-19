@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { PropType } from "vue";
 import { onMounted, ref } from "vue";
-import type { Anime } from "@/api/anime";
 import { LayContainer } from "@layui/layui-vue";
+import type { Anime } from "@/api/anime/types";
 
 const props = defineProps({
   anime: {
