@@ -1,4 +1,4 @@
-FROM nginx:latest AS qing-ui
+FROM nginx:latest AS qing-web-bangumi
 USER root
 MAINTAINER Stan<1576302867@qq.com>
 EXPOSE 80

@@ -36,7 +36,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import type { Anime } from "@/api/anime";
+import type { Anime } from "@/api/anime/types";
 
 const animeList = ref<Anime[]>([]);
 

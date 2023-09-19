@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from "vue";
 import MyDPlayer from "@/components/MyDPlayer.vue";
-import type { Anime } from "@/api/anime";
+import type { Anime } from "@/api/anime/types";
 
 const el = ref();
 const anime = ref<Anime>({
