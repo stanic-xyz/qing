@@ -1,0 +1,103 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+  namespace: qing
+data:
+  POSTGRES_USER: "root"
+  POSTGRES_PASSWORD: "admin123456"
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv-volume
+  namespace: qing
+  labels:
+    app: postgres
+spec:
+  storageClassName: local-path
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/data"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pv-claim
+  labels:
+    app: postgres
+  namespace: qing
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: local-path
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: qing
+spec:
+  replicas: 1
+  serviceName: postgres-deploy
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: postgres
+              protocol: TCP
+              containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: qing
+  labels:
+    app: postgres
+spec:
+  selector:
+    app: postgres
+  type: NodePort
+  ports:
+    - name: tcp-8090
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+      nodePort: 31432

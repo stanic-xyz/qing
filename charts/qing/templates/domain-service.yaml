@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: qing
+  name: domain-deploy
+  labels:
+    app: domain
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domain
+  template:
+    metadata:
+      labels:
+        app: domain
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: domain-web
+          image: stanic-docker.pkg.coding.net/qing/qing/qing-domain-service:0.0.2.67
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp-8080
+              containerPort: 8080
+          env:
+            - name: CONSUL_HOST
+              value: consul-app.qing
+            - name: CONSUL_PORT
+              value: "8500"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: qing
+  name: domain-app
+  labels:
+    app: domain
+spec:
+  selector:
+    app: domain
+  type: NodePort
+  ports:
+    - port: 8080
+      name: tcp-30080
+      protocol: TCP
+      targetPort: 8080

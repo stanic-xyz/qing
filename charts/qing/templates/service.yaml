@@ -1,15 +1,17 @@
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
-  name: { { include "qing.fullname" . } }
+  namespace: qing
+  name: admin-app
   labels:
-    { { - include "qing.labels" . | nindent 4 } }
+    app: admin
 spec:
-  type: { { .Values.service.type } }
-  ports:
-    - port: { { .Values.service.port } }
-      targetPort: http
-      protocol: TCP
-      name: http
   selector:
-    { { - include "qing.selectorLabels" . | nindent 4 } }
+    app: admin
+  type: NodePort
+  ports:
+    - name: tcp-31086
+      port: 10086
+      protocol: TCP
+      targetPort: 10086
+      nodePort: 31086

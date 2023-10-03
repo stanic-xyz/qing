@@ -1,0 +1,107 @@
+# postgres配置
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config-map
+data:
+  POSTGRES_PASSWORD: '123456'
+
+---
+# 数据存储卷
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-data-postgres
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  nfs:
+    server: nfs.k8s.com
+    path: /mnt/nfs/data/postgres
+
+---
+# postgres容器
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  serviceName: postgres-service
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: registry.k8s.com/k8s/postgres:11.10
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: postgres-config-map
+          resources:
+            requests:
+              cpu: "1"
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+      imagePullSecrets:
+        - name: k8s-auth
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: slow
+
+---
+# 内部访问的无头服务
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: postgres
+  ports:
+    - name: postgres
+      port: 5432
+  clusterIP: None
+
+---
+# 外部访问的服务
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-external-service
+spec:
+  selector:
+    app: postgres
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+      nodePort: 30002
+  type: NodePort

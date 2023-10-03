@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: halo
+  name: halo-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  tls:
+    - hosts:
+        - www.chenyunlong.cn
+    - secretName: chenyunlong-tls.yaml
+  rules:
+    - host: www.chenyunlong.cn
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: halo
+                port:
+                  number: 8090

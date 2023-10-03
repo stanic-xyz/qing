@@ -12,10 +12,9 @@ public record Book(String id, String name, int pageCount, String authorId) {
     );
 
     public static Book getById(String id) {
-        Book bookInfo = books.stream()
+        return books.stream()
             .filter(book -> book.id().equals(id))
             .findFirst()
             .orElse(null);
-        return bookInfo;
     }
 }

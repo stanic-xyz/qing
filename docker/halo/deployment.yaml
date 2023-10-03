@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: halo
+  namespace: halo
+  labels:
+    app: halo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: halo
+  template:
+    metadata:
+      labels:
+        app: halo
+    spec:
+      containers:
+        - name: halo
+          image: halohub/halo:2.9.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - "-spring.r2dbc.url=r2dbc:pool:postgresql://postgres.qing:5432/halo"
+            - "--spring.r2dbc.username=halo"
+            - "--spring.r2dbc.password=openpostgresql"
+            - "--spring.sql.init.platform=postgresql"
+          ports:
+            - containerPort: 8090
+              hostPort: 8090
+              name: port-8090

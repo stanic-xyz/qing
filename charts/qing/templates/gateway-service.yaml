@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: qing
+  name: gateway
+  labels:
+    app: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: api-gateway
+          image: stanic-docker.pkg.coding.net/qing/qing/qing-service-gateway:0.0.2.64
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp-9527
+              containerPort: 9527
+          env:
+            - name: CONSUL_HOST
+              value: consul-app.qing
+            - name: REDIS_HOST
+              value: redis.qing
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: qing
+  name: gateway
+  labels:
+    app: gateway
+spec:
+  selector:
+    app: gateway
+  type: NodePort
+  ports:
+    - name: tcp-9527
+      protocol: TCP
+      port: 9527
+      targetPort: 9527
+      nodePort: 32527
