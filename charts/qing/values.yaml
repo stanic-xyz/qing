@@ -4,10 +4,20 @@
 
 replicaCount: 1
 
+global:
+  imageRegistry: "stanic-docker.pkg.coding.net/qing"
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: [ ]
+  storageClass: ""
+  hostname: "chenyunlong.cn"
+
 image:
+  registry: docker.io
   repository: nginx
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 imagePullSecrets: [ ]
@@ -29,9 +39,9 @@ podSecurityContext: { }
 # fsGroup: 2000
 
 securityContext: { }
-  # capabilities:
-  #   drop:
-  #   - ALL
+# capabilities:
+#   drop:
+#   - ALL
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
@@ -40,30 +50,186 @@ service:
   type: ClusterIP
   port: 80
 
+
+consul:
+  host: consul
+  port: 8500
+
+
+## PostgreSQL chart configuration
+## ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+##
+postgresql:
+  ## @param postgresql.enabled Deploy a PostgreSQL server to satisfy the applications database requirements
+  ## To use an external database set this to false and configure the `externalDatabase.*` parameters
+  ##
+  enabled: true
+  ## @param postgresql.architecture PostgreSQL architecture. Allowed values: `standalone` or `replication`
+  ##
+  architecture: standalone
+  ## PostgreSQL Authentication parameters
+  ## @param postgresql.auth.rootPassword PostgreSQL root password
+  ## @param postgresql.auth.database PostgreSQL custom database
+  ## @param postgresql.auth.username PostgreSQL custom user name
+  ## @param postgresql.auth.password PostgreSQL custom user password
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#setting-the-root-password-on-first-run
+  ##      https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md#creating-a-database-on-first-run
+  ##      https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md#creating-a-database-user-on-first-run
+  ##
+  auth:
+    rootPassword: ""
+    database: halo
+    username: halo
+    password: ""
+  ## PostgreSQL Primary configuration
+  ##
+  primary:
+    ## PostgreSQL Primary Persistence parameters
+    ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
+    ## @param postgresql.primary.persistence.enabled Enable persistence on PostgreSQL using PVC(s)
+    ## @param postgresql.primary.persistence.storageClass Persistent Volume storage class
+    ## @param postgresql.primary.persistence.accessModes [array] Persistent Volume access modes
+    ## @param postgresql.primary.persistence.size Persistent Volume size
+    ##
+    persistence:
+      enabled: true
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+
+## MySQL chart configuration
+## ref: https://github.com/bitnami/charts/blob/main/bitnami/mysql/values.yaml
+##
+mysql:
+  ## @param mysql.enabled Deploy a MySQL server to satisfy the applications database requirements
+  ## To use an external database set this to false and configure the `externalDatabase.*` parameters
+  ##
+  enabled: false
+  ## @param mysql.architecture MySQL architecture. Allowed values: `standalone` or `replication`
+  ##
+  architecture: standalone
+  ## MySQL Authentication parameters
+  ## @param mysql.auth.rootPassword MySQL root password
+  ## @param mysql.auth.database MySQL custom database
+  ## @param mysql.auth.username MySQL custom user name
+  ## @param mysql.auth.password MySQL custom user password
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/mysql#setting-the-root-password-on-first-run
+  ##      https://github.com/bitnami/containers/blob/main/bitnami/mysql/README.md#creating-a-database-on-first-run
+  ##      https://github.com/bitnami/containers/blob/main/bitnami/mysql/README.md#creating-a-database-user-on-first-run
+  ##
+  auth:
+    rootPassword: ""
+    database: qing
+    username: qing
+    password: ""
+  ## MySQL Primary configuration
+  ##
+  primary:
+    ## MySQL Primary Persistence parameters
+    ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
+    ## @param mysql.primary.persistence.enabled Enable persistence on MySQL using PVC(s)
+    ## @param mysql.primary.persistence.storageClass Persistent Volume storage class
+    ## @param mysql.primary.persistence.accessModes [array] Persistent Volume access modes
+    ## @param mysql.primary.persistence.size Persistent Volume size
+    ##
+    persistence:
+      enabled: true
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+
+externalDatabase:
+  ## @param externalDatabase.platform External Database platform
+  ##
+  platform: postgresql
+  ## @param externalDatabase.host External Database server host
+  ##
+  host: ""
+  ## @param externalDatabase.port External Database server port
+  ##
+  port: ""
+  ## @param externalDatabase.user External Database username
+  ##
+  user: ""
+  ## @param externalDatabase.password External Database user password
+  ##
+  password: ""
+  ## @param externalDatabase.database External Database database name
+  ##
+  database: ""
+  ## @param externalDatabase.existingSecret The name of an existing secret with database credentials. Evaluated as a template
+  ## NOTE: Must contain key `password`
+  ## NOTE: When it's set, the `externalDatabase.password` parameter is ignored
+  ##
+  existingSecret: ""
+
 ingress:
   enabled: false
   className: ""
   annotations: { }
   # kubernetes.io/ingress.class: nginx
-  # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/tls.yaml-acme: "true"
   hosts:
     - host: chart-example.local
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls: [ ]
-  #  - secretName: chart-example-tls
+  #  - secretName: chart-example-tls.yaml
   #    hosts:
   #      - chart-example.local
 
+## @section Persistence Parameters
+##
+
+## Persistence Parameters
+## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+persistence:
+  ## @param persistence.enabled Enable persistence using Persistent Volume Claims
+  ##
+  enabled: true
+  ## @param persistence.storageClass Persistent Volume storage class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner
+  ##
+  storageClass: ""
+  ## @param persistence.accessModes [array] Persistent Volume access modes
+  ##
+  accessModes:
+    - ReadWriteOnce
+  ## @param persistence.size Persistent Volume size
+  ##
+  size: 10Gi
+  ## @param persistence.dataSource Custom PVC data source
+  ##
+  dataSource: { }
+  ## @param persistence.existingClaim The name of an existing PVC to use for persistence
+  ##
+  existingClaim: ""
+  ## @param persistence.selector Selector to match an existing Persistent Volume for Halo data PVC
+  ## If set, the PVC can't have a PV dynamically provisioned for it
+  ## E.g.
+  ## selector:
+  ##   matchLabels:
+  ##     app: my-app
+  ##
+  selector: { }
+  ## @param persistence.annotations Persistent Volume Claim annotations
+  ##
+  annotations: { }
+
 resources: { }
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
 # requests:
 #   cpu: 100m
 #   memory: 128Mi

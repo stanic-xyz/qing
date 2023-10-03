@@ -88,7 +88,6 @@ public class AuthingLoginController {
      */
     @GetMapping("getProfile")
     public JsonResult<UserDto> getProfile(String accessToken) throws Exception {
-        // 初始化客户端参数
         AuthenticationClientOptions clientOptions = new AuthenticationClientOptions();
         clientOptions.setAppId(authingProperties.getAppId());
         clientOptions.setAppSecret(authingProperties.getAppSecret());

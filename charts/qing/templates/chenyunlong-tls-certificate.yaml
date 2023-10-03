@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  namespace: cert-manager
+  name: chenyunlong-tls
+spec:
+  secretName: chenyunlong-tls.yaml
+  dnsNames:
+    - "*.{{.Values.global.hostname}}"
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

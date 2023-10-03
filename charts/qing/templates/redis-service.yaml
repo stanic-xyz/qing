@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: qing
+  name: redis-deploy
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: redis
+          image: redis:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp-6379
+              containerPort: 6379
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: qing
+  name: redis
+  labels:
+    app: redis
+spec:
+  selector:
+    app: redis
+  type: NodePort
+  ports:
+    - port: 6379
+      name: tcp-30379
+      protocol: TCP
+      targetPort: 6379
+      nodePort: 30379

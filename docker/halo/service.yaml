@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: halo
+  namespace: halo
+  labels:
+    app: halo
+spec:
+  selector:
+    app: halo
+  type: NodePort
+  ports:
+    - name: tcp-8090
+      protocol: TCP
+      port: 8090
+      targetPort: 8090

@@ -1,0 +1,93 @@
+# postgres配置
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config-map
+data:
+  POSTGRES_PASSWORD: '123456'
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-data-postgres
+spec:
+  capacity:
+    storage: 10Gi
+  # volumeMode field requires BlockVolume Alpha feature gate to be enabled.
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+    path: /mnt/disks/ssd1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - example-node
+
+
+---
+# postgres容器
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  serviceName: postgres-service
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: postgres-config-map
+
+---
+# 内部访问的无头服务
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: postgres
+  ports:
+    - name: postgres
+      port: 5432
+  clusterIP: None
+
+---
+# 外部访问的服务
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-external-service
+spec:
+  selector:
+    app: postgres
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+      nodePort: 30002
+  type: NodePort

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: qing
+  name: web-deploy
+  labels:
+    app: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: web
+          image: stanic-docker.pkg.coding.net/qing/qing/qing-web-bangumi:0.0.2.67
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp-80
+              containerPort: 80
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: qing
+  name: web
+  labels:
+    app: web
+spec:
+  selector:
+    app: web
+  type: NodePort
+  ports:
+    - port: 80
+      name: tcp-80
+      protocol: TCP
+      targetPort: 80

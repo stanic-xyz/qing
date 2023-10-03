@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  pg:
+    image: postgres:latest
+    container_name: db_postgres
+    restart: on-failure:3
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_PASSWORD=STANIC@POSTGRES@PASS
+      - POSTGRES_USER=qing
+      - POSTGRES_DB=qing
+      - PGUSER=root

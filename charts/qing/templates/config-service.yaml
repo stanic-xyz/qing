@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: qing
+  name: config-deploy
+  labels:
+    app: config
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config
+  template:
+    metadata:
+      labels:
+        app: config
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: consul
+          image: stanic-docker.pkg.coding.net/qing/qing/qing-config-git:0.0.2.64
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp-8888
+              containerPort: 8888
+          env:
+            - name: CONSUL_HOST
+              value: consul.qing
+            - name: CONSUL_PORT
+              value: "8500"
+            - name: GIT_USER
+              value: 1576302867@qq.com
+            - name: GIT_PASS
+              value: 4745701816long
+          readinessProbe:
+            httpGet:
+              port: 8888
+              path: /actuator/health/readiness
+          livenessProbe:
+            httpGet:
+              port: 8888
+              path: /actuator/health/liveness
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: qing
+  name: config-app
+  labels:
+    app: config
+spec:
+  selector:
+    app: config
+  type: ClusterIP
+  ports:
+    - port: 8888
+      name: tcp-8888
+      protocol: TCP
+      targetPort: 8888

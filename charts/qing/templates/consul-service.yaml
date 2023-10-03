@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: qing
+  name: consul-deploy
+  labels:
+    app: consul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul
+  template:
+    metadata:
+      labels:
+        app: consul
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: consul
+          image: consul:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp-8500
+              containerPort: 8500
+            - name: tcp-8300
+              containerPort: 8300
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: qing
+  name: consul
+  labels:
+    app: consul
+spec:
+  selector:
+    app: consul
+  type: NodePort
+  ports:
+    - port: 8500
+      name: tcp-8500
+      protocol: TCP
+      targetPort: 8500
+    - port: 8300
+      name: tcp-8300
+      protocol: TCP
+      targetPort: 8300

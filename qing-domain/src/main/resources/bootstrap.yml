@@ -10,4 +10,7 @@ spring:
         service-id: qing-config-git
     consul:
       host: ${CONSUL_HOST:localhost}
-      port: 8500
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        prefer-ip-address: true
+        register-health-check: true

@@ -1,10 +1,10 @@
 spring:
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://127.0.0.1:3306/qing?serverTimezone=GMT%2B8&
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://1.15.242.253:31432/qing
     hikari:
       username: root
-      password: 123456
+      password: admin123456
   data:
     redis:
       host: 127.0.0.1
@@ -21,7 +21,9 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MariaDBDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
 qing:
   openAopLog: true
   api:

@@ -1,5 +1,3 @@
-{{- if .Values.global.hostname}}
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -7,9 +5,18 @@ metadata:
   name: qing-ingress
   annotations:
     kubernetes.io/ingress.class: traefik
+    nginx.ingress.kubernetes.io/permanent-redirect-code: '308'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    traefik.ingress.kubernetes.io/frontend-entry-points: https
 spec:
+  tls:
+    - hosts:
+        - api.chenyunlong.cn
+        - config.chenyunlong.cn
+        - admin.chenyunlong.cn
+    - secretName: chenyunlong-tls
   rules:
-    - host: api.{{.Values.global.hostname}}
+    - host: api.chenyunlong.cn
       http:
         paths:
           - path: /
@@ -19,7 +26,7 @@ spec:
                 name: gateway
                 port:
                   number: 9527
-    - host: config.{{.Values.global.hostname}}
+    - host: config.chenyunlong.cn
       http:
         paths:
           - path: /
@@ -29,7 +36,7 @@ spec:
                 name: config-app
                 port:
                   number: 8888
-    - host: admin.{{.Values.global.hostname}}
+    - host: admin.chenyunlong.cn
       http:
         paths:
           - path: /
@@ -39,5 +46,3 @@ spec:
                 name: admin-app
                 port:
                   number: 10086
-
- {{- end}}

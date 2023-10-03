@@ -26,7 +26,28 @@ spec:
           env:
             - name: QING_CONSUL_HOST
               value: {{ .Values.consul.host}}
+            - name: QING_CONSUL_PORT
+              value: {{ .Values.consul.port}}
             - name: TZ
               value: Asia/Shanghai
             - name: LANG
               value: zh_CN.UTF-8
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: qing
+  name: admin-app
+  labels:
+    app: admin
+spec:
+  selector:
+    app: admin
+  type: NodePort
+  ports:
+    - name: tcp-31086
+      port: 10086
+      protocol: TCP
+      targetPort: 10086
+      nodePort: 31086
