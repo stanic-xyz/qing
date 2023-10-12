@@ -1,0 +1,16 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: halo-pv-claim
+  namespace: halo
+  labels:
+    app: halo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: pvc-halo-data
+  storageClassName: local-path
+  volumeMode: Filesystem

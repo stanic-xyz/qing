@@ -1,15 +1,60 @@
-apiVersion: apps/v1
-kind: Deployment
+kind: Namespace
+apiVersion: v1
 metadata:
   name: halo
+  labels:
+    kubernetes.io/metadata.name: halo
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: halo-pv-volume
   namespace: halo
   labels:
     app: halo
+spec:
+  storageClassName: local-path
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/halo"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: halo-pv-claim
+  namespace: halo
+  labels:
+    app: halo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: halo-pv-volume
+  storageClassName: local-path
+  volumeMode: Filesystem
+---
+
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: halo
+  namespace: halo
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: halo
+  serviceName: halo
   template:
     metadata:
       labels:
@@ -17,14 +62,27 @@ spec:
     spec:
       containers:
         - name: halo
-          image: halohub/halo:2.9.0
-          imagePullPolicy: IfNotPresent
+          image: halohub/halo:2.10
           args:
-            - "-spring.r2dbc.url=r2dbc:pool:postgresql://postgres.qing:5432/halo"
+            - "--spring.r2dbc.url=r2dbc:pool:postgresql://postgres.qing:5432/halo"
             - "--spring.r2dbc.username=halo"
             - "--spring.r2dbc.password=openpostgresql"
             - "--spring.sql.init.platform=postgresql"
           ports:
-            - containerPort: 8090
-              hostPort: 8090
-              name: port-8090
+            - name: http
+              containerPort: 8090
+              protocol: TCP
+          volumeMounts:
+            - name: halo-dir
+              mountPath: /root/.halo2
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      restartPolicy: Always
+      volumes:
+        - name: halo-dir
+          hostPath:
+            path: /data/halo
+            type: DirectoryOrCreate
