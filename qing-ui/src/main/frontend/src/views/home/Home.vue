@@ -4,7 +4,6 @@ import { getAnimeList } from "@/api/anime";
 import AnimeInfo from "@/views/anime/AnimeInfo.vue";
 import { LayEmpty } from "@layui/layui-vue";
 import BlockTitle from "@/views/common/BlockTitle.vue";
-import { useGuard } from "@authing/guard-vue3";
 import type { Anime } from "@/api/anime/types";
 
 const pagination = ref({ current: 0, pageSize: 12, total: 0 });
@@ -42,10 +41,8 @@ const weekList = ref([
 
 const activeWeekIndex = ref<Number>(0);
 
-const guard = useGuard();
-
 const getUserInfo = async () => {
-  console.log("用户当前登录状态", guard.checkLoginStatus());
+  console.log("用户当前登录状态", false);
   // const promise = await guard.startWithRedirect();
 };
 
@@ -69,10 +66,13 @@ onMounted(() => {
 
 function changeWeek(id: Number) {
   activeWeekIndex.value = id;
+
+  //   请求 https://www.codegeex.cn/ 网站，获取返回响应状态、响应头、响应内容，并输出
 }
 </script>
 
 <template>
+  <!--  生成一个容器-->
   <lay-container fluid id="container">
     <lay-layout>
       <lay-body>
@@ -168,6 +168,7 @@ function changeWeek(id: Number) {
       </lay-side>
     </lay-layout>
   </lay-container>
+  <!-- 底部 -->
 </template>
 
 <style scoped src="../../assets/css/index.css"></style>
