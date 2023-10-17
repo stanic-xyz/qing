@@ -40,7 +40,7 @@ import org.springframework.web.client.RestTemplate;
  * 全局配置
  *
  * @author stan
- * @date 2020/09/23
+ * @since 2020/09/23
  */
 @Slf4j
 @Configuration

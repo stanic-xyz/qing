@@ -38,10 +38,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 文件控制器
+ * OSS文件控制器。
  *
  * @author Stan
- * @date 2022/11/05
+ * @since 2022/11/05
  */
 @Tag(name = "文件控制器")
 @Slf4j
@@ -55,11 +55,14 @@ public class FileController {
 
     @Operation(summary = "获取存储桶列表")
     @GetMapping("bucket/list")
-    public ApiResult<List<Bucket>> listBuckts() {
+    public ApiResult<List<Bucket>> listBuckets() {
         List<Bucket> buckets = cosClient.listBuckets();
         return ApiResult.success(buckets);
     }
 
+    /**
+     * 获取存储桶列表。
+     */
     @Operation(summary = "获取存储桶列表")
     @GetMapping("createTempSecret")
     public ApiResult<TempSecret> getTempSecret() throws IOException {
@@ -74,7 +77,6 @@ public class FileController {
 
         // 设置域名:
         // 如果您使用了腾讯云 cvm，可以设置内部域名
-        //config.put("host", "sts.internal.tencentcloudapi.com");
 
         // 临时密钥有效时长，单位是秒，默认 1800 秒，目前主账号最长 2 小时（即 7200 秒），子账号最长 36 小时（即 129600）秒
         config.put("durationSeconds", 1800);
@@ -90,7 +92,7 @@ public class FileController {
         // 2、允许访问指定的对象："a/a1.txt", "b/b1.txt"
         // 3、允许访问指定前缀的对象："a*", "a/*", "b/*"
         // 如果填写了“*”，将允许用户访问所有资源；除非业务需要，否则请按照最小权限原则授予用户相应的访问权限范围。
-        config.put("allowPrefixes", new String[] {"*", "exampleobject2"});
+        config.put("allowPrefixes", new String[] {"*", "exampleObject2"});
 
         // 密钥的权限列表。必须在这里指定本次临时密钥所需要的权限。
         // 简单上传、表单上传和分块上传需要以下的权限，其他权限列表请参见 https://cloud.tencent.com/document/product/436/31923
@@ -103,7 +105,7 @@ public class FileController {
             "name/cos:InitiateMultipartUpload", "name/cos:ListMultipartUploads",
             "name/cos:ListParts", "name/cos:UploadPart", "name/cos:CompleteMultipartUpload"};
         config.put("allowActions", allowActions);
-//        设置condition（如有需要）
+        // 设置condition（如有需要）
         //# 临时密钥生效条件，关于condition的详细设置规则和COS支持的condition类型可以参考 https://cloud.tencent.com/document/product/436/71307
         final String raw_policy = """
             {
@@ -138,6 +140,9 @@ public class FileController {
         return ApiResult.success(tempSecret);
     }
 
+    /**
+     * 上传文件到腾讯对象存储。
+     */
     @Operation(summary = "上传文件到腾讯对象存储", description = "上传文件到腾讯对象存储")
     @PostMapping("cos/upload")
     public ApiResult<List<COSObjectSummary>> cosUpload() {
@@ -157,16 +162,16 @@ public class FileController {
         listObjectsRequest.setBucketName(buckets.get(0).getName());
         // prefix表示列出的object的key以prefix开始
         listObjectsRequest.setPrefix("images/");
-        // deliter表示分隔符, 设置为/表示列出当前目录下的object, 设置为空表示列出所有的object
+        // delimiter 表示分隔符, 设置为/表示列出当前目录下的object, 设置为空表示列出所有的object
         listObjectsRequest.setDelimiter("/");
-        // 设置最大遍历出多少个对象, 一次listobject最大支持1000
+        // 设置最大遍历出多少个对象, 一次 listObject 最大支持1000
         listObjectsRequest.setMaxKeys(1000);
         ObjectListing objectListing;
         do {
             try {
                 objectListing = cosClient.listObjects(listObjectsRequest);
             } catch (CosClientException e) {
-                e.printStackTrace();
+                log.error("获取OSS文件列表失败：{}", e.getMessage(), e);
                 return ApiResult.fail(e.getMessage());
             }
             // common prefix表示表示被delimiter截断的路径, 如delimiter设置为/, common prefix则表示所有子目录的路径

@@ -16,10 +16,10 @@ package cn.chenyunlong.jpa.support;
 import java.util.function.Supplier;
 
 /**
- * 对象创建器
+ * 对象创建器。
  *
  * @author gim 2022/1/28 9:55 下午
- * @date 2022/11/06
+ * @since 2022/11/06
  */
 public interface Create<T> {
 

@@ -42,6 +42,16 @@ public class MpConfig implements InitializingBean {
     }
 
     /**
+     * WxMpService多个实现类 声明一个实例
+     */
+    @Bean
+    public WxMpService wxMpService() {
+        WxMpService wxMpService = new WxMpServiceImpl();
+        wxMpService.setWxMpConfigStorage(wxMpConfigStorage());
+        return wxMpService;
+    }
+
+    /**
      * 微信客户端配置存储
      */
     @Bean
@@ -56,15 +66,5 @@ public class MpConfig implements InitializingBean {
         // 设置微信公众号的EncodingAESKey
         configStorage.setAesKey(wxMpProperties.getAesKey());
         return configStorage;
-    }
-
-    /**
-     * WxMpService多个实现类 声明一个实例
-     */
-    @Bean
-    public WxMpService wxMpService() {
-        WxMpService wxMpService = new WxMpServiceImpl();
-        wxMpService.setWxMpConfigStorage(wxMpConfigStorage());
-        return wxMpService;
     }
 }

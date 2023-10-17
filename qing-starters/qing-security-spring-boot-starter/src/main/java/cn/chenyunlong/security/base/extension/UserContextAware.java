@@ -21,7 +21,7 @@ import cn.chenyunlong.security.base.BaseJwtUser;
  *
  * @author 陈云龙
  * @author gim
- * @date 2022/11/11
+ * @since 2022/11/11
  */
 public interface UserContextAware {
 

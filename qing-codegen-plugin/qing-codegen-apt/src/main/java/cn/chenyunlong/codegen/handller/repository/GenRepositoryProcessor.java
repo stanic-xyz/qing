@@ -31,7 +31,7 @@ import javax.lang.model.element.TypeElement;
  * 生成Repository层的代码
  *
  * @author gim
- * @date 2022/12/22
+ * @since 2022/12/22
  */
 @AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenRepository.class)

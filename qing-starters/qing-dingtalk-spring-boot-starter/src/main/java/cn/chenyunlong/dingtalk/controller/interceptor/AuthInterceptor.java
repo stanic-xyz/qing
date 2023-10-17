@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
- * 拦截所有需要Token的请求，统一提前验证Token的有效性
+ * 拦截所有需要Token的请求，统一提前验证Token的有效性。
  *
- * @author Jack.kj@alibaba-inc.com
- * @date 2022/10/2022/10/20
+ * @author Stan
+ * @since 2022/10/2022/10/20
  */
 @Slf4j
 @Component

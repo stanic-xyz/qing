@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
+ * 字符串工具集。
+ *
  * @author gim
  */
 public final class StringUtils {

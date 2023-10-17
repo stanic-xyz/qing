@@ -18,6 +18,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
+ * Security配置。
+ *
  * @author stan
  */
 @Data

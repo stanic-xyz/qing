@@ -25,40 +25,46 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * JWT工具类
+ * JWT工具类。
  */
 public class JwtUtil {
 
     //有效期为
-    public static final Long JWT_TTL = TimeUnit.HOURS.toMillis(1);// 60 * 60 *1000  一个小时
+    public static final Long JWT_TTL = TimeUnit.HOURS.toMillis(1);
     //设置秘钥明文
     public static final String JWT_KEY = "itcast";
 
     /**
-     * 创建token
+     * 创建token。
      *
-     * @param id
-     * @param subject
-     * @param ttlMillis
-     * @return
+     * @param id        TokenID
+     * @param subject   主题内容
+     * @param ttlMillis 过期时间
+     * @return Jwt Token
      */
-    public static String createJWT(String id, String subject, Long ttlMillis) {
+    public static String createJwt(String id, String subject, Long ttlMillis) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime expDate = now.plusNanos(ttlMillis);
         SecretKey secretKey = generalKey();
         JwtBuilder builder = Jwts.builder()
-            .setId(id)              //唯一的ID
-            .setSubject(subject)   // 主题  可以是JSON数据
-            .setIssuer("admin")     // 签发者
-            .setIssuedAt(new Date())      // 签发时间
-            .signWith(signatureAlgorithm, secretKey) //使用HS256对称加密算法签名, 第二个参数为秘钥
-            .setExpiration(new Date(System.currentTimeMillis() + JWT_TTL));// 设置过期时间
+            //唯一的ID
+            .setId(id)
+            // 主题  可以是JSON数据
+            .setSubject(subject)
+            // 签发者
+            .setIssuer("admin")
+            // 签发时间
+            .setIssuedAt(new Date())
+            //使用HS256对称加密算法签名, 第二个参数为秘钥
+            .signWith(signatureAlgorithm, secretKey)
+            // 设置过期时间
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TTL));
         return builder.compact();
     }
 
     /**
-     * 生成加密后的秘钥 secretKey
+     * 生成密钥。
      *
      * @return 生成加密后的秘钥
      */
@@ -68,13 +74,13 @@ public class JwtUtil {
     }
 
     /**
-     * 解析
+     * 解析JwtToken。
      *
      * @param jwt jwt信息
-     * @return
-     * @throws Exception
+     * @return jwt解析内容！
+     * @throws Exception 解析异常信息
      */
-    public static Claims parseJWT(String jwt) throws Exception {
+    public static Claims parseJwt(String jwt) throws Exception {
         SecretKey secretKey = generalKey();
         return Jwts.parser()
             .setSigningKey(secretKey)

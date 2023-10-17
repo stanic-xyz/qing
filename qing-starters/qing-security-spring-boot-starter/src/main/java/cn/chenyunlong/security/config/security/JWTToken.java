@@ -18,6 +18,8 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
+ * Jwt 访问令牌。
+ *
  * @author Stan
  */
 public class JWTToken extends AbstractAuthenticationToken {

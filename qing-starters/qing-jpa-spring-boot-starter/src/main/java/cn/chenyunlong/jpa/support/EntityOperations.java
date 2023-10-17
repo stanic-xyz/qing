@@ -16,6 +16,8 @@ package cn.chenyunlong.jpa.support;
 import org.springframework.data.repository.CrudRepository;
 
 /**
+ * 实体类型操作。
+ *
  * @author gim 2022/3/5 9:52 下午
  */
 public abstract class EntityOperations {

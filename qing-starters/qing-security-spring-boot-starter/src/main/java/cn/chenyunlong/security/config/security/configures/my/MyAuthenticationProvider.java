@@ -65,7 +65,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
     }
 
     @Override
-    public boolean supports(Class<?> aClass) {
-        return MyAuthentication.class.isAssignableFrom(aClass);
+    public boolean supports(Class<?> clazz) {
+        return MyAuthentication.class.isAssignableFrom(clazz);
     }
 }

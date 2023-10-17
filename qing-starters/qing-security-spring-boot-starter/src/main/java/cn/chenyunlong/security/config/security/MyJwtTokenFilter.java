@@ -28,9 +28,9 @@ import org.springframework.util.StringUtils;
 
 public class MyJwtTokenFilter extends AbstractAuthenticationProcessingFilter {
 
-    private final static String AUTHORIZATION_HEADER = "Authorization";
-    private final static String AUTHORIZATION_QUERY = "token";
-    private final static String AUTHORIZATION_COOKIES = "qing_token";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String AUTHORIZATION_QUERY = "token";
+    private static final String AUTHORIZATION_COOKIES = "qing_token";
     private final TokenProvider tokenProvider;
 
     public MyJwtTokenFilter(String defaultFilterProcessesUrl, TokenProvider tokenProvider) {
@@ -40,13 +40,15 @@ public class MyJwtTokenFilter extends AbstractAuthenticationProcessingFilter {
 
 
     /**
+     * 授权。
+     *
      * @param request  from which to extract parameters and perform the authentication
      * @param response the response, which may be needed if the implementation has to do a
      *                 redirect as part of a multi-stage authentication process (such as OIDC).
-     * @return
-     * @throws AuthenticationException
-     * @throws IOException
-     * @throws ServletException
+     * @return 授权信息
+     * @throws AuthenticationException 授权异常
+     * @throws IOException             io异常
+     * @throws ServletException        Servlet异常
      */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,

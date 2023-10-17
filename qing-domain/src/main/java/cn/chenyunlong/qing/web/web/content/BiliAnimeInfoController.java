@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 用于定时获取哔哩哔哩动画的番剧评分信息
  *
  * @author Stan
- * @date 2022/11/05
+ * @since 2022/11/05
  */
 @Tag(name = "哔哩哔哩动画服务")
 @RestController

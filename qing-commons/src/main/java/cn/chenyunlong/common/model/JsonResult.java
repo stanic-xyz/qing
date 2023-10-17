@@ -24,7 +24,7 @@ import lombok.Setter;
  * 公共返回结构
  *
  * @author gim
- * @date 2022/11/11
+ * @since 2022/11/11
  */
 @Data
 public final class JsonResult<T> {

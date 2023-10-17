@@ -33,6 +33,8 @@ import javax.lang.model.element.TypeElement;
 import org.springframework.data.domain.Page;
 
 /**
+ * Service 处理器。
+ *
  * @author gim
  */
 @AutoService(CodeGenProcessor.class)

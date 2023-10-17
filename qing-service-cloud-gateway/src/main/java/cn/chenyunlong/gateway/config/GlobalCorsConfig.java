@@ -24,17 +24,17 @@ import org.springframework.web.util.pattern.PathPatternParser;
 import reactor.core.publisher.Mono;
 
 /**
- * 全局跨域配置
- * 注意：前端从网关进行调用时需要配置
+ * 全局跨域配置。
+ * 注意：前端从网关进行调用时需要配置。
  *
  * @author Stan
- * @date 2020/01/21
+ * @since 2020/01/21
  */
 @Configuration
 public class GlobalCorsConfig {
 
     /**
-     * 歌珥过滤器
+     * 跨域配置过滤器。
      *
      * @return {@link CorsWebFilter}
      */
@@ -52,7 +52,7 @@ public class GlobalCorsConfig {
     }
 
     /**
-     * 定义一个KeyResolver
+     * 定义一个Key解析器。
      *
      * @return Key生成器
      */

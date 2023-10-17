@@ -15,7 +15,9 @@ package cn.chenyunlong.jpa.support;
 
 import cn.chenyunlong.common.constants.BaseEnum;
 import java.util.Optional;
+import lombok.Getter;
 
+@Getter
 public enum BitFlag implements BaseEnum<Integer> {
     Y(1, "是"),
     N(0, "否");
@@ -32,19 +34,14 @@ public enum BitFlag implements BaseEnum<Integer> {
         return Optional.ofNullable(BaseEnum.parseByCode(code, BitFlag.class));
     }
 
-    public Integer getCode() {
-        return this.code;
-    }
-
     /**
-     * @return
+     * 获取枚举的实际类型。
+     *
+     * @return 枚举值
      */
     @Override
     public Integer getValue() {
         return code;
     }
 
-    public String getName() {
-        return this.name;
-    }
 }

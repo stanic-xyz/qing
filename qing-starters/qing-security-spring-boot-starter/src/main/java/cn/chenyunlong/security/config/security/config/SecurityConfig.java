@@ -14,8 +14,8 @@
 package cn.chenyunlong.security.config.security.config;
 
 import cn.chenyunlong.security.config.security.configures.authing.AuthingLoginConfigurer;
-import cn.chenyunlong.security.config.security.configures.my.MyAccessDeniedHandler;
 import cn.chenyunlong.security.config.security.configures.my.MyAuthenticationEntryPoint;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,17 +27,24 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 /**
+ * Security 配置。
+ *
  * @author Stan
  */
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final MyAccessDeniedHandler myAccessDeniedHandler;
+    @Resource(lookup = "myAccessDeniedHandler")
+    private final AccessDeniedHandler myAccessDeniedHandler;
     private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 
+    /**
+     * 配置授权管理器。
+     */
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
@@ -53,17 +60,21 @@ public class SecurityConfig {
             .build();
     }
 
+    /**
+     * 密码编码器。
+     *
+     * @return BCrypt 加密器
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     /**
-     * 集成Authing的登录认证服务
+     * 集成Authing的登录认证服务。
      */
     @Bean
     public SecurityFilterChain authingLoginFilterChain(HttpSecurity httpSecurity) throws Exception {
-
         httpSecurity
             .cors()
             .and()

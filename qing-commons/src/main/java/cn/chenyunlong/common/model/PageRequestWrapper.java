@@ -55,9 +55,9 @@ public class PageRequestWrapper<T> {
     private Map<String, String> sorts;
 
     /**
-     * 获取分页信息
+     * 获取分页信息。
      *
-     * @return
+     * @return 分页请求
      */
     public PageRequest getWrapper() {
         Sort sort = Sort.unsorted();

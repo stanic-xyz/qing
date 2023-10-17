@@ -32,7 +32,7 @@ import javax.lang.model.element.TypeElement;
  * 生成Mapper。
  *
  * @author Stan
- * @date 2022/11/29
+ * @since 2022/11/29
  */
 @AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenMapper.class)

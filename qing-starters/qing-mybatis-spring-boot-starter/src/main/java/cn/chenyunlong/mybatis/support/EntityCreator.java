@@ -24,17 +24,16 @@ import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 实体产生器
+ * 实体产生器。
  *
  * @author gim 2022/3/5 9:54 下午
- * @date 2022/11/14
+ * @since 2022/11/14
  */
 @Slf4j
 public class EntityCreator<T> extends BaseEntityOperation
     implements Create<T>, UpdateHandler<T>, Executor<T> {
-
     private final BaseMapper<T> baseMapper;
-    private T t;
+    private T clazzType;
     private Consumer<T> successHook = object -> log.info("save success");
     private Consumer<? super Throwable> errorHook = Throwable::printStackTrace;
 
@@ -44,7 +43,7 @@ public class EntityCreator<T> extends BaseEntityOperation
 
 
     /**
-     * 执行失败回调钩子
+     * 执行失败回调钩子。
      *
      * @param consumer 消费者
      * @return {@link Executor}<{@link T}>
@@ -56,41 +55,41 @@ public class EntityCreator<T> extends BaseEntityOperation
     }
 
     /**
-     * 创建
+     * 创建。
      *
      * @param supplier 供应商
      * @return {@link UpdateHandler}<{@link T}>
      */
     @Override
     public UpdateHandler<T> create(Supplier<T> supplier) {
-        this.t = supplier.get();
+        this.clazzType = supplier.get();
         return this;
     }
 
     /**
-     * 更新操作
+     * 更新操作。
      *
      * @param consumer 消费者
      * @return {@link Executor}<{@link T}>
      */
     @Override
     public Executor<T> update(Consumer<T> consumer) {
-        Preconditions.checkArgument(Objects.nonNull(t), "entity must supply");
-        consumer.accept(this.t);
+        Preconditions.checkArgument(Objects.nonNull(clazzType), "entity must supply");
+        consumer.accept(this.clazzType);
         return this;
     }
 
     /**
-     * 执行
+     * 执行。
      *
      * @return {@link Optional}<{@link T}>
      */
     @Override
     public Optional<T> execute() {
-        doValidate(this.t, CreateGroup.class);
+        doValidate(this.clazzType, CreateGroup.class);
         T save = Try.of(() -> {
-                baseMapper.insert(t);
-                return this.t;
+                baseMapper.insert(clazzType);
+                return this.clazzType;
             })
             .onSuccess(successHook)
             .onFailure(errorHook).getOrNull();
@@ -98,7 +97,7 @@ public class EntityCreator<T> extends BaseEntityOperation
     }
 
     /**
-     * 执行成功回调钩子
+     * 执行成功回调钩子。
      *
      * @param consumer 消费者
      * @return {@link Executor}<{@link T}>

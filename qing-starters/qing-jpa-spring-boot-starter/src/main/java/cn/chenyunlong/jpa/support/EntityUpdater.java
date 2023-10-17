@@ -25,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.CrudRepository;
 
 /**
+ * 实体类更新器。
+ *
  * @author gim 2022/3/5 9:36 下午
  */
 @Slf4j

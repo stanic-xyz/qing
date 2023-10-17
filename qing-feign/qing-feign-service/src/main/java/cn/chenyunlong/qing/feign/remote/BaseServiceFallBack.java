@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 public class BaseServiceFallBack implements BaseService {
 
     @Override
-    public String getUserInfo(String appid, String access_token, String sysIDs, String schoolId) {
+    public String getUserInfo(String appid, String accessToken, String sysIDs, String schoolId) {
         return "err:failed";
     }
 }

@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Jack.kj@alibaba-inc.com
- * @date 2022/10/2022/10/24
+ * 用户服务。
+ *
+ * @author Stan
+ * @since 2022/10/2022/10/24
  */
 @Slf4j
 @Service
@@ -26,6 +28,7 @@ public class UserService {
     }
 
     /**
+     * 用户服务。
      * see <a href="https://open.dingtalk.com/document/orgapp-server/obtain-the-userid-of-a-user-by-using-the-log-free">/v1.0/oauth2/ssoUserInfo</a>
      *
      * @param authCode temp auth code

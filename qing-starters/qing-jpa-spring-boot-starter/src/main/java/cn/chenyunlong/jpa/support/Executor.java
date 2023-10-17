@@ -17,22 +17,22 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * 执行器
+ * 执行器。
  *
  * @author gim 2022/1/28 9:07 下午
- * @date 2022/10/24
+ * @since 2022/10/24
  */
 public interface Executor<T> {
 
     /**
-     * 执行
+     * 执行。
      *
      * @return {@link Optional}<{@link T}>
      */
     Optional<T> execute();
 
     /**
-     * 执行成功回调
+     * 执行成功回调。
      *
      * @param consumer 消费者
      * @return {@link Executor}<{@link T}>
@@ -40,7 +40,7 @@ public interface Executor<T> {
     Executor<T> successHook(Consumer<T> consumer);
 
     /**
-     * 执行错误回调钩子
+     * 执行错误回调钩子。
      *
      * @param consumer 消费者
      * @return {@link Executor}<{@link T}>

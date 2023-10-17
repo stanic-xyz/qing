@@ -46,9 +46,7 @@ public interface CodeGenProcessor {
                        boolean useLombok);
 
     /**
-     * 获取支持注释。
-     *
-     * @return {@link Class}<{@link ?} {@link extends} {@link Annotation}>
+     * 获取支持的注释。
      */
     Class<? extends Annotation> getSupportedAnnotation();
 

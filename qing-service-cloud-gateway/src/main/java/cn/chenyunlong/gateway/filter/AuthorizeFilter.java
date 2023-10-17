@@ -16,8 +16,10 @@ package cn.chenyunlong.gateway.filter;
 import cn.chenyunlong.gateway.constrant.AuthConstant;
 import cn.chenyunlong.gateway.utils.JwtUtil;
 import com.alibaba.fastjson.JSONObject;
+import io.jsonwebtoken.Claims;
 import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -27,24 +29,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * 白名单路径访问时需要移除JWT请求头
+ * 白名单路径访问时需要移除JWT请求头。
  *
  * @author Stan
- * @date 2021/01/21
+ * @since 2021/01/21
  */
-//@Component
+@Slf4j
+@Component
 @RequiredArgsConstructor
 public class AuthorizeFilter implements GlobalFilter, Ordered {
 
     /**
-     * @param exchange
-     * @param chain
-     * @return
+     * 过滤器。
+     *
+     * @param exchange 城市
+     * @param chain    过滤器链
+     * @return 返回结果
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -73,9 +79,10 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 
         //9. 如果请求头中有令牌则解析令牌
         try {
-            JwtUtil.parseJWT(token);
+            Claims claims = JwtUtil.parseJwt(token);
+            log.info("解析成功：{}", claims.getExpiration());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("解析jwt令牌异常！", e);
             //10. 解析jwt令牌出错, 说明令牌过期或者伪造等不合法情况出现
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             // 封装响应数据

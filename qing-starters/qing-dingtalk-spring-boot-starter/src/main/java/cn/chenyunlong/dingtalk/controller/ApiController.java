@@ -6,38 +6,30 @@ import cn.chenyunlong.dingtalk.controller.model.ServiceResponse;
 import cn.chenyunlong.dingtalk.controller.model.TextModel;
 import cn.chenyunlong.dingtalk.controller.model.TopCardModel;
 import cn.chenyunlong.dingtalk.service.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author Jack.kj@alibaba-inc.com
- * @date 2022/10/2022/10/18
+ * 钉钉机器人控制器。
+ *
+ * @author Stan
+ * @since 2022/10/2022/10/18
  */
 @Slf4j
 @TokenRequired
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ApiController {
     private final RobotGroupMessagesService robotGroupMessagesService;
     private final RobotInteractiveCardsService robotInteractiveCardsService;
     private final InteractiveCardsInstanceService interactiveCardsInstanceService;
     private final UserService userService;
 
-    @Autowired
-    public ApiController(RobotGroupMessagesService robotGroupMessagesService,
-                         RobotInteractiveCardsService robotInteractiveCardsService,
-                         InteractiveCardsInstanceService interactiveCardsInstanceService,
-                         UserService userService) {
-        this.robotGroupMessagesService = robotGroupMessagesService;
-        this.robotInteractiveCardsService = robotInteractiveCardsService;
-        this.interactiveCardsInstanceService = interactiveCardsInstanceService;
-        this.userService = userService;
-    }
-
     /**
-     * 发送文本消息
+     * 发送文本消息。
      *
      * @return Response 200 : OK
      */
@@ -50,7 +42,7 @@ public class ApiController {
     }
 
     /**
-     * 发送消息卡片
+     * 发送消息卡片。
      *
      * @param messageCardModel 消息卡片结构体
      * @return OK
@@ -58,13 +50,14 @@ public class ApiController {
      */
     @PostMapping(value = "/sendMessageCard")
     public String sendMessageCard(@RequestBody MessageCardModel messageCardModel) throws Exception {
-        robotInteractiveCardsService.send(messageCardModel.getOpenConversationId());
-        log.info("sendMessageCard success {}", messageCardModel);
+        String message =
+            robotInteractiveCardsService.send(messageCardModel.getOpenConversationId());
+        log.info("sendMessageCard success {},发送消息：{}", messageCardModel, message);
         return "OK";
     }
 
     /**
-     * 发送吊顶卡片
+     * 发送置顶卡片。
      *
      * @param topCardModel 吊顶卡片model
      * @return OK
@@ -80,7 +73,7 @@ public class ApiController {
     }
 
     /**
-     * 获取用户信息
+     * 获取用户信息。
      *
      * @param authCode 免等授权码
      * @return ServiceResponse isSuccess说明是正常，否则异常，异常可以通过True Or False来体现

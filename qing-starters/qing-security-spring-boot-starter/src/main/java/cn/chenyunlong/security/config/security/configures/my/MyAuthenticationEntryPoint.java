@@ -26,8 +26,10 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 /**
+ * 登录成功处理入口。
+ *
  * @author Stan
- * @date 2020-09-27
+ * @since 2020-09-27
  */
 @Slf4j
 @Component
@@ -40,12 +42,11 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         if (isAjaxRequest(httpServletRequest)) {
             log.debug("临时申请");
         }
-        authException.printStackTrace();
-
-        ApiResult<String> success = ApiResult.fail("没有登录");
+        log.debug("登录失败");
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        ApiResult<String> success = ApiResult.fail("没有登录");
         httpServletResponse.getWriter().write(JSONUtil.toJsonStr(success));
     }
 

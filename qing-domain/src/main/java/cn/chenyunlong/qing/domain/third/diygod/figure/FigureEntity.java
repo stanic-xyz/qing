@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
  * 手办模型 DIYGod
  *
  * @author Stan
- * @date 2022/11/26
+ * @since 2022/11/26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

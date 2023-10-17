@@ -35,7 +35,7 @@ import lombok.Data;
  * 更新接口参数代码生成器
  *
  * @author Stan
- * @date 2022/11/29
+ * @since 2022/11/29
  */
 @AutoService(value = CodeGenProcessor.class)
 @SupportedGenTypes(types = GenUpdateRequest.class)
@@ -58,7 +58,7 @@ public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
+        addSetterAndGetterMethodWithConverter(builder, fields);
         addIdField(builder, useLombok);
         genJavaSourceFile(typeElement, builder);
     }

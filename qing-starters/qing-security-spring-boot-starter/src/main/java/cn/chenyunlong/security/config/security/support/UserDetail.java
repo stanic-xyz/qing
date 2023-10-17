@@ -19,16 +19,22 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * 用户详细信息
+ * 用户详细信息。
  *
  * @author Stan
- * @date 2022/10/18
+ * @since 2022/10/18
  */
 public class UserDetail implements UserDetails {
 
     private transient User currentUser;
     private transient Collection<GrantedAuthority> permissionList;
 
+    /**
+     * 构造用户详情。
+     *
+     * @param user        用户信息
+     * @param authorities 权限列表
+     */
     public UserDetail(User user, Collection<GrantedAuthority> authorities) {
         if (user != null) {
             currentUser = user;

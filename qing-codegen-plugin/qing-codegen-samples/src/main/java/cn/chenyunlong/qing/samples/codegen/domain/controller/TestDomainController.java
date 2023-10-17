@@ -15,18 +15,11 @@ import cn.chenyunlong.qing.samples.codegen.domain.response.TestDomainResponse;
 import cn.chenyunlong.qing.samples.codegen.domain.service.ITestDomainService;
 import cn.chenyunlong.qing.samples.codegen.domain.updater.TestDomainUpdater;
 import cn.chenyunlong.qing.samples.codegen.domain.vo.TestDomainVO;
-import java.lang.Long;
-import java.lang.String;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -79,7 +72,7 @@ public class TestDomainController {
     /**
      * findByPage request
      */
-    @PostMapping("findByPage")
+    @PostMapping("page")
     public JsonResult<PageResult<TestDomainResponse>> page(
             @RequestBody PageRequestWrapper<TestDomainQueryRequest> request) {
         PageRequestWrapper<TestDomainQuery> wrapper = new PageRequestWrapper<>();

@@ -17,9 +17,10 @@ import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.samples.codegen.Constants;
 import jakarta.persistence.Entity;
-import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -37,7 +38,8 @@ import lombok.Setter;
 @GenServiceImpl(sourcePath = Constants.GEN_API_SOURCE)
 @GenFeign(sourcePath = Constants.GEN_API_SOURCE, serverName = "stanic")
 @GenController(sourcePath = Constants.GEN_API_SOURCE)
-@Data
+@ToString
+@RequiredArgsConstructor
 @Entity
 public class TestDomain extends BaseEntity {
 

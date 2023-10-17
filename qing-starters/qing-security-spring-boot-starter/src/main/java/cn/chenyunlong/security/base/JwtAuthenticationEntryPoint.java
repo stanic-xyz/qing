@@ -32,7 +32,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
                          AuthenticationException e) throws IOException {
         response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
         try {
-            HandleHttpErrorUtil.handleHttpError(request, response, e);
+            HandleHttpErrorUtil.handleHttpError(response, e);
         } catch (Exception throwable) {
             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
         }

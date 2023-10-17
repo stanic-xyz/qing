@@ -16,8 +16,10 @@ package cn.chenyunlong.common.model;
 import lombok.Data;
 
 /**
+ * 彩虹分页。
+ *
  * @author ryanwang
- * @date 2020-03-06
+ * @since 2020-03-06
  */
 @Data
 public class RainbowPage {

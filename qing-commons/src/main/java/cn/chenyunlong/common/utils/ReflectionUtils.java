@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.common.utils;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import org.springframework.lang.NonNull;
@@ -21,11 +20,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Reflection utilities.
+ * 反射工具集。
  *
  * @author johnniang
  * @author ryanwang
- * @date 2019-03-15
+ * @since 2019-03-15
  */
 public class ReflectionUtils {
 
@@ -33,11 +32,11 @@ public class ReflectionUtils {
     }
 
     /**
-     * Gets parameterized type.
+     * 获取参数类型。
      *
-     * @param interfaceType       interface type must not be null
-     * @param implementationClass implementation class of the interface must not be null
-     * @return parameterized type of the interface or null if it is mismatch
+     * @param interfaceType       接口类型不能为空
+     * @param implementationClass 接口实现类，不能为空
+     * @return 接口的参数化类型，如果获取不到，返回null
      */
     @Nullable
     public static ParameterizedType getParameterizedType(@NonNull Class<?> interfaceType,
@@ -65,29 +64,11 @@ public class ReflectionUtils {
     }
 
     /**
-     * Gets parameterized type by super class.
+     * 获取参数话类型。
      *
-     * @param superClassType super class type must not be null
-     * @param extensionClass extension class
-     * @return parameterized type or null
-     */
-    @Nullable
-    public static ParameterizedType getParameterizedTypeBySuperClass(
-        @NonNull Class<?> superClassType, Class<?> extensionClass) {
-
-        if (extensionClass == null) {
-            return null;
-        }
-
-        return getParameterizedType(superClassType, extensionClass.getGenericSuperclass());
-    }
-
-    /**
-     * Gets parameterized type.
-     *
-     * @param superType    super type must not be null (super class or super interface)
-     * @param genericTypes generic type array
-     * @return parameterized type of the interface or null if it is mismatch
+     * @param superType    父类类型，不能为null (超类或超级接口)
+     * @param genericTypes 泛型类型数组
+     * @return 接口的参数化类型，如果不匹配，则为null
      */
     @Nullable
     public static ParameterizedType getParameterizedType(@NonNull Class<?> superType,
@@ -108,25 +89,4 @@ public class ReflectionUtils {
         return currentType;
     }
 
-    /**
-     * Gets field value from Object.
-     *
-     * @param fieldName fieldName must not be null
-     * @param object    object must not be null.
-     * @return value
-     */
-    public static Object getFieldValue(@NonNull String fieldName, @NonNull Object object) {
-        Assert.notNull(fieldName, "FieldName must not be null");
-        Assert.notNull(object, "Object type must not be null");
-        Object value = null;
-        try {
-            String firstLetter = fieldName.substring(0, 1).toUpperCase();
-            String getter = "get" + firstLetter + fieldName.substring(1);
-            Method method = object.getClass().getMethod(getter);
-            value = method.invoke(object);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return value;
-    }
 }

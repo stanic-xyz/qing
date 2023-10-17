@@ -17,7 +17,7 @@ package cn.chenyunlong.mybatis.support;
  * 实体操作
  *
  * @author gim 2022/3/5 10:07 下午
- * @date 2022/11/14
+ * @since 2022/11/14
  */
 public interface EntityOperation {
 

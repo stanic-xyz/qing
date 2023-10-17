@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
  * Controller层的日志封装类
  *
  * @author Stan
- * @date 2020/01/22
+ * @since 2020/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

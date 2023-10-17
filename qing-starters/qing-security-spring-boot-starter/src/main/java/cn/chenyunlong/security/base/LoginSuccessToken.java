@@ -23,6 +23,9 @@ public class LoginSuccessToken extends AbstractAuthenticationToken {
     @Getter
     private final String username;
 
+    /**
+     * 登录成功 Token 构造函数。
+     */
     public LoginSuccessToken(String token, String name) {
         super(AuthorityUtils.NO_AUTHORITIES);
         this.token = token;

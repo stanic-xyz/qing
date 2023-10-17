@@ -22,7 +22,7 @@ import lombok.Data;
  * Journal query params.
  *
  * @author ryanwang
- * @date 2019/05/07
+ * @since 2019/05/07
  */
 @Data
 public class MailParam {

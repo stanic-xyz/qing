@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * 文件属性
  *
  * @author stan
- * @date 2022/10/18
+ * @since 2022/10/18
  */
 @Data
 @Component

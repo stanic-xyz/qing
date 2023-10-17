@@ -15,8 +15,8 @@ package cn.chenyunlong.qing.infrastructure.aspect;
 
 import cn.chenyunlong.common.enums.BusinessStatus;
 import cn.chenyunlong.common.utils.HttpContextUtil;
-import cn.chenyunlong.common.utils.IpUtils;
 import cn.chenyunlong.qing.infrastructure.annotation.Log;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.alibaba.fastjson.JSONObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,7 +35,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * 日志记录切面
+ * 日志记录切面。
  *
  * @author Stan
  */
@@ -49,6 +49,13 @@ public class LogAspect {
         // do nothing
     }
 
+    /**
+     * aop切面。
+     *
+     * @param point 切面
+     * @return 执行结果
+     * @throws Throwable 异常
+     */
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
 
@@ -58,8 +65,9 @@ public class LogAspect {
         result = point.proceed();
         // 获取 request
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-        // 设置 IP 地址
-        String ip = IpUtils.getIpAddr(request);
+
+        // 获取请求 IP 地址
+        String ip = JakartaServletUtil.getClientIP(request);
         // 执行时长(毫秒)
         long time = System.currentTimeMillis() - beginTime;
         if (log.isDebugEnabled()) {
@@ -70,7 +78,7 @@ public class LogAspect {
     }
 
     /**
-     * 拦截异常操作
+     * 拦截异常操作。
      *
      * @param joinPoint 切点
      * @param e         异常
@@ -81,7 +89,7 @@ public class LogAspect {
     }
 
     /**
-     * 处理日志
+     * 处理日志。
      *
      * @param joinPoint  连接点
      * @param e          异常信息
@@ -96,14 +104,12 @@ public class LogAspect {
             }
 
             // 获取当前的用户
-            String currentUser = "stan";
 
             // *========数据库日志=========*//
             SysOperateLog operaLog = new SysOperateLog();
             operaLog.setStatus(BusinessStatus.SUCCESS.ordinal());
             // 请求的地址
             String ip = "192.168.129.1";
-            String deptName = "DeptName";
             String operateUrl = "/test";
 
             operaLog.setOperIp(ip);
@@ -113,7 +119,9 @@ public class LogAspect {
             }
 
             operaLog.setOperUrl(operateUrl);
+            String currentUser = "stan";
             operaLog.setOperName(currentUser);
+            String deptName = "DeptName";
             operaLog.setDeptName(deptName);
 
             if (e != null) {
@@ -133,13 +141,12 @@ public class LogAspect {
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("==前置通知异常==");
-            log.error("异常信息:{}", exp.getMessage());
-            exp.printStackTrace();
+            log.error("异常信息:{}", exp.getMessage(), exp);
         }
     }
 
     /**
-     * 获取注解中对方法的描述信息 用于Controller层注解
+     * 获取注解中对方法的描述信息 用于Controller层注解。
      *
      * @param log      日志
      * @param operaLog 操作日志
@@ -160,7 +167,7 @@ public class LogAspect {
     }
 
     /**
-     * 获取请求的参数，放到log中
+     * 获取请求的参数，放到log中。
      *
      * @param sysLog 操作日志
      */
@@ -179,7 +186,7 @@ public class LogAspect {
     }
 
     /**
-     * 把参数拼接成字符串
+     * 把参数拼接成字符串。
      *
      * @param paramsArray 参数数组
      * @return {@link String}
@@ -225,12 +232,12 @@ public class LogAspect {
             }
         }
         //单独的对象
-        return obj instanceof MultipartFile || obj instanceof HttpServletRequest ||
-            obj instanceof HttpServletResponse || obj instanceof BindingResult;
+        return obj instanceof MultipartFile || obj instanceof HttpServletRequest
+               || obj instanceof HttpServletResponse || obj instanceof BindingResult;
     }
 
     /**
-     * 是否存在注解，如果存在就获取
+     * 是否存在注解，如果存在就获取。
      *
      * @param joinPoint 连接点
      * @return {@link Log}
@@ -247,7 +254,7 @@ public class LogAspect {
     }
 
     /**
-     * 处理完请求后执行
+     * 处理完请求后执行。
      *
      * @param joinPoint 切点
      */

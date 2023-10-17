@@ -33,17 +33,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    public static final String HEADER_TOKEN_NAME = "token";
     public static final String USER_AGENT = "user-agent";
-    private final static String LANCOO_TOKEN_PREFIX = "X-Token=";
-    private final static String AUTHORIZATION_HEADER = "Authorization";
+    private static final String LANCOO_TOKEN_PREFIX = "X-Token=";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain chain)
         throws ServletException, IOException {
-        String authorization = resolveToken(request);
         String userAgent = request.getHeader(USER_AGENT);
         List<AntPathRequestMatcher> list = Lists.newArrayList();
         list.add(new AntPathRequestMatcher("/auth/**"));
@@ -54,6 +52,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 match = true;
             }
         }
+        String authorization = resolveToken(request);
         if (!Strings.isNullOrEmpty(authorization) && !match) {
             JwtAuthToken token = new JwtAuthToken(authorization);
             token.setUserAgent(userAgent);

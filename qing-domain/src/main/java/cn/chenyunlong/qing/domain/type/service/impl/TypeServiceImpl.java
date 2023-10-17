@@ -15,8 +15,6 @@ import cn.chenyunlong.qing.domain.type.repository.TypeRepository;
 import cn.chenyunlong.qing.domain.type.service.ITypeService;
 import cn.chenyunlong.qing.domain.type.updater.TypeUpdater;
 import cn.chenyunlong.qing.domain.type.vo.TypeVO;
-import java.lang.Long;
-import java.lang.Override;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

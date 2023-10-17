@@ -31,7 +31,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
                                         AuthenticationException e)
         throws IOException, ServletException {
         try {
-            HandleHttpErrorUtil.handleHttpError(request, response, e);
+            HandleHttpErrorUtil.handleHttpError(response, e);
         } catch (Exception throwable) {
             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
         }

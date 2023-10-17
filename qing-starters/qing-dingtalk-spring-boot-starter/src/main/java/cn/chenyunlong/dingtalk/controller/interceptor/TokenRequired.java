@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * mark method required token
+ * 标记该方法维需要Token校验。
  *
- * @author Jack.kj@alibaba-inc.com
- * @date 2022/10/2022/10/20
+ * @author Stan
+ * @since 2022/10/2022/10/20
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

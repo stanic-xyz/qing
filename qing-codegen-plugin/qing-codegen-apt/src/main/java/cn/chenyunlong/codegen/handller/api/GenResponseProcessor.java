@@ -35,7 +35,7 @@ import javax.lang.model.element.VariableElement;
  * 处理Response的代码生成
  *
  * @author Stan
- * @date 2022/11/28
+ * @since 2022/11/28
  */
 @AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenResponse.class)
@@ -56,7 +56,7 @@ public class GenResponseProcessor extends AbstractCodeGenProcessor {
             .superclass(AbstractJpaResponse.class)
             .addAnnotation(Schema.class)
             .addStaticBlock(CodeBlock.builder().build());
-        addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
+        addSetterAndGetterMethodWithConverter(builder, fields);
         genJavaSourceFile(typeElement, builder);
     }
 

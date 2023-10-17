@@ -20,6 +20,7 @@ import cn.chenyunlong.security.base.extension.UserContextAware;
 import cn.chenyunlong.security.config.SecurityCommonProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,6 +39,7 @@ import org.springframework.web.cors.CorsUtils;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableConfigurationProperties(SecurityCommonProperties.class)
 public class SecurityAutoConfigure {
 
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -50,6 +52,9 @@ public class SecurityAutoConfigure {
         return new DummyUserContextAware();
     }
 
+    /**
+     * 配置Security过滤器链。
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity

@@ -17,7 +17,7 @@ package cn.chenyunlong.common.model.dto.base;
 import cn.chenyunlong.common.utils.BeanUtils;
 
 /**
- * Converter interface for output DTO.
+ * 输出DTO的转换器接口。
  *
  * <b>The implementation type must be equal to DTO type</b>
  *
@@ -28,7 +28,7 @@ import cn.chenyunlong.common.utils.BeanUtils;
 public interface OutputConverter<DTO extends OutputConverter<DTO, DOMAIN>, DOMAIN> {
 
     /**
-     * Convert from domain.(shallow)
+     * 从领域对象转换，浅拷贝。
      *
      * @param domain domain data
      * @return converted dto data

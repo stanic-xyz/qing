@@ -31,7 +31,7 @@ import lombok.Data;
  * 生成Query方法
  *
  * @author cyl
- * @date 2019-10-08 17:14
+ * @since 2019-10-08 17:14
  */
 @AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenQuery.class)
@@ -61,8 +61,8 @@ public class GenQueryProcessor extends AbstractCodeGenProcessor {
             builder.addAnnotation(Data.class);
         }
         addSetterAndGetterMethod(builder, findFields(typeElement,
-                variableElement -> Objects.nonNull(variableElement.getAnnotation(QueryItem.class))),
-            useLombok);
+            variableElement -> Objects.nonNull(variableElement.getAnnotation(QueryItem.class)))
+        );
         genJavaFile(typeElement, builder);
     }
 

@@ -18,16 +18,16 @@ import jakarta.persistence.Converter;
 import java.time.Instant;
 
 /**
- * 时间转换器
+ * 时间转换器。
  *
  * @author Stan
- * @date 2022/10/24
+ * @since 2022/10/24
  */
 @Converter
 public class InstantLongConverter implements AttributeConverter<Instant, Long> {
 
     /**
-     * 转换为数据库列
+     * 转换为数据库列。
      *
      * @param date 日期
      * @return {@link Long}
@@ -38,7 +38,7 @@ public class InstantLongConverter implements AttributeConverter<Instant, Long> {
     }
 
     /**
-     * 转换为实体属性
+     * 转换为实体属性。
      *
      * @param date 日期
      * @return {@link Instant}

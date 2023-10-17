@@ -40,11 +40,13 @@ public class AuthingController {
     private final AuthingConfig authing;
 
 
+    /**
+     * 登录接口。
+     */
     @Operation(summary = "跳转到登录地址")
     @GetMapping("/login")
     public ResponseEntity<Void> login(HttpServletResponse response) {
         try {
-            // 设置初始化参数
             AuthenticationClientOptions clientOptions = new AuthenticationClientOptions();
             clientOptions.setAppId(authing.getAppId()); // Authing 应用 ID
             clientOptions.setAppSecret(authing.getAppSecret()); // Authing 应用密钥
@@ -66,11 +68,13 @@ public class AuthingController {
         }
     }
 
+    /**
+     * 通过 code 换取 AccessToken。
+     */
     @Operation(summary = "通过code换取AccessToken")
     @PostMapping("/accessToken")
     public ResponseEntity<UserInfo> getUserInfo(@Validated @RequestBody AuthingLoginParam param,
                                                 HttpServletResponse response) throws Exception {
-        // 设置初始化参数
         AuthenticationClientOptions clientOptions = new AuthenticationClientOptions();
         clientOptions.setAppId(authing.getAppId()); // Authing 应用 ID
         clientOptions.setAppSecret(authing.getAppSecret()); // Authing 应用密钥
@@ -91,6 +95,11 @@ public class AuthingController {
         return ResponseEntity.ok().body(userInfoByAccessToken);
     }
 
+    /**
+     * 根据 AccessToken获取用户信息。
+     *
+     * @param accessToken 访问令牌
+     */
     @Operation(summary = "根据AccessToken获取用户信息")
     @GetMapping("/getUserInfoByAccessToken")
     public ResponseEntity<UserInfo> getUserInfo(

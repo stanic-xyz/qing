@@ -20,9 +20,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class AuthingUserDetailService implements UserDetailsService {
 
     /**
+     * 根据用户名查询用户信息。
+     *
      * @param username the username identifying the user whose data is required.
-     * @return
-     * @throws UsernameNotFoundException
+     * @return 用户详情
+     * @throws UsernameNotFoundException 用户未找到异常
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

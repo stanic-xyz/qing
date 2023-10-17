@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.security.config.security;
 
-import cn.chenyunlong.common.utils.JwtUtil;
 import cn.chenyunlong.security.config.SecurityProperties;
 import cn.chenyunlong.security.config.security.dto.UserInfoVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,7 +31,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 /**
+ * Token操作方法。
+ *
  * @author Stan
+ * @since 2020-09-13
  */
 @Slf4j
 @Component
@@ -47,7 +49,7 @@ public class TokenProvider {
 
 
     /**
-     * 通过token获取用户信息
+     * 通过token获取用户信息。
      *
      * @param jwtToken token 信息
      * @return 用户信息
@@ -55,7 +57,9 @@ public class TokenProvider {
     @SuppressWarnings("unused")
     public UserInfoVO getUserNameFromToken(String jwtToken) {
         try {
-            Claims claims = JwtUtil.parseJWT(jwtToken, securityProperties.getSecretKey());
+            Claims claims = Jwts.parser().setSigningKey(securityProperties.getSecretKey())
+                .parseClaimsJws(jwtToken).getBody();
+
             return objectMapper.readValue(claims.getSubject(), UserInfoVO.class);
         } catch (SecurityException | MalformedJwtException e) {
             log.debug("Invalid JWT signature.");
@@ -74,7 +78,7 @@ public class TokenProvider {
     }
 
     /**
-     * 酱token生成jwt生成token信息
+     * 酱token生成jwt生成token信息。
      *
      * @param authentication token
      * @param rememberMe     是否记住我，认证信息时间设置为一个月
@@ -108,7 +112,7 @@ public class TokenProvider {
     }
 
     /**
-     * 酱token生成jwt生成token信息
+     * 酱token生成jwt生成token信息。
      *
      * @param userinfoVo token
      * @param rememberMe 是否记住我，认证信息时间设置为一个月
@@ -136,13 +140,13 @@ public class TokenProvider {
                 .setExpiration(validity)
                 .compact();
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error("生成jwttoken异常！", e);
         }
         return null;
     }
 
     /**
-     * 从jwt中获取token信息
+     * 从jwt中获取token信息。
      *
      * @param jwt jwt认证信息
      */
@@ -159,7 +163,7 @@ public class TokenProvider {
     }
 
     /**
-     * 验证认证信息是否有效
+     * 验证认证信息是否有效。
      *
      * @param jwtToken jwtToken
      * @return json是否合法
@@ -168,9 +172,8 @@ public class TokenProvider {
         try {
             Jwts.parser().setSigningKey(securityProperties.getSecretKey()).parseClaimsJws(jwtToken);
             return true;
-        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException |
-                 ExpiredJwtException |
-                 IllegalArgumentException ignore) {
+        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException
+                 | ExpiredJwtException | IllegalArgumentException ignore) {
             return false;
         }
     }

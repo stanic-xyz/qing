@@ -23,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.CrudRepository;
 
 /**
+ * 实体类控制器。
+ *
  * @author gim 2022/3/5 9:54 下午
  */
 @Slf4j
@@ -32,10 +34,8 @@ public class EntityCreator<T, ID> extends BaseEntityOperation
     private final CrudRepository<T, ID> repository;
     private T data;
     private Consumer<T> successHook = t -> log.info("save success");
-    private Consumer<? super Throwable> errorHook = throwable -> {
-        log.error("插入数据发生了异常");
-        throwable.printStackTrace();
-    };
+    private Consumer<? super Throwable> errorHook =
+        throwable -> log.error("插入数据发生了异常", throwable);
 
     public EntityCreator(CrudRepository<T, ID> repository) {
         this.repository = repository;
@@ -49,7 +49,7 @@ public class EntityCreator<T, ID> extends BaseEntityOperation
     }
 
     /**
-     * 创建对象
+     * 创建对象。
      *
      * @param supplier 供应商
      * @return {@link UpdateHandler}<{@link T}>

@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
- * 线程池配置
+ * 线程池配置。
  *
  * @author ruoyi
  **/
@@ -32,27 +32,27 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class ThreadPoolConfig {
     /**
-     * 核心线程池大小
+     * 核心线程池大小。
      */
     private static final int CORE_POOL_SIZE = 50;
 
     /**
-     * 最大可创建的线程数
+     * 最大可创建的线程数。
      */
     private static final int MAX_POOL_SIZE = 200;
 
     /**
-     * 队列最大长度
+     * 队列最大长度。
      */
     private static final int QUEUE_CAPACITY = 1000;
 
     /**
-     * 线程池维护线程所允许的空闲时间
+     * 线程池维护线程所允许的空闲时间。
      */
     private static final int KEEP_ALIVE_SECONDS = 300;
 
     /**
-     * 配置线程池
+     * 配置线程池。
      */
     @Bean(name = "threadPoolTaskExecutor")
     public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
@@ -67,7 +67,7 @@ public class ThreadPoolConfig {
     }
 
     /**
-     * 执行周期性或定时任务
+     * 执行周期性或定时任务。
      */
     @Bean(name = "scheduledExecutorService")
     protected ScheduledExecutorService scheduledExecutorService() {

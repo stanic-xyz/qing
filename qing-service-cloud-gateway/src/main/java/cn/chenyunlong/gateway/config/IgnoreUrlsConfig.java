@@ -21,10 +21,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * 网关白名单配置
+ * 网关白名单配置。
  *
  * @author Stan
- * @date 2021/01/21
+ * @since 2021/01/21
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

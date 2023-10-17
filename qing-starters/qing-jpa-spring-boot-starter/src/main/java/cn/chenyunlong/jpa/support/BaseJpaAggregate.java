@@ -26,7 +26,7 @@ import lombok.Setter;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 /**
- * 基础jpa类型
+ * 基础jpa类型。
  *
  * @author Stan
  * @since 2022/11/05
@@ -55,13 +55,13 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
     private Instant updatedAt;
 
     /**
-     * 数据状态
+     * 数据状态。
      */
     @Convert(converter = ValidStatusConverter.class)
     private ValidStatus validStatus;
 
     /**
-     * 乐观锁字段
+     * 乐观锁字段。
      */
     @Version
     @Column(name = "version")

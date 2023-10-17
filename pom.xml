@@ -95,7 +95,7 @@
         <fastjson.version>2.0.21</fastjson.version>
         <javapoet.version>1.13.0</javapoet.version>
         <auto.version>1.1.1</auto.version>
-        <liteflow.version>2.10.2</liteflow.version>
+        <liteflow.version>2.11.1</liteflow.version>
         <spring-boot-admin.version>3.0.4</spring-boot-admin.version>
         <spring-statemachine.version>3.2.0</spring-statemachine.version>
         <lego.version>0.1.23</lego.version>
@@ -291,6 +291,11 @@
                 <artifactId>authing-java-sdk</artifactId>
                 <version>3.0.15</version>
             </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>2.2.220</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -320,7 +325,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>3.11.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -359,6 +364,11 @@
                     <version>1.6.13</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
                     <groupId>com.spotify</groupId>
                     <artifactId>dockerfile-maven-plugin</artifactId>
                     <version>1.4.13</version>
@@ -376,18 +386,25 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <configLocation>checkstyle/checkstyle.xml</configLocation>
+                    <includeTestResources>true</includeTestResources>
+                    <consoleOutput>true</consoleOutput>
+                    <skip>false</skip>
+                    <failsOnError>false</failsOnError>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </reporting>
 
     <profiles>
         <profile>

@@ -14,15 +14,18 @@
 package cn.chenyunlong.common.constants;
 
 /**
+ * 校验状态。
+ *
  * @author gim
  **/
 public enum ValidStatus implements BaseEnum<Integer> {
+
     /**
-     * 有效
+     * 有效。
      */
     VALID(1, "valid"),
     /**
-     * 无效
+     * 无效。
      */
     INVALID(0, "invalid");
     private final Integer code;
@@ -39,7 +42,9 @@ public enum ValidStatus implements BaseEnum<Integer> {
     }
 
     /**
-     * @return
+     * 获取状态。
+     *
+     * @return 校验状态
      */
     @Override
     public Integer getValue() {

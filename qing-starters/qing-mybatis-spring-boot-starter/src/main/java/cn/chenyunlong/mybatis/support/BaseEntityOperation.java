@@ -27,17 +27,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * 基础实体操作
+ * 基础实体操作。
  *
  * @author gim 2022/3/5 10:07 下午
- * @date 2022/11/14
+ * @since 2022/11/14
  */
 public abstract class BaseEntityOperation implements EntityOperation {
 
     static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     /**
-     * 做验证
+     * 做验证。
      *
      * @param t     需要做校验的对象
      * @param group 校验分组

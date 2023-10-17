@@ -19,7 +19,7 @@ import lombok.Data;
  * jpa-vo基础基。
  *
  * @author Stan
- * @date 2022/11/28
+ * @since 2022/11/28
  */
 @Data
 public class AbstractBaseJpaVo {

@@ -17,12 +17,20 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * 枚举基础类
+ * 枚举基础类。
  *
  * @param <V> 数值类型
  */
 public interface BaseEnum<V> {
 
+    /**
+     * 根据Code解析枚举。
+     *
+     * @param code  枚举代码
+     * @param clazz 枚举枚举类型
+     * @param <T>   枚举类型的泛型
+     * @return 枚举
+     */
     static <T extends BaseEnum<?>> T parseByCode(Integer code, Class<T> clazz) {
         T[] enumConstants = clazz.getEnumConstants();
         return Arrays
@@ -33,14 +41,14 @@ public interface BaseEnum<V> {
     }
 
     /**
-     * 获取code码存入数据库
+     * 获取code码存入数据库。
      *
      * @return 获取编码
      */
     V getValue();
 
     /**
-     * 获取编码名称，便于维护
+     * 获取编码名称，便于维护。
      *
      * @return 获取编码名称
      */

@@ -38,7 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * @author gim vo 代码生成器
+ * vo 代码生成器。
+ *
+ * @author gim
  */
 @AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenVo.class)
@@ -69,7 +71,7 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
                 .addMember("access", "$T.PROTECTED", AccessLevel.class)
                 .build());
         }
-        addSetterAndGetterMethod(builder, fields, useLombok);
+        addSetterAndGetterMethod(builder, fields);
         MethodSpec.Builder constructorSpecBuilder = MethodSpec
             .constructorBuilder()
             .addParameter(TypeName.get(typeElement.asType()), "source")

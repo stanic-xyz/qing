@@ -70,7 +70,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
 
 
     /**
-     * 初始化
+     * 初始化注解处理器。
      *
      * @param processingEnvironment 处理环境
      */
@@ -83,7 +83,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
 
 
     /**
-     * 支持方法
+     * 判断该注解处理器是否支持处理该对象。
      *
      * @param typeElement      支持方法
      * @param roundEnvironment 周围环境
@@ -99,14 +99,14 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
             return false;
         }
         // 获取当前插件主持的注解类型
-        Class<? extends Annotation> aClass = supportedGenTypes.types();
+        Class<? extends Annotation> types = supportedGenTypes.types();
         // 该插件支持的注解类型为空，不支持处理
-        if (aClass != null) {
+        if (types != null) {
             Elements elementUtils = processingEnvironment.getElementUtils();
             return elementUtils
                 .getAllAnnotationMirrors(typeElement)
                 .stream()
-                .anyMatch(annotationMirror -> aClass
+                .anyMatch(annotationMirror -> types
                     .getTypeName()
                     .equals(annotationMirror.getAnnotationType().toString()));
         }
@@ -114,8 +114,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     }
 
     /**
-     * 生成类
-     * 生成Class
+     * 生成 Class 文件。
      *
      * @param typeElement 顶层元素
      * @param roundEnv    周围环境
@@ -168,7 +167,9 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
             SupportedGenTypes supportedGenTypes =
                 this.getClass().getAnnotation(SupportedGenTypes.class);
             override = supportedGenTypes.override();
+            // 判断支持的类型
             Class<? extends Annotation> types = supportedGenTypes.types();
+            System.out.println("支持的类型：types = " + types);
         }
         return override;
     }
@@ -180,7 +181,8 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      * @param predicate   谓词
      * @return {@link Set}<{@link VariableElement}>
      */
-    public Set<VariableElement> findFields(TypeElement typeElement, Predicate<VariableElement> predicate) {
+    public Set<VariableElement> findFields(TypeElement typeElement,
+                                           Predicate<VariableElement> predicate) {
         List<? extends Element> fieldTypes = typeElement.getEnclosedElements();
         Set<VariableElement> variableElements = new LinkedHashSet<>();
         for (VariableElement element : ElementFilter.fieldsIn(fieldTypes)) {
@@ -215,7 +217,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
             }
         });
 
-//        System.out.println("文件生成根路径： " + context.getBasePackage());
+        // System.out.println("文件生成根路径： " + context.getBasePackage());
 
         String serviceName =
             GenServiceProcessor.SERVICE_PREFIX + domainName + GenServiceProcessor.SERVICE_SUFFIX;
@@ -319,26 +321,24 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      *
      * @param builder          构建器
      * @param variableElements 变量元素
-     * @param useLombok        使用lombok
      */
     public void addSetterAndGetterMethod(TypeSpec.Builder builder,
-                                         Set<VariableElement> variableElements, boolean useLombok) {
+                                         Set<VariableElement> variableElements) {
         for (VariableElement variableElement : variableElements) {
             TypeName typeName = TypeName.get(variableElement.asType());
-            getDescriptionInfoBuilder(builder, variableElement, typeName, useLombok);
+            getDescriptionInfoBuilder(builder, variableElement, typeName);
         }
     }
 
     /**
      * 获取描述信息生成器，得到描述信息构建器。
      *
-     * @param builder   构建器
-     * @param element   已经
-     * @param typeName  类型名称
-     * @param useLombok 使用lombok
+     * @param builder  构建器
+     * @param element  已经
+     * @param typeName 类型名称
      */
     private void getDescriptionInfoBuilder(TypeSpec.Builder builder, VariableElement element,
-                                           TypeName typeName, boolean useLombok) {
+                                           TypeName typeName) {
         String fieldDescription = getFieldDesc(element);
         AnnotationSpec.Builder schemaAnnotationBuilder =
             AnnotationSpec.builder(Schema.class)
@@ -401,11 +401,9 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      *
      * @param builder          构建器
      * @param variableElements 变量元素
-     * @param useLombok        是否使用lombok
      */
     public void addSetterAndGetterMethodWithConverter(TypeSpec.Builder builder,
-                                                      Set<VariableElement> variableElements,
-                                                      boolean useLombok) {
+                                                      Set<VariableElement> variableElements) {
         for (VariableElement variableElement : variableElements) {
             TypeName typeName;
             if (Objects.nonNull(variableElement.getAnnotation(TypeConverter.class))) {
@@ -427,7 +425,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
             } else {
                 typeName = TypeName.get(variableElement.asType());
             }
-            getDescriptionInfoBuilder(builder, variableElement, typeName, useLombok);
+            getDescriptionInfoBuilder(builder, variableElement, typeName);
         }
     }
 
@@ -519,7 +517,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         JavaFile javaFile = JavaFile
             .builder(stringBuilder.toString(), typeSpec)
             .indent("    ")
-            .addFileComment("---Auto Generated by Qing-Generator --")
+            .addFileComment("---Auto Generated by Qing-Generator --\n")
             .build();
         try {
             javaFile.writeTo(filer);

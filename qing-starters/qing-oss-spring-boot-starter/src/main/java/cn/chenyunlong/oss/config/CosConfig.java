@@ -23,8 +23,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * OSS配置。
+ *
  * @author 陈云龙
- * @date 2020/11/09
+ * @since 2020/11/09
  **/
 @Configuration
 @RequiredArgsConstructor
@@ -32,6 +34,9 @@ public class CosConfig {
 
     private final OssProperties ossProperties;
 
+    /**
+     * 配置OSS Client。
+     */
     @Bean
     public COSClient cosClient() {
         // 1 初始化用户身份信息（secretId, secretKey）。

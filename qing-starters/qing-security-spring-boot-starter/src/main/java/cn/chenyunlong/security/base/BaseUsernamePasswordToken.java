@@ -18,14 +18,19 @@ import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+@Getter
 public abstract class BaseUsernamePasswordToken extends AbstractAuthenticationToken {
 
-    @Getter
     private final String username;
-    @Getter
     private final String password;
 
-
+    /**
+     * 用户名-密码 Token构造函数
+     *
+     * @param authorities 权限列表
+     * @param username    用户名
+     * @param password    密码
+     */
     public BaseUsernamePasswordToken(Collection<? extends GrantedAuthority> authorities,
                                      String username, String password) {
         super(authorities);
