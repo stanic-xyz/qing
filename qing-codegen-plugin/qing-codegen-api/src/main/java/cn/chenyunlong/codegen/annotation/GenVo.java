@@ -21,7 +21,7 @@ import java.lang.annotation.*;
  *
  * @author Stan
  * @author Gim
- * @date 2022/11/06
+ * @since 2022/11/06
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)

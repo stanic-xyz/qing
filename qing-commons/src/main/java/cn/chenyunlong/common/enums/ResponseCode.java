@@ -17,7 +17,7 @@ import cn.chenyunlong.common.constants.BaseEnum;
 
 /**
  * <p>
- * 前后端返回码
+ * 前后端返回码。
  * </p>
  *
  * @author stan

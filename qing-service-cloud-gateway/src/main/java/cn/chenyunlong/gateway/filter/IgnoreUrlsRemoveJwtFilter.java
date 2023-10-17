@@ -30,10 +30,10 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * 白名单路径访问时需要移除JWT请求头
+ * 白名单路径访问时需要移除JWT请求头。
  *
  * @author Stan
- * @date 2021/01/21
+ * @since 2021/01/21
  */
 @Component
 @RequiredArgsConstructor
@@ -41,7 +41,7 @@ public class IgnoreUrlsRemoveJwtFilter implements GlobalFilter, Ordered {
     private final IgnoreUrlsConfig ignoreUrlsConfig;
 
     /**
-     * 过滤器
+     * 过滤器。
      *
      * @param exchange 交换
      * @param chain    链

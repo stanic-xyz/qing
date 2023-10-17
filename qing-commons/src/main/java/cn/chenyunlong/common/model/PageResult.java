@@ -24,9 +24,18 @@ public class PageResult<T> {
     private Integer pageSize;
     private Integer pageNumber;
     private List<T> list;
+
     public PageResult() {
     }
 
+    /**
+     * 构造分页信息。
+     *
+     * @param list       实体类
+     * @param total      总共数量
+     * @param pageSize   分页大小
+     * @param pageNumber 页码
+     */
     public PageResult(List<T> list, Long total, Integer pageSize, Integer pageNumber) {
         this.list = list;
         this.total = total;
@@ -34,6 +43,15 @@ public class PageResult<T> {
         this.pageNumber = pageNumber;
     }
 
+    /**
+     * 根据数据类型构建分页对象。
+     *
+     * @param list       数据列表
+     * @param total      总数量
+     * @param pageSize   分页大小
+     * @param pageNumber 页码
+     * @param clazz      数据类型信息
+     */
     public PageResult(List<T> list, Long total, Integer pageSize, Integer pageNumber,
                       Class<T> clazz) {
         this.list = list;
@@ -49,6 +67,6 @@ public class PageResult<T> {
 
     public static <T> PageResult<T> of(List<T> list, Long total, Integer pageSize,
                                        Integer pageNumber, Class<T> clazz) {
-        return new PageResult<T>(list, total, pageSize, pageNumber, clazz);
+        return new PageResult<>(list, total, pageSize, pageNumber, clazz);
     }
 }

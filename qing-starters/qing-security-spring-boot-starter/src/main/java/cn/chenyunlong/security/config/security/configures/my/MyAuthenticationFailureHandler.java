@@ -25,6 +25,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
 /**
+ * 任务失败处理器
+ *
  * @author Stan
  */
 @Component
@@ -35,8 +37,8 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
                                         AuthenticationException exception) throws IOException {
 
         ApiResult<String> result;
-        if (exception instanceof UsernameNotFoundException ||
-            exception instanceof BadCredentialsException) {
+        if (exception instanceof UsernameNotFoundException
+            || exception instanceof BadCredentialsException) {
             result = ApiResult.fail(exception.getMessage());
         } else if (exception instanceof LockedException) {
             result = ApiResult.fail("账户被锁定，请联系管理员!");

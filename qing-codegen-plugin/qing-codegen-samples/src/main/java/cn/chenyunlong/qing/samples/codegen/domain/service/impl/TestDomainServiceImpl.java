@@ -14,8 +14,6 @@ import cn.chenyunlong.qing.samples.codegen.domain.repository.TestDomainRepositor
 import cn.chenyunlong.qing.samples.codegen.domain.service.ITestDomainService;
 import cn.chenyunlong.qing.samples.codegen.domain.updater.TestDomainUpdater;
 import cn.chenyunlong.qing.samples.codegen.domain.vo.TestDomainVO;
-import java.lang.Long;
-import java.lang.Override;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

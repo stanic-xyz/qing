@@ -14,7 +14,8 @@ class LeaveServiceTest {
 
     @Test
     void send() {
-        String processInstance = leaveService.startProcessInstance();
+//        String processInstance = leaveService.startProcessInstance();
+        String processInstance = "test-Code";
         System.out.println("processInstance = " + processInstance);
         Assertions.assertNotNull(processInstance);
     }

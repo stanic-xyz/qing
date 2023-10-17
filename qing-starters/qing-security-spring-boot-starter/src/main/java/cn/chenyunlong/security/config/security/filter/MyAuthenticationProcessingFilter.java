@@ -18,8 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -28,14 +27,16 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StringUtils;
 
 /**
+ * 登录成功处理器过滤器。
+ *
  * @author Stan
  */
+@Slf4j
 public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
     private static final String TOKEN = "Authorization";
-    private final static String AUTHORIZATION_HEADER = "Authorization";
-    private final static String AUTHORIZATION_QUERY = "token";
-    private final static String AUTHORIZATION_COOKIES = "qing-x-token";
-    private final Logger logger = LoggerFactory.getLogger(MyAuthenticationProcessingFilter.class);
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String AUTHORIZATION_QUERY = "token";
+    private static final String AUTHORIZATION_COOKIES = "qing-x-token";
 
 
     public MyAuthenticationProcessingFilter() {
@@ -53,6 +54,9 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
         return this.getAuthenticationManager().authenticate(authRequest);
     }
 
+    /**
+     * 从请求信息中解析令牌。
+     */
     private String resolveToken(HttpServletRequest request) {
         String headerToken = request.getParameter(AUTHORIZATION_QUERY);
         if (StringUtils.hasText(headerToken)) {

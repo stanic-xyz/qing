@@ -15,10 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * 吊顶卡片接口，详见https://open.dingtalk.com/document/orgapp-server/create-an-interactive-card-instance-1
+ * 吊顶卡片接口。
+ * 详见https://open.dingtalk.com/document/orgapp-server/create-an-interactive-card-instance-1
  *
- * @author Jack.kj@alibaba-inc.com
- * @date 2022/10/2022/10/19
+ * @author Stan
+ * @since 2022/10/2022/10/19
  */
 @Slf4j
 @Service
@@ -36,6 +37,11 @@ public class InteractiveCardsInstanceService {
         this.accessTokenService = accessTokenService;
     }
 
+    /**
+     * 构造结束后。
+     *
+     * @throws Exception 构造器异常
+     */
     @PostConstruct
     public void init() throws Exception {
         Config config = new Config();
@@ -45,6 +51,8 @@ public class InteractiveCardsInstanceService {
     }
 
     /**
+     * 创建并发送盒子。
+     *
      * @throws Exception may http exception or service exception
      */
     public Boolean createAndDeliverBox(String openConversationId) throws Exception {
@@ -54,13 +62,13 @@ public class InteractiveCardsInstanceService {
                 return false;
             }
 
-            log.info("InteractiveCardsInstanceService_createAndDeliverBox instance success," +
-                " openConversationId={}, outTrackId={}.", openConversationId, outTrackId);
+            log.info("InteractiveCardsInstanceService_createAndDeliverBox instance success,"
+                     + " openConversationId={}, outTrackId={}.", openConversationId, outTrackId);
             return openTopBoxes(openConversationId, outTrackId);
         } catch (TeaException e) {
             log.error(
-                "InteractiveCardsInstanceService_createAndDeliverBox throw TeaException, errCode={}, " +
-                    "errorMessage={}", e.getCode(), e.getMessage(), e);
+                "InteractiveCardsInstanceService_createAndDeliverBox throw TeaException, errCode={}, "
+                + "errorMessage={}", e.getCode(), e.getMessage(), e);
             throw e;
         } catch (Exception e) {
             log.error("InteractiveCardsInstanceService_createAndDeliverBox throw Exception", e);
@@ -87,12 +95,12 @@ public class InteractiveCardsInstanceService {
 
         InteractiveCardCreateInstanceResponse response =
             client.interactiveCardCreateInstanceWithOptions(request, headers, new RuntimeOptions());
-        if (Objects.isNull(response) || Objects.isNull(response.getBody()) ||
-            Objects.isNull(response.body.processQueryKey) ||
-            response.body.processQueryKey.isEmpty()) {
+        if (Objects.isNull(response) || Objects.isNull(response.getBody())
+            || Objects.isNull(response.body.processQueryKey)
+            || response.body.processQueryKey.isEmpty()) {
             log.error(
-                "InteractiveCardsInstanceService_instance interactiveCardCreateInstanceWithOptions return" +
-                    " error, response={}", response);
+                "InteractiveCardsInstanceService_instance interactiveCardCreateInstanceWithOptions return"
+                + " error, response={}", response);
             return null;
         }
 

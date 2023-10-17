@@ -23,7 +23,7 @@ import org.springframework.web.filter.CorsFilter;
  * 自定义CORS过滤器
  *
  * @author Stan
- * @date 2022/11/11
+ * @since 2022/11/11
  */
 public class CustomCorsFilter extends CorsFilter {
 

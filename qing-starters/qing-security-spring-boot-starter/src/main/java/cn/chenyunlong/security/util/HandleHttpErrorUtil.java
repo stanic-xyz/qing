@@ -15,7 +15,6 @@ package cn.chenyunlong.security.util;
 
 import cn.chenyunlong.security.exception.CustomAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import lombok.Data;
@@ -26,12 +25,15 @@ import org.springframework.security.core.AuthenticationException;
 @Slf4j
 public class HandleHttpErrorUtil {
 
-    private final static Integer AUTH_ERROR_CODE = 403;
+    private static final Integer AUTH_ERROR_CODE = 403;
 
     private HandleHttpErrorUtil() {
     }
 
-    public static void handleHttpError(HttpServletRequest request, HttpServletResponse response,
+    /**
+     * 处理 Http 错误。
+     */
+    public static void handleHttpError(HttpServletResponse response,
                                        AuthenticationException message) throws Exception {
         //设置http 返回请求错误码
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);

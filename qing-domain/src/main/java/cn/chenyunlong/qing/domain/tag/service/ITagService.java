@@ -7,7 +7,6 @@ import cn.chenyunlong.qing.domain.tag.creator.TagCreator;
 import cn.chenyunlong.qing.domain.tag.query.TagQuery;
 import cn.chenyunlong.qing.domain.tag.updater.TagUpdater;
 import cn.chenyunlong.qing.domain.tag.vo.TagVO;
-import java.lang.Long;
 import java.util.List;
 import org.springframework.data.domain.Page;
 

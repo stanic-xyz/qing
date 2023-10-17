@@ -15,10 +15,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
- * 获取token服务
+ * 获取token服务。
  *
- * @author Jack.kj@alibaba-inc.com
- * @date 2022/10/2022/10/19
+ * @author Stan
+ * @since 2022/10/2022/10/19
  */
 @Slf4j
 @Service
@@ -34,7 +34,7 @@ public class AccessTokenService {
     private volatile AccessToken accessToken;
 
     /**
-     * 启动获取一个Token
+     * 启动获取一个Token。
      */
     @PostConstruct
     public void init() throws Exception {
@@ -63,8 +63,8 @@ public class AccessTokenService {
 
         if (maxTryTimes <= 0) {
             throw new RuntimeException(
-                "fail to get accessToken from remote, try 3 times, please check your appKey" +
-                    " and appSecret");
+                "fail to get accessToken from remote, try 3 times, please check your appKey"
+                + " and appSecret");
         }
     }
 
@@ -75,19 +75,19 @@ public class AccessTokenService {
         try {
             GetAccessTokenResponse getAccessTokenResponse =
                 auth2Client.getAccessToken(getAccessTokenRequest);
-            if (Objects.isNull(getAccessTokenResponse) ||
-                Objects.isNull(getAccessTokenResponse.body)) {
+            if (Objects.isNull(getAccessTokenResponse)
+                || Objects.isNull(getAccessTokenResponse.body)) {
                 log.error(
-                    "AccessTokenService_getTokenFromRemoteServer getAccessToken return error," +
-                        " response={}", getAccessTokenResponse);
+                    "AccessTokenService_getTokenFromRemoteServer getAccessToken return error,"
+                    + " response={}", getAccessTokenResponse);
                 return false;
             }
 
             GetAccessTokenResponseBody body = getAccessTokenResponse.body;
             if (Objects.isNull(body.accessToken) || Objects.isNull(body.expireIn)) {
                 log.error(
-                    "AccessTokenService_getTokenFromRemoteServer getAccessToken invalid token, token or expireIn" +
-                        " maybe null, accessToken={}, expireIn={}", body.accessToken,
+                    "AccessTokenService_getTokenFromRemoteServer getAccessToken invalid token, token or expireIn"
+                    + " maybe null, accessToken={}, expireIn={}", body.accessToken,
                     body.expireIn);
                 return false;
             }
@@ -99,8 +99,9 @@ public class AccessTokenService {
             log.info("refresh access token success, expireIn={}", body.expireIn);
             return true;
         } catch (TeaException e) {
-            log.error("AccessTokenService_getTokenFromRemoteServer getAccessToken throw " +
-                "TeaException, errCode={}, errorMessage={}", e.getCode(), e.getMessage(), e);
+            log.error("AccessTokenService_getTokenFromRemoteServer getAccessToken throw "
+                      + "TeaException, errCode={}, errorMessage={}", e.getCode(), e.getMessage(),
+                e);
             return false;
         } catch (Exception e) {
             log.error("AccessTokenService_getTokenFromRemoteServer getAccessToken throw Exception",
@@ -110,7 +111,7 @@ public class AccessTokenService {
     }
 
     /**
-     * 定时检查Token是否过期，过期的了就去刷一下
+     * 定时检查Token是否过期，过期的了就去刷一下。
      */
     @Scheduled(fixedRate = 60 * 1000)
     public void checkAccessToken() {

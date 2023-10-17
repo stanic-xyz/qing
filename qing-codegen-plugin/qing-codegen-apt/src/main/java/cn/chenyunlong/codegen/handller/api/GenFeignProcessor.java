@@ -35,10 +35,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
- * 处理Feign接口的代码生成处理器
+ * 处理Feign接口的代码生成处理器。
  *
  * @author Stan
- * @date 2022/11/28
+ * @since 2022/11/28
  */
 @AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenFeign.class)
@@ -79,7 +79,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
     }
 
     /**
-     * 生成create方法
+     * 生成create方法。
      *
      * @param typeElement 类型元素
      * @param nameContext 名称上下文
@@ -111,7 +111,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
     }
 
     /**
-     * 生成公共的<code>update<code/>方法
+     * 生成公共的<code>update</code>方法。
      *
      * @param typeElement 类型元素
      * @param nameContext 名称上下文
@@ -143,7 +143,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
     }
 
     /**
-     * 检查方法是否有效
+     * 检查方法是否有效。
      *
      * @param typeElement 类型元素
      * @return {@link Optional}<{@link MethodSpec}>
@@ -169,7 +169,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
     }
 
     /**
-     * 检查方法是否无效
+     * 检查方法是否无效。
      *
      * @param typeElement 类型元素
      * @return {@link Optional}<{@link MethodSpec}>
@@ -196,7 +196,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
     }
 
     /**
-     * 按id查找代码生成器
+     * 按id查找代码生成器。
      *
      * @param nameContext 名称上下文
      * @return {@link Optional}<{@link MethodSpec}>
@@ -228,7 +228,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
     }
 
     /**
-     * 生成分页查询的方法
+     * 生成分页查询的方法。
      *
      * @param nameContext 代码生成器上下文
      * @return {@link Optional}<{@link MethodSpec}>

@@ -31,14 +31,12 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
- * 通用登录处理器
+ * 通用登录处理器。
  */
+@Getter
 public abstract class BaseLoginProcessFilter extends AbstractAuthenticationProcessingFilter {
-    @Getter
     private final AuthenticationSuccessHandler successHandler;
-    @Getter
     private final AuthenticationFailureHandler failureHandler;
-    @Getter
     private final ObjectMapper mapper;
 
     protected BaseLoginProcessFilter(String defaultFilterProcessesUrl,
@@ -69,6 +67,9 @@ public abstract class BaseLoginProcessFilter extends AbstractAuthenticationProce
         failureHandler.onAuthenticationFailure(request, response, failed);
     }
 
+    /**
+     * 检查登录方法。
+     */
     public void checkMethod(HttpServletRequest request) {
         if (!HttpMethod.POST.name().equals(request.getMethod())) {
             throw new MethodNotSupportException(AuthErrorMsg.methodNotSupport.getName());

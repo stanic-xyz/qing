@@ -19,10 +19,9 @@ import javax.lang.model.element.Element;
 import javax.tools.Diagnostic;
 
 /**
- * 处理环境持有人
+ * 工具类上下文holder
  *
  * @author gim
- * 工具类上下文holder
  * @since 2022/10/25
  */
 public final class ProcessingEnvironmentHolder {

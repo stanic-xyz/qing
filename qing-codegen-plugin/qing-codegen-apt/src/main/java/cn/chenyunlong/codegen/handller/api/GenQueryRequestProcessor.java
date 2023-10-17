@@ -35,7 +35,7 @@ import lombok.Data;
  * 处理QueryRequest的代码生成
  *
  * @author Stan
- * @date 2022/11/28
+ * @since 2022/11/28
  */
 @AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenQueryRequest.class)
@@ -58,7 +58,7 @@ public class GenQueryRequestProcessor extends AbstractCodeGenProcessor {
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
+        addSetterAndGetterMethodWithConverter(builder, fields);
         genJavaSourceFile(typeElement, builder);
     }
 

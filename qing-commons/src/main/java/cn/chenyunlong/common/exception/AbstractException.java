@@ -18,8 +18,10 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 /**
+ * 基础错误类型。
+ *
  * @author 陈云龙
- * @date 2021/02/27
+ * @since 2021/02/27
  **/
 public abstract class AbstractException extends RuntimeException {
 

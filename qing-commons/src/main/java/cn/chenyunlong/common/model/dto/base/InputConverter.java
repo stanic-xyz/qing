@@ -21,18 +21,17 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 
 /**
- * Converter interface for input DTO.
+ * 用于输入DTO的转换器接口。
  *
  * @author johnniang
  */
 public interface InputConverter<DOMAIN> {
 
     /**
-     * Convert to domain.(shallow)
+     * 转换到Domain领域对象。(浅拷贝)
      *
-     * @return new domain with same value(not null)
+     * @return 具有相同值的新域 (非空)
      */
-    @SuppressWarnings("unchecked")
     default DOMAIN convertTo() {
         // Get parameterized type
         ParameterizedType currentType = parameterizedType();
@@ -47,7 +46,7 @@ public interface InputConverter<DOMAIN> {
     }
 
     /**
-     * Get parameterized type.
+     * 获取参数化类型。
      *
      * @return parameterized type or null
      */
@@ -57,7 +56,7 @@ public interface InputConverter<DOMAIN> {
     }
 
     /**
-     * Update a domain by dto.(shallow)
+     * 通过 dto 更新 Domain 对象。
      *
      * @param domain updated domain
      */

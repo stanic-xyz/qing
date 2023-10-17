@@ -16,18 +16,20 @@ package cn.chenyunlong.jpa.support.converter;
 
 import cn.chenyunlong.common.constants.ValidStatus;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import java.util.Arrays;
 
 /**
- * 校验状态转换器
+ * 校验状态转换器。
  *
  * @author Stan
- * @date 2022/10/24
+ * @since 2022/10/24
  */
+@Converter
 public class ValidStatusConverter implements AttributeConverter<ValidStatus, Integer> {
 
     /**
-     * 转换为数据库列
+     * 转换为数据库列。
      *
      * @param validStatus 有效状态
      * @return {@link Integer}

@@ -16,15 +16,15 @@ package cn.chenyunlong.jpa.support;
 import java.util.function.Supplier;
 
 /**
- * 加载器
+ * 加载器。
  *
  * @author gim 2022/1/28 9:07 下午
- * @date 2022/10/24
+ * @since 2022/10/24
  */
 public interface Loader<T, ID> {
 
     /**
-     * 通过id加载对象
+     * 通过id加载对象。
      *
      * @param id id
      * @return {@link UpdateHandler}<{@link T}>
@@ -32,7 +32,7 @@ public interface Loader<T, ID> {
     UpdateHandler<T> loadById(ID id);
 
     /**
-     * 负载
+     * 执行加载操作。
      *
      * @param t t
      * @return {@link UpdateHandler}<{@link T}>

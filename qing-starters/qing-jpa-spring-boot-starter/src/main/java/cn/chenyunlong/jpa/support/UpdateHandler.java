@@ -16,6 +16,8 @@ package cn.chenyunlong.jpa.support;
 import java.util.function.Consumer;
 
 /**
+ * 更新操作执行器。
+ *
  * @author gim 2022/1/28 9:10 下午
  */
 public interface UpdateHandler<T> {

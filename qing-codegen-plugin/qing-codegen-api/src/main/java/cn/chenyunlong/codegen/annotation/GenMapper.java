@@ -20,7 +20,7 @@ import java.lang.annotation.*;
  * 生成Mapper注解
  *
  * @author StanChen
- * @date 2022/10/24
+ * @since 2022/10/24
  */
 
 @Target(ElementType.TYPE)

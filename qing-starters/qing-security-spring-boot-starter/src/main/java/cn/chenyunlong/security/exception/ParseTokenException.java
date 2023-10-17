@@ -13,22 +13,27 @@
 
 package cn.chenyunlong.security.exception;
 
+import lombok.Getter;
+
+/**
+ * Token 解析异常。
+ */
+@Getter
 public class ParseTokenException extends RuntimeException {
 
     private final Integer code;
     private final String msg;
 
+    /**
+     * token解析异常构造函数。
+     *
+     * @param code 错误代码
+     * @param msg  错误消息
+     */
     public ParseTokenException(Integer code, String msg) {
         super(msg);
         this.code = code;
         this.msg = msg;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
 }

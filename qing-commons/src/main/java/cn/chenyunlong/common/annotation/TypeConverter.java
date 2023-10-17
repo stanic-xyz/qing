@@ -19,6 +19,12 @@ import java.lang.annotation.*;
 @Inherited
 @Target({ElementType.FIELD})
 public @interface TypeConverter {
+
+    /**
+     * 转化成全民。
+     *
+     * @return 类型的全名！
+     */
     String toTypeFullName() default "java.lang.String";
 
 }

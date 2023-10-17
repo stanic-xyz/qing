@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
 
 
 /**
- * Base entity.
+ * 基础实体类。
  *
  * @author Stan
  * @since 2021/05/22
@@ -41,24 +41,24 @@ import org.springframework.util.StringUtils;
 public class BaseEntity extends BaseJpaAggregate {
 
     /**
-     * 创建者
+     * 创建人。
      */
     private String createBy;
 
     /**
-     * 更新者
+     * 更新人。
      */
     private String updateBy;
 
     /**
-     * 备注
+     * 备注。
      */
     @Column
     private String remark;
 
 
     /**
-     * 数据检查
+     * 持久化前。
      */
     @Override
     public void prePersist() {

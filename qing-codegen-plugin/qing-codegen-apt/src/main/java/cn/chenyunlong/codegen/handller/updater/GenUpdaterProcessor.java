@@ -38,7 +38,7 @@ import lombok.Data;
  * 更新一代处理器
  *
  * @author Gim
- * @date 2019/11/28 19:33
+ * @since 2019/11/28 19:33
  */
 @AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenUpdater.class)
@@ -69,7 +69,7 @@ public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
             builder.addAnnotation(Data.class);
         }
 
-        addSetterAndGetterMethod(builder, variableElements, useLombok);
+        addSetterAndGetterMethod(builder, variableElements);
         CodeBlock.Builder codeBlockBuilder = CodeBlock.builder();
         for (VariableElement variableElement : variableElements) {
             codeBlockBuilder.addStatement("$T.ofNullable($L()).ifPresent(param::$L)",

@@ -57,7 +57,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                               boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
-        TypeSpec.Builder builder = TypeSpec
+        final TypeSpec.Builder builder = TypeSpec
             .classBuilder(className)
             .addSuperinterface(ClassName.get(nameContext.getServicePackageName(),
                 nameContext.getServiceClassName()))

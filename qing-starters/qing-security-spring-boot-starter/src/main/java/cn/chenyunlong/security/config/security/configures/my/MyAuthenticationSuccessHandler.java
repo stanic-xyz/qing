@@ -30,6 +30,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 /**
+ * 登录成功处理器。
+ *
  * @author Stan
  */
 @Slf4j

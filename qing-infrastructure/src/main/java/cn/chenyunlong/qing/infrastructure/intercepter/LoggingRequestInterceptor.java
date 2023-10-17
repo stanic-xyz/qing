@@ -24,7 +24,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.lang.NonNull;
 
 /**
- * <br>日志拦截器</br>
+ * 日志拦截器。
  *
  * @author fattyca1
  * @since 1.0

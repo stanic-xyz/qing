@@ -15,21 +15,24 @@ package cn.chenyunlong.oss.controller.model;
 
 import lombok.Data;
 
+/**
+ * 临时密钥。
+ */
 @Data
 public class TempSecret {
 
     /**
-     * 临时密钥ID
+     * 临时密钥ID。
      */
     private String tmpSecretId;
 
     /**
-     * 临时密钥
+     * 临时密钥。
      */
     private String tmpSecretKey;
 
     /**
-     * 临时密钥的accessToken
+     * 临时密钥的accessToken。
      */
     private String sessionToken;
 

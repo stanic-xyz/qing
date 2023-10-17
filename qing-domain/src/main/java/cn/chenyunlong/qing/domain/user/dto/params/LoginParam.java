@@ -23,7 +23,7 @@ import lombok.ToString;
  * Login param.
  *
  * @author Stan
- * @date 2021/04/05
+ * @since 2021/04/05
  */
 @Data
 @ToString

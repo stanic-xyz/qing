@@ -14,12 +14,14 @@
 package cn.chenyunlong.common.constants;
 
 /**
+ * 错误代码枚举。
+ *
  * @author gim
  */
 
 public enum CodeEnum implements BaseEnum<Integer> {
     /**
-     * 整个系统通用编码 xx_xx_xxxx (服务标识_业务_错误编号，便于错误快速定位
+     * 整个系统通用编码 xx_xx_xxxx。 (服务标识_业务_错误编号，便于错误快速定位）
      */
     Success(1, "操作成功"),
     Fail(0, "操作失败"),
@@ -50,6 +52,8 @@ public enum CodeEnum implements BaseEnum<Integer> {
     }
 
     /**
+     * 获取枚举的值。
+     *
      * @return 获取枚举的值
      */
     @Override

@@ -15,15 +15,21 @@ package cn.chenyunlong.jpa.support.converter;
 
 import cn.chenyunlong.jpa.support.BitFlag;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
+/**
+ * bit实体类类型转化器。
+ */
+@Converter
 public class BitFlagConverter implements AttributeConverter<BitFlag, Integer> {
-    public BitFlagConverter() {
-    }
 
     public Integer convertToDatabaseColumn(BitFlag bt) {
         return bt.getCode();
     }
 
+    /**
+     * 从枚举值转化成枚举实例。
+     */
     public BitFlag convertToEntityAttribute(Integer code) {
         return BitFlag
             .of(code)

@@ -23,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -32,8 +31,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest(classes = QingCodegenSampleApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class TestDomainControllerTest {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private MockMvc mockMvc;
@@ -53,7 +50,7 @@ class TestDomainControllerTest {
     void page() throws Exception {
         TestDomain testDomain = mockData();
         Assertions.assertNotNull(testDomain, "添加实体类失败！");
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/test-domain/findByPage")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/test-domain/page")
                 .content("{}")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))

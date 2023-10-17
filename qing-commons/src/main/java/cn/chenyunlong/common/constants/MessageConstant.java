@@ -14,11 +14,12 @@
 package cn.chenyunlong.common.constants;
 
 /**
- * 消息常量
+ * 消息常量。
  *
  * @author Stan
- * @date 2021/01/23
+ * @since 2021/01/23
  */
+@SuppressWarnings("unused")
 public class MessageConstant {
 
     public static final String LOGIN_SUCCESS = "登录成功!";

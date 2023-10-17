@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
+ * Security 自动配置。
+ *
  * @author gim
  */
 @Configuration

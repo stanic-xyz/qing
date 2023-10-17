@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 获取RSA公钥接口
  *
  * @author Stan
- * @date 2021/01/14
+ * @since 2021/01/14
  */
 @ConditionalOnBean(KeyPair.class)
 @Tag(name = "RSA公钥")

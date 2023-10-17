@@ -17,6 +17,8 @@ package cn.chenyunlong.common.exception;
 import cn.chenyunlong.common.constants.BaseEnum;
 
 /**
+ * 业务错误
+ *
  * @author gim 强制业务异常必须提供code码，便于统一维护
  */
 public class BusinessException extends RuntimeException {

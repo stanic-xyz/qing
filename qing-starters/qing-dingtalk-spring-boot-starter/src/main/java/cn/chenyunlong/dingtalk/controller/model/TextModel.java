@@ -5,8 +5,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @author Jack.kj@alibaba-inc.com
- * @date 2022/10/2022/10/18
+ * 文本模型。
+ *
+ * @author 文本模型。
+ * @since 2022/10/2022/10/18
  */
 @Getter
 @Setter

@@ -6,7 +6,6 @@ import cn.chenyunlong.qing.samples.codegen.domain.creator.TestDomainCreator;
 import cn.chenyunlong.qing.samples.codegen.domain.query.TestDomainQuery;
 import cn.chenyunlong.qing.samples.codegen.domain.updater.TestDomainUpdater;
 import cn.chenyunlong.qing.samples.codegen.domain.vo.TestDomainVO;
-import java.lang.Long;
 import org.springframework.data.domain.Page;
 
 public interface ITestDomainService {

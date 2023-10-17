@@ -7,10 +7,10 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * register auth interceptor
+ * 注册授权拦截器。
  *
- * @author Jack.kj@alibaba-inc.com
- * @date 2022/10/2022/10/20
+ * @author Stan
+ * @since 2022/10/2022/10/20
  */
 @Component
 public class MyappWebMvcConfigurer implements WebMvcConfigurer {

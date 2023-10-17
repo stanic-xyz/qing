@@ -16,20 +16,20 @@ package cn.chenyunlong.common.enums;
 import cn.chenyunlong.common.constants.BaseEnum;
 
 /**
- * MFA type.
+ * MFA 类型。
  *
  * @author Stan
- * @date 2022/11/27
+ * @since 2022/11/27
  */
 public enum MFAType implements BaseEnum<Integer> {
 
     /**
-     * Disable MFA auth.
+     * 禁用MFA。
      */
     NONE(0, "Disable"),
 
     /**
-     * Time-based One-time Password (rfc6238).
+     * 基于时间的一次性密码 (rfc6238)。
      * see: <a href="https://tools.ietf.org/html/rfc6238">...</a>
      */
     TFA_TOTP(1, "TFA_TOTP");
@@ -43,12 +43,19 @@ public enum MFAType implements BaseEnum<Integer> {
         this.mfaName = mfaName;
     }
 
+    /**
+     * 判断判断是否使用MFA。
+     *
+     * @param mfaType mfa类型
+     * @return 是否使用MFA
+     */
+    @SuppressWarnings("unused")
     public static boolean useMFA(MFAType mfaType) {
         return mfaType != null && MFAType.NONE != mfaType;
     }
 
     /**
-     * 获取code码存入数据库
+     * 获取code码存入数据库。
      *
      * @return 获取编码
      */
@@ -58,7 +65,7 @@ public enum MFAType implements BaseEnum<Integer> {
     }
 
     /**
-     * 获取编码名称，便于维护
+     * 获取编码名称，便于维护。
      *
      * @return 获取编码名称
      */

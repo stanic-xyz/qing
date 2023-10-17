@@ -35,7 +35,7 @@ import lombok.Data;
  * 支持创建器的生成器
  *
  * @author chenyunlong
- * @date 2019/11/28 19:33
+ * @since 2019/11/28 19:33
  */
 
 @AutoService(CodeGenProcessor.class)
@@ -59,7 +59,7 @@ public class GenCreateRequestProcessor extends AbstractCodeGenProcessor {
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }
-        addSetterAndGetterMethodWithConverter(builder, fields, useLombok);
+        addSetterAndGetterMethodWithConverter(builder, fields);
         genJavaSourceFile(typeElement, builder);
     }
 

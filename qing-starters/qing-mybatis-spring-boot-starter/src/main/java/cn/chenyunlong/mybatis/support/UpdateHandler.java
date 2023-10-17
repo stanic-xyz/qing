@@ -16,15 +16,15 @@ package cn.chenyunlong.mybatis.support;
 import java.util.function.Consumer;
 
 /**
- * 更新处理程序
+ * 更新处理程序。
  *
  * @author gim 2022/1/28 9:10 下午
- * @date 2022/11/14
+ * @since 2022/11/14
  */
 public interface UpdateHandler<T> {
 
     /**
-     * 更新
+     * 更新。
      *
      * @param consumer 消费者
      * @return {@link Executor}<{@link T}>

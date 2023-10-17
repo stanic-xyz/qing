@@ -35,10 +35,10 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
                                 Authentication authentication) throws IOException {
-        ApiResult<Object> success = ApiResult.success("退出成功");
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        ApiResult<Object> success = ApiResult.success("退出成功");
         response.getWriter().write(JSONUtil.toJsonPrettyStr(success));
     }
 

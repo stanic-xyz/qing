@@ -27,6 +27,8 @@ import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 实体类更新器。
+ *
  * @author gim
  */
 @Slf4j
@@ -67,8 +69,8 @@ public class EntityUpdater<T> extends BaseEntityOperation implements Loader<T>,
     }
 
     @Override
-    public UpdateHandler<T> load(Supplier<T> t) {
-        this.entity = t.get();
+    public UpdateHandler<T> load(Supplier<T> supplier) {
+        this.entity = supplier.get();
         return this;
     }
 

@@ -20,30 +20,30 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Oss 基础操作
+ * Oss 基础操作。
  * 想要更复杂订单操作可以直接获取AmazonS3，通过AmazonS3 来进行复杂的操作
  * <a href="https://docs.aws.amazon.com/zh_cn/sdk-for-java/v1/developer-guide/examples-s3-buckets.html">...</a>
  */
 public interface OssClient {
     /**
-     * 创建bucket
+     * 创建bucket。
      *
      * @param bucketName bucket名称
      */
     void createBucket(String bucketName);
 
     /**
-     * 获取url
+     * 获取url。
      *
      * @param bucketName bucket名称
      * @param objectName 对象名称
      * @return url
      */
-    String getObjectURL(String bucketName, String objectName);
+    String getObjectUrl(String bucketName, String objectName);
 
 
     /**
-     * 获取存储对象信息
+     * 获取存储对象信息。
      *
      * @param bucketName bucket名称
      * @param objectName 对象名称
@@ -58,7 +58,7 @@ public interface OssClient {
     }
 
     /**
-     * 上传文件
+     * 上传文件。
      *
      * @param bucketName  bucket名称
      * @param objectName  对象名称
@@ -71,5 +71,10 @@ public interface OssClient {
     PutObjectResult putObject(String bucketName, String objectName, InputStream stream, long size,
                               String contextType) throws IOException;
 
+    /**
+     * 获取S3客户端。
+     *
+     * @return S3客户端
+     */
     AmazonS3 getS3Client();
 }

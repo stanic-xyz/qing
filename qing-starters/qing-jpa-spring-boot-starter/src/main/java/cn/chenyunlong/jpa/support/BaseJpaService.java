@@ -23,9 +23,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.util.CollectionUtils;
 
+/**
+ * 基础JPA处理服务。
+ * 服务尚未定义。
+ */
+@SuppressWarnings("unused")
 public abstract class BaseJpaService {
     private static final Logger log = LoggerFactory.getLogger(BaseJpaService.class);
-    static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    static final Validator validator;
+
+    static {
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+    }
 
     public BaseJpaService() {
     }
@@ -49,44 +58,74 @@ public abstract class BaseJpaService {
         }
     }
 
+    /**
+     * 创造者。
+     * 提供领域对象的创建功能
+     *
+     * @param <T>  创建着类型
+     * @param <ID> 创建者ID
+     */
     public class Creator<T, ID> {
         private final CrudRepository<T, ID> repository;
-        private T t;
-        private Consumer<T> successCallback = (t) -> {
-            BaseJpaService.log.info("save success");
-        };
+        private T typeClazz;
+        private Consumer<T> successCallback = (t) -> BaseJpaService.log.info("save success");
         private Consumer<? super Throwable> errorCallback = Throwable::printStackTrace;
 
         public Creator(CrudRepository<T, ID> repository) {
             this.repository = repository;
         }
 
+        /**
+         * 创建服务。
+         *
+         * @param supplier 提供者
+         * @return 创造者
+         */
         public Creator<T, ID> create(Supplier<T> supplier) {
-            this.t = supplier.get();
+            this.typeClazz = supplier.get();
             return this;
         }
 
-        public Creator<T, ID> init(Consumer<T> t) {
-            Preconditions.checkArgument(Objects.nonNull(t), "entity must supply");
-            t.accept(this.t);
+        /**
+         * 初始化创建器。
+         *
+         * @param consumer 消费者
+         * @return 创建器
+         */
+        public Creator<T, ID> init(Consumer<T> consumer) {
+            Preconditions.checkArgument(Objects.nonNull(consumer), "entity must supply");
+            consumer.accept(this.typeClazz);
             return this;
         }
 
-        public Creator<T, ID> sucCallback(Consumer<T> consumer) {
+        /**
+         * 成功回调。
+         *
+         * @param consumer 消费者
+         */
+        public Creator<T, ID> successCallback(Consumer<T> consumer) {
             this.successCallback = consumer;
             return this;
         }
 
+        /**
+         * 异常回调。
+         *
+         * @param consumer 消费者
+         */
         public Creator<T, ID> errorCallback(Consumer<? super Throwable> consumer) {
             this.errorCallback = consumer;
             return this;
         }
 
+        /**
+         * 执行。
+         */
         public Optional<T> execute() {
-            BaseJpaService.this.doValidate(this.t, CreateGroup.class);
-            T save = Try.of(() -> {
-                return this.repository.save(this.t);
-            }).onSuccess(this.successCallback).onFailure(this.errorCallback).getOrNull();
+            BaseJpaService.this.doValidate(this.typeClazz, CreateGroup.class);
+            T save =
+                Try.of(() -> this.repository.save(this.typeClazz)).onSuccess(this.successCallback)
+                    .onFailure(this.errorCallback).getOrNull();
             return Optional.ofNullable(save);
         }
     }
@@ -98,15 +137,16 @@ public abstract class BaseJpaService {
         private Consumer<? super Throwable> errorCallback;
 
         private Updater(CrudRepository<T, ID> repository) {
-            this.successCallback = (t) -> {
-                BaseJpaService.log.info(t.toString());
-            };
-            this.errorCallback = (e) -> {
-                BaseJpaService.log.error(e.getMessage());
-            };
+            this.successCallback = (t) -> BaseJpaService.log.info(t.toString());
+            this.errorCallback = (e) -> BaseJpaService.log.error(e.getMessage());
             this.repository = repository;
         }
 
+        /**
+         * 根据ID加载实体类。
+         *
+         * @param id 编号
+         */
         public Updater<T, ID> loadById(ID id) {
             Preconditions.checkArgument(Objects.nonNull(id), "id is null");
             Optional<T> loadEntity = this.repository.findById(id);
@@ -119,6 +159,12 @@ public abstract class BaseJpaService {
             return this;
         }
 
+        /**
+         * 更新服务。
+         *
+         * @param consumer 消费者。
+         * @return 更新器。
+         */
         public Updater<T, ID> update(Consumer<T> consumer) {
             Preconditions.checkArgument(Objects.nonNull(this.entity), "entity is null");
             consumer.accept(this.entity);
@@ -135,11 +181,17 @@ public abstract class BaseJpaService {
             return this;
         }
 
+        /**
+         * 执行服务。
+         *
+         * @return 执行结果
+         */
         public Optional<T> execute() {
             BaseJpaService.this.doValidate(this.entity, UpdateGroup.class);
-            T save = Try.of(() -> {
-                return this.repository.save(this.entity);
-            }).onSuccess(this.successCallback).onFailure(this.errorCallback).getOrNull();
+            T save = Try.of(() ->
+                    this.repository.save(this.entity))
+                .onSuccess(this.successCallback)
+                .onFailure(this.errorCallback).getOrNull();
             return Optional.ofNullable(save);
         }
     }

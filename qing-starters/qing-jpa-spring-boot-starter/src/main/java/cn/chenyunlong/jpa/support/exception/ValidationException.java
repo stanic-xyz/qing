@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class ValidationException extends BusinessException {
 
-    private List<ValidateResult> result;
+    private final List<ValidateResult> result;
 
     public ValidationException(List<ValidateResult> list) {
         super(CodeEnum.ParamSetIllegal, list);

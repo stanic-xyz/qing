@@ -15,6 +15,7 @@ package cn.chenyunlong.qing.feign.controller;
 
 import cn.chenyunlong.qing.feign.remote.BaseService;
 import cn.chenyunlong.qing.feign.remote.RemoteHello;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * Hello控制器
+ *
  * @author Stan
  */
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class HelloController {
 
     private final RemoteHello remoteHello;
@@ -34,11 +38,6 @@ public class HelloController {
 
     @Value("${test}")
     private String test;
-
-    public HelloController(RemoteHello remoteHello, BaseService baseService) {
-        this.remoteHello = remoteHello;
-        this.baseService = baseService;
-    }
 
     @GetMapping("hello")
     public String hello(@RequestParam String name) {

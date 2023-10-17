@@ -43,6 +43,7 @@ public class OssAutoConfiguration {
 
 
     /**
+     * 自动配置亚马逊S3。
      * 参考文档
      * <a href="https://docs.aws.amazon.com/zh_cn/sdk-for-java/v1/developer-guide/credentials.html">...</a>
      * 区域选择这块

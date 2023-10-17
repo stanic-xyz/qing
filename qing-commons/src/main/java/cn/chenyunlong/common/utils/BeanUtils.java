@@ -15,66 +15,24 @@ package cn.chenyunlong.common.utils;
 
 import cn.chenyunlong.common.exception.BeanUtilsException;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 
 /**
- * Bean utilities.
+ * Bean实用程序。
  *
  * @author johnniang
  */
 public class BeanUtils extends org.springframework.beans.BeanUtils {
 
-    /**
-     * Bean方法名中属性名开始的下标
-     */
-    private static final int BEAN_METHOD_PROP_INDEX = 3;
 
     /**
-     * 匹配getter方法的正则表达式
-     */
-    private static final Pattern GET_PATTERN = Pattern.compile("get(\\p{javaUpperCase}\\w*)");
-
-    /**
-     * 匹配setter方法的正则表达式
-     */
-    private static final Pattern SET_PATTERN = Pattern.compile("set(\\p{javaUpperCase}\\w*)");
-
-    private BeanUtils() {
-    }
-
-    /**
-     * Transforms from source data collection in batch.
-     *
-     * @param sources     source data collection
-     * @param targetClass target class must not be null
-     * @param <T>         target class type
-     * @return target collection transforming from source data collection.
-     * @throws BeanUtilsException if newing target instance failed or copying failed
-     */
-    @NonNull
-    public static <T> List<T> transformFromInBatch(Collection<?> sources,
-                                                   @NonNull Class<T> targetClass) {
-        if (CollectionUtils.isEmpty(sources)) {
-            return Collections.emptyList();
-        }
-
-        // Transform in batch
-        return sources.stream().map(source -> transformFrom(source, targetClass))
-            .collect(Collectors.toList());
-    }
-
-    /**
-     * Transforms from the source object. (copy same properties only)
+     * 从源对象转换。(仅复制相同的属性)
      *
      * @param source      source data
      * @param targetClass target class must not be null
@@ -89,7 +47,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         if (source == null) {
             return null;
         }
-
         // Init the instance
         try {
             // New instance for the target class
@@ -106,7 +63,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     /**
-     * Gets null names array of property.
+     * 获取属性的null名称数组。
      *
      * @param source object data must not be null
      * @return null name array of property
@@ -117,7 +74,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     /**
-     * Gets null names set of property.
+     * 获取属性的null名称集。
      *
      * @param source object data must not be null
      * @return null name set of property
@@ -144,7 +101,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     /**
-     * Update properties (non null).
+     * 更新属性 (非null)。
      *
      * @param source source data must not be null
      * @param target target data must not be null
@@ -163,79 +120,4 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         }
     }
 
-    /**
-     * Bean属性复制工具方法。
-     *
-     * @param dest 目标对象
-     * @param src  源对象
-     */
-    public static void copyBeanProp(Object dest, Object src) {
-        try {
-            BeanUtils.copyProperties(src, dest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 获取对象的setter方法。
-     *
-     * @param obj 对象
-     * @return 对象的setter方法列表
-     */
-    public static List<Method> getSetterMethods(Object obj) {
-        // setter方法列表
-        List<Method> setterMethods = new ArrayList<>();
-
-        // 获取所有方法
-        Method[] methods = obj.getClass().getMethods();
-
-        // 查找setter方法
-
-        for (Method method : methods) {
-            Matcher m = SET_PATTERN.matcher(method.getName());
-            if (m.matches() && (method.getParameterTypes().length == 1)) {
-                setterMethods.add(method);
-            }
-        }
-        // 返回setter方法列表
-        return setterMethods;
-    }
-
-    /**
-     * 获取对象的getter方法。
-     *
-     * @param obj 对象
-     * @return 对象的getter方法列表
-     */
-
-    public static List<Method> getGetterMethods(Object obj) {
-        // getter方法列表
-        List<Method> getterMethods = new ArrayList<>();
-        // 获取所有方法
-        Method[] methods = obj.getClass().getMethods();
-        // 查找getter方法
-        for (Method method : methods) {
-            Matcher m = GET_PATTERN.matcher(method.getName());
-            if (m.matches() && (method.getParameterTypes().length == 0)) {
-                getterMethods.add(method);
-            }
-        }
-        // 返回getter方法列表
-        return getterMethods;
-    }
-
-    /**
-     * 检查Bean方法名中的属性名是否相等。<br>
-     * 如getName()和setName()属性名一样，getName()和setAge()属性名不一样。
-     *
-     * @param method1 方法名1
-     * @param method2 方法名2
-     * @return 属性名一样返回true，否则返回false
-     */
-
-    public static boolean isMethodPropEquals(String method1, String method2) {
-        return method1.substring(BEAN_METHOD_PROP_INDEX)
-            .equals(method2.substring(BEAN_METHOD_PROP_INDEX));
-    }
 }

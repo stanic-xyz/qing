@@ -26,10 +26,10 @@ import java.util.stream.Collectors;
 import org.springframework.util.CollectionUtils;
 
 /**
- * 基础实体操作
+ * 基础实体操作。
  *
  * @author gim 2022/3/5 10:07 下午
- * @date 2022/10/24
+ * @since 2022/10/24
  */
 public abstract class BaseEntityOperation implements EntityOperation {
 
@@ -42,7 +42,7 @@ public abstract class BaseEntityOperation implements EntityOperation {
     }
 
     /**
-     * 做验证
+     * 执行验证逻辑。
      *
      * @param obj   t 泛型对象
      * @param group 校验组

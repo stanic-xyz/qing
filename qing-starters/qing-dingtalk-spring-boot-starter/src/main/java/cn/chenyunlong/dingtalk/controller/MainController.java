@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * 主页
+ * 主页。
  *
- * @author Jack.kj@alibaba-inc.com
- * @date 2022/10/2022/10/18
+ * @author Stan
+ * @since 2022/10/2022/10/18
  */
 @Slf4j
 @Controller

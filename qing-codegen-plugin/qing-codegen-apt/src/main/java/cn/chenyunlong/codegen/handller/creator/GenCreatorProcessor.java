@@ -35,7 +35,9 @@ import javax.lang.model.element.TypeElement;
 import lombok.Data;
 
 /**
- * @author cyl Creator 代码生成器
+ * Creator 代码生成处理器。
+ *
+ * @author cyl
  */
 @AutoService(CodeGenProcessor.class)
 @SupportedGenTypes(types = GenCreator.class)
@@ -71,8 +73,8 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
             builder.addAnnotation(Data.class);
         }
         addSetterAndGetterMethod(builder, findFields(typeElement,
-            variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class)) &&
-                               !dtoIgnore(variableElement)), useLombok);
+            variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class))
+                               && !dtoIgnore(variableElement)));
         genJavaSourceFile(typeElement, builder);
     }
 

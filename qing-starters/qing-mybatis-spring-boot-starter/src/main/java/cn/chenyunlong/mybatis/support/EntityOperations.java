@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * 实体操作
  *
  * @author gim
- * @date 2022/11/14
+ * @since 2022/11/14
  */
 public abstract class EntityOperations {
 

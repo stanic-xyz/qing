@@ -17,12 +17,26 @@ import java.io.Serializable;
 import java.util.function.Supplier;
 
 /**
+ * 加载器。
+ *
  * @author gim 2022/1/28 9:07 下午
  */
 public interface Loader<T> {
 
+    /**
+     * 根据ID加载数据，生成数据更新处理器。
+     *
+     * @param id 数据ID
+     * @return 更新执行器
+     */
     UpdateHandler<T> loadById(Serializable id);
 
-    UpdateHandler<T> load(Supplier<T> t);
+    /**
+     * 加载器。
+     *
+     * @param supplier 数据处理器提供者
+     * @return 数据加载执行处理器
+     */
+    UpdateHandler<T> load(Supplier<T> supplier);
 
 }

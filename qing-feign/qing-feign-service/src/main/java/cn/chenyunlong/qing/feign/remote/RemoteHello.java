@@ -14,12 +14,14 @@
 package cn.chenyunlong.qing.feign.remote;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Stan
  */
+@Component
 @FeignClient(value = "zhangli-service-provider", fallback = MyFeignFallBack.class)
 public interface RemoteHello {
 

@@ -19,13 +19,14 @@ import org.slf4j.Logger;
 
 /**
  * <p>
- * 常规类型的前后端返回model
+ * 常规类型的前后端返回model。
  * </p>
  *
  * @author wangmin1994@qq.com
  * @since 2019-03-28 10:45:41
  */
 @Data
+@SuppressWarnings("unused")
 public class ResultModel {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ResultModel.class);

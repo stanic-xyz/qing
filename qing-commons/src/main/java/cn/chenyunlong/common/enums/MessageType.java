@@ -16,17 +16,19 @@ package cn.chenyunlong.common.enums;
 import cn.chenyunlong.common.constants.BaseEnum;
 
 /**
+ * 消息类型。
+ *
  * @author Stan
  */
-
+@SuppressWarnings("unused")
 public enum MessageType implements BaseEnum<Integer> {
 
     /**
-     * 普通消息
+     * 普通消息。
      */
     SIMPLE_MESSAGE(0, "普通消息"),
     /**
-     * 带图片的消息
+     * 带图片的消息。
      */
     MESSAGE_WITH_IMG(1, "带图片的消息");
 
@@ -42,7 +44,7 @@ public enum MessageType implements BaseEnum<Integer> {
 
 
     /**
-     * 获取code码存入数据库
+     * 获取code码存入数据库。
      *
      * @return 获取编码
      */
@@ -52,7 +54,7 @@ public enum MessageType implements BaseEnum<Integer> {
     }
 
     /**
-     * 获取编码名称，便于维护
+     * 获取编码名称，便于维护。
      *
      * @return 获取编码名称
      */

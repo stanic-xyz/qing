@@ -39,8 +39,8 @@ public class StartedUpRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (context.isActive()) {
-            log.info("启动完毕，时间：" +
-                LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            log.info("启动完毕，时间："
+                     + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         }
     }
 }

@@ -31,12 +31,11 @@ import org.springframework.statemachine.state.State;
 @EnableStateMachine
 public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States, Events> {
 
-    @Override
-    public void configure(StateMachineConfigurationConfigurer<States, Events> config)
-        throws Exception {
-        config.withConfiguration().autoStartup(true).listener(listener());
-    }
-
+    /**
+     * 监听器。
+     *
+     * @return 状态监听器
+     */
     @Bean
     public StateMachineListener<States, Events> listener() {
         return new StateMachineListenerAdapter<>() {
@@ -45,6 +44,12 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
                 log.info("State change to " + to.getId());
             }
         };
+    }
+
+    @Override
+    public void configure(StateMachineConfigurationConfigurer<States, Events> config)
+        throws Exception {
+        config.withConfiguration().autoStartup(true).listener(listener());
     }
 
     @Override
