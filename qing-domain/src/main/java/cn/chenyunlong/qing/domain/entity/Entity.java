@@ -11,19 +11,18 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.zan;
+package cn.chenyunlong.qing.domain.entity;
 
 
 import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import cn.chenyunlong.qing.domain.zan.events.ZanEvent.ZanCreateEvent;
-import cn.chenyunlong.qing.domain.zan.events.ZanEvent.ZanRemoveEvent;
-import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import lombok.*;
 
 /**
- * 点赞
+ * 实体信息。
  *
  * @author Stan
  */
@@ -46,25 +45,22 @@ import lombok.*;
 @GenFeign(serverName = "stanic")
 @GenController
 @GenMapper
-@Entity
-@Table(name = "zan")
-public class Zan extends BaseEntity {
+@jakarta.persistence.Entity
+@Table(name = "entity")
+public class Entity extends BaseEntity {
 
-    private Long userId;
+    @FieldDesc(name = "用户名", description = "用户（唯一），用于前端显示！")
+    private String name;
 
-    private Long entityId;
+    @FieldDesc(name = "实体类型")
+    @Column(unique = true)
+    private EntityType entityType;
+
+    @FieldDesc(name = "点赞数量")
+    private Long zanCount;
 
     @Override
     public void init() {
         super.init();
-        registerEvent(new ZanCreateEvent(this));
-    }
-
-    /**
-     * 取消点赞
-     */
-    public void remove() {
-        invalid();
-        registerEvent(new ZanRemoveEvent(this));
     }
 }

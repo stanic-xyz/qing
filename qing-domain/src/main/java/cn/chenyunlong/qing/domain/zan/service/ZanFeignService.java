@@ -22,31 +22,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 )
 public interface ZanFeignService {
     /**
-     * createRequest
+     * 创建
      */
     @PostMapping("createZan")
     JsonResult<Long> createZan(@RequestBody ZanCreateRequest request);
 
     /**
-     * update request
+     * 更新请求
      */
     @PostMapping("updateZan")
     JsonResult<String> updateZan(@RequestBody ZanUpdateRequest request);
 
     /**
-     * valid
+     * 有效
      */
     @PostMapping("valid/{id}")
     JsonResult<String> validZan(@PathVariable("id") Long id);
 
     /**
-     * invalid
+     * 无效
      */
     @PostMapping("invalid/{id}")
     JsonResult<String> invalidZan(@PathVariable("id") Long id);
 
     /**
-     * findById
+     * 根据ID查询
      */
     @GetMapping("findById/{id}")
     JsonResult<ZanResponse> findById(@PathVariable("id") Long id);
@@ -55,6 +55,6 @@ public interface ZanFeignService {
      * findByPage request
      */
     @PostMapping("findByPage")
-    JsonResult<PageResult<ZanResponse>> findByPage(
+    JsonResult<PageResult<ZanResponse>> 分页查询(
         @RequestBody PageRequestWrapper<ZanQueryRequest> request);
 }

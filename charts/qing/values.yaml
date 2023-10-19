@@ -172,7 +172,7 @@ ingress:
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls.yaml-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: chenyunlong.cn
       paths:
         - path: /
           pathType: ImplementationSpecific

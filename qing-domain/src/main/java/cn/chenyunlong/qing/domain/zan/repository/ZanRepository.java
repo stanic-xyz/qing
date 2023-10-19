@@ -6,4 +6,12 @@ import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.zan.Zan;
 
 public interface ZanRepository extends BaseRepository<Zan, Long> {
+
+    /**
+     * 根据实体类查询点赞次数
+     *
+     * @param entityId 实体ID
+     * @return 点赞数量
+     */
+    Long countByEntityId(Long entityId);
 }
