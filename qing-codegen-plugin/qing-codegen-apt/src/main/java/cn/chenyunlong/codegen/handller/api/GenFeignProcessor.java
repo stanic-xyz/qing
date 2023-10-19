@@ -79,7 +79,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
     }
 
     /**
-     * 生成create方法。
+     * 生成创建方法。
      *
      * @param typeElement 类型元素
      * @param nameContext 名称上下文
@@ -102,7 +102,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
                     .addMember("value", "$S", "create" + typeElement.getSimpleName())
                     .build())
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .addJavadoc("createRequest")
+                .addJavadoc("创建")
                 .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
                     ClassName.get(Long.class)))
                 .build());
@@ -136,7 +136,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
                     ClassName.get(String.class)))
-                .addJavadoc("update request")
+                .addJavadoc("更新请求")
                 .build());
         }
         return Optional.empty();
@@ -164,7 +164,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
             .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
                 ClassName.get(String.class)))
-            .addJavadoc("valid")
+            .addJavadoc("有效")
             .build());
     }
 
@@ -191,7 +191,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
             .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
             .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
                 ClassName.get(String.class)))
-            .addJavadoc("invalid")
+            .addJavadoc("无效")
             .build());
     }
 
@@ -218,7 +218,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
                     .addMember("value", "$S", "findById/{id}")
                     .build())
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .addJavadoc("findById")
+                .addJavadoc("根据ID查询")
                 .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
                     ClassName.get(nameContext.getResponsePackageName(),
                         nameContext.getResponseClassName())))
@@ -241,7 +241,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
             ClassName requestBody =
                 ClassName.get("org.springframework.web.bind.annotation", "RequestBody");
             return Optional.of(MethodSpec
-                .methodBuilder("findByPage")
+                .methodBuilder("分页查询")
                 .addParameter(ParameterSpec
                     .builder(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class),
                         ClassName.get(nameContext.getQueryRequestPackageName(),

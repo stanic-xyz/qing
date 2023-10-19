@@ -11,13 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class IUserServiceTest extends AbstractDomainTests {
 
-
     @Autowired
     private IUserService userService;
 
     @Test
     @DisplayName("添加用户（注册）")
-    void createUser() {
+    public void createUser() {
         UserCreator userCreator = new UserCreator();
         userCreator.setAvatar(RandomUtil.randomString(100));
         userCreator.setDescription(RandomUtil.randomString(100));

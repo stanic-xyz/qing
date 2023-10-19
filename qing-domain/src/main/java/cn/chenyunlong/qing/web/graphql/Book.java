@@ -11,6 +11,9 @@ public record Book(String id, String name, int pageCount, String authorId) {
         new Book("book-3", "Down Under", 436, "author-3")
     );
 
+    /**
+     * 根据ID查询书籍。
+     */
     public static Book getById(String id) {
         return books.stream()
             .filter(book -> book.id().equals(id))

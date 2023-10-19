@@ -11,6 +11,9 @@ public record Author(String id, String firstName, String lastName) {
         new Author("author-3", "Bill", "Bryson")
     );
 
+    /**
+     * 根据ID查询工作计划。
+     */
     public static Author getById(String id) {
         return authors.stream()
             .filter(author -> author.id().equals(id))

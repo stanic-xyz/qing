@@ -7,6 +7,10 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.qing.domain.entity.Entity;
+import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
+import cn.chenyunlong.qing.domain.user.User;
+import cn.chenyunlong.qing.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.zan.Zan;
 import cn.chenyunlong.qing.domain.zan.creator.ZanCreator;
 import cn.chenyunlong.qing.domain.zan.mapper.ZanMapper;
@@ -30,12 +34,22 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ZanServiceImpl implements IZanService {
     private final ZanRepository zanRepository;
+    private final EntityRepository entityRepository;
+    private final UserRepository userRepository;
 
     /**
      * createImpl
      */
     @Override
     public Long createZan(ZanCreator creator) {
+        Optional<Entity> entity = entityRepository.findById(creator.getEntityId());
+        if (entity.isEmpty()) {
+            throw new BusinessException("创建zan失败，实体不存在");
+        }
+        Optional<User> userRepositoryById = userRepository.findById(creator.getUserId());
+        if (userRepositoryById.isEmpty()) {
+            throw new BusinessException("创建zan失败，用户不存在");
+        }
         Optional<Zan> zan = EntityOperations.doCreate(zanRepository)
             .create(() -> ZanMapper.INSTANCE.dtoToEntity(creator))
             .update(Zan::init)

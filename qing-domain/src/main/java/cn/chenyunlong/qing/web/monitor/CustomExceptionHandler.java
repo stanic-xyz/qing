@@ -36,16 +36,23 @@ public class CustomExceptionHandler {
     private final PrometheusCustomMonitor monitor;
 
 
-    @ExceptionHandler(value = AbstractException.class)
+    @ExceptionHandler(AbstractException.class)
     public ResponseEntity<JsonResult> errorHandler(Exception exception) {
         JsonResult<Exception> jsonResult = JsonResult.res(ResponseCode.PARAM_FAIL, exception);
         return ResponseEntity.badRequest().body(jsonResult);
     }
 
-    @ExceptionHandler(value = HttpMessageConversionException.class)
+    @ExceptionHandler(HttpMessageConversionException.class)
     public ResponseEntity<JsonResult> messageConversionException(Exception exception) {
         JsonResult<Object> jsonResult =
             JsonResult.fail("参数异常，请检查参数格式").setDevMessage(exception.getMessage());
+        return ResponseEntity.badRequest().body(jsonResult);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<JsonResult> messageConversionException(BusinessException exception) {
+        JsonResult jsonResult =
+            JsonResult.fail(exception.getMessage()).setDevMessage(exception.getMessage());
         return ResponseEntity.badRequest().body(jsonResult);
     }
 
@@ -60,13 +67,6 @@ public class CustomExceptionHandler {
         JsonResult jsonResult;
         jsonResult = JsonResult.fail("参数校验错误：" + exception.getMessage())
             .setDevMessage(exception.getMessage());
-        return ResponseEntity.badRequest().body(jsonResult);
-    }
-
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<JsonResult> messageConversionException(BusinessException exception) {
-        JsonResult jsonResult =
-            JsonResult.fail(exception.getMessage()).setDevMessage(exception.getMessage());
         return ResponseEntity.badRequest().body(jsonResult);
     }
 
@@ -93,7 +93,7 @@ public class CustomExceptionHandler {
      * @param e 更新请求异常信息
      * @return 退出信息
      */
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(Exception.class)
     public String handle(Exception e) {
         monitor.getRequestErrorCount().increment();
         return "error, message: " + e.getMessage();
