@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 /**
  * 异步发送邮件
  *
- * @author stan
+ * @author 陈云龙
  * @since 2020/09/23
  */
 @Aspect

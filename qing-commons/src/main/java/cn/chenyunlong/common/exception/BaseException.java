@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 /**
  * 系统异常基类
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

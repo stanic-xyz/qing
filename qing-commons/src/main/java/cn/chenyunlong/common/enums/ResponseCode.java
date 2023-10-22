@@ -20,7 +20,7 @@ import cn.chenyunlong.common.constants.BaseEnum;
  * 前后端返回码。
  * </p>
  *
- * @author stan
+ * @author 陈云龙
  * @since 2022/11/27
  */
 public enum ResponseCode implements BaseEnum<Integer> {

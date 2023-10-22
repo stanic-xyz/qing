@@ -37,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * 日志记录切面。
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Slf4j
 @Aspect

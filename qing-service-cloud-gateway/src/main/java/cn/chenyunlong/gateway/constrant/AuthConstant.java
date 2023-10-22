@@ -16,7 +16,7 @@ package cn.chenyunlong.gateway.constrant;
 /**
  * 权限相关常量定义。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2021/01/21
  */
 public interface AuthConstant {

@@ -34,7 +34,7 @@ import lombok.Data;
 /**
  * 更新接口参数代码生成器
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/29
  */
 @AutoService(value = CodeGenProcessor.class)
@@ -59,7 +59,7 @@ public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
             builder.addAnnotation(Data.class);
         }
         addSetterAndGetterMethodWithConverter(builder, fields);
-        addIdField(builder, useLombok);
+        addIdField(builder);
         genJavaSourceFile(typeElement, builder);
     }
 

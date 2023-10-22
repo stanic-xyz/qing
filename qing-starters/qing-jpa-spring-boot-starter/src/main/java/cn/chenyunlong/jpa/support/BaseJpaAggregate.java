@@ -28,7 +28,7 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 /**
  * 基础jpa类型。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/05
  */
 

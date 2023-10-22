@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 /**
  * 手办模型 DIYGod
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/26
  */
 @Data

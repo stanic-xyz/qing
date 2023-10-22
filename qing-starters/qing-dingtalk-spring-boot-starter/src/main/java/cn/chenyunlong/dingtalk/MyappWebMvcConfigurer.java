@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * 注册授权拦截器。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/2022/10/20
  */
 @Component

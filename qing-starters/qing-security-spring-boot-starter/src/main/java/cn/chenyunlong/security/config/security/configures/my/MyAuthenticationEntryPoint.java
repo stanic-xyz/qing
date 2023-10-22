@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 /**
  * 登录成功处理入口。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2020-09-27
  */
 @Slf4j

@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 /**
  * 拒绝访问处理器
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Component
 public class MyAccessDeniedHandler implements AccessDeniedHandler {

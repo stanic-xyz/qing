@@ -24,7 +24,7 @@ import lombok.*;
 /**
  * 实体信息。
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Getter
 @Setter

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 @Data
 public class AgePlayInfoModel {

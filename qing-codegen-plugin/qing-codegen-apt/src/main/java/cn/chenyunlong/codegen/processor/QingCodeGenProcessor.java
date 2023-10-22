@@ -21,7 +21,6 @@ import cn.chenyunlong.codegen.context.CodeGenContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.hutool.core.map.MapUtil;
-import com.google.common.annotations.VisibleForTesting;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.processing.AbstractProcessor;
@@ -41,11 +40,8 @@ import javax.lang.model.util.Elements;
  * @author gim
  * @since 2023-10-24
  */
-@SupportedOptions({"debug", "verify"})
+@SupportedOptions({"debug", "verify", "baseDir"})
 public class QingCodeGenProcessor extends AbstractProcessor {
-
-    @VisibleForTesting
-    static final String MISSING_SERVICES_ERROR = "No service interfaces provided for element!";
 
     private final List<String> exceptionStacks = Collections.synchronizedList(new ArrayList<>());
 

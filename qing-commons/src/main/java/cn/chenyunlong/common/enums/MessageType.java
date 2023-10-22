@@ -18,7 +18,7 @@ import cn.chenyunlong.common.constants.BaseEnum;
 /**
  * 消息类型。
  *
- * @author Stan
+ * @author 陈云龙
  */
 @SuppressWarnings("unused")
 public enum MessageType implements BaseEnum<Integer> {

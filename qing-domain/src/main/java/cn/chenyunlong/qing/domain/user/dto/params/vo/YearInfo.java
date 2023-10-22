@@ -17,7 +17,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 @Data
 public class YearInfo implements Serializable {

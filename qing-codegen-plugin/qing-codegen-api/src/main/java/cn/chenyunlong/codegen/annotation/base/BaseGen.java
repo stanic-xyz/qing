@@ -31,9 +31,9 @@ public @interface BaseGen {
     boolean overrideSource() default false;
 
     /**
-     * pkg名称
+     * 代码生成位置（包名）。
      *
-     * @return {@link String}
+     * @return 包名
      */
     String pkgName() default "";
 

@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 /**
  * Token操作方法。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2020-09-13
  */
 @Slf4j

@@ -7,7 +7,7 @@ import lombok.ToString;
 /**
  * 置顶卡片数据模型。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/2022/10/18
  */
 @Getter

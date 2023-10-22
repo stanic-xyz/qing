@@ -23,7 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * WebMVC通用配置
  *
- * @author stan
+ * @author 陈云龙
  */
 @Slf4j
 @Configuration

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Hello控制器
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Slf4j
 @RestController

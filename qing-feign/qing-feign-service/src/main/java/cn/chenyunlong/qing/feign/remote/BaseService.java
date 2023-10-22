@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * 基础服务。
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Component
 @FeignClient(name = "base-platform", url = "192.168.129.1:30103", fallback = BaseServiceFallBack.class)

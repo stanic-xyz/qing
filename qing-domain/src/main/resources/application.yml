@@ -99,3 +99,9 @@ springdoc:
 liteflow:
   rule-source: flow/flow.el.xml
   enable: false
+like:
+  configs:
+    LIKE:
+      - UserPayFilter
+      - UserQueryFilter
+      - EntityQueryFilter

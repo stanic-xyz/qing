@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 /**
  * 自定义导出Excel数据注解
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

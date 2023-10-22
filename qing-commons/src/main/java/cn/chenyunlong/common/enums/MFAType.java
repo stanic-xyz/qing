@@ -18,7 +18,7 @@ import cn.chenyunlong.common.constants.BaseEnum;
 /**
  * MFA 类型。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/27
  */
 public enum MFAType implements BaseEnum<Integer> {

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * 标记该方法维需要Token校验。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/2022/10/20
  */
 @Target({ElementType.TYPE})

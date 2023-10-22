@@ -16,7 +16,7 @@ package cn.chenyunlong.common.enums;
 /**
  * 操作人类别。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/27
  */
 public enum OperatorType {

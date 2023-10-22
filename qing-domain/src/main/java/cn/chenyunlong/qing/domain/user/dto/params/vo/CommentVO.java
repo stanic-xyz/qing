@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 @Data
 public class CommentVO {

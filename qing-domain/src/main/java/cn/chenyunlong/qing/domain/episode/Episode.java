@@ -26,7 +26,7 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 @Getter
 @Setter

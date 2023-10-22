@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 /**
  * 用户信息
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Data
 @NoArgsConstructor

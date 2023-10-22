@@ -32,7 +32,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 /**
  * Security 配置。
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Configuration
 @RequiredArgsConstructor

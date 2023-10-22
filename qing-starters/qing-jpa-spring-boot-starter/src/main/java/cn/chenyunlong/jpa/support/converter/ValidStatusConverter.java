@@ -22,7 +22,7 @@ import java.util.Arrays;
 /**
  * 校验状态转换器。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/24
  */
 @Converter

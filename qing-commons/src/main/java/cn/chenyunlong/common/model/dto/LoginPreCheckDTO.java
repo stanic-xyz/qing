@@ -20,7 +20,7 @@ import lombok.ToString;
 /**
  * User login env.
  *
- * @author Stan
+ * @author 陈云龙
  * @version 1.0
  * @since 2020/3/31 2:39 下午
  */

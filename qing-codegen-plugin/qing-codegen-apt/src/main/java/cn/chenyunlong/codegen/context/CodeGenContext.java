@@ -30,7 +30,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 /**
  * 通过SPI 加载所有的CodeGenProcessor 识别要处理的annotation标记类。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/28
  */
 public final class CodeGenContext {

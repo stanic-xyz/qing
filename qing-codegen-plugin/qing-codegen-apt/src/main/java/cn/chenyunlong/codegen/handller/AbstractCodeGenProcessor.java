@@ -58,7 +58,7 @@ import lombok.Data;
 /**
  * 基础代码一代处理器。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/27
  */
 public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
@@ -167,9 +167,6 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
             SupportedGenTypes supportedGenTypes =
                 this.getClass().getAnnotation(SupportedGenTypes.class);
             override = supportedGenTypes.override();
-            // 判断支持的类型
-            Class<? extends Annotation> types = supportedGenTypes.types();
-            System.out.println("支持的类型：types = " + types);
         }
         return override;
     }
@@ -432,10 +429,9 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     /**
      * 添加id setter和getter。
      *
-     * @param builder   构建器
-     * @param useLombok 使用启用lombok
+     * @param builder 构建器
      */
-    protected void addIdField(TypeSpec.Builder builder, boolean useLombok) {
+    protected void addIdField(TypeSpec.Builder builder) {
         builder.addField(
             FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
 

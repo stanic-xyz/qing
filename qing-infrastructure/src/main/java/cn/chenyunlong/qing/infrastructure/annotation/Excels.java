@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
 /**
  * Excel注解集
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

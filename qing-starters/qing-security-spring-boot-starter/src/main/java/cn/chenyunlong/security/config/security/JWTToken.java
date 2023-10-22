@@ -20,7 +20,7 @@ import org.springframework.security.core.GrantedAuthority;
 /**
  * Jwt 访问令牌。
  *
- * @author Stan
+ * @author 陈云龙
  */
 public class JWTToken extends AbstractAuthenticationToken {
 

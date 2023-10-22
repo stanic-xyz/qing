@@ -32,7 +32,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 /**
  * 通过实现ResponseBodyAdvice接口来完成对响应结果的过滤
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Slf4j
 @SuppressWarnings("rawtypes")

@@ -21,7 +21,7 @@ import lombok.ToString;
 /**
  * Login param.
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2021/04/05
  */
 @Data

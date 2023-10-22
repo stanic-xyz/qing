@@ -25,7 +25,7 @@ import lombok.*;
 /**
  * 点赞
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Getter
 @Setter

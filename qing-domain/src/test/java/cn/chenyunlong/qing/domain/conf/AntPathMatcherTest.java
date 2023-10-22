@@ -22,7 +22,7 @@ import org.springframework.util.AntPathMatcher;
 /**
  * Ant path matcher test.
  *
- * @author Stan
+ * @author 陈云龙
  */
 class AntPathMatcherTest {
 

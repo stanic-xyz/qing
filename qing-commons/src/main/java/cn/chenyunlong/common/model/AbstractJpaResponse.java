@@ -16,7 +16,7 @@ package cn.chenyunlong.common.model;
 import lombok.Data;
 
 /**
- * @author StanChen
+ * @author 陈云龙Chen
  */
 @Data
 public abstract class AbstractJpaResponse implements Response {

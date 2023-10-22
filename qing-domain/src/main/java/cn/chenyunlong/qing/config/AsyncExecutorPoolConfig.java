@@ -22,7 +22,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 /**
  * 异步线程池配置。
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Configuration
 public class AsyncExecutorPoolConfig implements AsyncConfigurer {

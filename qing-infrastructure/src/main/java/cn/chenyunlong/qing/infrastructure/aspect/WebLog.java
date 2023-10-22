@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 /**
  * Controller层的日志封装类
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2020/01/22
  */
 @Data

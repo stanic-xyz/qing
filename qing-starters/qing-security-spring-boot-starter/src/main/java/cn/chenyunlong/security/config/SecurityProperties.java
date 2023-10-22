@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 /**
  * Security配置。
  *
- * @author stan
+ * @author 陈云龙
  */
 @Data
 @Component

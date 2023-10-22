@@ -12,7 +12,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class ZanEventProcessor {
 
     private final ZanRepository zanRepository;
-
     private final IEntityService entityService;
 
 
@@ -23,7 +22,7 @@ public class ZanEventProcessor {
      */
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleMoneyChargeEvent(ZanEvent.ZanCreateEvent event) {
-        zanRepository.findById(event.getStudent().getId())
+        zanRepository.findById(event.getZan().getId())
             .ifPresent(zan -> entityService.updateZanCount(zan.getEntityId()));
     }
 }

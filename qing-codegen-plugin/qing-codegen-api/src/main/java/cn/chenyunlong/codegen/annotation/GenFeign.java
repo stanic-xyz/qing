@@ -26,6 +26,11 @@ import java.lang.annotation.*;
 public @interface GenFeign {
 
 
+    /**
+     * 代码生成位置（包名）。
+     *
+     * @return 包名
+     */
     String pkgName() default "service";
 
     String serverName() default "xxxSrv";

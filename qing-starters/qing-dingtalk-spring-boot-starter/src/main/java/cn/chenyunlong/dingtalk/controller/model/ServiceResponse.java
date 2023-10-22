@@ -6,7 +6,7 @@ import lombok.Setter;
 /**
  * 服务相应数据模型。
  *
- * @author stanic
+ * @author 陈云龙ic
  * @since 2022/10/2022/10/24
  */
 @Getter

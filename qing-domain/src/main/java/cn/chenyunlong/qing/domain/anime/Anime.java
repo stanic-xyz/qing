@@ -29,7 +29,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 /**
  * 动漫信息。
  *
- * @author Stan
+ * @author 陈云龙
  */
 
 @Getter

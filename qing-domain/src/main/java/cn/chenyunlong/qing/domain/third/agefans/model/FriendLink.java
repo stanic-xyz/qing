@@ -19,7 +19,7 @@ import lombok.Data;
 /**
  * 友链
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Data
 public class FriendLink implements Serializable {

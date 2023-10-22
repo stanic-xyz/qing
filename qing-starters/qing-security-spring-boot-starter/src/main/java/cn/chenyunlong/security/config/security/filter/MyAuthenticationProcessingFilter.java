@@ -29,7 +29,7 @@ import org.springframework.util.StringUtils;
 /**
  * 登录成功处理器过滤器。
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Slf4j
 public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {

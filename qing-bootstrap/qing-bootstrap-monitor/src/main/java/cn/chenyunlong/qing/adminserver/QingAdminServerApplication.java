@@ -19,7 +19,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 @EnableAdminServer
 @EnableDiscoveryClient

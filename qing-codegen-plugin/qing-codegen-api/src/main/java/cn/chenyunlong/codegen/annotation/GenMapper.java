@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 /**
  * 生成Mapper注解
  *
- * @author StanChen
+ * @author 陈云龙Chen
  * @since 2022/10/24
  */
 
@@ -29,6 +29,11 @@ import java.lang.annotation.*;
 @BaseGen
 public @interface GenMapper {
 
+    /**
+     * 代码生成位置（包名）。
+     *
+     * @return 包名
+     */
     String pkgName() default "mapper";
 
     String sourcePath() default "src/main/java";

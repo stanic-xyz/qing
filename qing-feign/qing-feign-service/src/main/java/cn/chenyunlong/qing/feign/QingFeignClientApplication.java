@@ -21,7 +21,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 /**
  * QingFeignClientApplication
  *
- * @author Stan
+ * @author 陈云龙
  */
 @EnableDiscoveryClient
 @EnableFeignClients
