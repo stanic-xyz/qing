@@ -16,9 +16,7 @@
 
 package cn.chenyunlong.qing.domain;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 
 /**
@@ -29,8 +27,5 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @ActiveProfiles("test")
 public abstract class AbstractDomainTests {
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
 }

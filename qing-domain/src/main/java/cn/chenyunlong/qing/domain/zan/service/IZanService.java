@@ -5,11 +5,19 @@ package cn.chenyunlong.qing.domain.zan.service;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.qing.domain.zan.creator.ZanCreator;
 import cn.chenyunlong.qing.domain.zan.query.ZanQuery;
+import cn.chenyunlong.qing.domain.zan.request.ZanCreateRequest;
 import cn.chenyunlong.qing.domain.zan.updater.ZanUpdater;
 import cn.chenyunlong.qing.domain.zan.vo.ZanVO;
 import org.springframework.data.domain.Page;
 
 public interface IZanService {
+
+
+    /**
+     * create
+     */
+    Long like(ZanCreateRequest createRequest);
+
     /**
      * create
      */

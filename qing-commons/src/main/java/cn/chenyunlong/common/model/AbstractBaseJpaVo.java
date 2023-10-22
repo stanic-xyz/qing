@@ -18,7 +18,7 @@ import lombok.Data;
 /**
  * jpa-vo基础基。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/28
  */
 @Data

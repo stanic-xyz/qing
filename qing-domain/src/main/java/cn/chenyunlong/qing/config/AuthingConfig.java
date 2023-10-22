@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Authing 登录相关的配置
  *
- * @author stan
+ * @author 陈云龙
  */
 @Slf4j
 @Configuration
@@ -35,6 +35,6 @@ public class AuthingConfig implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        log.info("Authing应用{{}}完毕！", authingProperties.getAppName());
+        log.info("Authing应用{{}}配置完毕！", authingProperties.getAppName());
     }
 }

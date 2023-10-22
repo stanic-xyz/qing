@@ -32,7 +32,7 @@ import reactor.core.publisher.Mono;
 /**
  * 白名单路径访问时需要移除JWT请求头。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2021/01/21
  */
 @Component

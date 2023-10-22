@@ -30,11 +30,12 @@ import java.lang.annotation.*;
 public @interface GenCreator {
 
     /**
-     * 包名。
+     * 代码生成位置（包名）。
      *
      * @return 包名
      */
-    String pkgName() default "creator";
+    String pkgName() default
+        "creator";
 
     /**
      * 生成源代码的目录。

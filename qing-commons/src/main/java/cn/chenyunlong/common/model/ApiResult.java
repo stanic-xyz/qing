@@ -23,7 +23,7 @@ import lombok.ToString;
 /**
  * 全局返回数据类型
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Data
 @ToString

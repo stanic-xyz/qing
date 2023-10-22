@@ -34,7 +34,7 @@ import javax.lang.model.element.VariableElement;
 /**
  * 处理Response的代码生成
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/28
  */
 @AutoService(CodeGenProcessor.class)

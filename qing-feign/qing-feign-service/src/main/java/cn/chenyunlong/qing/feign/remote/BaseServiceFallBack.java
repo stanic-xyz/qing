@@ -16,7 +16,7 @@ package cn.chenyunlong.qing.feign.remote;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 @Component
 public class BaseServiceFallBack implements BaseService {

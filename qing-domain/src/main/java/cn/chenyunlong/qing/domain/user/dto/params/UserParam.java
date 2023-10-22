@@ -24,7 +24,7 @@ import lombok.Data;
 /**
  * 注册用户的参数信息
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Data
 public class UserParam implements InputConverter<User> {

@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
  * 全局跨域配置。
  * 注意：前端从网关进行调用时需要配置。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2020/01/21
  */
 @Configuration

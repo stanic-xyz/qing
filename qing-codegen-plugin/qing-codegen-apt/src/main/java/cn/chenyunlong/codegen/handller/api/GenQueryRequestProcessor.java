@@ -34,7 +34,7 @@ import lombok.Data;
 /**
  * 处理QueryRequest的代码生成
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/28
  */
 @AutoService(CodeGenProcessor.class)

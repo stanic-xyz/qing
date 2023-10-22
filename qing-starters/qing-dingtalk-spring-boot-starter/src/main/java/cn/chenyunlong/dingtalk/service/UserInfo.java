@@ -8,7 +8,7 @@ import lombok.ToString;
 /**
  * 用户信息。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/2022/10/24
  */
 @Getter

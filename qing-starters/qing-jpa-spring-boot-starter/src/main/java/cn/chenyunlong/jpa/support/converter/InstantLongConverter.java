@@ -20,7 +20,7 @@ import java.time.Instant;
 /**
  * 时间转换器。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/24
  */
 @Converter

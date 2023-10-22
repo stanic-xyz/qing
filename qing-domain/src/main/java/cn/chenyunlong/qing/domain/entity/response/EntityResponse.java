@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema
 public class EntityResponse extends AbstractJpaResponse {
-    static {
-    }
 
     @Schema(
         title = "name",

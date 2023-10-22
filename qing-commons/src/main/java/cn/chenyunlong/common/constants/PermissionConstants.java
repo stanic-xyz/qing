@@ -16,7 +16,7 @@ package cn.chenyunlong.common.constants;
 /**
  * 权限通用常量。
  *
- * @author Stan
+ * @author 陈云龙
  */
 @SuppressWarnings("unused")
 public class PermissionConstants {

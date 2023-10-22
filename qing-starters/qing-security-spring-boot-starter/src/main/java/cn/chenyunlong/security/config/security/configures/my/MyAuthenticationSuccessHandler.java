@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 /**
  * 登录成功处理器。
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Slf4j
 @Component

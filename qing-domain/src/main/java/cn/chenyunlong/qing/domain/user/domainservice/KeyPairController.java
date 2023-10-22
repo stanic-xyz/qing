@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 获取RSA公钥接口
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2021/01/14
  */
 @ConditionalOnBean(KeyPair.class)

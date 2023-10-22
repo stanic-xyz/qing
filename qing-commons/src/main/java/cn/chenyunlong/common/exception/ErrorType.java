@@ -14,7 +14,7 @@
 package cn.chenyunlong.common.exception;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 public interface ErrorType {
     /**

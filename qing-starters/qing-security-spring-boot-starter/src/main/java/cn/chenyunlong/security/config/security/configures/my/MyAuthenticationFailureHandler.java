@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 /**
  * 任务失败处理器
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Component
 public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler {

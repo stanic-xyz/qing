@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 /**
  * 处理Feign接口的代码生成处理器。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/28
  */
 @AutoService(CodeGenProcessor.class)
@@ -241,7 +241,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
             ClassName requestBody =
                 ClassName.get("org.springframework.web.bind.annotation", "RequestBody");
             return Optional.of(MethodSpec
-                .methodBuilder("分页查询")
+                .methodBuilder("page")
                 .addParameter(ParameterSpec
                     .builder(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class),
                         ClassName.get(nameContext.getQueryRequestPackageName(),
@@ -253,7 +253,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
                     .addMember("value", "$S", "findByPage")
                     .build())
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .addJavadoc("findByPage request")
+                .addJavadoc("分页查询")
                 .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
                     ParameterizedTypeName.get(ClassName.get(PageResult.class),
                         ClassName.get(nameContext.getResponsePackageName(),

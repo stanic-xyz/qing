@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 外部接口-哔哩哔哩动漫接口
  * 用于定时获取哔哩哔哩动画的番剧评分信息
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/05
  */
 @Tag(name = "哔哩哔哩动画服务")

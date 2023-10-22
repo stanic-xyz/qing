@@ -21,7 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * 用户详细信息。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/18
  */
 public class UserDetail implements UserDetails {

@@ -87,7 +87,7 @@ public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
             .returns(void.class);
         builder.addMethod(methodBuilder.build());
 
-        addIdField(builder, useLombok);
+        addIdField(builder);
         genJavaFile(typeElement, builder);
     }
 

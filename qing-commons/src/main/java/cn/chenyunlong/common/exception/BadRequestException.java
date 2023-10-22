@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus;
 /**
  * Exception caused by bad request.
  *
- * @author Stan
+ * @author 陈云龙
  */
 public class BadRequestException extends AbstractException {
 

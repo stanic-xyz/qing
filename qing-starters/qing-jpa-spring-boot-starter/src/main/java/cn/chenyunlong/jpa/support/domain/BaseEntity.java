@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
 /**
  * 基础实体类。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2021/05/22
  */
 @Data

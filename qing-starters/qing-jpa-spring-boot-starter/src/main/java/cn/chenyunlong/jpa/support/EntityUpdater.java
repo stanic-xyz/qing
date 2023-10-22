@@ -42,6 +42,17 @@ public class EntityUpdater<T, ID> extends BaseEntityOperation
         this.repository = repository;
     }
 
+    /**
+     * 创建服务。
+     *
+     * @param supplier 提供者
+     * @return 创造者
+     */
+    public EntityUpdater<T, ID> create(Supplier<T> supplier) {
+        this.entity = supplier.get();
+        return this;
+    }
+
     @Override
     public Optional<T> execute() {
         doValidate(this.entity, UpdateGroup.class);
@@ -55,6 +66,12 @@ public class EntityUpdater<T, ID> extends BaseEntityOperation
         return Optional.empty();
     }
 
+    /**
+     * 根据主键标识查询实体类。
+     *
+     * @param id id 主键标识
+     * @return 更新操作处理器。
+     */
     @Override
     public UpdateHandler<T> loadById(ID id) {
         Preconditions.checkArgument(Objects.nonNull(id), "id is null");

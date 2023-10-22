@@ -31,7 +31,7 @@ import javax.lang.model.element.TypeElement;
 /**
  * 生成Mapper。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/29
  */
 @AutoService(CodeGenProcessor.class)

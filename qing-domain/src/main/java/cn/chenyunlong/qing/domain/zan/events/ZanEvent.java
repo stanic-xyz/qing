@@ -7,12 +7,12 @@ public class ZanEvent {
 
     @Value
     public static class ZanCreateEvent {
-        Zan student;
+        Zan zan;
     }
 
     @Value
     public static class ZanRemoveEvent {
-        Zan student;
+        Zan zan;
     }
 
 }

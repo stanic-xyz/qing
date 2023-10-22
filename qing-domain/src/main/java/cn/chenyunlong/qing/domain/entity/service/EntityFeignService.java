@@ -55,6 +55,6 @@ public interface EntityFeignService {
      * findByPage request
      */
     @PostMapping("findByPage")
-    JsonResult<PageResult<EntityResponse>> 分页查询(
+    JsonResult<PageResult<EntityResponse>> page(
         @RequestBody PageRequestWrapper<EntityQueryRequest> request);
 }

@@ -40,7 +40,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * 统一日志处理切面
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2021/01/21
  */
 @Aspect

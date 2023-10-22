@@ -59,8 +59,9 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
         final TypeSpec.Builder builder = TypeSpec
             .classBuilder(className)
-            .addSuperinterface(ClassName.get(nameContext.getServicePackageName(),
-                nameContext.getServiceClassName()))
+            .addSuperinterface(
+                ClassName.get(nameContext.getServicePackageName(),
+                    nameContext.getServiceClassName()))
             .addAnnotation(Transactional.class)
             .addAnnotation(Service.class)
             .addAnnotation(Slf4j.class)

@@ -18,7 +18,7 @@ import cn.chenyunlong.security.base.BaseJwtUser;
 /**
  * 基础用户接口
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/11
  */
 public class QingBaseUser extends BaseJwtUser {

@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus;
 /**
  * Authentication exception.
  *
- * @author Stan
+ * @author 陈云龙
  */
 public class AuthenticationException extends AbstractException {
 

@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 /**
  * 退出成功处理器
  *
- * @author Stan
+ * @author 陈云龙
  */
 @Component
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {

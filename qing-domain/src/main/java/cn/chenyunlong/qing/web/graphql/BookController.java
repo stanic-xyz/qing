@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.web.graphql;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
@@ -19,9 +19,7 @@ public class BookController {
      */
     @QueryMapping
     public List<Book> books(@Argument String id) {
-        return Book.books.stream().filter(book ->
-                book.id().equals(id))
-            .collect(Collectors.toList());
+        return new ArrayList<>(Book.books);
     }
 
     @SchemaMapping

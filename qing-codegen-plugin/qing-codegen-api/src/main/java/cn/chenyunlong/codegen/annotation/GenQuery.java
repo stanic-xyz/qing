@@ -27,6 +27,11 @@ import java.lang.annotation.*;
 @BaseGen
 public @interface GenQuery {
 
+    /**
+     * 代码生成位置（包名）。
+     *
+     * @return 包名
+     */
     String pkgName() default "query";
 
     String sourcePath() default "src/main/java";

@@ -25,7 +25,13 @@ import java.lang.annotation.*;
 @BaseGen
 public @interface GenController {
 
-    String pkgName() default "controller";
+    /**
+     * 代码生成位置（包名）。
+     *
+     * @return 包名
+     */
+    String pkgName() default
+        "controller";
 
     String sourcePath() default "src/main/java";
 

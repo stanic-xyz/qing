@@ -22,7 +22,7 @@ import java.lang.annotation.*;
 /**
  * 代码生成器基础文件
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/27
  */
 

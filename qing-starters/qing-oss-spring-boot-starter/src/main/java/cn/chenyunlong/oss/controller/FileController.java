@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * OSS文件控制器。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/05
  */
 @Tag(name = "文件控制器")

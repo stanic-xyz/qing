@@ -5,18 +5,28 @@ package cn.chenyunlong.qing.domain.zan.service.impl;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.jpa.support.BaseJpaService;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
 import cn.chenyunlong.qing.domain.user.User;
 import cn.chenyunlong.qing.domain.user.repository.UserRepository;
+import cn.chenyunlong.qing.domain.zan.LikeContext;
+import cn.chenyunlong.qing.domain.zan.LikeModel;
 import cn.chenyunlong.qing.domain.zan.Zan;
 import cn.chenyunlong.qing.domain.zan.creator.ZanCreator;
 import cn.chenyunlong.qing.domain.zan.mapper.ZanMapper;
+import cn.chenyunlong.qing.domain.zan.pipeline.BizEnum;
+import cn.chenyunlong.qing.domain.zan.pipeline.EventFilterChain;
+import cn.chenyunlong.qing.domain.zan.pipeline.FilterChainPipeline;
+import cn.chenyunlong.qing.domain.zan.pipeline.selecter.FilterSelector;
 import cn.chenyunlong.qing.domain.zan.query.ZanQuery;
 import cn.chenyunlong.qing.domain.zan.repository.ZanRepository;
+import cn.chenyunlong.qing.domain.zan.request.ZanCreateRequest;
 import cn.chenyunlong.qing.domain.zan.service.IZanService;
+import cn.chenyunlong.qing.domain.zan.service.plugin.SmsPlugin;
+import cn.chenyunlong.qing.domain.zan.service.selector.LikeFilterSelectorFactory;
 import cn.chenyunlong.qing.domain.zan.updater.ZanUpdater;
 import cn.chenyunlong.qing.domain.zan.vo.ZanVO;
 import java.util.Optional;
@@ -25,6 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.plugin.core.PluginRegistry;
+import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,10 +44,39 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ZanServiceImpl implements IZanService {
+@EnablePluginRegistries(value = {SmsPlugin.class})
+public class ZanServiceImpl extends BaseJpaService implements IZanService {
     private final ZanRepository zanRepository;
     private final EntityRepository entityRepository;
     private final UserRepository userRepository;
+    private final FilterChainPipeline<LikeContext> likeContextPipeline;
+    private final LikeFilterSelectorFactory likeFilterSelectorFactory;
+    private final PluginRegistry<SmsPlugin, LikeModel> pluginRegistry;
+
+    /**
+     * 点赞
+     *
+     * @param createRequest 请求参数
+     * @return 点赞结果
+     */
+    @Override
+    public Long like(ZanCreateRequest createRequest) {
+        FilterSelector filterSelector = likeFilterSelectorFactory.getFilterSelector(BizEnum.LIKE);
+        LikeContext likeContext = LikeContext.create(BizEnum.LIKE, filterSelector);
+        likeContext.setCreateRequest(createRequest);
+        EventFilterChain<LikeContext> filterChain = likeContextPipeline.getNext();
+        filterChain.handle(likeContext);
+
+        LikeModel likeModel = likeContext.getLikeModel();
+        // 通过插件处理业务扩展
+        pluginRegistry.getPluginsFor(likeModel).forEach(
+            likeModelLikePlugin ->
+                likeModelLikePlugin.sendSms(likeModel.getUser().getPhone(),
+                    likeModel.getUser().getEmail()));
+
+        // 业务处理完毕，读取处理结果
+        return likeContext.getCreateRequest().getEntityId();
+    }
 
     /**
      * createImpl
@@ -62,7 +103,7 @@ public class ZanServiceImpl implements IZanService {
      */
     @Override
     public void updateZan(ZanUpdater updater) {
-        EntityOperations.doUpdate(zanRepository)
+        doUpdate(zanRepository)
             .loadById(updater.getId())
             .update(updater::updateZan)
             .execute();
@@ -73,7 +114,7 @@ public class ZanServiceImpl implements IZanService {
      */
     @Override
     public void validZan(Long id) {
-        EntityOperations.doUpdate(zanRepository)
+        doUpdate(zanRepository)
             .loadById(id)
             .update(BaseEntity::valid)
             .execute();
@@ -84,7 +125,7 @@ public class ZanServiceImpl implements IZanService {
      */
     @Override
     public void invalidZan(Long id) {
-        EntityOperations.doUpdate(zanRepository)
+        doUpdate(zanRepository)
             .loadById(id)
             .update(BaseEntity::invalid)
             .execute();

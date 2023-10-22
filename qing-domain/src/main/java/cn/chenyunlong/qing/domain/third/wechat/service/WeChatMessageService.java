@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 /**
  * 微信消息
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/26
  */
 @Slf4j

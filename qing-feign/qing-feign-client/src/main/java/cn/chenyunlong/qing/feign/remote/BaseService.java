@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 @FeignClient(
     name = "base-platform",

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 /**
  * 互动卡片服务。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/2022/10/19
  */
 @Slf4j

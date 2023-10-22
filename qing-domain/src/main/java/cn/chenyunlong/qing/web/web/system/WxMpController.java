@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 对接微信公众平台
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/11/05
  */
 @Slf4j

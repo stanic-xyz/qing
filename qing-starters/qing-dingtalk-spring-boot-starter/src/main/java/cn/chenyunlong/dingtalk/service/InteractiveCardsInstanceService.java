@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * 吊顶卡片接口。
  * 详见https://open.dingtalk.com/document/orgapp-server/create-an-interactive-card-instance-1
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/2022/10/19
  */
 @Slf4j

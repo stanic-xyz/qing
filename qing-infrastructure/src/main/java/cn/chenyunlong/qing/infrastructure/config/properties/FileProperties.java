@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 /**
  * 文件属性
  *
- * @author stan
+ * @author 陈云龙
  * @since 2022/10/18
  */
 @Data

@@ -17,7 +17,7 @@ package cn.chenyunlong.common.exception;
 /**
  * 自定义错误类型
  *
- * @author Stan
+ * @author 陈云龙
  */
 
 public enum SystemErrorType implements ErrorType {

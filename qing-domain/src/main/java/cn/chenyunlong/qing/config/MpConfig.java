@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * MybatisPlus配置类。
  *
- * @author stan
+ * @author 陈云龙
  */
 @Configuration
 @EnableConfigurationProperties(WxMpProperties.class)

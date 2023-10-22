@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 public interface BiliAnimeService {
     /**

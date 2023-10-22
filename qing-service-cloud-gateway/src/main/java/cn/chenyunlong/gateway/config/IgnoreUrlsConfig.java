@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 /**
  * 网关白名单配置。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2021/01/21
  */
 @Data

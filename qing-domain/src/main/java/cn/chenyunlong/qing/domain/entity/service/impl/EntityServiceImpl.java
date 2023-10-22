@@ -42,11 +42,11 @@ public class EntityServiceImpl extends BaseJpaService implements IEntityService 
      */
     @Override
     public Long createEntity(EntityCreator creator) {
-        Optional<Entity> entity = EntityOperations.doCreate(entityRepository)
+        Optional<Entity> entity = doCreate(entityRepository)
             .create(() -> EntityMapper.INSTANCE.dtoToEntity(creator))
             .update(Entity::init)
             .execute();
-        return entity.isPresent() ? entity.get().getId() : 0;
+        return entity.map(Entity::getId).orElse(0L);
     }
 
     /**
@@ -54,7 +54,7 @@ public class EntityServiceImpl extends BaseJpaService implements IEntityService 
      */
     @Override
     public void updateEntity(EntityUpdater updater) {
-        EntityOperations.doUpdate(entityRepository)
+        doUpdate(entityRepository)
             .loadById(updater.getId())
             .update(updater::updateEntity)
             .execute();
@@ -76,7 +76,7 @@ public class EntityServiceImpl extends BaseJpaService implements IEntityService 
      */
     @Override
     public void invalidEntity(Long id) {
-        EntityOperations.doUpdate(entityRepository)
+        doUpdate(entityRepository)
             .loadById(id)
             .update(BaseEntity::invalid)
             .execute();

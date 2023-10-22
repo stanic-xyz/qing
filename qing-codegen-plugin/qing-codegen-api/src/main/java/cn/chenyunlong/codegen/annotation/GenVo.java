@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 /**
  * 生成VO
  *
- * @author Stan
+ * @author 陈云龙
  * @author Gim
  * @since 2022/11/06
  */
@@ -30,9 +30,9 @@ import java.lang.annotation.*;
 public @interface GenVo {
 
     /**
-     * 包名
+     * 代码生成位置（包名）。
      *
-     * @return {@link String}
+     * @return 包名
      */
     String pkgName() default "vo";
 

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * @author Stan
+ * @author 陈云龙
  */
 @Component
 @FeignClient(value = "zhangli-service-provider", fallback = MyFeignFallBack.class)

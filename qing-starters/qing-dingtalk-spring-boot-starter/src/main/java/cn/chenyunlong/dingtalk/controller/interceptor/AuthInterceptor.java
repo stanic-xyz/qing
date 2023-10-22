@@ -22,7 +22,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 /**
  * 拦截所有需要Token的请求，统一提前验证Token的有效性。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2022/10/2022/10/20
  */
 @Slf4j

@@ -25,6 +25,11 @@ import java.lang.annotation.*;
 @BaseGen
 public @interface GenRepository {
 
+    /**
+     * 代码生成位置（包名）。
+     *
+     * @return 包名
+     */
     String pkgName() default "repository";
 
     String sourcePath() default "src/main/java";

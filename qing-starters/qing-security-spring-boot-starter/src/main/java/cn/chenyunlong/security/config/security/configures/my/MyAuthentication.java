@@ -20,7 +20,7 @@ import org.springframework.security.core.GrantedAuthority;
 /**
  * 个人授权信息。
  *
- * @author Stan
+ * @author 陈云龙
  */
 public class MyAuthentication extends AbstractAuthenticationToken {
     public MyAuthentication(Collection<? extends GrantedAuthority> authorities) {

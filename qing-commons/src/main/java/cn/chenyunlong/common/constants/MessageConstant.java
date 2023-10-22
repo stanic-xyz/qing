@@ -16,7 +16,7 @@ package cn.chenyunlong.common.constants;
 /**
  * 消息常量。
  *
- * @author Stan
+ * @author 陈云龙
  * @since 2021/01/23
  */
 @SuppressWarnings("unused")
