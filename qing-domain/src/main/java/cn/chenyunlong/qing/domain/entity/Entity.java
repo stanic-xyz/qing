@@ -17,7 +17,6 @@ package cn.chenyunlong.qing.domain.entity;
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import lombok.*;
 
@@ -53,7 +52,6 @@ public class Entity extends BaseEntity {
     private String name;
 
     @FieldDesc(name = "实体类型")
-    @Column(unique = true)
     private EntityType entityType;
 
     @FieldDesc(name = "点赞数量")

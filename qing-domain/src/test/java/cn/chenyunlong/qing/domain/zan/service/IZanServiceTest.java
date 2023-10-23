@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
-@Rollback
 class IZanServiceTest extends AbstractDomainTests {
 
     @Autowired
@@ -30,6 +29,7 @@ class IZanServiceTest extends AbstractDomainTests {
     @Autowired
     private IEntityService entityService;
 
+    @Rollback
     @Test
     @DisplayName("点赞！")
     void createZan_NoUser() {
@@ -44,6 +44,7 @@ class IZanServiceTest extends AbstractDomainTests {
         });
     }
 
+    @Rollback
     @Test
     @DisplayName("点赞！")
     void createZan() {
@@ -78,6 +79,7 @@ class IZanServiceTest extends AbstractDomainTests {
 
     }
 
+    @Rollback
     @Test
     void invalidZan() {
 
@@ -111,10 +113,9 @@ class IZanServiceTest extends AbstractDomainTests {
 
         zanService.invalidZan(zanId);
         ZanVO zanVO = zanService.findById(zanId);
-
-
     }
 
+    @Rollback
     @Test
     void like() {
 
