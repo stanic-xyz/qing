@@ -199,9 +199,7 @@ function sendReport() {
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">动画名称：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.name
-                }}</span>
+                <span class="detail_imform_value">{{ data.anime.name }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">原版名称：</span>
@@ -211,9 +209,7 @@ function sendReport() {
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">原作：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.author
-                }}</span>
+                <span class="detail_imform_value">{{ data.anime.author }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">制作公司：</span>
@@ -241,9 +237,7 @@ function sendReport() {
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">标签：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.tags
-                }}</span>
+                <span class="detail_imform_value">{{ data.anime.tags }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">官方网站：</span>

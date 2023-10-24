@@ -29,12 +29,12 @@ function handleBtn() {
 
 <template>
   <lay-form
-    @submit="handleBtn"
     :model="loginForm"
-    requiredIcons="layui-icon-heart-fill"
     :use-CN="true"
     required
+    requiredIcons="layui-icon-heart-fill"
     style="text-align: center"
+    @submit="handleBtn"
   >
     <lay-form-item label="账户" prop="username">
       <lay-input v-model="loginForm.username"></lay-input>

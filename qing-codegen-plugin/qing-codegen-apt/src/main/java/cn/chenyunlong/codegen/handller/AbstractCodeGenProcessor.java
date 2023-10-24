@@ -53,7 +53,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
-import lombok.Data;
 
 /**
  * 基础代码一代处理器。
@@ -449,49 +448,6 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
             .addStatement("this.$L = $L", "id", "id");
         builder.addMethod(getMethod.build());
         builder.addMethod(setMethod.build());
-    }
-
-    /**
-     * 获取生成源的类型信息类型。
-     *
-     * @param sourceName     源名称
-     * @param packageName    包名
-     * @param superClassName 超类名字
-     * @return {@link TypeSpec.Builder}
-     */
-    public TypeSpec.Builder getSourceType(String sourceName, String packageName,
-                                          String superClassName) {
-        return TypeSpec
-            .classBuilder(sourceName)
-            .superclass(ClassName.get(packageName, superClassName))
-            .addModifiers(Modifier.PUBLIC)
-            .addAnnotation(Schema.class);
-    }
-
-    /**
-     * 源类型与构造。
-     *
-     * @param typeElement    typeElement
-     * @param sourceName     源名称
-     * @param packageName    包名
-     * @param superClassName 父类名称
-     * @return {@link TypeSpec.Builder}
-     */
-    public TypeSpec.Builder getSourceTypeWithConstruct(TypeElement typeElement, String sourceName,
-                                                       String packageName, String superClassName) {
-        MethodSpec.Builder constructorSpecBuilder = MethodSpec
-            .constructorBuilder()
-            .addParameter(TypeName.get(typeElement.asType()), "source")
-            .addModifiers(Modifier.PUBLIC);
-        constructorSpecBuilder.addStatement("super(source)");
-        return TypeSpec
-            .classBuilder(sourceName)
-            .superclass(ClassName.get(packageName, superClassName))
-            .addModifiers(Modifier.PUBLIC)
-            .addMethod(MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC).build())
-            .addMethod(constructorSpecBuilder.build())
-            .addAnnotation(Schema.class)
-            .addAnnotation(Data.class);
     }
 
 

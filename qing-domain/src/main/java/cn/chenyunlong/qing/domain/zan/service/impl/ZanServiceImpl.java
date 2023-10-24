@@ -40,7 +40,7 @@ import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Service
 @Slf4j
 @RequiredArgsConstructor

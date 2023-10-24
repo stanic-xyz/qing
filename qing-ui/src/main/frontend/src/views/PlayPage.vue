@@ -99,9 +99,7 @@ function changeEpisode(episodeId: any) {
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">动画种类：</span>
-                    <span class="play_imform_val">{{
-                      anime.typeName
-                    }}</span>
+                    <span class="play_imform_val">{{ anime.typeName }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">原作：</span>
@@ -115,9 +113,7 @@ function changeEpisode(episodeId: any) {
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">其它名称：</span>
-                    <span class="play_imform_val">{{
-                      anime.otherName
-                    }}</span>
+                    <span class="play_imform_val">{{ anime.otherName }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">制作公司：</span>
@@ -131,9 +127,7 @@ function changeEpisode(episodeId: any) {
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">播放状态：</span>
-                    <span class="play_imform_val">{{
-                      anime.playStatus
-                    }}</span>
+                    <span class="play_imform_val">{{ anime.playStatus }}</span>
                   </li>
                   <li class="play_imform_kv">
                     <span class="play_imform_tag">剧情类型：</span>

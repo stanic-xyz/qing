@@ -7,6 +7,7 @@ import { onMounted } from "vue";
 
 onMounted(() => {
   console.log("onMounted");
+  console.log("this 充 home");
 });
 </script>
 

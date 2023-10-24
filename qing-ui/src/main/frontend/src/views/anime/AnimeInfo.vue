@@ -49,12 +49,12 @@ onMounted(() => {
       <div class="video_item">
         <div class="video_item--image position-relative">
           <img
-            referrerpolicy="no-referrer"
-            :src="anime.coverUrl"
-            data-original="https://cdn.aqdstatic.com:966/age/20220255.jpg"
-            class="video_thumbs lazyload d-block w-100"
-            style="display: block; width: 120px"
             :alt="anime.name"
+            :src="anime.coverUrl"
+            class="video_thumbs lazyload d-block w-100"
+            data-original="https://cdn.aqdstatic.com:966/age/20220255.jpg"
+            referrerpolicy="no-referrer"
+            style="display: block; width: 120px"
           /><span class="video_item--info rounded-1 text-truncate">第08集</span>
         </div>
         <div

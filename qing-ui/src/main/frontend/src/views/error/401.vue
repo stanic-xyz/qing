@@ -1,10 +1,10 @@
 <template>
   <lay-card class="error-page">
     <lay-exception
-      status="401"
-      title="401"
       describe="抱歉，你无权访问该页面"
+      status="401"
       style="height: auto; width: auto"
+      title="401"
     >
       <template #extra>
         <lay-button>刷新</lay-button>
