@@ -73,7 +73,7 @@ function changeWeek(id: Number) {
 
 <template>
   <!--  生成一个容器-->
-  <lay-container fluid id="container">
+  <lay-container id="container" fluid>
     <lay-layout>
       <lay-body>
         <div>
@@ -88,8 +88,8 @@ function changeWeek(id: Number) {
             </ul>
           </div>
           <lay-empty
-            description="今日暂无推荐信息"
             v-if="animeInfoList.length == 0"
+            description="今日暂无推荐信息"
           ></lay-empty>
           <BlockTitle name="最近播放">最近播放</BlockTitle>
           <div>

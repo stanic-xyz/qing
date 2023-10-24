@@ -1,6 +1,6 @@
 <template>
   <lay-card class="error-page">
-    <lay-exception status="404" title="404" describe="抱歉，你访问的页面不存在">
+    <lay-exception describe="抱歉，你访问的页面不存在" status="404" title="404">
       <template #extra>
         <lay-button>刷新</lay-button>
         <lay-button type="primary">返回</lay-button>

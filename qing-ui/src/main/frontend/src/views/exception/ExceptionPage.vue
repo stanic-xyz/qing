@@ -9,7 +9,7 @@ console.log("ExceptionPage 加载成功");
 <template>
   <header
     class="panel-cover"
-    style="background-image: url('../../../public/logo.jpg')"
+    style="background-image: url(&quot;../../../public/logo.jpg&quot;)"
   >
     <div class="panel-main">
       <div class="panel-main__inner panel-inverted">

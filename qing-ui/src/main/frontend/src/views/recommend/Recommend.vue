@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import {onMounted, ref} from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
-import type {Anime} from "@/api/anime/types";
+import type { Anime } from "@/api/anime/types";
 
 const animeInfoList = ref<Anime[]>([]);
 
@@ -9,7 +9,7 @@ onMounted(() => {
   const instance = axios.create({
     baseURL: "https://mock.apifox.cn/m1/1876271-0-default",
     timeout: 1000,
-    headers: {apifoxToken: "6JQ7DXmRywJ8fsffzsMfLqLcgGMcwuvg"},
+    headers: { apifoxToken: "6JQ7DXmRywJ8fsffzsMfLqLcgGMcwuvg" },
   });
 
   instance
@@ -73,7 +73,7 @@ onMounted(() => {
             </router-link>
             <h4 class="anime_icon2_name">
               <router-link :to="`anime/${anime.id}`"
-              >{{ anime.name }}
+                >{{ anime.name }}
               </router-link>
             </h4>
           </li>

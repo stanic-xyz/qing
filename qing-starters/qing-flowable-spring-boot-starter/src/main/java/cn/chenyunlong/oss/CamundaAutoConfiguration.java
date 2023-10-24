@@ -17,6 +17,7 @@ import cn.chenyunlong.oss.config.OssProperties;
 import jakarta.annotation.Resource;
 import java.util.Arrays;
 import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,6 +28,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+@Slf4j
 @Configuration
 @EnableConfigurationProperties(OssProperties.class)
 public class CamundaAutoConfiguration {
@@ -34,11 +36,18 @@ public class CamundaAutoConfiguration {
     @Resource
     private RuntimeService runtimeService;
 
+    /**
+     * 部署完成事件通知
+     *
+     * @param event 完成部署事件
+     */
     @EventListener
     public void processPostDeploy(PostDeployEvent event) {
+        String name = event.getProcessEngine().getName();
+        log.info("流程示例部署完成：{}", name);
         runtimeService.startProcessInstanceByKey("loanApproval");
 
-        HashMap<String, Object> variables = new HashMap<String, Object>();
+        HashMap<String, Object> variables = new HashMap<>();
         variables.put("assigneeList030", Arrays.asList("kermit", "demo"));
         variables.put("assigneeList040", Arrays.asList("kermit", "demo"));
         variables.put("starter", "demo");
@@ -46,7 +55,9 @@ public class CamundaAutoConfiguration {
         runtimeService.startProcessInstanceByKey("Process_Demo1", variables);
     }
 
-    //Camunda CORS Filter in Spring Boot Application
+    /**
+     * Camunda CORS Filter in Spring Boot Application
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

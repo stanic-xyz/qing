@@ -16,8 +16,8 @@
     <lay-page
       v-model="currentPage"
       :limit="limit"
-      :total="total"
       :show-page="true"
+      :total="total"
     ></lay-page>
   </div>
 </template>
