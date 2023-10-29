@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.domain.type.service;
 
 import cn.chenyunlong.qing.domain.AbstractDomainTests;
-import cn.chenyunlong.qing.domain.type.creator.TypeCreator;
+import cn.chenyunlong.qing.domain.type.dto.creator.TypeCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

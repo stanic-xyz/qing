@@ -35,7 +35,7 @@ public @interface GenCreator {
      * @return 包名
      */
     String pkgName() default
-        "creator";
+        "dto.creator";
 
     /**
      * 生成源代码的目录。

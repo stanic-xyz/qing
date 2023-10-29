@@ -27,13 +27,11 @@ public class LikeContext implements EventContext {
      * 过滤器选择器
      */
     private final FilterSelector filterSelector;
-
+    @Getter
+    private final LikeModel likeModel;
     @Getter
     @Setter
     private ZanCreateRequest createRequest;
-
-    @Getter
-    private final LikeModel likeModel;
 
     /**
      * 新建一个上下文。
@@ -58,7 +56,7 @@ public class LikeContext implements EventContext {
     }
 
     /**
-     * @return
+     * 获取过滤器选择器。
      */
     @Override
     public FilterSelector getFilterSelector() {

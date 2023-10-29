@@ -1,18 +1,20 @@
-import { http } from "@/utils/service";
+import {http} from "@/utils/service";
+
+const service_url = "qing-service-anime";
 
 export const login = function (loginForm: any) {
-  return http.post("/user/login", loginForm);
+  return http.post(service_url + "/user/login", loginForm);
 };
 
 export const menu = function () {
-  return http.get("/user/menu");
+  return http.get(service_url + "/user/menu");
 };
 
 export const permission = function () {
   let param;
-  return http.get("/user/permission", param);
+  return http.get(service_url + "/user/permission", param);
 };
 
 export const userInfo = function (params: any) {
-  return http.get("user/getUserInfo");
+  return http.get(service_url + "user/getUserInfo");
 };

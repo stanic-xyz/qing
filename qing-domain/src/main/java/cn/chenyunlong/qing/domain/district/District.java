@@ -18,12 +18,10 @@ import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.proxy.HibernateProxy;
 
 /**
  * @author 陈云龙
@@ -56,31 +54,4 @@ public class District extends BaseEntity {
     @FieldDesc(name = "名称")
     private String name;
 
-    @Override
-    public final boolean equals(Object aClass) {
-        if (this == aClass) {
-            return true;
-        }
-        if (aClass == null) {
-            return false;
-        }
-        Class<?> oEffectiveClass = aClass instanceof HibernateProxy
-            ? ((HibernateProxy) aClass).getHibernateLazyInitializer().getPersistentClass()
-            : aClass.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
-            ((HibernateProxy) this).getHibernateLazyInitializer()
-                .getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) {
-            return false;
-        }
-        District that = (District) aClass;
-        return getId() != null && Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ?
-            ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() :
-            getClass().hashCode();
-    }
 }

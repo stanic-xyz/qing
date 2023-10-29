@@ -17,6 +17,8 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
+ * 生成更新请求体。
+ *
  * @author gim
  */
 @Target(ElementType.TYPE)
@@ -30,9 +32,15 @@ public @interface GenUpdateRequest {
      *
      * @return 包名
      */
-    String pkgName() default "request";
+    String pkgName() default "dto.request";
 
+    /**
+     * 文件生成的路径。
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 是否覆盖原有文件，默认false。
+     */
     boolean overrideSource() default false;
 }

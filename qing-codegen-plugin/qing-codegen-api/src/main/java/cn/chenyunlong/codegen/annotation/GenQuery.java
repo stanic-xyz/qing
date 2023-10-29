@@ -32,7 +32,7 @@ public @interface GenQuery {
      *
      * @return 包名
      */
-    String pkgName() default "query";
+    String pkgName() default "dto.query";
 
     String sourcePath() default "src/main/java";
 

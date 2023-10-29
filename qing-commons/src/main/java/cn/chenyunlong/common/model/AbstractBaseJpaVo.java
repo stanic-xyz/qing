@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.common.model;
 
+import java.time.Instant;
 import lombok.Data;
 
 /**
@@ -24,12 +25,9 @@ import lombok.Data;
 @Data
 public class AbstractBaseJpaVo {
 
-    private int version;
-
     private Long id;
 
-    private Long createdAt;
+    private Instant createdAt;
 
-    private Long updatedAt;
-
+    private Instant updatedAt;
 }

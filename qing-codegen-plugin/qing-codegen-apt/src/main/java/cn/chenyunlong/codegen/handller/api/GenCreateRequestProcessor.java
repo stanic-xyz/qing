@@ -71,7 +71,7 @@ public class GenCreateRequestProcessor extends AbstractCodeGenProcessor {
      */
     @Override
     public String getSubPackageName(TypeElement typeElement) {
-        return "request";
+        return typeElement.getAnnotation(GenCreateRequest.class).pkgName();
     }
 
     @Override

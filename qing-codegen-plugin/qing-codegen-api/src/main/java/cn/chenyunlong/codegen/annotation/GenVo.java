@@ -34,7 +34,7 @@ public @interface GenVo {
      *
      * @return 包名
      */
-    String pkgName() default "vo";
+    String pkgName() default "dto.vo";
 
     /**
      * 源路径

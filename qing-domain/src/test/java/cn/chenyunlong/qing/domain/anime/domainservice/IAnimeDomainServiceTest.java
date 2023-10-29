@@ -2,7 +2,7 @@ package cn.chenyunlong.qing.domain.anime.domainservice;
 
 import cn.chenyunlong.qing.domain.AbstractDomainTests;
 import cn.chenyunlong.qing.domain.anime.PlayStatus;
-import cn.chenyunlong.qing.domain.anime.creator.AnimeCreator;
+import cn.chenyunlong.qing.domain.anime.dto.creator.AnimeCreator;
 import cn.chenyunlong.qing.domain.anime.service.IAnimeService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;

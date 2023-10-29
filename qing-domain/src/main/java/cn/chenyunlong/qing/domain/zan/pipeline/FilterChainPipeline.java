@@ -17,22 +17,19 @@ public class FilterChainPipeline<T extends LikeContext> {
      * 获取所有的过滤器链。
      */
     private final List<EventFilter<T>> filters;
-
-    public FilterChainPipeline() {
-        filters = new LinkedList<>();
-    }
-
     /**
      * 下一个过滤器。
      */
     private EventFilterChain<T> next;
-
     /**
      * 最后一个过滤器。
      */
     @Setter
     private EventFilterChain<T> last;
 
+    public FilterChainPipeline() {
+        filters = new LinkedList<>();
+    }
 
     /**
      * 添加过滤器到第一个。

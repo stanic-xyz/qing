@@ -24,6 +24,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * 类型信息
+ *
  * @author 陈云龙
  */
 

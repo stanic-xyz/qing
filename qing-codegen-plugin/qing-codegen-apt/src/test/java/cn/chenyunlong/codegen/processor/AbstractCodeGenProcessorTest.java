@@ -78,7 +78,6 @@ public class AbstractCodeGenProcessorTest extends TestCase {
             package cn.chenyunlong.coded;
                             
             import io.swagger.v3.oas.annotations.media.Schema;
-            import cn.chenyunlong.codegen.annotation.GenDto;
             import cn.chenyunlong.codegen.annotation.GenCreator;
                             
             final class HelloWorld {
