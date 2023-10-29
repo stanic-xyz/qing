@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.domain.tag.service;
 
 import cn.chenyunlong.qing.domain.AbstractDomainTests;
-import cn.chenyunlong.qing.domain.tag.creator.TagCreator;
+import cn.chenyunlong.qing.domain.tag.dto.creator.TagCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

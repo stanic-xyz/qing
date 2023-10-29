@@ -16,8 +16,6 @@ package cn.chenyunlong.qing.domain.zan;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import cn.chenyunlong.qing.domain.zan.events.ZanEvent.ZanCreateEvent;
-import cn.chenyunlong.qing.domain.zan.events.ZanEvent.ZanRemoveEvent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -57,7 +55,6 @@ public class Zan extends BaseEntity {
     @Override
     public void init() {
         super.init();
-        registerEvent(new ZanCreateEvent(this));
     }
 
     /**
@@ -65,6 +62,5 @@ public class Zan extends BaseEntity {
      */
     public void remove() {
         invalid();
-        registerEvent(new ZanRemoveEvent(this));
     }
 }

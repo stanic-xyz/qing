@@ -16,13 +16,17 @@ package cn.chenyunlong.codegen.annotation;
 import java.lang.annotation.*;
 
 /**
- * @Author: Gim
- * @since: 2019-10-08 17:34
- * @Description:
+ * 自动生成查询参数
+ *
+ * @author 陈云龙
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.SOURCE)
 @Documented
 public @interface QueryItem {
+
+    /**
+     * 字段描述。
+     */
     String desc() default "";
 }

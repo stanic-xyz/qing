@@ -1,11 +1,7 @@
-import type {
-  NavigationGuardNext,
-  RouteLocationNormalized,
-  Router,
-} from "vue-router";
-import { createRouter, createWebHistory } from "vue-router";
+import type {NavigationGuardNext, RouteLocationNormalized, Router} from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import routes from "./modules/base-routes";
-import { userStore } from "@/stores/user";
+import {userStore} from "@/stores/user";
 
 /** 路由白名单 */
 const whiteList = ["/login"];
@@ -32,7 +28,7 @@ router.beforeEach(
   (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized,
-    next: NavigationGuardNext
+    next: NavigationGuardNext,
   ): void => {
     const store = userStore();
 
@@ -43,13 +39,13 @@ router.beforeEach(
     } else {
       next();
     }
-  }
+  },
 );
 
 router.onError(
   (error: any, to: RouteLocationNormalized, from: RouteLocationNormalized) => {
     console.log("导航守卫发生了错误");
-  }
+  },
 );
 
 router.afterEach(() => {

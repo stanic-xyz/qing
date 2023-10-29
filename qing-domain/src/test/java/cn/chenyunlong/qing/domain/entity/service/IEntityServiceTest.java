@@ -2,7 +2,7 @@ package cn.chenyunlong.qing.domain.entity.service;
 
 import cn.chenyunlong.qing.domain.AbstractDomainTests;
 import cn.chenyunlong.qing.domain.entity.EntityType;
-import cn.chenyunlong.qing.domain.entity.creator.EntityCreator;
+import cn.chenyunlong.qing.domain.entity.dto.creator.EntityCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

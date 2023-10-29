@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.domain.anime.mapper;
 
 import cn.chenyunlong.qing.domain.anime.Anime;
-import cn.chenyunlong.qing.domain.anime.creator.AnimeCreator;
+import cn.chenyunlong.qing.domain.anime.dto.creator.AnimeCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

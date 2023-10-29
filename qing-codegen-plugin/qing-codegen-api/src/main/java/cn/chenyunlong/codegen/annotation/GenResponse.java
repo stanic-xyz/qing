@@ -17,7 +17,9 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
- * @author gim
+ * 生成响应体。
+ *
+ * @author chenyunlong
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
@@ -30,9 +32,15 @@ public @interface GenResponse {
      *
      * @return 包名
      */
-    String pkgName() default "response";
+    String pkgName() default "dto.response";
 
+    /**
+     * 文件生成的路径。
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 是否覆盖原有文件，默认false。
+     */
     boolean overrideSource() default false;
 }

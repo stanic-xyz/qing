@@ -26,6 +26,8 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 /**
+ * 单集
+ *
  * @author 陈云龙
  */
 @Getter

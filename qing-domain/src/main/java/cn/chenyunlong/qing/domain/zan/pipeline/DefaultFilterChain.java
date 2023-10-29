@@ -15,10 +15,9 @@ public class DefaultFilterChain<T extends EventContext> implements EventFilterCh
      * 流水线的描述信息
      */
     private final String description;
-
+    private final EventFilter<T> eventFilter;
     @Setter
     private EventFilterChain<T> next;
-    private final EventFilter<T> eventFilter;
 
     /**
      * 初始化一个默认的过滤器链
@@ -36,15 +35,15 @@ public class DefaultFilterChain<T extends EventContext> implements EventFilterCh
     }
 
     @Override
-    public void fireNext(T context) {
-        next.handle(context);
-    }
-
-    @Override
     public void handle(T context) {
         eventFilter.doFilter(context);
         if (next != null && context.continueChain()) {
             fireNext(context);
         }
+    }
+
+    @Override
+    public void fireNext(T context) {
+        next.handle(context);
     }
 }

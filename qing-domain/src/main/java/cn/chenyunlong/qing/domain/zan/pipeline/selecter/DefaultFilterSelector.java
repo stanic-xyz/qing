@@ -11,16 +11,16 @@ import cn.chenyunlong.qing.domain.zan.pipeline.context.EventContext;
 public class DefaultFilterSelector implements FilterSelector {
 
     /**
+     * 禁用构造器
+     */
+    private DefaultFilterSelector() {
+    }
+
+    /**
      * 创建一个默认的过滤器匹配器。
      */
     public static FilterSelector createDefault() {
         return new DefaultFilterSelector();
-    }
-
-    /**
-     * 禁用构造器
-     */
-    private DefaultFilterSelector() {
     }
 
     @Override

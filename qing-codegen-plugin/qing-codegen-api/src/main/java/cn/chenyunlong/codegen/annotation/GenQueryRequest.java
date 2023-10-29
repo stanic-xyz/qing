@@ -30,7 +30,7 @@ public @interface GenQueryRequest {
      *
      * @return 包名
      */
-    String pkgName() default "request";
+    String pkgName() default "dto.request";
 
     String sourcePath() default "src/main/java";
 

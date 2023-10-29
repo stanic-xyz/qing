@@ -33,9 +33,17 @@ public @interface GenUpdater {
      *
      * @return 包名
      */
-    String pkgName() default "updater";
+    String pkgName() default "dto.updater";
 
+    /**
+     * 代码生成路径
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 是否需要覆盖原有的
+     *
+     * @return true：覆盖原有文件，false：忽略已有源文件
+     */
     boolean overrideSource() default false;
 }
