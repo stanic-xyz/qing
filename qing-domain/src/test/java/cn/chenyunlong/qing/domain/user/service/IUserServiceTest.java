@@ -8,12 +8,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 public class IUserServiceTest extends AbstractDomainTests {
 
     @Autowired
     private IUserService userService;
 
+    @Rollback
     @Test
     @DisplayName("添加用户（注册）")
     public void createUser() {

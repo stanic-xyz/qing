@@ -5,7 +5,7 @@ import cn.chenyunlong.qing.domain.tag.dto.creator.TagCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.test.annotation.Rollback;
 
 class ITagServiceTest extends AbstractDomainTests {
 
@@ -13,6 +13,7 @@ class ITagServiceTest extends AbstractDomainTests {
     @Autowired
     private ITagService typeService;
 
+    @Rollback
     @Test
     void createTag() {
         TagCreator typeCreator = new TagCreator();
