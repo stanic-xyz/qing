@@ -1,25 +1,103 @@
 package cn.chenyunlong.qing.domain.entity.service;
 
-import cn.chenyunlong.qing.domain.AbstractDomainTests;
-import cn.chenyunlong.qing.domain.entity.EntityType;
-import cn.chenyunlong.qing.domain.entity.dto.creator.EntityCreator;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+
+import cn.chenyunlong.common.constants.ValidStatus;
+import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.qing.domain.entity.Entity;
+import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
+import cn.chenyunlong.qing.domain.user.User;
+import cn.chenyunlong.qing.domain.user.repository.UserRepository;
+import cn.chenyunlong.qing.domain.zan.Zan;
+import cn.chenyunlong.qing.domain.zan.dto.creator.ZanCreator;
+import cn.chenyunlong.qing.domain.zan.repository.ZanRepository;
+import cn.chenyunlong.qing.domain.zan.service.impl.ZanServiceImpl;
+import jakarta.transaction.Transactional;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 
-@Rollback
-class IEntityServiceTest extends AbstractDomainTests {
+@Transactional
+class ZanServiceImplTest {
 
-    @Autowired
-    private IEntityService userService;
+    private ZanServiceImpl zanService;
+    private EntityRepository entityRepository;
+    private UserRepository userRepository;
+    private ZanRepository zanRepository;
+
+    @BeforeEach
+    void setUp() {
+        entityRepository = mock(EntityRepository.class);
+        userRepository = mock(UserRepository.class);
+        zanRepository = mock(ZanRepository.class);
+        zanService =
+            new ZanServiceImpl(zanRepository, entityRepository, userRepository, null, null, null);
+    }
 
     @Test
-    void createEntity() {
-        EntityCreator userCreator = new EntityCreator();
-        userCreator.setEntityType(EntityType.USER);
-        userCreator.setName("华为");
-        Long entityId = userService.createEntity(userCreator);
-        Assertions.assertNotNull(entityId);
+    void testCreateZan_ThrowsBusinessExceptionWhenEntityNotExists() {
+        ZanCreator creator = new ZanCreator();
+        creator.setEntityId(1L);
+        creator.setUserId(2L);
+
+        doReturn(Optional.empty()).when(entityRepository).findById(creator.getEntityId());
+        assertThrows(BusinessException.class, () -> zanService.createZan(creator));
+    }
+
+    @Test
+    void testCreateZan_ThrowsBusinessExceptionWhenUserNotExists() {
+        ZanCreator creator = new ZanCreator();
+        creator.setEntityId(1L);
+        creator.setUserId(2L);
+
+        doReturn(Optional.empty()).when(userRepository).findById(creator.getUserId());
+        assertThrows(BusinessException.class, () -> zanService.createZan(creator));
+    }
+
+    @Test
+    void testCreateZan_ReturnsZanIdWhenSuccessful() {
+        ZanCreator creator = new ZanCreator();
+        creator.setEntityId(1L);
+        creator.setUserId(2L);
+
+        User user = new User();
+        user.setId(2L);
+
+        doReturn(Optional.of(new Entity())).when(entityRepository).findById(creator.getEntityId());
+        doReturn(Optional.of(new User())).when(userRepository).findById(creator.getUserId());
+        doReturn(Optional.of(new Zan())).when(zanRepository).findById(anyLong());
+        doAnswer(answer -> {
+            Object argument = answer.getArgument(0);
+            ((Zan) argument).setValidStatus(ValidStatus.VALID);
+            Zan zan = new Zan();
+            zan.setId(1L);
+            return zan;
+        }).when(zanRepository).save(any());
+        long zanId = zanService.createZan(creator);
+        assertEquals(1, zanId);
+    }
+
+    @Test
+    void testCreateZan_ReturnsZeroWhenZanNotCreated() {
+        ZanCreator creator = new ZanCreator();
+        creator.setEntityId(1L);
+        creator.setUserId(2L);
+
+        doReturn(Optional.of(new Entity())).when(entityRepository).findById(creator.getEntityId());
+        doReturn(Optional.of(new User())).when(userRepository).findById(creator.getUserId());
+        doReturn(Optional.empty()).when(zanRepository).findById(anyLong());
+        doAnswer(answer -> {
+            Object argument = answer.getArgument(0);
+            ((Zan) argument).setValidStatus(ValidStatus.VALID);
+            Zan zan = new Zan();
+            zan.setId(1L);
+            return zan;
+        }).when(zanRepository).save(any());
+        long zanId = zanService.createZan(creator);
+        assertEquals(1, zanId);
     }
 }
