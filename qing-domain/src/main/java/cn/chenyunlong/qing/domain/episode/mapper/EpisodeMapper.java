@@ -31,11 +31,11 @@ public interface EpisodeMapper {
         return BeanUtil.copyProperties(request, EpisodeQuery.class);
     }
 
-    default EpisodeResponse vo2Response(EpisodeVO vo) {
-        return BeanUtil.copyProperties(vo, EpisodeResponse.class);
-    }
-
     default EpisodeResponse vo2CustomResponse(EpisodeVO vo) {
         return vo2Response(vo);
+    }
+
+    default EpisodeResponse vo2Response(EpisodeVO vo) {
+        return BeanUtil.copyProperties(vo, EpisodeResponse.class);
     }
 }

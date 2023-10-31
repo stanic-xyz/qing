@@ -31,11 +31,11 @@ public interface TagMapper {
         return BeanUtil.copyProperties(request, TagQuery.class);
     }
 
-    default TagResponse vo2Response(TagVO vo) {
-        return BeanUtil.copyProperties(vo, TagResponse.class);
-    }
-
     default TagResponse vo2CustomResponse(TagVO vo) {
         return vo2Response(vo);
+    }
+
+    default TagResponse vo2Response(TagVO vo) {
+        return BeanUtil.copyProperties(vo, TagResponse.class);
     }
 }

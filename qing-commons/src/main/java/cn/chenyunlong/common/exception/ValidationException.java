@@ -18,10 +18,12 @@ import java.util.List;
 import lombok.Getter;
 
 /**
- * @author gim
+ * 校验错误异常
+ *
+ * @author 陈云龙
  */
+@Getter
 public class ValidationException extends RuntimeException {
-    @Getter
     private final List<ValidateResult> result;
 
     public ValidationException(List<ValidateResult> list) {

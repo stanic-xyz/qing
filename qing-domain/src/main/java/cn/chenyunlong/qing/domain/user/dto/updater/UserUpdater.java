@@ -78,6 +78,20 @@ public class UserUpdater {
 
     private Long id;
 
+    public void updateUser(User param) {
+        Optional.ofNullable(getUid()).ifPresent(param::setUid);
+        Optional.ofNullable(getUsername()).ifPresent(param::setUsername);
+        Optional.ofNullable(getNickname()).ifPresent(param::setNickname);
+        Optional.ofNullable(getPassword()).ifPresent(param::setPassword);
+        Optional.ofNullable(getPhone()).ifPresent(param::setPhone);
+        Optional.ofNullable(getEmail()).ifPresent(param::setEmail);
+        Optional.ofNullable(getAvatar()).ifPresent(param::setAvatar);
+        Optional.ofNullable(getDescription()).ifPresent(param::setDescription);
+        Optional.ofNullable(getExpireTime()).ifPresent(param::setExpireTime);
+        Optional.ofNullable(getMfaType()).ifPresent(param::setMfaType);
+        Optional.ofNullable(getMfaKey()).ifPresent(param::setMfaKey);
+    }
+
     public Long getUid() {
         return uid;
     }
@@ -164,20 +178,6 @@ public class UserUpdater {
 
     public void setMfaKey(String mfaKey) {
         this.mfaKey = mfaKey;
-    }
-
-    public void updateUser(User param) {
-        Optional.ofNullable(getUid()).ifPresent(param::setUid);
-        Optional.ofNullable(getUsername()).ifPresent(param::setUsername);
-        Optional.ofNullable(getNickname()).ifPresent(param::setNickname);
-        Optional.ofNullable(getPassword()).ifPresent(param::setPassword);
-        Optional.ofNullable(getPhone()).ifPresent(param::setPhone);
-        Optional.ofNullable(getEmail()).ifPresent(param::setEmail);
-        Optional.ofNullable(getAvatar()).ifPresent(param::setAvatar);
-        Optional.ofNullable(getDescription()).ifPresent(param::setDescription);
-        Optional.ofNullable(getExpireTime()).ifPresent(param::setExpireTime);
-        Optional.ofNullable(getMfaType()).ifPresent(param::setMfaType);
-        Optional.ofNullable(getMfaKey()).ifPresent(param::setMfaKey);
     }
 
     public Long getId() {

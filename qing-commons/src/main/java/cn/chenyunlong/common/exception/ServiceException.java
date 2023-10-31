@@ -17,7 +17,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @author zhoutaoo
+ * 服务异常
+ *
+ * @author 陈云龙
  * @since 2018/6/2
  */
 @EqualsAndHashCode(callSuper = true)

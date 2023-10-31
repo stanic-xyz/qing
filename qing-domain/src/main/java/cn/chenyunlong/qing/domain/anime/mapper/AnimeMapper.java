@@ -31,11 +31,11 @@ public interface AnimeMapper {
         return BeanUtil.copyProperties(request, AnimeQuery.class);
     }
 
-    default AnimeResponse vo2Response(AnimeVO vo) {
-        return BeanUtil.copyProperties(vo, AnimeResponse.class);
-    }
-
     default AnimeResponse vo2CustomResponse(AnimeVO vo) {
         return vo2Response(vo);
+    }
+
+    default AnimeResponse vo2Response(AnimeVO vo) {
+        return BeanUtil.copyProperties(vo, AnimeResponse.class);
     }
 }

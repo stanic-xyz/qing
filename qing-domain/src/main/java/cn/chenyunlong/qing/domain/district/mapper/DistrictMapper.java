@@ -31,11 +31,11 @@ public interface DistrictMapper {
         return BeanUtil.copyProperties(request, DistrictQuery.class);
     }
 
-    default DistrictResponse vo2Response(DistrictVO vo) {
-        return BeanUtil.copyProperties(vo, DistrictResponse.class);
-    }
-
     default DistrictResponse vo2CustomResponse(DistrictVO vo) {
         return vo2Response(vo);
+    }
+
+    default DistrictResponse vo2Response(DistrictVO vo) {
+        return BeanUtil.copyProperties(vo, DistrictResponse.class);
     }
 }

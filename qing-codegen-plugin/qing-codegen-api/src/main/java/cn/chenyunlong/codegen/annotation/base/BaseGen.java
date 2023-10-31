@@ -18,13 +18,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * 通过该注解，可以添加一些基础配置信息。
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface BaseGen {
 
 
     /**
-     * 覆盖
+     * 覆盖已有源文件。
      *
      * @return boolean
      */

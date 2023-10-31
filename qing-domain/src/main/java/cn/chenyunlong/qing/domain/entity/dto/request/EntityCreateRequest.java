@@ -26,27 +26,4 @@ public class EntityCreateRequest implements Request {
     )
     private Long zanCount;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public EntityType getEntityType() {
-        return entityType;
-    }
-
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
-    }
-
-    public Long getZanCount() {
-        return zanCount;
-    }
-
-    public void setZanCount(Long zanCount) {
-        this.zanCount = zanCount;
-    }
 }

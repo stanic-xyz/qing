@@ -31,11 +31,11 @@ public interface AttachmentMapper {
         return BeanUtil.copyProperties(request, AttachmentQuery.class);
     }
 
-    default AttachmentResponse vo2Response(AttachmentVO vo) {
-        return BeanUtil.copyProperties(vo, AttachmentResponse.class);
-    }
-
     default AttachmentResponse vo2CustomResponse(AttachmentVO vo) {
         return vo2Response(vo);
+    }
+
+    default AttachmentResponse vo2Response(AttachmentVO vo) {
+        return BeanUtil.copyProperties(vo, AttachmentResponse.class);
     }
 }

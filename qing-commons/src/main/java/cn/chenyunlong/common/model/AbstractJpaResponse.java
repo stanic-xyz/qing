@@ -16,7 +16,9 @@ package cn.chenyunlong.common.model;
 import lombok.Data;
 
 /**
- * @author 陈云龙Chen
+ * Jpa 返回类型
+ *
+ * @author 陈云龙
  */
 @Data
 public abstract class AbstractJpaResponse implements Response {

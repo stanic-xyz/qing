@@ -2,8 +2,6 @@ package cn.chenyunlong.qing.domain.attachement.dto.updater;
 
 import cn.chenyunlong.qing.domain.attachement.Attachment;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.lang.Long;
-import java.lang.String;
 import java.util.Optional;
 import lombok.Data;
 
@@ -41,6 +39,14 @@ public class AttachmentUpdater {
     private Long fileSize;
 
     private Long id;
+
+    public void updateAttachment(Attachment param) {
+        Optional.ofNullable(getFileId()).ifPresent(param::setFileId);
+        Optional.ofNullable(getFileName()).ifPresent(param::setFileName);
+        Optional.ofNullable(getMimeType()).ifPresent(param::setMimeType);
+        Optional.ofNullable(getUrl()).ifPresent(param::setUrl);
+        Optional.ofNullable(getFileSize()).ifPresent(param::setFileSize);
+    }
 
     public Long getFileId() {
         return fileId;
@@ -80,14 +86,6 @@ public class AttachmentUpdater {
 
     public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
-    }
-
-    public void updateAttachment(Attachment param) {
-        Optional.ofNullable(getFileId()).ifPresent(param::setFileId);
-        Optional.ofNullable(getFileName()).ifPresent(param::setFileName);
-        Optional.ofNullable(getMimeType()).ifPresent(param::setMimeType);
-        Optional.ofNullable(getUrl()).ifPresent(param::setUrl);
-        Optional.ofNullable(getFileSize()).ifPresent(param::setFileSize);
     }
 
     public Long getId() {

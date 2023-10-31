@@ -16,7 +16,14 @@ package cn.chenyunlong.common.mapper;
 import java.time.Instant;
 import java.util.Objects;
 
+/**
+ * DateMapper
+ */
 public class DateMapper {
+
+    /**
+     * 时间转时间戳
+     */
     public Long asLong(Instant date) {
         if (Objects.nonNull(date)) {
             return date.toEpochMilli();
@@ -24,6 +31,9 @@ public class DateMapper {
         return null;
     }
 
+    /**
+     * 时间戳转时间
+     */
     public Instant asInstant(Long date) {
         if (Objects.nonNull(date)) {
             return Instant.ofEpochMilli(date);

@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
@@ -25,6 +26,7 @@ import javax.annotation.Nullable;
  *
  * @author johnniang
  */
+@SuppressWarnings("unused")
 public interface InputConverter<DOMAIN> {
 
     /**
@@ -32,6 +34,7 @@ public interface InputConverter<DOMAIN> {
      *
      * @return 具有相同值的新域 (非空)
      */
+    @SuppressWarnings("unchecked")
     default DOMAIN convertTo() {
         // Get parameterized type
         ParameterizedType currentType = parameterizedType();

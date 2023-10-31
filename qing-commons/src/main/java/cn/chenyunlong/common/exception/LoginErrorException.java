@@ -15,6 +15,9 @@ package cn.chenyunlong.common.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * 登录异常
+ */
 public class LoginErrorException extends AbstractException {
     public LoginErrorException(String msg, int code) {
         super(msg);

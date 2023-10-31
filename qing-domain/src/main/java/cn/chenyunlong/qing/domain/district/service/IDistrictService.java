@@ -5,7 +5,6 @@ import cn.chenyunlong.qing.domain.district.dto.creator.DistrictCreator;
 import cn.chenyunlong.qing.domain.district.dto.query.DistrictQuery;
 import cn.chenyunlong.qing.domain.district.dto.updater.DistrictUpdater;
 import cn.chenyunlong.qing.domain.district.dto.vo.DistrictVO;
-import java.lang.Long;
 import org.springframework.data.domain.Page;
 
 public interface IDistrictService {

@@ -13,9 +13,10 @@
 
 package cn.chenyunlong.codegen.annotation.enumes;
 
+/**
+ * 生成的模板代码持久层使用的 ORM 框架类型。
+ */
 public enum OrmType {
-
-    MYBATIS,
 
     MYBATIS_PLUS,
 

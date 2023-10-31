@@ -17,7 +17,7 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
- * 创更新器
+ * 生成更新Dto代码
  *
  * @author gim
  * @since 2022/10/24

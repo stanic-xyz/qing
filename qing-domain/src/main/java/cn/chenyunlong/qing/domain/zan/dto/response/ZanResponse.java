@@ -2,12 +2,15 @@ package cn.chenyunlong.qing.domain.zan.dto.response;
 
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@Data
 @Schema
+@EqualsAndHashCode(
+    callSuper = true
+)
 public class ZanResponse extends AbstractJpaResponse {
-    static {
-    }
-
     @Schema(
         title = "userId",
         description = "userId"
@@ -19,20 +22,4 @@ public class ZanResponse extends AbstractJpaResponse {
         description = "entityId"
     )
     private Long entityId;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(Long entityId) {
-        this.entityId = entityId;
-    }
 }

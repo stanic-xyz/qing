@@ -13,8 +13,6 @@ import cn.chenyunlong.qing.samples.codegen.domain.dto.vo.TestDomainVO;
 import cn.chenyunlong.qing.samples.codegen.domain.mapper.TestDomainMapper;
 import cn.chenyunlong.qing.samples.codegen.domain.repository.TestDomainRepository;
 import cn.chenyunlong.qing.samples.codegen.domain.service.ITestDomainService;
-import java.lang.Long;
-import java.lang.Override;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

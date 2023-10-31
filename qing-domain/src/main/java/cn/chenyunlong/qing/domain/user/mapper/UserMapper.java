@@ -31,11 +31,11 @@ public interface UserMapper {
         return BeanUtil.copyProperties(request, UserQuery.class);
     }
 
-    default UserResponse vo2Response(UserVO vo) {
-        return BeanUtil.copyProperties(vo, UserResponse.class);
-    }
-
     default UserResponse vo2CustomResponse(UserVO vo) {
         return vo2Response(vo);
+    }
+
+    default UserResponse vo2Response(UserVO vo) {
+        return BeanUtil.copyProperties(vo, UserResponse.class);
     }
 }

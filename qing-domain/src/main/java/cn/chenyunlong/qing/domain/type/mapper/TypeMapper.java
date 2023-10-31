@@ -31,11 +31,11 @@ public interface TypeMapper {
         return BeanUtil.copyProperties(request, TypeQuery.class);
     }
 
-    default TypeResponse vo2Response(TypeVO vo) {
-        return BeanUtil.copyProperties(vo, TypeResponse.class);
-    }
-
     default TypeResponse vo2CustomResponse(TypeVO vo) {
         return vo2Response(vo);
+    }
+
+    default TypeResponse vo2Response(TypeVO vo) {
+        return BeanUtil.copyProperties(vo, TypeResponse.class);
     }
 }

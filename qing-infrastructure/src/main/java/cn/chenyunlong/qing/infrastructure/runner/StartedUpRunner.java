@@ -23,6 +23,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
+ * 启动监听器。
+ *
  * @author 陈云龙
  */
 @Order

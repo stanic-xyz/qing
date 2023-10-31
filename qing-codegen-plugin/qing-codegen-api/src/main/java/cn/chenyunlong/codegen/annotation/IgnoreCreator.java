@@ -16,8 +16,10 @@ package cn.chenyunlong.codegen.annotation;
 import java.lang.annotation.*;
 
 /**
- * @Author: Gim
- * @Description:
+ * 在创建请求里面护短该字段
+ *
+ * @author 陈云龙
+ * @apiNote 没有忽略的字段，默认会在 CreateRequest对象里面生成
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.SOURCE)

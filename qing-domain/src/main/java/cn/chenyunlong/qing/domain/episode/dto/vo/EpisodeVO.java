@@ -44,11 +44,8 @@ public class EpisodeVO extends AbstractBaseJpaVo {
     public EpisodeVO(Episode source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setName(source.getName());
         this.setAnimeId(source.getAnimeId());
         this.setCollectionId(source.getCollectionId());

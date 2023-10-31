@@ -14,6 +14,8 @@
 package cn.chenyunlong.common.exception;
 
 /**
+ * 错误码
+ *
  * @author 错误码定义
  */
 public class ErrorCode {

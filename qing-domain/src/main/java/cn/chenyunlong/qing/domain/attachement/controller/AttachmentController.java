@@ -14,18 +14,11 @@ import cn.chenyunlong.qing.domain.attachement.dto.updater.AttachmentUpdater;
 import cn.chenyunlong.qing.domain.attachement.dto.vo.AttachmentVO;
 import cn.chenyunlong.qing.domain.attachement.mapper.AttachmentMapper;
 import cn.chenyunlong.qing.domain.attachement.service.IAttachmentService;
-import java.lang.Long;
-import java.lang.String;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j

@@ -54,6 +54,9 @@ public class WebLogAspect {
     public void webLog() {
     }
 
+    /**
+     * 切入点之前
+     */
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) {
         //ToDo 切入点之前
@@ -62,6 +65,9 @@ public class WebLogAspect {
         }
     }
 
+    /**
+     * 处理返回结果
+     */
     @AfterReturning(value = "webLog()", returning = "returnVal")
     public void doAfterReturning(Object returnVal) {
         if (log.isDebugEnabled()) {
@@ -78,7 +84,7 @@ public class WebLogAspect {
      */
     @Around("webLog()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         //获取当前请求对象
         ServletRequestAttributes attributes =
             (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -86,7 +92,6 @@ public class WebLogAspect {
         //记录请求信息(通过Logstash传入Elasticsearch)
 
         WebLog webLog = new WebLog();
-        Object result = joinPoint.proceed();
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         Method method = methodSignature.getMethod();
@@ -94,6 +99,7 @@ public class WebLogAspect {
             Operation log = method.getAnnotation(Operation.class);
             webLog.setDescription(log.description());
         }
+        Object result = joinPoint.proceed();
         long endTime = System.currentTimeMillis();
         String urlStr = request.getRequestURL().toString();
         webLog.setBasePath(StrUtil.removeSuffix(urlStr, URLUtil.url(urlStr).getPath()));
@@ -111,7 +117,7 @@ public class WebLogAspect {
         logMap.put("parameter", webLog.getParameter());
         logMap.put("spendTime", webLog.getSpendTime());
         logMap.put("description", webLog.getDescription());
-        LOGGER.info("{}", JSONUtil.toJsonStr(webLog));
+        LOGGER.info("{}", JSONUtil.toJsonStr(logMap));
         return result;
     }
 
@@ -139,7 +145,7 @@ public class WebLogAspect {
                 argList.add(map);
             }
         }
-        if (argList.size() == 0) {
+        if (argList.isEmpty()) {
             return null;
         } else if (argList.size() == 1) {
             return argList.get(0);

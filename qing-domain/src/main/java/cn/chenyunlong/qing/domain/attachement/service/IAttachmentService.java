@@ -5,7 +5,6 @@ import cn.chenyunlong.qing.domain.attachement.dto.creator.AttachmentCreator;
 import cn.chenyunlong.qing.domain.attachement.dto.query.AttachmentQuery;
 import cn.chenyunlong.qing.domain.attachement.dto.updater.AttachmentUpdater;
 import cn.chenyunlong.qing.domain.attachement.dto.vo.AttachmentVO;
-import java.lang.Long;
 import org.springframework.data.domain.Page;
 
 public interface IAttachmentService {

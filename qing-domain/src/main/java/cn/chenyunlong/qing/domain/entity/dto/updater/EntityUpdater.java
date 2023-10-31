@@ -29,6 +29,12 @@ public class EntityUpdater {
 
     private Long id;
 
+    public void updateEntity(Entity param) {
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+        Optional.ofNullable(getEntityType()).ifPresent(param::setEntityType);
+        Optional.ofNullable(getZanCount()).ifPresent(param::setZanCount);
+    }
+
     public String getName() {
         return name;
     }
@@ -51,12 +57,6 @@ public class EntityUpdater {
 
     public void setZanCount(Long zanCount) {
         this.zanCount = zanCount;
-    }
-
-    public void updateEntity(Entity param) {
-        Optional.ofNullable(getName()).ifPresent(param::setName);
-        Optional.ofNullable(getEntityType()).ifPresent(param::setEntityType);
-        Optional.ofNullable(getZanCount()).ifPresent(param::setZanCount);
     }
 
     public Long getId() {

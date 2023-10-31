@@ -3,9 +3,9 @@ package cn.chenyunlong.qing.domain.zan.service;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.qing.domain.zan.dto.creator.ZanCreator;
 import cn.chenyunlong.qing.domain.zan.dto.query.ZanQuery;
+import cn.chenyunlong.qing.domain.zan.dto.request.ZanCreateRequest;
 import cn.chenyunlong.qing.domain.zan.dto.updater.ZanUpdater;
 import cn.chenyunlong.qing.domain.zan.dto.vo.ZanVO;
-import cn.chenyunlong.qing.domain.zan.request.ZanCreateRequest;
 import org.springframework.data.domain.Page;
 
 public interface IZanService {
@@ -42,5 +42,5 @@ public interface IZanService {
     /**
      * 点赞。
      */
-    Long like(ZanCreateRequest creator);
+    Long like(ZanCreateRequest createRequest);
 }

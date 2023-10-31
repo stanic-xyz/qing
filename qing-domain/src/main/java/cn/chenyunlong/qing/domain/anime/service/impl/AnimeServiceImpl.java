@@ -13,8 +13,6 @@ import cn.chenyunlong.qing.domain.anime.dto.vo.AnimeVO;
 import cn.chenyunlong.qing.domain.anime.mapper.AnimeMapper;
 import cn.chenyunlong.qing.domain.anime.repository.AnimeRepository;
 import cn.chenyunlong.qing.domain.anime.service.IAnimeService;
-import java.lang.Long;
-import java.lang.Override;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

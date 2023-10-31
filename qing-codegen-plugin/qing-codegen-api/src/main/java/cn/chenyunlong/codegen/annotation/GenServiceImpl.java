@@ -17,7 +17,9 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
- * @author gim
+ * 生成Service基础CRUD方法。
+ *
+ * @author 陈云龙
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
@@ -32,7 +34,13 @@ public @interface GenServiceImpl {
      */
     String pkgName() default "service.impl";
 
+    /**
+     * 默认代码生成路径
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 重新运行是是否覆盖原有的源文件，重新生成源代码。
+     */
     boolean overrideSource() default false;
 }

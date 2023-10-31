@@ -16,12 +16,21 @@ package cn.chenyunlong.common.mapper;
 import cn.chenyunlong.common.constants.ValidStatus;
 import java.util.Objects;
 
+/**
+ * 通用的枚举类映射。
+ */
+@SuppressWarnings("unused")
 public class GenericEnumMapper {
 
     public Integer asInteger(ValidStatus status) {
         return status.getValue();
     }
 
+    /**
+     * c错误吗转换成状态信息
+     *
+     * @param code 错误码
+     */
     public ValidStatus asValidStatus(Integer code) {
         for (ValidStatus status : ValidStatus.values()) {
             if (Objects.equals(status.getValue(), code)) {

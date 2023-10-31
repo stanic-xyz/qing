@@ -30,11 +30,8 @@ public class TypeVO extends AbstractBaseJpaVo {
     public TypeVO(Type source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setName(source.getName());
         this.setInstruction(source.getInstruction());
     }
