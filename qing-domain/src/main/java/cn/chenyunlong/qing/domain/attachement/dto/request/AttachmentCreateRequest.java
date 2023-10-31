@@ -2,8 +2,6 @@ package cn.chenyunlong.qing.domain.attachement.dto.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.lang.Long;
-import java.lang.String;
 import lombok.Data;
 
 @Schema

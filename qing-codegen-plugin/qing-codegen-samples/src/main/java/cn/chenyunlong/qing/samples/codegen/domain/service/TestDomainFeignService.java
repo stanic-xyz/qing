@@ -7,8 +7,6 @@ import cn.chenyunlong.qing.samples.codegen.domain.dto.request.TestDomainCreateRe
 import cn.chenyunlong.qing.samples.codegen.domain.dto.request.TestDomainQueryRequest;
 import cn.chenyunlong.qing.samples.codegen.domain.dto.request.TestDomainUpdateRequest;
 import cn.chenyunlong.qing.samples.codegen.domain.dto.response.TestDomainResponse;
-import java.lang.Long;
-import java.lang.String;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

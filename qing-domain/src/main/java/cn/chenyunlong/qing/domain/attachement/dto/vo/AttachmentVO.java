@@ -3,8 +3,6 @@ package cn.chenyunlong.qing.domain.attachement.dto.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import cn.chenyunlong.qing.domain.attachement.Attachment;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.lang.Long;
-import java.lang.String;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -52,11 +50,8 @@ public class AttachmentVO extends AbstractBaseJpaVo {
     public AttachmentVO(Attachment source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setFileId(source.getFileId());
         this.setFileName(source.getFileName());
         this.setMimeType(source.getMimeType());

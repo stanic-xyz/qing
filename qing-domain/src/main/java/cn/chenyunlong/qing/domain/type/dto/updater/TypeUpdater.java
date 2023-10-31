@@ -20,6 +20,11 @@ public class TypeUpdater {
 
     private Long id;
 
+    public void updateType(Type param) {
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+        Optional.ofNullable(getInstruction()).ifPresent(param::setInstruction);
+    }
+
     public String getName() {
         return name;
     }
@@ -34,11 +39,6 @@ public class TypeUpdater {
 
     public void setInstruction(String instruction) {
         this.instruction = instruction;
-    }
-
-    public void updateType(Type param) {
-        Optional.ofNullable(getName()).ifPresent(param::setName);
-        Optional.ofNullable(getInstruction()).ifPresent(param::setInstruction);
     }
 
     public Long getId() {

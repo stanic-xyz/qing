@@ -25,7 +25,8 @@ public enum SystemErrorType implements ErrorType {
      * 具体的错误类型以及消息提示信息
      */
     ARGUMENT_NOT_VALID("020000", "请求参数校验不通过"),
-    DUPLICATE_PRIMARY_KEY("030000", "唯一键冲突"), FAILED("500", "操作失败"),
+    DUPLICATE_PRIMARY_KEY("030000", "唯一键冲突"),
+    FAILED("500", "操作失败"),
     GATEWAY_CONNECT_TIME_OUT("010002", "网关超时"), GATEWAY_ERROR("010500", "网关异常"),
     GATEWAY_NOT_FOUND_SERVICE("010404", "服务未找到"), INVALID_TOKEN("020001", "无效token"),
     SUCCESS("200", "操作成功"), SYSTEM_BUSY("000001", "系统繁忙,请稍候再试"),

@@ -17,7 +17,9 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
- * @author gim
+ * 自动生成Service层基础代码。
+ *
+ * @author chenyunlong
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
@@ -32,7 +34,13 @@ public @interface GenService {
      */
     String pkgName() default "service";
 
+    /**
+     * 默认代码生成路径
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 重新运行是是否覆盖原有的源文件，重新生成源代码。
+     */
     boolean overrideSource() default false;
 }

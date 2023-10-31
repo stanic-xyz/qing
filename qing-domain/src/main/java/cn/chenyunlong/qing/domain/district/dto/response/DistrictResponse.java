@@ -2,7 +2,6 @@ package cn.chenyunlong.qing.domain.district.dto.response;
 
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.lang.String;
 
 @Schema
 public class DistrictResponse extends AbstractJpaResponse {

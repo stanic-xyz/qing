@@ -88,11 +88,8 @@ public class UserVO extends AbstractBaseJpaVo {
     public UserVO(User source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setUid(source.getUid());
         this.setUsername(source.getUsername());
         this.setNickname(source.getNickname());

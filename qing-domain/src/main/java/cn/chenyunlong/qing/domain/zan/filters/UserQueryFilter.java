@@ -4,8 +4,8 @@ import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.domain.user.User;
 import cn.chenyunlong.qing.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.zan.LikeContext;
+import cn.chenyunlong.qing.domain.zan.dto.request.ZanCreateRequest;
 import cn.chenyunlong.qing.domain.zan.pipeline.AbstractEventFilter;
-import cn.chenyunlong.qing.domain.zan.request.ZanCreateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

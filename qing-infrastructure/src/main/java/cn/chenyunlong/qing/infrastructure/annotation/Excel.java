@@ -17,7 +17,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * 自定义导出Excel数据注解
@@ -58,14 +58,9 @@ public @interface Excel {
     String separator() default ",";
 
     /**
-     * BigDecimal 精度 默认:-1(默认不开启BigDecimal格式化)
-     */
-    int scale() default -1;
-
-    /**
      * BigDecimal 舍入规则 默认:BigDecimal.ROUND_HALF_EVEN
      */
-    int roundingMode() default BigDecimal.ROUND_HALF_EVEN;
+    RoundingMode roundingMode() default RoundingMode.HALF_EVEN;
 
     /**
      * 导出类型（0数字 1字符串）

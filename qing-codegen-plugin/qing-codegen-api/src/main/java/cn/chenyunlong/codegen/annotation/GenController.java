@@ -17,6 +17,8 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
+ * 生成Controller的注解
+ *
  * @author gim
  */
 @Target(ElementType.TYPE)
@@ -30,11 +32,16 @@ public @interface GenController {
      *
      * @return 包名
      */
-    String pkgName() default
-        "controller";
+    String pkgName() default "controller";
 
+    /**
+     * 代码生成路径
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 重新运行是是否覆盖原有的源文件，重新生成源代码。
+     */
     boolean overrideSource() default false;
 
     /**

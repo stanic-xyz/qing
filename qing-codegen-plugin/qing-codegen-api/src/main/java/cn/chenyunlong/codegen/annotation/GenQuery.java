@@ -17,9 +17,11 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
- * @Author: Gim
- * @since: 2019-10-08 17:13
- * @Description:
+ * 生成查询请求体
+ *
+ * @author 陈云龙
+ * @apiNote 标记为该注解，可以自动生成查询请求体
+ * @since 2019-10-08 17:13
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
@@ -34,7 +36,13 @@ public @interface GenQuery {
      */
     String pkgName() default "dto.query";
 
+    /**
+     * 默认代码生成路径
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 重新运行是是否覆盖原有的源文件，重新生成源代码。
+     */
     boolean overrideSource() default false;
 }

@@ -43,12 +43,18 @@ public final class JsonResult<T> {
     private JsonResult() {
     }
 
+    /**
+     * 成功
+     */
     public static <E> JsonResult<E> success(E result, String msg) {
         JsonResult<E> jsonResult = success(result);
         jsonResult.setMessage(msg);
         return jsonResult;
     }
 
+    /**
+     * 成功
+     */
     public static <E> JsonResult<E> success(E result) {
         JsonResult<E> jsonResult = new JsonResult<>();
         jsonResult.setCode(CodeEnum.Success.getValue());
@@ -57,6 +63,9 @@ public final class JsonResult<T> {
         return jsonResult;
     }
 
+    /**
+     * 成功
+     */
     public static <T, E> JsonResult<T> fail(BaseEnum<Integer> codeEnum) {
         JsonResult<T> jsonResult = new JsonResult<>();
         jsonResult.setMessage(codeEnum.getName());
@@ -64,6 +73,9 @@ public final class JsonResult<T> {
         return jsonResult;
     }
 
+    /**
+     * 成功
+     */
     public static <T> JsonResult<T> fail(String msg) {
         JsonResult<T> jsonResult = new JsonResult<>();
         jsonResult.setMessage(msg);
@@ -71,6 +83,9 @@ public final class JsonResult<T> {
         return jsonResult;
     }
 
+    /**
+     * 成功
+     */
     public static <E> JsonResult<E> fail(E result, String msg) {
         JsonResult<E> jsonResult = new JsonResult<>();
         jsonResult.setCode(CodeEnum.Fail.getValue());
@@ -79,6 +94,9 @@ public final class JsonResult<T> {
         return jsonResult;
     }
 
+    /**
+     * 成功
+     */
     public static <E> JsonResult<E> res(BaseEnum<Integer> codeEnum, E result) {
         JsonResult<E> jsonResult = new JsonResult<>();
         jsonResult.setMessage(codeEnum.getName());

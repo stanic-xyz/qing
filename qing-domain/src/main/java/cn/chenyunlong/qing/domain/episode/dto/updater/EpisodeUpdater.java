@@ -34,6 +34,13 @@ public class EpisodeUpdater {
 
     private Long id;
 
+    public void updateEpisode(Episode param) {
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+        Optional.ofNullable(getAnimeId()).ifPresent(param::setAnimeId);
+        Optional.ofNullable(getCollectionId()).ifPresent(param::setCollectionId);
+        Optional.ofNullable(getCollectionName()).ifPresent(param::setCollectionName);
+    }
+
     public String getName() {
         return name;
     }
@@ -64,13 +71,6 @@ public class EpisodeUpdater {
 
     public void setCollectionName(String collectionName) {
         this.collectionName = collectionName;
-    }
-
-    public void updateEpisode(Episode param) {
-        Optional.ofNullable(getName()).ifPresent(param::setName);
-        Optional.ofNullable(getAnimeId()).ifPresent(param::setAnimeId);
-        Optional.ofNullable(getCollectionId()).ifPresent(param::setCollectionId);
-        Optional.ofNullable(getCollectionName()).ifPresent(param::setCollectionName);
     }
 
     public Long getId() {

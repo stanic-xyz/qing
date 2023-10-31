@@ -9,8 +9,8 @@ import cn.chenyunlong.qing.domain.entity.service.IEntityService;
 import cn.chenyunlong.qing.domain.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.user.service.IUserService;
 import cn.chenyunlong.qing.domain.zan.dto.creator.ZanCreator;
+import cn.chenyunlong.qing.domain.zan.dto.request.ZanCreateRequest;
 import cn.chenyunlong.qing.domain.zan.dto.vo.ZanVO;
-import cn.chenyunlong.qing.domain.zan.request.ZanCreateRequest;
 import cn.hutool.core.util.RandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -79,10 +79,10 @@ class IZanServiceTest extends AbstractDomainTests {
 
     }
 
+    @DisplayName("测试 invalid 方法")
     @Rollback
     @Test
     void invalidZan() {
-
         // 创建一个用户
         EntityCreator entityCreator = new EntityCreator();
         entityCreator.setEntityType(EntityType.USER);
@@ -110,15 +110,15 @@ class IZanServiceTest extends AbstractDomainTests {
         Assertions.assertEquals(userId, byId.getUserId());
         Assertions.assertEquals(userId, byId.getUserId());
 
-
         zanService.invalidZan(zanId);
         ZanVO zanVO = zanService.findById(zanId);
+        Assertions.assertNotNull(zanVO);
     }
 
     @Rollback
     @Test
+    @DisplayName("测试 Pipeline 和 Spring Plugin")
     void like() {
-
         // 创建一个用户
         EntityCreator entityCreator = new EntityCreator();
         entityCreator.setEntityType(EntityType.USER);

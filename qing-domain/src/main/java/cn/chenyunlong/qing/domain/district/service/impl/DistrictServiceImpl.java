@@ -13,8 +13,6 @@ import cn.chenyunlong.qing.domain.district.dto.vo.DistrictVO;
 import cn.chenyunlong.qing.domain.district.mapper.DistrictMapper;
 import cn.chenyunlong.qing.domain.district.repository.DistrictRepository;
 import cn.chenyunlong.qing.domain.district.service.IDistrictService;
-import java.lang.Long;
-import java.lang.Override;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

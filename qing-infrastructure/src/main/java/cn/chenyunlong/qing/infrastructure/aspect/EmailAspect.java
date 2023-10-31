@@ -44,6 +44,9 @@ public class EmailAspect {
         // do nothing
     }
 
+    /**
+     * 切面
+     */
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
 

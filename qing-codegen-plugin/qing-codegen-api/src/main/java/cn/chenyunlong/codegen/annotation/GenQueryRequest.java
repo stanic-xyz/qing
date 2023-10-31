@@ -17,6 +17,8 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
+ * 自动生成基础的查询请求对象。
+ *
  * @author gim
  */
 @Target(ElementType.TYPE)
@@ -32,7 +34,13 @@ public @interface GenQueryRequest {
      */
     String pkgName() default "dto.request";
 
+    /**
+     * 默认代码生成路径
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 重新运行是是否覆盖原有的源文件，重新生成源代码。
+     */
     boolean overrideSource() default false;
 }

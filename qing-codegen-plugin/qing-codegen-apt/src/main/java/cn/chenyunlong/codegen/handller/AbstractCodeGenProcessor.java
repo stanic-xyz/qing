@@ -60,6 +60,7 @@ import javax.lang.model.util.Elements;
  * @author 陈云龙
  * @since 2022/11/27
  */
+@SuppressWarnings("unused")
 public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
 
 
@@ -345,27 +346,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         FieldSpec.Builder fieldSpec = FieldSpec
             .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
             .addAnnotation(schemaAnnotationBuilder.build());
-
-
         builder.addField(fieldSpec.build());
-
-        // 不使用lombok
-        String fieldName = getFieldDefaultName(element);
-        MethodSpec.Builder getMethod = MethodSpec
-            .methodBuilder("get" + fieldName)
-            .returns(typeName)
-            .addModifiers(Modifier.PUBLIC)
-            .addStatement("return $L", element.getSimpleName().toString());
-        MethodSpec.Builder setMethod = MethodSpec
-            .methodBuilder("set" + fieldName)
-            .returns(void.class)
-            .addModifiers(Modifier.PUBLIC)
-            .addParameter(typeName, element.getSimpleName().toString())
-            .addStatement("this.$L = $L", element.getSimpleName().toString(), element
-                .getSimpleName()
-                .toString());
-        builder.addMethod(getMethod.build());
-        builder.addMethod(setMethod.build());
     }
 
     /**

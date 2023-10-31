@@ -13,8 +13,6 @@ import cn.chenyunlong.qing.domain.attachement.dto.vo.AttachmentVO;
 import cn.chenyunlong.qing.domain.attachement.mapper.AttachmentMapper;
 import cn.chenyunlong.qing.domain.attachement.repository.AttachmentRepository;
 import cn.chenyunlong.qing.domain.attachement.service.IAttachmentService;
-import java.lang.Long;
-import java.lang.Override;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

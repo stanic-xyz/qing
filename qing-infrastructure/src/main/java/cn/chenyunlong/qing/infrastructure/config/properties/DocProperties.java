@@ -19,6 +19,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
+ * 文档属性配置。
+ *
  * @author 陈云龙
  */
 @Data

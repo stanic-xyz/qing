@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.common.model;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.util.Map;
@@ -23,7 +22,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 /**
- * @author gim
+ * 分页包装器
+ *
+ * @author 陈云龙
  */
 @Data
 public class PageRequestWrapper<T> {
@@ -31,7 +32,6 @@ public class PageRequestWrapper<T> {
     /**
      * 查询条件
      */
-    @Nullable
     private T bean;
 
     /**
@@ -51,7 +51,6 @@ public class PageRequestWrapper<T> {
     /**
      * 排序信息
      */
-    @Nullable
     private Map<String, String> sorts;
 
     /**

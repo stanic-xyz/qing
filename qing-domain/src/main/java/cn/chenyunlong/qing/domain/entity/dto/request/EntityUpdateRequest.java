@@ -28,35 +28,4 @@ public class EntityUpdateRequest implements Request {
 
     private Long id;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public EntityType getEntityType() {
-        return entityType;
-    }
-
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
-    }
-
-    public Long getZanCount() {
-        return zanCount;
-    }
-
-    public void setZanCount(Long zanCount) {
-        this.zanCount = zanCount;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

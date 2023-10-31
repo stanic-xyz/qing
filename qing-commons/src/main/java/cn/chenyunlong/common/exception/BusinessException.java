@@ -15,18 +15,20 @@ package cn.chenyunlong.common.exception;
 
 
 import cn.chenyunlong.common.constants.BaseEnum;
+import lombok.Getter;
 
 /**
- * 业务错误
+ * 业务错误。
  *
  * @author gim 强制业务异常必须提供code码，便于统一维护
  */
+@Getter
 public class BusinessException extends RuntimeException {
 
-    private BaseEnum code;
+    private BaseEnum<Integer> code;
     private Object data;
 
-    public BusinessException(BaseEnum code) {
+    public BusinessException(BaseEnum<Integer> code) {
         super(code.getName());
         this.code = code;
     }
@@ -35,7 +37,13 @@ public class BusinessException extends RuntimeException {
         this.data = data;
     }
 
-    public BusinessException(BaseEnum code, Object data) {
+    /**
+     * 生成基础异常
+     *
+     * @param code 错误码
+     * @param data 错误信息
+     */
+    public BusinessException(BaseEnum<Integer> code, Object data) {
         super(code.getName());
         this.code = code;
         this.data = data;

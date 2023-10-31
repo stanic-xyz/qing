@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.web.web;
 
 import cn.chenyunlong.common.constants.CodeEnum;
+import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.JsonResult;
 import jakarta.transaction.SystemException;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * @author gim
+ * 全局异常处理
+ *
+ * @author 陈云龙
  */
 @RestControllerAdvice
 @Slf4j
@@ -33,9 +36,8 @@ public class GlobalExceptionAdvice {
      * @param exception 业务异常
      * @return 返回空的信息
      */
-    @ExceptionHandler(cn.chenyunlong.common.exception.BusinessException.class)
-    public JsonResult<Void> handleBusinessException(
-        cn.chenyunlong.common.exception.BusinessException exception) {
+    @ExceptionHandler(BusinessException.class)
+    public JsonResult<Void> handleBusinessException(BusinessException exception) {
         return JsonResult.res(CodeEnum.NotFindError, null);
     }
 

@@ -18,6 +18,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
+ * 环境配置。
+ *
  * @author 陈云龙
  */
 @Data

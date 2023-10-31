@@ -34,6 +34,7 @@ import junit.framework.TestCase;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 
+@SuppressWarnings("deprecation")
 @Schema
 public class AbstractCodeGenProcessorTest extends TestCase {
 

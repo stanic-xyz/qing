@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.domain.district.dto.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import cn.chenyunlong.qing.domain.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.lang.String;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,11 +32,8 @@ public class DistrictVO extends AbstractBaseJpaVo {
     public DistrictVO(District source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setCode(source.getCode());
         this.setName(source.getName());
     }

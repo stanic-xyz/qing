@@ -3,12 +3,12 @@ package cn.chenyunlong.qing.domain.zan.mapper;
 import cn.chenyunlong.qing.domain.zan.Zan;
 import cn.chenyunlong.qing.domain.zan.dto.creator.ZanCreator;
 import cn.chenyunlong.qing.domain.zan.dto.query.ZanQuery;
+import cn.chenyunlong.qing.domain.zan.dto.request.ZanCreateRequest;
+import cn.chenyunlong.qing.domain.zan.dto.request.ZanQueryRequest;
+import cn.chenyunlong.qing.domain.zan.dto.request.ZanUpdateRequest;
+import cn.chenyunlong.qing.domain.zan.dto.response.ZanResponse;
 import cn.chenyunlong.qing.domain.zan.dto.updater.ZanUpdater;
 import cn.chenyunlong.qing.domain.zan.dto.vo.ZanVO;
-import cn.chenyunlong.qing.domain.zan.request.ZanCreateRequest;
-import cn.chenyunlong.qing.domain.zan.request.ZanQueryRequest;
-import cn.chenyunlong.qing.domain.zan.request.ZanUpdateRequest;
-import cn.chenyunlong.qing.domain.zan.response.ZanResponse;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface ZanMapper {

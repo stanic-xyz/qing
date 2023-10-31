@@ -2,8 +2,6 @@ package cn.chenyunlong.qing.domain.attachement.dto.response;
 
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.lang.Long;
-import java.lang.String;
 
 @Schema
 public class AttachmentResponse extends AbstractJpaResponse {

@@ -2,8 +2,6 @@ package cn.chenyunlong.qing.domain.district.dto.updater;
 
 import cn.chenyunlong.qing.domain.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.lang.Long;
-import java.lang.String;
 import java.util.Optional;
 import lombok.Data;
 
@@ -24,6 +22,11 @@ public class DistrictUpdater {
 
     private Long id;
 
+    public void updateDistrict(District param) {
+        Optional.ofNullable(getCode()).ifPresent(param::setCode);
+        Optional.ofNullable(getName()).ifPresent(param::setName);
+    }
+
     public String getCode() {
         return code;
     }
@@ -38,11 +41,6 @@ public class DistrictUpdater {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void updateDistrict(District param) {
-        Optional.ofNullable(getCode()).ifPresent(param::setCode);
-        Optional.ofNullable(getName()).ifPresent(param::setName);
     }
 
     public Long getId() {

@@ -5,7 +5,6 @@ import cn.chenyunlong.qing.domain.anime.dto.creator.AnimeCreator;
 import cn.chenyunlong.qing.domain.anime.dto.query.AnimeQuery;
 import cn.chenyunlong.qing.domain.anime.dto.updater.AnimeUpdater;
 import cn.chenyunlong.qing.domain.anime.dto.vo.AnimeVO;
-import java.lang.Long;
 import org.springframework.data.domain.Page;
 
 public interface IAnimeService {

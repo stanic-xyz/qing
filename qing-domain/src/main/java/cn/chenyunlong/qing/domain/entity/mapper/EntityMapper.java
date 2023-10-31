@@ -31,11 +31,11 @@ public interface EntityMapper {
         return BeanUtil.copyProperties(request, EntityQuery.class);
     }
 
-    default EntityResponse vo2Response(EntityVO vo) {
-        return BeanUtil.copyProperties(vo, EntityResponse.class);
-    }
-
     default EntityResponse vo2CustomResponse(EntityVO vo) {
         return vo2Response(vo);
+    }
+
+    default EntityResponse vo2Response(EntityVO vo) {
+        return BeanUtil.copyProperties(vo, EntityResponse.class);
     }
 }

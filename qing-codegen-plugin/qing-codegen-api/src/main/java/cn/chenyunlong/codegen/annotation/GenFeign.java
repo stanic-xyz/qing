@@ -17,7 +17,9 @@ import cn.chenyunlong.codegen.annotation.base.BaseGen;
 import java.lang.annotation.*;
 
 /**
- * @author gim
+ * 自动生成 Feign 客户端代码。
+ *
+ * @author 陈云龙
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
@@ -33,9 +35,18 @@ public @interface GenFeign {
      */
     String pkgName() default "service";
 
+    /**
+     * 服务名称
+     */
     String serverName() default "xxxSrv";
 
+    /**
+     * 代码生成路径
+     */
     String sourcePath() default "src/main/java";
 
+    /**
+     * 是否覆盖原有源代码。
+     */
     boolean overrideSource() default false;
 }

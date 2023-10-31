@@ -39,11 +39,8 @@ public class EntityVO extends AbstractBaseJpaVo {
     public EntityVO(Entity source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setName(source.getName());
         this.setEntityType(source.getEntityType());
         this.setZanCount(source.getZanCount());
