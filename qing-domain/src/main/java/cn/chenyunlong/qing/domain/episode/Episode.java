@@ -15,7 +15,7 @@ package cn.chenyunlong.qing.domain.episode;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.util.Objects;
@@ -50,7 +50,7 @@ import org.hibernate.proxy.HibernateProxy;
 @GenMapper
 @Entity
 @Table(name = "episode")
-public class Episode extends BaseEntity {
+public class Episode extends BaseJpaAggregate {
 
     @FieldDesc(name = "名称")
     private String name;

@@ -14,15 +14,12 @@
 package cn.chenyunlong.jpa.support.domain;
 
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.springframework.util.StringUtils;
 
 
 /**
@@ -33,50 +30,11 @@ import org.springframework.util.StringUtils;
  */
 @Data
 @Accessors(chain = true)
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Embeddable
 @MappedSuperclass
 public class BaseEntity extends BaseJpaAggregate {
-
-    /**
-     * 创建人。
-     */
-    private String createBy;
-
-    /**
-     * 更新人。
-     */
-    private String updateBy;
-
-    /**
-     * 备注。
-     */
-    @Column
-    private String remark;
-
-
-    /**
-     * 持久化前。
-     */
-    @Override
-    public void prePersist() {
-        super.prePersist();
-        if (!StringUtils.hasText(createBy)) {
-            createBy = "system";
-        }
-        if (!StringUtils.hasText(updateBy)) {
-            updateBy = "";
-        }
-    }
-
-    @Override
-    public void preUpdate() {
-        if (!StringUtils.hasLength(updateBy)) {
-            updateBy = "";
-        }
-    }
 
 
 }

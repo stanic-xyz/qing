@@ -15,7 +15,7 @@ package cn.chenyunlong.qing.domain.district;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -46,7 +46,7 @@ import lombok.ToString;
 @GenMapper
 @Entity
 @Table(name = "district")
-public class District extends BaseEntity {
+public class District extends BaseJpaAggregate {
 
     @FieldDesc(name = "地区")
     private String code;

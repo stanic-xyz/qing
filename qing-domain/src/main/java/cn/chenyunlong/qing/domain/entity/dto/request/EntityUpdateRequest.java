@@ -5,8 +5,8 @@ import cn.chenyunlong.qing.domain.entity.EntityType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-@Schema
 @Data
+@Schema
 public class EntityUpdateRequest implements Request {
     @Schema(
         title = "name",

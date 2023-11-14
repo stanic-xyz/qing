@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.web.web.content;
 
-import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
+import cn.chenyunlong.qing.domain.third.bilibili.BiliAnimeScoreEntity;
 import cn.chenyunlong.qing.domain.third.bilibili.service.BiliAnimeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDateTime;
@@ -45,10 +45,10 @@ public class BiliAnimeInfoController {
      * @param animeId   动漫id
      * @param startTime 开始时间
      * @param endTime   结束时间
-     * @return {@link List}<{@link BilibiliAnimeScoreEntity}>
+     * @return {@link List}<{@link BiliAnimeScoreEntity}>
      */
     @GetMapping("scores")
-    public List<BilibiliAnimeScoreEntity> getScoreList(
+    public List<BiliAnimeScoreEntity> getScoreList(
         Long animeId,
         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime startTime,

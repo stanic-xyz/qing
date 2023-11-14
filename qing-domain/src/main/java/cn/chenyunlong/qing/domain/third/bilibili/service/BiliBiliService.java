@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.third.bilibili.service;
 
-import cn.chenyunlong.qing.domain.third.bilibili.BilibiliAnimeScoreEntity;
+import cn.chenyunlong.qing.domain.third.bilibili.BiliAnimeScoreEntity;
 import cn.chenyunlong.qing.domain.third.bilibili.model.AnimeData;
 import cn.chenyunlong.qing.domain.third.bilibili.model.BgngumeResponse;
 import cn.chenyunlong.qing.domain.third.bilibili.model.BiliAnime;
@@ -86,8 +86,8 @@ public class BiliBiliService implements BiliAnimeService {
      * @return 评分记录
      */
     @Override
-    public List<BilibiliAnimeScoreEntity> getScoreInfoList(Long animeId, LocalDateTime startTime,
-                                                           LocalDateTime entTime) {
+    public List<BiliAnimeScoreEntity> getScoreInfoList(Long animeId, LocalDateTime startTime,
+                                                       LocalDateTime entTime) {
         return Collections.emptyList();
     }
 }

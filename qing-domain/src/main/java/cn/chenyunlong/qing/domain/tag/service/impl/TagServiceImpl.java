@@ -3,8 +3,9 @@ package cn.chenyunlong.qing.domain.tag.service.impl;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.qing.domain.tag.QTag;
 import cn.chenyunlong.qing.domain.tag.Tag;
 import cn.chenyunlong.qing.domain.tag.dto.creator.TagCreator;
 import cn.chenyunlong.qing.domain.tag.dto.query.TagQuery;
@@ -13,6 +14,8 @@ import cn.chenyunlong.qing.domain.tag.dto.vo.TagVO;
 import cn.chenyunlong.qing.domain.tag.mapper.TagMapper;
 import cn.chenyunlong.qing.domain.tag.repository.TagRepository;
 import cn.chenyunlong.qing.domain.tag.service.ITagService;
+import com.querydsl.jpa.impl.JPAQuery;
+import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 public class TagServiceImpl implements ITagService {
+    private final EntityManager entityManager;
     private final TagRepository tagRepository;
 
     /**
@@ -59,7 +63,7 @@ public class TagServiceImpl implements ITagService {
     public void validTag(Long id) {
         EntityOperations.doUpdate(tagRepository)
             .loadById(id)
-            .update(BaseEntity::valid)
+            .update(BaseJpaAggregate::valid)
             .execute();
     }
 
@@ -70,7 +74,7 @@ public class TagServiceImpl implements ITagService {
     public void invalidTag(Long id) {
         EntityOperations.doUpdate(tagRepository)
             .loadById(id)
-            .update(BaseEntity::invalid)
+            .update(BaseJpaAggregate::invalid)
             .execute();
     }
 
@@ -79,8 +83,16 @@ public class TagServiceImpl implements ITagService {
      */
     @Override
     public TagVO findById(Long id) {
-        Optional<Tag> tag = tagRepository.findById(id);
-        return new TagVO(tag.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        QTag tag = QTag.tag;
+        JPAQuery<?> query = new JPAQuery<Void>(entityManager);
+        Tag one = query.select(tag)
+            .from(tag)
+            .where(tag.id.eq(1L))
+            .fetchOne();
+        log.info(String.valueOf(one));
+        Optional<Tag> tagOptional = tagRepository.findById(id);
+        return new TagVO(
+            tagOptional.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**

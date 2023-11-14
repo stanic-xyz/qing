@@ -30,4 +30,6 @@ public class AbstractBaseJpaVo {
     private Instant createdAt;
 
     private Instant updatedAt;
+
+    private Integer version;
 }

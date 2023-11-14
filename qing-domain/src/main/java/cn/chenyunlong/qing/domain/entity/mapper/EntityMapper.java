@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.domain.entity.mapper;
 
+import cn.chenyunlong.common.mapper.DateMapper;
+import cn.chenyunlong.common.mapper.GenericEnumMapper;
 import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.entity.dto.creator.EntityCreator;
 import cn.chenyunlong.qing.domain.entity.dto.query.EntityQuery;
@@ -9,33 +11,30 @@ import cn.chenyunlong.qing.domain.entity.dto.request.EntityUpdateRequest;
 import cn.chenyunlong.qing.domain.entity.dto.response.EntityResponse;
 import cn.chenyunlong.qing.domain.entity.dto.updater.EntityUpdater;
 import cn.chenyunlong.qing.domain.entity.dto.vo.EntityVO;
-import cn.hutool.core.bean.BeanUtil;
+import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
+@Mapper(
+    uses = {
+        GenericEnumMapper.class,
+        DateMapper.class,
+        CustomMapper.class
+    }
+)
 public interface EntityMapper {
-    EntityMapper INSTANCE = new EntityMapper() {
-    };
 
-    default Entity dtoToEntity(EntityCreator dto) {
-        return BeanUtil.copyProperties(dto, Entity.class);
-    }
+    EntityMapper INSTANCE = Mappers.getMapper(EntityMapper.class);
 
-    default EntityUpdater request2Updater(EntityUpdateRequest request) {
-        return BeanUtil.copyProperties(request, EntityUpdater.class);
-    }
+    Entity dtoToEntity(EntityCreator dto);
 
-    default EntityCreator request2Dto(EntityCreateRequest request) {
-        return BeanUtil.copyProperties(request, EntityCreator.class);
-    }
+    EntityUpdater request2Updater(EntityUpdateRequest request);
 
-    default EntityQuery request2Query(EntityQueryRequest request) {
-        return BeanUtil.copyProperties(request, EntityQuery.class);
-    }
+    EntityCreator request2Dto(EntityCreateRequest request);
 
-    default EntityResponse vo2CustomResponse(EntityVO vo) {
-        return vo2Response(vo);
-    }
+    EntityQuery request2Query(EntityQueryRequest request);
 
-    default EntityResponse vo2Response(EntityVO vo) {
-        return BeanUtil.copyProperties(vo, EntityResponse.class);
-    }
+    EntityResponse vo2CustomResponse(EntityVO vo);
+
+    EntityResponse vo2Response(EntityVO vo);
 }

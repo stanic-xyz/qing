@@ -15,7 +15,7 @@ package cn.chenyunlong.qing.domain.attachement;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.util.Objects;
@@ -48,7 +48,7 @@ import org.hibernate.proxy.HibernateProxy;
 @GenMapper
 @Entity
 @Table(name = "attachment")
-public class Attachment extends BaseEntity {
+public class Attachment extends BaseJpaAggregate {
 
     @FieldDesc(name = "文件ID")
     private Long fileId;

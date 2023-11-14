@@ -68,6 +68,22 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
     @Setter(AccessLevel.PRIVATE)
     private Integer version;
 
+    /**
+     * 创建人。
+     */
+    private String createBy;
+
+    /**
+     * 更新人。
+     */
+    private String updateBy;
+
+    /**
+     * 备注。
+     */
+    @Column
+    private String remark;
+
 
     /**
      * 持久化之前。

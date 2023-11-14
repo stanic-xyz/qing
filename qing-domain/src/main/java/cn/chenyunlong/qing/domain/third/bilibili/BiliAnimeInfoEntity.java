@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.third.bilibili;
 
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "bilibili_anime")
-public class BiliAnimeInfoEntity extends BaseEntity {
+public class BiliAnimeInfoEntity extends BaseJpaAggregate {
     private Long mediaId;
     private String title;
     private Long seasonId;
