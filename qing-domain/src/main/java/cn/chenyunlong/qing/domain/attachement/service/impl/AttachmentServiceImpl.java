@@ -3,8 +3,8 @@ package cn.chenyunlong.qing.domain.attachement.service.impl;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.attachement.Attachment;
 import cn.chenyunlong.qing.domain.attachement.dto.creator.AttachmentCreator;
 import cn.chenyunlong.qing.domain.attachement.dto.query.AttachmentQuery;
@@ -59,7 +59,7 @@ public class AttachmentServiceImpl implements IAttachmentService {
     public void validAttachment(Long id) {
         EntityOperations.doUpdate(attachmentRepository)
             .loadById(id)
-            .update(BaseEntity::valid)
+            .update(BaseJpaAggregate::valid)
             .execute();
     }
 
@@ -70,7 +70,7 @@ public class AttachmentServiceImpl implements IAttachmentService {
     public void invalidAttachment(Long id) {
         EntityOperations.doUpdate(attachmentRepository)
             .loadById(id)
-            .update(BaseEntity::invalid)
+            .update(BaseJpaAggregate::invalid)
             .execute();
     }
 

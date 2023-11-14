@@ -15,7 +15,7 @@ package cn.chenyunlong.qing.domain.zan;
 
 
 import cn.chenyunlong.codegen.annotation.*;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -46,7 +46,7 @@ import lombok.*;
 @GenMapper
 @Entity
 @Table(name = "zan")
-public class Zan extends BaseEntity {
+public class Zan extends BaseJpaAggregate {
 
     private Long userId;
 

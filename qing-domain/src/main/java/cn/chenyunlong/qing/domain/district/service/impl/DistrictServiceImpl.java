@@ -3,8 +3,8 @@ package cn.chenyunlong.qing.domain.district.service.impl;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.district.District;
 import cn.chenyunlong.qing.domain.district.dto.creator.DistrictCreator;
 import cn.chenyunlong.qing.domain.district.dto.query.DistrictQuery;
@@ -59,7 +59,7 @@ public class DistrictServiceImpl implements IDistrictService {
     public void validDistrict(Long id) {
         EntityOperations.doUpdate(districtRepository)
             .loadById(id)
-            .update(BaseEntity::valid)
+            .update(BaseJpaAggregate::valid)
             .execute();
     }
 
@@ -70,7 +70,7 @@ public class DistrictServiceImpl implements IDistrictService {
     public void invalidDistrict(Long id) {
         EntityOperations.doUpdate(districtRepository)
             .loadById(id)
-            .update(BaseEntity::invalid)
+            .update(BaseJpaAggregate::invalid)
             .execute();
     }
 

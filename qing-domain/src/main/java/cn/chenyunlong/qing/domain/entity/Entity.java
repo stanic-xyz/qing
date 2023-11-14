@@ -16,7 +16,9 @@ package cn.chenyunlong.qing.domain.entity;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import cn.chenyunlong.qing.infrustructure.converter.EntityTypeConverter;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Table;
 import lombok.*;
 
@@ -46,11 +48,12 @@ import lombok.*;
 @GenMapper
 @jakarta.persistence.Entity
 @Table(name = "entity")
-public class Entity extends BaseEntity {
+public class Entity extends BaseJpaAggregate {
 
     @FieldDesc(name = "用户名", description = "用户（唯一），用于前端显示！")
     private String name;
 
+    @Convert(converter = EntityTypeConverter.class)
     @FieldDesc(name = "实体类型")
     private EntityType entityType;
 

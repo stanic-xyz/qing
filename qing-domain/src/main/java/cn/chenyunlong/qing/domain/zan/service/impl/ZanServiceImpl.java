@@ -3,8 +3,8 @@ package cn.chenyunlong.qing.domain.zan.service.impl;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
 import cn.chenyunlong.qing.domain.user.User;
@@ -89,7 +89,7 @@ public class ZanServiceImpl implements IZanService {
     public void validZan(Long id) {
         EntityOperations.doUpdate(zanRepository)
             .loadById(id)
-            .update(BaseEntity::valid)
+            .update(BaseJpaAggregate::valid)
             .execute();
     }
 
@@ -100,7 +100,7 @@ public class ZanServiceImpl implements IZanService {
     public void invalidZan(Long id) {
         EntityOperations.doUpdate(zanRepository)
             .loadById(id)
-            .update(BaseEntity::invalid)
+            .update(BaseJpaAggregate::invalid)
             .execute();
     }
 

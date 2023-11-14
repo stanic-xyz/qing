@@ -15,10 +15,11 @@ package cn.chenyunlong.qing.domain.tag;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -44,9 +45,10 @@ import lombok.ToString;
 @GenController
 @GenMapper
 @ToString
-@Entity(name = "tag")
+@Entity
+@Table(name = "tag")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Tag extends BaseEntity {
+public class Tag extends BaseJpaAggregate {
 
     @FieldDesc(description = "名称")
     private String name;

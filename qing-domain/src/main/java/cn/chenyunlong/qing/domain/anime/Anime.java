@@ -15,11 +15,9 @@ package cn.chenyunlong.qing.domain.anime;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import cn.chenyunlong.qing.infrustructure.converter.PlayStatusConverter;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,9 +47,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 @GenController
 @GenMapper
 @ToString
-@Entity(name = "anime")
+@Entity
+@Table(name = "anime")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Anime extends BaseEntity {
+public class Anime extends BaseJpaAggregate {
 
     @FieldDesc(description = "名称")
     private String name;

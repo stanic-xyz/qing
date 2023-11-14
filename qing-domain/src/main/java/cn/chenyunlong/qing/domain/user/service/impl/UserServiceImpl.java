@@ -3,8 +3,8 @@ package cn.chenyunlong.qing.domain.user.service.impl;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.user.User;
 import cn.chenyunlong.qing.domain.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.user.dto.query.UserQuery;
@@ -59,7 +59,7 @@ public class UserServiceImpl implements IUserService {
     public void validUser(Long id) {
         EntityOperations.doUpdate(userRepository)
             .loadById(id)
-            .update(BaseEntity::valid)
+            .update(BaseJpaAggregate::valid)
             .execute();
     }
 
@@ -70,7 +70,7 @@ public class UserServiceImpl implements IUserService {
     public void invalidUser(Long id) {
         EntityOperations.doUpdate(userRepository)
             .loadById(id)
-            .update(BaseEntity::invalid)
+            .update(BaseJpaAggregate::invalid)
             .execute();
     }
 

@@ -15,7 +15,7 @@ package cn.chenyunlong.qing.domain.type;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -48,7 +48,7 @@ import lombok.ToString;
 @ToString
 @Entity(name = "type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Type extends BaseEntity {
+public class Type extends BaseJpaAggregate {
 
     @FieldDesc(description = "名称")
     private String name;

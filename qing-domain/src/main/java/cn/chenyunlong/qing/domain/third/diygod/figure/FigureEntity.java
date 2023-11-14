@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.domain.third.diygod.figure;
 
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "figure")
 @Entity
-public class FigureEntity extends BaseEntity {
+public class FigureEntity extends BaseJpaAggregate {
     private String name;
     private String otherNames;
     private LocalDate releaseDate;

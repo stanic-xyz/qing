@@ -3,8 +3,8 @@ package cn.chenyunlong.qing.domain.episode.service.impl;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.episode.Episode;
 import cn.chenyunlong.qing.domain.episode.dto.creator.EpisodeCreator;
 import cn.chenyunlong.qing.domain.episode.dto.query.EpisodeQuery;
@@ -59,7 +59,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
     public void validEpisode(Long id) {
         EntityOperations.doUpdate(episodeRepository)
             .loadById(id)
-            .update(BaseEntity::valid)
+            .update(BaseJpaAggregate::valid)
             .execute();
     }
 
@@ -70,7 +70,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
     public void invalidEpisode(Long id) {
         EntityOperations.doUpdate(episodeRepository)
             .loadById(id)
-            .update(BaseEntity::invalid)
+            .update(BaseJpaAggregate::invalid)
             .execute();
     }
 

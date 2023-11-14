@@ -34,6 +34,7 @@ public class TagVO extends AbstractBaseJpaVo {
         this.setUpdatedAt(source.getCreatedAt());
         this.setName(source.getName());
         this.setInstruction(source.getInstruction());
+        this.setVersion(source.getVersion());
     }
 
     public String getName() {

@@ -13,26 +13,28 @@
 
 package cn.chenyunlong.qing.domain.third.bilibili;
 
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * @TableName bilibili_anime_score
+ * 哔哩哔哩动漫评分系统
  */
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "bilibili_anime_score")
+@Entity
+@Table(name = "bili_anime_score")
 @Data
-public class BilibiliAnimeScoreEntity extends BaseEntity {
+public class BiliAnimeScoreEntity extends BaseJpaAggregate {
     /**
      * 动漫ID
      */
     private Long animeId;
 
     /**
-     *
+     * 评分信息
      */
     private Double score;
 

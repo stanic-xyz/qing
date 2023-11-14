@@ -100,6 +100,7 @@
         <spring-statemachine.version>3.2.0</spring-statemachine.version>
         <lego.version>0.1.23</lego.version>
         <knife4j.version>4.1.0</knife4j.version>
+        <querydsl.version>5.0.0</querydsl.version>
     </properties>
 
     <issueManagement>

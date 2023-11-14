@@ -3,8 +3,8 @@ package cn.chenyunlong.qing.domain.anime.service.impl;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.dto.creator.AnimeCreator;
 import cn.chenyunlong.qing.domain.anime.dto.query.AnimeQuery;
@@ -59,7 +59,7 @@ public class AnimeServiceImpl implements IAnimeService {
     public void validAnime(Long id) {
         EntityOperations.doUpdate(animeRepository)
             .loadById(id)
-            .update(BaseEntity::valid)
+            .update(BaseJpaAggregate::valid)
             .execute();
     }
 
@@ -70,7 +70,7 @@ public class AnimeServiceImpl implements IAnimeService {
     public void invalidAnime(Long id) {
         EntityOperations.doUpdate(animeRepository)
             .loadById(id)
-            .update(BaseEntity::invalid)
+            .update(BaseJpaAggregate::invalid)
             .execute();
     }
 

@@ -17,7 +17,7 @@ package cn.chenyunlong.qing.domain.user;
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.common.enums.MFAType;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -52,7 +52,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tb_user")
-public class User extends BaseEntity {
+public class User extends BaseJpaAggregate {
 
     @Column(unique = true)
     @FieldDesc(name = "用户唯一ID")
