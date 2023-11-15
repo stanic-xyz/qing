@@ -2,7 +2,9 @@ package cn.chenyunlong.qing.infrustructure.converter;
 
 import cn.chenyunlong.qing.domain.attribute.WebControlType;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
+@Converter
 public class WebControlTypeConverter implements AttributeConverter<WebControlType, Integer> {
     @Override
     public Integer convertToDatabaseColumn(WebControlType webControlType) {
