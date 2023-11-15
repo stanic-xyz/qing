@@ -2,7 +2,9 @@ package cn.chenyunlong.qing.infrustructure.converter;
 
 import cn.chenyunlong.qing.domain.entity.EntityType;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
+@Converter
 public class EntityTypeConverter implements AttributeConverter<EntityType, Integer> {
 
     @Override

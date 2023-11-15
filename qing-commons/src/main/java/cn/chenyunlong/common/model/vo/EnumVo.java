@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.common.model;
+package cn.chenyunlong.common.model.vo;
 
 import lombok.Data;
 

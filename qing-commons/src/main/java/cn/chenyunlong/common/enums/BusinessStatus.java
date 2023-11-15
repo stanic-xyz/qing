@@ -13,20 +13,37 @@
 
 package cn.chenyunlong.common.enums;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * 操作状态。
  *
  * @author ruoyi
  */
-public enum BusinessStatus {
+@RequiredArgsConstructor
+public enum BusinessStatus implements CommonEnum {
 
     /**
      * 成功。
      */
-    SUCCESS,
+    SUCCESS(1, "成功"),
 
     /**
      * 失败。
      */
-    FAIL,
+    FAIL(0, "失败");
+
+    private final int code;
+    private final String description;
+
+    @Override
+    public int getCode() {
+        return this.code;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
+
+    }
 }
