@@ -1,25 +1,26 @@
 package cn.chenyunlong.qing.domain.entity.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
-
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
-import cn.chenyunlong.qing.domain.user.User;
-import cn.chenyunlong.qing.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.zan.Zan;
 import cn.chenyunlong.qing.domain.zan.dto.creator.ZanCreator;
 import cn.chenyunlong.qing.domain.zan.repository.ZanRepository;
 import cn.chenyunlong.qing.domain.zan.service.impl.ZanServiceImpl;
 import jakarta.transaction.Transactional;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @Transactional
 class ZanServiceImplTest {

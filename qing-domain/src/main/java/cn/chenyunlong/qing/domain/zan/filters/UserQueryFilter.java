@@ -1,8 +1,8 @@
 package cn.chenyunlong.qing.domain.zan.filters;
 
 import cn.chenyunlong.common.exception.NotFoundException;
-import cn.chenyunlong.qing.domain.user.User;
-import cn.chenyunlong.qing.domain.user.repository.UserRepository;
+import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.zan.LikeContext;
 import cn.chenyunlong.qing.domain.zan.dto.request.ZanCreateRequest;
 import cn.chenyunlong.qing.domain.zan.pipeline.AbstractEventFilter;

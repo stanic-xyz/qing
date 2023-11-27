@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.domain.zan;
 
+import cn.chenyunlong.qing.domain.auth.user.User;
 import cn.chenyunlong.qing.domain.entity.Entity;
-import cn.chenyunlong.qing.domain.user.User;
 import cn.chenyunlong.qing.domain.zan.service.plugin.SmsType;
 import lombok.Data;
 

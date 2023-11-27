@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.domain.zan.config;
 
+import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
-import cn.chenyunlong.qing.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.zan.LikeContext;
 import cn.chenyunlong.qing.domain.zan.filters.EntityQueryFilter;
 import cn.chenyunlong.qing.domain.zan.filters.UserPayFilter;

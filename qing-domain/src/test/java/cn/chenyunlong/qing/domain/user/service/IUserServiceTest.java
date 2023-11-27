@@ -2,7 +2,8 @@ package cn.chenyunlong.qing.domain.user.service;
 
 import cn.chenyunlong.common.enums.MFAType;
 import cn.chenyunlong.qing.domain.AbstractDomainTests;
-import cn.chenyunlong.qing.domain.user.dto.creator.UserCreator;
+import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
+import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
 import cn.hutool.core.util.RandomUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

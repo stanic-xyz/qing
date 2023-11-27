@@ -3,7 +3,7 @@
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          https://license.coscl.org.cn/MulanPSL2
+ *          http://license.coscl.org.cn/MulanPSL2
  * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
  * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
@@ -11,26 +11,30 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime;
+package cn.chenyunlong.qing.domain.auth.user;
+
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.common.enums.MFAType;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 /**
- * 动漫信息。
+ * 用户信息
  *
  * @author 陈云龙
  */
-
 @Getter
 @Setter
+@ToString
 @GenVo
 @GenCreator
 @GenUpdater
@@ -45,17 +49,27 @@ import lombok.ToString;
 @GenFeign(serverName = "stanic")
 @GenController
 @GenMapper
-@ToString
-@Entity(name = "anime_category")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class AnimeCategory extends BaseEntity {
+@Entity
+@Table(name = "sys_user")
+public class User extends BaseJpaAggregate {
 
-    @FieldDesc(description = "名称")
-    private String name;
+    @Column(unique = true)
+    @FieldDesc(name = "用户唯一ID")
+    private Long uid;
 
-    @FieldDesc(description = "父级id")
-    private Long pid;
+    @FieldDesc(name = "用户名", description = "用户（唯一），用于前端显示！")
+    private String username;
 
-    @FieldDesc(description = "排序号")
-    private Integer orderNo;
+    @FieldDesc(name = "昵称")
+    @Column(unique = true)
+    private String nickname;
+
+    private String password;
+    private String phone;
+    private String email;
+    private String avatar;
+    private String description;
+    private LocalDateTime expireTime;
+    private MFAType mfaType;
+    private String mfaKey;
 }
