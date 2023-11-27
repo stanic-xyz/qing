@@ -5,10 +5,10 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
+import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
-import cn.chenyunlong.qing.domain.user.User;
-import cn.chenyunlong.qing.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.zan.LikeContext;
 import cn.chenyunlong.qing.domain.zan.LikeModel;
 import cn.chenyunlong.qing.domain.zan.Zan;
@@ -26,7 +26,6 @@ import cn.chenyunlong.qing.domain.zan.repository.ZanRepository;
 import cn.chenyunlong.qing.domain.zan.service.IZanService;
 import cn.chenyunlong.qing.domain.zan.service.plugin.SmsPlugin;
 import cn.chenyunlong.qing.domain.zan.service.selector.LikeFilterSelectorFactory;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -36,6 +35,8 @@ import org.springframework.plugin.core.PluginRegistry;
 import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service

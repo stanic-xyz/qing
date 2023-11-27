@@ -78,10 +78,15 @@ public class OpenApiConfig {
         License license = new License().name("Mulan PSL v2")
             .url("https://license.coscl.org.cn/MulanPSL2");
         Info info = new Info()
+                // 标题
             .title("XXX用户系统API")
+                // 版本
             .version("0.0.2-SNAPSHOT")
+                // 描述
             .description("Knife4j集成springdoc-openapi示例")
+                // 服务条款
             .termsOfService("http://doc.xiaominfo.com")
+                // 协议
             .license(license);
         OpenAPI openAPI = new OpenAPI();
         openAPI.info(info);

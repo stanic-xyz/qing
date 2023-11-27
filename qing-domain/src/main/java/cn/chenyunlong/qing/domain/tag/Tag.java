@@ -20,11 +20,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * 标签
+ *
  * @author 陈云龙
  */
 
@@ -50,6 +53,7 @@ import lombok.ToString;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Tag extends BaseJpaAggregate {
 
+    @NotBlank(message = "名称不能为空")
     @FieldDesc(description = "名称")
     private String name;
 

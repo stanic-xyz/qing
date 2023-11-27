@@ -25,13 +25,14 @@ import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.config.properties.AuthingProperties;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * 对接微信公众平台
@@ -106,5 +107,13 @@ public class AuthingLoginController {
             throw new BusinessException(profile.getMessage());
         }
         return JsonResult.success(profile.getData());
+    }
+
+    /**
+     * 跳转到Authing登录界面。
+     */
+    @GetMapping("getVersion")
+    public JsonResult<String> getProfile() {
+        return JsonResult.success("0.0.2-SNAPSHOT");
     }
 }
