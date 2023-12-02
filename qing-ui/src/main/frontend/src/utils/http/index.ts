@@ -5,9 +5,9 @@ import type {
   RequestInterceptors,
   RequestMethods,
 } from "@/utils/http/types";
-import type { AxiosInstance, AxiosRequestConfig } from "axios";
+import type {AxiosInstance, AxiosRequestConfig} from "axios";
 import axios from "axios";
-import { userInfoStore } from "@/stores/session";
+import {userInfoStore} from "@/stores/session";
 
 moment.locale("zh-cn");
 
@@ -92,7 +92,7 @@ class QingHttp {
     method: RequestMethods,
     url: string,
     param?: any,
-    axiosConfig?: QingHttpRequestConfig
+    axiosConfig?: QingHttpRequestConfig,
   ): Promise<T> {
     const config = {
       method,
@@ -177,7 +177,7 @@ class QingHttp {
       function (error) {
         // 对请求错误做些什么
         return Promise.reject(error);
-      }
+      },
     );
   }
 
@@ -213,7 +213,7 @@ class QingHttp {
     return this.cancelRequestSourceList?.findIndex(
       (item: CancelRequestSource) => {
         return Object.keys(item)[0] === url;
-      }
+      },
     ) as number;
   }
 

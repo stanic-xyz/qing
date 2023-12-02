@@ -1,6 +1,6 @@
-import { http } from "@/utils/service";
-import type { Anime } from "@/api/anime/types";
-import type { QingPageResponse, QingResponse } from "@/utils/http/types";
+import {http} from "@/utils/service";
+import type {Anime} from "@/api/anime/types";
+import type {QingPageResponse, QingResponse} from "@/utils/http/types";
 
 /** 登录 */
 export const getLogin = (username: string, password: string) => {
@@ -17,6 +17,6 @@ export const getAnimeList = (data?: object) => {
   return http.request<QingResponse<QingPageResponse<Anime>>>(
     "post",
     "/api/v1/anime/page",
-    data
+    data,
   );
 };
