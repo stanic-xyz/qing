@@ -1,10 +1,5 @@
 // types.ts
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse,
-  Method,
-} from "axios";
+import type {AxiosError, AxiosRequestConfig, AxiosResponse, Method,} from "axios";
 
 export type RequestMethods = Extract<
   Method,

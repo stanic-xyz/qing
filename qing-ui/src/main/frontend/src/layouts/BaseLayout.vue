@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import MyFooter from "@/views/common/MyFooter.vue";
 import MyHeader from "@/views/common/MyHeader.vue";
 </script>

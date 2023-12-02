@@ -1,5 +1,5 @@
-import { http } from "@/utils/service";
-import type { RefreshTokenResult, UserResult } from "@/api/auth/types";
+import {http} from "@/utils/service";
+import type {RefreshTokenResult, UserResult} from "@/api/auth/types";
 
 /** 登录 */
 export const formLogin = (username: string, password: string) => {

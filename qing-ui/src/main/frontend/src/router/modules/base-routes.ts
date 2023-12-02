@@ -97,6 +97,11 @@ export default [
         component: () => import("../../views/about/About.vue"),
       },
       {
+        path: "/search",
+        name: "search",
+        component: () => import("../../views/SearchPage.vue"),
+      },
+      {
         path: "/login",
         name: "login",
         meta: {
