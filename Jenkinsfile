@@ -1,10 +1,21 @@
 pipeline {
     agent any
     stages {
-        stage('构建Domain服务') {
+        stage('编译') {
             steps {
-                sh '''echo hello CODING
-mvn clean install -pl qing-domain -am -f pom.xml'''
+                sh '''echo 开始编译'''
+                sh '''mvn clean package -pl qing-domain -f pom.xml'''
+            }
+        }
+        stage('编译') {
+            steps {
+                sh "mvn test  -pl qing-domain -f pom.xml"
+            }
+            post {
+                always {
+                    // 收集测试报告
+                    junit 'qing-domain/target/surefire-reports/*.xml'
+                }
             }
         }
     }
