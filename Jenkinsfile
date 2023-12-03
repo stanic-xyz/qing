@@ -7,7 +7,7 @@ pipeline {
                 sh '''mvn clean package -pl qing-domain -f pom.xml'''
             }
         }
-        stage('编译') {
+        stage('单元测试') {
             steps {
                 sh "mvn test  -pl qing-domain -f pom.xml"
             }
