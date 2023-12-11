@@ -9,7 +9,7 @@ pipeline {
         stage('编译') {
             steps {
                 sh '''echo 开始编译'''
-                sh '''clean install -pl qing-codegen-plugin/qing-codegen-apt -am -f pom.xml'''
+                sh '''mvn clean install -pl qing-codegen-plugin/qing-codegen-apt -am -f pom.xml'''
                 sh '''mvn clean package -pl qing-domain -am -f pom.xml'''
             }
         }
