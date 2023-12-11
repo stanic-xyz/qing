@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.qing.infrastructure.statemechine;
 
-import java.util.EnumSet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +24,8 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
+
+import java.util.EnumSet;
 
 @Slf4j
 @Configuration
@@ -38,7 +39,7 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
      */
     @Bean
     public StateMachineListener<States, Events> listener() {
-        return new StateMachineListenerAdapter<>() {
+        return new StateMachineListenerAdapter<States, Events>() {
             @Override
             public void stateChanged(State from, State to) {
                 log.info("State change to " + to.getId());
@@ -48,7 +49,7 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
 
     @Override
     public void configure(StateMachineConfigurationConfigurer<States, Events> config)
-        throws Exception {
+            throws Exception {
         config.withConfiguration().autoStartup(true).listener(listener());
     }
 
@@ -59,16 +60,16 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
 
     @Override
     public void configure(StateMachineTransitionConfigurer<States, Events> transitionConfigurer)
-        throws Exception {
+            throws Exception {
         transitionConfigurer
-            .withExternal()
-            .source(States.SI)
-            .target(States.S1)
-            .event(Events.E1)
-            .and()
-            .withExternal()
-            .source(States.S1)
-            .target(States.S2)
-            .event(Events.E2);
+                .withExternal()
+                .source(States.SI)
+                .target(States.S1)
+                .event(Events.E1)
+                .and()
+                .withExternal()
+                .source(States.S1)
+                .target(States.S2)
+                .event(Events.E2);
     }
 }
