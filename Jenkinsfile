@@ -9,8 +9,8 @@ pipeline {
         stage('编译') {
             steps {
                 sh '''echo 开始编译'''
-                sh '''mvn clean package -pl qing-domain -f pom.xml'''
-                sh '''docker login -u qing-1702323773149 -p a22fafc4c8121132df6c3e1b0038470cba4e299e stanic-docker.pkg.coding.net'''
+                sh '''clean install -pl qing-codegen-plugin/qing-codegen-apt -am -f pom.xml'''
+                sh '''mvn clean package -pl qing-domain -am -f pom.xml'''
             }
         }
         stage('单元测试') {
