@@ -255,6 +255,11 @@
             <optional>true</optional>
             <classifier>jakarta</classifier>
         </dependency>
+        <dependency>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-security-spring-boot-starter</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
