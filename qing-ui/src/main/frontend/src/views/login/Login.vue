@@ -7,14 +7,14 @@ import { userInfoStore } from "@/stores/session";
 // “ref”是用来存储值的响应式数据源。
 // 理论上我们在展示该字符串的时候不需要将其包装在 ref() 中，
 // 但是在下一个示例中更改这个值的时候，我们就需要它了。
-const loginForm = reactive({
-  username: "",
-  password: "",
+const loginFormData = reactive({
+  username: '1',
+  password: '123456'
 });
 
 function handleBtn() {
   layer.msg("进行登录操作");
-  formLogin(loginForm.username, loginForm.password)
+  formLogin(loginFormData.username, loginFormData.password)
     .then(function (response) {
       console.log("发起请求成功了", response);
       const userInfoSto = userInfoStore();
@@ -29,7 +29,7 @@ function handleBtn() {
 
 <template>
   <lay-form
-    :model="loginForm"
+    :model="loginFormData"
     :use-CN="true"
     required
     requiredIcons="layui-icon-heart-fill"
@@ -37,10 +37,10 @@ function handleBtn() {
     @submit="handleBtn"
   >
     <lay-form-item label="账户" prop="username">
-      <lay-input v-model="loginForm.username"></lay-input>
+      <lay-input v-model="loginFormData.username"></lay-input>
     </lay-form-item>
     <lay-form-item label="密码" prop="password">
-      <lay-input v-model="loginForm.password"></lay-input>
+      <lay-input v-model="loginFormData.password"></lay-input>
     </lay-form-item>
     <lay-form-item style="text-align: center">
       <lay-button @click="handleBtn">提交</lay-button>

@@ -3,8 +3,9 @@ docker network create jenkins
 docker volume create jenkins-docker-certs
 docker volume create jenkins-data
 
-docker container run \
+docker run \
   --name jenkins-docker \
+  --rm \
   --detach \
   --privileged \
   --network jenkins \
@@ -12,7 +13,9 @@ docker container run \
   --env DOCKER_TLS_CERTDIR=/certs \
   --volume jenkins-docker-certs:/certs/client \
   --volume jenkins-data:/var/jenkins_home \
-  docker:dind
+  --publish 2376:2376 \
+  docker:dind \
+  --storage-driver overlay2
 
 docker container run \
   --name jenkins-blueocean \

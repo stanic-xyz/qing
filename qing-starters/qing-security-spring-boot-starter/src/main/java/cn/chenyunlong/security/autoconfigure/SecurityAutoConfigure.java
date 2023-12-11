@@ -88,7 +88,7 @@ public class SecurityAutoConfigure {
             .permitAll()
             //静态资源直接放行
             .requestMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html",
-                "/**/*.css", "/**/*.js")
+                    "/**/*.css", "/**/*.js", "/auth/**")
             .permitAll()
             //Swagger相关直接放行
             .requestMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**",
