@@ -51,8 +51,7 @@ public final class AuthingLoginConfigurer
         AuthingLoginFilter authingLoginFilter =
             new AuthingLoginFilter(authenticationManagerBuilder.getObject());
         authingLoginFilter.setAuthenticationFailureHandler(
-            (request, response, exception) -> System.out.println(
-                "AuthingLoginConfigurer.onAuthenticationFailure"));
+                (request, response, exception) -> System.out.println("AuthingLoginConfigurer.onAuthenticationFailure"));
         authingLoginFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
             ObjectMapper objectMapper = new ObjectMapper();
             AuthingToken authingToken = (AuthingToken) authentication;

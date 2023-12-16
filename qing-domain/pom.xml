@@ -94,10 +94,6 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-cache</artifactId>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
@@ -113,11 +109,6 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>cn.com.riversoft</groupId>-->
-        <!--            <artifactId>weixin-mp</artifactId>-->
-        <!--            <version>0.9.8</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -254,6 +245,11 @@
             <scope>provided</scope>
             <optional>true</optional>
             <classifier>jakarta</classifier>
+        </dependency>
+        <dependency>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-security-spring-boot-starter</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

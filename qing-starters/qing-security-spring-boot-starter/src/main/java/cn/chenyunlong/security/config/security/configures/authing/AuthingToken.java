@@ -14,19 +14,20 @@
 package cn.chenyunlong.security.config.security.configures.authing;
 
 import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
-import java.util.Collection;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 
-public class AuthingToken extends AbstractAuthenticationToken {
+
+public class AuthingToken implements Authentication {
 
 
     @Setter
     @Getter
-    private String token;
+    private String code;
 
     @Setter
     @Getter
@@ -36,8 +37,14 @@ public class AuthingToken extends AbstractAuthenticationToken {
     @Setter
     private OIDCTokenResponse response;
 
-    public AuthingToken(Collection<? extends GrantedAuthority> authorities) {
-        super(authorities);
+    public AuthingToken(AuthingLoginRequest loginRequest) {
+        this.code = loginRequest.getCode();
+        this.state = loginRequest.getState();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     @Override
@@ -46,7 +53,27 @@ public class AuthingToken extends AbstractAuthenticationToken {
     }
 
     @Override
+    public Object getDetails() {
+        return null;
+    }
+
+    @Override
     public Object getPrincipal() {
         return "admin";
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        return false;
+    }
+
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }
