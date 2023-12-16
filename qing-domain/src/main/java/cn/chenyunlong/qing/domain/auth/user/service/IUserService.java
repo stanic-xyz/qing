@@ -1,11 +1,14 @@
 package cn.chenyunlong.qing.domain.auth.user.service;
 
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.qing.domain.auth.user.User;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
 import org.springframework.data.domain.Page;
+
+import java.util.Optional;
 
 public interface IUserService {
     /**
@@ -37,4 +40,6 @@ public interface IUserService {
      * findByPage
      */
     Page<UserVO> findByPage(PageRequestWrapper<UserQuery> query);
+
+    Optional<User> findByUsername(String username);
 }
