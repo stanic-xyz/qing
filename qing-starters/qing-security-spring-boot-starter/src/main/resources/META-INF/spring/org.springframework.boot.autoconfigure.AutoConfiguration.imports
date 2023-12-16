@@ -1,1 +1,2 @@
-cn.chenyunlong.security.autoconfigure.SecurityAutoConfigure
+cn.chenyunlong.qing.config.security.SecurityConfig
+cn.chenyunlong.security.configures.authing.AuthingLoginConfigurer

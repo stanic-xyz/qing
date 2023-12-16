@@ -22,7 +22,7 @@ import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
 import cn.authing.sdk.java.model.AuthenticationClientOptions;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.JsonResult;
-import cn.chenyunlong.security.config.security.configures.authing.properties.AuthingProperties;
+import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

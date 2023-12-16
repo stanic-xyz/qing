@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.UserMapper;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     /**
      * createImpl
@@ -92,5 +94,10 @@ public class UserServiceImpl implements IUserService {
         PageRequest pageRequest =
                 PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return userRepository.findAll(pageRequest).map(UserVO::new);
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return Optional.ofNullable(userRepository.findByUsername(username));
     }
 }

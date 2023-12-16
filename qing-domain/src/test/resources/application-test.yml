@@ -54,3 +54,4 @@ qing:
   swagger:
     doc-disabled: false
   index-size: 26
+debug: false

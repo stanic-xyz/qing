@@ -18,7 +18,7 @@ import cn.authing.sdk.java.dto.authentication.IOidcParams;
 import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
 import cn.authing.sdk.java.dto.authentication.UserInfo;
 import cn.authing.sdk.java.model.AuthenticationClientOptions;
-import cn.chenyunlong.security.config.security.configures.authing.properties.AuthingProperties;
+import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.security.endpoint.model.AuthingLoginParam;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
