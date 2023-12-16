@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.config;
 
-import cn.chenyunlong.qing.config.properties.AuthingProperties;
+import cn.chenyunlong.security.config.security.configures.authing.properties.AuthingProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;

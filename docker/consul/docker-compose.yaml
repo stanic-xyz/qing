@@ -1,14 +1,14 @@
 version: "3"
 
 services:
-  pg:
+  consul:
     image: consul:latest
     container_name: consul
     restart: always
     volumes:
       - ./db:/consul/data
     ports:
-      - "5432:5432"
+      - "8300:8300"
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s

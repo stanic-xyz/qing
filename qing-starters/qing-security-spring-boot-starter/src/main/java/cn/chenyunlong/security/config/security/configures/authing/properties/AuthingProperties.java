@@ -1,10 +1,10 @@
-package cn.chenyunlong.qing.config.properties;
+package cn.chenyunlong.security.config.security.configures.authing.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
-@ConfigurationProperties(prefix = "qing.authing")
+@ConfigurationProperties(prefix = "qing.security.authing")
 public class AuthingProperties {
 
     private String appName = "stanic";

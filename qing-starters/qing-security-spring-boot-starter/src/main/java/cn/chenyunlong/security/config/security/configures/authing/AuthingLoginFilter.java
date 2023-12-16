@@ -18,18 +18,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.io.IOException;
 
 public class AuthingLoginFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -38,9 +35,7 @@ public class AuthingLoginFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-                                                HttpServletResponse response)
-        throws AuthenticationException, IOException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         String method = request.getMethod();
@@ -56,19 +51,12 @@ public class AuthingLoginFilter extends AbstractAuthenticationProcessingFilter {
         } else {
             return null;
         }
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
-        AuthingToken passToken = new AuthingToken(grantedAuthorities);
-        passToken.setToken(loginRequest.getCode());
-        passToken.setState(loginRequest.getState());
+        AuthingToken passToken = new AuthingToken(loginRequest);
         return this.getAuthenticationManager().authenticate(passToken);
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request,
-                                            HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult)
-        throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         super.successfulAuthentication(request, response, chain, authResult);
     }
 

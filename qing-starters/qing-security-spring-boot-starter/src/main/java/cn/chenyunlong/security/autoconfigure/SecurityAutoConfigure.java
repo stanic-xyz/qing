@@ -13,24 +13,25 @@
 
 package cn.chenyunlong.security.autoconfigure;
 
-import cn.chenyunlong.security.base.JwtAuthenticationEntryPoint;
 import cn.chenyunlong.security.base.JwtAuthenticationTokenFilter;
 import cn.chenyunlong.security.base.extension.DummyUserContextAware;
 import cn.chenyunlong.security.base.extension.UserContextAware;
 import cn.chenyunlong.security.config.SecurityCommonProperties;
+import cn.chenyunlong.security.config.security.entrypoint.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.web.cors.CorsUtils;
+
+import static cn.chenyunlong.security.config.security.configures.authing.AuthingLoginConfigurer.authingLogin;
+import static cn.chenyunlong.security.config.security.configures.password.PasswordLoginConfigurer.passLogin;
 
 /**
  * spring security 配置类 自动注入JwtAuthenticationProvider
@@ -42,10 +43,6 @@ import org.springframework.web.cors.CorsUtils;
 @EnableConfigurationProperties(SecurityCommonProperties.class)
 public class SecurityAutoConfigure {
 
-    private final JwtAuthenticationEntryPoint unauthorizedHandler;
-
-    private final SecurityCommonProperties commonProperties;
-
     @Bean
     @ConditionalOnMissingBean(UserContextAware.class)
     UserContextAware dummyUserContext() {
@@ -53,65 +50,31 @@ public class SecurityAutoConfigure {
     }
 
     /**
-     * 配置Security过滤器链。
+     * 用户登录
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain userLoginFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.securityMatcher("/auth/**");
+        httpSecurity.apply(authingLogin());
+        httpSecurity.apply(passLogin());
         httpSecurity
-            .requiresChannel()
-            .anyRequest()
-            .requiresInsecure()
-            .and()
-            .csrf()
-            .disable()//csrf取消
-            .cors()
-            .disable()
-            .exceptionHandling()
-            .authenticationEntryPoint(unauthorizedHandler)
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()//不再存储session
-            .headers()
-            .frameOptions()
-            .disable()
-            .and()
-            .headers()
-            .addHeaderWriter(new XFrameOptionsHeaderWriter(
-                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
-            .and()
-            .authorizeHttpRequests()
-            .requestMatchers(CorsUtils::isPreFlightRequest)
-            .permitAll()
-            //OPTIONS请求直接放行
-            .requestMatchers(HttpMethod.OPTIONS)
-            .permitAll()
-            //静态资源直接放行
-            .requestMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html",
-                    "/**/*.css", "/**/*.js", "/auth/**")
-            .permitAll()
-            //Swagger相关直接放行
-            .requestMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**",
-                "/v2/api-docs", "/configuration/ui", "/configuration/security", "/auth/**",
-                "/public/**")
-            .permitAll()
-            .requestMatchers(commonProperties.getUnAuthUrls().toArray(new String[0]))
-            .permitAll()
-            .requestMatchers("/admin/**)")
-            .hasRole("ADMIN")
-            .anyRequest()
-            .authenticated();
-
-        httpSecurity.addFilterBefore(authenticationTokenFilterBean(),
-            UsernamePasswordAuthenticationFilter.class);
-        // 资源创建
-        httpSecurity.headers().cacheControl();
-
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(entrypoint()))
+                .authorizeHttpRequests()
+                .anyRequest().permitAll();
         return httpSecurity.build();
     }
 
     public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
         return new JwtAuthenticationTokenFilter();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint entrypoint() {
+        return new CustomAuthenticationEntryPoint();
     }
 
 }

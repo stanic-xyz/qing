@@ -18,13 +18,11 @@ import cn.authing.sdk.java.dto.authentication.IOidcParams;
 import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
 import cn.authing.sdk.java.dto.authentication.UserInfo;
 import cn.authing.sdk.java.model.AuthenticationClientOptions;
-import cn.chenyunlong.security.config.security.AuthingConfig;
+import cn.chenyunlong.security.config.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.security.endpoint.model.AuthingLoginParam;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,12 +30,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.text.ParseException;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/authorize/auth")
 @RequiredArgsConstructor
 public class AuthingController {
-    private final AuthingConfig authing;
+    private final AuthingProperties authing;
 
 
     /**
