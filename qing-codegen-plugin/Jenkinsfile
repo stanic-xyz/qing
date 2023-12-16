@@ -1,0 +1,40 @@
+pipeline {
+    agent {
+        docker {
+            image 'maven:3.9.5-eclipse-temurin-17-alpine'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
+    stages {
+        stage('编译打包') {
+            steps {
+                sh '''mvn clean install -pl qing-codegen-plugin/qing-codegen-apt -am -f pom.xml'''
+            }
+        }
+        stage('代码生成器单元测试') {
+            steps {
+                sh '''echo 清理工作空间'''
+                sh '''mvn clean -pl qing-codegen-plugin/qing-codegen-samples -f pom.xml'''
+                sh '''echo 开始测试'''
+                sh '''mvn clean test -pl qing-codegen-plugin/qing-codegen-samples -f pom.xml'''
+            }
+            post {
+                always {
+                    // 收集测试报告
+                    junit 'qing-codegen-plugin/qing-codegen-samples/target/surefire-reports/*.xml'
+                }
+            }
+        }
+        stage('代码生成器示例项目单元测试') {
+            steps {
+                sh '''mvn clean test -pl qing-codegen-plugin/qing-codegen-samples -f pom.xml'''
+            }
+            post {
+                always {
+                    // 收集测试报告
+                    junit 'qing-codegen-plugin/qing-codegen-samples/target/surefire-reports/*.xml'
+                }
+            }
+        }
+    }
+}
