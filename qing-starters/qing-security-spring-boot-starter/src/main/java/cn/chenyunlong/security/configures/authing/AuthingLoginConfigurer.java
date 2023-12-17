@@ -44,7 +44,13 @@ public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<Authing
         super.configure(httpSecurity);
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
         AuthingLoginFilter authingLoginFilter = new AuthingLoginFilter(authenticationManager, authingProperty);
-        authingLoginFilter.setAuthenticationFailureHandler((request, response, exception) -> System.out.println("AuthingLoginConfigurer.onAuthenticationFailure"));
+        authingLoginFilter.setAuthenticationFailureHandler((request, response, exception) -> {
+            ObjectMapper objectMapper = new ObjectMapper();
+            //构建一个Token
+            ApiResult<Void> success = ApiResult.fail("登录失败");
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(objectMapper.writeValueAsString(success));
+        });
         authingLoginFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
             ObjectMapper objectMapper = new ObjectMapper();
             AuthingLoginToken authingLoginToken = (AuthingLoginToken) authentication;

@@ -79,7 +79,12 @@ public class AuthingProvider implements AuthenticationProvider {
             List<ConnectionData> connectionDataList = connectionService.findConnectionByProviderIdAndProviderUserId(providerId, userInfo.getSub());
             if (CollectionUtil.isEmpty(connectionDataList)) {
                 // 自动注册// 自动注册
-                userDetails = connectionService.signUp(AuthUser.builder().build(), providerId, loginRequest.getState());
+                userDetails = connectionService.signUp(AuthUser.builder()
+                        .username(userInfo.getName())
+                        .uuid(userInfo.getSub())
+                        .avatar(userInfo.getPicture())
+                        .source(providerId)
+                        .build(), providerId, loginRequest.getState());
             }
             //4.2 第三方登录用户已存在, 直接登录
             if (userDetails == null) {

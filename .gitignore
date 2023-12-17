@@ -49,3 +49,4 @@ local.env
 /codegen/
 /qing-config-git/src/main/resources/config/zhangli-service-provider/
 /charts/node_modules
+!qing-third/
