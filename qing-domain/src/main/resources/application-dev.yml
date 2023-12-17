@@ -39,6 +39,7 @@ qing:
       appSecret: a599ddfc87b4478596b31a17e46d2360
       appHost: https://stanic.authing.cn/6432d5c9e0502f0bb45319bf
       redirectUrl: http://localhost:8080/auth2/authorization
+      authLoginUrlPrefix: /api/auth2/authorization
   mp:
     # 测试账号
     appId: wx9e955703886af7c9

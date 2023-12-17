@@ -10,12 +10,12 @@ public class AuthingProperties {
     /**
      * 第三方登录回调处理 url 前缀 ，也就是 RedirectUrl 的前缀, 不包含 ServletContextPath，默认为 /auth2/login.<br><br>
      */
-    private String redirectUrlPrefix = "/auth2/login";
+    private String redirectUrlPrefix = "api/auth2/login";
 
     /**
      * 第三方登录授权登录 url 前缀, 不包含 ServletContextPath，默认为 /auth2/authorization.<br><br>
      */
-    private String authLoginUrlPrefix = "/auth2/authorization";
+    private String authLoginUrlPrefix = "api/auth2/authorization";
 
     /**
      * 第三方授权登录成功后的默认权限, 多个权限用逗号分开, 默认为: "ROLE_USER"
