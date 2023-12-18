@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
-public class IUserServiceTest extends AbstractDomainTests {
+public class IQingUserServiceTest extends AbstractDomainTests {
 
     @Autowired
     private IUserService userService;

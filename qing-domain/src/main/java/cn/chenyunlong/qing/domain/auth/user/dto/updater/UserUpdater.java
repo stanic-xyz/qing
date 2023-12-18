@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.domain.auth.user.dto.updater;
 
 import cn.chenyunlong.common.enums.MFAType;
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -79,7 +79,7 @@ public class UserUpdater {
 
     private Long id;
 
-    public void updateUser(User param) {
+    public void updateUser(QingUser param) {
         Optional.ofNullable(getUid()).ifPresent(param::setUid);
         Optional.ofNullable(getUsername()).ifPresent(param::setUsername);
         Optional.ofNullable(getNickname()).ifPresent(param::setNickname);

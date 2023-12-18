@@ -19,7 +19,6 @@ import cn.chenyunlong.security.entity.AuthUser;
 import cn.chenyunlong.security.entity.ConnectionData;
 import cn.chenyunlong.security.exception.RegisterUserFailureException;
 import cn.chenyunlong.security.exception.UpdateConnectionException;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.MultiValueMap;
@@ -49,8 +48,7 @@ public interface ConnectionService {
      * @return the new user UserDetails.
      * @throws RegisterUserFailureException 用户重名或注册失败
      */
-    @NonNull
-    UserDetails signUp(@NonNull AuthUser authUser, @NonNull String providerId, @NonNull String encodeState) throws RegisterUserFailureException;
+    UserDetails signUp(AuthUser authUser, String providerId, String encodeState) throws RegisterUserFailureException;
 
     /**
      * 根据传入的参数更新第三方授权登录的用户信息, 包括 accessToken 信息,
@@ -59,7 +57,7 @@ public interface ConnectionService {
      * @param connectionData 第三方授权登录的用户信息
      * @throws UpdateConnectionException 更新异常
      */
-    void updateUserConnectionAndAuthToken(@NonNull final AuthUser authUser, @NonNull final ConnectionData connectionData) throws UpdateConnectionException;
+    void updateUserConnectionAndAuthToken(final AuthUser authUser, final ConnectionData connectionData) throws UpdateConnectionException;
 
     /**
      * 第三方授权登录信息{@link AuthUser}绑定到本地账号{@link UserDetails}, 且添加第三方授权登录信息到 user_connection 与 auth_token
@@ -68,7 +66,7 @@ public interface ConnectionService {
      * @param authUser   第三方用户信息
      * @param providerId 第三方服务商 Id
      */
-    void binding(@NonNull UserDetails principal, @NonNull AuthUser authUser, @NonNull String providerId);
+    void binding(UserDetails principal, AuthUser authUser, String providerId);
 
     /**
      * 解除绑定(第三方)
@@ -77,7 +75,7 @@ public interface ConnectionService {
      * @param providerId     第三方服务商 Id
      * @param providerUserId 第三方用户 Id
      */
-    void unbinding(@NonNull String userId, @NonNull String providerId, @NonNull String providerUserId);
+    void unbinding(String userId, String providerId, String providerUserId);
 
     /**
      * 根据 providerId 与 providerUserId 获取 ConnectionData list.
@@ -87,8 +85,8 @@ public interface ConnectionService {
      * @return connection data list
      */
     @Nullable
-    List<ConnectionData> findConnectionByProviderIdAndProviderUserId(@NonNull String providerId,
-                                                                     @NonNull String providerUserId);
+    List<ConnectionData> findConnectionByProviderIdAndProviderUserId(String providerId,
+                                                                     String providerUserId);
 
     /**
      * 获取当前账号下所有绑定的第三方账号接口.<br>
@@ -108,6 +106,6 @@ public interface ConnectionService {
      * @param userId the userId
      * @return all connections the current user has across all providers.
      */
-    @NonNull
-    MultiValueMap<String, ConnectionData> listAllConnections(@NonNull String userId);
+
+    MultiValueMap<String, ConnectionData> listAllConnections(String userId);
 }

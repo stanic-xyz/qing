@@ -5,7 +5,7 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
@@ -60,7 +60,7 @@ public class ZanServiceImpl implements IZanService {
         if (entity.isEmpty()) {
             throw new BusinessException("创建zan失败，实体不存在");
         }
-        Optional<User> userRepositoryById = userRepository.findById(creator.getUserId());
+        Optional<QingUser> userRepositoryById = userRepository.findById(creator.getUserId());
         if (userRepositoryById.isEmpty()) {
             throw new BusinessException("创建zan失败，用户不存在");
         }
@@ -136,8 +136,8 @@ public class ZanServiceImpl implements IZanService {
         // 通过插件处理业务扩展
         pluginRegistry.getPluginsFor(likeModel).forEach(
             likeModelLikePlugin ->
-                likeModelLikePlugin.sendSms(likeModel.getUser().getPhone(),
-                    likeModel.getUser().getEmail()));
+                    likeModelLikePlugin.sendSms(likeModel.getQingUser().getPhone(),
+                            likeModel.getQingUser().getEmail()));
 
         // 业务处理完毕，读取处理结果
         return likeContext.getCreateRequest().getEntityId();

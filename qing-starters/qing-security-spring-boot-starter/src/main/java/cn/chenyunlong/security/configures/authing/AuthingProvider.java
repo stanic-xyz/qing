@@ -18,8 +18,10 @@ import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
 import cn.authing.sdk.java.dto.authentication.UserInfo;
 import cn.authing.sdk.java.model.AuthenticationClientOptions;
 import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
+import cn.chenyunlong.security.entity.AuthToken;
 import cn.chenyunlong.security.entity.AuthUser;
 import cn.chenyunlong.security.entity.ConnectionData;
+import cn.chenyunlong.security.exception.NotConnectedException;
 import cn.chenyunlong.security.signup.ConnectionService;
 import cn.chenyunlong.security.token.Auth2AuthenticationToken;
 import cn.hutool.core.collection.CollectionUtil;
@@ -63,9 +65,9 @@ public class AuthingProvider implements AuthenticationProvider {
         try {
             authenticationClient = new AuthenticationClient(clientOptions);
             //1.3 通过code 获取OIDCTokenResponse
-            OIDCTokenResponse accessTokenByCode = authenticationClient.getAccessTokenByCode(loginRequest.getCode());
-            log.info("【Authing】通过Authing登录成功：accessToken:{}", accessTokenByCode.getAccessToken());
-            UserInfo userInfo = authenticationClient.getUserInfoByAccessToken(accessTokenByCode.getAccessToken());
+            OIDCTokenResponse accessToken = authenticationClient.getAccessTokenByCode(loginRequest.getCode());
+            log.info("【Authing】通过Authing登录成功：accessToken:{}", accessToken.getAccessToken());
+            UserInfo userInfo = authenticationClient.getUserInfoByAccessToken(accessToken.getAccessToken());
             log.info("【Authing】通过Authing登录成功：userInfo:{}", JSONUtil.toJsonPrettyStr(userInfo));
             String name = userInfo.getName();
             log.info("【Authing】通过Authing登录成功：authing用户名:{}，sub：{}", name, userInfo.getSub());
@@ -78,16 +80,30 @@ public class AuthingProvider implements AuthenticationProvider {
             String providerId = "authing";
             List<ConnectionData> connectionDataList = connectionService.findConnectionByProviderIdAndProviderUserId(providerId, userInfo.getSub());
             if (CollectionUtil.isEmpty(connectionDataList)) {
-                // 自动注册// 自动注册
-                userDetails = connectionService.signUp(AuthUser.builder()
+                // 自动注册
+                AuthUser authUser = AuthUser.builder()
                         .username(userInfo.getName())
                         .uuid(userInfo.getSub())
                         .avatar(userInfo.getPicture())
                         .source(providerId)
-                        .build(), providerId, loginRequest.getState());
+                        .token(AuthToken.builder()
+                                .accessCode(accessToken.getAccessToken())
+                                .expireIn(accessToken.getExpiresIn().longValue())
+                                .code(loginRequest.getCode())
+                                .userId(userInfo.getSub())
+                                .idToken(accessToken.getIdToken())
+                                .openId(userInfo.getSub())
+                                .refreshToken(accessToken.getRefreshToken())
+                                .build())
+                        .build();
+                userDetails = connectionService.signUp(authUser, providerId, loginRequest.getState());
+            } else {
+                ConnectionData connectionData = connectionDataList.stream().findFirst().orElseThrow(() -> new IllegalArgumentException("未找到匹配的连接信息"));
+                userDetails = userDetailsService.loadUserByUsername(connectionData.getUserId());
             }
             //4.2 第三方登录用户已存在, 直接登录
             if (userDetails == null) {
+                throw new NotConnectedException(providerId);
             }
             // 7 创建成功认证 token 并返回
             Auth2AuthenticationToken auth2AuthenticationToken = new Auth2AuthenticationToken(userDetails, userDetails.getAuthorities(), providerId);

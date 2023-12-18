@@ -20,21 +20,25 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.security.KeyPair;
-import java.util.Collections;
-import javax.net.ssl.SSLContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.request.AuthGithubRequest;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.web.client.RestTemplate;
+
+import javax.net.ssl.SSLContext;
+import java.security.KeyPair;
+import java.util.Collections;
 
 /**
  * 全局配置
@@ -102,5 +106,11 @@ public class QingConfiguration implements InitializingBean {
         KeyStoreKeyFactory keyStoreKeyFactory =
             new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "123456".toCharArray());
         return keyStoreKeyFactory.getKeyPair("jwt", "123456".toCharArray());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(PasswordEncoder.class)
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

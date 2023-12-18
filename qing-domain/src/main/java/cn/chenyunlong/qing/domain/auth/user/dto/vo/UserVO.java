@@ -2,7 +2,7 @@ package cn.chenyunlong.qing.domain.auth.user.dto.vo;
 
 import cn.chenyunlong.common.enums.MFAType;
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -86,7 +86,7 @@ public class UserVO extends AbstractBaseJpaVo {
     )
     private String mfaKey;
 
-    public UserVO(User source) {
+    public UserVO(QingUser source) {
         super();
         this.setId(source.getId());
         this.setCreatedAt(source.getCreatedAt());

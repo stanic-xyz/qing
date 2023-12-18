@@ -54,7 +54,7 @@ helm install qing qing/qing
 | Name                 | Description                                                          | Value                   |
 |----------------------|----------------------------------------------------------------------|-------------------------|
 | `qingUsername`       | Qing username                                                        | `admin`                 |
-| `qingPassword`       | Qing user password                                                   | `""`                    |
+| `qingPassword`       | Qing qingUser password                                               | `""`                    |
 | `existingSecret`     | Name of existing secret containing Qing credentials                  | `""`                    |
 | `qingExternalUrl`    | 外部访问地址，请根据实际需要修改                                                     | `http://localhost:8090` |
 | `qingScheme`         | Scheme to use to generate Qing URLs                                  | `http`                  |
@@ -72,8 +72,8 @@ helm install qing qing/qing
 | `postgresql.architecture`                     | PostgreSQL architecture. Allowed values: `standalone` or `replication`            | `standalone` |
 | `postgresql.auth.rootPassword`                | PostgreSQL root password                                                          | `""`         |
 | `postgresql.auth.database`                    | PostgreSQL custom database                                                        | `qing`       |
-| `postgresql.auth.username`                    | PostgreSQL custom user name                                                       | `qing`       |
-| `postgresql.auth.password`                    | PostgreSQL custom user password                                                   | `""`         |
+| `postgresql.auth.username`                    | PostgreSQL custom qingUser name                                                   | `qing`       |
+| `postgresql.auth.password`                    | PostgreSQL custom qingUser password                                               | `""`         |
 | `postgresql.primary.persistence.enabled`      | Enable persistence on PostgreSQL using PVC(s)                                     | `true`       |
 | `postgresql.primary.persistence.storageClass` | Persistent Volume storage class                                                   | `""`         |
 | `postgresql.primary.persistence.accessModes`  | Persistent Volume access modes                                                    | `[]`         |
@@ -82,8 +82,8 @@ helm install qing qing/qing
 | `mysql.architecture`                          | MySQL architecture. Allowed values: `standalone` or `replication`                 | `standalone` |
 | `mysql.auth.rootPassword`                     | MySQL root password                                                               | `""`         |
 | `mysql.auth.database`                         | MySQL custom database                                                             | `qing`       |
-| `mysql.auth.username`                         | MySQL custom user name                                                            | `qing`       |
-| `mysql.auth.password`                         | MySQL custom user password                                                        | `""`         |
+| `mysql.auth.username`                         | MySQL custom qingUser name                                                        | `qing`       |
+| `mysql.auth.password`                         | MySQL custom qingUser password                                                    | `""`         |
 | `mysql.primary.persistence.enabled`           | Enable persistence on MySQL using PVC(s)                                          | `true`       |
 | `mysql.primary.persistence.storageClass`      | Persistent Volume storage class                                                   | `""`         |
 | `mysql.primary.persistence.accessModes`       | Persistent Volume access modes                                                    | `[]`         |
@@ -91,8 +91,8 @@ helm install qing qing/qing
 | `externalDatabase.platform`                   | External Database platform                                                        | `postgresql` |
 | `externalDatabase.host`                       | External Database server host                                                     | `""`         |
 | `externalDatabase.port`                       | External Database server port                                                     | `""`         |
-| `externalDatabase.user`                       | External Database username                                                        | `""`         |
-| `externalDatabase.password`                   | External Database user password                                                   | `""`         |
+| `externalDatabase.qingUser`                   | External Database username                                                        | `""`         |
+| `externalDatabase.password`                   | External Database qingUser password                                               | `""`         |
 | `externalDatabase.database`                   | External Database database name                                                   | `""`         |
 | `externalDatabase.existingSecret`             | The name of an existing secret with database credentials. Evaluated as a template | `""`         |
 

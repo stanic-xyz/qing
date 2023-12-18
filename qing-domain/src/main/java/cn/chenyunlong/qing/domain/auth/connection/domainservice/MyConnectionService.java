@@ -1,6 +1,11 @@
-package cn.chenyunlong.qing.domain.auth.connection;
+package cn.chenyunlong.qing.domain.auth.connection.domainservice;
 
+import cn.chenyunlong.qing.domain.auth.connection.dto.creator.UserConnectionCreator;
+import cn.chenyunlong.qing.domain.auth.connection.mapper.UserConnectionMapper;
+import cn.chenyunlong.qing.domain.auth.connection.repository.UserConnectionRepository;
+import cn.chenyunlong.qing.domain.auth.connection.service.IUserConnectionService;
 import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
+import cn.chenyunlong.security.entity.AuthToken;
 import cn.chenyunlong.security.entity.AuthUser;
 import cn.chenyunlong.security.entity.ConnectionData;
 import cn.chenyunlong.security.enums.ErrorCodeEnum;
@@ -16,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,13 +30,14 @@ public class MyConnectionService implements ConnectionService {
 
     private final UmsUserDetailsService userDetailsService;
     private final AuthingProperties authingProperties;
+    private final IUserConnectionService userConnectionService;
+    private final UserConnectionRepository connectionRepository;
+
 
     @Override
     public UserDetails signUp(AuthUser authUser, String providerId, String encodeState) throws RegisterUserFailureException {
-
         String username = authUser.getUsername();
         String[] usernames = userDetailsService.generateUsernames(authUser);
-
         try {
             // 重名检查
             username = null;
@@ -65,7 +72,19 @@ public class MyConnectionService implements ConnectionService {
      * @param userDetails 用户详情
      */
     private void registerConnection(String providerId, AuthUser authUser, UserDetails userDetails) {
-
+        AuthToken token = authUser.getToken();
+        UserConnectionCreator creator = UserConnectionCreator.builder()
+                .accessToken(authUser.getToken().getAccessToken())
+                .providerId(providerId)
+                .displayName(authUser.getUsername())
+                .rank(1)
+                .imageUrl(authUser.getAvatar())
+                .refreshToken(authUser.getToken().getRefreshToken())
+                .expireTime(authUser.getToken().getExpireIn())
+                .userId(userDetails.getUsername())
+                .providerUserId(authUser.getUuid())
+                .build();
+        Long userConnection = userConnectionService.createUserConnection(creator);
     }
 
     @Override
@@ -85,7 +104,10 @@ public class MyConnectionService implements ConnectionService {
 
     @Override
     public List<ConnectionData> findConnectionByProviderIdAndProviderUserId(String providerId, String providerUserId) {
-        return null;
+        return connectionRepository.findConnectionByProviderIdAndProviderUserId(providerId, providerUserId)
+                .stream()
+                .map(UserConnectionMapper.INSTANCE::entityToConnectionData)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -15,9 +15,9 @@
 alter table anime_episode
     add playlist_id bigint not null comment '播放列表ID' after anime_id;
 
-create unique index user_email_index on user (email);
+create unique index user_email_index on qingUser (email);
 
-create unique index user_username_index on user (username);
+create unique index user_username_index on qingUser (username);
 
 
 SELECT concat('ALTER TABLE ', table_schema, '.', table_name,

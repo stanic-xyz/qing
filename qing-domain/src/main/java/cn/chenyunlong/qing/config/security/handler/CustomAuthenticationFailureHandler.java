@@ -1,5 +1,6 @@
-package cn.chenyunlong.security.config.security.handler;
+package cn.chenyunlong.qing.config.security.handler;
 
+import cn.chenyunlong.common.model.JsonResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,8 +17,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         ObjectMapper mapper = new ObjectMapper();
-        response.setStatus(200);
-        response.getWriter().write("{构建成功}");
-        response.setContentType("application/json;charset=utf-8");
+        response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+        response.getWriter().write(mapper.writeValueAsString(JsonResult.fail(null, "登录失败：" + exception.getMessage())));
     }
 }

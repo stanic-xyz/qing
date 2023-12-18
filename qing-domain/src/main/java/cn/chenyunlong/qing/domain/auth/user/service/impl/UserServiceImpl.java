@@ -5,7 +5,7 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
@@ -37,9 +37,9 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public Long createUser(UserCreator creator) {
-        Optional<User> user = EntityOperations.doCreate(userRepository)
+        Optional<QingUser> user = EntityOperations.doCreate(userRepository)
                 .create(() -> UserMapper.INSTANCE.dtoToEntity(creator))
-                .update(User::init)
+                .update(QingUser::init)
                 .execute();
         return user.isPresent() ? user.get().getId() : 0;
     }
@@ -82,7 +82,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public UserVO findById(Long id) {
-        Optional<User> user = userRepository.findById(id);
+        Optional<QingUser> user = userRepository.findById(id);
         return new UserVO(user.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
@@ -97,7 +97,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
+    public Optional<QingUser> findByUsername(String username) {
         return Optional.ofNullable(userRepository.findByUsername(username));
     }
 }

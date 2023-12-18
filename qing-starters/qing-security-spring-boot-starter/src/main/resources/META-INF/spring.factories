@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.chenyunlong.security.config.SecurityConfig\
   cn.chenyunlong.security.configures.authing.AuthingLoginConfigurer

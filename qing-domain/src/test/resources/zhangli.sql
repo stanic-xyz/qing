@@ -520,7 +520,7 @@ TABLES `role` WRITE;
     DISABLE KEYS */;
 INSERT INTO `role`
 VALUES (1, 'admin', '管理团', now(), now(), 'stan', '', '', ''),
-       (2, 'user', '普通用户', now(), now(), 'stan', '', '', '');
+       (2, 'qingUser', '普通用户', now(), now(), 'stan', '', '', '');
 /*!40000 ALTER TABLE `role`
     ENABLE KEYS */;
 UNLOCK
@@ -636,10 +636,10 @@ CREATE TABLE `upload_file`
   AUTO_INCREMENT = 138
   DEFAULT CHARSET = utf8;
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `qingUser`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 
-CREATE TABLE `user`
+CREATE TABLE `qingUser`
 (
     `userid`       bigint(20) not null AUTO_INCREMENT,
     `username`     varchar(10)           DEFAULT NULL COMMENT '用户登录的账号，长度为十位字符',
@@ -687,7 +687,7 @@ CREATE TABLE `user_third`
 
 
 
-INSERT INTO `user`
+INSERT INTO `qingUser`
 VALUES (123, 'stan', '纯纯的黑色幽默', 'avatar_path', 'description', '1576302867@qq.com',
         '13628091432', '$2a$10$45ScSS1BeuYizV2QYJ9HVOfpBoTOxnjXyCkNPFkTJnf9o3bW0l.4G',
         '13628091432', now(), now(), 'stan', '', '', '');

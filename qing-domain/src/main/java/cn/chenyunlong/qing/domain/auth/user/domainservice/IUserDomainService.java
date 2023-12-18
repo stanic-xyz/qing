@@ -1,8 +1,8 @@
 package cn.chenyunlong.qing.domain.auth.user.domainservice;
 
 import cn.chenyunlong.common.constants.ValidStatus;
-import cn.chenyunlong.qing.domain.auth.user.QUser;
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QQingUser;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.LoginParam;
 import cn.chenyunlong.qing.domain.auth.user.dto.response.QingTokenResponse;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
@@ -26,15 +26,15 @@ public class IUserDomainService {
      */
     public QingTokenResponse login(LoginParam loginParam) {
 
-        QUser user = QUser.user;
-        User userName = queryFactory.selectFrom(user).where(user.username.eq(loginParam.getUsername())).fetchOne();
-        if (userName == null) {
+        QQingUser user = QQingUser.qingUser;
+        QingUser qingUserName = queryFactory.selectFrom(user).where(user.username.eq(loginParam.getUsername())).fetchOne();
+        if (qingUserName == null) {
             throw new RuntimeException("用户不存在");
         }
-        if (!userName.getPassword().equals(loginParam.getPassword())) {
+        if (!qingUserName.getPassword().equals(loginParam.getPassword())) {
             throw new RuntimeException("密码错误");
         }
-        if (userName.getValidStatus() != ValidStatus.VALID) {
+        if (qingUserName.getValidStatus() != ValidStatus.VALID) {
             throw new RuntimeException("用户已被禁用");
         }
         // 创建一个token 返回到前端
