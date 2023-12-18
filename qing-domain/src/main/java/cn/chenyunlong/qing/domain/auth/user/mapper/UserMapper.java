@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.domain.auth.user.mapper;
 
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.UserCreateRequest;
@@ -15,8 +15,8 @@ public interface UserMapper {
     UserMapper INSTANCE = new UserMapper() {
     };
 
-    default User dtoToEntity(UserCreator dto) {
-        return BeanUtil.copyProperties(dto, User.class);
+    default QingUser dtoToEntity(UserCreator dto) {
+        return BeanUtil.copyProperties(dto, QingUser.class);
     }
 
     default UserUpdater request2Updater(UserUpdateRequest request) {

@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.security.config.security.handler;
+package cn.chenyunlong.qing.config.security.handler;
 
 import cn.chenyunlong.common.model.ApiResult;
 import cn.hutool.json.JSONUtil;
@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +29,6 @@ import java.nio.charset.StandardCharsets;
  *
  * @author 陈云龙
  */
-@Component
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override

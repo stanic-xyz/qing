@@ -51,7 +51,7 @@ import java.time.LocalDateTime;
 @GenMapper
 @Entity
 @Table(name = "sys_user")
-public class User extends BaseJpaAggregate {
+public class QingUser extends BaseJpaAggregate {
 
     @Column(unique = true)
     @FieldDesc(name = "用户唯一ID")

@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class AuthToken implements Serializable {
     private String accessToken;
-    private int expireIn;
+    private long expireIn;
     private String refreshToken;
     private int refreshTokenExpireIn;
     private String uid;

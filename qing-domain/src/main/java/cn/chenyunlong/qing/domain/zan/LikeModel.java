@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.domain.zan;
 
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.zan.service.plugin.SmsType;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.Data;
 public class LikeModel {
 
     private SmsType smsType = SmsType.A_LI_YUN;
-    private User user;
+    private QingUser qingUser;
     private Entity entity;
 
     /**

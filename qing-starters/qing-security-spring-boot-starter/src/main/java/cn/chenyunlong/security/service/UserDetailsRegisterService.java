@@ -26,7 +26,6 @@ package cn.chenyunlong.security.service;
 import cn.chenyunlong.security.entity.AuthUser;
 import cn.chenyunlong.security.enums.ErrorCodeEnum;
 import cn.chenyunlong.security.exception.RegisterUserFailureException;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -75,7 +74,7 @@ public interface UserDetailsRegisterService {
      * @return 注册后的 UserDetails 信息
      * @throws RegisterUserFailureException 用户注册失败
      */
-    default UserDetails registerUser(@NonNull AuthUser authUser, @NonNull String username, @NonNull String defaultAuthority) throws RegisterUserFailureException {
+    default UserDetails registerUser(AuthUser authUser, String username, String defaultAuthority) throws RegisterUserFailureException {
         return this.registerUser(authUser, username, defaultAuthority, null);
     }
 
@@ -94,7 +93,7 @@ public interface UserDetailsRegisterService {
      * @return 注册后的 UserDetails 信息
      * @throws RegisterUserFailureException 用户注册失败
      */
-    default UserDetails registerUser(@NonNull AuthUser authUser, @NonNull String username, @NonNull String defaultAuthority,
+    default UserDetails registerUser(AuthUser authUser, String username, String defaultAuthority,
                                      @Nullable String decodeState) throws RegisterUserFailureException {
         throw new RegisterUserFailureException(ErrorCodeEnum.USER_REGISTER_FAILURE, null);
     }

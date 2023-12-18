@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.domain.auth.user.service;
 
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
@@ -41,5 +41,5 @@ public interface IUserService {
      */
     Page<UserVO> findByPage(PageRequestWrapper<UserQuery> query);
 
-    Optional<User> findByUsername(String username);
+    Optional<QingUser> findByUsername(String username);
 }

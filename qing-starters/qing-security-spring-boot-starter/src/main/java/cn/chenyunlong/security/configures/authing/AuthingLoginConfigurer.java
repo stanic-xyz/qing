@@ -13,59 +13,55 @@
 
 package cn.chenyunlong.security.configures.authing;
 
-import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
-import cn.chenyunlong.common.model.ApiResult;
 import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.security.signup.ConnectionService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Slf4j
 @EnableConfigurationProperties(AuthingProperties.class)
-@AutoConfigureAfter(AuthenticationManager.class)
 @RequiredArgsConstructor
 public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<AuthingLoginConfigurer, HttpSecurity> implements InitializingBean {
 
     private final AuthingProperties authingProperty;
     private final ConnectionService connectionService;
     private final UserDetailsService userDetailsService;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final AuthenticationFailureHandler authenticationFailureHandler;
+
+
+    @Override
+    public void afterPropertiesSet() {
+        log.info("Authing应用{{}}配置完毕！", authingProperty.getAppName());
+    }
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         super.configure(httpSecurity);
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
-        AuthingLoginFilter authingLoginFilter = new AuthingLoginFilter(authenticationManager, authingProperty);
-        authingLoginFilter.setAuthenticationFailureHandler((request, response, exception) -> {
-            ObjectMapper objectMapper = new ObjectMapper();
-            //构建一个Token
-            ApiResult<Void> success = ApiResult.fail("登录失败");
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(success));
-        });
-        authingLoginFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
-            ObjectMapper objectMapper = new ObjectMapper();
-            AuthingLoginToken authingLoginToken = (AuthingLoginToken) authentication;
-            //构建一个Token
-            ApiResult<OIDCTokenResponse> success = ApiResult.success(authingLoginToken.getResponse());
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(success));
-        });
-        authingLoginFilter.setRememberMeServices(new AuthingRememberMeServices(authingProperty));
+        AuthingLoginFilter authingLoginFilter = getAuthingLoginFilter(authenticationManager);
         httpSecurity.authenticationProvider(new AuthingProvider(authingProperty, userDetailsService, connectionService));
         httpSecurity.addFilterBefore(authingLoginFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        log.info("Authing应用{{}}配置完毕！", authingProperty.getAppName());
+    private AuthingLoginFilter getAuthingLoginFilter(AuthenticationManager authenticationManager) {
+        AuthingLoginFilter authingLoginFilter = new AuthingLoginFilter(authenticationManager, authingProperty);
+        if (authenticationFailureHandler != null) {
+            authingLoginFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        }
+        if (authenticationSuccessHandler != null) {
+            authingLoginFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        }
+        authingLoginFilter.setRememberMeServices(new AuthingRememberMeServices(authingProperty));
+        return authingLoginFilter;
     }
 }

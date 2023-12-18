@@ -13,11 +13,9 @@
 
 package cn.chenyunlong.qing.config.security;
 
-import cn.chenyunlong.security.base.JwtAuthenticationTokenFilter;
 import cn.chenyunlong.security.base.extension.DummyUserContextAware;
 import cn.chenyunlong.security.base.extension.UserContextAware;
 import cn.chenyunlong.security.config.SecurityCommonProperties;
-import cn.chenyunlong.security.config.security.entrypoint.CustomAuthenticationEntryPoint;
 import cn.chenyunlong.security.configures.authing.AuthingLoginConfigurer;
 import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
 import jakarta.annotation.Resource;
@@ -29,7 +27,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -64,13 +61,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
-        return new JwtAuthenticationTokenFilter();
-    }
-
-    @Bean
-    public AuthenticationEntryPoint entrypoint() {
-        return new CustomAuthenticationEntryPoint();
-    }
 }

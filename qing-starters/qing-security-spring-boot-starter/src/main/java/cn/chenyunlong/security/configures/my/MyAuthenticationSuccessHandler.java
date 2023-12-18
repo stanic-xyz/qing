@@ -25,7 +25,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Date;
@@ -36,7 +35,6 @@ import java.util.Date;
  * @author 陈云龙
  */
 @Slf4j
-@Component
 @AllArgsConstructor
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 

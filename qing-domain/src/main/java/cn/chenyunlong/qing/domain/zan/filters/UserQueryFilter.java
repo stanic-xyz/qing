@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.domain.zan.filters;
 
 import cn.chenyunlong.common.exception.NotFoundException;
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.zan.LikeContext;
 import cn.chenyunlong.qing.domain.zan.dto.request.ZanCreateRequest;
@@ -20,9 +20,9 @@ public class UserQueryFilter extends AbstractEventFilter<LikeContext> {
         log.info("获取用户信息！");
         ZanCreateRequest createRequest = eventContext.getCreateRequest();
         Long userId = createRequest.getUserId();
-        User user = userService.findById(userId)
+        QingUser qingUser = userService.findById(userId)
             .orElseThrow(() -> new NotFoundException("未查询到用户：" + userId));
         // 将用户信息添加到上下文中
-        eventContext.getLikeModel().setUser(user);
+        eventContext.getLikeModel().setQingUser(qingUser);
     }
 }

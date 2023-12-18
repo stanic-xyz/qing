@@ -2,7 +2,7 @@ package cn.chenyunlong.qing.domain.entity.service;
 
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.exception.BusinessException;
-import cn.chenyunlong.qing.domain.auth.user.User;
+import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
@@ -65,11 +65,11 @@ class ZanServiceImplTest {
         creator.setEntityId(1L);
         creator.setUserId(2L);
 
-        User user = new User();
-        user.setId(2L);
+        QingUser qingUser = new QingUser();
+        qingUser.setId(2L);
 
         doReturn(Optional.of(new Entity())).when(entityRepository).findById(creator.getEntityId());
-        doReturn(Optional.of(new User())).when(userRepository).findById(creator.getUserId());
+        doReturn(Optional.of(new QingUser())).when(userRepository).findById(creator.getUserId());
         doReturn(Optional.of(new Zan())).when(zanRepository).findById(anyLong());
         doAnswer(answer -> {
             Object argument = answer.getArgument(0);
@@ -89,7 +89,7 @@ class ZanServiceImplTest {
         creator.setUserId(2L);
 
         doReturn(Optional.of(new Entity())).when(entityRepository).findById(creator.getEntityId());
-        doReturn(Optional.of(new User())).when(userRepository).findById(creator.getUserId());
+        doReturn(Optional.of(new QingUser())).when(userRepository).findById(creator.getUserId());
         doReturn(Optional.empty()).when(zanRepository).findById(anyLong());
         doAnswer(answer -> {
             Object argument = answer.getArgument(0);
