@@ -78,7 +78,8 @@ public class AuthingProvider implements AuthenticationProvider {
             UserDetails userDetails = null;
             //4.1 没有第三方登录记录, 自动注册 或 绑定 或 临时创建第三方登录用户
             String providerId = "authing";
-            List<ConnectionData> connectionDataList = connectionService.findConnectionByProviderIdAndProviderUserId(providerId, userInfo.getSub());
+            List<ConnectionData> connectionDataList;
+            connectionDataList = connectionService.findConnectionByProviderIdAndProviderUserId(providerId, userInfo.getSub());
             if (CollectionUtil.isEmpty(connectionDataList)) {
                 // 自动注册
                 AuthUser authUser = AuthUser.builder()

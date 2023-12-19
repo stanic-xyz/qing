@@ -30,7 +30,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Slf4j
 @EnableConfigurationProperties(AuthingProperties.class)
 @RequiredArgsConstructor
-public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<AuthingLoginConfigurer, HttpSecurity> implements InitializingBean {
+public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<AuthingLoginConfigurer, HttpSecurity>
+        implements InitializingBean {
 
     private final AuthingProperties authingProperty;
     private final ConnectionService connectionService;
@@ -49,7 +50,9 @@ public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<Authing
         super.configure(httpSecurity);
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
         AuthingLoginFilter authingLoginFilter = getAuthingLoginFilter(authenticationManager);
-        httpSecurity.authenticationProvider(new AuthingProvider(authingProperty, userDetailsService, connectionService));
+        AuthingProvider authenticationProvider =
+                new AuthingProvider(authingProperty, userDetailsService, connectionService);
+        httpSecurity.authenticationProvider(authenticationProvider);
         httpSecurity.addFilterBefore(authingLoginFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

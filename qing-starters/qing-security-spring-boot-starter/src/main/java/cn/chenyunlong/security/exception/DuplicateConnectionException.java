@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package cn.chenyunlong.security.exception;
 
 import cn.chenyunlong.security.entity.ConnectionData;
 import cn.chenyunlong.security.entity.ConnectionKey;
-import org.springframework.security.core.SpringSecurityCoreVersion;
+import cn.chenyunlong.security.repository.UsersConnectionRepository;
 
 /**
  * Thrown by a {@link UsersConnectionRepository} when attempting to add a {@link ConnectionData} and a connection
@@ -27,7 +28,6 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
  * @see UsersConnectionRepository#addConnection(ConnectionData)
  */
 public final class DuplicateConnectionException extends ConnectionRepositoryException {
-    private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
     private final ConnectionKey connectionKey;
 

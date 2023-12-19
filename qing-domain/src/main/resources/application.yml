@@ -94,6 +94,7 @@ springdoc:
     default-model-expand-depth: 20
     path: /swagger-ui.html
     enabled: true
+    default-models-expand-depth: -1
   show-actuator: true
   use-management-port: false
 liteflow:
