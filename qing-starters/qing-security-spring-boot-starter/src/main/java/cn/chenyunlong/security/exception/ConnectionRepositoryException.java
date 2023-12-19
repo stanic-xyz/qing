@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package cn.chenyunlong.security.exception;
 
+import cn.chenyunlong.security.repository.UsersConnectionRepository;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 
 import java.io.Serial;

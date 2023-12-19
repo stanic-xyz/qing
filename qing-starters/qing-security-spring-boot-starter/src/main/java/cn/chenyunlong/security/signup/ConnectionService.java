@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package cn.chenyunlong.security.signup;
 
 import cn.chenyunlong.security.entity.AuthUser;

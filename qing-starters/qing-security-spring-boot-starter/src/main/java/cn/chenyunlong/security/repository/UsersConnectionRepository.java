@@ -58,6 +58,30 @@ public interface UsersConnectionRepository {
     Set<String> findUserIdsConnectedTo(String providerId, Set<String> providerUserIds);
 
     /**
+     * 根据 userId 通过指定 providerUsersCriteriaSql 与 parameters 的 sql 获取 ConnectionData list
+     *
+     * @param providerUsersCriteriaSql providerUsersCriteriaSql
+     * @param userId                   本地账户用户 Id
+     * @return connection data list
+     */
+    List<ConnectionData> findConnectionsToUsers(String providerUsersCriteriaSql, String userId);
+
+    /**
+     * 获取 userId 和 providerUserIds 的所以绑定信息.
+     * Find the connections the current user has to the given provider users.
+     * The providerUsers parameter accepts a map containing an entry for each provider the caller is interested in.
+     * The key for each entry is the providerId e.g. "qq", and the value is a list of provider user ids to fetch
+     * connections to e.g. ("987665", "435796", "584444").
+     * The returned map has the same structure and order, except the provider userId values have been replaced by Connection instances.
+     * If no connection exists between the current user and a given provider user, a null value is returned for that position.
+     *
+     * @param userId          本地账户用户 Id
+     * @param providerUserIds 第三方用户 Id
+     * @return the provider user connection map
+     */
+    MultiValueMap<String, ConnectionData> findConnectionsToUsers(String userId, MultiValueMap<String, String> providerUserIds);
+
+    /**
      * 获取 userId 的所有绑定信息.
      * Find all connections the current user has across all providers.
      * The returned map contains an entry for each provider the user is connected to.
@@ -88,21 +112,6 @@ public interface UsersConnectionRepository {
      * @return the connections the user has to the provider, or an empty list if none
      */
     List<ConnectionData> findConnections(String userId, String providerId);
-
-    /**
-     * 获取 userId 和 providerUserIds 的所以绑定信息.
-     * Find the connections the current user has to the given provider users.
-     * The providerUsers parameter accepts a map containing an entry for each provider the caller is interested in.
-     * The key for each entry is the providerId e.g. "qq", and the value is a list of provider user ids to fetch
-     * connections to e.g. ("987665", "435796", "584444").
-     * The returned map has the same structure and order, except the provider userId values have been replaced by Connection instances.
-     * If no connection exists between the current user and a given provider user, a null value is returned for that position.
-     *
-     * @param userId          本地账户用户 Id
-     * @param providerUserIds 第三方用户 Id
-     * @return the provider user connection map
-     */
-    MultiValueMap<String, ConnectionData> findConnectionsToUsers(String userId, MultiValueMap<String, String> providerUserIds);
 
     /**
      * 获取 userId 和 providerId 的所以 rank 值最小的绑定信息.
@@ -183,15 +192,6 @@ public interface UsersConnectionRepository {
      * @return connection data list
      */
     List<ConnectionData> findAllListConnections(String userId);
-
-    /**
-     * 根据 userId 通过指定 providerUsersCriteriaSql 与 parameters 的 sql 获取 ConnectionData list
-     *
-     * @param providerUsersCriteriaSql providerUsersCriteriaSql
-     * @param userId                   本地账户用户 Id
-     * @return connection data list
-     */
-    List<ConnectionData> findConnectionsToUsers(String providerUsersCriteriaSql, String userId);
 
     /**
      * 根据 {@code AuthTokenPo#getId()} 更新 {@link ConnectionData}.<br>

@@ -16,10 +16,8 @@
 
 package cn.chenyunlong.security.userdetails;
 
-import cn.chenyunlong.security.deserializes.TemporaryUserDeserializer;
 import cn.chenyunlong.security.entity.AuthUser;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,7 +44,6 @@ import java.util.function.Function;
 @SuppressWarnings("ALL")
 @Slf4j
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
-@JsonDeserialize(using = TemporaryUserDeserializer.class)
 public class TemporaryUser implements UserDetails, CredentialsContainer {
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
@@ -68,10 +65,6 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
     // ~ Constructors
     // ===================================================================================================
 
-
-    /**
-     * Calls the more complex constructor with all boolean arguments set to {@code true}.
-     */
     /**
      * Calls the more complex constructor with all boolean arguments set to {@code true}.
      *
