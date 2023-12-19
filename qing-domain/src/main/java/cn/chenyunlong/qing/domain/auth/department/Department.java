@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @GenService
 @GenServiceImpl
 @GenFeign(serverName = "stanic")
-@GenController(sourcePath = "src/main/java/cn/chenyunlong/qing/web/auth")
+@GenController
 @GenMapper
 @Data
 @Entity
