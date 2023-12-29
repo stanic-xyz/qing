@@ -11,10 +11,10 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.mapper;
+package cn.chenyunlong.qing.domain.anime.anime.mapper;
 
-import cn.chenyunlong.qing.domain.anime.Anime;
-import cn.chenyunlong.qing.domain.anime.dto.creator.AnimeCreator;
+import cn.chenyunlong.qing.domain.anime.anime.Anime;
+import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -27,7 +27,7 @@ public class JwtTokenUtil {
 
     private String secret;
     private Long expiration;
-    private String header;
+    private String header = "jwt";
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
 
     /**
