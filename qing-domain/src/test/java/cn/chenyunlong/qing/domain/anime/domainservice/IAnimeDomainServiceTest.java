@@ -1,13 +1,14 @@
 package cn.chenyunlong.qing.domain.anime.domainservice;
 
 import cn.chenyunlong.qing.domain.AbstractDomainTests;
-import cn.chenyunlong.qing.domain.anime.PlayStatus;
-import cn.chenyunlong.qing.domain.anime.dto.creator.AnimeCreator;
-import cn.chenyunlong.qing.domain.anime.service.IAnimeService;
-import java.time.LocalDate;
+import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
+import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
+import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
 
 class IAnimeDomainServiceTest extends AbstractDomainTests {
 

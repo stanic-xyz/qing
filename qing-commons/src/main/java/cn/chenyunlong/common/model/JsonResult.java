@@ -15,10 +15,12 @@ package cn.chenyunlong.common.model;
 
 import cn.chenyunlong.common.constants.BaseEnum;
 import cn.chenyunlong.common.constants.CodeEnum;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
+
+import java.util.Objects;
 
 /**
  * 公共返回结构
@@ -91,6 +93,28 @@ public final class JsonResult<T> {
         jsonResult.setCode(CodeEnum.Fail.getValue());
         jsonResult.setMessage(msg);
         jsonResult.setResult(result);
+        return jsonResult;
+    }
+
+
+    /**
+     * 成功
+     */
+    public static <E> JsonResult<E> forbidden(String msg) {
+        JsonResult<E> jsonResult = new JsonResult<>();
+        jsonResult.setCode(CodeEnum.Fail.getValue());
+        jsonResult.setMessage(msg);
+        jsonResult.setResult(null);
+        jsonResult.setCode(HttpStatus.FORBIDDEN.value());
+        return jsonResult;
+    }
+
+    public static <E> JsonResult<E> unAuthorized(String message) {
+        JsonResult<E> jsonResult = new JsonResult<>();
+        jsonResult.setCode(CodeEnum.Fail.getValue());
+        jsonResult.setMessage(message);
+        jsonResult.setResult(null);
+        jsonResult.setCode(HttpStatus.UNAUTHORIZED.value());
         return jsonResult;
     }
 

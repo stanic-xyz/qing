@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.qing.domain.type;
 
-import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
@@ -31,20 +30,6 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@GenVo
-@GenCreator
-@GenUpdater
-@GenQuery
-@GenCreateRequest
-@GenUpdateRequest
-@GenQueryRequest
-@GenResponse
-@GenRepository
-@GenService
-@GenServiceImpl
-@GenFeign(serverName = "stanic")
-@GenController
-@GenMapper
 @ToString
 @Entity(name = "type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

@@ -1,0 +1,96 @@
+package cn.chenyunlong.qing.domain.anime.anime.service.impl;
+
+import cn.chenyunlong.common.constants.CodeEnum;
+import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import cn.chenyunlong.jpa.support.EntityOperations;
+import cn.chenyunlong.qing.domain.anime.anime.Anime;
+import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
+import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeQuery;
+import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeUpdater;
+import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeVO;
+import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
+import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
+import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+@Transactional
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class AnimeServiceImpl implements IAnimeService {
+    private final AnimeRepository animeRepository;
+
+    /**
+     * createImpl
+     */
+    @Override
+    public Long createAnime(AnimeCreator creator) {
+        Optional<Anime> anime = EntityOperations.doCreate(animeRepository)
+            .create(() -> AnimeMapper.INSTANCE.dtoToEntity(creator))
+            .update(Anime::init)
+            .execute();
+        return anime.isPresent() ? anime.get().getId() : 0;
+    }
+
+    /**
+     * update
+     */
+    @Override
+    public void updateAnime(AnimeUpdater updater) {
+        EntityOperations.doUpdate(animeRepository)
+            .loadById(updater.getId())
+            .update(updater::updateAnime)
+            .execute();
+    }
+
+    /**
+     * valid
+     */
+    @Override
+    public void validAnime(Long id) {
+        EntityOperations.doUpdate(animeRepository)
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
+    }
+
+    /**
+     * invalid
+     */
+    @Override
+    public void invalidAnime(Long id) {
+        EntityOperations.doUpdate(animeRepository)
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
+    }
+
+    /**
+     * findById
+     */
+    @Override
+    public AnimeVO findById(Long id) {
+        Optional<Anime> anime = animeRepository.findById(id);
+        return new AnimeVO(anime.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+    }
+
+    /**
+     * findByPage
+     */
+    @Override
+    public Page<AnimeVO> findByPage(PageRequestWrapper<AnimeQuery> query) {
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        return animeRepository.findAll(pageRequest).map(AnimeVO::new);
+    }
+}

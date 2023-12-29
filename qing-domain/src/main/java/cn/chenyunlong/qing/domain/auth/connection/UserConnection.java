@@ -59,10 +59,12 @@ public class UserConnection extends BaseJpaAggregate {
      * 本地用户id
      */
     private String userId;
+
     /**
      * 第三方服务商
      */
     private String providerId;
+
     /**
      * 第三方用户id
      */
@@ -72,26 +74,32 @@ public class UserConnection extends BaseJpaAggregate {
      * userId 绑定同一个 providerId 的排序
      */
     private Integer rank;
+
     /**
      * 第三方用户名
      */
     private String displayName;
+
     /**
      * 主页
      */
     private String profileUrl;
+
     /**
      * 头像
      */
     private String imageUrl;
+
     /**
      * accessToken
      */
     private String accessToken;
+
     /**
      * auth_token.id
      */
     private Long tokenId;
+
     /**
      * refreshToken
      */

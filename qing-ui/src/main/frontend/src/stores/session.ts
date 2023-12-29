@@ -1,17 +1,20 @@
-import { defineStore } from "pinia";
-import { logOut } from "@/api/auth";
+import {defineStore} from "pinia";
+import {logOut} from "@/api/auth";
 
 export const userInfoStore = defineStore("userInfo", {
   state: () => {
     return {
       accessToken: "",
-      username: "username",
-      nickname: "Static",
+      username: "未知用户",
+      nickname: "位置用户",
       avatar: "https://dummyimage.com/100x100",
       expireAt: null,
       idToken: "id_token",
       tokenType: "Bearer",
     };
+  },
+  getters: {
+    tokenHeader: (state) => state.tokenType + " " + state.accessToken,
   },
   actions: {
     login() {

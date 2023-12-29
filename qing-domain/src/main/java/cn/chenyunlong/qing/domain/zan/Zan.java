@@ -14,7 +14,6 @@
 package cn.chenyunlong.qing.domain.zan;
 
 
-import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -30,20 +29,6 @@ import lombok.*;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-@GenVo
-@GenCreator
-@GenUpdater
-@GenQuery
-@GenCreateRequest
-@GenUpdateRequest
-@GenQueryRequest
-@GenResponse
-@GenRepository
-@GenService
-@GenServiceImpl
-@GenFeign(serverName = "stanic")
-@GenController
-@GenMapper
 @Entity
 @Table(name = "zan")
 public class Zan extends BaseJpaAggregate {
@@ -51,16 +36,4 @@ public class Zan extends BaseJpaAggregate {
     private Long userId;
 
     private Long entityId;
-
-    @Override
-    public void init() {
-        super.init();
-    }
-
-    /**
-     * 取消点赞
-     */
-    public void remove() {
-        invalid();
-    }
 }

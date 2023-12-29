@@ -18,11 +18,13 @@ const defaultConfig: AxiosRequestConfig = {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdGFuaWPmnLrlmajkuroiLCJjcmVhdGVkIjoxNzAzNTE5NjQ1OTM5LCJleHAiOjE3MDM2MTk2NDV9.4Yx8hMO-HLQi0wlHKWoXSHVG8BZWaoXwGVhDspw_glcOB3OtBH1zQjoyKaUT2yzKAoPNgC6yq4f7EygbzFTJlg",
   },
   paramsSerializer: function (params) {
     return JSON.stringify(params);
   },
-  baseURL: import.meta.env.VITE_GLOBAL_DOMAIN_URL,
+  baseURL: "/",
 };
 
 /**
@@ -156,8 +158,10 @@ class QingHttp {
       //   return Promise.reject(error);
       // }
       function (config) {
+        const store = userInfoStore();
+        console.log("执行拦截器", store.accessToken);
+        config.headers.Authorization = store.tokenHeader;
         // 在发送请求之前做些什么
-
         if (config.method === "post") {
           // 序列化
           // config.data = qs.stringify(config.data);

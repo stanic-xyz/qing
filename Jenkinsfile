@@ -6,12 +6,12 @@ pipeline {
         }
     }
     stages {
-        stage('编译 Domain') {
-            when { branch comparator: 'EQUALS', pattern: 'main' }
+        stage('安装基础依赖包') {
             steps {
-                sh '''echo 开始编译'''
+                sh '''echo 安装基础依赖包 Starters'''
+                sh '''mvn clean install -pl qing-starters -f pom.xml'''
+                sh '''echo 安装代码生成器Starters'''
                 sh '''mvn clean install -pl qing-codegen-plugin/qing-codegen-apt -am -f pom.xml'''
-                sh '''mvn clean package -pl qing-domain -am -f pom.xml'''
             }
         }
         stage('单元测试') {
@@ -23,6 +23,12 @@ pipeline {
                     // 收集测试报告
                     junit 'qing-domain/target/surefire-reports/*.xml'
                 }
+            }
+        }
+        stage('编译打包 Domain') {
+            steps {
+                sh '''echo 开始编译'''
+                sh '''mvn clean package -pl qing-domain -am -f pom.xml'''
             }
         }
     }

@@ -49,4 +49,9 @@ public class AuthingProperties {
      * Authing 应用配置的登录回调地址
      */
     private String redirectUrl;
+
+    /**
+     * 前端登录页
+     */
+    private String loginPage;
 }
