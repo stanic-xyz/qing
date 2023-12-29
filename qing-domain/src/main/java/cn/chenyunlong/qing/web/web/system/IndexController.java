@@ -4,7 +4,6 @@ import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.config.security.utils.JwtTokenUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -20,8 +19,6 @@ public class IndexController {
     @Resource
     private JwtTokenUtil jwtTokenUtil;
 
-    @Value("${qing.security.jwt.header}")
-    private String tokenHeader;
 
     @PostMapping("/refreshToken")
     public JsonResult<Map<String, Object>> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String oldToken) {
@@ -31,7 +28,7 @@ public class IndexController {
             token = jwtTokenUtil.refreshHeadToken(oldToken);
             Map<String, Object> map = new HashMap<>();
             map.put("token", token);
-            map.put("tokenHeader", tokenHeader);
+            map.put("tokenHeader", jwtTokenUtil.getHeader());
             return JsonResult.success(map);
         }
         return JsonResult.fail("token已过期");
