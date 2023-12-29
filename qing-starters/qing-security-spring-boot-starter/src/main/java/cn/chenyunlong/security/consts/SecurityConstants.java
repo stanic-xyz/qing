@@ -218,6 +218,20 @@ public class SecurityConstants {
      * request header: User-Agent
      */
     public static final String HEADER_USER_AGENT = "User-Agent";
+
+
+    /**
+     * request header: Authorization
+     */
+    public static final String HEADER_AUTHORIZATION_NAME = "Authorization";
+
+
+    /**
+     * request header: Authorization=Bear
+     */
+    public static final String HEADER_AUTHORIZATION_BEAR_TOKEN_PREFIX = "Bear ";
+
+
     /**
      * request header: "Referer"
      */

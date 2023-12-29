@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://1.15.242.253:31432/qing
+    url: jdbc:postgresql://192.168.10.104:5432/qing
     hikari:
       username: root
       password: admin123456
@@ -34,12 +34,18 @@ qing:
     doc-disabled: false
   index-size: 26
   security:
+    jwt:
+      secret: 123123
+      header: jwt
+      expiration: 100000
     authing:
       appId: 6432d5c9e0502f0bb45319bf
       appSecret: a599ddfc87b4478596b31a17e46d2360
       appHost: https://stanic.authing.cn/6432d5c9e0502f0bb45319bf
       redirectUrl: http://localhost:8080/api/auth2/authorization
       authLoginUrlPrefix: /api/auth2/authorization
+      auto-sign-up: true
+      login-page: http://localhost:5173/#/login/Authing
   mp:
     # 测试账号
     appId: wx9e955703886af7c9

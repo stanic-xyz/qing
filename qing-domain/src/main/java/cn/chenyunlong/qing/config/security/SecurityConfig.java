@@ -13,21 +13,26 @@
 
 package cn.chenyunlong.qing.config.security;
 
+import cn.chenyunlong.qing.config.security.filter.MyAuthenticationProcessingFilter;
+import cn.chenyunlong.qing.config.security.jwt.MySecurityContextRepository;
+import cn.chenyunlong.qing.config.security.utils.JwtTokenUtil;
 import cn.chenyunlong.security.base.extension.DummyUserContextAware;
 import cn.chenyunlong.security.base.extension.UserContextAware;
 import cn.chenyunlong.security.config.SecurityCommonProperties;
 import cn.chenyunlong.security.configures.authing.AuthingLoginConfigurer;
 import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * spring security 配置类 自动注入JwtAuthenticationProvider
@@ -39,10 +44,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableConfigurationProperties(SecurityCommonProperties.class)
 public class SecurityConfig {
 
-    @Resource
-    private AuthingProperties authingProperties;
-    @Resource
-    private AuthingLoginConfigurer authingLoginConfigurer;
+    private final AuthingProperties authingProperties;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserDetailsService userDetailsService;
+    private final AuthingLoginConfigurer authingLoginConfigurer;
+    private final AccessDeniedHandler accessDeniedHandler;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     @ConditionalOnMissingBean(UserContextAware.class)
@@ -52,13 +59,37 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain userLoginFilterChain(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login.html").defaultSuccessUrl("/index.html");
-        http.logout().logoutSuccessUrl("/login.html");
-        http.apply(this.authingLoginConfigurer);
         http.csrf().disable();
-        http.authorizeHttpRequests().requestMatchers(HttpMethod.GET, authingProperties.getRedirectUrlPrefix() + "*", authingProperties.getRedirectUrlPrefix() + "*").permitAll();
-        http.authorizeHttpRequests().anyRequest().permitAll();
+        http.cors().disable();
+        http.authorizeHttpRequests()
+                .requestMatchers(
+                        authingProperties.getRedirectUrlPrefix(),
+                        "/swagger-ui/**",
+                        "/doc.html",
+                        "/v3/api-docs/**",
+                        "/login",
+                        "/favicon.ico",
+                        "/auth/passLogin",
+                        "api/authorize/authing/login")
+                .permitAll();
+        http.authorizeHttpRequests()
+                .anyRequest().hasRole("USER");
+        http.formLogin(formLogin -> formLogin.usernameParameter("username")
+                .loginProcessingUrl("/auth/passLogin")
+        );
+        http.addFilterAt(new MyAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.logout().logoutSuccessUrl("/login.html");
+        http.securityContext(httpSecuritySecurityContextConfigurer ->
+                httpSecuritySecurityContextConfigurer.securityContextRepository(securityContextRepository()));
+        http.apply(authingLoginConfigurer);
+        http.exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
+                .authenticationEntryPoint(authenticationEntryPoint);
         return http.build();
     }
 
+    @Bean
+    public MySecurityContextRepository securityContextRepository() {
+        return new MySecurityContextRepository(jwtTokenUtil, userDetailsService);
+    }
 }

@@ -18,12 +18,13 @@ import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
 import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import java.time.Instant;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import org.springframework.data.domain.AbstractAggregateRoot;
+
+import java.time.Instant;
 
 /**
  * 基础jpa类型。
@@ -95,11 +96,15 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
         if (validStatus == null) {
             this.validStatus = ValidStatus.VALID;
         }
+        if (version == null) {
+            this.version = 1;
+        }
     }
 
     @PreUpdate
     public void preUpdate() {
         this.setUpdatedAt(Instant.now());
+        this.setVersion(this.version + 1);
     }
 
 

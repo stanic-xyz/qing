@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { reactive } from "vue";
-import { layer } from "@layui/layui-vue";
-import { formLogin } from "@/api/auth";
-import { userInfoStore } from "@/stores/session";
+import {reactive} from "vue";
+import {layer} from "@layui/layui-vue";
+import {formLogin} from "@/api/auth";
+import {userInfoStore} from "@/stores/session";
 
 // “ref”是用来存储值的响应式数据源。
 // 理论上我们在展示该字符串的时候不需要将其包装在 ref() 中，
 // 但是在下一个示例中更改这个值的时候，我们就需要它了。
 const loginFormData = reactive({
-  username: '1',
-  password: '123456'
+  username: "1",
+  password: "123456",
 });
 
 function handleBtn() {

@@ -10,7 +10,7 @@ export const formLogin = (username: string, password: string) => {
 };
 
 export const exchangeToken = (code: string, state: string) => {
-  return http.post("api/authorize/auth/accessToken", {
+  return http.get("api/auth2/authorization", {
     code: code,
     state: state,
   });

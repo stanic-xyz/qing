@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.infrustructure.converter;
 
-import cn.chenyunlong.qing.domain.anime.PlayStatus;
+import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.infrustructure.converter;
 
 import cn.chenyunlong.qing.domain.entity.EntityType;
+
 import java.util.Objects;
 
 public class CustomMapper {

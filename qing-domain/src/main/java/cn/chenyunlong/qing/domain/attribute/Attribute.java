@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.domain.attribute;
 
-import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.codegen.annotation.IgnoreDto;
+import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
@@ -10,25 +11,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
-@GenVo
-@GenCreator
-@GenUpdater
-@GenQuery
-@GenCreateRequest
-@GenUpdateRequest
-@GenQueryRequest
-@GenResponse
-@GenRepository
-@GenService
-@GenServiceImpl
-@GenFeign(serverName = "stanic")
-@GenController
-@GenMapper
 @ToString
 @Entity(name = "attribute")
+@EqualsAndHashCode(callSuper = true)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Attribute extends BaseJpaAggregate {
 

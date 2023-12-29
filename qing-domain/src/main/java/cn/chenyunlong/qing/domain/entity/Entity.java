@@ -14,7 +14,6 @@
 package cn.chenyunlong.qing.domain.entity;
 
 
-import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.qing.infrustructure.converter.EntityTypeConverter;
@@ -32,20 +31,6 @@ import lombok.*;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-@GenVo
-@GenCreator
-@GenUpdater
-@GenQuery
-@GenCreateRequest
-@GenUpdateRequest
-@GenQueryRequest
-@GenResponse
-@GenRepository
-@GenService
-@GenServiceImpl
-@GenFeign(serverName = "stanic")
-@GenController
-@GenMapper
 @jakarta.persistence.Entity
 @Table(name = "entity")
 public class Entity extends BaseJpaAggregate {

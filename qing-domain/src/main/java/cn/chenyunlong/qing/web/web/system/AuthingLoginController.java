@@ -116,4 +116,5 @@ public class AuthingLoginController {
     public JsonResult<String> getProfile() {
         return JsonResult.success("0.0.2-SNAPSHOT");
     }
+
 }

@@ -15,6 +15,7 @@ package cn.chenyunlong.security.configures.authing;
 
 import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.security.signup.ConnectionService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -43,6 +44,12 @@ public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<Authing
     @Override
     public void afterPropertiesSet() {
         log.info("Authing应用{{}}配置完毕！", authingProperty.getAppName());
+    }
+
+    @Override
+    public void init(HttpSecurity builder) throws Exception {
+        ObjectMapper sharedObject = builder.getSharedObject(ObjectMapper.class);
+        super.init(builder);
     }
 
     @Override
