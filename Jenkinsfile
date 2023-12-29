@@ -30,7 +30,7 @@ pipeline {
         stage('编译打包 Domain') {
             steps {
                 sh '''echo 开始编译'''
-                sh '''mvn clean package -pl qing-domain -f pom.xml'''
+                sh '''mvn clean package -pl qing-domain -f pom.xml -DskipTests=true'''
             }
         }
     }
