@@ -1,16 +1,11 @@
 package cn.chenyunlong.common.enums;
 
 import com.google.common.collect.Maps;
-import jakarta.annotation.PostConstruct;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -22,6 +17,12 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * Created by taoli on 2022/12/10.
  * gitee : <a href="https://gitee.com/litao851025/lego">...</a>
@@ -30,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class CommonEnumRegistry {
+public class CommonEnumRegistry implements InitializingBean {
     private static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
     private static final String BASE__ENUM_CLASS_NAME = CommonEnum.class.getName();
 
@@ -45,28 +46,38 @@ public class CommonEnumRegistry {
 
     private final ResourceLoader resourceLoader;
 
+
+    private String toPackage(String basePackage) {
+        String result = basePackage.replace(".", "/");
+        return result + "/";
+    }
+
+    private String convertKeyFromClassName(String className) {
+        return Character.toLowerCase(className.charAt(0)) + className.substring(1);
+    }
+
     /**
      * 初始化枚举字典
      */
-    @PostConstruct
-    public void initDict() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
         if (StringUtils.isEmpty(basePackage)) {
             return;
         }
         ResourcePatternResolver resourcePatternResolver =
-            ResourcePatternUtils.getResourcePatternResolver(this.resourceLoader);
+                ResourcePatternUtils.getResourcePatternResolver(this.resourceLoader);
         MetadataReaderFactory metadataReaderFactory = new SimpleMetadataReaderFactory();
         try {
             String pkg = toPackage(this.basePackage);
             // 对 basePackage 包进行扫描
             String packageSearchPath =
-                ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + pkg + DEFAULT_RESOURCE_PATTERN;
+                    ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + pkg + DEFAULT_RESOURCE_PATTERN;
             Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
             for (Resource resource : resources) {
                 if (resource.isReadable()) {
                     try {
                         MetadataReader metadataReader =
-                            metadataReaderFactory.getMetadataReader(resource);
+                                metadataReaderFactory.getMetadataReader(resource);
                         ClassMetadata classMetadata = metadataReader.getClassMetadata();
 
                         String[] interfaceNames = classMetadata.getInterfaceNames();
@@ -79,9 +90,9 @@ public class CommonEnumRegistry {
                             if (cls.isEnum() && CommonEnum.class.isAssignableFrom(cls)) {
                                 Object[] enumConstants = cls.getEnumConstants();
                                 List<CommonEnum> commonEnums = Arrays.stream(enumConstants)
-                                    .filter(e -> e instanceof CommonEnum)
-                                    .map(e -> (CommonEnum) e)
-                                    .collect(Collectors.toList());
+                                        .filter(e -> e instanceof CommonEnum)
+                                        .map(e -> (CommonEnum) e)
+                                        .collect(Collectors.toList());
 
                                 String key = convertKeyFromClassName(cls.getSimpleName());
 
@@ -97,14 +108,5 @@ public class CommonEnumRegistry {
         } catch (IOException e) {
             log.error("failed to load dict by auto register", e);
         }
-    }
-
-    private String toPackage(String basePackage) {
-        String result = basePackage.replace(".", "/");
-        return result + "/";
-    }
-
-    private String convertKeyFromClassName(String className) {
-        return Character.toLowerCase(className.charAt(0)) + className.substring(1);
     }
 }
