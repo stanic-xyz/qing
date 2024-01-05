@@ -15,7 +15,6 @@ package cn.chenyunlong.qing.samples.codegen.domain;
 
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
-import cn.chenyunlong.qing.samples.codegen.Constants;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +31,12 @@ import lombok.ToString;
 @GenUpdateRequest
 @GenQueryRequest
 @GenResponse
-@GenMapper(sourcePath = Constants.GEN_API_SOURCE)
-@GenRepository(sourcePath = Constants.GEN_API_SOURCE)
-@GenService(sourcePath = Constants.GEN_API_SOURCE)
-@GenServiceImpl(sourcePath = Constants.GEN_API_SOURCE)
-@GenFeign(sourcePath = Constants.GEN_API_SOURCE, serverName = "stanic")
-@GenController(sourcePath = Constants.GEN_API_SOURCE)
+@GenMapper
+@GenRepository
+@GenService
+@GenServiceImpl
+@GenFeign(serverName = "stanic")
+@GenController
 @ToString
 @RequiredArgsConstructor
 @Entity
