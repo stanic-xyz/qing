@@ -277,7 +277,7 @@
                     <encoding>UTF-8</encoding>
                     <compilerArgs>
                         <arg>-AbaseDir=${project.basedir}</arg>
-                        <arg>-XprintProcessorInfo</arg>
+                        <!--<arg>-XprintProcessorInfo</arg>-->
                     </compilerArgs>
                 </configuration>
             </plugin>
