@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.web.web.system;
 
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.config.security.utils.JwtTokenUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+@Tag(name = "刷新token")
 @RestController
 @Slf4j
 public class IndexController {

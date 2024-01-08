@@ -3,18 +3,18 @@ package cn.chenyunlong.qing.config.security.password;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.IOException;
 
 public class PasswordLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    public PasswordLoginFilter(AuthenticationManager authenticationManager) {
-        super("/auth/passLogin", authenticationManager);
+    public PasswordLoginFilter() {
+        super(new AntPathRequestMatcher("/auth/passLogin", "POST"));
     }
 
     @Override

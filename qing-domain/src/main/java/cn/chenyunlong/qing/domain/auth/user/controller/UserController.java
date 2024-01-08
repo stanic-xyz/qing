@@ -4,28 +4,29 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
+import cn.chenyunlong.qing.domain.auth.user.domainservice.IUserDomainService;
+import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
+import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.LoginParam;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.UserCreateRequest;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.UserQueryRequest;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.UserUpdateRequest;
-import cn.chenyunlong.qing.domain.auth.user.domainservice.IUserDomainService;
-import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
-import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.response.QingTokenResponse;
 import cn.chenyunlong.qing.domain.auth.user.dto.response.UserResponse;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.UserMapper;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
-
-import java.util.stream.Collectors;
-
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
+@Tag(name = "用户管理")
 @RestController
 @Slf4j
 @Validated

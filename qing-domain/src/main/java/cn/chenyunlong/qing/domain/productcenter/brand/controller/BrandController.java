@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.productcenter.brand.dto.updater.BrandUpdater;
 import cn.chenyunlong.qing.domain.productcenter.brand.dto.vo.BrandVO;
 import cn.chenyunlong.qing.domain.productcenter.brand.mapper.BrandMapper;
 import cn.chenyunlong.qing.domain.productcenter.brand.service.IBrandService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "品牌管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/brand")

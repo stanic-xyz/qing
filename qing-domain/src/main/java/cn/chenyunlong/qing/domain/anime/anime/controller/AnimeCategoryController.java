@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeCategoryUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeCategoryVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeCategoryMapper;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeCategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "动漫分类")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/anime-category")

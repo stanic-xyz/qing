@@ -14,12 +14,15 @@ import cn.chenyunlong.qing.domain.entity.dto.updater.EntityUpdater;
 import cn.chenyunlong.qing.domain.entity.dto.vo.EntityVO;
 import cn.chenyunlong.qing.domain.entity.mapper.EntityMapper;
 import cn.chenyunlong.qing.domain.entity.service.IEntityService;
-import java.util.stream.Collectors;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
+@Tag(name = "实体管理", description = "实体管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/entity")

@@ -15,6 +15,7 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "AnimeController", description = "番剧管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/anime")

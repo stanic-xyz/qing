@@ -25,9 +25,9 @@ import lombok.EqualsAndHashCode;
 @GenRepository
 @GenService
 @GenServiceImpl
-@GenFeign(serverName = "stanic")
 @GenController
 @GenMapper
+@GenFeign(serverName = "stanic")
 @EqualsAndHashCode(callSuper = false)
 public class Platform extends BaseJpaAggregate {
 

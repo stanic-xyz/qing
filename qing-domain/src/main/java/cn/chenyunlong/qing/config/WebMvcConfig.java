@@ -13,12 +13,13 @@
 
 package cn.chenyunlong.qing.config;
 
+import cn.chenyunlong.qing.aspect.HttpLogInterceptor;
 import cn.chenyunlong.qing.infrastructure.config.properties.QingProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -29,7 +30,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@ComponentScan(basePackages = {"cn.chenyunlong.common"})
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final QingProperties qingProperties;
@@ -45,5 +45,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .allowCredentials(true)
             .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new HttpLogInterceptor());
+        WebMvcConfigurer.super.addInterceptors(registry);
     }
 }

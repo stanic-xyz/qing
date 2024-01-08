@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.productcenter.verifyrule.dto.updater.VerifyRul
 import cn.chenyunlong.qing.domain.productcenter.verifyrule.dto.vo.VerifyRuleVO;
 import cn.chenyunlong.qing.domain.productcenter.verifyrule.mapper.VerifyRuleMapper;
 import cn.chenyunlong.qing.domain.productcenter.verifyrule.service.IVerifyRuleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "验证规则")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/verify-rule")

@@ -15,6 +15,7 @@ package cn.chenyunlong.qing.config.security;
 
 import cn.chenyunlong.qing.config.security.filter.MyAuthenticationProcessingFilter;
 import cn.chenyunlong.qing.config.security.jwt.MySecurityContextRepository;
+import cn.chenyunlong.qing.config.security.password.MyCustomDsl;
 import cn.chenyunlong.qing.config.security.utils.JwtTokenUtil;
 import cn.chenyunlong.security.base.extension.DummyUserContextAware;
 import cn.chenyunlong.security.base.extension.UserContextAware;
@@ -48,6 +49,7 @@ public class SecurityConfig {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
     private final AuthingLoginConfigurer authingLoginConfigurer;
+    private final MyCustomDsl customPasswordDsl;
     private final AccessDeniedHandler accessDeniedHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
@@ -59,29 +61,30 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain userLoginFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.cors().disable();
-        http.authorizeHttpRequests()
-                .requestMatchers(
-                        authingProperties.getRedirectUrlPrefix(),
-                        "/swagger-ui/**",
-                        "/doc.html",
-                        "/v3/api-docs/**",
-                        "/login",
-                        "/favicon.ico",
-                        "/auth/passLogin",
-                        "api/authorize/authing/login")
-                .permitAll();
-        http.authorizeHttpRequests()
-                .anyRequest().hasRole("USER");
-        http.formLogin(formLogin -> formLogin.usernameParameter("username")
-                .loginProcessingUrl("/auth/passLogin")
-        );
-        http.addFilterAt(new MyAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.logout().logoutSuccessUrl("/login.html");
-        http.securityContext(httpSecuritySecurityContextConfigurer ->
-                httpSecuritySecurityContextConfigurer.securityContextRepository(securityContextRepository()));
         http.apply(authingLoginConfigurer);
+        http.apply(customPasswordDsl);
+        http.securityMatcher("/**")
+                .authorizeHttpRequests(authorize -> {
+                    authorize.requestMatchers(
+                            authingProperties.getRedirectUrlPrefix(),
+                            "/swagger-ui/**",
+                            "/doc.html",
+                            "/v3/api-docs/**",
+                            "/login",
+                            "/favicon.ico",
+                            "/auth/passLogin",
+                            "/api/authorize/authing/login").permitAll();
+                    authorize.anyRequest().hasRole("USER");
+                })
+                .formLogin(formLogin -> formLogin.usernameParameter("username")
+                        .loginProcessingUrl("/auth/passLogin")
+                        .permitAll()
+                )
+                .addFilterBefore(new MyAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout.logoutSuccessUrl("/login.html"))
+                .securityContext(httpSecuritySecurityContextConfigurer ->
+                        httpSecuritySecurityContextConfigurer.securityContextRepository(securityContextRepository()))
+        ;
         http.exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(authenticationEntryPoint);

@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.productcenter.template.dto.updater.TemplateUpd
 import cn.chenyunlong.qing.domain.productcenter.template.dto.vo.TemplateVO;
 import cn.chenyunlong.qing.domain.productcenter.template.mapper.TemplateMapper;
 import cn.chenyunlong.qing.domain.productcenter.template.service.ITemplateService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "模板管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/template")
