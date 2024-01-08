@@ -71,10 +71,10 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
         if (cookies == null) {
             return null;
         }
-        Optional<Cookie> zhangliToken =
+        Optional<Cookie> cookieOptional =
             Arrays.stream(cookies).filter(cookie -> cookie.getName().equals(AUTHORIZATION_COOKIES))
                 .findFirst();
-        return zhangliToken.map(Cookie::getValue).orElse(null);
+        return cookieOptional.map(Cookie::getValue).orElse(null);
     }
 
 }

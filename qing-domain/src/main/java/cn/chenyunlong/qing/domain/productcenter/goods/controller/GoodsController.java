@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.productcenter.goods.dto.updater.GoodsUpdater;
 import cn.chenyunlong.qing.domain.productcenter.goods.dto.vo.GoodsVO;
 import cn.chenyunlong.qing.domain.productcenter.goods.mapper.GoodsMapper;
 import cn.chenyunlong.qing.domain.productcenter.goods.service.IGoodsService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "商品管理", description = "商品管理接口")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/goods")

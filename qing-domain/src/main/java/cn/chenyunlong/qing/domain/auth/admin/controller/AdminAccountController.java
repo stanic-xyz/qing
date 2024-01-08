@@ -12,6 +12,7 @@ import cn.chenyunlong.qing.domain.auth.admin.dto.updater.AdminAccountUpdater;
 import cn.chenyunlong.qing.domain.auth.admin.dto.vo.AdminAccountVO;
 import cn.chenyunlong.qing.domain.auth.admin.mapper.AdminAccountMapper;
 import cn.chenyunlong.qing.domain.auth.admin.service.IAdminAccountService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "管理员账号管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/admin-account")

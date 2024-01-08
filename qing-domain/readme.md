@@ -78,3 +78,44 @@
 | `utils`      | 工具包           | 工具函数封装                                            |
 | `--timer`    | timer         | 定时器接口封装                                           |
 | `--upload`   | oss           | oss接口封装                                           |
+
+### 快速执行
+
+#### 快速创建功能
+
+可以通过创建一下带注解的类，快速创建一个功能。待注解类完成后，执行`编译`命令即可实现简单的 CRUD 功能。
+注意功能创建好之后，尽量不要提交带注解的类到 Git 因为注解处理器会影响其他人的启动项目
+
+```java
+
+@GenVo
+@GenCreator
+@GenUpdater
+@GenQuery
+@GenCreateRequest
+@GenUpdateRequest
+@GenQueryRequest
+@GenResponse
+@GenRepository
+@GenService
+@GenServiceImpl
+@GenController
+@GenMapper
+@GenFeign(serverName = "stanic")
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "anime_recommend")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class Recommend extends BaseJpaAggregate {
+
+   @NotBlank(message = "名称不能为空")
+   @FieldDesc(description = "名称")
+   private String name;
+
+   @FieldDesc(description = "介绍")
+   private String instruction;
+
+}
+```

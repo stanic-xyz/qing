@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import { getAnimeList } from "@/api/anime";
+import {onMounted, ref} from "vue";
+import {getAnimeList} from "@/api/anime";
 import AnimeInfo from "@/views/anime/AnimeInfo.vue";
-import { LayEmpty } from "@layui/layui-vue";
+import {LayEmpty} from "@layui/layui-vue";
 import BlockTitle from "@/views/common/BlockTitle.vue";
-import type { Anime } from "@/api/anime/types";
+import type {Anime} from "@/api/anime/types";
 
 const pagination = ref({ current: 0, pageSize: 12, total: 0 });
 const animeInfoList = ref<Anime[]>([]);
@@ -47,7 +47,7 @@ const getUserInfo = async () => {
 };
 
 const getCardListData = async () => {
-  console.log("获取动漫卡片数据");
+  console.log("获取动漫卡片数据：开始请求");
   const animeListResponse = await getAnimeList({
     page: pagination.value.current,
     pageSize: pagination.value.pageSize,

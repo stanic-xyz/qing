@@ -14,12 +14,15 @@ import cn.chenyunlong.qing.domain.type.dto.updater.TypeUpdater;
 import cn.chenyunlong.qing.domain.type.dto.vo.TypeVO;
 import cn.chenyunlong.qing.domain.type.mapper.TypeMapper;
 import cn.chenyunlong.qing.domain.type.service.ITypeService;
-import java.util.stream.Collectors;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
+@Tag(name = "分类管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/type")

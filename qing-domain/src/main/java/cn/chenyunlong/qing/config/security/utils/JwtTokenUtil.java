@@ -3,12 +3,11 @@ package cn.chenyunlong.qing.config.security.utils;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,6 @@ public class JwtTokenUtil {
     private String secret;
     private Long expiration;
     private String header = "jwt";
-    private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
 
     /**
      * 根据负责生成JWT的token
@@ -51,8 +49,10 @@ public class JwtTokenUtil {
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
+        } catch (ExpiredJwtException exception) {
+            log.info("JWT已过期:{},jwt:{}", exception.getMessage(), token);
         } catch (Exception e) {
-            LOGGER.info("JWT格式验证失败:{}", token);
+            log.info("JWT格式验证失败:{}", token);
         }
         return claims;
     }
@@ -157,9 +157,6 @@ public class JwtTokenUtil {
         Date created = claims.get(CLAIM_KEY_CREATED, Date.class);
         Date refreshDate = new Date();
         //刷新时间在创建时间的指定时间内
-        if (refreshDate.after(created) && refreshDate.before(DateUtil.offsetSecond(created, time))) {
-            return true;
-        }
-        return false;
+        return refreshDate.after(created) && refreshDate.before(DateUtil.offsetSecond(created, time));
     }
 }

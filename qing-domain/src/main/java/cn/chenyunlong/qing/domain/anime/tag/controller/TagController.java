@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.anime.tag.dto.updater.TagUpdater;
 import cn.chenyunlong.qing.domain.anime.tag.dto.vo.TagVO;
 import cn.chenyunlong.qing.domain.anime.tag.mapper.TagMapper;
 import cn.chenyunlong.qing.domain.anime.tag.service.ITagService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "标签管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/tag")
 @RequiredArgsConstructor
 public class TagController {
+
     private final ITagService tagService;
 
     /**

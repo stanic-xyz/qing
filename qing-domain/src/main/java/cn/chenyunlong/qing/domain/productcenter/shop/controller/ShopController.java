@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.productcenter.shop.dto.updater.ShopUpdater;
 import cn.chenyunlong.qing.domain.productcenter.shop.dto.vo.ShopVO;
 import cn.chenyunlong.qing.domain.productcenter.shop.mapper.ShopMapper;
 import cn.chenyunlong.qing.domain.productcenter.shop.service.IShopService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "店铺管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/shop")

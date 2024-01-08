@@ -16,7 +16,7 @@ export const getAnimeList = (data?: object) => {
 
   return http.request<QingResponse<QingPageResponse<Anime>>>(
     "post",
-    "/api/api/v1/anime/page",
+    "/api/v1/anime/page",
     data,
   );
 };

@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.auth.user.dto.updater.QingUserUpdater;
 import cn.chenyunlong.qing.domain.auth.user.dto.vo.QingUserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.QingUserMapper;
 import cn.chenyunlong.qing.domain.auth.user.service.IQingUserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "用户管理-Qing", description = "用户管理-Qing")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/qing-user")

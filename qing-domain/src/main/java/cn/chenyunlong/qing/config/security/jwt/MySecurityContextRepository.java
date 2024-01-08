@@ -36,13 +36,12 @@ public class MySecurityContextRepository implements SecurityContextRepository {
         token = token.replaceFirst("Bearer ", "");
         // 拿到 用户名
         String username = jwtTokenUtil.getUserNameFromToken(token);
+        if (StrUtil.isBlank(username)) {
+            return securityContext;
+        }
         // 查询用户
         UserDetails user = userService.loadUserByUsername(username);
         if (user == null) {
-            return securityContext;
-        }
-        // 验证 token
-        if (!jwtTokenUtil.validateToken(token, user)) {
             return securityContext;
         }
         UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.authenticated(user.getUsername(), user.getPassword(), user.getAuthorities());

@@ -3,7 +3,7 @@ import type {RefreshTokenResult, UserResult} from "@/api/auth/types";
 
 /** 登录 */
 export const formLogin = (username: string, password: string) => {
-  return http.post("api/authorize/formLogin", {
+  return http.post("api/login", {
     username: username,
     password: password,
   });

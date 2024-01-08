@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.anime.district.dto.updater.DistrictUpdater;
 import cn.chenyunlong.qing.domain.anime.district.dto.vo.DistrictVO;
 import cn.chenyunlong.qing.domain.anime.district.mapper.DistrictConverter;
 import cn.chenyunlong.qing.domain.anime.district.service.IDistrictService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "地区管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/district")

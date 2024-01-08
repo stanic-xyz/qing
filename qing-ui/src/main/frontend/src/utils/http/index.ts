@@ -173,7 +173,7 @@ class QingHttp {
             // 若是有做鉴权token , 就给头部带上token
             // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
             // 若是需要跨站点,存放到 cookie 会好一点,限制也没那么多,有些浏览环境限制了 localstorage (隐身模式)的使用
-            console.log(store.accessToken);
+            console.log("认证信息", store.accessToken);
           }
         }
         return config;

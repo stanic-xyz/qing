@@ -14,12 +14,15 @@ import cn.chenyunlong.qing.domain.zan.dto.updater.ZanUpdater;
 import cn.chenyunlong.qing.domain.zan.dto.vo.ZanVO;
 import cn.chenyunlong.qing.domain.zan.mapper.ZanMapper;
 import cn.chenyunlong.qing.domain.zan.service.IZanService;
-import java.util.stream.Collectors;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
+@Tag(name = "点赞管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/zan")

@@ -14,21 +14,15 @@ import cn.chenyunlong.qing.domain.auth.connection.dto.updater.UserConnectionUpda
 import cn.chenyunlong.qing.domain.auth.connection.dto.vo.UserConnectionVO;
 import cn.chenyunlong.qing.domain.auth.connection.mapper.UserConnectionMapper;
 import cn.chenyunlong.qing.domain.auth.connection.service.IUserConnectionService;
-
-import java.lang.Long;
-import java.lang.String;
-import java.util.stream.Collectors;
-
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
+@Tag(name = "用户连接表")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/user-connection")

@@ -15,7 +15,6 @@ package cn.chenyunlong.security.configures.authing;
 
 import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.security.signup.ConnectionService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -48,7 +47,8 @@ public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<Authing
 
     @Override
     public void init(HttpSecurity builder) throws Exception {
-        ObjectMapper sharedObject = builder.getSharedObject(ObjectMapper.class);
+        builder.csrf().disable();
+        builder.cors().disable();
         super.init(builder);
     }
 

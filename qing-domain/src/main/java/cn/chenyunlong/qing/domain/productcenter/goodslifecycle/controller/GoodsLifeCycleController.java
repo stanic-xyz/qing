@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.dto.updater.Goods
 import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.dto.vo.GoodsLifeCycleVO;
 import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.mapper.GoodsLifeCycleMapper;
 import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.service.IGoodsLifeCycleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+@Tag(name = "商品生命周期管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/goods-life-cycle")

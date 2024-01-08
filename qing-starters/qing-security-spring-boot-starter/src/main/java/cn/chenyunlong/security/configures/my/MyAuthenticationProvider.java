@@ -13,9 +13,8 @@
 
 package cn.chenyunlong.security.configures.my;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -23,33 +22,24 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
-//@Component
+import java.net.PasswordAuthentication;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
 public class MyAuthenticationProvider implements AuthenticationProvider {
 
-    private final Logger logger = LoggerFactory.getLogger(MyAuthenticationProvider.class);
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public MyAuthenticationProvider(
-        @Qualifier("myUserDetailService") UserDetailsService userDetailsService,
-        PasswordEncoder passwordEncoder) {
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Override
-    public Authentication authenticate(Authentication authentication)
-        throws AuthenticationException {
-
-        MyAuthentication myAuthentication = (MyAuthentication) authentication;
-
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         if (authentication.getCredentials() == null) {
-            logger.debug("Authentication failed: no credentials provided");
-
+            log.debug("Authentication failed: no credentials provided");
             throw new BadCredentialsException("Bad credentials");
         }
-
         String presentedUsername = authentication.getPrincipal().toString();
         String presentedPassword = authentication.getCredentials().toString();
 
@@ -57,7 +47,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
         //仅仅校验密码
         if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
-            logger.debug("Authentication failed: password does not match stored value");
+            log.debug("Authentication failed: password does not match stored value");
             throw new BadCredentialsException("Bad credentials");
         }
 
@@ -66,6 +56,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return MyAuthentication.class.isAssignableFrom(clazz);
+        return PasswordAuthentication.class.isAssignableFrom(clazz);
     }
 }
