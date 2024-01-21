@@ -251,6 +251,11 @@
             <artifactId>qing-security-spring-boot-starter</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.geekhalo.lego</groupId>
+            <artifactId>lego-starter</artifactId>
+            <version>0.1.38</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -276,8 +281,9 @@
                     <target>17</target>
                     <encoding>UTF-8</encoding>
                     <compilerArgs>
-                        <arg>-AbaseDir=${project.basedir}</arg>
+                        <compilerArg>-AbaseDir=${project.basedir}</compilerArg>
                         <!--<arg>-XprintProcessorInfo</arg>-->
+                        <compilerArg>-parameters</compilerArg>
                     </compilerArgs>
                 </configuration>
             </plugin>

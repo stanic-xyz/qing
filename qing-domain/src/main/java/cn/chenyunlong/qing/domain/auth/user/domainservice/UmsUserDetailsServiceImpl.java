@@ -69,7 +69,7 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
         creator.setPassword(encodedPassword);
         creator.setAvatar(authUser.getAvatar());
         creator.setMfaType(MFAType.NONE);
-        Long user = userService.createUser(creator);
+        Long user = userService.register(creator);
         return User.builder()
                 .username(username)
                 .password(encodedPassword)

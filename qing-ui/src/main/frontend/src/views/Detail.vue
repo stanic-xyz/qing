@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from "vue";
-import axios from "axios";
+import { page } from "@/apis/anime";
 
+const currentPage = ref<number>(0);
+const pageSize = ref<number>(10);
 const data = ref({
   activeIndex: "1",
   activeIndex2: "1",
@@ -46,20 +48,16 @@ const data = ref({
 });
 
 onMounted(() => {
-  const instance = axios.create({
-    baseURL: "https://mock.apifox.cn/m1/1876271-0-default",
-    timeout: 1000,
-    headers: { apifoxToken: "6JQ7DXmRywJ8fsffzsMfLqLcgGMcwuvg" },
-  });
-
-  instance
-    .get("/anime/v1/findById/" + "123123")
-    .then(function (response) {
-      data.value = response.data.result;
-      console.log(data.value);
+  page({
+    pageSize: pageSize.value,
+    page: currentPage.value,
+  })
+    .then((response) => {
+      console.log(response);
+      console.log("请求成功了，总的数量：", response.result.total);
     })
-    .catch(function (error) {
-      console.log(error);
+    .catch((err) => {
+      console.log("请求失败了");
     });
 });
 
