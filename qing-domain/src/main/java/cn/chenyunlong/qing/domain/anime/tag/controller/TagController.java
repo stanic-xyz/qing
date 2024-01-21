@@ -31,18 +31,12 @@ public class TagController {
 
     private final ITagService tagService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createTag(@RequestBody TagCreateRequest request) {
         TagCreator creator = TagMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(tagService.createTag(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateTag")
     public JsonResult<String> updateTag(@RequestBody TagUpdateRequest request) {
         TagUpdater updater = TagMapper.INSTANCE.request2Updater(request);
@@ -50,27 +44,18 @@ public class TagController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validTag(@PathVariable Long id) {
         tagService.validTag(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidTag(@PathVariable Long id) {
         tagService.invalidTag(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
     @GetMapping("findById/{id}")
     public JsonResult<TagResponse> findById(@PathVariable Long id) {
         TagVO vo = tagService.findById(id);
@@ -78,9 +63,6 @@ public class TagController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<TagResponse>> page(
         @RequestBody PageRequestWrapper<TagQueryRequest> request) {

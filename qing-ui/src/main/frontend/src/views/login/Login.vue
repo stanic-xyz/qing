@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {reactive} from "vue";
 import {layer} from "@layui/layui-vue";
-import {formLogin} from "@/api/auth";
+import {formLogin} from "@/apis/auth";
 import {userInfoStore} from "@/stores/session";
 
 // “ref”是用来存储值的响应式数据源。

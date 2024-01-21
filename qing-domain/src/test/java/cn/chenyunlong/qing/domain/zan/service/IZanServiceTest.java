@@ -62,7 +62,7 @@ class IZanServiceTest extends AbstractDomainTests {
         userCreator.setNickname(RandomUtil.randomString(15));
         userCreator.setPassword(RandomUtil.randomString(16));
         userCreator.setMfaKey(MFAType.TFA_TOTP.getName());
-        Long userId = userService.createUser(userCreator);
+        Long userId = userService.register(userCreator);
         Assertions.assertNotNull(userId);
 
 
@@ -97,7 +97,7 @@ class IZanServiceTest extends AbstractDomainTests {
         userCreator.setNickname(RandomUtil.randomString(15));
         userCreator.setPassword(RandomUtil.randomString(16));
         userCreator.setMfaKey(MFAType.TFA_TOTP.getName());
-        Long userId = userService.createUser(userCreator);
+        Long userId = userService.register(userCreator);
         Assertions.assertNotNull(userId);
 
         ZanCreator creator = new ZanCreator();
@@ -133,7 +133,7 @@ class IZanServiceTest extends AbstractDomainTests {
         userCreator.setNickname(RandomUtil.randomString(15));
         userCreator.setPassword(RandomUtil.randomString(16));
         userCreator.setMfaKey(MFAType.TFA_TOTP.getName());
-        Long userId = userService.createUser(userCreator);
+        Long userId = userService.register(userCreator);
         Assertions.assertNotNull(userId);
 
         ZanCreateRequest creator = new ZanCreateRequest();

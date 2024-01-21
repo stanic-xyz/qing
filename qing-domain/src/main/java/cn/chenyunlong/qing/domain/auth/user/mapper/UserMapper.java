@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.domain.auth.user.mapper;
 
+import cn.chenyunlong.common.mapper.DateMapper;
+import cn.chenyunlong.common.mapper.GenericEnumMapper;
 import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
@@ -9,33 +11,30 @@ import cn.chenyunlong.qing.domain.auth.user.dto.request.UserUpdateRequest;
 import cn.chenyunlong.qing.domain.auth.user.dto.response.UserResponse;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
-import cn.hutool.core.bean.BeanUtil;
+import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
+@Mapper(uses = {
+        GenericEnumMapper.class,
+        DateMapper.class,
+        CustomMapper.class
+})
 public interface UserMapper {
-    UserMapper INSTANCE = new UserMapper() {
-    };
 
-    default QingUser dtoToEntity(UserCreator dto) {
-        return BeanUtil.copyProperties(dto, QingUser.class);
-    }
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    default UserUpdater request2Updater(UserUpdateRequest request) {
-        return BeanUtil.copyProperties(request, UserUpdater.class);
-    }
+    QingUser dtoToEntity(UserCreator dto);
 
-    default UserCreator request2Dto(UserCreateRequest request) {
-        return BeanUtil.copyProperties(request, UserCreator.class);
-    }
+    UserUpdater request2Updater(UserUpdateRequest request);
 
-    default UserQuery request2Query(UserQueryRequest request) {
-        return BeanUtil.copyProperties(request, UserQuery.class);
-    }
+    @Mapping(source = "password.password", target = "password")
+    UserCreator request2Dto(UserCreateRequest request);
 
-    default UserResponse vo2CustomResponse(UserVO vo) {
-        return vo2Response(vo);
-    }
+    UserQuery request2Query(UserQueryRequest request);
 
-    default UserResponse vo2Response(UserVO vo) {
-        return BeanUtil.copyProperties(vo, UserResponse.class);
-    }
+    UserResponse vo2CustomResponse(UserVO vo);
+
+    UserResponse vo2Response(UserVO vo);
 }
