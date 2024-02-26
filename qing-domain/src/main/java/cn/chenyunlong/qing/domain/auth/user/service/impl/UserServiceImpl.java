@@ -36,7 +36,7 @@ public class UserServiceImpl implements IUserService {
      * createImpl
      */
     @Override
-    public Long createUser(UserCreator creator) {
+    public Long register(UserCreator creator) {
         Optional<QingUser> user = EntityOperations.doCreate(userRepository)
                 .create(() -> UserMapper.INSTANCE.dtoToEntity(creator))
                 .update(QingUser::init)

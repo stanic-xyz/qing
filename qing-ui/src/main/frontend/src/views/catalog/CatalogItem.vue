@@ -2,7 +2,7 @@
 import type { PropType } from "vue";
 import { onMounted, ref } from "vue";
 import { LayContainer } from "@layui/layui-vue";
-import type { Anime } from "@/api/anime/types";
+import type { Anime } from "@/apis/anime/types";
 
 const props = defineProps({
   anime: {

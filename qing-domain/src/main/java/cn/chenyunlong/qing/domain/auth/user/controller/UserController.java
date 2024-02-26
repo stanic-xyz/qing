@@ -37,12 +37,12 @@ public class UserController {
     private final IUserDomainService domainService;
 
     /**
-     * createRequest
+     * 注册用户
      */
     @PostMapping
-    public JsonResult<Long> createUser(@RequestBody UserCreateRequest request) {
+    public JsonResult<Long> register(@RequestBody UserCreateRequest request) {
         UserCreator creator = UserMapper.INSTANCE.request2Dto(request);
-        return JsonResult.success(userService.createUser(creator));
+        return JsonResult.success(userService.register(creator));
     }
 
     /**

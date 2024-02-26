@@ -1,12 +1,24 @@
 <script lang="ts" setup>
-import type { PropType } from "vue";
+import { type PropType, ref } from "vue";
 import { onMounted } from "vue";
-import type { Anime } from "@/api/anime/types";
+import type { Anime } from "@/apis/anime/types";
+import { page } from "@/apis/anime";
 
 onMounted(() => {
   console.log("动漫详情加载成功");
+  page({
+    pageSize: 1,
+    page: 1,
+  }).then((response) => {
+    console.log(response);
+    console.log('请求结果：总数',response.result.total)
+    username.value = response.result.total
+
+    console.log('后续的用户名',username)
+  });
 });
 
+const username = ref(1)
 const props = defineProps({
   anime: {
     type: Object as PropType<Anime>,

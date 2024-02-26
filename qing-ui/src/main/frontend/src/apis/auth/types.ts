@@ -31,3 +31,31 @@ export type UserResult = {
     expires: Date;
   };
 };
+
+type Directions = Extract<Direction, "desc" | "asc">;
+
+type Direction = "desc" | "DESC" | "asc" | "ASC";
+
+interface Sort {
+  column: string;
+  direction: Directions;
+}
+
+/**
+ * @description 整体路由配置表（包括完整子路由）
+ */
+export interface PageRequest<T> {
+  /**
+   *查询参数
+   */
+  bean?: T;
+  /** 当前页 */
+  page: number;
+  /** 分页大小 */
+  pageSize?: number;
+
+  /**
+   * 排序
+   */
+  sorts?: Sort[];
+}

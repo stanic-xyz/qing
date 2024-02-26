@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.attachement;
+package cn.chenyunlong.qing.domain.anime.playlist;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
@@ -23,6 +23,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * 单集
+ *
  * @author 陈云龙
  */
 @Getter
@@ -30,21 +32,18 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "attachment")
-public class Attachment extends BaseJpaAggregate {
+@Table(name = "play_list")
+public class PlayList extends BaseJpaAggregate {
 
-    @FieldDesc(name = "文件ID")
-    private Long fileId;
+    @FieldDesc(name = "名称")
+    private String name;
 
-    @FieldDesc(name = "文件名称")
-    private String fileName;
+    @FieldDesc(name = "动漫ID")
+    private Long animeId;
 
-    @FieldDesc(name = "文件类型", description = "文件描述信息")
-    private String mimeType;
+    @FieldDesc(name = "播放源ID")
+    private Long collectionId;
 
-    @FieldDesc(name = "文件地址", description = "文件上传地址")
-    private String url;
-
-    @FieldDesc(name = "文件大小")
-    private Long fileSize;
+    @FieldDesc(name = "播放源名称")
+    private String collectionName;
 }
