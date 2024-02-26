@@ -90,12 +90,6 @@ public class DemoSignUpUrlAuthenticationSuccessHandler
 
         logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
 
-//        if (isAjaxOrJson(request)) {
-//            responseWithJson(response, HttpStatus.OK.value(), toJsonString(ResponseResult
-//            .success("url", targetUrl)));
-//            return;
-//        }
-
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
