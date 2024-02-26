@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
-import {getAnimeList} from "@/api/anime";
+import {getAnimeList} from "@/apis/anime";
 import AnimeInfo from "@/views/anime/AnimeInfo.vue";
 import {LayEmpty} from "@layui/layui-vue";
 import BlockTitle from "@/views/common/BlockTitle.vue";
-import type {Anime} from "@/api/anime/types";
+import type {Anime} from "@/apis/anime/types";
 
 const pagination = ref({ current: 0, pageSize: 12, total: 0 });
 const animeInfoList = ref<Anime[]>([]);

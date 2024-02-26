@@ -14,7 +14,7 @@ public interface IUserService {
     /**
      * create
      */
-    Long createUser(UserCreator creator);
+    Long register(UserCreator creator);
 
     /**
      * update

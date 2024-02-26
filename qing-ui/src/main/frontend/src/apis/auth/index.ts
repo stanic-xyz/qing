@@ -1,9 +1,18 @@
-import {http} from "@/utils/service";
-import type {RefreshTokenResult, UserResult} from "@/api/auth/types";
+import { http } from "@/utils/service";
+import type { RefreshTokenResult, UserResult } from "@/apis/auth/types";
+import type { Anime } from "@/apis/anime/types";
 
 /** 登录 */
 export const formLogin = (username: string, password: string) => {
   return http.post("api/login", {
+    username: username,
+    password: password,
+  });
+};
+
+/** 登录 */
+export const login = (username: string, password: string) => {
+  return http.post("api/authorize/formLogin", {
     username: username,
     password: password,
   });
@@ -27,6 +36,6 @@ export const getLogin = (data?: object) => {
 };
 
 /** 刷新token */
-export const refreshToken = (data?: object) => {
+export const refreshToken = (data?: any) => {
   return http.request<RefreshTokenResult>("post", "api/refreshToken", { data });
 };

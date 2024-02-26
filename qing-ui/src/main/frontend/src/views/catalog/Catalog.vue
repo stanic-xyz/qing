@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import CatalogItem from "@/views/catalog/CatalogItem.vue";
-import type { Anime } from "@/api/anime/types";
+import type { Anime } from "@/apis/anime/types";
 
 const animeInfoList = ref<Anime[]>([]);
 const limit = ref(20);

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import axios from "axios";
-import type { Anime } from "@/api/anime/types";
+import type { Anime } from "@/apis/anime/types";
 
 const animeInfoList = ref<Anime[]>([]);
 
