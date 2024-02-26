@@ -17,9 +17,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {
-        GenericEnumMapper.class,
-        DateMapper.class,
-        CustomMapper.class
+    GenericEnumMapper.class,
+    DateMapper.class,
+    CustomMapper.class
 })
 public interface UserMapper {
 

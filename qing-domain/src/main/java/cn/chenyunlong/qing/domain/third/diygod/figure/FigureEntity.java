@@ -32,6 +32,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "figure")
 @Entity
 public class FigureEntity extends BaseJpaAggregate {
+
     private String name;
     private String otherNames;
     private LocalDate releaseDate;

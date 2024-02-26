@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.dto.vo.GoodsLifeC
 import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.mapper.GoodsLifeCycleMapper;
 import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.service.IGoodsLifeCycleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "商品生命周期管理")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/goods-life-cycle")
 @RequiredArgsConstructor
 public class GoodsLifeCycleController {
+
     private final IGoodsLifeCycleService goodsLifeCycleService;
 
     /**
@@ -44,7 +49,8 @@ public class GoodsLifeCycleController {
      */
     @PostMapping("updateGoodsLifeCycle")
     public JsonResult<String> updateGoodsLifeCycle(
-            @RequestBody GoodsLifeCycleUpdateRequest request) {
+        @RequestBody
+        GoodsLifeCycleUpdateRequest request) {
         GoodsLifeCycleUpdater updater = GoodsLifeCycleMapper.INSTANCE.request2Updater(request);
         goodsLifeCycleService.updateGoodsLifeCycle(updater);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -83,7 +89,8 @@ public class GoodsLifeCycleController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<GoodsLifeCycleResponse>> page(
-            @RequestBody PageRequestWrapper<GoodsLifeCycleQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<GoodsLifeCycleQueryRequest> request) {
         PageRequestWrapper<GoodsLifeCycleQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(GoodsLifeCycleMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -91,13 +98,13 @@ public class GoodsLifeCycleController {
         wrapper.setPage(request.getPage());
         Page<GoodsLifeCycleVO> page = goodsLifeCycleService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(GoodsLifeCycleMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(GoodsLifeCycleMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

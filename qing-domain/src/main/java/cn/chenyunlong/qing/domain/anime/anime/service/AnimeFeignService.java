@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
     path = "anime/v1"
 )
 public interface AnimeFeignService {
+
     /**
      * 创建
      */

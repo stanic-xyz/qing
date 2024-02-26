@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.verifyrule.dto.vo.VerifyRuleVO;
 import org.springframework.data.domain.Page;
 
 public interface IVerifyRuleService {
+
     /**
      * create
      */

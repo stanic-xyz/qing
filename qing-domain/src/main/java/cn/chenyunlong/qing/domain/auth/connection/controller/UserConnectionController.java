@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.auth.connection.dto.vo.UserConnectionVO;
 import cn.chenyunlong.qing.domain.auth.connection.mapper.UserConnectionMapper;
 import cn.chenyunlong.qing.domain.auth.connection.service.IUserConnectionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "用户连接表")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/user-connection")
 @RequiredArgsConstructor
 public class UserConnectionController {
+
     private final IUserConnectionService userConnectionService;
 
     /**
@@ -44,7 +49,8 @@ public class UserConnectionController {
      */
     @PostMapping("updateUserConnection")
     public JsonResult<String> updateUserConnection(
-            @RequestBody UserConnectionUpdateRequest request) {
+        @RequestBody
+        UserConnectionUpdateRequest request) {
         UserConnectionUpdater updater = UserConnectionMapper.INSTANCE.request2Updater(request);
         userConnectionService.updateUserConnection(updater);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -83,7 +89,8 @@ public class UserConnectionController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<UserConnectionResponse>> page(
-            @RequestBody PageRequestWrapper<UserConnectionQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<UserConnectionQueryRequest> request) {
         PageRequestWrapper<UserConnectionQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(UserConnectionMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -91,13 +98,13 @@ public class UserConnectionController {
         wrapper.setPage(request.getPage());
         Page<UserConnectionVO> page = userConnectionService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(UserConnectionMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(UserConnectionMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

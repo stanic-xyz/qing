@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.domain.productcenter.template;
 
 import cn.chenyunlong.common.constants.BaseEnum;
-
 import java.util.Optional;
 
 public enum TemplateType implements BaseEnum<Integer> {
@@ -12,9 +11,13 @@ public enum TemplateType implements BaseEnum<Integer> {
     private final Integer value;
     private final String name;
 
-    private TemplateType(Integer code, String name) {
+    TemplateType(Integer code, String name) {
         this.value = code;
         this.name = name;
+    }
+
+    public static Optional<TemplateType> of(Integer code) {
+        return Optional.ofNullable(BaseEnum.parseByCode(code, TemplateType.class));
     }
 
     public Integer getValue() {
@@ -23,9 +26,5 @@ public enum TemplateType implements BaseEnum<Integer> {
 
     public String getName() {
         return this.name;
-    }
-
-    public static Optional<TemplateType> of(Integer code) {
-        return Optional.ofNullable((TemplateType) BaseEnum.parseByCode(code, TemplateType.class));
     }
 }

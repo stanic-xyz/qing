@@ -27,7 +27,9 @@ public class IUserDomainService {
     public QingTokenResponse login(LoginParam loginParam) {
 
         QQingUser user = QQingUser.qingUser;
-        QingUser qingUserName = queryFactory.selectFrom(user).where(user.username.eq(loginParam.getUsername())).fetchOne();
+        QingUser qingUserName =
+            queryFactory.selectFrom(user).where(user.username.eq(loginParam.getUsername()))
+                .fetchOne();
         if (qingUserName == null) {
             throw new RuntimeException("用户不存在");
         }

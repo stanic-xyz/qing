@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.shop.dto.vo.ShopVO;
 import org.springframework.data.domain.Page;
 
 public interface IShopService {
+
     /**
      * create
      */

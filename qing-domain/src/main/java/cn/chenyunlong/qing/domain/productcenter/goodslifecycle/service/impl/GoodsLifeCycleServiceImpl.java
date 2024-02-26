@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.dto.vo.GoodsLifeC
 import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.mapper.GoodsLifeCycleMapper;
 import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.repository.GoodsLifeCycleRepository;
 import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.service.IGoodsLifeCycleService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class GoodsLifeCycleServiceImpl implements IGoodsLifeCycleService {
+
     private final GoodsLifeCycleRepository goodsLifeCycleRepository;
 
     /**
@@ -35,7 +35,8 @@ public class GoodsLifeCycleServiceImpl implements IGoodsLifeCycleService {
      */
     @Override
     public Long createGoodsLifeCycle(GoodsLifeCycleCreator creator) {
-        Optional<GoodsLifeCycle> goodsLifeCycle = EntityOperations.doCreate(goodsLifeCycleRepository)
+        Optional<GoodsLifeCycle> goodsLifeCycle =
+            EntityOperations.doCreate(goodsLifeCycleRepository)
                 .create(() -> GoodsLifeCycleMapper.INSTANCE.dtoToEntity(creator))
                 .update(GoodsLifeCycle::init)
                 .execute();
@@ -48,9 +49,9 @@ public class GoodsLifeCycleServiceImpl implements IGoodsLifeCycleService {
     @Override
     public void updateGoodsLifeCycle(GoodsLifeCycleUpdater updater) {
         EntityOperations.doUpdate(goodsLifeCycleRepository)
-                .loadById(updater.getId())
-                .update(updater::updateGoodsLifeCycle)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateGoodsLifeCycle)
+            .execute();
     }
 
     /**
@@ -59,9 +60,9 @@ public class GoodsLifeCycleServiceImpl implements IGoodsLifeCycleService {
     @Override
     public void validGoodsLifeCycle(Long id) {
         EntityOperations.doUpdate(goodsLifeCycleRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +71,9 @@ public class GoodsLifeCycleServiceImpl implements IGoodsLifeCycleService {
     @Override
     public void invalidGoodsLifeCycle(Long id) {
         EntityOperations.doUpdate(goodsLifeCycleRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +82,8 @@ public class GoodsLifeCycleServiceImpl implements IGoodsLifeCycleService {
     @Override
     public GoodsLifeCycleVO findById(Long id) {
         Optional<GoodsLifeCycle> goodsLifeCycle = goodsLifeCycleRepository.findById(id);
-        return new GoodsLifeCycleVO(goodsLifeCycle.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new GoodsLifeCycleVO(
+            goodsLifeCycle.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +91,8 @@ public class GoodsLifeCycleServiceImpl implements IGoodsLifeCycleService {
      */
     @Override
     public Page<GoodsLifeCycleVO> findByPage(PageRequestWrapper<GoodsLifeCycleQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return goodsLifeCycleRepository.findAll(pageRequest).map(GoodsLifeCycleVO::new);
     }
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 @Schema
 @Data
 public class AttachmentCreateRequest implements Request {
+
     @Schema(
         title = "fileId",
         description = "文件ID"

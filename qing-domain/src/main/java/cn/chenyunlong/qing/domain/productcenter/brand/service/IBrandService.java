@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.brand.dto.vo.BrandVO;
 import org.springframework.data.domain.Page;
 
 public interface IBrandService {
+
     /**
      * 录入品牌
      */

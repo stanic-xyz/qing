@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
     access = AccessLevel.PROTECTED
 )
 public class AttachmentVO extends AbstractBaseJpaVo {
+
     @Schema(
         title = "fileId",
         description = "文件ID"

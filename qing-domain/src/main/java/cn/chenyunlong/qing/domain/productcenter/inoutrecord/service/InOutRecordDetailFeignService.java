@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "stanic",
-        contextId = "inOutRecordDetailClient",
-        path = "inOutRecordDetail/v1"
+    value = "stanic",
+    contextId = "inOutRecordDetailClient",
+    path = "inOutRecordDetail/v1"
 )
 public interface InOutRecordDetailFeignService {
+
     /**
      * 创建
      */
@@ -54,5 +55,6 @@ public interface InOutRecordDetailFeignService {
      */
     @PostMapping("findByPage")
     JsonResult<PageResult<InOutRecordDetailResponse>> page(
-            @RequestBody PageRequestWrapper<InOutRecordDetailQueryRequest> request);
+        @RequestBody
+        PageRequestWrapper<InOutRecordDetailQueryRequest> request);
 }

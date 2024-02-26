@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
     path = "type/v1"
 )
 public interface TypeFeignService {
+
     /**
      * 创建
      */

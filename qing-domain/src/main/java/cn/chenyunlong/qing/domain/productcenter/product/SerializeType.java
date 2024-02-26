@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.domain.productcenter.product;
 
 import cn.chenyunlong.common.constants.BaseEnum;
-
 import java.util.Optional;
 
 public enum SerializeType implements BaseEnum<Integer> {
@@ -11,9 +10,13 @@ public enum SerializeType implements BaseEnum<Integer> {
     private final Integer code;
     private final String name;
 
-    private SerializeType(Integer code, String name) {
+    SerializeType(Integer code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public static Optional<SerializeType> of(Integer code) {
+        return Optional.ofNullable(BaseEnum.parseByCode(code, SerializeType.class));
     }
 
     @Override
@@ -23,9 +26,5 @@ public enum SerializeType implements BaseEnum<Integer> {
 
     public String getName() {
         return this.name;
-    }
-
-    public static Optional<SerializeType> of(Integer code) {
-        return Optional.ofNullable((SerializeType) BaseEnum.parseByCode(code, SerializeType.class));
     }
 }

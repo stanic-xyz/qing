@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.productsku.dto.vo.ProductSkuVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface ProductSkuMapper {
+
     ProductSkuMapper INSTANCE = new ProductSkuMapper() {
+
     };
 
     default ProductSku dtoToEntity(ProductSkuCreator dto) {

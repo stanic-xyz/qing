@@ -36,12 +36,12 @@ public class LikeContext implements EventContext {
     /**
      * 新建一个上下文。
      *
-     * @param bizEnum        业务代码
+     * @param bizEnum 业务代码
      * @param filterSelector 过滤器选择器
      * @return 业务上下文
      */
     public static LikeContext create(BizEnum bizEnum,
-                                     FilterSelector filterSelector) {
+        FilterSelector filterSelector) {
         return new LikeContext(bizEnum, filterSelector, LikeModel.createDefault());
     }
 

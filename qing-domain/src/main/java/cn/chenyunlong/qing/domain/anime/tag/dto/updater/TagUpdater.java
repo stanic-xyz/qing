@@ -2,13 +2,13 @@ package cn.chenyunlong.qing.domain.anime.tag.dto.updater;
 
 import cn.chenyunlong.qing.domain.anime.tag.Tag;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class TagUpdater {
+
     @Schema(
         title = "name"
     )

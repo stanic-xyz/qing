@@ -2,28 +2,28 @@ package cn.chenyunlong.qing.domain.productcenter.template.dto.updater;
 
 import cn.chenyunlong.qing.domain.productcenter.template.TemplateCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class TemplateCategoryUpdater {
+
     @Schema(
-            title = "name",
-            description = "分类名称"
+        title = "name",
+        description = "分类名称"
     )
     private String name;
 
     @Schema(
-            title = "pid",
-            description = "父节点ID"
+        title = "pid",
+        description = "父节点ID"
     )
     private Long pid;
 
     @Schema(
-            title = "sortNum",
-            description = "排序号"
+        title = "sortNum",
+        description = "排序号"
     )
     private Integer sortNum;
 

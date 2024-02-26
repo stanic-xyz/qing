@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.QingUserVO;
 import org.springframework.data.domain.Page;
 
 public interface IQingUserService {
+
     /**
      * create
      */

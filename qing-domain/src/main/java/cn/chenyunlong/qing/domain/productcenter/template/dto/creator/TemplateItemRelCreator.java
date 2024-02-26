@@ -6,21 +6,22 @@ import lombok.Data;
 @Schema
 @Data
 public class TemplateItemRelCreator {
+
     @Schema(
-            title = "templateId",
-            description = "模板ID"
+        title = "templateId",
+        description = "模板ID"
     )
     private Long templateId;
 
     @Schema(
-            title = "templateItemId",
-            description = "模板项ID"
+        title = "templateItemId",
+        description = "模板项ID"
     )
     private Long templateItemId;
 
     @Schema(
-            title = "ruleJson",
-            description = "校验的结构化list"
+        title = "ruleJson",
+        description = "校验的结构化list"
     )
     private String ruleJson;
 }

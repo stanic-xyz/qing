@@ -42,9 +42,9 @@ public class BiliAnimeInfoController {
     /**
      * 得到评分列表
      *
-     * @param animeId   动漫id
+     * @param animeId 动漫id
      * @param startTime 开始时间
-     * @param endTime   结束时间
+     * @param endTime 结束时间
      * @return {@link List}<{@link BiliAnimeScoreEntity}>
      */
     @GetMapping("scores")

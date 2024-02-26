@@ -7,21 +7,22 @@ import lombok.Data;
 @Schema
 @Data
 public class UserTokenUpdater {
+
     @Schema(
-            title = "uid",
-            description = "用户唯一ID"
+        title = "uid",
+        description = "用户唯一ID"
     )
     private Long uid;
 
     @Schema(
-            title = "username",
-            description = "用户名"
+        title = "username",
+        description = "用户名"
     )
     private String accessToken;
 
     @Schema(
-            title = "nickname",
-            description = "昵称"
+        title = "nickname",
+        description = "昵称"
     )
     private String nickname;
 

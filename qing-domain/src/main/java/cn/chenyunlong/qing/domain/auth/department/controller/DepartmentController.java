@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.auth.department.dto.vo.DepartmentVO;
 import cn.chenyunlong.qing.domain.auth.department.mapper.DepartmentMapper;
 import cn.chenyunlong.qing.domain.auth.department.service.IDepartmentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "部门管理")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/department")
 @RequiredArgsConstructor
 public class DepartmentController {
+
     private final IDepartmentService departmentService;
 
     /**
@@ -82,7 +87,8 @@ public class DepartmentController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<DepartmentResponse>> page(
-            @RequestBody PageRequestWrapper<DepartmentQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<DepartmentQueryRequest> request) {
         PageRequestWrapper<DepartmentQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(DepartmentMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -90,13 +96,13 @@ public class DepartmentController {
         wrapper.setPage(request.getPage());
         Page<DepartmentVO> page = departmentService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(DepartmentMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(DepartmentMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

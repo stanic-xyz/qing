@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
     path = "zan/v1"
 )
 public interface ZanFeignService {
+
     /**
      * 创建
      */

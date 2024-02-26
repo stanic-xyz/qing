@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserTokenVO;
 import org.springframework.data.domain.Page;
 
 public interface IUserTokenService {
+
     /**
      * create
      */

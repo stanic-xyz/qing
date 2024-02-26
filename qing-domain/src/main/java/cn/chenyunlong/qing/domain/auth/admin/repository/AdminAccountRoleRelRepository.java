@@ -2,9 +2,8 @@ package cn.chenyunlong.qing.domain.auth.admin.repository;
 
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.auth.admin.AdminAccountRoleRel;
-import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 
 public interface AdminAccountRoleRelRepository extends BaseRepository<AdminAccountRoleRel, Long> {
 

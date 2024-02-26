@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.anime.attachement.dto.vo.AttachmentVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface AttachmentMapper {
+
     AttachmentMapper INSTANCE = new AttachmentMapper() {
+
     };
 
     default Attachment dtoToEntity(AttachmentCreator dto) {

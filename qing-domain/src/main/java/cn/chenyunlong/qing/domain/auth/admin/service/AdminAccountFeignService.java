@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "stanic",
-        contextId = "adminAccountClient",
-        path = "adminAccount/v1"
+    value = "stanic",
+    contextId = "adminAccountClient",
+    path = "adminAccount/v1"
 )
 public interface AdminAccountFeignService {
+
     /**
      * 创建
      */
@@ -54,5 +55,6 @@ public interface AdminAccountFeignService {
      */
     @PostMapping("findByPage")
     JsonResult<PageResult<AdminAccountResponse>> page(
-            @RequestBody PageRequestWrapper<AdminAccountQueryRequest> request);
+        @RequestBody
+        PageRequestWrapper<AdminAccountQueryRequest> request);
 }

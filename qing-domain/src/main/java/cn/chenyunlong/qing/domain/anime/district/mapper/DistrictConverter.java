@@ -15,10 +15,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {
-        CustomMapper.class,
-        DateMapper.class,
+    CustomMapper.class,
+    DateMapper.class,
 })
 public interface DistrictConverter {
+
     DistrictConverter INSTANCE = Mappers.getMapper(DistrictConverter.class);
 
     District dtoToEntity(DistrictCreator dto);

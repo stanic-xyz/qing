@@ -16,13 +16,16 @@ package cn.chenyunlong.qing.domain.anime.anime;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.qing.infrustructure.converter.PlayStatusConverter;
-import jakarta.persistence.*;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 
 /**
  * 动漫信息。

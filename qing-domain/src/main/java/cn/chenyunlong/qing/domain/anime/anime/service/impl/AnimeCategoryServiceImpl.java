@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeCategoryVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeCategoryMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeCategoryService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class AnimeCategoryServiceImpl implements IAnimeCategoryService {
+
     private final AnimeCategoryRepository animeCategoryRepository;
 
     /**

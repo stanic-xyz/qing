@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.auth.platform.dto.vo.PlatformVO;
 import org.springframework.data.domain.Page;
 
 public interface IPlatformService {
+
     /**
      * create
      */

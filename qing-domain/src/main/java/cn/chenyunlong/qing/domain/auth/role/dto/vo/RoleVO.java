@@ -12,52 +12,49 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class RoleVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "role",
-            description = "角色编码"
+        title = "role",
+        description = "角色编码"
     )
     private String role;
 
     @Schema(
-            title = "name",
-            description = "角色名称"
+        title = "name",
+        description = "角色名称"
     )
     private String name;
 
     @Schema(
-            title = "platformId",
-            description = "平台Id"
+        title = "platformId",
+        description = "平台Id"
     )
     private Long platformId;
 
     @Schema(
-            title = "remark",
-            description = "备注"
+        title = "remark",
+        description = "备注"
     )
     private String remark;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 
     public RoleVO(Role source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setVersion(source.getVersion());
-        ;
         this.setRole(source.getRole());
         this.setName(source.getName());
         this.setPlatformId(source.getPlatformId());

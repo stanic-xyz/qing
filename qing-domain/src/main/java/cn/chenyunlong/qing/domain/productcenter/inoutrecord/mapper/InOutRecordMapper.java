@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.inoutrecord.dto.vo.InOutRecordVO
 import cn.hutool.core.bean.BeanUtil;
 
 public interface InOutRecordMapper {
+
     InOutRecordMapper INSTANCE = new InOutRecordMapper() {
+
     };
 
     default InOutRecord dtoToEntity(InOutRecordCreator dto) {

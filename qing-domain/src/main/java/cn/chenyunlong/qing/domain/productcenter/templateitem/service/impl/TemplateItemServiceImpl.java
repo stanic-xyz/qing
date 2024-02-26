@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.templateitem.dto.vo.TemplateItem
 import cn.chenyunlong.qing.domain.productcenter.templateitem.mapper.TemplateItemMapper;
 import cn.chenyunlong.qing.domain.productcenter.templateitem.repository.TemplateItemRepository;
 import cn.chenyunlong.qing.domain.productcenter.templateitem.service.ITemplateItemService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class TemplateItemServiceImpl implements ITemplateItemService {
+
     private final TemplateItemRepository templateItemRepository;
 
     /**
@@ -36,9 +36,9 @@ public class TemplateItemServiceImpl implements ITemplateItemService {
     @Override
     public Long createTemplateItem(TemplateItemCreator creator) {
         Optional<TemplateItem> templateItem = EntityOperations.doCreate(templateItemRepository)
-                .create(() -> TemplateItemMapper.INSTANCE.dtoToEntity(creator))
-                .update(TemplateItem::init)
-                .execute();
+            .create(() -> TemplateItemMapper.INSTANCE.dtoToEntity(creator))
+            .update(TemplateItem::init)
+            .execute();
         return templateItem.isPresent() ? templateItem.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class TemplateItemServiceImpl implements ITemplateItemService {
     @Override
     public void updateTemplateItem(TemplateItemUpdater updater) {
         EntityOperations.doUpdate(templateItemRepository)
-                .loadById(updater.getId())
-                .update(updater::updateTemplateItem)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateTemplateItem)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class TemplateItemServiceImpl implements ITemplateItemService {
     @Override
     public void validTemplateItem(Long id) {
         EntityOperations.doUpdate(templateItemRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class TemplateItemServiceImpl implements ITemplateItemService {
     @Override
     public void invalidTemplateItem(Long id) {
         EntityOperations.doUpdate(templateItemRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +81,8 @@ public class TemplateItemServiceImpl implements ITemplateItemService {
     @Override
     public TemplateItemVO findById(Long id) {
         Optional<TemplateItem> templateItem = templateItemRepository.findById(id);
-        return new TemplateItemVO(templateItem.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new TemplateItemVO(
+            templateItem.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +90,8 @@ public class TemplateItemServiceImpl implements ITemplateItemService {
      */
     @Override
     public Page<TemplateItemVO> findByPage(PageRequestWrapper<TemplateItemQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return templateItemRepository.findAll(pageRequest).map(TemplateItemVO::new);
     }
 }

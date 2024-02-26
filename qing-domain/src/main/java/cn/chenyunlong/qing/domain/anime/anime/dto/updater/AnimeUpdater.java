@@ -3,14 +3,14 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.updater;
 import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.time.LocalDate;
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class AnimeUpdater {
+
     @Schema(
         title = "name"
     )

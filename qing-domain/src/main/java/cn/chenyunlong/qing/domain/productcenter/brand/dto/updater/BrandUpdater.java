@@ -3,34 +3,34 @@ package cn.chenyunlong.qing.domain.productcenter.brand.dto.updater;
 import cn.chenyunlong.qing.domain.productcenter.brand.Brand;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class BrandUpdater {
+
     @Schema(
-            title = "name",
-            description = "品牌名称"
+        title = "name",
+        description = "品牌名称"
     )
     private String name;
 
     @Schema(
-            title = "logo",
-            description = "品牌logo"
+        title = "logo",
+        description = "品牌logo"
     )
     private String logo;
 
     @Schema(
-            title = "description",
-            description = "品牌描述"
+        title = "description",
+        description = "品牌描述"
     )
     private String description;
 
     @Schema(
-            title = "provider",
-            description = "供应商"
+        title = "provider",
+        description = "供应商"
     )
     private String provider;
 
