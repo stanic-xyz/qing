@@ -18,6 +18,17 @@ package cn.chenyunlong.security.userdetails;
 
 import cn.chenyunlong.security.entity.AuthUser;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,10 +39,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
-
-import java.io.Serializable;
-import java.util.*;
-import java.util.function.Function;
 
 /**
  * 用于第三方授权登录时, 未开启自动注册且用户是第一次授权登录的临时用户.
@@ -68,19 +75,19 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
     /**
      * Calls the more complex constructor with all boolean arguments set to {@code true}.
      *
-     * @param username    用户名默认为: username + "_" + providerId + "_" + providerUserId
-     * @param password    密码
+     * @param username 用户名默认为: username + "_" + providerId + "_" + providerUserId
+     * @param password 密码
      * @param authorities 权限默认为 {@link Auth2Properties#defaultAuthorities}
-     * @param authUser    第三方授权登录的用户信息
+     * @param authUser 第三方授权登录的用户信息
      * @param encodeState 第三方授权登录的流程中加密后的 state 参数
      */
     public TemporaryUser(String username,
-                         String password,
-                         Collection<? extends GrantedAuthority> authorities,
-                         AuthUser authUser,
-                         String encodeState) {
+        String password,
+        Collection<? extends GrantedAuthority> authorities,
+        AuthUser authUser,
+        String encodeState) {
         this(username, password, true, true, true, true,
-                authorities, authUser, encodeState);
+            authorities, authUser, encodeState);
     }
 
 
@@ -88,31 +95,31 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
      * Construct the <code>User</code> with the details required by
      * {@link org.springframework.security.authentication.dao.DaoAuthenticationProvider}.
      *
-     * @param username              the username presented to the
-     *                              <code>DaoAuthenticationProvider</code>
-     * @param password              the password that should be presented to the
-     *                              <code>DaoAuthenticationProvider</code>
-     * @param enabled               set to <code>true</code> if the user is enabled
-     * @param accountNonExpired     set to <code>true</code> if the account has not expired
+     * @param username the username presented to the
+     * <code>DaoAuthenticationProvider</code>
+     * @param password the password that should be presented to the
+     * <code>DaoAuthenticationProvider</code>
+     * @param enabled set to <code>true</code> if the user is enabled
+     * @param accountNonExpired set to <code>true</code> if the account has not expired
      * @param credentialsNonExpired set to <code>true</code> if the credentials have not
-     *                              expired
-     * @param accountNonLocked      set to <code>true</code> if the account is not locked
-     * @param authorities           the authorities that should be granted to the caller if they
-     *                              presented the correct username and password and the user is enabled. Not null.
-     * @param authUser              第三方授权登录的用户信息
-     * @param encodeState           第三方授权登录的流程中加密后的 state 参数
+     * expired
+     * @param accountNonLocked set to <code>true</code> if the account is not locked
+     * @param authorities the authorities that should be granted to the caller if they
+     * presented the correct username and password and the user is enabled. Not null.
+     * @param authUser 第三方授权登录的用户信息
+     * @param encodeState 第三方授权登录的流程中加密后的 state 参数
      * @throws IllegalArgumentException if a <code>null</code> value was passed either as
      *                                  a parameter or as an element in the <code>GrantedAuthority</code> collection
      */
     public TemporaryUser(String username, String password, boolean enabled,
-                         boolean accountNonExpired, boolean credentialsNonExpired,
-                         boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
-                         AuthUser authUser,
-                         String encodeState) {
+        boolean accountNonExpired, boolean credentialsNonExpired,
+        boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
+        AuthUser authUser,
+        String encodeState) {
 
         if (((username == null) || "".equals(username)) || (password == null)) {
             throw new IllegalArgumentException(
-                    "Cannot pass null or empty values to constructor");
+                "Cannot pass null or empty values to constructor");
         }
 
         this.username = username;
@@ -178,16 +185,16 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
     }
 
     private static SortedSet<GrantedAuthority> sortAuthorities(
-            Collection<? extends GrantedAuthority> authorities) {
+        Collection<? extends GrantedAuthority> authorities) {
         Assert.notNull(authorities, "Cannot pass a null GrantedAuthority collection");
         // Ensure array iteration order is predictable (as per
         // UserDetails.getAuthorities() contract and SEC-717)
         SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>(
-                new AuthorityComparator());
+            new AuthorityComparator());
 
         for (GrantedAuthority grantedAuthority : authorities) {
             Assert.notNull(grantedAuthority,
-                    "GrantedAuthority list cannot contain any null elements");
+                "GrantedAuthority list cannot contain any null elements");
             sortedAuthorities.add(grantedAuthority);
         }
 
@@ -195,7 +202,8 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
     }
 
     private static class AuthorityComparator implements Comparator<GrantedAuthority>,
-            Serializable {
+                                                            Serializable {
+
         private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
         @Override
@@ -248,7 +256,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
         sb.append("Enabled: ").append(this.enabled).append("; ");
         sb.append("AccountNonExpired: ").append(this.accountNonExpired).append("; ");
         sb.append("credentialsNonExpired: ").append(this.credentialsNonExpired)
-                .append("; ");
+            .append("; ");
         sb.append("AccountNonLocked: ").append(this.accountNonLocked).append("; ");
         sb.append("authUser: ").append(this.authUser.toString()).append("; ");
         sb.append("encodeState: ").append(this.encodeState).append("; ");
@@ -362,6 +370,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
      * should provided. The remaining attributes have reasonable defaults.
      */
     public static class UserBuilder {
+
         private String username;
         private String password;
         private List<GrantedAuthority> authorities;
@@ -440,16 +449,16 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
          * </p>
          *
          * @param roles the roles for this user (i.e. USER, ADMIN, etc). Cannot be null,
-         *              contain null values or start with "ROLE_"
+         * contain null values or start with "ROLE_"
          * @return the {@link UserBuilder} for method chaining (i.e. to populate
          * additional attributes for this user)
          */
         public UserBuilder roles(String... roles) {
             List<GrantedAuthority> authorities = new ArrayList<>(
-                    roles.length);
+                roles.length);
             for (String role : roles) {
                 Assert.isTrue(!role.startsWith("ROLE_"), () -> role
-                        + " cannot start with ROLE_ (it is automatically added)");
+                                                                   + " cannot start with ROLE_ (it is automatically added)");
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
             }
             return authorities(authorities);
@@ -459,7 +468,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
          * Populates the authorities. This attribute is required.
          *
          * @param authorities the authorities for this user. Cannot be null, or contain
-         *                    null values
+         * null values
          * @return the {@link UserBuilder} for method chaining (i.e. to populate
          * additional attributes for this user)
          * @see #roles(String...)
@@ -472,7 +481,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
          * Populates the authorities. This attribute is required.
          *
          * @param authorities the authorities for this user. Cannot be null, or contain
-         *                    null values
+         * null values
          * @return the {@link UserBuilder} for method chaining (i.e. to populate
          * additional attributes for this user)
          * @see #roles(String...)
@@ -486,7 +495,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
          * Populates the authorities. This attribute is required.
          *
          * @param authorities the authorities for this user (i.e. ROLE_USER, ROLE_ADMIN,
-         *                    etc). Cannot be null, or contain null values
+         * etc). Cannot be null, or contain null values
          * @return the {@link UserBuilder} for method chaining (i.e. to populate
          * additional attributes for this user)
          * @see #roles(String...)
@@ -570,8 +579,8 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
         public UserDetails build() {
             String encodedPassword = this.passwordEncoder.apply(password);
             return new TemporaryUser(username, encodedPassword, !disabled, !accountExpired,
-                    !credentialsExpired, !accountLocked, authorities,
-                    authUser, encodeState);
+                !credentialsExpired, !accountLocked, authorities,
+                authUser, encodeState);
         }
     }
 }

@@ -16,7 +16,6 @@ package cn.chenyunlong.mybatis.support;
 import cn.chenyunlong.common.validator.CreateGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.google.common.base.Preconditions;
-import io.vavr.control.Try;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -32,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EntityCreator<T> extends BaseEntityOperation
     implements Create<T>, UpdateHandler<T>, Executor<T> {
+
     private final BaseMapper<T> baseMapper;
     private T clazzType;
     private Consumer<T> successHook = object -> log.info("save success");
@@ -87,13 +87,14 @@ public class EntityCreator<T> extends BaseEntityOperation
     @Override
     public Optional<T> execute() {
         doValidate(this.clazzType, CreateGroup.class);
-        T save = Try.of(() -> {
-                baseMapper.insert(clazzType);
-                return this.clazzType;
-            })
-            .onSuccess(successHook)
-            .onFailure(errorHook).getOrNull();
-        return Optional.ofNullable(save);
+        try {
+            baseMapper.insert(clazzType);
+            successHook.accept(this.clazzType);
+            return Optional.ofNullable(this.clazzType);
+        } catch (Exception exception) {
+            errorHook.accept(exception);
+            return Optional.empty();
+        }
     }
 
     /**
