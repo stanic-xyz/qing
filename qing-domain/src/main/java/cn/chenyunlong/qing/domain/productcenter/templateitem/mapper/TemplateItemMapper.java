@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.templateitem.dto.vo.TemplateItem
 import cn.hutool.core.bean.BeanUtil;
 
 public interface TemplateItemMapper {
+
     TemplateItemMapper INSTANCE = new TemplateItemMapper() {
+
     };
 
     default TemplateItem dtoToEntity(TemplateItemCreator dto) {

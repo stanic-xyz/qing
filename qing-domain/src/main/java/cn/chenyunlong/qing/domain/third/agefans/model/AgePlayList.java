@@ -18,6 +18,7 @@ import lombok.Data;
 
 @Data
 public class AgePlayList {
+
     List<AgeAnimeEpisode> episodeList;
     private Integer index;
 }

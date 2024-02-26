@@ -3,10 +3,9 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.LocalDate;
 
 @Data
 @Schema
@@ -14,6 +13,7 @@ import java.time.LocalDate;
     callSuper = true
 )
 public class AnimeResponse extends AbstractJpaResponse {
+
     @Schema(
         title = "name"
     )

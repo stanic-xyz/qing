@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
     path = "attachment/v1"
 )
 public interface AttachmentFeignService {
+
     /**
      * 创建
      */

@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.samples.codegen.domain.dto.vo.TestDomainVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface TestDomainMapper {
+
     TestDomainMapper INSTANCE = new TestDomainMapper() {
+
     };
 
     default TestDomain dtoToEntity(TestDomainCreator dto) {

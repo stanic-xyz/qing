@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserTokenVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface UserTokenMapper {
+
     UserTokenMapper INSTANCE = new UserTokenMapper() {
+
     };
 
     default UserToken dtoToEntity(UserTokenCreator dto) {

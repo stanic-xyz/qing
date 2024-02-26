@@ -12,38 +12,36 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class StoreVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "name",
-            description = "仓库名称"
+        title = "name",
+        description = "仓库名称"
     )
     private String name;
 
     @Schema(
-            title = "description",
-            description = "备注"
+        title = "description",
+        description = "备注"
     )
     private String description;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 
     public StoreVO(Store source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setName(source.getName());
         this.setDescription(source.getDescription());
         this.setValidStatus(source.getValidStatus());

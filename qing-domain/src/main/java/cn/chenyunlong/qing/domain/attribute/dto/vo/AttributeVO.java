@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
     access = AccessLevel.PROTECTED
 )
 public class AttributeVO extends AbstractBaseJpaVo {
+
     @Schema(
         title = "uniqueCode",
         description = "唯一编码"
@@ -40,11 +41,8 @@ public class AttributeVO extends AbstractBaseJpaVo {
     public AttributeVO(Attribute source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setUniqueCode(source.getUniqueCode());
         this.setControlType(source.getControlType());
         this.setValidStatus(source.getValidStatus());

@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.product.dto.vo.ProductVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface ProductMapper {
+
     ProductMapper INSTANCE = new ProductMapper() {
+
     };
 
     default Product dtoToEntity(ProductCreator dto) {

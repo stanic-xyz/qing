@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.inoutrecord.dto.vo.InOutRecordVO
 import org.springframework.data.domain.Page;
 
 public interface IInOutRecordService {
+
     /**
      * create
      */

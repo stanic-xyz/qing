@@ -28,6 +28,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "bili_anime_score")
 @Data
 public class BiliAnimeScoreEntity extends BaseJpaAggregate {
+
     /**
      * 动漫ID
      */

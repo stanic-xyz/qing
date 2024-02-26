@@ -9,39 +9,40 @@ import lombok.Data;
 @Schema
 @Data
 public class InOutRecordUpdateRequest implements Request {
+
     @Schema(
-            title = "storeId",
-            description = "仓库ID"
+        title = "storeId",
+        description = "仓库ID"
     )
     private Long storeId;
 
     @Schema(
-            title = "inOutStoreType",
-            description = "出入库类型"
+        title = "inOutStoreType",
+        description = "出入库类型"
     )
     private InOutStoreType inOutStoreType;
 
     @Schema(
-            title = "directionType",
-            description = "出入方向"
+        title = "directionType",
+        description = "出入方向"
     )
     private DirectionType directionType;
 
     @Schema(
-            title = "batchNo",
-            description = "批次号"
+        title = "batchNo",
+        description = "批次号"
     )
     private String batchNo;
 
     @Schema(
-            title = "count",
-            description = "数量"
+        title = "count",
+        description = "数量"
     )
     private Integer count;
 
     @Schema(
-            title = "operateUser",
-            description = "操作人"
+        title = "operateUser",
+        description = "操作人"
     )
     private String operateUser;
 

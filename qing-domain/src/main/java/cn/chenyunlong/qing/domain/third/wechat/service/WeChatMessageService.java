@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class WeChatMessageService {
+
     //构建一个队列
     private static final Map<String, Long> messages = new ConcurrentHashMap<>();
 

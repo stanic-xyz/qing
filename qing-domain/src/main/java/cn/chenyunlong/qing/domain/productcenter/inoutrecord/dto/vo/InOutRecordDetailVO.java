@@ -12,38 +12,36 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class InOutRecordDetailVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "uniqueCodes",
-            description = "唯一编码字符串，约定用;分隔"
+        title = "uniqueCodes",
+        description = "唯一编码字符串，约定用;分隔"
     )
     private String uniqueCodes;
 
     @Schema(
-            title = "extInfo",
-            description = "扩展信息"
+        title = "extInfo",
+        description = "扩展信息"
     )
     private String extInfo;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 
     public InOutRecordDetailVO(InOutRecordDetail source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setUniqueCodes(source.getUniqueCodes());
         this.setExtInfo(source.getExtInfo());
         this.setValidStatus(source.getValidStatus());

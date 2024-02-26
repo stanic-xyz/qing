@@ -8,6 +8,7 @@ import lombok.Data;
 @Schema
 @Data
 public class TypeUpdater {
+
     @Schema(
         title = "name"
     )

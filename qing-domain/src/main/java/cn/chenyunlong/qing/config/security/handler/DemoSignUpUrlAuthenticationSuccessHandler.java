@@ -1,6 +1,7 @@
 /*
  * MIT License
- * Copyright (c) 2020-2029 YongWu zheng (dcenter.top and gitee.com/pcore and github.com/ZeroOrInfinity)
+ * Copyright (c) 2020-2029 YongWu zheng (dcenter.top and gitee.com/pcore and github
+ * .com/ZeroOrInfinity)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,20 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package cn.chenyunlong.qing.config.security.handler;
+
+import static org.springframework.util.StringUtils.hasText;
 
 import cn.chenyunlong.security.userdetails.TemporaryUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
-
-import java.io.IOException;
-
-import static org.springframework.util.StringUtils.hasText;
 
 /**
  * 演示 signUpUrl 设置为 null 时的一种处理方式
@@ -41,19 +42,20 @@ import static org.springframework.util.StringUtils.hasText;
  * @author YongWu zheng
  * @version V2.0  Created by 2020/10/30 10:19
  */
-public class DemoSignUpUrlAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+public class DemoSignUpUrlAuthenticationSuccessHandler
+    extends SavedRequestAwareAuthenticationSuccessHandler {
+
     private RequestCache requestCache = new HttpSessionRequestCache();
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response, Authentication authentication)
-            throws IOException {
+        HttpServletResponse response, Authentication authentication)
+        throws IOException {
 
 
         // start: 判断是否为临时用户, 进行相关逻辑的处理
         final Object principal = authentication.getPrincipal();
-        if (principal instanceof TemporaryUser) {
-            TemporaryUser temporaryUser = ((TemporaryUser) principal);
+        if (principal instanceof TemporaryUser temporaryUser) {
             // 自己的处理逻辑, 如返回 json 数据
             // ...
 
@@ -89,7 +91,8 @@ public class DemoSignUpUrlAuthenticationSuccessHandler extends SavedRequestAware
         logger.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
 
 //        if (isAjaxOrJson(request)) {
-//            responseWithJson(response, HttpStatus.OK.value(), toJsonString(ResponseResult.success("url", targetUrl)));
+//            responseWithJson(response, HttpStatus.OK.value(), toJsonString(ResponseResult
+//            .success("url", targetUrl)));
 //            return;
 //        }
 

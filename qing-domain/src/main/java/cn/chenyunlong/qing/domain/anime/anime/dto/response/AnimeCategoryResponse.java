@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
     callSuper = true
 )
 public class AnimeCategoryResponse extends AbstractJpaResponse {
+
     @Schema(
         title = "name"
     )

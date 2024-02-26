@@ -64,30 +64,32 @@ public class SecurityConfig {
         http.apply(authingLoginConfigurer);
         http.apply(customPasswordDsl);
         http.securityMatcher("/**")
-                .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers(
-                            authingProperties.getRedirectUrlPrefix(),
-                            "/swagger-ui/**",
-                            "/doc.html",
-                            "/v3/api-docs/**",
-                            "/login",
-                            "/favicon.ico",
-                            "/auth/passLogin",
-                            "/api/authorize/authing/login").permitAll();
-                    authorize.anyRequest().hasRole("USER");
-                })
-                .formLogin(formLogin -> formLogin.usernameParameter("username")
-                        .loginProcessingUrl("/auth/passLogin")
-                        .permitAll()
-                )
-                .addFilterBefore(new MyAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
-                .logout(logout -> logout.logoutSuccessUrl("/login.html"))
-                .securityContext(httpSecuritySecurityContextConfigurer ->
-                        httpSecuritySecurityContextConfigurer.securityContextRepository(securityContextRepository()))
+            .authorizeHttpRequests(authorize -> {
+                authorize.requestMatchers(
+                    authingProperties.getRedirectUrlPrefix(),
+                    "/swagger-ui/**",
+                    "/doc.html",
+                    "/v3/api-docs/**",
+                    "/login",
+                    "/favicon.ico",
+                    "/auth/passLogin",
+                    "/api/authorize/authing/login").permitAll();
+                authorize.anyRequest().hasRole("USER");
+            })
+            .formLogin(formLogin -> formLogin.usernameParameter("username")
+                .loginProcessingUrl("/auth/passLogin")
+                .permitAll()
+            )
+            .addFilterBefore(new MyAuthenticationProcessingFilter(),
+                UsernamePasswordAuthenticationFilter.class)
+            .logout(logout -> logout.logoutSuccessUrl("/login.html"))
+            .securityContext(httpSecuritySecurityContextConfigurer ->
+                httpSecuritySecurityContextConfigurer.securityContextRepository(
+                    securityContextRepository()))
         ;
         http.exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint);
+            .accessDeniedHandler(accessDeniedHandler)
+            .authenticationEntryPoint(authenticationEntryPoint);
         return http.build();
     }
 

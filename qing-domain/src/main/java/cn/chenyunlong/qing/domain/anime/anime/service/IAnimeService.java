@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeVO;
 import org.springframework.data.domain.Page;
 
 public interface IAnimeService {
+
     /**
      * create
      */

@@ -14,27 +14,26 @@ public enum ProductErrorCode implements BaseEnum<String> {
     GOODS_HAS_IN("1001002", "商品已经在库里"),
     GOODS_HAS_OUT("1001003", "商品已经出库");
 
+    private final String code;
+    private final String name;
+
     ProductErrorCode(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    private final String code;
-    private final String name;
+    public static Optional<ProductErrorCode> of(String code) {
+        return Optional.ofNullable(BaseEnum.parseByCode(code, ProductErrorCode.class));
+    }
 
     @Override
     public String getValue() {
         return this.code;
     }
 
-
     @Override
     public String getName() {
         return this.name;
-    }
-
-    public static Optional<ProductErrorCode> of(String code) {
-        return Optional.ofNullable(BaseEnum.parseByCode(code, ProductErrorCode.class));
     }
 
 }

@@ -23,6 +23,10 @@ public enum WebControlType implements BaseEnum<Integer> {
         this.msg = msg;
     }
 
+    public static Optional<WebControlType> of(Integer code) {
+        return Optional.ofNullable(BaseEnum.parseByCode(code, WebControlType.class));
+    }
+
     @Override
     public Integer getValue() {
         return code;
@@ -31,9 +35,5 @@ public enum WebControlType implements BaseEnum<Integer> {
     @Override
     public String getName() {
         return msg;
-    }
-
-    public static Optional<WebControlType> of(Integer code) {
-        return Optional.ofNullable(BaseEnum.parseByCode(code, WebControlType.class));
     }
 }

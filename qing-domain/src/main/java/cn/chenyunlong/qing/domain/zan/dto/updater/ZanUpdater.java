@@ -8,6 +8,7 @@ import lombok.Data;
 @Schema
 @Data
 public class ZanUpdater {
+
     @Schema(
         title = "userId",
         description = "userId"

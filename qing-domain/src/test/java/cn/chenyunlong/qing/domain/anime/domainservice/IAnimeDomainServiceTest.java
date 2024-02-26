@@ -4,11 +4,10 @@ import cn.chenyunlong.qing.domain.AbstractDomainTests;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
 
 class IAnimeDomainServiceTest extends AbstractDomainTests {
 
@@ -47,7 +46,7 @@ class IAnimeDomainServiceTest extends AbstractDomainTests {
         animeInfoCreator.setPremiereDate(LocalDate.now());
         animeInfoCreator.setCoverUrl(
             "https://i0.hdslb.com/bfs/bangumi/image/95d2881427fd43431f6a696a05623675ecdce9d9" +
-            ".jpg@450w_600h.webp");
+                ".jpg@450w_600h.webp");
         animeInfoCreator.setPremiereDate(LocalDate.of(2022, 7, 5));
         animeInfoCreator.setPlayHeat(String.valueOf(1430000000));
         Long aLong = animeService.createAnime(animeInfoCreator);

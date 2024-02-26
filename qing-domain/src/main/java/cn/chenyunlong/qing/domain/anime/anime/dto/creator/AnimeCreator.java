@@ -2,13 +2,13 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.creator;
 
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.time.LocalDate;
+import lombok.Data;
 
 @Schema
 @Data
 public class AnimeCreator {
+
     @Schema(
         title = "name"
     )

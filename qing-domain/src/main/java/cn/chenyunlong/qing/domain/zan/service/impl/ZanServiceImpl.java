@@ -26,6 +26,7 @@ import cn.chenyunlong.qing.domain.zan.repository.ZanRepository;
 import cn.chenyunlong.qing.domain.zan.service.IZanService;
 import cn.chenyunlong.qing.domain.zan.service.plugin.SmsPlugin;
 import cn.chenyunlong.qing.domain.zan.service.selector.LikeFilterSelectorFactory;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -36,14 +37,13 @@ import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @EnablePluginRegistries({SmsPlugin.class})
 public class ZanServiceImpl implements IZanService {
+
     private final ZanRepository zanRepository;
     private final EntityRepository entityRepository;
     private final UserRepository userRepository;
@@ -136,8 +136,8 @@ public class ZanServiceImpl implements IZanService {
         // 通过插件处理业务扩展
         pluginRegistry.getPluginsFor(likeModel).forEach(
             likeModelLikePlugin ->
-                    likeModelLikePlugin.sendSms(likeModel.getQingUser().getPhone(),
-                            likeModel.getQingUser().getEmail()));
+                likeModelLikePlugin.sendSms(likeModel.getQingUser().getPhone(),
+                    likeModel.getQingUser().getEmail()));
 
         // 业务处理完毕，读取处理结果
         return likeContext.getCreateRequest().getEntityId();

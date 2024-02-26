@@ -3,13 +3,13 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.request;
 import cn.chenyunlong.common.model.Request;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.time.LocalDate;
+import lombok.Data;
 
 @Schema
 @Data
 public class AnimeUpdateRequest implements Request {
+
     @Schema(
         title = "name"
     )

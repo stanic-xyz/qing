@@ -12,50 +12,48 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class VerifyRuleVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "ruleName",
-            description = "规则名称"
+        title = "ruleName",
+        description = "规则名称"
     )
     private String ruleName;
 
     @Schema(
-            title = "regexStr",
-            description = "校验表达式"
+        title = "regexStr",
+        description = "校验表达式"
     )
     private String regexStr;
 
     @Schema(
-            title = "message",
-            description = "错误提示信息"
+        title = "message",
+        description = "错误提示信息"
     )
     private String message;
 
     @Schema(
-            title = "verifySchema",
-            description = "jc"
+        title = "verifySchema",
+        description = "jc"
     )
     private String verifySchema;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 
     public VerifyRuleVO(VerifyRule source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setRuleName(source.getRuleName());
         this.setRegexStr(source.getRegexStr());
         this.setMessage(source.getMessage());

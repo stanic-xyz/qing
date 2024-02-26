@@ -6,6 +6,7 @@ import lombok.Data;
 @Schema
 @Data
 public class EpisodeCreator {
+
     @Schema(
         title = "name",
         description = "名称"

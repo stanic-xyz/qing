@@ -44,7 +44,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .addMapping("/**")
             .allowCredentials(true)
             .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
 
     @Override

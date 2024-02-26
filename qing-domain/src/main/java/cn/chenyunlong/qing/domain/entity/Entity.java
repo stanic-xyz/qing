@@ -19,7 +19,11 @@ import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.qing.infrustructure.converter.EntityTypeConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 实体信息。

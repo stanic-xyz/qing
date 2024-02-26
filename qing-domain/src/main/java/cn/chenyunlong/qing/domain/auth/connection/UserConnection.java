@@ -13,19 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package cn.chenyunlong.qing.domain.auth.connection;
 
 
-import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.codegen.annotation.GenController;
+import cn.chenyunlong.codegen.annotation.GenCreateRequest;
+import cn.chenyunlong.codegen.annotation.GenCreator;
+import cn.chenyunlong.codegen.annotation.GenFeign;
+import cn.chenyunlong.codegen.annotation.GenMapper;
+import cn.chenyunlong.codegen.annotation.GenQuery;
+import cn.chenyunlong.codegen.annotation.GenQueryRequest;
+import cn.chenyunlong.codegen.annotation.GenRepository;
+import cn.chenyunlong.codegen.annotation.GenResponse;
+import cn.chenyunlong.codegen.annotation.GenService;
+import cn.chenyunlong.codegen.annotation.GenServiceImpl;
+import cn.chenyunlong.codegen.annotation.GenUpdateRequest;
+import cn.chenyunlong.codegen.annotation.GenUpdater;
+import cn.chenyunlong.codegen.annotation.GenVo;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * A data transfer object that allows the internal state of a Connection to be persisted and transferred between layers of an application.
+ * A data transfer object that allows the internal state of a Connection to be persisted and
+ * transferred between layers of an application.
  * Some fields may be null .
- * For example, an OAuth2Connection has a null 'secret' field while an OAuth1Connection has null 'refreshToken' and 'expireTime' fields.
+ * For example, an OAuth2Connection has a null 'secret' field while an OAuth1Connection has null
+ * 'refreshToken' and 'expireTime' fields.
  *
  * @author Keith Donald
  * @author YongWu zheng

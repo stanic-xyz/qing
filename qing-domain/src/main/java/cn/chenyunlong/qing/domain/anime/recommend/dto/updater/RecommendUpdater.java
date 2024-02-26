@@ -2,20 +2,20 @@ package cn.chenyunlong.qing.domain.anime.recommend.dto.updater;
 
 import cn.chenyunlong.qing.domain.anime.recommend.Recommend;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class RecommendUpdater {
+
     @Schema(
-            title = "name"
+        title = "name"
     )
     private String name;
 
     @Schema(
-            title = "instruction"
+        title = "instruction"
     )
     private String instruction;
 

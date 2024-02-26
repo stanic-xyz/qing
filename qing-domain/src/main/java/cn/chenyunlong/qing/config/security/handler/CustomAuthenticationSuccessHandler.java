@@ -5,13 +5,12 @@ import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.security.userdetails.TemporaryUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 /**
  * 定制成功处理器
@@ -25,7 +24,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException {
+        Authentication authentication) throws IOException {
         // start: 判断是否为临时用户, 进行相关逻辑的处理
         Object principal = authentication.getPrincipal();
         String token = "";
@@ -36,6 +35,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         } else if (principal instanceof User user) {
             token = jwtTokenUtil.generateToken(user);
         }
-        response.sendRedirect(authingProperties.getLoginPage() + "?accessToken=%s&tempUser=%s".formatted(token, tempUser));
+        response.sendRedirect(
+            authingProperties.getLoginPage() + "?accessToken=%s&tempUser=%s".formatted(token,
+                tempUser));
     }
 }

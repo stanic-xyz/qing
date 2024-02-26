@@ -6,19 +6,27 @@ import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.auth.admin.dto.creator.AdminAccountCreator;
 import cn.chenyunlong.qing.domain.auth.admin.dto.query.AdminAccountQuery;
-import cn.chenyunlong.qing.domain.auth.admin.dto.request.*;
+import cn.chenyunlong.qing.domain.auth.admin.dto.request.AdminAccountCreateRequest;
+import cn.chenyunlong.qing.domain.auth.admin.dto.request.AdminAccountQueryRequest;
+import cn.chenyunlong.qing.domain.auth.admin.dto.request.AdminAccountUpdateRequest;
+import cn.chenyunlong.qing.domain.auth.admin.dto.request.UserAuthPlatformsRequest;
+import cn.chenyunlong.qing.domain.auth.admin.dto.request.UserRolesRequest;
 import cn.chenyunlong.qing.domain.auth.admin.dto.response.AdminAccountResponse;
 import cn.chenyunlong.qing.domain.auth.admin.dto.updater.AdminAccountUpdater;
 import cn.chenyunlong.qing.domain.auth.admin.dto.vo.AdminAccountVO;
 import cn.chenyunlong.qing.domain.auth.admin.mapper.AdminAccountMapper;
 import cn.chenyunlong.qing.domain.auth.admin.service.IAdminAccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "管理员账号管理")
 @RestController
@@ -26,6 +34,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/admin-account")
 @RequiredArgsConstructor
 public class AdminAccountController {
+
     private final IAdminAccountService adminAccountService;
 
     /**
@@ -98,7 +107,8 @@ public class AdminAccountController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<AdminAccountResponse>> page(
-            @RequestBody PageRequestWrapper<AdminAccountQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<AdminAccountQueryRequest> request) {
         PageRequestWrapper<AdminAccountQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(AdminAccountMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -106,13 +116,13 @@ public class AdminAccountController {
         wrapper.setPage(request.getPage());
         Page<AdminAccountVO> page = adminAccountService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(AdminAccountMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(AdminAccountMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

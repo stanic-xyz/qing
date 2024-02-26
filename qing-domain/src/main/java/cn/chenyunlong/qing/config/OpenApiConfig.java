@@ -1,9 +1,11 @@
 package cn.chenyunlong.qing.config;
 
 import cn.hutool.core.util.RandomUtil;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.HashMap;
 import java.util.Map;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
@@ -11,7 +13,7 @@ import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/***
+/**
  * 创建OpenApi配置
  */
 @Configuration
@@ -78,18 +80,19 @@ public class OpenApiConfig {
         License license = new License().name("Mulan PSL v2")
             .url("https://license.coscl.org.cn/MulanPSL2");
         Info info = new Info()
-                // 标题
             .title("XXX用户系统API")
-                // 版本
             .version("0.0.2-SNAPSHOT")
-                // 描述
             .description("Knife4j集成springdoc-openapi示例")
-                // 服务条款
             .termsOfService("http://doc.xiaominfo.com")
-                // 协议
             .license(license);
         OpenAPI openAPI = new OpenAPI();
         openAPI.info(info);
+        openAPI.components(new Components()
+            // 设置 spring security jwt accessToken 认证的请求头 Authorization: Bearer xxx.xxx.xxx
+            .addSecuritySchemes("authScheme", new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .bearerFormat("JWT")
+                .scheme("bearer")));
         return openAPI;
     }
 }
