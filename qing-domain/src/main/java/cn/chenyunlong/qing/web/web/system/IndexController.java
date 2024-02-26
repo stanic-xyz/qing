@@ -23,7 +23,7 @@ public class IndexController {
 
     @PostMapping("/refreshToken")
     public JsonResult<Map<String, Object>> refreshToken(
-        @RequestHeader( HttpHeaders.AUTHORIZATION )
+        @RequestHeader(HttpHeaders.AUTHORIZATION)
         String oldToken) {
         String token;
         // 如果 token 已经过期, 那么就不支持续约新的 token 了

@@ -39,7 +39,6 @@ public class WxMpController {
 
     /**
      * 验证消息的确来自微信服务器
-     * <p>
      * 开发者通过检验signature对请求进行校验。若确认此次GET请求来自微信服务器，请原样返回echostr参数内容，则接入生效
      *
      * @param signature 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
@@ -61,36 +60,14 @@ public class WxMpController {
         return echostr;
     }
 
+    /**
+     * 创建菜单
+     *
+     * @throws WxErrorException 卫星异常
+     */
     @GetMapping("createMenu")
     public void createMenu() throws WxErrorException {
-        String json = """
-            {
-             	"button":[
-             	{
-                	"type":"click",
-                	"name":"今日歌曲",
-                 	"key":"V1001_TODAY_MUSIC"\s
-            	},
-            	{\s
-            		"name":"菜单",
-            		"sub_button":[
-            		{
-            			"type":"view",
-            			"name":"搜索",
-            			"url":"http://www.soso.com/"
-            		},
-            		{
-            			"type":"view",
-            			"name":"视频",
-            			"url":"http://v.qq.com/"
-            		},
-            		{
-            			"type":"click",
-            			"name":"赞一下我们",
-            			"key":"V1001_GOOD"
-            		}]
-             }]
-            }""";
+        String json = "";
         String s = wxMpService.getMenuService().menuCreate(json);
         System.out.println(s);
     }
