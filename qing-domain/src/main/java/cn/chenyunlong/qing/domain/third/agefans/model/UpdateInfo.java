@@ -20,8 +20,6 @@ public class UpdateInfo {
 
     private String mid;
     private Boolean isNew;
-    private String mMtime;
-    private String mName;
     private String nameForNew;
     private Long word;
 }

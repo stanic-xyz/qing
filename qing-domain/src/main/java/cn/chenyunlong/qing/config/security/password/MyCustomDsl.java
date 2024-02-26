@@ -23,7 +23,7 @@ public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurit
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-//        myFilter.setFlag(flag);
+        // myFilter.setFlag(flag);
         http.addFilterBefore(new PasswordLoginFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

@@ -29,6 +29,16 @@ public class JwtTokenUtil {
     private String header = "jwt";
 
     /**
+     * 根据用户信息生成token
+     */
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return generateToken(claims);
+    }
+
+    /**
      * 根据负责生成JWT的token
      */
     private String generateToken(Map<String, Object> claims) {
@@ -103,16 +113,6 @@ public class JwtTokenUtil {
     private Date getExpiredDateFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
         return claims.getExpiration();
-    }
-
-    /**
-     * 根据用户信息生成token
-     */
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
-        claims.put(CLAIM_KEY_CREATED, new Date());
-        return generateToken(claims);
     }
 
     /**
