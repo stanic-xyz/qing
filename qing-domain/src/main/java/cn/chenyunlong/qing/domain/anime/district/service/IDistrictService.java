@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.anime.district.dto.vo.DistrictVO;
 import org.springframework.data.domain.Page;
 
 public interface IDistrictService {
+
     /**
      * create
      */

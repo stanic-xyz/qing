@@ -2,34 +2,34 @@ package cn.chenyunlong.qing.domain.productcenter.verifyrule.dto.updater;
 
 import cn.chenyunlong.qing.domain.productcenter.verifyrule.VerifyRule;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class VerifyRuleUpdater {
+
     @Schema(
-            title = "ruleName",
-            description = "规则名称"
+        title = "ruleName",
+        description = "规则名称"
     )
     private String ruleName;
 
     @Schema(
-            title = "regexStr",
-            description = "校验表达式"
+        title = "regexStr",
+        description = "校验表达式"
     )
     private String regexStr;
 
     @Schema(
-            title = "message",
-            description = "错误提示信息"
+        title = "message",
+        description = "错误提示信息"
     )
     private String message;
 
     @Schema(
-            title = "verifySchema",
-            description = "jc"
+        title = "verifySchema",
+        description = "jc"
     )
     private String verifySchema;
 

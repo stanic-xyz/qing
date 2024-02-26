@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.auth.platform.dto.vo.PlatformVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface PlatformMapper {
+
     PlatformMapper INSTANCE = new PlatformMapper() {
+
     };
 
     default Platform dtoToEntity(PlatformCreator dto) {

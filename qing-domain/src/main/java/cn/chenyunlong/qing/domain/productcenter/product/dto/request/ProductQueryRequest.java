@@ -7,4 +7,5 @@ import lombok.Data;
 @Schema
 @Data
 public class ProductQueryRequest implements Request {
+
 }

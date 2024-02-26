@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.dto.vo.GoodsLifeC
 import cn.hutool.core.bean.BeanUtil;
 
 public interface GoodsLifeCycleMapper {
+
     GoodsLifeCycleMapper INSTANCE = new GoodsLifeCycleMapper() {
+
     };
 
     default GoodsLifeCycle dtoToEntity(GoodsLifeCycleCreator dto) {

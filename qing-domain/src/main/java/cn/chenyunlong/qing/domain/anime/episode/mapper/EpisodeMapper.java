@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.anime.episode.dto.vo.EpisodeVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface EpisodeMapper {
+
     EpisodeMapper INSTANCE = new EpisodeMapper() {
+
     };
 
     default Episode dtoToEntity(EpisodeCreator dto) {

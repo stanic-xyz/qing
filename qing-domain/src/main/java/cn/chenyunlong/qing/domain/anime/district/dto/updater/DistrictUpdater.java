@@ -2,9 +2,8 @@ package cn.chenyunlong.qing.domain.anime.district.dto.updater;
 
 import cn.chenyunlong.qing.domain.anime.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data

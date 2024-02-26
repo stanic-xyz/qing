@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.productcenter.shop.dto.vo.ShopVO;
 import cn.chenyunlong.qing.domain.productcenter.shop.mapper.ShopMapper;
 import cn.chenyunlong.qing.domain.productcenter.shop.service.IShopService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "店铺管理")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/shop")
 @RequiredArgsConstructor
 public class ShopController {
+
     private final IShopService shopService;
 
     /**
@@ -82,7 +87,8 @@ public class ShopController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<ShopResponse>> page(
-            @RequestBody PageRequestWrapper<ShopQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<ShopQueryRequest> request) {
         PageRequestWrapper<ShopQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(ShopMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -90,13 +96,13 @@ public class ShopController {
         wrapper.setPage(request.getPage());
         Page<ShopVO> page = shopService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(ShopMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(ShopMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

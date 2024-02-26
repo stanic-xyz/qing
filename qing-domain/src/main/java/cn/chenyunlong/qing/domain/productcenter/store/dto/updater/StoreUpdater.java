@@ -2,22 +2,22 @@ package cn.chenyunlong.qing.domain.productcenter.store.dto.updater;
 
 import cn.chenyunlong.qing.domain.productcenter.store.Store;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class StoreUpdater {
+
     @Schema(
-            title = "name",
-            description = "仓库名称"
+        title = "name",
+        description = "仓库名称"
     )
     private String name;
 
     @Schema(
-            title = "description",
-            description = "备注"
+        title = "description",
+        description = "备注"
     )
     private String description;
 

@@ -7,13 +7,14 @@ import lombok.Data;
 @Schema
 @Data
 public class RecommendUpdateRequest implements Request {
+
     @Schema(
-            title = "name"
+        title = "name"
     )
     private String name;
 
     @Schema(
-            title = "instruction"
+        title = "instruction"
     )
     private String instruction;
 

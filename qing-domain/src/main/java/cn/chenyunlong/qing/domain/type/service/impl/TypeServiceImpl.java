@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 public class TypeServiceImpl implements ITypeService {
+
     private final TypeRepository typeRepository;
 
     /**

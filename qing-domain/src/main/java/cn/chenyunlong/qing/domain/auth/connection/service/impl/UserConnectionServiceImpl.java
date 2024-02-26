@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.auth.connection.dto.vo.UserConnectionVO;
 import cn.chenyunlong.qing.domain.auth.connection.mapper.UserConnectionMapper;
 import cn.chenyunlong.qing.domain.auth.connection.repository.UserConnectionRepository;
 import cn.chenyunlong.qing.domain.auth.connection.service.IUserConnectionService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserConnectionServiceImpl implements IUserConnectionService {
+
     private final UserConnectionRepository userConnectionRepository;
 
     /**
@@ -35,7 +35,8 @@ public class UserConnectionServiceImpl implements IUserConnectionService {
      */
     @Override
     public Long createUserConnection(UserConnectionCreator creator) {
-        Optional<UserConnection> userConnection = EntityOperations.doCreate(userConnectionRepository)
+        Optional<UserConnection> userConnection =
+            EntityOperations.doCreate(userConnectionRepository)
                 .create(() -> UserConnectionMapper.INSTANCE.dtoToEntity(creator))
                 .update(UserConnection::init)
                 .execute();
@@ -48,9 +49,9 @@ public class UserConnectionServiceImpl implements IUserConnectionService {
     @Override
     public void updateUserConnection(UserConnectionUpdater updater) {
         EntityOperations.doUpdate(userConnectionRepository)
-                .loadById(updater.getId())
-                .update(updater::updateUserConnection)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateUserConnection)
+            .execute();
     }
 
     /**
@@ -59,9 +60,9 @@ public class UserConnectionServiceImpl implements IUserConnectionService {
     @Override
     public void validUserConnection(Long id) {
         EntityOperations.doUpdate(userConnectionRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +71,9 @@ public class UserConnectionServiceImpl implements IUserConnectionService {
     @Override
     public void invalidUserConnection(Long id) {
         EntityOperations.doUpdate(userConnectionRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +82,8 @@ public class UserConnectionServiceImpl implements IUserConnectionService {
     @Override
     public UserConnectionVO findById(Long id) {
         Optional<UserConnection> userConnection = userConnectionRepository.findById(id);
-        return new UserConnectionVO(userConnection.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new UserConnectionVO(
+            userConnection.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +91,8 @@ public class UserConnectionServiceImpl implements IUserConnectionService {
      */
     @Override
     public Page<UserConnectionVO> findByPage(PageRequestWrapper<UserConnectionQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return userConnectionRepository.findAll(pageRequest).map(UserConnectionVO::new);
     }
 }

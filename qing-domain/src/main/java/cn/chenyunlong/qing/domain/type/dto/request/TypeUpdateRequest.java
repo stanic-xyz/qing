@@ -7,6 +7,7 @@ import lombok.Data;
 @Schema
 @Data
 public class TypeUpdateRequest implements Request {
+
     @Schema(
         title = "name"
     )

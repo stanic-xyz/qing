@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.productcenter.inoutrecord.dto.vo.InOutRecordDe
 import cn.chenyunlong.qing.domain.productcenter.inoutrecord.mapper.InOutRecordDetailMapper;
 import cn.chenyunlong.qing.domain.productcenter.inoutrecord.service.IInOutRecordDetailService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "出入库记录详情")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/in-out-record-detail")
 @RequiredArgsConstructor
 public class InOutRecordDetailController {
+
     private final IInOutRecordDetailService inOutRecordDetailService;
 
     /**
@@ -35,7 +40,8 @@ public class InOutRecordDetailController {
      */
     @PostMapping
     public JsonResult<Long> createInOutRecordDetail(
-            @RequestBody InOutRecordDetailCreateRequest request) {
+        @RequestBody
+        InOutRecordDetailCreateRequest request) {
         InOutRecordDetailCreator creator = InOutRecordDetailMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(inOutRecordDetailService.createInOutRecordDetail(creator));
     }
@@ -45,8 +51,10 @@ public class InOutRecordDetailController {
      */
     @PostMapping("updateInOutRecordDetail")
     public JsonResult<String> updateInOutRecordDetail(
-            @RequestBody InOutRecordDetailUpdateRequest request) {
-        InOutRecordDetailUpdater updater = InOutRecordDetailMapper.INSTANCE.request2Updater(request);
+        @RequestBody
+        InOutRecordDetailUpdateRequest request) {
+        InOutRecordDetailUpdater updater =
+            InOutRecordDetailMapper.INSTANCE.request2Updater(request);
         inOutRecordDetailService.updateInOutRecordDetail(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -84,7 +92,8 @@ public class InOutRecordDetailController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<InOutRecordDetailResponse>> page(
-            @RequestBody PageRequestWrapper<InOutRecordDetailQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<InOutRecordDetailQueryRequest> request) {
         PageRequestWrapper<InOutRecordDetailQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(InOutRecordDetailMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -92,13 +101,13 @@ public class InOutRecordDetailController {
         wrapper.setPage(request.getPage());
         Page<InOutRecordDetailVO> page = inOutRecordDetailService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(InOutRecordDetailMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(InOutRecordDetailMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

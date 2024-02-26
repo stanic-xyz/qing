@@ -13,7 +13,9 @@ import cn.chenyunlong.security.entity.ConnectionData;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface UserConnectionMapper {
+
     UserConnectionMapper INSTANCE = new UserConnectionMapper() {
+
     };
 
     default UserConnection dtoToEntity(UserConnectionCreator dto) {
@@ -34,11 +36,11 @@ public interface UserConnectionMapper {
 
     default ConnectionData entityToConnectionData(UserConnection userConnection) {
         return ConnectionData.builder()
-                .providerId(userConnection.getProviderId())
-                .userId(userConnection.getUserId())
-                .accessToken(userConnection.getAccessToken())
-                .expireTime(userConnection.getExpireTime())
-                .build();
+            .providerId(userConnection.getProviderId())
+            .userId(userConnection.getUserId())
+            .accessToken(userConnection.getAccessToken())
+            .expireTime(userConnection.getExpireTime())
+            .build();
     }
 
     default UserConnectionResponse vo2Response(UserConnectionVO vo) {

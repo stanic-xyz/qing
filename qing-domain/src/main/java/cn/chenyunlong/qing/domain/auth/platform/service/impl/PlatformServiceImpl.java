@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.auth.platform.dto.vo.PlatformVO;
 import cn.chenyunlong.qing.domain.auth.platform.mapper.PlatformMapper;
 import cn.chenyunlong.qing.domain.auth.platform.repository.PlatformRepository;
 import cn.chenyunlong.qing.domain.auth.platform.service.IPlatformService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class PlatformServiceImpl implements IPlatformService {
+
     private final PlatformRepository platformRepository;
 
     /**
@@ -36,9 +36,9 @@ public class PlatformServiceImpl implements IPlatformService {
     @Override
     public Long createPlatform(PlatformCreator creator) {
         Optional<Platform> platform = EntityOperations.doCreate(platformRepository)
-                .create(() -> PlatformMapper.INSTANCE.dtoToEntity(creator))
-                .update(Platform::init)
-                .execute();
+            .create(() -> PlatformMapper.INSTANCE.dtoToEntity(creator))
+            .update(Platform::init)
+            .execute();
         return platform.isPresent() ? platform.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class PlatformServiceImpl implements IPlatformService {
     @Override
     public void updatePlatform(PlatformUpdater updater) {
         EntityOperations.doUpdate(platformRepository)
-                .loadById(updater.getId())
-                .update(updater::updatePlatform)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updatePlatform)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class PlatformServiceImpl implements IPlatformService {
     @Override
     public void validPlatform(Long id) {
         EntityOperations.doUpdate(platformRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class PlatformServiceImpl implements IPlatformService {
     @Override
     public void invalidPlatform(Long id) {
         EntityOperations.doUpdate(platformRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +81,8 @@ public class PlatformServiceImpl implements IPlatformService {
     @Override
     public PlatformVO findById(Long id) {
         Optional<Platform> platform = platformRepository.findById(id);
-        return new PlatformVO(platform.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new PlatformVO(
+            platform.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +90,8 @@ public class PlatformServiceImpl implements IPlatformService {
      */
     @Override
     public Page<PlatformVO> findByPage(PageRequestWrapper<PlatformQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return platformRepository.findAll(pageRequest).map(PlatformVO::new);
     }
 }

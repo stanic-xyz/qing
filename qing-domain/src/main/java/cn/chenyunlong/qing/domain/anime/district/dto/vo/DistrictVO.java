@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
     access = AccessLevel.PROTECTED
 )
 public class DistrictVO extends AbstractBaseJpaVo {
+
     @Schema(
         title = "code",
         description = "地区"

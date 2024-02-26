@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.productsku.dto.vo.ProductSkuVO;
 import cn.chenyunlong.qing.domain.productcenter.productsku.mapper.ProductSkuMapper;
 import cn.chenyunlong.qing.domain.productcenter.productsku.repository.ProductSkuRepository;
 import cn.chenyunlong.qing.domain.productcenter.productsku.service.IProductSkuService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ProductSkuServiceImpl implements IProductSkuService {
+
     private final ProductSkuRepository productSkuRepository;
 
     /**
@@ -36,9 +36,9 @@ public class ProductSkuServiceImpl implements IProductSkuService {
     @Override
     public Long createProductSku(ProductSkuCreator creator) {
         Optional<ProductSku> productSku = EntityOperations.doCreate(productSkuRepository)
-                .create(() -> ProductSkuMapper.INSTANCE.dtoToEntity(creator))
-                .update(ProductSku::init)
-                .execute();
+            .create(() -> ProductSkuMapper.INSTANCE.dtoToEntity(creator))
+            .update(ProductSku::init)
+            .execute();
         return productSku.isPresent() ? productSku.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class ProductSkuServiceImpl implements IProductSkuService {
     @Override
     public void updateProductSku(ProductSkuUpdater updater) {
         EntityOperations.doUpdate(productSkuRepository)
-                .loadById(updater.getId())
-                .update(updater::updateProductSku)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateProductSku)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class ProductSkuServiceImpl implements IProductSkuService {
     @Override
     public void validProductSku(Long id) {
         EntityOperations.doUpdate(productSkuRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class ProductSkuServiceImpl implements IProductSkuService {
     @Override
     public void invalidProductSku(Long id) {
         EntityOperations.doUpdate(productSkuRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +81,8 @@ public class ProductSkuServiceImpl implements IProductSkuService {
     @Override
     public ProductSkuVO findById(Long id) {
         Optional<ProductSku> productSku = productSkuRepository.findById(id);
-        return new ProductSkuVO(productSku.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new ProductSkuVO(
+            productSku.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +90,8 @@ public class ProductSkuServiceImpl implements IProductSkuService {
      */
     @Override
     public Page<ProductSkuVO> findByPage(PageRequestWrapper<ProductSkuQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return productSkuRepository.findAll(pageRequest).map(ProductSkuVO::new);
     }
 }

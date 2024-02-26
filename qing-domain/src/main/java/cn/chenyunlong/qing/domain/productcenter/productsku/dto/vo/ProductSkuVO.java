@@ -12,50 +12,48 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class ProductSkuVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "productId",
-            description = "产品ID"
+        title = "productId",
+        description = "产品ID"
     )
     private Long productId;
 
     @Schema(
-            title = "name",
-            description = "名称"
+        title = "name",
+        description = "名称"
     )
     private String name;
 
     @Schema(
-            title = "code",
-            description = "编号"
+        title = "code",
+        description = "编号"
     )
     private String code;
 
     @Schema(
-            title = "skuData",
-            description = "sku信息"
+        title = "skuData",
+        description = "sku信息"
     )
     private String skuData;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 
     public ProductSkuVO(ProductSku source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setProductId(source.getProductId());
         this.setName(source.getName());
         this.setCode(source.getCode());

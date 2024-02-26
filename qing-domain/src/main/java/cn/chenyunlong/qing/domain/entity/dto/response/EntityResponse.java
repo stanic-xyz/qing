@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @Schema
 public class EntityResponse extends AbstractJpaResponse {
+
     static {
     }
 

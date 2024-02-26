@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.shop.dto.vo.ShopVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface ShopMapper {
+
     ShopMapper INSTANCE = new ShopMapper() {
+
     };
 
     default Shop dtoToEntity(ShopCreator dto) {

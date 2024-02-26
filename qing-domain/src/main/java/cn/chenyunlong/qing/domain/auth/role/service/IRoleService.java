@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.auth.role.dto.vo.RoleVO;
 import org.springframework.data.domain.Page;
 
 public interface IRoleService {
+
     /**
      * create
      */

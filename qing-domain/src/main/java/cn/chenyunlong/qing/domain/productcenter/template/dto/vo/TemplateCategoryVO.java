@@ -12,44 +12,42 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class TemplateCategoryVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "name",
-            description = "分类名称"
+        title = "name",
+        description = "分类名称"
     )
     private String name;
 
     @Schema(
-            title = "pid",
-            description = "父节点ID"
+        title = "pid",
+        description = "父节点ID"
     )
     private Long pid;
 
     @Schema(
-            title = "sortNum",
-            description = "排序号"
+        title = "sortNum",
+        description = "排序号"
     )
     private Integer sortNum;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 
     public TemplateCategoryVO(TemplateCategory source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setName(source.getName());
         this.setPid(source.getPid());
         this.setSortNum(source.getSortNum());

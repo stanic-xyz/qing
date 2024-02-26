@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.anime.district.dto.vo.DistrictVO;
 import cn.chenyunlong.qing.domain.anime.district.mapper.DistrictConverter;
 import cn.chenyunlong.qing.domain.anime.district.service.IDistrictService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "地区管理")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/district")
 @RequiredArgsConstructor
 public class DistrictController {
+
     private final IDistrictService districtService;
 
     /**
@@ -92,7 +97,7 @@ public class DistrictController {
         return JsonResult.success(
             PageResult.of(
                 page.getContent().stream()
-                        .map(DistrictConverter.INSTANCE::vo2CustomResponse)
+                    .map(DistrictConverter.INSTANCE::vo2CustomResponse)
                     .collect(Collectors.toList()),
                 page.getTotalElements(),
                 page.getSize(),

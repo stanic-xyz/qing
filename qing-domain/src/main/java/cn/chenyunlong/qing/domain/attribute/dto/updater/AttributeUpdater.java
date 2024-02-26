@@ -9,6 +9,7 @@ import lombok.Data;
 @Schema
 @Data
 public class AttributeUpdater {
+
     @Schema(
         title = "uniqueCode",
         description = "唯一编码"

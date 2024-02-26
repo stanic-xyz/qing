@@ -1,14 +1,13 @@
 package cn.chenyunlong.qing.domain.auth.user;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.Instant;
-
-import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 /**
  * User connection extension.

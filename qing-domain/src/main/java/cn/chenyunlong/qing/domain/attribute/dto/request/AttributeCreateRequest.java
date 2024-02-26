@@ -9,6 +9,7 @@ import lombok.Data;
 @Schema
 @Data
 public class AttributeCreateRequest implements Request {
+
     @Schema(
         title = "uniqueCode",
         description = "唯一编码"

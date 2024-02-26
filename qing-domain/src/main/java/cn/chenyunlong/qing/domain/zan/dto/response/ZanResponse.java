@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
     callSuper = true
 )
 public class ZanResponse extends AbstractJpaResponse {
+
     @Schema(
         title = "userId",
         description = "userId"

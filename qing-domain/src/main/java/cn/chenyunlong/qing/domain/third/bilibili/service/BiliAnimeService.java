@@ -21,6 +21,7 @@ import java.util.List;
  * @author 陈云龙
  */
 public interface BiliAnimeService {
+
     /**
      * 同步哔哩哔哩的动漫信息
      */
@@ -29,11 +30,11 @@ public interface BiliAnimeService {
     /**
      * 获取B站动漫的评分记录
      *
-     * @param animeId   动漫ID
+     * @param animeId 动漫ID
      * @param startTime 开始时间
-     * @param entTime   结束时间
+     * @param entTime 结束时间
      * @return 评分记录
      */
     List<BiliAnimeScoreEntity> getScoreInfoList(Long animeId, LocalDateTime startTime,
-                                                LocalDateTime entTime);
+        LocalDateTime entTime);
 }

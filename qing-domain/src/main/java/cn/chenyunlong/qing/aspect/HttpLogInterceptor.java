@@ -23,10 +23,12 @@ public class HttpLogInterceptor implements HandlerInterceptor {
      * 此时我们需要通过response来产生响应；
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+        Object handler) throws Exception {
         startTime.set(System.currentTimeMillis());
         // 记录请求日志
-        log.info("用户访问地址:{}, 请求方式: {}，请求地址：{}", request.getRemoteAddr(), request.getMethod(), request.getServletPath());
+        log.info("用户访问地址:{}, 请求方式: {}，请求地址：{}", request.getRemoteAddr(),
+            request.getMethod(), request.getServletPath());
         log.info("----------------请求头.start.....");
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
@@ -38,7 +40,8 @@ public class HttpLogInterceptor implements HandlerInterceptor {
      * 还可以进行一些资源清理，类似于try-catch-finally中的finally，但仅调用处理器执行链中
      */
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+        Object handler, Exception ex) throws Exception {
         log.info("请求处理结束. 处理耗时: {}", System.currentTimeMillis() - startTime.get());
         startTime.remove();
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);

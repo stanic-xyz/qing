@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.auth.department.dto.vo.DepartmentVO;
 import org.springframework.data.domain.Page;
 
 public interface IDepartmentService {
+
     /**
      * create
      */

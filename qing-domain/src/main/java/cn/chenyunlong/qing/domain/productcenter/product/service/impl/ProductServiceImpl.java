@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.product.dto.vo.ProductVO;
 import cn.chenyunlong.qing.domain.productcenter.product.mapper.ProductMapper;
 import cn.chenyunlong.qing.domain.productcenter.product.repository.ProductRepository;
 import cn.chenyunlong.qing.domain.productcenter.product.service.IProductService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ProductServiceImpl implements IProductService {
+
     private final ProductRepository productRepository;
 
     /**
@@ -36,9 +36,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Long createProduct(ProductCreator creator) {
         Optional<Product> product = EntityOperations.doCreate(productRepository)
-                .create(() -> ProductMapper.INSTANCE.dtoToEntity(creator))
-                .update(Product::init)
-                .execute();
+            .create(() -> ProductMapper.INSTANCE.dtoToEntity(creator))
+            .update(Product::init)
+            .execute();
         return product.isPresent() ? product.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void updateProduct(ProductUpdater updater) {
         EntityOperations.doUpdate(productRepository)
-                .loadById(updater.getId())
-                .update(updater::updateProduct)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateProduct)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void validProduct(Long id) {
         EntityOperations.doUpdate(productRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void invalidProduct(Long id) {
         EntityOperations.doUpdate(productRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +81,8 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ProductVO findById(Long id) {
         Optional<Product> product = productRepository.findById(id);
-        return new ProductVO(product.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new ProductVO(
+            product.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +90,8 @@ public class ProductServiceImpl implements IProductService {
      */
     @Override
     public Page<ProductVO> findByPage(PageRequestWrapper<ProductQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return productRepository.findAll(pageRequest).map(ProductVO::new);
     }
 }

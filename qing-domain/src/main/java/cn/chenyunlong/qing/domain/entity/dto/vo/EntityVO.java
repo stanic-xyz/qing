@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
     access = AccessLevel.PROTECTED
 )
 public class EntityVO extends AbstractBaseJpaVo {
+
     @Schema(
         title = "name",
         description = "用户名"

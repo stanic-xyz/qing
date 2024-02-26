@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.auth.role.dto.vo.RoleVO;
 import cn.chenyunlong.qing.domain.auth.role.mapper.RoleMapper;
 import cn.chenyunlong.qing.domain.auth.role.service.IRoleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "角色管理")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/role")
 @RequiredArgsConstructor
 public class RoleController {
+
     private final IRoleService roleService;
 
     /**
@@ -82,7 +87,8 @@ public class RoleController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<RoleResponse>> page(
-            @RequestBody PageRequestWrapper<RoleQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<RoleQueryRequest> request) {
         PageRequestWrapper<RoleQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(RoleMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -90,13 +96,13 @@ public class RoleController {
         wrapper.setPage(request.getPage());
         Page<RoleVO> page = roleService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(RoleMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(RoleMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

@@ -7,39 +7,40 @@ import lombok.Data;
 @Schema
 @Data
 public class TemplateUpdateRequest implements Request {
+
     @Schema(
-            title = "name",
-            description = "名称"
+        title = "name",
+        description = "名称"
     )
     private String name;
 
     @Schema(
-            title = "description",
-            description = "描述"
+        title = "description",
+        description = "描述"
     )
     private String description;
 
     @Schema(
-            title = "code",
-            description = "编码"
+        title = "code",
+        description = "编码"
     )
     private String code;
 
     @Schema(
-            title = "categoryId",
-            description = "分类ID"
+        title = "categoryId",
+        description = "分类ID"
     )
     private Long categoryId;
 
     @Schema(
-            title = "templateType",
-            description = "templateType"
+        title = "templateType",
+        description = "templateType"
     )
     private Integer templateType;
 
     @Schema(
-            title = "metaData",
-            description = "元数据"
+        title = "metaData",
+        description = "元数据"
     )
     private String metaData;
 

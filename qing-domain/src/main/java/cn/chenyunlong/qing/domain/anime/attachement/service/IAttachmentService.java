@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.anime.attachement.dto.vo.AttachmentVO;
 import org.springframework.data.domain.Page;
 
 public interface IAttachmentService {
+
     /**
      * create
      */

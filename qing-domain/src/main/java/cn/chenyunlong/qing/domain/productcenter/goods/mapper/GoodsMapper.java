@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.goods.dto.vo.GoodsVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface GoodsMapper {
+
     GoodsMapper INSTANCE = new GoodsMapper() {
+
     };
 
     default Goods dtoToEntity(GoodsCreator dto) {

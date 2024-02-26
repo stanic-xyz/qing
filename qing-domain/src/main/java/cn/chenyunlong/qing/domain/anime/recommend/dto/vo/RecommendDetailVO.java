@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class RecommendDetailVO extends RecommendVO {
 

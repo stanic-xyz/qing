@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
     path = "attribute/v1"
 )
 public interface AttributeFeignService {
+
     /**
      * 创建
      */

@@ -5,6 +5,7 @@ import cn.chenyunlong.qing.domain.zan.pipeline.context.EventContext;
 import java.util.List;
 
 public class LocalListBasedFilterSelector implements FilterSelector {
+
     private final List<String> filterNames;
 
     public LocalListBasedFilterSelector(List<String> filterNames) {

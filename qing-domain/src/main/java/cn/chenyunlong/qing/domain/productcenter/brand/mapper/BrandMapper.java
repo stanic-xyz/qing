@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.brand.dto.vo.BrandVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface BrandMapper {
+
     BrandMapper INSTANCE = new BrandMapper() {
+
     };
 
     default Brand dtoToEntity(BrandCreator dto) {

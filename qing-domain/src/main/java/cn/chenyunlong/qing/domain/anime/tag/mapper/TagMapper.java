@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.anime.tag.dto.vo.TagVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface TagMapper {
+
     TagMapper INSTANCE = new TagMapper() {
+
     };
 
     default Tag dtoToEntity(TagCreator dto) {

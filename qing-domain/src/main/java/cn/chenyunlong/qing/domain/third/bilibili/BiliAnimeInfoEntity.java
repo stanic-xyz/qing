@@ -22,6 +22,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "bilibili_anime")
 public class BiliAnimeInfoEntity extends BaseJpaAggregate {
+
     private Long mediaId;
     private String title;
     private Long seasonId;

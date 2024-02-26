@@ -62,7 +62,8 @@
 //        requestFactory.setReadTimeout(60 * 1000);
 //
 //        String url =
-//                String.format("https://www.agemys.com/_getplay?aid=%d&playindex=%d&epindex=%d", animeId, playlistId, episodeId);
+//                String.format("https://www.agemys.com/_getplay?aid=%d&playindex=%d&epindex=%d",
+//                animeId, playlistId, episodeId);
 //        String referUrl = "https://www.agemys.com";
 //        StringBuilder cookie = new StringBuilder();
 //        String playUrl =
@@ -77,7 +78,8 @@
 //
 //        HttpEntity<String> stringHttpEntity = new HttpEntity<>(null, headers);
 //        ResponseEntity<String> firstResponse;
-//        firstResponse = restTemplate.exchange(url, HttpMethod.GET, stringHttpEntity, String.class);
+//        firstResponse = restTemplate.exchange(url, HttpMethod.GET, stringHttpEntity, String
+//        .class);
 //
 //        List<String> sessions = firstResponse.getHeaders().get(HttpHeaders.SET_COOKIE);
 //        assert sessions != null;
@@ -94,7 +96,8 @@
 //        stringHttpEntity = new HttpEntity<>(null, headers);
 //
 //        ResponseEntity<String> response;
-//        response = restTemplate.exchange(currentUrl, HttpMethod.GET, stringHttpEntity, String.class);
+//        response = restTemplate.exchange(currentUrl, HttpMethod.GET, stringHttpEntity, String
+//        .class);
 //        System.out.println(response);
 //        if (response.getStatusCode().is2xxSuccessful()) {
 //            String responseBody = response.getBody();
@@ -167,8 +170,10 @@
 //            recommend.setWidth(Integer.valueOf(Objects
 //                    .requireNonNull(element.select(".anime_icon1_img").first())
 //                    .attr("width")));
-//            recommend.setImgUrl(Objects.requireNonNull(element.select(".anime_icon1_img").first()).attr("data-src"));
-//            recommend.setAnimeName(Objects.requireNonNull(element.select(".anime_icon1_name").first()).text());
+//            recommend.setImgUrl(Objects.requireNonNull(element.select(".anime_icon1_img").first
+//            ()).attr("data-src"));
+//            recommend.setAnimeName(Objects.requireNonNull(element.select(".anime_icon1_name")
+//            .first()).text());
 //            return recommend;
 //        }).collect(Collectors.toList());
 //
@@ -264,7 +269,8 @@
 //                    String href = headElement.attr("href");
 //                    String animeId = href.substring(href.lastIndexOf("/") + 1);
 //                    //获取图片地址
-//                    String img = Objects.requireNonNull(headElement.getElementsByTag("img").first()).attr("src");
+//                    String img = Objects.requireNonNull(headElement.getElementsByTag("img")
+//                    .first()).attr("src");
 //
 //                    System.out.println("animeId：" + animeId);
 //                    System.out.println(href);

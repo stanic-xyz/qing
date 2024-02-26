@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.store.dto.vo.StoreVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface StoreMapper {
+
     StoreMapper INSTANCE = new StoreMapper() {
+
     };
 
     default Store dtoToEntity(StoreCreator dto) {
