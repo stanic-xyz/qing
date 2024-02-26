@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.inoutrecord.dto.vo.InOutRecordDe
 import cn.chenyunlong.qing.domain.productcenter.inoutrecord.mapper.InOutRecordDetailMapper;
 import cn.chenyunlong.qing.domain.productcenter.inoutrecord.repository.InOutRecordDetailRepository;
 import cn.chenyunlong.qing.domain.productcenter.inoutrecord.service.IInOutRecordDetailService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class InOutRecordDetailServiceImpl implements IInOutRecordDetailService {
+
     private final InOutRecordDetailRepository inOutRecordDetailRepository;
 
     /**
@@ -35,7 +35,8 @@ public class InOutRecordDetailServiceImpl implements IInOutRecordDetailService {
      */
     @Override
     public Long createInOutRecordDetail(InOutRecordDetailCreator creator) {
-        Optional<InOutRecordDetail> inOutRecordDetail = EntityOperations.doCreate(inOutRecordDetailRepository)
+        Optional<InOutRecordDetail> inOutRecordDetail =
+            EntityOperations.doCreate(inOutRecordDetailRepository)
                 .create(() -> InOutRecordDetailMapper.INSTANCE.dtoToEntity(creator))
                 .update(InOutRecordDetail::init)
                 .execute();
@@ -48,9 +49,9 @@ public class InOutRecordDetailServiceImpl implements IInOutRecordDetailService {
     @Override
     public void updateInOutRecordDetail(InOutRecordDetailUpdater updater) {
         EntityOperations.doUpdate(inOutRecordDetailRepository)
-                .loadById(updater.getId())
-                .update(updater::updateInOutRecordDetail)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateInOutRecordDetail)
+            .execute();
     }
 
     /**
@@ -59,9 +60,9 @@ public class InOutRecordDetailServiceImpl implements IInOutRecordDetailService {
     @Override
     public void validInOutRecordDetail(Long id) {
         EntityOperations.doUpdate(inOutRecordDetailRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +71,9 @@ public class InOutRecordDetailServiceImpl implements IInOutRecordDetailService {
     @Override
     public void invalidInOutRecordDetail(Long id) {
         EntityOperations.doUpdate(inOutRecordDetailRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +82,8 @@ public class InOutRecordDetailServiceImpl implements IInOutRecordDetailService {
     @Override
     public InOutRecordDetailVO findById(Long id) {
         Optional<InOutRecordDetail> inOutRecordDetail = inOutRecordDetailRepository.findById(id);
-        return new InOutRecordDetailVO(inOutRecordDetail.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new InOutRecordDetailVO(
+            inOutRecordDetail.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +91,8 @@ public class InOutRecordDetailServiceImpl implements IInOutRecordDetailService {
      */
     @Override
     public Page<InOutRecordDetailVO> findByPage(PageRequestWrapper<InOutRecordDetailQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return inOutRecordDetailRepository.findAll(pageRequest).map(InOutRecordDetailVO::new);
     }
 }

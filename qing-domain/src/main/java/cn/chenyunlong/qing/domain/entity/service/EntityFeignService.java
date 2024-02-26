@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
     path = "entity/v1"
 )
 public interface EntityFeignService {
+
     /**
      * 创建
      */

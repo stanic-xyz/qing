@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.productcenter.verifyrule.dto.vo.VerifyRuleVO;
 import cn.chenyunlong.qing.domain.productcenter.verifyrule.mapper.VerifyRuleMapper;
 import cn.chenyunlong.qing.domain.productcenter.verifyrule.service.IVerifyRuleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "验证规则")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/verify-rule")
 @RequiredArgsConstructor
 public class VerifyRuleController {
+
     private final IVerifyRuleService verifyRuleService;
 
     /**
@@ -82,7 +87,8 @@ public class VerifyRuleController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<VerifyRuleResponse>> page(
-            @RequestBody PageRequestWrapper<VerifyRuleQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<VerifyRuleQueryRequest> request) {
         PageRequestWrapper<VerifyRuleQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(VerifyRuleMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -90,13 +96,13 @@ public class VerifyRuleController {
         wrapper.setPage(request.getPage());
         Page<VerifyRuleVO> page = verifyRuleService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(VerifyRuleMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(VerifyRuleMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

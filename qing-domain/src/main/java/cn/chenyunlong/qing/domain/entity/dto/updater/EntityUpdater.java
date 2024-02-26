@@ -9,6 +9,7 @@ import lombok.Data;
 @Schema
 @Data
 public class EntityUpdater {
+
     @Schema(
         title = "name",
         description = "用户名"

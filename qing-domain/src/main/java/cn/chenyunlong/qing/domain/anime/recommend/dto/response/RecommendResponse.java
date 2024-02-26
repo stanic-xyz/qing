@@ -9,16 +9,17 @@ import lombok.EqualsAndHashCode;
 @Data
 @Schema
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 public class RecommendResponse extends AbstractJpaResponse {
+
     @Schema(
-            title = "name"
+        title = "name"
     )
     private String name;
 
     @Schema(
-            title = "instruction"
+        title = "instruction"
     )
     private String instruction;
 

@@ -13,7 +13,9 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeCategoryVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface AnimeCategoryMapper {
+
     AnimeCategoryMapper INSTANCE = new AnimeCategoryMapper() {
+
     };
 
     default AnimeCategory dtoToEntity(AnimeCategoryCreator dto) {

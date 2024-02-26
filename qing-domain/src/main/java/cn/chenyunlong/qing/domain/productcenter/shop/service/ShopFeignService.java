@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "stanic",
-        contextId = "shopClient",
-        path = "shop/v1"
+    value = "stanic",
+    contextId = "shopClient",
+    path = "shop/v1"
 )
 public interface ShopFeignService {
+
     /**
      * 创建
      */
@@ -54,5 +55,6 @@ public interface ShopFeignService {
      */
     @PostMapping("findByPage")
     JsonResult<PageResult<ShopResponse>> page(
-            @RequestBody PageRequestWrapper<ShopQueryRequest> request);
+        @RequestBody
+        PageRequestWrapper<ShopQueryRequest> request);
 }

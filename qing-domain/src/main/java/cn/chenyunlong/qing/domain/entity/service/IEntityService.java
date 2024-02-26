@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.entity.dto.vo.EntityVO;
 import org.springframework.data.domain.Page;
 
 public interface IEntityService {
+
     /**
      * create
      */

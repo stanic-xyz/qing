@@ -7,6 +7,7 @@ import lombok.Data;
 @Schema
 @Data
 public class AnimeCategoryCreateRequest implements Request {
+
     @Schema(
         title = "name"
     )

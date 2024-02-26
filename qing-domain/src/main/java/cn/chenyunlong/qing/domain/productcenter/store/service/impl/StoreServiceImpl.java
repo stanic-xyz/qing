@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.store.dto.vo.StoreVO;
 import cn.chenyunlong.qing.domain.productcenter.store.mapper.StoreMapper;
 import cn.chenyunlong.qing.domain.productcenter.store.repository.StoreRepository;
 import cn.chenyunlong.qing.domain.productcenter.store.service.IStoreService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class StoreServiceImpl implements IStoreService {
+
     private final StoreRepository storeRepository;
 
     /**
@@ -36,9 +36,9 @@ public class StoreServiceImpl implements IStoreService {
     @Override
     public Long createStore(StoreCreator creator) {
         Optional<Store> store = EntityOperations.doCreate(storeRepository)
-                .create(() -> StoreMapper.INSTANCE.dtoToEntity(creator))
-                .update(Store::init)
-                .execute();
+            .create(() -> StoreMapper.INSTANCE.dtoToEntity(creator))
+            .update(Store::init)
+            .execute();
         return store.isPresent() ? store.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class StoreServiceImpl implements IStoreService {
     @Override
     public void updateStore(StoreUpdater updater) {
         EntityOperations.doUpdate(storeRepository)
-                .loadById(updater.getId())
-                .update(updater::updateStore)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateStore)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class StoreServiceImpl implements IStoreService {
     @Override
     public void validStore(Long id) {
         EntityOperations.doUpdate(storeRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class StoreServiceImpl implements IStoreService {
     @Override
     public void invalidStore(Long id) {
         EntityOperations.doUpdate(storeRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -89,7 +89,8 @@ public class StoreServiceImpl implements IStoreService {
      */
     @Override
     public Page<StoreVO> findByPage(PageRequestWrapper<StoreQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return storeRepository.findAll(pageRequest).map(StoreVO::new);
     }
 }

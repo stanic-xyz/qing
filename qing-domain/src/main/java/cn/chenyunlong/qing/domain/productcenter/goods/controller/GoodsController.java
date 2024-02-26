@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.productcenter.goods.dto.vo.GoodsVO;
 import cn.chenyunlong.qing.domain.productcenter.goods.mapper.GoodsMapper;
 import cn.chenyunlong.qing.domain.productcenter.goods.service.IGoodsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "商品管理", description = "商品管理接口")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/goods")
 @RequiredArgsConstructor
 public class GoodsController {
+
     private final IGoodsService goodsService;
 
     /**
@@ -82,7 +87,8 @@ public class GoodsController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<GoodsResponse>> page(
-            @RequestBody PageRequestWrapper<GoodsQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<GoodsQueryRequest> request) {
         PageRequestWrapper<GoodsQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(GoodsMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -90,13 +96,13 @@ public class GoodsController {
         wrapper.setPage(request.getPage());
         Page<GoodsVO> page = goodsService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(GoodsMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(GoodsMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

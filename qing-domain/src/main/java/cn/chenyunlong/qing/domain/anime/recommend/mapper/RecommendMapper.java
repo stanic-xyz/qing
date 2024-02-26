@@ -17,11 +17,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {
-        CustomMapper.class,
-        GenericEnumMapper.class,
-        DateMapper.class
+    CustomMapper.class,
+    GenericEnumMapper.class,
+    DateMapper.class
 })
 public interface RecommendMapper {
+
     RecommendMapper INSTANCE = Mappers.getMapper(RecommendMapper.class);
 
     Recommend dtoToEntity(RecommendCreator dto);

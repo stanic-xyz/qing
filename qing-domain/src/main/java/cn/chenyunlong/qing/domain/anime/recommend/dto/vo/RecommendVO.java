@@ -11,19 +11,20 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class RecommendVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "name"
+        title = "name"
     )
     private String name;
 
     @Schema(
-            title = "instruction"
+        title = "instruction"
     )
     private String instruction;
 

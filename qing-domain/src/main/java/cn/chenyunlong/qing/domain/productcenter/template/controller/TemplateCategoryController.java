@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.productcenter.template.dto.vo.TemplateCategory
 import cn.chenyunlong.qing.domain.productcenter.template.mapper.TemplateCategoryMapper;
 import cn.chenyunlong.qing.domain.productcenter.template.service.ITemplateCategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "模板分类")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/template-category")
 @RequiredArgsConstructor
 public class TemplateCategoryController {
+
     private final ITemplateCategoryService templateCategoryService;
 
     /**
@@ -35,7 +40,8 @@ public class TemplateCategoryController {
      */
     @PostMapping
     public JsonResult<Long> createTemplateCategory(
-            @RequestBody TemplateCategoryCreateRequest request) {
+        @RequestBody
+        TemplateCategoryCreateRequest request) {
         TemplateCategoryCreator creator = TemplateCategoryMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(templateCategoryService.createTemplateCategory(creator));
     }
@@ -45,7 +51,8 @@ public class TemplateCategoryController {
      */
     @PostMapping("updateTemplateCategory")
     public JsonResult<String> updateTemplateCategory(
-            @RequestBody TemplateCategoryUpdateRequest request) {
+        @RequestBody
+        TemplateCategoryUpdateRequest request) {
         TemplateCategoryUpdater updater = TemplateCategoryMapper.INSTANCE.request2Updater(request);
         templateCategoryService.updateTemplateCategory(updater);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -84,7 +91,8 @@ public class TemplateCategoryController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<TemplateCategoryResponse>> page(
-            @RequestBody PageRequestWrapper<TemplateCategoryQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<TemplateCategoryQueryRequest> request) {
         PageRequestWrapper<TemplateCategoryQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(TemplateCategoryMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -92,13 +100,13 @@ public class TemplateCategoryController {
         wrapper.setPage(request.getPage());
         Page<TemplateCategoryVO> page = templateCategoryService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(TemplateCategoryMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(TemplateCategoryMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

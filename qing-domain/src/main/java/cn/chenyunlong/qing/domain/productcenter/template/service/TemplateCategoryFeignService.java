@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "stanic",
-        contextId = "templateCategoryClient",
-        path = "templateCategory/v1"
+    value = "stanic",
+    contextId = "templateCategoryClient",
+    path = "templateCategory/v1"
 )
 public interface TemplateCategoryFeignService {
+
     /**
      * 创建
      */
@@ -54,5 +55,6 @@ public interface TemplateCategoryFeignService {
      */
     @PostMapping("findByPage")
     JsonResult<PageResult<TemplateCategoryResponse>> page(
-            @RequestBody PageRequestWrapper<TemplateCategoryQueryRequest> request);
+        @RequestBody
+        PageRequestWrapper<TemplateCategoryQueryRequest> request);
 }

@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
     access = AccessLevel.PROTECTED
 )
 public class EpisodeVO extends AbstractBaseJpaVo {
+
     @Schema(
         title = "name",
         description = "名称"

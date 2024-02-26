@@ -7,6 +7,7 @@ import lombok.Data;
 @Schema
 @Data
 public class ZanUpdateRequest implements Request {
+
     @Schema(
         title = "userId",
         description = "userId"

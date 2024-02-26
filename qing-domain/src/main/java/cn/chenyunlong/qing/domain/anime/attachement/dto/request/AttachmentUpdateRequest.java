@@ -7,6 +7,7 @@ import lombok.Data;
 @Schema
 @Data
 public class AttachmentUpdateRequest implements Request {
+
     @Schema(
         title = "fileId",
         description = "文件ID"

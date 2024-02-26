@@ -5,11 +5,11 @@ import cn.chenyunlong.qing.domain.auth.admin.dto.creator.AdminAccountCreator;
 import cn.chenyunlong.qing.domain.auth.admin.dto.query.AdminAccountQuery;
 import cn.chenyunlong.qing.domain.auth.admin.dto.updater.AdminAccountUpdater;
 import cn.chenyunlong.qing.domain.auth.admin.dto.vo.AdminAccountVO;
+import java.util.List;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 public interface IAdminAccountService {
+
     /**
      * create
      */

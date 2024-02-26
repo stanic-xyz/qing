@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.auth.platform.dto.vo.PlatformVO;
 import cn.chenyunlong.qing.domain.auth.platform.mapper.PlatformMapper;
 import cn.chenyunlong.qing.domain.auth.platform.service.IPlatformService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "平台管理", description = "平台管理")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/platform")
 @RequiredArgsConstructor
 public class PlatformController {
+
     private final IPlatformService platformService;
 
     /**
@@ -82,7 +87,8 @@ public class PlatformController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<PlatformResponse>> page(
-            @RequestBody PageRequestWrapper<PlatformQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<PlatformQueryRequest> request) {
         PageRequestWrapper<PlatformQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(PlatformMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -90,13 +96,13 @@ public class PlatformController {
         wrapper.setPage(request.getPage());
         Page<PlatformVO> page = platformService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(PlatformMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(PlatformMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

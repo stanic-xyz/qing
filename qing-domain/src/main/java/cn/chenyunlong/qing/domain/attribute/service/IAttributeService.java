@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.attribute.dto.vo.AttributeVO;
 import org.springframework.data.domain.Page;
 
 public interface IAttributeService {
+
     /**
      * create
      */

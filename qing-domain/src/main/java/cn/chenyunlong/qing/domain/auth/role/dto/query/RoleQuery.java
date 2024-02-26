@@ -6,15 +6,16 @@ import lombok.Data;
 @Schema
 @Data
 public class RoleQuery {
+
     @Schema(
-            title = "name",
-            description = "角色名称"
+        title = "name",
+        description = "角色名称"
     )
     private String name;
 
     @Schema(
-            title = "platformId",
-            description = "平台Id"
+        title = "platformId",
+        description = "平台Id"
     )
     private Long platformId;
 }

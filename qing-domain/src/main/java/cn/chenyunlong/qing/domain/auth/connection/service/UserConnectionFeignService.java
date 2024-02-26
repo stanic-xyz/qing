@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "stanic",
-        contextId = "userConnectionClient",
-        path = "userConnection/v1"
+    value = "stanic",
+    contextId = "userConnectionClient",
+    path = "userConnection/v1"
 )
 public interface UserConnectionFeignService {
+
     /**
      * 创建
      */
@@ -54,5 +55,6 @@ public interface UserConnectionFeignService {
      */
     @PostMapping("findByPage")
     JsonResult<PageResult<UserConnectionResponse>> page(
-            @RequestBody PageRequestWrapper<UserConnectionQueryRequest> request);
+        @RequestBody
+        PageRequestWrapper<UserConnectionQueryRequest> request);
 }

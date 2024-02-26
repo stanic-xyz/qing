@@ -7,6 +7,7 @@ import lombok.Data;
 @Schema
 @Data
 public class EntityCreator {
+
     @Schema(
         title = "name",
         description = "用户名"

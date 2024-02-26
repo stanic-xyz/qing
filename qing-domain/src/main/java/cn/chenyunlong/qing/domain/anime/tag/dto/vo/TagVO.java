@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
     access = AccessLevel.PROTECTED
 )
 public class TagVO extends AbstractBaseJpaVo {
+
     @Schema(
         title = "name"
     )

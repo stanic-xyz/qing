@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserTokenVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.UserTokenMapper;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserTokenRepository;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserTokenService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserTokenServiceImpl implements IUserTokenService {
+
     private final UserTokenRepository userTokenRepository;
 
     /**
@@ -36,9 +36,9 @@ public class UserTokenServiceImpl implements IUserTokenService {
     @Override
     public Long createUserToken(UserTokenCreator creator) {
         Optional<UserToken> userToken = EntityOperations.doCreate(userTokenRepository)
-                .create(() -> UserTokenMapper.INSTANCE.dtoToEntity(creator))
-                .update(UserToken::init)
-                .execute();
+            .create(() -> UserTokenMapper.INSTANCE.dtoToEntity(creator))
+            .update(UserToken::init)
+            .execute();
         return userToken.isPresent() ? userToken.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class UserTokenServiceImpl implements IUserTokenService {
     @Override
     public void updateUserToken(UserTokenUpdater updater) {
         EntityOperations.doUpdate(userTokenRepository)
-                .loadById(updater.getId())
-                .update(updater::updateUserToken)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateUserToken)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class UserTokenServiceImpl implements IUserTokenService {
     @Override
     public void validUserToken(Long id) {
         EntityOperations.doUpdate(userTokenRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class UserTokenServiceImpl implements IUserTokenService {
     @Override
     public void invalidUserToken(Long id) {
         EntityOperations.doUpdate(userTokenRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -82,7 +82,7 @@ public class UserTokenServiceImpl implements IUserTokenService {
     public UserTokenVO findById(Long id) {
         Optional<UserToken> userToken = userTokenRepository.findById(id);
         return new UserTokenVO(
-                userToken.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            userToken.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -91,7 +91,7 @@ public class UserTokenServiceImpl implements IUserTokenService {
     @Override
     public Page<UserTokenVO> findByPage(PageRequestWrapper<UserTokenQuery> query) {
         PageRequest pageRequest =
-                PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return userTokenRepository.findAll(pageRequest).map(UserTokenVO::new);
     }
 }

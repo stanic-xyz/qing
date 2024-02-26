@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.inoutrecord.dto.vo.InOutRecordVO
 import cn.chenyunlong.qing.domain.productcenter.inoutrecord.mapper.InOutRecordMapper;
 import cn.chenyunlong.qing.domain.productcenter.inoutrecord.repository.InOutRecordRepository;
 import cn.chenyunlong.qing.domain.productcenter.inoutrecord.service.IInOutRecordService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class InOutRecordServiceImpl implements IInOutRecordService {
+
     private final InOutRecordRepository inOutRecordRepository;
 
     /**
@@ -36,9 +36,9 @@ public class InOutRecordServiceImpl implements IInOutRecordService {
     @Override
     public Long createInOutRecord(InOutRecordCreator creator) {
         Optional<InOutRecord> inOutRecord = EntityOperations.doCreate(inOutRecordRepository)
-                .create(() -> InOutRecordMapper.INSTANCE.dtoToEntity(creator))
-                .update(InOutRecord::init)
-                .execute();
+            .create(() -> InOutRecordMapper.INSTANCE.dtoToEntity(creator))
+            .update(InOutRecord::init)
+            .execute();
         return inOutRecord.isPresent() ? inOutRecord.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class InOutRecordServiceImpl implements IInOutRecordService {
     @Override
     public void updateInOutRecord(InOutRecordUpdater updater) {
         EntityOperations.doUpdate(inOutRecordRepository)
-                .loadById(updater.getId())
-                .update(updater::updateInOutRecord)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateInOutRecord)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class InOutRecordServiceImpl implements IInOutRecordService {
     @Override
     public void validInOutRecord(Long id) {
         EntityOperations.doUpdate(inOutRecordRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class InOutRecordServiceImpl implements IInOutRecordService {
     @Override
     public void invalidInOutRecord(Long id) {
         EntityOperations.doUpdate(inOutRecordRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +81,8 @@ public class InOutRecordServiceImpl implements IInOutRecordService {
     @Override
     public InOutRecordVO findById(Long id) {
         Optional<InOutRecord> inOutRecord = inOutRecordRepository.findById(id);
-        return new InOutRecordVO(inOutRecord.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new InOutRecordVO(
+            inOutRecord.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +90,8 @@ public class InOutRecordServiceImpl implements IInOutRecordService {
      */
     @Override
     public Page<InOutRecordVO> findByPage(PageRequestWrapper<InOutRecordQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return inOutRecordRepository.findAll(pageRequest).map(InOutRecordVO::new);
     }
 }

@@ -2,28 +2,28 @@ package cn.chenyunlong.qing.domain.auth.department.dto.updater;
 
 import cn.chenyunlong.qing.domain.auth.department.Department;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class DepartmentUpdater {
+
     @Schema(
-            title = "name",
-            description = "部门名称"
+        title = "name",
+        description = "部门名称"
     )
     private String name;
 
     @Schema(
-            title = "pid",
-            description = "上级单位"
+        title = "pid",
+        description = "上级单位"
     )
     private Long pid;
 
     @Schema(
-            title = "sortNum",
-            description = "sortNum"
+        title = "sortNum",
+        description = "sortNum"
     )
     private Integer sortNum;
 

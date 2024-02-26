@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.productsku.dto.vo.ProductSkuVO;
 import org.springframework.data.domain.Page;
 
 public interface IProductSkuService {
+
     /**
      * create
      */

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class UserPayFilter extends AbstractEventFilter<LikeContext> {
+
     @Override
     protected void handleEvent(LikeContext eventContext) {
         BizEnum bizEnum = eventContext.getBizEnum();

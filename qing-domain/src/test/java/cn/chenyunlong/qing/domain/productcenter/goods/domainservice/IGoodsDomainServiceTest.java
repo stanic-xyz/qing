@@ -1,15 +1,14 @@
 package cn.chenyunlong.qing.domain.productcenter.goods.domainservice;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import cn.chenyunlong.qing.domain.AbstractDomainTests;
 import cn.chenyunlong.qing.domain.productcenter.goods.domainservice.model.GoodsInStoreRequest;
 import cn.hutool.core.util.IdUtil;
 import jakarta.annotation.Resource;
-import org.junit.jupiter.api.Test;
-
 import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 
 class IGoodsDomainServiceTest extends AbstractDomainTests {
 
