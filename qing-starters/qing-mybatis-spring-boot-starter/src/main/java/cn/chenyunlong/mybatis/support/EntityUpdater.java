@@ -18,7 +18,6 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.validator.UpdateGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.google.common.base.Preconditions;
-import io.vavr.control.Try;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class EntityUpdater<T> extends BaseEntityOperation implements Loader<T>,
-    UpdateHandler<T>, Executor<T> {
+                                                                         UpdateHandler<T>, Executor<T> {
 
     private final BaseMapper<T> baseMapper;
     private T entity;
@@ -47,13 +46,14 @@ public class EntityUpdater<T> extends BaseEntityOperation implements Loader<T>,
     @Override
     public Optional<T> execute() {
         doValidate(this.entity, UpdateGroup.class);
-        T save = Try.of(() -> {
-                baseMapper.updateById(entity);
-                return this.entity;
-            })
-            .onSuccess(successHook)
-            .onFailure(errorHook).getOrNull();
-        return Optional.ofNullable(save);
+        try {
+            baseMapper.updateById(entity);
+            successHook.accept(entity);
+            return Optional.of(entity);
+        } catch (Exception exception) {
+            errorHook.accept(exception);
+            return Optional.empty();
+        }
     }
 
     @Override

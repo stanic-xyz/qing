@@ -8,9 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StartExecutionListener implements ExecutionListener {
+
+    /**
+     * 按照代码检查的要求，这里需要又注释说明这里如何实现.
+     *
+     * @param execution 执行
+     */
     @Override
-    public final void notify(final DelegateExecution execution) throws Exception {
-        System.out.println("ExecutionListener--事件：【" + execution.getEventName() + "】--触发了");
+    public void notify(final DelegateExecution execution) {
+        System.out.println("ExecutionListener--事件：【"
+                               + execution.getEventName() + "】--触发了");
         if ("start".equals(execution.getEventName())) {
             List<String> userOneList = new ArrayList<>();
             userOneList.add("zhangsan");

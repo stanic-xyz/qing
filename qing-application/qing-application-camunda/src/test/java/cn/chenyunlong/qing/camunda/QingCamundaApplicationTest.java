@@ -13,9 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
                 "camunda.bpm.generate-unique-process-application-name=true",
                 "spring.datasource.generate-unique-name=true",
         },
-        classes = QingStarterCamundaApplication.class
+    classes = QingCamundaApplication.class
 )
-public class QingStarterCamundaApplicationTest {
+public class QingCamundaApplicationTest {
 
     @Test
     public void contextLoads() {
