@@ -6,6 +6,7 @@ import jakarta.persistence.Converter;
 
 @Converter
 public class PlayStatusConverter implements AttributeConverter<PlayStatus, Integer> {
+
     @Override
     public Integer convertToDatabaseColumn(PlayStatus attribute) {
         return attribute.getValue();

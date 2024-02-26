@@ -2,9 +2,8 @@ package cn.chenyunlong.qing.samples.codegen.domain.dto.updater;
 
 import cn.chenyunlong.qing.samples.codegen.domain.TestDomain;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data

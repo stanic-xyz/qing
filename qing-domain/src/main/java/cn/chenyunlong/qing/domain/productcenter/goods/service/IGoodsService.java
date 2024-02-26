@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.goods.dto.vo.GoodsVO;
 import org.springframework.data.domain.Page;
 
 public interface IGoodsService {
+
     /**
      * create
      */

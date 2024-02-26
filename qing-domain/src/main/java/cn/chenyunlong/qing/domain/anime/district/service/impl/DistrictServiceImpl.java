@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.anime.district.dto.vo.DistrictVO;
 import cn.chenyunlong.qing.domain.anime.district.mapper.DistrictConverter;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
 import cn.chenyunlong.qing.domain.anime.district.service.IDistrictService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class DistrictServiceImpl implements IDistrictService {
+
     private final DistrictRepository districtRepository;
 
     /**
@@ -36,7 +36,7 @@ public class DistrictServiceImpl implements IDistrictService {
     @Override
     public Long createDistrict(DistrictCreator creator) {
         Optional<District> district = EntityOperations.doCreate(districtRepository)
-                .create(() -> DistrictConverter.INSTANCE.dtoToEntity(creator))
+            .create(() -> DistrictConverter.INSTANCE.dtoToEntity(creator))
             .update(District::init)
             .execute();
         return district.isPresent() ? district.get().getId() : 0;

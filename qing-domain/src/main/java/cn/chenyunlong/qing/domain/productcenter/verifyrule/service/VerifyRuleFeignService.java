@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "stanic",
-        contextId = "verifyRuleClient",
-        path = "verifyRule/v1"
+    value = "stanic",
+    contextId = "verifyRuleClient",
+    path = "verifyRule/v1"
 )
 public interface VerifyRuleFeignService {
+
     /**
      * 创建
      */
@@ -54,5 +55,6 @@ public interface VerifyRuleFeignService {
      */
     @PostMapping("findByPage")
     JsonResult<PageResult<VerifyRuleResponse>> page(
-            @RequestBody PageRequestWrapper<VerifyRuleQueryRequest> request);
+        @RequestBody
+        PageRequestWrapper<VerifyRuleQueryRequest> request);
 }

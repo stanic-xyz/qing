@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.verifyrule.dto.vo.VerifyRuleVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface VerifyRuleMapper {
+
     VerifyRuleMapper INSTANCE = new VerifyRuleMapper() {
+
     };
 
     default VerifyRule dtoToEntity(VerifyRuleCreator dto) {

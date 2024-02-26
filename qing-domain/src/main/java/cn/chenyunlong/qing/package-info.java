@@ -1,4 +1,3 @@
-
 @QueryEntities(value = {BaseEntity.class, BaseJpaAggregate.class})
 package cn.chenyunlong.qing;
 

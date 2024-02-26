@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.auth.role.dto.vo.RoleVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface RoleMapper {
+
     RoleMapper INSTANCE = new RoleMapper() {
+
     };
 
     default Role dtoToEntity(RoleCreator dto) {

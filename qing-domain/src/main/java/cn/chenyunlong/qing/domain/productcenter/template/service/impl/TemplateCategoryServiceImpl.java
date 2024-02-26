@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.template.dto.vo.TemplateCategory
 import cn.chenyunlong.qing.domain.productcenter.template.mapper.TemplateCategoryMapper;
 import cn.chenyunlong.qing.domain.productcenter.template.repository.TemplateCategoryRepository;
 import cn.chenyunlong.qing.domain.productcenter.template.service.ITemplateCategoryService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class TemplateCategoryServiceImpl implements ITemplateCategoryService {
+
     private final TemplateCategoryRepository templateCategoryRepository;
 
     /**
@@ -35,7 +35,8 @@ public class TemplateCategoryServiceImpl implements ITemplateCategoryService {
      */
     @Override
     public Long createTemplateCategory(TemplateCategoryCreator creator) {
-        Optional<TemplateCategory> templateCategory = EntityOperations.doCreate(templateCategoryRepository)
+        Optional<TemplateCategory> templateCategory =
+            EntityOperations.doCreate(templateCategoryRepository)
                 .create(() -> TemplateCategoryMapper.INSTANCE.dtoToEntity(creator))
                 .update(TemplateCategory::init)
                 .execute();
@@ -48,9 +49,9 @@ public class TemplateCategoryServiceImpl implements ITemplateCategoryService {
     @Override
     public void updateTemplateCategory(TemplateCategoryUpdater updater) {
         EntityOperations.doUpdate(templateCategoryRepository)
-                .loadById(updater.getId())
-                .update(updater::updateTemplateCategory)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateTemplateCategory)
+            .execute();
     }
 
     /**
@@ -59,9 +60,9 @@ public class TemplateCategoryServiceImpl implements ITemplateCategoryService {
     @Override
     public void validTemplateCategory(Long id) {
         EntityOperations.doUpdate(templateCategoryRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +71,9 @@ public class TemplateCategoryServiceImpl implements ITemplateCategoryService {
     @Override
     public void invalidTemplateCategory(Long id) {
         EntityOperations.doUpdate(templateCategoryRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +82,8 @@ public class TemplateCategoryServiceImpl implements ITemplateCategoryService {
     @Override
     public TemplateCategoryVO findById(Long id) {
         Optional<TemplateCategory> templateCategory = templateCategoryRepository.findById(id);
-        return new TemplateCategoryVO(templateCategory.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new TemplateCategoryVO(
+            templateCategory.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +91,8 @@ public class TemplateCategoryServiceImpl implements ITemplateCategoryService {
      */
     @Override
     public Page<TemplateCategoryVO> findByPage(PageRequestWrapper<TemplateCategoryQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return templateCategoryRepository.findAll(pageRequest).map(TemplateCategoryVO::new);
     }
 }

@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
     callSuper = true
 )
 public class AttributeResponse extends AbstractJpaResponse {
+
     @Schema(
         title = "uniqueCode",
         description = "唯一编码"

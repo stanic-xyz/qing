@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "stanic",
-        contextId = "qingUserClient",
-        path = "qingUser/v1"
+    value = "stanic",
+    contextId = "qingUserClient",
+    path = "qingUser/v1"
 )
 public interface QingUserFeignService {
+
     /**
      * 创建
      */
@@ -54,5 +55,6 @@ public interface QingUserFeignService {
      */
     @PostMapping("findByPage")
     JsonResult<PageResult<QingUserResponse>> page(
-            @RequestBody PageRequestWrapper<QingUserQueryRequest> request);
+        @RequestBody
+        PageRequestWrapper<QingUserQueryRequest> request);
 }

@@ -6,33 +6,34 @@ import lombok.Data;
 @Schema
 @Data
 public class ShopCreator {
+
     @Schema(
-            title = "name",
-            description = "店名"
+        title = "name",
+        description = "店名"
     )
     private String name;
 
     @Schema(
-            title = "starLevel",
-            description = "星级"
+        title = "starLevel",
+        description = "星级"
     )
     private Integer starLevel;
 
     @Schema(
-            title = "onlineTime",
-            description = "上线时间"
+        title = "onlineTime",
+        description = "上线时间"
     )
     private Long onlineTime;
 
     @Schema(
-            title = "contactUserPhone",
-            description = "联系人手机号"
+        title = "contactUserPhone",
+        description = "联系人手机号"
     )
     private String contactUserPhone;
 
     @Schema(
-            title = "contactUser",
-            description = "联系人"
+        title = "contactUser",
+        description = "联系人"
     )
     private String contactUser;
 }

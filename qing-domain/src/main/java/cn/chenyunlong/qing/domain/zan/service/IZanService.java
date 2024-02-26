@@ -9,6 +9,7 @@ import cn.chenyunlong.qing.domain.zan.dto.vo.ZanVO;
 import org.springframework.data.domain.Page;
 
 public interface IZanService {
+
     /**
      * create
      */

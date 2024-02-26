@@ -9,36 +9,37 @@ import lombok.EqualsAndHashCode;
 @Data
 @Schema
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 public class VerifyRuleResponse extends AbstractJpaResponse {
+
     @Schema(
-            title = "ruleName",
-            description = "规则名称"
+        title = "ruleName",
+        description = "规则名称"
     )
     private String ruleName;
 
     @Schema(
-            title = "regexStr",
-            description = "校验表达式"
+        title = "regexStr",
+        description = "校验表达式"
     )
     private String regexStr;
 
     @Schema(
-            title = "message",
-            description = "错误提示信息"
+        title = "message",
+        description = "错误提示信息"
     )
     private String message;
 
     @Schema(
-            title = "verifySchema",
-            description = "jc"
+        title = "verifySchema",
+        description = "jc"
     )
     private String verifySchema;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 }

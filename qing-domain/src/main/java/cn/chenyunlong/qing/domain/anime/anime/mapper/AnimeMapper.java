@@ -16,6 +16,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {CustomMapper.class, DateMapper.class})
 public interface AnimeMapper {
+
     AnimeMapper INSTANCE = Mappers.getMapper(AnimeMapper.class);
 
     Anime dtoToEntity(AnimeCreator dto);

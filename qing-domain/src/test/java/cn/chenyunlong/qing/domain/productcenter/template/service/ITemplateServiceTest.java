@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.domain.productcenter.template.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import cn.chenyunlong.qing.domain.AbstractDomainTests;
 import cn.chenyunlong.qing.domain.productcenter.template.TemplateType;
 import cn.chenyunlong.qing.domain.productcenter.template.dto.creator.TemplateCategoryCreator;
@@ -7,8 +9,6 @@ import cn.chenyunlong.qing.domain.productcenter.template.dto.creator.TemplateCre
 import cn.hutool.core.util.IdUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ITemplateServiceTest extends AbstractDomainTests {
 

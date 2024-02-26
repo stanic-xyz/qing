@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "anime",
-        contextId = "recommendClient",
-        path = "recommend/v1"
+    value = "anime",
+    contextId = "recommendClient",
+    path = "recommend/v1"
 )
 public interface RecommendFeignService {
+
     /**
      * 创建
      */
@@ -54,5 +55,6 @@ public interface RecommendFeignService {
      */
     @PostMapping("findByPage")
     JsonResult<PageResult<RecommendResponse>> page(
-            @RequestBody PageRequestWrapper<RecommendQueryRequest> request);
+        @RequestBody
+        PageRequestWrapper<RecommendQueryRequest> request);
 }

@@ -16,6 +16,8 @@ package cn.chenyunlong.qing.config.security.filter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,9 +26,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 /**
  * 登录成功处理器过滤器。
  *
@@ -34,6 +33,7 @@ import java.util.Optional;
  */
 @Slf4j
 public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
+
     private static final String TOKEN = "Authorization";
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_QUERY = "token";
@@ -47,7 +47,7 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest,
-                                                HttpServletResponse httpServletResponse)
+        HttpServletResponse httpServletResponse)
         throws AuthenticationException {
         //TODO 完善认证过程
         UsernamePasswordAuthenticationToken authRequest;

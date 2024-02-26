@@ -2,22 +2,22 @@ package cn.chenyunlong.qing.domain.auth.platform.dto.updater;
 
 import cn.chenyunlong.qing.domain.auth.platform.Platform;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class PlatformUpdater {
+
     @Schema(
-            title = "code",
-            description = "编码"
+        title = "code",
+        description = "编码"
     )
     private String code;
 
     @Schema(
-            title = "name",
-            description = "平台名称"
+        title = "name",
+        description = "平台名称"
     )
     private String name;
 

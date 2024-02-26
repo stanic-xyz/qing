@@ -6,15 +6,16 @@ import lombok.Data;
 @Schema
 @Data
 public class PlatformCreator {
+
     @Schema(
-            title = "code",
-            description = "编码"
+        title = "code",
+        description = "编码"
     )
     private String code;
 
     @Schema(
-            title = "name",
-            description = "平台名称"
+        title = "name",
+        description = "平台名称"
     )
     private String name;
 }

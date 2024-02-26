@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
     path = "district/v1"
 )
 public interface DistrictFeignService {
+
     /**
      * 创建
      */

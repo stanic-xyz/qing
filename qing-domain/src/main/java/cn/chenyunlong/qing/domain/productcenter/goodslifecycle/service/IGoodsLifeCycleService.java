@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.goodslifecycle.dto.vo.GoodsLifeC
 import org.springframework.data.domain.Page;
 
 public interface IGoodsLifeCycleService {
+
     /**
      * create
      */

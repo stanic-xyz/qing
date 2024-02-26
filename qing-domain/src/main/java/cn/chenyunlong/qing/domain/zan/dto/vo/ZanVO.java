@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
     access = AccessLevel.PROTECTED
 )
 public class ZanVO extends AbstractBaseJpaVo {
+
     @Schema(
         title = "userId",
         description = "userId"

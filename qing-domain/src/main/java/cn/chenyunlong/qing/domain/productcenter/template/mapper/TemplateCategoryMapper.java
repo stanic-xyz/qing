@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.template.dto.vo.TemplateCategory
 import cn.hutool.core.bean.BeanUtil;
 
 public interface TemplateCategoryMapper {
+
     TemplateCategoryMapper INSTANCE = new TemplateCategoryMapper() {
+
     };
 
     default TemplateCategory dtoToEntity(TemplateCategoryCreator dto) {

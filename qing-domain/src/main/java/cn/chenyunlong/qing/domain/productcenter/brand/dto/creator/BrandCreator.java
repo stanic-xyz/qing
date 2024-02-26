@@ -6,27 +6,28 @@ import lombok.Data;
 @Schema
 @Data
 public class BrandCreator {
+
     @Schema(
-            title = "name",
-            description = "品牌名称"
+        title = "name",
+        description = "品牌名称"
     )
     private String name;
 
     @Schema(
-            title = "logo",
-            description = "品牌logo"
+        title = "logo",
+        description = "品牌logo"
     )
     private String logo;
 
     @Schema(
-            title = "description",
-            description = "品牌描述"
+        title = "description",
+        description = "品牌描述"
     )
     private String description;
 
     @Schema(
-            title = "provider",
-            description = "供应商"
+        title = "provider",
+        description = "供应商"
     )
     private String provider;
 }

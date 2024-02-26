@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.QingUserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.QingUserMapper;
 import cn.chenyunlong.qing.domain.auth.user.repository.QingUserRepository;
 import cn.chenyunlong.qing.domain.auth.user.service.IQingUserService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class QingUserServiceImpl implements IQingUserService {
+
     private final QingUserRepository qingUserRepository;
 
     /**
@@ -36,9 +36,9 @@ public class QingUserServiceImpl implements IQingUserService {
     @Override
     public Long createQingUser(QingUserCreator creator) {
         Optional<QingUser> qingUser = EntityOperations.doCreate(qingUserRepository)
-                .create(() -> QingUserMapper.INSTANCE.dtoToEntity(creator))
-                .update(QingUser::init)
-                .execute();
+            .create(() -> QingUserMapper.INSTANCE.dtoToEntity(creator))
+            .update(QingUser::init)
+            .execute();
         return qingUser.isPresent() ? qingUser.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class QingUserServiceImpl implements IQingUserService {
     @Override
     public void updateQingUser(QingUserUpdater updater) {
         EntityOperations.doUpdate(qingUserRepository)
-                .loadById(updater.getId())
-                .update(updater::updateQingUser)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateQingUser)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class QingUserServiceImpl implements IQingUserService {
     @Override
     public void validQingUser(Long id) {
         EntityOperations.doUpdate(qingUserRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class QingUserServiceImpl implements IQingUserService {
     @Override
     public void invalidQingUser(Long id) {
         EntityOperations.doUpdate(qingUserRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +81,8 @@ public class QingUserServiceImpl implements IQingUserService {
     @Override
     public QingUserVO findById(Long id) {
         Optional<QingUser> qingUser = qingUserRepository.findById(id);
-        return new QingUserVO(qingUser.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new QingUserVO(
+            qingUser.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -89,7 +90,8 @@ public class QingUserServiceImpl implements IQingUserService {
      */
     @Override
     public Page<QingUserVO> findByPage(PageRequestWrapper<QingUserQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return qingUserRepository.findAll(pageRequest).map(QingUserVO::new);
     }
 }

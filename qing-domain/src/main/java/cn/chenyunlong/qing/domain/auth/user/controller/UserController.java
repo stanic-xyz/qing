@@ -18,13 +18,17 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.UserMapper;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "用户管理")
 @RestController
@@ -33,6 +37,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
+
     private final IUserService userService;
     private final IUserDomainService domainService;
 
@@ -97,7 +102,8 @@ public class UserController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<UserResponse>> page(
-            @RequestBody PageRequestWrapper<UserQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<UserQueryRequest> request) {
         PageRequestWrapper<UserQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(UserMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -105,13 +111,13 @@ public class UserController {
         wrapper.setPage(request.getPage());
         Page<UserVO> page = userService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(UserMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(UserMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

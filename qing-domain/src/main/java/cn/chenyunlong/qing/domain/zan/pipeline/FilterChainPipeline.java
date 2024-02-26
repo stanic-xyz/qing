@@ -35,7 +35,7 @@ public class FilterChainPipeline<T extends LikeContext> {
      * 添加过滤器到第一个。
      *
      * @param description 描述信息
-     * @param filter      过滤器
+     * @param filter 过滤器
      * @return 当前流水线, 始终返回过滤器流水线的第一个链
      */
     public FilterChainPipeline<T> addFirst(String description, EventFilter<T> filter) {
@@ -53,7 +53,7 @@ public class FilterChainPipeline<T extends LikeContext> {
      * 添加过滤器到最后一个。
      *
      * @param description 描述信息
-     * @param filter      过滤器
+     * @param filter 过滤器
      * @return 当前流水线, 始终返回过滤器流水线的第一个链
      */
     public FilterChainPipeline<T> addLast(String description, EventFilter<T> filter) {

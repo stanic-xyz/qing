@@ -15,12 +15,16 @@ import cn.chenyunlong.qing.domain.productcenter.templateitem.dto.vo.TemplateItem
 import cn.chenyunlong.qing.domain.productcenter.templateitem.mapper.TemplateItemMapper;
 import cn.chenyunlong.qing.domain.productcenter.templateitem.service.ITemplateItemService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "模板项管理")
 @RestController
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/template-item")
 @RequiredArgsConstructor
 public class TemplateItemController {
+
     private final ITemplateItemService templateItemService;
 
     /**
@@ -82,7 +87,8 @@ public class TemplateItemController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<TemplateItemResponse>> page(
-            @RequestBody PageRequestWrapper<TemplateItemQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<TemplateItemQueryRequest> request) {
         PageRequestWrapper<TemplateItemQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(TemplateItemMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -90,13 +96,13 @@ public class TemplateItemController {
         wrapper.setPage(request.getPage());
         Page<TemplateItemVO> page = templateItemService.findByPage(wrapper);
         return JsonResult.success(
-                PageResult.of(
-                        page.getContent().stream()
-                                .map(TemplateItemMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+            PageResult.of(
+                page.getContent().stream()
+                    .map(TemplateItemMapper.INSTANCE::vo2CustomResponse)
+                    .collect(Collectors.toList()),
+                page.getTotalElements(),
+                page.getSize(),
+                page.getNumber())
         );
     }
 }

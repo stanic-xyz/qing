@@ -1,5 +1,13 @@
 package cn.chenyunlong.qing.domain.entity.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.domain.auth.user.QingUser;
@@ -11,16 +19,9 @@ import cn.chenyunlong.qing.domain.zan.dto.creator.ZanCreator;
 import cn.chenyunlong.qing.domain.zan.repository.ZanRepository;
 import cn.chenyunlong.qing.domain.zan.service.impl.ZanServiceImpl;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
 
 @Transactional
 class ZanServiceImplTest {

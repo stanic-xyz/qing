@@ -7,6 +7,7 @@ import lombok.Data;
 @Schema
 @Data
 public class TypeCreateRequest implements Request {
+
     @Schema(
         title = "name"
     )

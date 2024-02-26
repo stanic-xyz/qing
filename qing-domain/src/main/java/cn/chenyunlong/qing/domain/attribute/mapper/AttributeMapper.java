@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.attribute.dto.vo.AttributeVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface AttributeMapper {
+
     AttributeMapper INSTANCE = new AttributeMapper() {
+
     };
 
     default Attribute dtoToEntity(AttributeCreator dto) {

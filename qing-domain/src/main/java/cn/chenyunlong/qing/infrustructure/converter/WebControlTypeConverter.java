@@ -6,6 +6,7 @@ import jakarta.persistence.Converter;
 
 @Converter
 public class WebControlTypeConverter implements AttributeConverter<WebControlType, Integer> {
+
     @Override
     public Integer convertToDatabaseColumn(WebControlType webControlType) {
         return webControlType.getCode();

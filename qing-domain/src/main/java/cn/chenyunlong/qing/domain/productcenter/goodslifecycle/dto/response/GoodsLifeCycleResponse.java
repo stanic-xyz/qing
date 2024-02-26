@@ -11,42 +11,43 @@ import lombok.EqualsAndHashCode;
 @Data
 @Schema
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 public class GoodsLifeCycleResponse extends AbstractJpaResponse {
+
     @Schema(
-            title = "directionType",
-            description = "出入库方向"
+        title = "directionType",
+        description = "出入库方向"
     )
     private DirectionType directionType;
 
     @Schema(
-            title = "uniqueCode",
-            description = "唯一编码"
+        title = "uniqueCode",
+        description = "唯一编码"
     )
     private String uniqueCode;
 
     @Schema(
-            title = "inOutStoreType",
-            description = "出入库类型"
+        title = "inOutStoreType",
+        description = "出入库类型"
     )
     private InOutStoreType inOutStoreType;
 
     @Schema(
-            title = "storeId",
-            description = "仓库ID"
+        title = "storeId",
+        description = "仓库ID"
     )
     private Long storeId;
 
     @Schema(
-            title = "remark",
-            description = "备注"
+        title = "remark",
+        description = "备注"
     )
     private String remark;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 }

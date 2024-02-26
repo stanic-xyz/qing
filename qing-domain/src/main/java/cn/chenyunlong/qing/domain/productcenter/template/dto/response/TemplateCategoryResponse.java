@@ -9,30 +9,31 @@ import lombok.EqualsAndHashCode;
 @Data
 @Schema
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 public class TemplateCategoryResponse extends AbstractJpaResponse {
+
     @Schema(
-            title = "name",
-            description = "分类名称"
+        title = "name",
+        description = "分类名称"
     )
     private String name;
 
     @Schema(
-            title = "pid",
-            description = "父节点ID"
+        title = "pid",
+        description = "父节点ID"
     )
     private Long pid;
 
     @Schema(
-            title = "sortNum",
-            description = "排序号"
+        title = "sortNum",
+        description = "排序号"
     )
     private Integer sortNum;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 }

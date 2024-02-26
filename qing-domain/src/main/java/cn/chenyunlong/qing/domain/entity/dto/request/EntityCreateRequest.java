@@ -8,6 +8,7 @@ import lombok.Data;
 @Schema
 @Data
 public class EntityCreateRequest implements Request {
+
     @Schema(
         title = "name",
         description = "用户名"

@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.domain.productcenter.inoutrecord.enums;
 
 import cn.chenyunlong.common.constants.BaseEnum;
-
 import java.util.Optional;
 
 public enum InOutStoreType implements BaseEnum<Integer> {
@@ -16,9 +15,14 @@ public enum InOutStoreType implements BaseEnum<Integer> {
     private final Integer value;
     private final String name;
 
-    private InOutStoreType(Integer code, String name) {
+    InOutStoreType(Integer code, String name) {
         this.value = code;
         this.name = name;
+    }
+
+    public static Optional<InOutStoreType> of(Integer code) {
+        return Optional.ofNullable(
+                BaseEnum.parseByCode(code, InOutStoreType.class));
     }
 
     public Integer getValue() {
@@ -27,9 +31,5 @@ public enum InOutStoreType implements BaseEnum<Integer> {
 
     public String getName() {
         return this.name;
-    }
-
-    public static Optional<InOutStoreType> of(Integer code) {
-        return Optional.ofNullable((InOutStoreType) BaseEnum.parseByCode(code, InOutStoreType.class));
     }
 }
