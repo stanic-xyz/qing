@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.auth.connection.dto.vo.UserConnectionVO;
 import org.springframework.data.domain.Page;
 
 public interface IUserConnectionService {
+
     /**
      * create
      */

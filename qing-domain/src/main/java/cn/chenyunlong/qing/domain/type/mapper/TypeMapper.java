@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.type.dto.vo.TypeVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface TypeMapper {
+
     TypeMapper INSTANCE = new TypeMapper() {
+
     };
 
     default Type dtoToEntity(TypeCreator dto) {

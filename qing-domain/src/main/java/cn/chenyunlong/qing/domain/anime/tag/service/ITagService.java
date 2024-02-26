@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.anime.tag.dto.vo.TagVO;
 import org.springframework.data.domain.Page;
 
 public interface ITagService {
+
     /**
      * create
      */

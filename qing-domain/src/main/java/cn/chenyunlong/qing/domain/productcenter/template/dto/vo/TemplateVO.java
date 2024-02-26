@@ -13,62 +13,60 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class TemplateVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "name",
-            description = "名称"
+        title = "name",
+        description = "名称"
     )
     private String name;
 
     @Schema(
-            title = "description",
-            description = "描述"
+        title = "description",
+        description = "描述"
     )
     private String description;
 
     @Schema(
-            title = "code",
-            description = "编码"
+        title = "code",
+        description = "编码"
     )
     private String code;
 
     @Schema(
-            title = "categoryId",
-            description = "分类ID"
+        title = "categoryId",
+        description = "分类ID"
     )
     private Long categoryId;
 
     @Schema(
-            title = "templateType",
-            description = "templateType"
+        title = "templateType",
+        description = "templateType"
     )
     private TemplateType templateType;
 
     @Schema(
-            title = "metaData",
-            description = "元数据"
+        title = "metaData",
+        description = "元数据"
     )
     private String metaData;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 
     public TemplateVO(Template source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setName(source.getName());
         this.setDescription(source.getDescription());
         this.setCode(source.getCode());

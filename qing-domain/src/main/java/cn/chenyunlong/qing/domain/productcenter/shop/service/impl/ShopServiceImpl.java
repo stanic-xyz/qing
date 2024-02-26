@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.shop.dto.vo.ShopVO;
 import cn.chenyunlong.qing.domain.productcenter.shop.mapper.ShopMapper;
 import cn.chenyunlong.qing.domain.productcenter.shop.repository.ShopRepository;
 import cn.chenyunlong.qing.domain.productcenter.shop.service.IShopService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ShopServiceImpl implements IShopService {
+
     private final ShopRepository shopRepository;
 
     /**
@@ -36,9 +36,9 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public Long createShop(ShopCreator creator) {
         Optional<Shop> shop = EntityOperations.doCreate(shopRepository)
-                .create(() -> ShopMapper.INSTANCE.dtoToEntity(creator))
-                .update(Shop::init)
-                .execute();
+            .create(() -> ShopMapper.INSTANCE.dtoToEntity(creator))
+            .update(Shop::init)
+            .execute();
         return shop.isPresent() ? shop.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public void updateShop(ShopUpdater updater) {
         EntityOperations.doUpdate(shopRepository)
-                .loadById(updater.getId())
-                .update(updater::updateShop)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateShop)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public void validShop(Long id) {
         EntityOperations.doUpdate(shopRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public void invalidShop(Long id) {
         EntityOperations.doUpdate(shopRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -89,7 +89,8 @@ public class ShopServiceImpl implements IShopService {
      */
     @Override
     public Page<ShopVO> findByPage(PageRequestWrapper<ShopQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return shopRepository.findAll(pageRequest).map(ShopVO::new);
     }
 }

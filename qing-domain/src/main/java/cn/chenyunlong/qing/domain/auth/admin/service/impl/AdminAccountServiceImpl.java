@@ -21,6 +21,8 @@ import cn.chenyunlong.qing.domain.auth.platform.repository.PlatformRepository;
 import cn.chenyunlong.qing.domain.auth.role.repository.RoleRepository;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,14 +31,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class AdminAccountServiceImpl implements IAdminAccountService {
+
     private final AdminAccountRepository adminAccountRepository;
     private final RoleRepository roleRepository;
     private final AdminAccountRoleRelRepository adminAccountRoleRelRepository;
@@ -49,9 +49,9 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
     @Override
     public Long createAdminAccount(AdminAccountCreator creator) {
         Optional<AdminAccount> adminAccount = EntityOperations.doCreate(adminAccountRepository)
-                .create(() -> AdminAccountMapper.INSTANCE.dtoToEntity(creator))
-                .update(AdminAccount::init)
-                .execute();
+            .create(() -> AdminAccountMapper.INSTANCE.dtoToEntity(creator))
+            .update(AdminAccount::init)
+            .execute();
         return adminAccount.isPresent() ? adminAccount.get().getId() : 0;
     }
 
@@ -61,9 +61,9 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
     @Override
     public void updateAdminAccount(AdminAccountUpdater updater) {
         EntityOperations.doUpdate(adminAccountRepository)
-                .loadById(updater.getId())
-                .update(updater::updateAdminAccount)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateAdminAccount)
+            .execute();
     }
 
     /**
@@ -72,9 +72,9 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
     @Override
     public void validAdminAccount(Long id) {
         EntityOperations.doUpdate(adminAccountRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -83,9 +83,9 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
     @Override
     public void invalidAdminAccount(Long id) {
         EntityOperations.doUpdate(adminAccountRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -94,7 +94,8 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
     @Override
     public AdminAccountVO findById(Long id) {
         Optional<AdminAccount> adminAccount = adminAccountRepository.findById(id);
-        return new AdminAccountVO(adminAccount.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new AdminAccountVO(
+            adminAccount.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
     /**
@@ -102,7 +103,8 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
      */
     @Override
     public Page<AdminAccountVO> findByPage(PageRequestWrapper<AdminAccountQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return adminAccountRepository.findAll(pageRequest).map(AdminAccountVO::new);
     }
 
@@ -114,16 +116,19 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
         Assert.isTrue(adminAccount.isPresent(), "账户不存在");
 
         // 查询当前用户所有的工作角色信息
-        List<AdminAccountRoleRel> adminAccountRoleRelList = adminAccountRoleRelRepository.listRoleByAccountId(accountId);
+        List<AdminAccountRoleRel> adminAccountRoleRelList =
+            adminAccountRoleRelRepository.listRoleByAccountId(accountId);
 
         List<Long> oldRoleIds = adminAccountRoleRelList.stream().map(AdminAccountRoleRel::getId)
-                .toList();
+            .toList();
         if (oldRoleIds.isEmpty()) {
             // 移除当前不存在的角色列表
             adminAccountRoleRelRepository.deleteAllById(oldRoleIds);
         }
-        List<AdminAccountRoleRel> roleRelList = roleRepository.findAllById(roleIds).stream().map(role ->
-                AdminAccountRoleRel.builder().adminAccountId(accountId).roleId(role.getId()).build()).toList();
+        List<AdminAccountRoleRel> roleRelList =
+            roleRepository.findAllById(roleIds).stream().map(role ->
+                AdminAccountRoleRel.builder().adminAccountId(accountId).roleId(role.getId())
+                    .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
             adminAccountRoleRelRepository.saveAll(roleRelList);
         }
@@ -138,15 +143,18 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
 
         // 查询当前用户所有的工作角色信息
         List<AdminAccountPlatformRel> adminAccountRoleRelList =
-                adminAccountPlatformRelRepository.listPlatformsByAccountId(accountId);
-        List<Long> oldPlatformRels = adminAccountRoleRelList.stream().map(AdminAccountPlatformRel::getId)
+            adminAccountPlatformRelRepository.listPlatformsByAccountId(accountId);
+        List<Long> oldPlatformRels =
+            adminAccountRoleRelList.stream().map(AdminAccountPlatformRel::getId)
                 .toList();
         if (oldPlatformRels.isEmpty()) {
             // 移除当前不存在的角色列表
             adminAccountPlatformRelRepository.deleteAllById(oldPlatformRels);
         }
-        List<AdminAccountPlatformRel> roleRelList = platformRepository.findAllById(platformIds).stream().map(role ->
-                AdminAccountPlatformRel.builder().adminAccountId(accountId).platformId(role.getId()).build()).toList();
+        List<AdminAccountPlatformRel> roleRelList =
+            platformRepository.findAllById(platformIds).stream().map(role ->
+                AdminAccountPlatformRel.builder().adminAccountId(accountId).platformId(role.getId())
+                    .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
             adminAccountPlatformRelRepository.saveAll(roleRelList);
         }

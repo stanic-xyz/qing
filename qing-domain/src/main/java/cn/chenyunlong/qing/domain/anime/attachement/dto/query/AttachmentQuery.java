@@ -6,4 +6,5 @@ import lombok.Data;
 @Schema
 @Data
 public class AttachmentQuery {
+
 }

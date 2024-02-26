@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 public class FlowDelegate implements JavaDelegate {
     @Override
-    public void execute(DelegateExecution execution) throws Exception {
+    public void execute(final DelegateExecution execution) {
 
     }
 }

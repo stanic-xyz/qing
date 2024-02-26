@@ -14,12 +14,16 @@ import cn.chenyunlong.qing.samples.codegen.domain.dto.updater.TestDomainUpdater;
 import cn.chenyunlong.qing.samples.codegen.domain.dto.vo.TestDomainVO;
 import cn.chenyunlong.qing.samples.codegen.domain.mapper.TestDomainMapper;
 import cn.chenyunlong.qing.samples.codegen.domain.service.ITestDomainService;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
@@ -89,12 +93,12 @@ public class TestDomainController {
         Page<TestDomainVO> page = testDomainService.findByPage(wrapper);
         return JsonResult.success(
                 PageResult.of(
-                        page.getContent().stream()
-                                .map(TestDomainMapper.INSTANCE::vo2CustomResponse)
-                                .collect(Collectors.toList()),
-                        page.getTotalElements(),
-                        page.getSize(),
-                        page.getNumber())
+                    page.getContent().stream()
+                        .map(TestDomainMapper.INSTANCE::vo2CustomResponse)
+                        .collect(Collectors.toList()),
+                    page.getTotalElements(),
+                    page.getSize(),
+                    page.getNumber())
         );
     }
 }

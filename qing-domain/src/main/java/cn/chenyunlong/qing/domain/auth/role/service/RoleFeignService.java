@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        value = "stanic",
-        contextId = "roleClient",
-        path = "role/v1"
+    value = "stanic",
+    contextId = "roleClient",
+    path = "role/v1"
 )
 public interface RoleFeignService {
+
     /**
      * 创建
      */
@@ -54,5 +55,6 @@ public interface RoleFeignService {
      */
     @PostMapping("findByPage")
     JsonResult<PageResult<RoleResponse>> page(
-            @RequestBody PageRequestWrapper<RoleQueryRequest> request);
+        @RequestBody
+        PageRequestWrapper<RoleQueryRequest> request);
 }

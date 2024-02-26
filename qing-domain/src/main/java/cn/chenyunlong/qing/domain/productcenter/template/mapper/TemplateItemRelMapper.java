@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.productcenter.template.dto.vo.TemplateItemRelV
 import cn.hutool.core.bean.BeanUtil;
 
 public interface TemplateItemRelMapper {
+
     TemplateItemRelMapper INSTANCE = new TemplateItemRelMapper() {
+
     };
 
     default TemplateItemRel dtoToEntity(TemplateItemRelCreator dto) {

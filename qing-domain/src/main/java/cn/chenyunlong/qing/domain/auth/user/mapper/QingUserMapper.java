@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.QingUserVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface QingUserMapper {
+
     QingUserMapper INSTANCE = new QingUserMapper() {
+
     };
 
     default QingUser dtoToEntity(QingUserCreator dto) {

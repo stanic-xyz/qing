@@ -9,36 +9,37 @@ import lombok.EqualsAndHashCode;
 @Data
 @Schema
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 public class RoleResponse extends AbstractJpaResponse {
+
     @Schema(
-            title = "role",
-            description = "角色编码"
+        title = "role",
+        description = "角色编码"
     )
     private String role;
 
     @Schema(
-            title = "name",
-            description = "角色名称"
+        title = "name",
+        description = "角色名称"
     )
     private String name;
 
     @Schema(
-            title = "platformId",
-            description = "平台Id"
+        title = "platformId",
+        description = "平台Id"
     )
     private Long platformId;
 
     @Schema(
-            title = "remark",
-            description = "备注"
+        title = "remark",
+        description = "备注"
     )
     private String remark;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 }

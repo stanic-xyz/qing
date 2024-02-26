@@ -1,9 +1,8 @@
 package cn.chenyunlong.qing.config.security.jwt;
 
+import java.util.Collections;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-
-import java.util.Collections;
 
 @Getter
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {

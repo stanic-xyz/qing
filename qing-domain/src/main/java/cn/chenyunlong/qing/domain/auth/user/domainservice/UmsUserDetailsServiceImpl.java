@@ -8,6 +8,11 @@ import cn.chenyunlong.security.entity.AuthUser;
 import cn.chenyunlong.security.exception.RegisterUserFailureException;
 import cn.chenyunlong.security.service.UmsUserDetailsService;
 import cn.hutool.core.util.IdUtil;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -17,16 +22,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
+
     private final IUserService userService;
     private final PasswordEncoder passwordEncoder;
 
@@ -49,15 +49,16 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
         QingUser qingUser = userOptional.get();
         log.info("Demo ======>: 登录用户名：{}, 登录成功", username);
         return new User(qingUser.getUsername(), qingUser.getPassword(),
-                true,
-                true,
-                true,
-                true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_VISIT, ROLE_USER"));
+            true,
+            true,
+            true,
+            true,
+            AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_VISIT, ROLE_USER"));
     }
 
     @Override
-    public UserDetails registerUser(AuthUser authUser, String username, String defaultAuthority, String decodeState) throws RegisterUserFailureException {
+    public UserDetails registerUser(AuthUser authUser, String username, String defaultAuthority,
+        String decodeState) throws RegisterUserFailureException {
         UserCreator creator = new UserCreator();
         creator.setUid(IdUtil.getSnowflakeNextId());
         creator.setUsername(username);
@@ -71,13 +72,13 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
         creator.setMfaType(MFAType.NONE);
         Long user = userService.register(creator);
         return User.builder()
-                .username(username)
-                .password(encodedPassword)
-                .disabled(false)
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .authorities(Collections.emptyList())
-                .build();
+            .username(username)
+            .password(encodedPassword)
+            .disabled(false)
+            .accountExpired(false)
+            .accountLocked(false)
+            .credentialsExpired(false)
+            .authorities(Collections.emptyList())
+            .build();
     }
 }

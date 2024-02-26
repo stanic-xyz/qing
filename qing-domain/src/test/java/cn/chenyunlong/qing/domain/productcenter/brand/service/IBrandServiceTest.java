@@ -5,12 +5,11 @@ import cn.chenyunlong.qing.domain.productcenter.brand.Brand;
 import cn.chenyunlong.qing.domain.productcenter.brand.dto.creator.BrandCreator;
 import cn.chenyunlong.qing.domain.productcenter.brand.dto.updater.BrandUpdater;
 import cn.chenyunlong.qing.domain.productcenter.brand.repository.BrandRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
 
 class IBrandServiceTest extends AbstractDomainTests {
 

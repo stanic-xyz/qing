@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.auth.admin.dto.vo.AdminAccountVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface AdminAccountMapper {
+
     AdminAccountMapper INSTANCE = new AdminAccountMapper() {
+
     };
 
     default AdminAccount dtoToEntity(AdminAccountCreator dto) {

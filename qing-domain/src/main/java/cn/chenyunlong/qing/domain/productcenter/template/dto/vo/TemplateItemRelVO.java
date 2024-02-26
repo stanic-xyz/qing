@@ -12,44 +12,42 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class TemplateItemRelVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "templateId",
-            description = "模板ID"
+        title = "templateId",
+        description = "模板ID"
     )
     private Long templateId;
 
     @Schema(
-            title = "templateItemId",
-            description = "模板项ID"
+        title = "templateItemId",
+        description = "模板项ID"
     )
     private Long templateItemId;
 
     @Schema(
-            title = "ruleJson",
-            description = "校验的结构化list"
+        title = "ruleJson",
+        description = "校验的结构化list"
     )
     private String ruleJson;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 
     public TemplateItemRelVO(TemplateItemRel source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setTemplateId(source.getTemplateId());
         this.setTemplateItemId(source.getTemplateItemId());
         this.setRuleJson(source.getRuleJson());

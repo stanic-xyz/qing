@@ -9,24 +9,25 @@ import lombok.EqualsAndHashCode;
 @Data
 @Schema
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 public class StoreResponse extends AbstractJpaResponse {
+
     @Schema(
-            title = "name",
-            description = "仓库名称"
+        title = "name",
+        description = "仓库名称"
     )
     private String name;
 
     @Schema(
-            title = "description",
-            description = "备注"
+        title = "description",
+        description = "备注"
     )
     private String description;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 }

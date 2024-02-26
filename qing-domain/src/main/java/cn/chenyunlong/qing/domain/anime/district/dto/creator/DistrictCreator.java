@@ -6,6 +6,7 @@ import lombok.Data;
 @Schema
 @Data
 public class DistrictCreator {
+
     @Schema(
         title = "code",
         description = "地区"

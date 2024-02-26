@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class QingTokenResponse {
+
     /**
      * 访问令牌
      */

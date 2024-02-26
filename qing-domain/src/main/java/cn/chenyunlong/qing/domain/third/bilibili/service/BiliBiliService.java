@@ -47,7 +47,10 @@ public class BiliBiliService implements BiliAnimeService {
             try {
                 BgngumeResponse response =
                     restTemplate.getForObject(
-                        "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=-1&style_id=-1&order=4&st=1&sort=0&page={num}&season_type=1&pagesize={pageSize}&type=1",
+                        "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area"
+                            + "=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1"
+                            + "&year=-1&style_id=-1&order=4&st=1&sort=0&page={num}&season_type=1"
+                            + "&pagesize={pageSize}&type=1",
                         BgngumeResponse.class, num,
                         pageSize);
                 if (response != null && response.getCode() == 0 && response.getData() != null
@@ -80,14 +83,14 @@ public class BiliBiliService implements BiliAnimeService {
     /**
      * 获取B站动漫的评分记录
      *
-     * @param animeId   动漫ID
+     * @param animeId 动漫ID
      * @param startTime 开始时间
-     * @param entTime   结束时间
+     * @param entTime 结束时间
      * @return 评分记录
      */
     @Override
     public List<BiliAnimeScoreEntity> getScoreInfoList(Long animeId, LocalDateTime startTime,
-                                                       LocalDateTime entTime) {
+        LocalDateTime entTime) {
         return Collections.emptyList();
     }
 }

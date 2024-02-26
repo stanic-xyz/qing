@@ -12,40 +12,37 @@ import lombok.NoArgsConstructor;
 @Schema
 @Data
 @EqualsAndHashCode(
-        callSuper = true
+    callSuper = true
 )
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
 public class PlatformVO extends AbstractBaseJpaVo {
+
     @Schema(
-            title = "code",
-            description = "编码"
+        title = "code",
+        description = "编码"
     )
     private String code;
 
     @Schema(
-            title = "name",
-            description = "平台名称"
+        title = "name",
+        description = "平台名称"
     )
     private String name;
 
     @Schema(
-            title = "validStatus",
-            description = "validStatus"
+        title = "validStatus",
+        description = "validStatus"
     )
     private ValidStatus validStatus;
 
     public PlatformVO(Platform source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setVersion(source.getVersion());
-        ;
         this.setCode(source.getCode());
         this.setName(source.getName());
         this.setValidStatus(source.getValidStatus());

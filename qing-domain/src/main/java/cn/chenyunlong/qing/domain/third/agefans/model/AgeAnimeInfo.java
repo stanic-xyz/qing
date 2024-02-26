@@ -18,6 +18,7 @@ import lombok.Data;
 
 @Data
 public class AgeAnimeInfo {
+
     private List<AgePlayList> agePlayListList;
     private List<AgeRecommendInfo> recommendList;
     private AgeBaiduNet baiduNet;

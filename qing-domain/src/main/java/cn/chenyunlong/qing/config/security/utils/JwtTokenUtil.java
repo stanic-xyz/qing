@@ -6,21 +6,21 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 @Data
 @Slf4j
 @ConfigurationProperties(prefix = "qing.security.jwt")
 @Component
 public class JwtTokenUtil {
+
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
 
@@ -33,10 +33,10 @@ public class JwtTokenUtil {
      */
     private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
+            .setClaims(claims)
+            .setExpiration(generateExpirationDate())
+            .signWith(SignatureAlgorithm.HS512, secret)
+            .compact();
     }
 
     /**
@@ -46,9 +46,9 @@ public class JwtTokenUtil {
         Claims claims = null;
         try {
             claims = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
         } catch (ExpiredJwtException exception) {
             log.info("JWT已过期:{},jwt:{}", exception.getMessage(), token);
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class JwtTokenUtil {
     /**
      * 验证token是否还有效
      *
-     * @param token       客户端传入的token
+     * @param token 客户端传入的token
      * @param userDetails 从数据库中查询出来的用户信息
      */
     public boolean validateToken(String token, UserDetails userDetails) {
@@ -150,13 +150,14 @@ public class JwtTokenUtil {
      * 判断token在指定时间内是否刚刚刷新过
      *
      * @param token 原token
-     * @param time  指定时间（秒）
+     * @param time 指定时间（秒）
      */
     private boolean tokenRefreshJustBefore(String token, int time) {
         Claims claims = getClaimsFromToken(token);
         Date created = claims.get(CLAIM_KEY_CREATED, Date.class);
         Date refreshDate = new Date();
         //刷新时间在创建时间的指定时间内
-        return refreshDate.after(created) && refreshDate.before(DateUtil.offsetSecond(created, time));
+        return refreshDate.after(created) && refreshDate.before(
+            DateUtil.offsetSecond(created, time));
     }
 }

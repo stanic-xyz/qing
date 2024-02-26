@@ -44,7 +44,9 @@ public class MySecurityContextRepository implements SecurityContextRepository {
         if (user == null) {
             return securityContext;
         }
-        UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.authenticated(user.getUsername(), user.getPassword(), user.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken =
+            UsernamePasswordAuthenticationToken.authenticated(user.getUsername(),
+                user.getPassword(), user.getAuthorities());
         authenticationToken.setDetails(user);
         securityContext.setAuthentication(authenticationToken);
         // 返回
@@ -52,7 +54,8 @@ public class MySecurityContextRepository implements SecurityContextRepository {
     }
 
     @Override
-    public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
+    public void saveContext(SecurityContext context, HttpServletRequest request,
+        HttpServletResponse response) {
         // 不用保存, 只要前端持续发送token就好
     }
 

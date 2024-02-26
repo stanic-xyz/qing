@@ -2,13 +2,13 @@ package cn.chenyunlong.qing.domain.anime.attachement.dto.updater;
 
 import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Optional;
+import lombok.Data;
 
 @Schema
 @Data
 public class AttachmentUpdater {
+
     @Schema(
         title = "fileId",
         description = "文件ID"

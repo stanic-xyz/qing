@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
     access = AccessLevel.PROTECTED
 )
 public class AnimeCategoryVO extends AbstractBaseJpaVo {
+
     @Schema(
         title = "name"
     )
@@ -35,11 +36,8 @@ public class AnimeCategoryVO extends AbstractBaseJpaVo {
     public AnimeCategoryVO(AnimeCategory source) {
         super();
         this.setId(source.getId());
-        ;
         this.setCreatedAt(source.getCreatedAt());
-        ;
         this.setUpdatedAt(source.getCreatedAt());
-        ;
         this.setName(source.getName());
         this.setOrderNo(source.getOrderNo());
         this.setPid(source.getPid());

@@ -6,6 +6,7 @@ import lombok.Data;
 @Schema
 @Data
 public class AttachmentCreator {
+
     @Schema(
         title = "fileId",
         description = "文件ID"

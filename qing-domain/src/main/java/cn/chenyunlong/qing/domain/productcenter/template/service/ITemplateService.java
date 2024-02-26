@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.template.dto.vo.TemplateVO;
 import org.springframework.data.domain.Page;
 
 public interface ITemplateService {
+
     /**
      * create
      */

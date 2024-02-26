@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.samples.codegen.domain.dto.vo.TestDomainVO;
 import cn.chenyunlong.qing.samples.codegen.domain.mapper.TestDomainMapper;
 import cn.chenyunlong.qing.samples.codegen.domain.repository.TestDomainRepository;
 import cn.chenyunlong.qing.samples.codegen.domain.service.ITestDomainService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,8 +21,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Transactional
 @Service
@@ -36,9 +35,9 @@ public class TestDomainServiceImpl implements ITestDomainService {
     @Override
     public Long createTestDomain(TestDomainCreator creator) {
         Optional<TestDomain> testDomain = EntityOperations.doCreate(testDomainRepository)
-                .create(() -> TestDomainMapper.INSTANCE.dtoToEntity(creator))
-                .update(TestDomain::init)
-                .execute();
+            .create(() -> TestDomainMapper.INSTANCE.dtoToEntity(creator))
+            .update(TestDomain::init)
+            .execute();
         return testDomain.isPresent() ? testDomain.get().getId() : 0;
     }
 
@@ -48,9 +47,9 @@ public class TestDomainServiceImpl implements ITestDomainService {
     @Override
     public void updateTestDomain(TestDomainUpdater updater) {
         EntityOperations.doUpdate(testDomainRepository)
-                .loadById(updater.getId())
-                .update(updater::updateTestDomain)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateTestDomain)
+            .execute();
     }
 
     /**
@@ -59,9 +58,9 @@ public class TestDomainServiceImpl implements ITestDomainService {
     @Override
     public void validTestDomain(Long id) {
         EntityOperations.doUpdate(testDomainRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +69,9 @@ public class TestDomainServiceImpl implements ITestDomainService {
     @Override
     public void invalidTestDomain(Long id) {
         EntityOperations.doUpdate(testDomainRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**

@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.auth.department.dto.vo.DepartmentVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface DepartmentMapper {
+
     DepartmentMapper INSTANCE = new DepartmentMapper() {
+
     };
 
     default Department dtoToEntity(DepartmentCreator dto) {

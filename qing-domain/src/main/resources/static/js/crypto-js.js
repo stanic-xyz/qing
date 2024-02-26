@@ -33,7 +33,7 @@
 	     */
         var create = Object.create || (function () {
             function F() {
-            };
+            }
 
             return function (obj) {
                 var subtype;
@@ -921,8 +921,8 @@
                     var M_offset_i = M[offset_i];
 
                     M[offset_i] = (
-                        (((M_offset_i << 8) | (M_offset_i >>> 24)) & 0x00ff00ff) |
-                        (((M_offset_i << 24) | (M_offset_i >>> 8)) & 0xff00ff00)
+                            (((M_offset_i << 8) | (M_offset_i >>> 24)) & 0x00ff00ff) |
+                            (((M_offset_i << 24) | (M_offset_i >>> 8)) & 0xff00ff00)
                     );
                 }
 
@@ -1042,12 +1042,12 @@
                 var nBitsTotalH = Math.floor(nBitsTotal / 0x100000000);
                 var nBitsTotalL = nBitsTotal;
                 dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 15] = (
-                    (((nBitsTotalH << 8) | (nBitsTotalH >>> 24)) & 0x00ff00ff) |
-                    (((nBitsTotalH << 24) | (nBitsTotalH >>> 8)) & 0xff00ff00)
+                        (((nBitsTotalH << 8) | (nBitsTotalH >>> 24)) & 0x00ff00ff) |
+                        (((nBitsTotalH << 24) | (nBitsTotalH >>> 8)) & 0xff00ff00)
                 );
                 dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = (
-                    (((nBitsTotalL << 8) | (nBitsTotalL >>> 24)) & 0x00ff00ff) |
-                    (((nBitsTotalL << 24) | (nBitsTotalL >>> 8)) & 0xff00ff00)
+                        (((nBitsTotalL << 8) | (nBitsTotalL >>> 24)) & 0x00ff00ff) |
+                        (((nBitsTotalL << 24) | (nBitsTotalL >>> 8)) & 0xff00ff00)
                 );
 
                 data.sigBytes = (dataWords.length + 1) * 4;
@@ -1065,7 +1065,7 @@
                     var H_i = H[i];
 
                     H[i] = (((H_i << 8) | (H_i >>> 24)) & 0x00ff00ff) |
-                        (((H_i << 24) | (H_i >>> 8)) & 0xff00ff00);
+                            (((H_i << 24) | (H_i >>> 8)) & 0xff00ff00);
                 }
 
                 // Return final computed hash
@@ -1343,13 +1343,13 @@
                     } else {
                         var gamma0x = W[i - 15];
                         var gamma0 = ((gamma0x << 25) | (gamma0x >>> 7)) ^
-                            ((gamma0x << 14) | (gamma0x >>> 18)) ^
-                            (gamma0x >>> 3);
+                                ((gamma0x << 14) | (gamma0x >>> 18)) ^
+                                (gamma0x >>> 3);
 
                         var gamma1x = W[i - 2];
                         var gamma1 = ((gamma1x << 15) | (gamma1x >>> 17)) ^
-                            ((gamma1x << 13) | (gamma1x >>> 19)) ^
-                            (gamma1x >>> 10);
+                                ((gamma1x << 13) | (gamma1x >>> 19)) ^
+                                (gamma1x >>> 10);
 
                         W[i] = gamma0 + W[i - 7] + gamma1 + W[i - 16];
                     }
@@ -1601,14 +1601,14 @@
 
             // Convert other array views to uint8
             if (
-                typedArray instanceof Int8Array ||
-                (typeof Uint8ClampedArray !== "undefined" && typedArray instanceof Uint8ClampedArray) ||
-                typedArray instanceof Int16Array ||
-                typedArray instanceof Uint16Array ||
-                typedArray instanceof Int32Array ||
-                typedArray instanceof Uint32Array ||
-                typedArray instanceof Float32Array ||
-                typedArray instanceof Float64Array
+                    typedArray instanceof Int8Array ||
+                    (typeof Uint8ClampedArray !== "undefined" && typedArray instanceof Uint8ClampedArray) ||
+                    typedArray instanceof Int16Array ||
+                    typedArray instanceof Uint16Array ||
+                    typedArray instanceof Int32Array ||
+                    typedArray instanceof Uint32Array ||
+                    typedArray instanceof Float32Array ||
+                    typedArray instanceof Float64Array
             ) {
                 typedArray = new Uint8Array(typedArray.buffer, typedArray.byteOffset, typedArray.byteLength);
             }
@@ -1702,8 +1702,8 @@
 
                     // Swap
                     M[offset_i] = (
-                        (((M_offset_i << 8) | (M_offset_i >>> 24)) & 0x00ff00ff) |
-                        (((M_offset_i << 24) | (M_offset_i >>> 8)) & 0xff00ff00)
+                            (((M_offset_i << 8) | (M_offset_i >>> 24)) & 0x00ff00ff) |
+                            (((M_offset_i << 24) | (M_offset_i >>> 8)) & 0xff00ff00)
                     );
                 }
                 // Shortcut
@@ -1789,8 +1789,8 @@
                 // Add padding
                 dataWords[nBitsLeft >>> 5] |= 0x80 << (24 - nBitsLeft % 32);
                 dataWords[(((nBitsLeft + 64) >>> 9) << 4) + 14] = (
-                    (((nBitsTotal << 8) | (nBitsTotal >>> 24)) & 0x00ff00ff) |
-                    (((nBitsTotal << 24) | (nBitsTotal >>> 8)) & 0xff00ff00)
+                        (((nBitsTotal << 8) | (nBitsTotal >>> 24)) & 0x00ff00ff) |
+                        (((nBitsTotal << 24) | (nBitsTotal >>> 8)) & 0xff00ff00)
                 );
                 data.sigBytes = (dataWords.length + 1) * 4;
 
@@ -1808,7 +1808,7 @@
 
                     // Swap
                     H[i] = (((H_i << 8) | (H_i >>> 24)) & 0x00ff00ff) |
-                        (((H_i << 24) | (H_i >>> 8)) & 0xff00ff00);
+                            (((H_i << 24) | (H_i >>> 8)) & 0xff00ff00);
                 }
 
                 // Return final computed hash
@@ -2711,12 +2711,12 @@
 
                     // Swap endian
                     M2i = (
-                        (((M2i << 8) | (M2i >>> 24)) & 0x00ff00ff) |
-                        (((M2i << 24) | (M2i >>> 8)) & 0xff00ff00)
+                            (((M2i << 8) | (M2i >>> 24)) & 0x00ff00ff) |
+                            (((M2i << 24) | (M2i >>> 8)) & 0xff00ff00)
                     );
                     M2i1 = (
-                        (((M2i1 << 8) | (M2i1 >>> 24)) & 0x00ff00ff) |
-                        (((M2i1 << 24) | (M2i1 >>> 8)) & 0xff00ff00)
+                            (((M2i1 << 8) | (M2i1 >>> 24)) & 0x00ff00ff) |
+                            (((M2i1 << 24) | (M2i1 >>> 8)) & 0xff00ff00)
                     );
 
                     // Absorb message into state
@@ -2809,7 +2809,7 @@
                     var roundConstant = ROUND_CONSTANTS[round];
                     lane.high ^= roundConstant.high;
                     lane.low ^= roundConstant.low;
-                    ;
+
                 }
             },
 
@@ -2844,12 +2844,12 @@
 
                     // Swap endian
                     laneMsw = (
-                        (((laneMsw << 8) | (laneMsw >>> 24)) & 0x00ff00ff) |
-                        (((laneMsw << 24) | (laneMsw >>> 8)) & 0xff00ff00)
+                            (((laneMsw << 8) | (laneMsw >>> 24)) & 0x00ff00ff) |
+                            (((laneMsw << 24) | (laneMsw >>> 8)) & 0xff00ff00)
                     );
                     laneLsw = (
-                        (((laneLsw << 8) | (laneLsw >>> 24)) & 0x00ff00ff) |
-                        (((laneLsw << 24) | (laneLsw >>> 8)) & 0xff00ff00)
+                            (((laneLsw << 8) | (laneLsw >>> 24)) & 0x00ff00ff) |
+                            (((laneLsw << 24) | (laneLsw >>> 8)) & 0xff00ff00)
                     );
 
                     // Squeeze state to retrieve hash
@@ -4532,7 +4532,7 @@
                         invKeySchedule[invKsRow] = t;
                     } else {
                         invKeySchedule[invKsRow] = INV_SUB_MIX_0[SBOX[t >>> 24]] ^ INV_SUB_MIX_1[SBOX[(t >>> 16) & 0xff]] ^
-                            INV_SUB_MIX_2[SBOX[(t >>> 8) & 0xff]] ^ INV_SUB_MIX_3[SBOX[t & 0xff]];
+                                INV_SUB_MIX_2[SBOX[(t >>> 8) & 0xff]] ^ INV_SUB_MIX_3[SBOX[t & 0xff]];
                     }
                 }
             },
@@ -5591,7 +5591,7 @@
                 // Swap endian
                 for (var i = 0; i < 4; i++) {
                     K[i] = (((K[i] << 8) | (K[i] >>> 24)) & 0x00ff00ff) |
-                        (((K[i] << 24) | (K[i] >>> 8)) & 0xff00ff00);
+                            (((K[i] << 24) | (K[i] >>> 8)) & 0xff00ff00);
                 }
 
                 // Generate initial state values
@@ -5669,7 +5669,7 @@
                 for (var i = 0; i < 4; i++) {
                     // Swap endian
                     S[i] = (((S[i] << 8) | (S[i] >>> 24)) & 0x00ff00ff) |
-                        (((S[i] << 24) | (S[i] >>> 8)) & 0xff00ff00);
+                            (((S[i] << 24) | (S[i] >>> 8)) & 0xff00ff00);
 
                     // Encrypt
                     M[offset + i] ^= S[i];
@@ -5881,7 +5881,7 @@
                 for (var i = 0; i < 4; i++) {
                     // Swap endian
                     S[i] = (((S[i] << 8) | (S[i] >>> 24)) & 0x00ff00ff) |
-                        (((S[i] << 24) | (S[i] >>> 8)) & 0xff00ff00);
+                            (((S[i] << 24) | (S[i] >>> 8)) & 0xff00ff00);
 
                     // Encrypt
                     M[offset + i] ^= S[i];

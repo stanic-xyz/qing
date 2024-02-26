@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.store.dto.vo.StoreVO;
 import org.springframework.data.domain.Page;
 
 public interface IStoreService {
+
     /**
      * create
      */

@@ -31,6 +31,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Slf4j
 @Configuration
 public class ThreadPoolConfig {
+
     /**
      * 核心线程池大小。
      */
@@ -75,6 +76,7 @@ public class ThreadPoolConfig {
             .namingPattern("schedule-pool-%d")
             .daemon(true)
             .build()) {
+
             @Override
             protected void afterExecute(Runnable runnable, Throwable throwable) {
                 super.afterExecute(runnable, throwable);

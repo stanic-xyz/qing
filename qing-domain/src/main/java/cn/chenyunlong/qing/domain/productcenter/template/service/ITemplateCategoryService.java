@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.productcenter.template.dto.vo.TemplateCategory
 import org.springframework.data.domain.Page;
 
 public interface ITemplateCategoryService {
+
     /**
      * create
      */

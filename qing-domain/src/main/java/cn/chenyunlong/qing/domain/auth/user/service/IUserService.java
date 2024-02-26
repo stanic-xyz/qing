@@ -6,11 +6,11 @@ import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 
-import java.util.Optional;
-
 public interface IUserService {
+
     /**
      * create
      */

@@ -3,9 +3,8 @@ package cn.chenyunlong.qing.domain.productcenter.goods.domainservice.model;
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class GoodsInStoreRequest implements Request {

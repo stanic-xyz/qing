@@ -7,6 +7,7 @@ import lombok.Data;
 @Schema
 @Data
 public class EpisodeUpdateRequest implements Request {
+
     @Schema(
         title = "name",
         description = "名称"

@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.auth.role.dto.vo.RoleVO;
 import cn.chenyunlong.qing.domain.auth.role.mapper.RoleMapper;
 import cn.chenyunlong.qing.domain.auth.role.repository.RoleRepository;
 import cn.chenyunlong.qing.domain.auth.role.service.IRoleService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class RoleServiceImpl implements IRoleService {
+
     private final RoleRepository roleRepository;
 
     /**
@@ -36,9 +36,9 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public Long createRole(RoleCreator creator) {
         Optional<Role> role = EntityOperations.doCreate(roleRepository)
-                .create(() -> RoleMapper.INSTANCE.dtoToEntity(creator))
-                .update(Role::init)
-                .execute();
+            .create(() -> RoleMapper.INSTANCE.dtoToEntity(creator))
+            .update(Role::init)
+            .execute();
         return role.isPresent() ? role.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public void updateRole(RoleUpdater updater) {
         EntityOperations.doUpdate(roleRepository)
-                .loadById(updater.getId())
-                .update(updater::updateRole)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateRole)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public void validRole(Long id) {
         EntityOperations.doUpdate(roleRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public void invalidRole(Long id) {
         EntityOperations.doUpdate(roleRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -89,7 +89,8 @@ public class RoleServiceImpl implements IRoleService {
      */
     @Override
     public Page<RoleVO> findByPage(PageRequestWrapper<RoleQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return roleRepository.findAll(pageRequest).map(RoleVO::new);
     }
 }

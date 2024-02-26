@@ -4,12 +4,11 @@ import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Schema
 @Data
@@ -20,6 +19,7 @@ import java.time.LocalDate;
     access = AccessLevel.PROTECTED
 )
 public class AnimeVO extends AbstractBaseJpaVo {
+
     @Schema(
         title = "name"
     )

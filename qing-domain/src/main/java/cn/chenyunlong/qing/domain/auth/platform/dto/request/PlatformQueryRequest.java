@@ -7,9 +7,10 @@ import lombok.Data;
 @Schema
 @Data
 public class PlatformQueryRequest implements Request {
+
     @Schema(
-            title = "name",
-            description = "平台名称"
+        title = "name",
+        description = "平台名称"
     )
     private String name;
 }

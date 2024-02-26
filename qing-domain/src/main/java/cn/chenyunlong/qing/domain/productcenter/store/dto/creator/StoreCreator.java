@@ -6,15 +6,16 @@ import lombok.Data;
 @Schema
 @Data
 public class StoreCreator {
+
     @Schema(
-            title = "name",
-            description = "仓库名称"
+        title = "name",
+        description = "仓库名称"
     )
     private String name;
 
     @Schema(
-            title = "description",
-            description = "备注"
+        title = "description",
+        description = "备注"
     )
     private String description;
 }

@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.type.dto.vo.TypeVO;
 import org.springframework.data.domain.Page;
 
 public interface ITypeService {
+
     /**
      * create
      */

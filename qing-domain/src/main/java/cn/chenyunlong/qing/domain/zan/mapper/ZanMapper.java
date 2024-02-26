@@ -12,7 +12,9 @@ import cn.chenyunlong.qing.domain.zan.dto.vo.ZanVO;
 import cn.hutool.core.bean.BeanUtil;
 
 public interface ZanMapper {
+
     ZanMapper INSTANCE = new ZanMapper() {
+
     };
 
     default Zan dtoToEntity(ZanCreator dto) {

@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.productcenter.brand.dto.vo.BrandVO;
 import cn.chenyunlong.qing.domain.productcenter.brand.mapper.BrandMapper;
 import cn.chenyunlong.qing.domain.productcenter.brand.repository.BrandRepository;
 import cn.chenyunlong.qing.domain.productcenter.brand.service.IBrandService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,13 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Transactional
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class BrandServiceImpl implements IBrandService {
+
     private final BrandRepository brandRepository;
 
     /**
@@ -36,9 +36,9 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public Long createBrand(BrandCreator creator) {
         Optional<Brand> brand = EntityOperations.doCreate(brandRepository)
-                .create(() -> BrandMapper.INSTANCE.dtoToEntity(creator))
-                .update(Brand::init)
-                .execute();
+            .create(() -> BrandMapper.INSTANCE.dtoToEntity(creator))
+            .update(Brand::init)
+            .execute();
         return brand.isPresent() ? brand.get().getId() : 0;
     }
 
@@ -48,9 +48,9 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public void updateBrand(BrandUpdater updater) {
         EntityOperations.doUpdate(brandRepository)
-                .loadById(updater.getId())
-                .update(updater::updateBrand)
-                .execute();
+            .loadById(updater.getId())
+            .update(updater::updateBrand)
+            .execute();
     }
 
     /**
@@ -59,9 +59,9 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public void validBrand(Long id) {
         EntityOperations.doUpdate(brandRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::valid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
     /**
@@ -70,9 +70,9 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public void invalidBrand(Long id) {
         EntityOperations.doUpdate(brandRepository)
-                .loadById(id)
-                .update(BaseJpaAggregate::invalid)
-                .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -89,7 +89,8 @@ public class BrandServiceImpl implements IBrandService {
      */
     @Override
     public Page<BrandVO> findByPage(PageRequestWrapper<BrandQuery> query) {
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest =
+            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return brandRepository.findAll(pageRequest).map(BrandVO::new);
     }
 }

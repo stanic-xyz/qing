@@ -9,6 +9,7 @@ import cn.chenyunlong.qing.domain.anime.recommend.dto.vo.RecommendVO;
 import org.springframework.data.domain.Page;
 
 public interface IRecommendService {
+
     /**
      * create
      */
