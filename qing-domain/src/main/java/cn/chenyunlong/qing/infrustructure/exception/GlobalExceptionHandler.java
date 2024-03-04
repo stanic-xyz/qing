@@ -1,12 +1,14 @@
 package cn.chenyunlong.qing.infrustructure.exception;
 
 import cn.chenyunlong.common.model.JsonResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -22,9 +24,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    JsonResult<Void> handleException() {
-        return JsonResult.fail("Exception Deal!");
+    JsonResult<Void> handleException(Exception exception) {
+        log.error("未知异常", exception);
+        return JsonResult.fail("未知异常!");
     }
-
-
 }
