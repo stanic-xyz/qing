@@ -2,7 +2,9 @@ package cn.chenyunlong.qing.domain.anime.domainservice;
 
 import cn.chenyunlong.qing.domain.AbstractDomainTests;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
+import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCategoryCreator;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
+import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeCategoryService;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
@@ -14,20 +16,32 @@ class IAnimeDomainServiceTest extends AbstractDomainTests {
     @Autowired
     private IAnimeService animeService;
 
+    @Autowired
+    private IAnimeCategoryService categoryService;
+
     @Test
     void handleAnimeInfoRecommend() {
+        // TODO 测试处理动画信息推荐
     }
 
     @Test
     void handleAnimeInfoOut() {
+        // TODO 测试处理动画信息退出
     }
 
     @Test
     void handleAnimeInfoTransfer() {
+        // TODO 测试处理动画信息转移
     }
 
     @Test
     void create() {
+        // 创建一个动画类别
+        Long category = categoryService.createAnimeCategory(AnimeCategoryCreator.builder()
+                                                                .pid(null)
+                                                                .name("言情")
+                                                                .orderNo(1)
+                                                                .build());
         AnimeCreator animeInfoCreator = new AnimeCreator();
         animeInfoCreator.setName("凡人修仙传");
         animeInfoCreator.setCompanyName("起点中文网");
@@ -41,7 +55,7 @@ class IAnimeDomainServiceTest extends AbstractDomainTests {
         animeInfoCreator.setOfficialWebsite("https://www.bilibili.com/bangumi/media/md28223043");
         animeInfoCreator.setDistrictId(1L);
         animeInfoCreator.setDistrictName("中国");
-        animeInfoCreator.setTypeId(1L);
+        animeInfoCreator.setTypeId(category);
         animeInfoCreator.setTypeName("喜剧");
         animeInfoCreator.setPremiereDate(LocalDate.now());
         animeInfoCreator.setCoverUrl(
