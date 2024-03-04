@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
 import type {Anime} from "@/apis/anime/types";
-import {findById, page} from "@/apis/anime";
+import {page} from "@/apis/anime";
 
 const animeInfoList = ref<Anime[]>([]);
 
 onMounted(() => {
   page({
     pageSize: 10,
-    page: 1,
+    page: 0
   })
     .then(function (response) {
       console.log("获取到动漫信息内容", response.result.list || []);
@@ -17,12 +17,6 @@ onMounted(() => {
     .catch(function (error) {
       console.log(error);
     });
-
-  findById("1").then((response) => {
-    console.log("成功获取到动漫信息,动漫名称", response.result.name);
-    console.log("成功获取到动漫信息,动漫介绍信息", response.result.instruction);
-    console.log("成功获取到动漫信息", response.result);
-  });
 });
 </script>
 
