@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.domain.auth.connection.mapper;
 
+import cn.chenyunlong.common.mapper.DateMapper;
+import cn.chenyunlong.common.mapper.GenericEnumMapper;
 import cn.chenyunlong.qing.domain.auth.connection.UserConnection;
 import cn.chenyunlong.qing.domain.auth.connection.dto.creator.UserConnectionCreator;
 import cn.chenyunlong.qing.domain.auth.connection.dto.query.UserConnectionQuery;
@@ -10,44 +12,28 @@ import cn.chenyunlong.qing.domain.auth.connection.dto.response.UserConnectionRes
 import cn.chenyunlong.qing.domain.auth.connection.dto.updater.UserConnectionUpdater;
 import cn.chenyunlong.qing.domain.auth.connection.dto.vo.UserConnectionVO;
 import cn.chenyunlong.security.entity.ConnectionData;
-import cn.hutool.core.bean.BeanUtil;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
+@Mapper(uses = {
+    DateMapper.class,
+    GenericEnumMapper.class
+})
 public interface UserConnectionMapper {
 
-    UserConnectionMapper INSTANCE = new UserConnectionMapper() {
+    UserConnectionMapper INSTANCE = Mappers.getMapper(UserConnectionMapper.class);
 
-    };
+    UserConnection dtoToEntity(UserConnectionCreator dto);
 
-    default UserConnection dtoToEntity(UserConnectionCreator dto) {
-        return BeanUtil.copyProperties(dto, UserConnection.class);
-    }
+    UserConnectionUpdater request2Updater(UserConnectionUpdateRequest request);
 
-    default UserConnectionUpdater request2Updater(UserConnectionUpdateRequest request) {
-        return BeanUtil.copyProperties(request, UserConnectionUpdater.class);
-    }
+    UserConnectionCreator request2Dto(UserConnectionCreateRequest request);
 
-    default UserConnectionCreator request2Dto(UserConnectionCreateRequest request) {
-        return BeanUtil.copyProperties(request, UserConnectionCreator.class);
-    }
+    UserConnectionQuery request2Query(UserConnectionQueryRequest request);
 
-    default UserConnectionQuery request2Query(UserConnectionQueryRequest request) {
-        return BeanUtil.copyProperties(request, UserConnectionQuery.class);
-    }
+    ConnectionData entityToConnectionData(UserConnection userConnection);
 
-    default ConnectionData entityToConnectionData(UserConnection userConnection) {
-        return ConnectionData.builder()
-            .providerId(userConnection.getProviderId())
-            .userId(userConnection.getUserId())
-            .accessToken(userConnection.getAccessToken())
-            .expireTime(userConnection.getExpireTime())
-            .build();
-    }
+    UserConnectionResponse vo2Response(UserConnectionVO vo);
 
-    default UserConnectionResponse vo2Response(UserConnectionVO vo) {
-        return BeanUtil.copyProperties(vo, UserConnectionResponse.class);
-    }
-
-    default UserConnectionResponse vo2CustomResponse(UserConnectionVO vo) {
-        return vo2Response(vo);
-    }
+    UserConnectionResponse vo2CustomResponse(UserConnectionVO vo);
 }

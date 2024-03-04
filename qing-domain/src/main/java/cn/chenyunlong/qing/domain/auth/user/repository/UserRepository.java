@@ -8,4 +8,7 @@ public interface UserRepository extends BaseRepository<QingUser, Long> {
 
     @Query("select u from QingUser u where u.username = ?1")
     QingUser findByUsername(String username);
+
+    @Query("select u from QingUser u where u.uid = ?1")
+    QingUser findUserByUserId(String userId);
 }

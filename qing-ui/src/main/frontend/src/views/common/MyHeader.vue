@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { onMounted, reactive } from "vue";
+import {onMounted, reactive} from "vue";
 import Notification from "@/views/common/Notification.vue";
-import { userInfoStore } from "@/stores/session";
-import { LayAvatar, LayButton } from "@layui/layui-vue";
+import {userInfoStore} from "@/stores/session";
+import {LayAvatar, LayButton} from "@layui/layui-vue";
 
-const src =
-  "https://foruda.gitee.com/avatar/1677022544584087390/4835367_jmysy_1578975358.png";
+const src = "https://foruda.gitee.com/avatar/1677022544584087390/4835367_jmysy_1578975358.png";
 const data = reactive({
   time: new Date(),
   activeIndex: 1,
@@ -39,7 +38,7 @@ const data = reactive({
 });
 
 onMounted(() => {
-  console.log(data);
+  console.log("Header加载完毕！");
 });
 
 function handleSelect(event: any) {
@@ -56,7 +55,7 @@ function handleLogout() {
     console.log("退出登录成功", response);
   });
 
-  console.log(userInfoSto.accessToken);
+  console.log(userInfoSto.token);
   // router.push("/login");
 }
 </script>
@@ -68,9 +67,7 @@ function handleLogout() {
     </div>
     <div class="loginOut">
       <lay-dropdown trigger="hover" updateAtScroll>
-        <span class="svg_title svg_title_user"
-          ><lay-avatar :src="src" radius
-        /></span>
+        <span class="svg_title svg_title_user"><lay-avatar :src="src" radius/></span>
         <template #content>
           <lay-dropdown-menu>
             <lay-space direction="vertical">
@@ -87,15 +84,7 @@ function handleLogout() {
     </div>
   </div>
   <div id="nav">
-    <router-link
-      v-for="(link, index) in data.links"
-      v-bind:key="index"
-      :class="{ nav_button_current: data.activeIndex === link.index }"
-      class="nav_button"
-      v-bind:to="link.path"
-      @click="handleSelect(link.index)"
-      >{{ link.name }}
-    </router-link>
+    <router-link v-for="(link, index) in data.links" v-bind:key="index" :class="{ nav_button_current: data.activeIndex === link.index }" class="nav_button" v-bind:to="link.path" @click="handleSelect(link.index)">{{ link.name }}</router-link>
   </div>
   <Notification url="https://www.chenyunlong.cn"></Notification>
 </template>

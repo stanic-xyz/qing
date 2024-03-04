@@ -13,7 +13,6 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.UserMapper;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
-    private final JPAQueryFactory jpaQueryFactory;
 
     /**
      * createImpl
@@ -38,9 +36,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Long register(UserCreator creator) {
         Optional<QingUser> user = EntityOperations.doCreate(userRepository)
-            .create(() -> UserMapper.INSTANCE.dtoToEntity(creator))
-            .update(QingUser::init)
-            .execute();
+                                      .create(() -> UserMapper.INSTANCE.dtoToEntity(creator))
+                                      .update(QingUser::init)
+                                      .execute();
         return user.isPresent() ? user.get().getId() : 0;
     }
 
@@ -99,5 +97,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Optional<QingUser> findByUsername(String username) {
         return Optional.ofNullable(userRepository.findByUsername(username));
+    }
+
+    @Override
+    public Optional<QingUser> loadUserByUserId(String userId) {
+        return Optional.ofNullable(userRepository.findUserByUserId(userId));
     }
 }

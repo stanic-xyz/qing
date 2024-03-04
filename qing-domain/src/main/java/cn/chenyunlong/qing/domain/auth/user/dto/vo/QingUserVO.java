@@ -20,10 +20,7 @@ import lombok.NoArgsConstructor;
 )
 public class QingUserVO extends AbstractBaseJpaVo {
 
-    @Schema(
-        title = "uid",
-        description = "用户唯一ID"
-    )
+    @Schema(title = "uid", description = "用户唯一ID")
     private Long uid;
 
     @Schema(

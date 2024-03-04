@@ -23,19 +23,21 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import java.util.Objects;
+import java.util.stream.Stream;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @AutoConfiguration
 @Configuration
 @EnableConfigurationProperties(OssProperties.class)
+@ComponentScan(basePackages = "cn.chenyunlong.oss")
+@ConditionalOnProperty(prefix = "qing.oss", name = "enable", havingValue = "true")
 public class OssAutoConfiguration {
 
     @Bean
@@ -57,31 +59,30 @@ public class OssAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(AmazonS3.class)
-    @ConditionalOnProperty(prefix = "oss", name = "enable", havingValue = "true")
     public AmazonS3 amazonS3(OssProperties ossProperties) {
         long nullSize = Stream
-                .<String>builder()
-                .add(ossProperties.getEndpoint())
-                .add(ossProperties.getAccessSecret())
-                .add(ossProperties.getAccessKey())
-                .build()
-                .filter(Objects::isNull)
-                .count();
+                            .<String>builder()
+                            .add(ossProperties.getEndpoint())
+                            .add(ossProperties.getAccessSecret())
+                            .add(ossProperties.getAccessKey())
+                            .build()
+                            .filter(Objects::isNull)
+                            .count();
         if (nullSize > 0) {
             throw new RuntimeException("oss 配置错误,请检查");
         }
         AWSCredentials awsCredentials =
-                new BasicAWSCredentials(ossProperties.getAccessKey(), ossProperties.getAccessSecret());
+            new BasicAWSCredentials(ossProperties.getAccessKey(), ossProperties.getAccessSecret());
         AWSCredentialsProvider awsCredentialsProvider =
-                new AWSStaticCredentialsProvider(awsCredentials);
+            new AWSStaticCredentialsProvider(awsCredentials);
         return AmazonS3Client
-                .builder()
-                .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration(ossProperties.getEndpoint(),
-                                ossProperties.getRegion()))
-                .withCredentials(awsCredentialsProvider)
-                .disableChunkedEncoding()
-                .withPathStyleAccessEnabled(ossProperties.isPathStyleAccess())
-                .build();
+                   .builder()
+                   .withEndpointConfiguration(
+                       new AwsClientBuilder.EndpointConfiguration(ossProperties.getEndpoint(),
+                           ossProperties.getRegion()))
+                   .withCredentials(awsCredentialsProvider)
+                   .disableChunkedEncoding()
+                   .withPathStyleAccessEnabled(ossProperties.isPathStyleAccess())
+                   .build();
     }
 }

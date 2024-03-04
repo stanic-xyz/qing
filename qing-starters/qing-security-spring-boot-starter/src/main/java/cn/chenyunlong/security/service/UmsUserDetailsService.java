@@ -1,12 +1,11 @@
 package cn.chenyunlong.security.service;
 
 import cn.chenyunlong.security.entity.AuthUser;
+import java.io.IOException;
+import java.util.List;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * 用户名密码、手机短信登录、第三方授权登录及自动注册、用户注册服务：<br><br>
@@ -37,12 +36,12 @@ public interface UmsUserDetailsService extends UserDetailsService, UserDetailsRe
      * @return 返回一个 username 数组
      */
     default String[] generateUsernames(AuthUser authUser) {
-        return new String[]{
-                authUser.getUsername(),
-                // providerId = authUser.getSource()
-                authUser.getUsername() + "_" + authUser.getSource(),
-                // providerUserId = authUser.getUuid()
-                authUser.getUsername() + "_" + authUser.getSource() + "_" + authUser.getUuid()
+        return new String[] {
+            authUser.getUsername(),
+            // providerId = authUser.getSource()
+            authUser.getUsername() + "_" + authUser.getSource(),
+            // providerUserId = authUser.getUuid()
+            authUser.getUsername() + "_" + authUser.getSource() + "_" + authUser.getUuid()
         };
     }
 

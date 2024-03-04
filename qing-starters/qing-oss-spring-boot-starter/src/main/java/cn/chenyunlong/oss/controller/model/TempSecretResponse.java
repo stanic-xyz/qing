@@ -19,7 +19,7 @@ import lombok.Data;
  * 临时密钥。
  */
 @Data
-public class TempSecret {
+public class TempSecretResponse {
 
     /**
      * 临时密钥ID。

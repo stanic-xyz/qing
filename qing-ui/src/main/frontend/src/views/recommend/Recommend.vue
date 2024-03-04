@@ -1,50 +1,28 @@
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import axios from "axios";
-import type { Anime } from "@/apis/anime/types";
+import {onMounted, ref} from "vue";
+import type {Anime} from "@/apis/anime/types";
+import {findById, page} from "@/apis/anime";
 
 const animeInfoList = ref<Anime[]>([]);
 
 onMounted(() => {
-  const instance = axios.create({
-    baseURL: "https://mock.apifox.cn/m1/1876271-0-default",
-    timeout: 1000,
-    headers: { apifoxToken: "6JQ7DXmRywJ8fsffzsMfLqLcgGMcwuvg" },
-  });
-
-  instance
-    .post("/anime/v1/findByPage", {
-      page: 1,
-      pageSize: 87,
-      bean: {},
-      sorts: {},
-    })
+  page({
+    pageSize: 10,
+    page: 1,
+  })
     .then(function (response) {
-      animeInfoList.value = response.data.result.list;
-      console.log(animeInfoList.value);
+      console.log("获取到动漫信息内容", response.result.list || []);
+      animeInfoList.value = response.result.list || [];
     })
     .catch(function (error) {
       console.log(error);
     });
-  // animeInfoList.value.push({
-  //   id: 3,
-  //   name: "金好理五候",
-  //   instruction: "ex est fugiat",
-  //   districtId: 90,
-  //   districtName: "持增该山克布",
-  //   coverUrl: "http://localhost:8080/img/anime/%E4%BC%A4%E7%89%A9%E8%AF%AD.jpg",
-  //   typeId: 29,
-  //   typeName: "间大决据手阶",
-  //   originalName: "劳特五感长",
-  //   otherName: "联统系在置克",
-  //   author: "consectetur veniam adipisicing Lorem",
-  //   company: "magna ad sint id consequat",
-  //   playStatus: "FINISHED",
-  //   plotType: "pariatur sint sit",
-  //   tags: ["pariatur exercitation irure consequat ad"],
-  //   officialWebsite: "labore consectetur dolore ullamco culpa",
-  //   playHeat: "sit",
-  // });
+
+  findById("1").then((response) => {
+    console.log("成功获取到动漫信息,动漫名称", response.result.name);
+    console.log("成功获取到动漫信息,动漫介绍信息", response.result.instruction);
+    console.log("成功获取到动漫信息", response.result);
+  });
 });
 </script>
 
@@ -54,27 +32,22 @@ onMounted(() => {
     <div class="baseBlock">
       <div class="blockContent">
         <ul class="ul_li_a6">
-          <li
-            v-for="(anime, index) in animeInfoList"
-            :key="index"
-            class="anime_icon2"
-          >
+          <li v-if="animeInfoList.length !== 0" v-for="(anime, index) in animeInfoList" :key="index" class="anime_icon2">
             <router-link :to="`/anime/${anime.id}`">
-              <img
-                :alt="anime.name"
-                :src="anime.coverUrl"
-                :title="anime.name"
-                class="anime_icon2_img"
-                height="208px"
-                referrerpolicy="no-referrer"
-                width="150px"
-              />
+              <img :alt="anime.name" :src="anime.coverUrl" :title="anime.name" class="anime_icon2_img" height="208px" referrerpolicy="no-referrer" width="150px"/>
               <span class="anime_icon1_name1">[TV 01-12]</span>
             </router-link>
             <h4 class="anime_icon2_name">
-              <router-link :to="`anime/${anime.id}`"
-                >{{ anime.name }}
-              </router-link>
+              <router-link :to="`anime/${anime.id}`">{{ anime.name }}</router-link>
+            </h4>
+          </li>
+          <li v-if="animeInfoList.length === 0" class="anime_icon2">
+            <router-link :to="`/anime/123123`">
+              <img :alt="12312" :src="12312" :title="12312" class="anime_icon2_img" height="208px" referrerpolicy="no-referrer" width="150px"/>
+              <span class="anime_icon1_name1">[TV 01-12]</span>
+            </router-link>
+            <h4 class="anime_icon2_name">
+              <router-link :to="`anime/12312`">{{ "anime.name" }}</router-link>
             </h4>
           </li>
         </ul>

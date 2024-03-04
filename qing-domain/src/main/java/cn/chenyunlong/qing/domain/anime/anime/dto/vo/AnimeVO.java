@@ -1,22 +1,16 @@
 package cn.chenyunlong.qing.domain.anime.anime.dto.vo;
 
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
-import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Schema
 @Data
 @EqualsAndHashCode(
     callSuper = true
-)
-@NoArgsConstructor(
-    access = AccessLevel.PROTECTED
 )
 public class AnimeVO extends AbstractBaseJpaVo {
 
@@ -114,30 +108,4 @@ public class AnimeVO extends AbstractBaseJpaVo {
         title = "orderNo"
     )
     private Integer orderNo;
-
-    public AnimeVO(Anime source) {
-        super();
-        this.setId(source.getId());
-        this.setCreatedAt(source.getCreatedAt());
-        this.setUpdatedAt(source.getCreatedAt());
-        this.setName(source.getName());
-        this.setInstruction(source.getInstruction());
-        this.setDistrictId(source.getDistrictId());
-        this.setDistrictName(source.getDistrictName());
-        this.setCoverUrl(source.getCoverUrl());
-        this.setTypeId(source.getTypeId());
-        this.setTypeName(source.getTypeName());
-        this.setOriginalName(source.getOriginalName());
-        this.setOtherName(source.getOtherName());
-        this.setAuthor(source.getAuthor());
-        this.setCompanyId(source.getCompanyId());
-        this.setCompanyName(source.getCompanyName());
-        this.setPremiereDate(source.getPremiereDate());
-        this.setPlayStatus(source.getPlayStatus());
-        this.setPlotType(source.getPlotType());
-        this.setTags(source.getTags());
-        this.setOfficialWebsite(source.getOfficialWebsite());
-        this.setPlayHeat(source.getPlayHeat());
-        this.setOrderNo(source.getOrderNo());
-    }
 }

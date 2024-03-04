@@ -252,10 +252,15 @@
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.geekhalo.lego</groupId>
-            <artifactId>lego-starter</artifactId>
-            <version>0.1.38</version>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-oss-spring-boot-starter</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.geekhalo.lego</groupId>-->
+        <!--            <artifactId>lego-starter</artifactId>-->
+        <!--            <version>0.1.38</version>-->
+        <!--        </dependency>-->
     </dependencies>
 
     <build>
