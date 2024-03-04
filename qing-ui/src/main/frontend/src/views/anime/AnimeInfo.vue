@@ -6,7 +6,7 @@ onMounted(() => {
   console.log("动漫详情加载成功", props.anime.id);
 });
 
-const username = ref(1);
+const animeId = ref(1);
 const props = defineProps({
   anime: {
     type: Object as PropType<Anime>,

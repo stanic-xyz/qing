@@ -36,7 +36,7 @@ export const invalid = (id: String) => {
 };
 
 /** 更新动漫信息 */
-export const findById = (id: String) => {
+export const findById = (id: number) => {
   console.log("禁用：请求参数:{}", id);
   return http.request<QingResponse<Anime>>("get", serviceUrl + "findById/" + id);
 };

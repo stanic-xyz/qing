@@ -16,6 +16,7 @@ import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
 import cn.hutool.core.lang.Assert;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +60,15 @@ public class AnimeServiceImpl implements IAnimeService {
     public void updateAnime(AnimeUpdater updater) {
         EntityOperations.doUpdate(animeRepository)
             .loadById(updater.getId())
-            .update(updater::updateAnime)
+            .update(param -> {
+                if (!Objects.equals(param.getTypeId(), updater.getTypeId())) {
+                    Long typeId = updater.getTypeId();
+                    Optional<AnimeCategory> animeCategory = categoryRepository.findById(typeId);
+                    Assert.isTrue(animeCategory.isPresent(), "分类信息不存在");
+                    animeCategory.ifPresent(category -> updater.setTypeName(category.getName()));
+                }
+                updater.updateAnime(param);
+            })
             .execute();
     }
 

@@ -130,11 +130,4 @@ public class AnimeUpdater {
         Optional.ofNullable(getOrderNo()).ifPresent(param::setOrderNo);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }
