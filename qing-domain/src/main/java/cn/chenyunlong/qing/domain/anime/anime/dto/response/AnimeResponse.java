@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.response;
 
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.Data;
@@ -77,6 +78,7 @@ public class AnimeResponse extends AbstractJpaResponse {
     @Schema(
         title = "premiereDate"
     )
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate premiereDate;
 
     @Schema(

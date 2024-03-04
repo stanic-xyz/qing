@@ -6,6 +6,7 @@ import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
+import cn.chenyunlong.qing.domain.anime.anime.QAnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCategoryCreator;
 import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeCategoryQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeCategoryUpdater;
@@ -13,12 +14,11 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeCategoryVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeCategoryMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeCategoryService;
+import com.querydsl.core.BooleanBuilder;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,9 +36,9 @@ public class AnimeCategoryServiceImpl implements IAnimeCategoryService {
     @Override
     public Long createAnimeCategory(AnimeCategoryCreator creator) {
         Optional<AnimeCategory> animeCategory = EntityOperations.doCreate(animeCategoryRepository)
-            .create(() -> AnimeCategoryMapper.INSTANCE.dtoToEntity(creator))
-            .update(AnimeCategory::init)
-            .execute();
+                                                    .create(() -> AnimeCategoryMapper.INSTANCE.dtoToEntity(creator))
+                                                    .update(AnimeCategory::init)
+                                                    .execute();
         return animeCategory.isPresent() ? animeCategory.get().getId() : 0;
     }
 
@@ -90,8 +90,11 @@ public class AnimeCategoryServiceImpl implements IAnimeCategoryService {
      */
     @Override
     public Page<AnimeCategoryVO> findByPage(PageRequestWrapper<AnimeCategoryQuery> query) {
-        PageRequest pageRequest =
-            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return animeCategoryRepository.findAll(pageRequest).map(AnimeCategoryVO::new);
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        AnimeCategoryQuery updater = query.getBean();
+        if (updater != null) {
+            Optional.ofNullable(updater.getId()).ifPresent(id -> booleanBuilder.and(QAnimeCategory.animeCategory.id.eq(id)));
+        }
+        return animeCategoryRepository.findAll(booleanBuilder, query.getWrapper()).map(AnimeCategoryVO::new);
     }
 }

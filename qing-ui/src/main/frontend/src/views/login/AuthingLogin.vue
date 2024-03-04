@@ -13,26 +13,19 @@ onMounted(() => {
 
   const accessToken = router.currentRoute.value.query.accessToken;
   if (accessToken === null) {
-    alert("登录失败");
+    console.log("登录失败，token为空");
     return;
   }
 
   const state = router.currentRoute.value.query.tempUser;
   if (state === null) {
-    alert("临时用户");
     return;
   }
   console.log("accessToken", accessToken);
   console.log("state", state);
   const userInfoSto = userInfoStore();
-
-  userInfoSto.$reset();
-  userInfoSto.login();
-  userInfoSto.$patch((state) => {
-    state.accessToken = accessToken.toString();
-  });
-  alert("登录成功:当前用户类型是否是临时用户：" + state.toString());
-  console.debug("本地存储信息", userInfoSto);
+  userInfoSto.login(accessToken);
+  console.log("登录成功:当前用户类型是否是临时用户：" + state.toString());
   router.push("/profile");
 });
 </script>

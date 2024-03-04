@@ -42,4 +42,6 @@ public interface IUserService {
     Page<UserVO> findByPage(PageRequestWrapper<UserQuery> query);
 
     Optional<QingUser> findByUsername(String username);
+
+    Optional<QingUser> loadUserByUserId(String userId);
 }

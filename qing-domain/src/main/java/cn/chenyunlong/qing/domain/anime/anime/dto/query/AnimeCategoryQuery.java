@@ -7,4 +7,6 @@ import lombok.Data;
 @Data
 public class AnimeCategoryQuery {
 
+    private Long id;
+
 }

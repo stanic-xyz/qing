@@ -1,11 +1,10 @@
 package cn.chenyunlong.security.enums;
 
 
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
-
-import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor

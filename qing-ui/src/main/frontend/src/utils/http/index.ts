@@ -1,10 +1,5 @@
 import moment from "moment";
-import type {
-  CancelRequestSource,
-  QingHttpRequestConfig,
-  RequestInterceptors,
-  RequestMethods,
-} from "@/utils/http/types";
+import type {CancelRequestSource, QingHttpRequestConfig, RequestInterceptors, RequestMethods} from "@/utils/http/types";
 import type {AxiosInstance, AxiosRequestConfig} from "axios";
 import axios from "axios";
 import {userInfoStore} from "@/stores/session";
@@ -18,8 +13,7 @@ const defaultConfig: AxiosRequestConfig = {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdGFuaWPmnLrlmajkuroiLCJjcmVhdGVkIjoxNzAzNTE5NjQ1OTM5LCJleHAiOjE3MDM2MTk2NDV9.4Yx8hMO-HLQi0wlHKWoXSHVG8BZWaoXwGVhDspw_glcOB3OtBH1zQjoyKaUT2yzKAoPNgC6yq4f7EygbzFTJlg",
+    Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdGFuaWPmnLrlmajkuroiLCJjcmVhdGVkIjoxNzAzNTE5NjQ1OTM5LCJleHAiOjE3MDM2MTk2NDV9.4Yx8hMO-HLQi0wlHKWoXSHVG8BZWaoXwGVhDspw_glcOB3OtBH1zQjoyKaUT2yzKAoPNgC6yq4f7EygbzFTJlg",
   },
   paramsSerializer: function (params) {
     return JSON.stringify(params);
@@ -57,8 +51,7 @@ class QingHttp {
     this.instance = axios.create(defaultConfig);
     // this.initConfig = defaultConfig;
     this.instance.defaults.headers.common["Content-Type"] = "application/json";
-    this.instance.defaults.headers.common["Accept"] =
-      "application/json, text/plain, */*";
+    this.instance.defaults.headers.common["Accept"] = "application/json, text/plain, */*";
     this.httpInterceptorsRequest();
     // this.httpInterceptorsResponse();
   }
@@ -90,19 +83,7 @@ class QingHttp {
   }
 
   /** 通用请求工具函数 */
-  public request<T>(
-    method: RequestMethods,
-    url: string,
-    param?: any,
-    axiosConfig?: QingHttpRequestConfig,
-  ): Promise<T> {
-    const config = {
-      method,
-      url,
-      ...param,
-      ...axiosConfig,
-    } as QingHttpRequestConfig;
-
+  public request<T>(method: RequestMethods, url: string, param?: any, axiosConfig?: QingHttpRequestConfig): Promise<T> {
     // 单独处理自定义请求/响应回掉
     return new Promise((resolve, reject) => {
       this.instance
@@ -159,7 +140,7 @@ class QingHttp {
       // }
       function (config) {
         const store = userInfoStore();
-        console.log("执行拦截器", store.accessToken);
+        console.log("执行拦截器", store.token);
         config.headers.Authorization = store.tokenHeader;
         // 在发送请求之前做些什么
         if (config.method === "post") {
@@ -169,11 +150,11 @@ class QingHttp {
           // 温馨提示,若公司的提交能直接接受json 格式,可以不用 qs 来序列化的
         } else {
           const store = userInfoStore();
-          if (store && store.accessToken) {
+          if (store && store.token) {
             // 若是有做鉴权token , 就给头部带上token
             // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
             // 若是需要跨站点,存放到 cookie 会好一点,限制也没那么多,有些浏览环境限制了 localstorage (隐身模式)的使用
-            console.log("认证信息", store.accessToken);
+            console.log("认证信息", store.token);
           }
         }
         return config;
@@ -214,11 +195,9 @@ class QingHttp {
    * @returns {number} 索引位置
    */
   private getSourceIndex(url: string): number {
-    return this.cancelRequestSourceList?.findIndex(
-      (item: CancelRequestSource) => {
-        return Object.keys(item)[0] === url;
-      },
-    ) as number;
+    return this.cancelRequestSourceList?.findIndex((item: CancelRequestSource) => {
+      return Object.keys(item)[0] === url;
+    }) as number;
   }
 
   /**
@@ -230,10 +209,8 @@ class QingHttp {
     const urlIndex = this.requestUrlList?.findIndex((u) => u === url);
     const sourceIndex = this.getSourceIndex(url);
     // 删除url和cancel方法
-    urlIndex !== -1 &&
-      this.cancelRequestSourceList?.splice(urlIndex as number, 1);
-    sourceIndex !== -1 &&
-      this.cancelRequestSourceList?.splice(sourceIndex as number, 1);
+    urlIndex !== -1 && this.cancelRequestSourceList?.splice(urlIndex as number, 1);
+    sourceIndex !== -1 && this.cancelRequestSourceList?.splice(sourceIndex as number, 1);
   }
 }
 

@@ -15,7 +15,7 @@ pipeline {
         }
         stage('单元测试') {
             steps {
-							sh "mvn test -pl qing-domain -f pom.xml"
+                sh "mvn test -pl qing-domain -f pom.xml"
             }
             post {
                 always {

@@ -5,14 +5,15 @@ import cn.chenyunlong.qing.domain.auth.connection.mapper.UserConnectionMapper;
 import cn.chenyunlong.qing.domain.auth.connection.repository.UserConnectionRepository;
 import cn.chenyunlong.qing.domain.auth.connection.service.IUserConnectionService;
 import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
-import cn.chenyunlong.security.entity.AuthToken;
 import cn.chenyunlong.security.entity.AuthUser;
 import cn.chenyunlong.security.entity.ConnectionData;
+import cn.chenyunlong.security.enums.AuthProvider;
 import cn.chenyunlong.security.enums.ErrorCodeEnum;
 import cn.chenyunlong.security.exception.RegisterUserFailureException;
 import cn.chenyunlong.security.exception.UpdateConnectionException;
 import cn.chenyunlong.security.service.UmsUserDetailsService;
 import cn.chenyunlong.security.signup.ConnectionService;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,8 +35,7 @@ public class MyConnectionService implements ConnectionService {
 
 
     @Override
-    public UserDetails signUp(AuthUser authUser, String providerId, String encodeState)
-        throws RegisterUserFailureException {
+    public UserDetails signUp(AuthUser authUser, AuthProvider provider, String encodeState) throws RegisterUserFailureException {
         String username = authUser.getUsername();
         String[] usernames = userDetailsService.generateUsernames(authUser);
         try {
@@ -50,19 +50,17 @@ public class MyConnectionService implements ConnectionService {
             }
             // 用户重名, 自动注册失败
             if (username == null) {
-                throw new RegisterUserFailureException(ErrorCodeEnum.USERNAME_USED,
-                    authUser.getUsername());
+                // 生成一个随机用户名
+                username = "用户" + IdUtil.simpleUUID().toUpperCase();
             }
             // 解密 encodeState  https://gitee.com/pcore/just-auth-spring-security-starter/issues/I22JC7
             // 注册到本地账户
-            UserDetails userDetails = userDetailsService.registerUser(authUser, username,
-                authingProperties.getDefaultAuthorities(), encodeState);
+            UserDetails userDetails = userDetailsService.registerUser(authUser, username, authingProperties.getDefaultAuthorities(), encodeState);
             // 第三方授权登录信息绑定到本地账号, 且添加第三方授权登录信息到 user_connection 与 auth_token
-            registerConnection(providerId, authUser, userDetails);
+            registerConnection(provider, authUser, userDetails);
             return userDetails;
         } catch (Exception exception) {
-            log.error(String.format("OAuth2自动注册失败: error=%s, username=%s, authUser=%s",
-                exception.getMessage(), username, JSONUtil.toJsonPrettyStr(authUser)), exception);
+            log.error(String.format("OAuth2自动注册失败: error=%s, username=%s, authUser=%s", exception.getMessage(), username, JSONUtil.toJsonPrettyStr(authUser)), exception);
             throw new RegisterUserFailureException(ErrorCodeEnum.USER_REGISTER_FAILURE, username);
         }
     }
@@ -70,24 +68,23 @@ public class MyConnectionService implements ConnectionService {
     /**
      * 绑定用户
      *
-     * @param providerId 用户提供者
+     * @param provider 用户提供者
      * @param authUser 用户信息
      * @param userDetails 用户详情
      */
-    private void registerConnection(String providerId, AuthUser authUser, UserDetails userDetails) {
-        AuthToken token = authUser.getToken();
+    private void registerConnection(AuthProvider provider, AuthUser authUser, UserDetails userDetails) {
         UserConnectionCreator creator = UserConnectionCreator.builder()
-            .accessToken(authUser.getToken().getAccessToken())
-            .providerId(providerId)
-            .displayName(authUser.getUsername())
-            .rank(1)
-            .imageUrl(authUser.getAvatar())
-            .refreshToken(authUser.getToken().getRefreshToken())
-            .expireTime(authUser.getToken().getExpireIn())
-            .userId(userDetails.getUsername())
-            .providerUserId(authUser.getUuid())
-            .build();
-        Long userConnection = userConnectionService.createUserConnection(creator);
+                                            .accessToken(authUser.getToken().getAccessToken())
+                                            .providerId(provider.getProviderId())
+                                            .displayName(authUser.getUsername())
+                                            .rank(1)
+                                            .imageUrl(authUser.getAvatar())
+                                            .refreshToken(authUser.getToken().getRefreshToken())
+                                            .expireTime(authUser.getToken().getExpireIn())
+                                            .userId(userDetails.getUsername())
+                                            .providerUserId(authUser.getUuid())
+                                            .build();
+        userConnectionService.createUserConnection(creator);
     }
 
     @Override
@@ -107,13 +104,13 @@ public class MyConnectionService implements ConnectionService {
     }
 
     @Override
-    public List<ConnectionData> findConnectionByProviderIdAndProviderUserId(String providerId,
+    public List<ConnectionData> findConnectionByProviderIdAndProviderUserId(AuthProvider provider,
         String providerUserId) {
-        return connectionRepository.findConnectionByProviderIdAndProviderUserId(providerId,
+        return connectionRepository.findConnectionByProviderIdAndProviderUserId(provider.getProviderId(),
                 providerUserId)
-            .stream()
-            .map(UserConnectionMapper.INSTANCE::entityToConnectionData)
-            .collect(Collectors.toList());
+                   .stream()
+                   .map(UserConnectionMapper.INSTANCE::entityToConnectionData)
+                   .collect(Collectors.toList());
     }
 
     @Override

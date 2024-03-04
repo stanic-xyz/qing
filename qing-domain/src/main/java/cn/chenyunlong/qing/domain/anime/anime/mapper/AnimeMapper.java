@@ -29,5 +29,7 @@ public interface AnimeMapper {
 
     AnimeResponse vo2CustomResponse(AnimeVO vo);
 
+    AnimeVO entityToVo(Anime dto);
+
     AnimeResponse vo2Response(AnimeVO vo);
 }

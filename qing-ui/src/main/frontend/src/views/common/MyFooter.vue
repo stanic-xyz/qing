@@ -7,31 +7,13 @@
         </div>
         <ul class="link_text list_scroll clearfix">
           <li>
-            <a
-              class="text_muted"
-              href="https://www.chenyunlong.cn"
-              target="_blank"
-              title="博客地址"
-              >博客地址</a
-            >
+            <a class="text_muted" href="https://www.chenyunlong.cn" target="_blank" title="博客地址">博客地址</a>
           </li>
           <li>
-            <a
-              class="text_muted"
-              href="https://www.chenyunlong.cn/admin"
-              target="_blank"
-              title="博客后台地址"
-              >博客后台地址</a
-            >
+            <a class="text_muted" href="https://www.chenyunlong.cn/admin" target="_blank" title="博客后台地址">博客后台地址</a>
           </li>
           <li>
-            <a
-              class="text_muted"
-              href="https://status.chenyunlong.cn"
-              target="_blank"
-              title="状态查看"
-              >服务器状态</a
-            >
+            <a class="text_muted" href="https://status.chenyunlong.cn" target="_blank" title="状态查看">服务器状态</a>
           </li>
         </ul>
 
@@ -44,20 +26,15 @@
   </footer>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import {onMounted, ref} from "vue";
 
 const data = ref({
   time: new Date(),
   activeIndex: "1",
   activeIndex2: "1",
 });
-
-function handleSelect(key: string, keyPath: string) {
-  console.log(key, keyPath);
-}
-
 onMounted(() => {
-  console.log(data);
+  console.log("Footer加载完毕！");
 });
 </script>
 <style scoped>

@@ -2,20 +2,16 @@ package cn.chenyunlong.qing.domain.anime.recommend.dto.vo;
 
 import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeVO;
+import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
 import cn.chenyunlong.qing.domain.anime.recommend.Recommend;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Schema
 @Data
 @EqualsAndHashCode(
     callSuper = true
-)
-@NoArgsConstructor(
-    access = AccessLevel.PROTECTED
 )
 public class RecommendDetailVO extends RecommendVO {
 
@@ -30,6 +26,6 @@ public class RecommendDetailVO extends RecommendVO {
         this.setVersion(source.getVersion());
         this.setName(source.getName());
         this.setInstruction(source.getInstruction());
-        this.animeVO = new AnimeVO(anime);
+        this.animeVO = AnimeMapper.INSTANCE.entityToVo(anime);
     }
 }

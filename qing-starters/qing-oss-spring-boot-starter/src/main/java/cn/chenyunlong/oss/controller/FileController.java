@@ -15,7 +15,7 @@ package cn.chenyunlong.oss.controller;
 
 import cn.chenyunlong.common.model.ApiResult;
 import cn.chenyunlong.oss.config.OssProperties;
-import cn.chenyunlong.oss.controller.model.TempSecret;
+import cn.chenyunlong.oss.controller.model.TempSecretResponse;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.model.Bucket;
@@ -63,9 +63,9 @@ public class FileController {
     /**
      * 获取存储桶列表。
      */
-    @Operation(summary = "获取存储桶列表")
+    @Operation(summary = "创建临时密钥")
     @GetMapping("createTempSecret")
-    public ApiResult<TempSecret> getTempSecret() throws IOException {
+    public ApiResult<TempSecretResponse> getTempSecret() throws IOException {
         TreeMap<String, Object> config = new TreeMap<>();
         //这里的 SecretId 和 SecretKey 代表了用于申请临时密钥的永久身份（主账号、子账号等），子账号需要具有操作存储桶的权限。
         //用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
@@ -133,11 +133,11 @@ public class FileController {
 
         config.put("policy", raw_policy);
         Response response = CosStsClient.getCredential(config);
-        TempSecret tempSecret = new TempSecret();
-        tempSecret.setTmpSecretId(response.credentials.tmpSecretId);
-        tempSecret.setTmpSecretKey(response.credentials.tmpSecretKey);
-        tempSecret.setSessionToken(response.credentials.sessionToken);
-        return ApiResult.success(tempSecret);
+        TempSecretResponse tempSecretResponse = new TempSecretResponse();
+        tempSecretResponse.setTmpSecretId(response.credentials.tmpSecretId);
+        tempSecretResponse.setTmpSecretKey(response.credentials.tmpSecretKey);
+        tempSecretResponse.setSessionToken(response.credentials.sessionToken);
+        return ApiResult.success(tempSecretResponse);
     }
 
     /**

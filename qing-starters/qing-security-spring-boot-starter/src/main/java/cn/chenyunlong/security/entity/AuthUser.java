@@ -1,9 +1,13 @@
 package cn.chenyunlong.security.entity;
 
+import cn.chenyunlong.security.enums.AuthProvider;
 import cn.chenyunlong.security.enums.AuthUserGender;
-import lombok.*;
-
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -11,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthUser implements Serializable {
+
     /**
      * 用户第三方系统的唯一id。在调用方集成该组件时，可以用uuid + source唯一确定一个用户
      *
@@ -56,7 +61,7 @@ public class AuthUser implements Serializable {
     /**
      * 用户来源
      */
-    private String source;
+    private AuthProvider source;
     /**
      * 用户授权的token信息
      */

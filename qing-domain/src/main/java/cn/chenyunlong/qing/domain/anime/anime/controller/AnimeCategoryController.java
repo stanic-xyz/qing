@@ -40,7 +40,9 @@ public class AnimeCategoryController {
      * createRequest
      */
     @PostMapping
-    public JsonResult<Long> createAnimeCategory(@RequestBody AnimeCategoryCreateRequest request) {
+    public JsonResult<Long> createAnimeCategory(
+        @RequestBody
+        AnimeCategoryCreateRequest request) {
         AnimeCategoryCreator creator = AnimeCategoryMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(animeCategoryService.createAnimeCategory(creator));
     }
@@ -49,7 +51,9 @@ public class AnimeCategoryController {
      * update request
      */
     @PostMapping("updateAnimeCategory")
-    public JsonResult<String> updateAnimeCategory(@RequestBody AnimeCategoryUpdateRequest request) {
+    public JsonResult<String> updateAnimeCategory(
+        @RequestBody
+        AnimeCategoryUpdateRequest request) {
         AnimeCategoryUpdater updater = AnimeCategoryMapper.INSTANCE.request2Updater(request);
         animeCategoryService.updateAnimeCategory(updater);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -59,7 +63,9 @@ public class AnimeCategoryController {
      * valid
      */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validAnimeCategory(@PathVariable Long id) {
+    public JsonResult<String> validAnimeCategory(
+        @PathVariable
+        Long id) {
         animeCategoryService.validAnimeCategory(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -68,7 +74,9 @@ public class AnimeCategoryController {
      * invalid
      */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidAnimeCategory(@PathVariable Long id) {
+    public JsonResult<String> invalidAnimeCategory(
+        @PathVariable
+        Long id) {
         animeCategoryService.invalidAnimeCategory(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -77,7 +85,9 @@ public class AnimeCategoryController {
      * findById
      */
     @GetMapping("findById/{id}")
-    public JsonResult<AnimeCategoryResponse> findById(@PathVariable Long id) {
+    public JsonResult<AnimeCategoryResponse> findById(
+        @PathVariable
+        Long id) {
         AnimeCategoryVO vo = animeCategoryService.findById(id);
         AnimeCategoryResponse response = AnimeCategoryMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
@@ -88,7 +98,8 @@ public class AnimeCategoryController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<AnimeCategoryResponse>> page(
-        @RequestBody PageRequestWrapper<AnimeCategoryQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<AnimeCategoryQueryRequest> request) {
         PageRequestWrapper<AnimeCategoryQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(AnimeCategoryMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
@@ -104,6 +115,6 @@ public class AnimeCategoryController {
                 page.getTotalElements(),
                 page.getSize(),
                 page.getNumber())
-        );
+                                 );
     }
 }

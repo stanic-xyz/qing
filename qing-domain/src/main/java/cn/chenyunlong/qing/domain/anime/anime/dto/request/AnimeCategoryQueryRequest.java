@@ -8,4 +8,6 @@ import lombok.Data;
 @Data
 public class AnimeCategoryQueryRequest implements Request {
 
+    private Long id;
+
 }
