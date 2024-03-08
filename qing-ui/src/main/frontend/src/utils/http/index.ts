@@ -1,8 +1,9 @@
 import moment from "moment";
-import type {CancelRequestSource, QingHttpRequestConfig, RequestInterceptors, RequestMethods} from "@/utils/http/types";
-import type {AxiosInstance, AxiosRequestConfig} from "axios";
+import type { CancelRequestSource, QingHttpRequestConfig, RequestInterceptors, RequestMethods } from "@/utils/http/types";
+import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios from "axios";
-import {userInfoStore} from "@/stores/session";
+import { userInfoStore } from "@/stores/session";
+import { layer } from "@layui/layui-vue";
 
 moment.locale("zh-cn");
 
@@ -53,7 +54,7 @@ class QingHttp {
     this.instance.defaults.headers.common["Content-Type"] = "application/json";
     this.instance.defaults.headers.common["Accept"] = "application/json, text/plain, */*";
     this.httpInterceptorsRequest();
-    // this.httpInterceptorsResponse();
+    this.httpInterceptorsResponse();
   }
 
   // 取消全部请求
@@ -96,7 +97,10 @@ class QingHttp {
           resolve(response.data);
         })
         .catch((error) => {
-          console.log("请求发生了错误", error.code, error.response.data);
+          console.log("请求发生了错误", error, error);
+          if (error.status === 401) {
+            layer.msg(error.data.message);
+          }
           reject(error);
         });
     });
@@ -160,34 +164,35 @@ class QingHttp {
         return config;
       },
       function (error) {
+        const { config } = error;
         // 对请求错误做些什么
         return Promise.reject(error);
       },
     );
   }
 
-  // /** 响应拦截 */
-  // private httpInterceptorsResponse(): void {
-  //   // 全局响应拦截器保证最后执行
-  //   // this.instance.interceptors.response.use(
-  //   //   (response) => {
-  //   //     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
-  //   //     // 否则的话抛出错误
-  //   //     if (response.status === 200) {
-  //   //       console.log(response);
-  //   //       return Promise.resolve(response.data);
-  //   //     } else {
-  //   //       return Promise.reject(response);
-  //   //     }
-  //   //   },
-  //   //   (error) => {
-  //   //     if (error.response.status) {
-  //   //       error.toJSON();
-  //   //       return Promise.reject(error.response);
-  //   //     }
-  //   //   }
-  //   // );
-  // }
+  /** 响应拦截 */
+  private httpInterceptorsResponse(): void {
+    // 全局响应拦截器保证最后执行
+    this.instance.interceptors.response.use(
+      (response) => {
+        // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
+        // 否则的话抛出错误
+        console.log("结果拦截器里面", response);
+        if (response.status === 200) {
+          return Promise.resolve(response);
+        } else {
+          return Promise.reject(response);
+        }
+      },
+      (error) => {
+        if (error.response.status) {
+          console.error(error.toJSON());
+          return Promise.reject(error.response);
+        }
+      },
+    );
+  }
 
   /**
    * @description: 获取指定 url 在 cancelRequestSourceList 中的索引
