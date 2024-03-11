@@ -1,19 +1,20 @@
 <script lang="ts" setup>
-import {onMounted, reactive, ref} from "vue";
-import {findById} from "@/apis/anime";
+import { onMounted, reactive, ref } from "vue";
+import { findById } from "@/apis/anime";
 import AnimeInfo from "@/views/anime/AnimeInfo.vue";
-import {useRoute, useRouter} from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import type { Anime } from "@/apis/anime/types";
 
 const currentPage = ref<number>(0);
 const pageSize = ref<number>(10);
-const data = ref({
+const data = reactive({
   activeIndex: "1",
   activeIndex2: "1",
   currentDate: new Date(),
   menuIndex: 0,
   time: "2020年01月15日 21时50分19秒",
   loading: true,
-  anime: {},
+  anime: {} as Anime,
   playList: [
     {
       id: 1,
@@ -34,13 +35,13 @@ onMounted(() => {
   console.log("加载了id", id);
   if (typeof id === "string") {
     findById(Number.parseInt(id))
-            .then((response) => {
-              console.log("获取到了结果了", response.result);
-              data.value.anime = response.result;
-            })
-            .catch((error) => {
-              console.log("为查询到动漫信息", error.code, error.response.data.message);
-            });
+      .then((response) => {
+        console.log("获取到了结果了", response.result);
+        data.anime = response.result;
+      })
+      .catch((error) => {
+        console.log("为查询到动漫信息", error.code, error.response.data.message);
+      });
   } else {
     // 参数错误
     useRouter().push("/error/paramError");
@@ -127,7 +128,7 @@ function sendReport() {
     <div class="div_left">
       <div class="baseblock">
         <div class="blockcontent">
-          <img :alt="data.anime.name" class="poster" height="356px" referrerpolicy="no-referrer" src="https://cdn.aqdstatic.com:966/age/20010004.jpg" width="256px"/>
+          <img :alt="data.anime.name" class="poster" height="356px" referrerpolicy="no-referrer" src="https://cdn.aqdstatic.com:966/age/20010004.jpg" width="256px" />
         </div>
       </div>
       <div class="baseblock">
@@ -137,12 +138,12 @@ function sendReport() {
             <ul class="blockcontent">
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">地区：</span>
-                <span class="detail_imform_value">{{ data.anime.districtName }}</span>
+                <span class="detail_imform_value">{{ data.anime.name }}</span>
                 <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">动画种类：</span>
-                <span class="detail_imform_value">{{ data.anime.typeName }}</span>
+                <span class="detail_imform_value">{{ data.anime.name }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">动画名称：</span>
@@ -268,8 +269,8 @@ function sendReport() {
         <div class="report_div">
           <div id="report_form">
             <div>
-              <input id="report_aid" v-model="data.anime.id" name="cid" type="hidden"/>
-              <label v-for="(type, index) in data.reportTypes" :key="index"> <input v-model="chooseReportTypes" name="link_invalid" type="radio" v-bind:value="type.name"/>{{ type.name }}</label>
+              <input id="report_aid" v-model="data.anime.id" name="cid" type="hidden" />
+              <label v-for="(type, index) in data.reportTypes" :key="index"> <input v-model="chooseReportTypes" name="link_invalid" type="radio" v-bind:value="type.name" />{{ type.name }}</label>
               <br />
               <label>
                 {{ chooseReportTypes }}
@@ -294,7 +295,7 @@ function sendReport() {
           <div id="recommend_block" class="switchBlock">
             <ul class="ul_li_a4">
               <li v-for="(anime, index) in relevantList" :key="index" class="anime_icon1">
-                <router-link :to="`/anime/${anime.id}`"><img alt="暂无" class="anime_icon1_img" height="205" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语_small.jpg" width="148"/></router-link>
+                <router-link :to="`/anime/${anime.id}`"><img alt="暂无" class="anime_icon1_img" height="205" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语_small.jpg" width="148" /></router-link>
                 <router-link :to="`/anime/${anime.id}`">
                   <div class="anime_icon1_name">{{ anime.name }}</div>
                 </router-link>
@@ -304,11 +305,11 @@ function sendReport() {
           <div id="comments_block" class="switchBlock">
             <form id="comment_form" action="javascript:void(0)" method="GET">
               <div>
-                <input id="comment_id" name="cid" type="hidden" value="${data?.anime?.id}"/>
+                <input id="comment_id" name="cid" type="hidden" value="${data?.anime?.id}" />
                 <label for="comment_content"></label>
                 <textarea id="comment_content" autocapitalize="off" autocomplete="off" csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm" maxlength="255" name="comment_content" placeholder="说点什么吧" spellcheck="false" tid="20180132" wrap="SOFT"></textarea>
                 <label class="comment_imform_tag" for="comment_user">昵称：</label>
-                <input id="comment_user" autocapitalize="off" autocomplete="off" name="comment_user" placeholder="名字" readonly spellcheck="false" value="游客"/>
+                <input id="comment_user" autocapitalize="off" autocomplete="off" name="comment_user" placeholder="名字" readonly spellcheck="false" value="游客" />
                 <input class="nbutton" name="" type="submit" />
               </div>
             </form>

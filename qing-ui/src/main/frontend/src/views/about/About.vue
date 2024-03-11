@@ -1,3 +1,16 @@
+<template>
+  <div>
+    <button @click="submitFile">上传</button>
+    <div class="about">
+      <LayUpload v-model="file" @done="doneHandle" multiple :cut="true" :auto="false" :drag="true">
+        <template #preview>
+          <img v-if="data" :src="data.url" style="width: 100px" alt="上传图片预览" />
+        </template>
+      </LayUpload>
+    </div>
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import COS from "cos-js-sdk-v5";
@@ -15,7 +28,7 @@ onMounted(() => {
 const file = ref([]);
 const doneHandle = (result: { data: string }) => {
   data.value = JSON.parse(result.data);
-  console.log(data.value.url);
+  console.log("文件上传成功", data.value.url);
 };
 
 const submitFile = () => {
@@ -47,16 +60,5 @@ const submitFile = () => {
   });
 };
 </script>
-
-<template>
-  <button @click="submitFile">上传</button>
-  <div class="about">
-    <lay-upload v-model="file" @done="doneHandle" multiple :cut="true" :auto="false" :drag="true">
-      <template #preview>
-        <img v-if="data" :src="data.url" style="width: 100px" alt="创建技术" />
-      </template>
-    </lay-upload>
-  </div>
-</template>
 
 <style scoped></style>

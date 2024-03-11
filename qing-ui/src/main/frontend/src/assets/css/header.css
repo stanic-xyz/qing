@@ -1,28 +1,29 @@
 /*top ==== ==== ==== ==== ==== ==== ==== ==== */
-#top {
+
+@import url(../../assets/css/common/base.css);
+
+.header-wrapper {
   box-sizing: border-box;
-  height: 160px;
-  padding: 10px 8px;
   background-color: #292929;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  margin: 0;
+  padding: 1rem 1rem 1rem 1rem;
 }
 
-#logo {
-  margin-top: 22px;
-  margin-left: 8px;
-  float: left;
+.brand-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
-#logo a {
-  width: 215px;
-  height: 85px;
-  display: block;
-  background: url("../../img/logo.png") no-repeat;
-  overflow: hidden;
-  line-height: 300px;
-}
-
-.loginOut {
-  float: right;
+.user-wrapper {
+  /*float: right;*/
+  width: 50px;
 }
 
 .item-btn {
@@ -31,33 +32,48 @@
 
 /*nav ==== ==== ==== ==== ==== ==== ==== ==== */
 
-#nav {
+.nav {
   height: 56px;
   background-color: #292929;
+  margin: auto;
 }
 
-.nav_button {
+.nav .nav_button {
   box-sizing: border-box;
   display: inline-block;
   height: 56px;
   line-height: 56px;
-  padding: 0 14px;
+  padding: 0;
+  margin: 0 10px;
   font-size: 1.2em;
   text-decoration: none;
-  margin-right: -4px;
-  border-top-left-radius: 2px;
+  border-top-left-radius: 1px;
   border-top-right-radius: 2px;
   color: white;
 }
 
-.nav_button:hover,
-.nav_button:active {
+.nav .nav_button:hover,
+.nav .nav_button:active {
   background-color: #303030;
-  color: #0d6aad;
+  color: red;
 }
 
 .nav_button_current {
   background-color: #303030;
+  color: red;
+  position: relative;
+}
+
+.nav_button_current::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -1rem;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 2px;
+  background-color: red;
+
 }
 
 .search_form {
@@ -91,13 +107,13 @@
   box-sizing: border-box;
   width: 32px;
   height: 38px;
-  background: url("../../img/search.png") no-repeat 6px 9px;
+  background: url("../img/search.png") no-repeat 6px 9px;
   border: none;
   background-size: 20px 20px;
   text-align: center;
 }
 
-#top_search_from {
+#header-wrapper_search_from {
   float: right;
   margin: 8px 8px;
 }

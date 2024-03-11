@@ -1,7 +1,7 @@
-import {http} from "@/utils/service";
-import type {Anime} from "@/apis/anime/types";
-import type {QingPageResponse, QingResponse} from "@/utils/http/types";
-import type {PageRequest} from "@/apis/auth/types";
+import { http } from "@/utils/service";
+import type { Anime } from "@/apis/anime/types";
+import type { QingPageResponse, QingResponse } from "@/utils/http/types";
+import type { PageRequest } from "@/apis/auth/types";
 
 const serviceUrl: string = "api/v1/anime/";
 

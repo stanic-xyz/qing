@@ -7,25 +7,13 @@ console.log("ExceptionPage 加载成功");
 </script>
 
 <template>
-  <header
-    class="panel-cover"
-    style="background-image: url(&quot;../../../public/logo.jpg&quot;)"
-  >
+  <header class="panel-cover">
     <div class="panel-main">
       <div class="panel-main__inner panel-inverted">
         <div class="panel-main__content">
-          <a href="/login">
-            <img
-              alt="AGE FANS LOGO"
-              class="panel-cover__logo logo"
-              src="../../../public/logo.jpg"
-              title="AGE动漫"
-              width="150"
-          /></a>
+          <a href="/login"> <img alt="AGE FANS LOGO" class="panel-cover__logo logo" src="../../../public/logo.jpg" title="AGE动漫" width="150" /></a>
           <hr class="panel-cover__divider" />
-          <p class="panel-cover__description">
-            对不起，您要找的页面被俺给弄丢了(＞人＜){{ count }}
-          </p>
+          <p class="panel-cover__description">对不起，您要找的页面被俺给弄丢了(＞人＜){{ count }}</p>
           <hr class="panel-cover__divider panel-cover__divider--secondary" />
           <p class="footer">我的动漫 © 2020 - 2022 bangumi.chenyunlong.cn</p>
         </div>

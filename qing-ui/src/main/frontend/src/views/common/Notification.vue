@@ -18,6 +18,11 @@ const props = defineProps({
   padding: 10px;
   margin: 0;
   font-size: 14px;
-  border: 1px solid red;
+  border-radius: 10px;
+  border: 1px solid #ffffff;
+}
+
+.notification a {
+  color: white;
 }
 </style>
