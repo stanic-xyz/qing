@@ -1,9 +1,11 @@
 import { http } from "@/utils/service";
 import type { RefreshTokenResult, UserResult } from "@/apis/auth/types";
 
+const serviceUrl: string = "api";
+
 /** 登录 */
 export const formLogin = (username: string, password: string) => {
-  return http.post("api/login", {
+  return http.post(serviceUrl + "/auth/passLogin", {
     username: username,
     password: password,
   });

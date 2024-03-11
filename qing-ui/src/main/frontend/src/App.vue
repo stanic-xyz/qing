@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {RouterView} from "vue-router";
+import { RouterView } from "vue-router";
 
 // 引入 CSS 样式
 </script>
@@ -8,4 +8,4 @@ import {RouterView} from "vue-router";
   <router-view></router-view>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

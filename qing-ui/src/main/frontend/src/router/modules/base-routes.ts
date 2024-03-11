@@ -2,7 +2,7 @@ import Activity from "@/views/Activity.vue";
 import AuthingLogin from "@/views/login/AuthingLogin.vue";
 import ExceptionPage from "@/views/exception/ExceptionPage.vue";
 import Login from "@/views/login/Login.vue";
-import BaseLayout from "@/layouts/BaseLayout.vue";
+import BaseLayout from "@/views/layouts/BaseLayout.vue";
 
 export default [
   {

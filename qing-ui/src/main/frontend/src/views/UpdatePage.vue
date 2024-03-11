@@ -6,12 +6,12 @@
         <div class="spaceBlock"></div>
         <ul class="ul_li_a6">
           <li v-for="(anime, index) in animeList" :key="index" class="anime_icon2">
-            <router-link :to="`/detail/${anime.id}`">
-              <img :alt="anime.name" :src="anime.coverUrl" :title="anime.name" class="anime_icon2_img" height="208px" referrerpolicy="no-referrer" width="150px"/>
+            <router-link :to="`/anime/${anime.id}`">
+              <img :alt="anime.name" :src="anime.coverUrl" :title="anime.name" class="anime_icon2_img" height="208px" referrerpolicy="no-referrer" width="150px" />
               <span class="anime_icon1_name1">02:00 第10话</span>
             </router-link>
             <h4 class="anime_icon2_name">
-              <router-link :to="`/detail/${anime.id}`">
+              <router-link :to="`/anime/${anime.id}`">
                 {{ anime.name }}
               </router-link>
             </h4>
@@ -23,9 +23,9 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, ref} from "vue";
-import type {Anime} from "@/apis/anime/types";
-import {page} from "@/apis/anime";
+import { onMounted, ref } from "vue";
+import type { Anime } from "@/apis/anime/types";
+import { page } from "@/apis/anime";
 
 const animeList = ref<Anime[]>([]);
 
@@ -48,19 +48,19 @@ onMounted(() => {
       },
     ],
   })
-          .then(function (response) {
-            const animeDataList = response.result.list || [];
-            console.log("获取到动漫信息内容", animeDataList);
-            animeDataList.forEach((anime) => {
-              animeList.value.push(anime);
-            });
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+    .then(function (response) {
+      const animeDataList = response.result.list || [];
+      console.log("获取到动漫信息内容", animeDataList);
+      animeDataList.forEach((anime) => {
+        animeList.value.push(anime);
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 });
 </script>
-<style scoped>
+<style scoped lang="scss">
 .alert {
   text-align: left;
   margin: 10px;
