@@ -39,7 +39,9 @@ public class EpisodeController {
      * createRequest
      */
     @PostMapping
-    public JsonResult<Long> createEpisode(@RequestBody EpisodeCreateRequest request) {
+    public JsonResult<Long> createEpisode(
+        @RequestBody
+        EpisodeCreateRequest request) {
         EpisodeCreator creator = EpisodeMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(episodeService.createEpisode(creator));
     }
@@ -48,7 +50,9 @@ public class EpisodeController {
      * update request
      */
     @PostMapping("updateEpisode")
-    public JsonResult<String> updateEpisode(@RequestBody EpisodeUpdateRequest request) {
+    public JsonResult<String> updateEpisode(
+        @RequestBody
+        EpisodeUpdateRequest request) {
         EpisodeUpdater updater = EpisodeMapper.INSTANCE.request2Updater(request);
         episodeService.updateEpisode(updater);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -58,7 +62,9 @@ public class EpisodeController {
      * valid
      */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validEpisode(@PathVariable Long id) {
+    public JsonResult<String> validEpisode(
+        @PathVariable
+        Long id) {
         episodeService.validEpisode(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -67,7 +73,9 @@ public class EpisodeController {
      * invalid
      */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidEpisode(@PathVariable Long id) {
+    public JsonResult<String> invalidEpisode(
+        @PathVariable
+        Long id) {
         episodeService.invalidEpisode(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -76,7 +84,9 @@ public class EpisodeController {
      * findById
      */
     @GetMapping("findById/{id}")
-    public JsonResult<EpisodeResponse> findById(@PathVariable Long id) {
+    public JsonResult<EpisodeResponse> findById(
+        @PathVariable
+        Long id) {
         EpisodeVO vo = episodeService.findById(id);
         EpisodeResponse response = EpisodeMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
@@ -87,7 +97,8 @@ public class EpisodeController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<EpisodeResponse>> page(
-        @RequestBody PageRequestWrapper<EpisodeQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<EpisodeQueryRequest> request) {
         PageRequestWrapper<EpisodeQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(EpisodeMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());

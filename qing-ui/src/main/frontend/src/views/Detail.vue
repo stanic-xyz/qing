@@ -1,37 +1,20 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from "vue";
-import { page } from "@/apis/anime";
+import { findById } from "@/apis/anime";
+import AnimeInfo from "@/views/anime/AnimeInfo.vue";
+import { useRoute, useRouter } from "vue-router";
+import type { Anime } from "@/apis/anime/types";
 
 const currentPage = ref<number>(0);
 const pageSize = ref<number>(10);
-const data = ref({
+const data = reactive({
   activeIndex: "1",
   activeIndex2: "1",
   currentDate: new Date(),
   menuIndex: 0,
   time: "2020年01月15日 21时50分19秒",
   loading: true,
-  anime: {
-    id: 20000001,
-    name: "海贼王",
-    instruction:
-      "电视动画《航海王》改编自尾田荣一郎创作的同名长篇少年漫画，动画由东映动画制作。 海贼王哥尔·D·罗杰在临死前曾留下了关于其毕生的财富“One Piece”的消息，由此引得群雄并起，众海盗们为了这笔传说中的巨额财富展开争夺，各种势力、政权不断交替，整个世界进入了动荡混乱的“大海贼时代”。 生长在东海某小村庄的路飞受到海贼香克斯的精神指引，决定成为一名出色的海盗。为了达成这个目标，并找到万众瞩目的One Piece，路飞踏上艰苦的旅程。一路上他遇到了无数磨难，也结识了索隆、娜美、山治、乌索普、罗宾等一众性格各异的好友。他们携手一同展开充满传奇色彩的大冒险。",
-    districtId: 1,
-    districtName: "日本",
-    coverUrl: "http://localhost/age/H6eec4b52f5ed449b8583e5ab518e7849p.jpg",
-    typeId: 1,
-    typeName: "TV",
-    originalName: "ONE PIECE",
-    otherName: "航海王 / ワンピース",
-    author: "尾田栄一郎",
-    company: "東映動画",
-    premiereDate: "2022-12-30 12:30:20",
-    playStatus: "连载",
-    plotType: "搞笑 冒险 热血 励志",
-    tags: "搞笑 冒险 热血 励志",
-    officialWebsite: "http://www.fujitv.co.jp/b_hp/onepiece",
-    playHeat: "3953",
-  },
+  anime: {} as Anime,
   playList: [
     {
       id: 1,
@@ -48,42 +31,24 @@ const data = ref({
 });
 
 onMounted(() => {
-  page({
-    pageSize: pageSize.value,
-    page: currentPage.value,
-  })
-    .then((response) => {
-      console.log(response);
-      console.log("请求成功了，总的数量：", response.result.total);
-    })
-    .catch((err) => {
-      console.log("请求失败了");
-    });
+  const id = useRoute().params.animeId;
+  console.log("加载了id", id);
+  if (typeof id === "string") {
+    findById(Number.parseInt(id))
+      .then((response) => {
+        console.log("获取到了结果了", response.result);
+        data.anime = response.result;
+      })
+      .catch((error) => {
+        console.log("为查询到动漫信息", error.code, error.response.data.message);
+      });
+  } else {
+    // 参数错误
+    useRouter().push("/error/paramError");
+  }
 });
 
-const relevantList = ref([
-  {
-    id: 20000001,
-    name: "海贼王",
-    instruction:
-      "电视动画《航海王》改编自尾田荣一郎创作的同名长篇少年漫画，动画由东映动画制作。 海贼王哥尔·D·罗杰在临死前曾留下了关于其毕生的财富“One Piece”的消息，由此引得群雄并起，众海盗们为了这笔传说中的巨额财富展开争夺，各种势力、政权不断交替，整个世界进入了动荡混乱的“大海贼时代”。 生长在东海某小村庄的路飞受到海贼香克斯的精神指引，决定成为一名出色的海盗。为了达成这个目标，并找到万众瞩目的One Piece，路飞踏上艰苦的旅程。一路上他遇到了无数磨难，也结识了索隆、娜美、山治、乌索普、罗宾等一众性格各异的好友。他们携手一同展开充满传奇色彩的大冒险。",
-    districtId: 1,
-    districtName: "日本",
-    coverUrl: "http://localhost/age/H6eec4b52f5ed449b8583e5ab518e7849p.jpg",
-    typeId: 1,
-    typeName: "TV",
-    originalName: "ONE PIECE",
-    otherName: "航海王 / ワンピース",
-    author: "尾田栄一郎",
-    company: "東映動画",
-    premiereDate: "2022-12-30 12:30:20",
-    playStatus: "连载",
-    plotType: "搞笑 冒险 热血 励志",
-    tags: "搞笑 冒险 热血 励志",
-    officialWebsite: "http://www.fujitv.co.jp/b_hp/onepiece",
-    playHeat: "3953",
-  },
-]);
+const relevantList = ref<AnimeInfo>();
 const currentPlayListId = ref(0);
 const isCommentBoard = ref(false);
 const chooseReportTypes = ref([]);
@@ -163,14 +128,7 @@ function sendReport() {
     <div class="div_left">
       <div class="baseblock">
         <div class="blockcontent">
-          <img
-            :alt="data.anime.name"
-            class="poster"
-            height="356px"
-            referrerpolicy="no-referrer"
-            src="https://cdn.aqdstatic.com:966/age/20010004.jpg"
-            width="256px"
-          />
+          <img :alt="data.anime.name" class="poster" height="356px" referrerpolicy="no-referrer" src="https://cdn.aqdstatic.com:966/age/20010004.jpg" width="256px" />
         </div>
       </div>
       <div class="baseblock">
@@ -180,20 +138,12 @@ function sendReport() {
             <ul class="blockcontent">
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">地区：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.districtName
-                }}</span>
-                <a
-                  class="detail_imform_show_full"
-                  href="javascript:detail_show_full();"
-                  >&lt;&lt;展开</a
-                >
+                <span class="detail_imform_value">{{ data.anime.name }}</span>
+                <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">动画种类：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.typeName
-                }}</span>
+                <span class="detail_imform_value">{{ data.anime.name }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">动画名称：</span>
@@ -201,9 +151,7 @@ function sendReport() {
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">原版名称：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.originalName
-                }}</span>
+                <span class="detail_imform_value">{{ data.anime.originalName }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">原作：</span>
@@ -211,27 +159,19 @@ function sendReport() {
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">制作公司：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.company
-                }}</span>
+                <span class="detail_imform_value">{{ data.anime.company }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">首播时间：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.premiereDate
-                }}</span>
+                <span class="detail_imform_value">{{ data.anime.premiereDate }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">播放状态：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.playStatus
-                }}</span>
+                <span class="detail_imform_value">{{ data.anime.playStatus }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">剧情类型：</span>
-                <span class="detail_imform_value">{{
-                  data.anime.plotType
-                }}</span>
+                <span class="detail_imform_value">{{ data.anime.plotType }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">标签：</span>
@@ -240,9 +180,7 @@ function sendReport() {
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">官方网站：</span>
                 <span class="detail_imform_value">
-                  <a :href="data?.anime?.officialWebsite" target="_blank">{{
-                    data?.anime?.officialWebsite
-                  }}</a>
+                  <a :href="data?.anime?.officialWebsite" target="_blank">{{ data?.anime?.officialWebsite }}</a>
                 </span>
               </li>
             </ul>
@@ -255,9 +193,7 @@ function sendReport() {
             <div class="blocktitle detail_title1">相关动画：</div>
             <ul class="blockcontent">
               <li class="relates_series">
-                <router-link :to="'/anime/20170004'"
-                  >为美好的世界献上祝福！ 第二季
-                </router-link>
+                <router-link :to="'/anime/20170004'">为美好的世界献上祝福！ 第二季</router-link>
               </li>
 
               <li class="relates_series">
@@ -291,18 +227,8 @@ function sendReport() {
       <div class="blockline1" style="margin: 8px"></div>
       <div id="playlist-div" class="baseblock">
         <div class="blocktitle">在线播放：</div>
-        <ul
-          v-for="(listInfo, index) in data.playList"
-          id="menu0"
-          :key="index"
-          class="menu0"
-        >
-          <li
-            v-if="index === data.menuIndex"
-            style="display: block"
-            v-bind:class="{ on: index === data.menuIndex }"
-            @click="next(listInfo.id)"
-          >
+        <ul v-for="(listInfo, index) in data.playList" id="menu0" :key="index" class="menu0">
+          <li v-if="index === data.menuIndex" style="display: block" v-bind:class="{ on: index === data.menuIndex }" @click="next(listInfo.id)">
             {{ listInfo?.name }}
           </li>
         </ul>
@@ -317,12 +243,7 @@ function sendReport() {
           >
             <ul v-for="(episode, index) in episodeList" :key="index">
               <li>
-                <router-link
-                  :title="episode.name"
-                  :to="`/anime/${data.anime.id}/play/{listId}/{episodeId}(animeId=${data.anime.id}`"
-                  target="_self"
-                  >{{ episode.name }}
-                </router-link>
+                <router-link :title="episode.name" :to="`/anime/${data.anime.id}/play/{listId}/{episodeId}(animeId=${data.anime.id}`" target="_self">{{ episode.name }}</router-link>
               </li>
             </ul>
           </div>
@@ -334,9 +255,7 @@ function sendReport() {
         <div class="blocktitle">网盘资源：</div>
         <div class="blockcontent">
           <span class="res_links">
-            <a class="res_links_a" href="/link/20160083/0" target="_blank"
-              >[TV 01-10+OVA 720P]</a
-            >
+            <a class="res_links_a" href="/link/20160083/0" target="_blank">[TV 01-10+OVA 720P]</a>
             <span class="res_links_pswd_tag">(提取码:</span>
             <span class="res_links_pswd">fe5e)</span></span
           >
@@ -350,37 +269,16 @@ function sendReport() {
         <div class="report_div">
           <div id="report_form">
             <div>
-              <input
-                id="report_aid"
-                v-model="data.anime.id"
-                name="cid"
-                type="hidden"
-              />
-              <label v-for="(type, index) in data.reportTypes" :key="index">
-                <input
-                  v-model="chooseReportTypes"
-                  name="link_invalid"
-                  type="radio"
-                  v-bind:value="type.name"
-                />{{ type.name }}</label
-              >
+              <input id="report_aid" v-model="data.anime.id" name="cid" type="hidden" />
+              <label v-for="(type, index) in data.reportTypes" :key="index"> <input v-model="chooseReportTypes" name="link_invalid" type="radio" v-bind:value="type.name" />{{ type.name }}</label>
               <br />
               <label>
                 {{ chooseReportTypes }}
                 <br />
-                <textarea
-                  v-model="reportDetail"
-                  autocapitalize="off"
-                  autocomplete="off"
-                  name="detail"
-                  placeholder="请告诉我们详细情况~"
-                  spellcheck="true"
-                ></textarea>
+                <textarea v-model="reportDetail" autocapitalize="off" autocomplete="off" name="detail" placeholder="请告诉我们详细情况~" spellcheck="true"></textarea>
               </label>
               <br />
-              <button class="nbutton" value="提交" @click="sendReport">
-                提交
-              </button>
+              <button class="nbutton" value="提交" @click="sendReport">提交</button>
             </div>
           </div>
         </div>
@@ -391,37 +289,13 @@ function sendReport() {
         <div class="blockcontent">
           <!-- switch -->
           <div style="padding-left: 8px">
-            <button
-              :class="{ switchButton_current: !isCommentBoard }"
-              class="switchbtn"
-              @onclick="changeRecommendBoard"
-            >
-              相关推荐
-            </button>
-            <button
-              :class="{ switchButton_current: isCommentBoard }"
-              class="switchbtn"
-              @onclick="changeRecommendBoard"
-            >
-              留言板
-            </button>
+            <button :class="{ switchButton_current: !isCommentBoard }" class="switchbtn" @onclick="changeRecommendBoard">相关推荐</button>
+            <button :class="{ switchButton_current: isCommentBoard }" class="switchbtn" @onclick="changeRecommendBoard">留言板</button>
           </div>
           <div id="recommend_block" class="switchBlock">
             <ul class="ul_li_a4">
-              <li
-                v-for="(anime, index) in relevantList"
-                :key="index"
-                class="anime_icon1"
-              >
-                <router-link :to="`/anime/${anime.id}`">
-                  <img
-                    alt="暂无"
-                    class="anime_icon1_img"
-                    height="205"
-                    referrerpolicy="no-referrer"
-                    src="../assets/img/anime/伤物语_small.jpg"
-                    width="148"
-                /></router-link>
+              <li v-for="(anime, index) in relevantList" :key="index" class="anime_icon1">
+                <router-link :to="`/anime/${anime.id}`"><img alt="暂无" class="anime_icon1_img" height="205" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语_small.jpg" width="148" /></router-link>
                 <router-link :to="`/anime/${anime.id}`">
                   <div class="anime_icon1_name">{{ anime.name }}</div>
                 </router-link>
@@ -431,49 +305,18 @@ function sendReport() {
           <div id="comments_block" class="switchBlock">
             <form id="comment_form" action="javascript:void(0)" method="GET">
               <div>
-                <input
-                  id="comment_id"
-                  name="cid"
-                  type="hidden"
-                  value="${data?.anime?.id}"
-                />
+                <input id="comment_id" name="cid" type="hidden" value="${data?.anime?.id}" />
                 <label for="comment_content"></label>
-                <textarea
-                  id="comment_content"
-                  autocapitalize="off"
-                  autocomplete="off"
-                  csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm"
-                  maxlength="255"
-                  name="comment_content"
-                  placeholder="说点什么吧"
-                  spellcheck="false"
-                  tid="20180132"
-                  wrap="SOFT"
-                ></textarea>
-                <label class="comment_imform_tag" for="comment_user"
-                  >昵称：</label
-                >
-                <input
-                  id="comment_user"
-                  autocapitalize="off"
-                  autocomplete="off"
-                  name="comment_user"
-                  placeholder="名字"
-                  readonly
-                  spellcheck="false"
-                  value="游客"
-                />
+                <textarea id="comment_content" autocapitalize="off" autocomplete="off" csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm" maxlength="255" name="comment_content" placeholder="说点什么吧" spellcheck="false" tid="20180132" wrap="SOFT"></textarea>
+                <label class="comment_imform_tag" for="comment_user">昵称：</label>
+                <input id="comment_user" autocapitalize="off" autocomplete="off" name="comment_user" placeholder="名字" readonly spellcheck="false" value="游客" />
                 <input class="nbutton" name="" type="submit" />
               </div>
             </form>
 
             <!-- 评论列表 -->
             <ul id="comment_list" style="margin-top: 16px">
-              <li
-                v-for="(comment, index) in commentList"
-                :key="index"
-                class="comment"
-              >
+              <li v-for="(comment, index) in commentList" :key="index" class="comment">
                 <hr class="hrspace2" />
                 <div class="comment_cell_user">
                   {{ comment.username }}
@@ -493,16 +336,7 @@ function sendReport() {
             <div class="spaceblock1"></div>
             <ul class="comment_page">
               <li>
-                <button
-                  class="${data?.comments?.current == 1 ?'pbutton asciifont pbutton_current':'pbutton asciifont'}"
-                  data-cid="${data?.anime?.id}"
-                  data-pages="${data?.comments?.getPages()}"
-                  data-size="${data?.comments?.size}"
-                  href="javascript:void(0)"
-                  @onclick="nextPage"
-                >
-                  首页
-                </button>
+                <button class="${data?.comments?.current == 1 ?'pbutton asciifont pbutton_current':'pbutton asciifont'}" data-cid="${data?.anime?.id}" data-pages="${data?.comments?.getPages()}" data-size="${data?.comments?.size}" href="javascript:void(0)" @onclick="nextPage">首页</button>
               </li>
             </ul>
           </div>

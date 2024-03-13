@@ -1,7 +1,7 @@
-import {http} from "@/utils/service";
-import type {Anime} from "@/apis/anime/types";
-import type {QingPageResponse, QingResponse} from "@/utils/http/types";
-import type {PageRequest} from "@/apis/auth/types";
+import { http } from "@/utils/service";
+import type { Anime } from "@/apis/anime/types";
+import type { QingPageResponse, QingResponse } from "@/utils/http/types";
+import type { PageRequest } from "@/apis/auth/types";
 
 const serviceUrl: string = "api/v1/anime/";
 
@@ -36,7 +36,7 @@ export const invalid = (id: String) => {
 };
 
 /** 更新动漫信息 */
-export const findById = (id: String) => {
+export const findById = (id: number) => {
   console.log("禁用：请求参数:{}", id);
   return http.request<QingResponse<Anime>>("get", serviceUrl + "findById/" + id);
 };

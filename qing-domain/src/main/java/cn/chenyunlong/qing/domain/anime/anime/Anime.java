@@ -22,6 +22,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -37,7 +38,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 @ToString
 @Entity
-@Table(name = "anime")
+@Table(name = "anime_info")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Anime extends BaseJpaAggregate {
 
@@ -96,6 +97,9 @@ public class Anime extends BaseJpaAggregate {
 
     @FieldDesc(description = "播放热度")
     private String playHeat;
+
+    @FieldDesc(description = "最后更新时间")
+    private LocalDateTime lastUpdateTime;
 
     @FieldDesc(description = "排序号")
     private Integer orderNo;
