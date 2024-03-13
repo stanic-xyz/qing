@@ -36,4 +36,24 @@ public class TempSecretResponse {
      */
     private String sessionToken;
 
+    /**
+     * 开始时间
+     */
+    public long startTime;
+
+    /**
+     * 过期时间
+     */
+    public long expiredTime;
+
+    /**
+     * 存储桶
+     */
+    private String bucketName;
+
+    /**
+     * 区域
+     */
+    private String region;
+
 }
