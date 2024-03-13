@@ -36,32 +36,42 @@ public class TagController {
     private final ITagService tagService;
 
     @PostMapping
-    public JsonResult<Long> createTag(@RequestBody TagCreateRequest request) {
+    public JsonResult<Long> createTag(
+        @RequestBody
+        TagCreateRequest request) {
         TagCreator creator = TagMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(tagService.createTag(creator));
     }
 
     @PostMapping("updateTag")
-    public JsonResult<String> updateTag(@RequestBody TagUpdateRequest request) {
+    public JsonResult<String> updateTag(
+        @RequestBody
+        TagUpdateRequest request) {
         TagUpdater updater = TagMapper.INSTANCE.request2Updater(request);
         tagService.updateTag(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
     @PostMapping("valid/{id}")
-    public JsonResult<String> validTag(@PathVariable Long id) {
+    public JsonResult<String> validTag(
+        @PathVariable
+        Long id) {
         tagService.validTag(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidTag(@PathVariable Long id) {
+    public JsonResult<String> invalidTag(
+        @PathVariable
+        Long id) {
         tagService.invalidTag(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
     @GetMapping("findById/{id}")
-    public JsonResult<TagResponse> findById(@PathVariable Long id) {
+    public JsonResult<TagResponse> findById(
+        @PathVariable
+        Long id) {
         TagVO vo = tagService.findById(id);
         TagResponse response = TagMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
@@ -69,7 +79,8 @@ public class TagController {
 
     @PostMapping("page")
     public JsonResult<PageResult<TagResponse>> page(
-        @RequestBody PageRequestWrapper<TagQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<TagQueryRequest> request) {
         PageRequestWrapper<TagQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(TagMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());

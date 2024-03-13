@@ -1,10 +1,16 @@
 package cn.chenyunlong.qing.domain.anime.tag.dto.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Schema
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TagCreator {
 
     @Schema(
@@ -17,19 +23,4 @@ public class TagCreator {
     )
     private String instruction;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getInstruction() {
-        return instruction;
-    }
-
-    public void setInstruction(String instruction) {
-        this.instruction = instruction;
-    }
 }

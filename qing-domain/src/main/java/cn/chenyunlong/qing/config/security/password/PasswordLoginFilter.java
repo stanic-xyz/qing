@@ -13,7 +13,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class PasswordLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     public PasswordLoginFilter() {
-        super(new AntPathRequestMatcher("/auth/passLogin", "POST"));
+        super(new AntPathRequestMatcher("/api/auth/passLogin", "POST"));
     }
 
     @Override

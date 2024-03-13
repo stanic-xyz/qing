@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.domain.anime.tag.mapper;
 
+import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.qing.domain.anime.tag.Tag;
 import cn.chenyunlong.qing.domain.anime.tag.dto.creator.TagCreator;
 import cn.chenyunlong.qing.domain.anime.tag.dto.query.TagQuery;
@@ -9,35 +10,24 @@ import cn.chenyunlong.qing.domain.anime.tag.dto.request.TagUpdateRequest;
 import cn.chenyunlong.qing.domain.anime.tag.dto.response.TagResponse;
 import cn.chenyunlong.qing.domain.anime.tag.dto.updater.TagUpdater;
 import cn.chenyunlong.qing.domain.anime.tag.dto.vo.TagVO;
-import cn.hutool.core.bean.BeanUtil;
+import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
+@Mapper(uses = {CustomMapper.class, DateMapper.class})
 public interface TagMapper {
 
-    TagMapper INSTANCE = new TagMapper() {
+    TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);
 
-    };
+    Tag dtoToEntity(TagCreator dto);
 
-    default Tag dtoToEntity(TagCreator dto) {
-        return BeanUtil.copyProperties(dto, Tag.class);
-    }
+    TagUpdater request2Updater(TagUpdateRequest request);
 
-    default TagUpdater request2Updater(TagUpdateRequest request) {
-        return BeanUtil.copyProperties(request, TagUpdater.class);
-    }
+    TagCreator request2Dto(TagCreateRequest request);
 
-    default TagCreator request2Dto(TagCreateRequest request) {
-        return BeanUtil.copyProperties(request, TagCreator.class);
-    }
+    TagQuery request2Query(TagQueryRequest request);
 
-    default TagQuery request2Query(TagQueryRequest request) {
-        return BeanUtil.copyProperties(request, TagQuery.class);
-    }
+    TagResponse vo2CustomResponse(TagVO vo);
 
-    default TagResponse vo2CustomResponse(TagVO vo) {
-        return vo2Response(vo);
-    }
-
-    default TagResponse vo2Response(TagVO vo) {
-        return BeanUtil.copyProperties(vo, TagResponse.class);
-    }
+    TagResponse vo2Response(TagVO vo);
 }

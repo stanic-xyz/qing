@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.Data;
 
 @Schema
@@ -62,7 +63,7 @@ public class AnimeCreateRequest implements Request {
     private String plotType;
 
     @Schema(title = "tags")
-    private String tags;
+    private List<Long> tagIds;
 
     @Schema(title = "officialWebsite")
     private String officialWebsite;

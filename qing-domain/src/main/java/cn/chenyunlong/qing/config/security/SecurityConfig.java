@@ -71,8 +71,8 @@ public class SecurityConfig {
                     "/doc.html",
                     "/v3/api-docs/**",
                     "/login",
+                    "/api/auth/passLogin",
                     "/favicon.ico",
-                    "/auth/passLogin",
                     "/api/authorize/authing/login").permitAll();
                 authorize.anyRequest().hasRole("USER");
             })

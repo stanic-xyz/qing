@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.creator;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.Data;
 
 @Schema
@@ -87,7 +88,7 @@ public class AnimeCreator {
     @Schema(
         title = "tags"
     )
-    private String tags;
+    private List<Long> tagIds;
 
     @Schema(
         title = "officialWebsite"
