@@ -11,12 +11,14 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.playlist;
+package cn.chenyunlong.qing.domain.anime.episode;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -32,8 +34,8 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "play_list")
-public class PlayList extends BaseJpaAggregate {
+@Table(name = "anime_play_source")
+public class PlaySource extends BaseJpaAggregate {
 
     @FieldDesc(name = "名称")
     private String name;
@@ -46,4 +48,10 @@ public class PlayList extends BaseJpaAggregate {
 
     @FieldDesc(name = "播放源名称")
     private String collectionName;
+
+    @FieldDesc(name = "播放源图标")
+    private String icon;
+
+    @OneToMany(targetEntity = Episode.class, fetch = jakarta.persistence.FetchType.LAZY)
+    private List<Episode> episodes;
 }

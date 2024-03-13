@@ -11,18 +11,23 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.tag;
+package cn.chenyunlong.qing.domain.anime.anime;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 /**
  * 标签
@@ -34,14 +39,21 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "anime_tag")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Tag extends BaseJpaAggregate {
+@Table(name = "anime_tag_rel")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class AnimeTagRel {
 
-    @NotBlank(message = "名称不能为空")
-    @FieldDesc(description = "名称")
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    @JdbcTypeCode(SqlTypes.BIGINT)
+    private Long id;
 
-    @FieldDesc(description = "介绍")
-    private String instruction;
+    @FieldDesc(description = "番剧Id")
+    private Long animeId;
+
+    @FieldDesc(description = "标签Id")
+    private Long tagId;
 }
