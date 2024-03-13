@@ -13,6 +13,7 @@ export interface Anime {
   otherName?: string;
   author?: string;
   company?: string;
+  companyName?: string;
   playStatus?: string;
   plotType?: string;
   tags?: string[];

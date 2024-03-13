@@ -87,6 +87,17 @@ export default [
         },
       },
       {
+        path: "/examples/component",
+        name: "example-component",
+        component: () => import("../../views/examples/component/Component.vue"),
+        meta: {
+          title: "组件",
+          requireAuth: false,
+          affix: true,
+          closable: false,
+        },
+      },
+      {
         path: "/play/:animeId",
         name: "play",
         component: () => import("../../views/PlayPage.vue"),
