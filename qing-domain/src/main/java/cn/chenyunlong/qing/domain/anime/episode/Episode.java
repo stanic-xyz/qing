@@ -16,6 +16,7 @@ package cn.chenyunlong.qing.domain.anime.episode;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "episode")
+@Table(name = "anime_episode")
 public class Episode extends BaseJpaAggregate {
 
     @FieldDesc(name = "名称")
@@ -46,4 +47,7 @@ public class Episode extends BaseJpaAggregate {
 
     @FieldDesc(name = "播放源名称")
     private String collectionName;
+
+    @ManyToOne
+    private PlaySource playSource;
 }

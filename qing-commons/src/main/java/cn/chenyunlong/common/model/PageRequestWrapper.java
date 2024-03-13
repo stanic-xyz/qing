@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.common.model;
 
+import cn.chenyunlong.common.model.page.OrderRequest;
 import cn.hutool.core.collection.CollUtil;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.util.Map;
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnegative;
 import lombok.Data;
@@ -58,7 +59,7 @@ public class PageRequestWrapper<T> {
     /**
      * 排序信息
      */
-    private Map<String, String> sorts;
+    private List<OrderRequest> sorts;
 
     /**
      * 获取分页信息。
@@ -71,11 +72,11 @@ public class PageRequestWrapper<T> {
     public PageRequest getWrapper() {
         Sort sort = Sort.unsorted();
         if (CollUtil.isNotEmpty(sorts)) {
-            sort = Sort.by(sorts.entrySet().stream().map(entry -> {
-                String entryValue = entry.getValue();
-                Sort.Direction direction = Sort.Direction.fromOptionalString(entryValue).orElse(Sort.Direction.DESC);
-                return Sort.Order.by(entry.getKey()).with(direction);
-            }).collect(Collectors.toList()));
+            sort = Sort.by(sorts.stream()
+                               .map(orderRequest ->
+                                        Sort.Order.by(orderRequest.getProperty())
+                                            .with(Sort.Direction.fromString(orderRequest.getDirection())))
+                               .collect(Collectors.toList()));
         }
         return PageRequest.of(page, pageSize).withSort(sort);
     }

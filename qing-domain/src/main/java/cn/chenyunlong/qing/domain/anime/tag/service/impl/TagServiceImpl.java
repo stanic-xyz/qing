@@ -5,7 +5,6 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.qing.domain.anime.tag.QTag;
 import cn.chenyunlong.qing.domain.anime.tag.Tag;
 import cn.chenyunlong.qing.domain.anime.tag.dto.creator.TagCreator;
 import cn.chenyunlong.qing.domain.anime.tag.dto.query.TagQuery;
@@ -14,7 +13,7 @@ import cn.chenyunlong.qing.domain.anime.tag.dto.vo.TagVO;
 import cn.chenyunlong.qing.domain.anime.tag.mapper.TagMapper;
 import cn.chenyunlong.qing.domain.anime.tag.repository.TagRepository;
 import cn.chenyunlong.qing.domain.anime.tag.service.ITagService;
-import com.querydsl.jpa.impl.JPAQuery;
+import cn.hutool.core.lang.Assert;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +39,13 @@ public class TagServiceImpl implements ITagService {
     @Override
     public Long createTag(TagCreator creator) {
         Optional<Tag> tag = EntityOperations.doCreate(tagRepository)
-            .create(() -> TagMapper.INSTANCE.dtoToEntity(creator))
-            .update(Tag::init)
-            .execute();
+                                .create(() -> {
+                                    boolean existsByName = tagRepository.existsByName(creator.getName());
+                                    Assert.isFalse(existsByName, "标签名称已存在");
+                                    return TagMapper.INSTANCE.dtoToEntity(creator);
+                                })
+                                .update(Tag::init)
+                                .execute();
         return tag.isPresent() ? tag.get().getId() : 0;
     }
 
@@ -53,7 +56,12 @@ public class TagServiceImpl implements ITagService {
     public void updateTag(TagUpdater updater) {
         EntityOperations.doUpdate(tagRepository)
             .loadById(updater.getId())
-            .update(updater::updateTag)
+            .update(param -> {
+                // 判断标签是否和其他标签重名
+                boolean existsByNameAndNotId = tagRepository.existsByNameAndNotId(updater.getName(), updater.getId());
+                Assert.isFalse(existsByNameAndNotId, "标签名称已存在");
+                updater.updateTag(param);
+            })
             .execute();
     }
 
@@ -84,13 +92,6 @@ public class TagServiceImpl implements ITagService {
      */
     @Override
     public TagVO findById(Long id) {
-        QTag tag = QTag.tag;
-        JPAQuery<?> query = new JPAQuery<Void>(entityManager);
-        Tag one = query.select(tag)
-            .from(tag)
-            .where(tag.id.eq(1L))
-            .fetchOne();
-        log.info(String.valueOf(one));
         Optional<Tag> tagOptional = tagRepository.findById(id);
         return new TagVO(
             tagOptional.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));

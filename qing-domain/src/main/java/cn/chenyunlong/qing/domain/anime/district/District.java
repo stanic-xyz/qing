@@ -30,7 +30,7 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "district")
+@Table(name = "anime_district")
 public class District extends BaseJpaAggregate {
 
     @FieldDesc(name = "地区")

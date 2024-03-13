@@ -30,7 +30,7 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "attachment")
+@Table(name = "anime_attachment")
 public class Attachment extends BaseJpaAggregate {
 
     @FieldDesc(name = "文件ID")
