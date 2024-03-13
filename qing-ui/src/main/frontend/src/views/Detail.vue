@@ -1,128 +1,3 @@
-<script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue";
-import { findById } from "@/apis/anime";
-import AnimeInfo from "@/views/anime/AnimeInfo.vue";
-import { useRoute, useRouter } from "vue-router";
-import type { Anime } from "@/apis/anime/types";
-
-const currentPage = ref<number>(0);
-const pageSize = ref<number>(10);
-const data = reactive({
-  activeIndex: "1",
-  activeIndex2: "1",
-  currentDate: new Date(),
-  menuIndex: 0,
-  time: "2020年01月15日 21时50分19秒",
-  loading: true,
-  anime: {} as Anime,
-  playList: [
-    {
-      id: 1,
-      name: "列表1",
-      episodeList: [{ name: "test" }],
-    },
-  ],
-  reportTypes: [
-    {
-      id: "1",
-      name: "反馈类型1",
-    },
-  ],
-});
-
-onMounted(() => {
-  const id = useRoute().params.animeId;
-  console.log("加载了id", id);
-  if (typeof id === "string") {
-    findById(Number.parseInt(id))
-      .then((response) => {
-        console.log("获取到了结果了", response.result);
-        data.anime = response.result;
-      })
-      .catch((error) => {
-        console.log("为查询到动漫信息", error.code, error.response.data.message);
-      });
-  } else {
-    // 参数错误
-    useRouter().push("/error/paramError");
-  }
-});
-
-const relevantList = ref<AnimeInfo>();
-const currentPlayListId = ref(0);
-const isCommentBoard = ref(false);
-const chooseReportTypes = ref([]);
-const reportDetail = ref("");
-const episodeList = ref<any>([
-  {
-    id: "12123",
-    name: "测试名称",
-  },
-]);
-const commentList = reactive([
-  {
-    createTime: {
-      nano: 0,
-      year: 2021,
-      monthValue: 7,
-      dayOfMonth: 28,
-      hour: 23,
-      minute: 21,
-      second: 40,
-      month: "JULY",
-      dayOfWeek: "WEDNESDAY",
-      dayOfYear: 209,
-      chronology: {
-        id: "ISO",
-        calendarType: "iso8601",
-      },
-    },
-    updateTime: {
-      nano: 0,
-      year: 2021,
-      monthValue: 7,
-      dayOfMonth: 28,
-      hour: 23,
-      minute: 21,
-      second: 39,
-      month: "JULY",
-      dayOfWeek: "WEDNESDAY",
-      dayOfYear: 209,
-      chronology: {
-        id: "ISO",
-        calendarType: "iso8601",
-      },
-    },
-    searchValue: "",
-    createBy: "",
-    updateBy: "",
-    remark: "",
-    id: "1420404091520241666",
-    cid: 20000001,
-    username: "游客",
-    content: "啦啦啦",
-    ipAddress: null,
-  },
-]);
-
-function next(animeId: any) {
-  console.log(animeId);
-}
-
-function nextPage() {
-  console.log("翻页到下一页评论");
-}
-
-function changeRecommendBoard() {
-  isCommentBoard.value = !isCommentBoard.value;
-  console.log(isCommentBoard.value);
-}
-
-function sendReport() {
-  console.log("发起了举报");
-  alert(reportDetail.value);
-}
-</script>
 <template>
   <div id="container">
     <div class="div_left">
@@ -143,7 +18,7 @@ function sendReport() {
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">动画种类：</span>
-                <span class="detail_imform_value">{{ data.anime.name }}</span>
+                <span class="detail_imform_value">{{ data.anime.typeName }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">动画名称：</span>
@@ -154,12 +29,12 @@ function sendReport() {
                 <span class="detail_imform_value">{{ data.anime.originalName }}</span>
               </li>
               <li class="detail_imform_kv">
-                <span class="detail_imform_tag">原作：</span>
+                <span class="detail_imform_tag">作者：</span>
                 <span class="detail_imform_value">{{ data.anime.author }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">制作公司：</span>
-                <span class="detail_imform_value">{{ data.anime.company }}</span>
+                <span class="detail_imform_value">{{ data.anime.companyName }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">首播时间：</span>
@@ -345,5 +220,131 @@ function sendReport() {
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import {onMounted, reactive, ref} from "vue";
+import {findById} from "@/apis/anime";
+import AnimeInfo from "@/views/anime/AnimeInfo.vue";
+import {useRoute, useRouter} from "vue-router";
+import type {Anime} from "@/apis/anime/types";
+
+const currentPage = ref<number>(0);
+const pageSize = ref<number>(10);
+const data = reactive({
+  activeIndex: "1",
+  activeIndex2: "1",
+  currentDate: new Date(),
+  menuIndex: 0,
+  time: "2020年01月15日 21时50分19秒",
+  loading: true,
+  anime: {} as Anime,
+  playList: [
+    {
+      id: 1,
+      name: "列表1",
+      episodeList: [{name: "test"}],
+    },
+  ],
+  reportTypes: [
+    {
+      id: "1",
+      name: "反馈类型1",
+    },
+  ],
+});
+
+onMounted(() => {
+  const id = useRoute().params.animeId;
+  console.log("加载了id", id);
+  if (typeof id === "string") {
+    findById(Number.parseInt(id))
+            .then((response) => {
+              console.log("获取到了结果了", response.result);
+              data.anime = response.result;
+            })
+            .catch((error) => {
+              console.log("为查询到动漫信息", error.code, error.response.data.message);
+            });
+  } else {
+    // 参数错误
+    useRouter().push("/error/paramError");
+  }
+});
+
+const relevantList = ref<AnimeInfo>();
+const currentPlayListId = ref(0);
+const isCommentBoard = ref(false);
+const chooseReportTypes = ref([]);
+const reportDetail = ref("");
+const episodeList = ref<any>([
+  {
+    id: "12123",
+    name: "测试名称",
+  },
+]);
+const commentList = reactive([
+  {
+    createTime: {
+      nano: 0,
+      year: 2021,
+      monthValue: 7,
+      dayOfMonth: 28,
+      hour: 23,
+      minute: 21,
+      second: 40,
+      month: "JULY",
+      dayOfWeek: "WEDNESDAY",
+      dayOfYear: 209,
+      chronology: {
+        id: "ISO",
+        calendarType: "iso8601",
+      },
+    },
+    updateTime: {
+      nano: 0,
+      year: 2021,
+      monthValue: 7,
+      dayOfMonth: 28,
+      hour: 23,
+      minute: 21,
+      second: 39,
+      month: "JULY",
+      dayOfWeek: "WEDNESDAY",
+      dayOfYear: 209,
+      chronology: {
+        id: "ISO",
+        calendarType: "iso8601",
+      },
+    },
+    searchValue: "",
+    createBy: "",
+    updateBy: "",
+    remark: "",
+    id: "1420404091520241666",
+    cid: 20000001,
+    username: "游客",
+    content: "啦啦啦",
+    ipAddress: null,
+  },
+]);
+
+function next(animeId: any) {
+  console.log(animeId);
+}
+
+function nextPage() {
+  console.log("翻页到下一页评论");
+}
+
+function changeRecommendBoard() {
+  isCommentBoard.value = !isCommentBoard.value;
+  console.log(isCommentBoard.value);
+}
+
+function sendReport() {
+  console.log("发起了举报");
+  alert(reportDetail.value);
+}
+</script>
 
 <style scoped src="../assets/css/detail.css"></style>

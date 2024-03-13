@@ -25,6 +25,7 @@ declare module 'vue' {
     LayPage: typeof import('@layui/layui-vue')['LayPage']
     LaySide: typeof import('@layui/layui-vue')['LaySide']
     LaySpace: typeof import('@layui/layui-vue')['LaySpace']
+    LayUpload: typeof import('@layui/layui-vue')['LayUpload']
     MyDPlayer: typeof import('./src/components/MyDPlayer.vue')['default']
     NavItem: typeof import('./src/components/block/Nav-Item.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
