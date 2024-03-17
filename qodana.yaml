@@ -29,3 +29,7 @@ projectJDK: graalvm-17 #(Applied in CI/CD pipeline)
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 linter: jetbrains/qodana-jvm:latest
+exclude:
+  - name: All
+    paths:
+      - qing-third\javapoet

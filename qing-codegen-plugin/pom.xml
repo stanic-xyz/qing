@@ -29,6 +29,5 @@
     <modules>
         <module>qing-codegen-api</module>
         <module>qing-codegen-apt</module>
-        <module>qing-codegen-samples</module>
     </modules>
 </project>

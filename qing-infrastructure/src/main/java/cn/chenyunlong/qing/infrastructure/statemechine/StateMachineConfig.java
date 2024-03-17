@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.infrastructure.statemechine;
 
+import java.util.EnumSet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +25,6 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
-
-import java.util.EnumSet;
 
 @Slf4j
 @Configuration
@@ -39,10 +38,11 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
      */
     @Bean
     public StateMachineListener<States, Events> listener() {
-        return new StateMachineListenerAdapter<States, Events>() {
+        return new StateMachineListenerAdapter<>() {
+
             @Override
             public void stateChanged(State from, State to) {
-                log.info("State change to " + to.getId());
+                log.info("State change to {}", to.getId());
             }
         };
     }

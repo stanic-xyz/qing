@@ -1,6 +1,0 @@
-server:
-  port: 8906
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
