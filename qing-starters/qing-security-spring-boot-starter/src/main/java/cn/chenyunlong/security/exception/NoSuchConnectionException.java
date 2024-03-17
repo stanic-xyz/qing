@@ -19,6 +19,7 @@ package cn.chenyunlong.security.exception;
 import cn.chenyunlong.security.entity.ConnectionData;
 import cn.chenyunlong.security.entity.ConnectionKey;
 import cn.chenyunlong.security.repository.UsersConnectionRepository;
+import java.io.Serial;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 
 /**
@@ -29,6 +30,8 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
  * @see UsersConnectionRepository#getConnection(String, ConnectionKey)
  */
 public final class NoSuchConnectionException extends ConnectionRepositoryException {
+
+    @Serial
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
     private final ConnectionKey connectionKey;

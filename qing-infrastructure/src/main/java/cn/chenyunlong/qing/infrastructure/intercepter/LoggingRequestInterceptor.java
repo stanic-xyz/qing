@@ -31,6 +31,7 @@ import org.springframework.lang.NonNull;
  */
 @Slf4j
 public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
+
     // 用来记录接口执行时间的最小接收值
     private final long timeoutMs;
 
@@ -40,8 +41,12 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
     @NonNull
     @Override
-    public ClientHttpResponse intercept(@NonNull HttpRequest request, @NonNull byte[] body,
-                                        ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(
+        @NonNull
+        HttpRequest request,
+        @NonNull
+        byte[] body,
+        ClientHttpRequestExecution execution) throws IOException {
 
         long start = System.currentTimeMillis();
         ClientHttpResponse response = execution.execute(request, body);
@@ -58,15 +63,13 @@ public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
         throws IOException {
         // 记录日志
         String responseStr = IOUtils.toString(response.getBody(), StandardCharsets.UTF_8);
-        log.info(new StringBuilder()
-                .append("\n")
-                .append("URI             : {}, \n")
-                .append("Method       : {}, \n")
-                .append("Headers      : {}, \n")
-                .append("Param         : {}, \n")
-                .append("RespStatus  : {}, \n")
-                .append("Response    : {}")
-                .toString(), request.getURI(), request.getMethod(), request.getHeaders(),
+        log.info("""
+                URI             : {},\s
+                Method       : {},\s
+                Headers      : {},\s
+                Param         : {},\s
+                RespStatus  : {},\s
+                Response    : {}""", request.getURI(), request.getMethod(), request.getHeaders(),
             new String(body, StandardCharsets.UTF_8), response.getStatusCode(), responseStr);
     }
 }

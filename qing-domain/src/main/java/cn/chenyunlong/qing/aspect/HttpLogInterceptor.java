@@ -23,7 +23,8 @@ public class HttpLogInterceptor implements HandlerInterceptor {
      * 此时我们需要通过response来产生响应；
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+    public boolean preHandle(HttpServletRequest request,
+        HttpServletResponse response,
         Object handler) throws Exception {
         startTime.set(System.currentTimeMillis());
         // 记录请求日志

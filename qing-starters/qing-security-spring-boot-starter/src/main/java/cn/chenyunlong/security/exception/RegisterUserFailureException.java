@@ -25,6 +25,7 @@ package cn.chenyunlong.security.exception;
 
 
 import cn.chenyunlong.security.enums.ErrorCodeEnum;
+import java.io.Serial;
 
 /**
  * 注册用户失败
@@ -34,6 +35,7 @@ import cn.chenyunlong.security.enums.ErrorCodeEnum;
  */
 public class RegisterUserFailureException extends AbstractResponseJsonAuthenticationException {
 
+    @Serial
     private static final long serialVersionUID = 9180897671726519378L;
 
     public RegisterUserFailureException(ErrorCodeEnum errorCodeEnum, Throwable t, String userId) {

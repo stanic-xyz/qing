@@ -36,7 +36,6 @@
         <module>qing-bus-server</module>
         <module>qing-codegen-plugin</module>
         <module>qing-starters</module>
-        <module>qing-starters-samples</module>
         <module>qing-infrastructure</module>
         <module>qing-ui</module>
     </modules>

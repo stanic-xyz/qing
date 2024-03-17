@@ -44,7 +44,7 @@ public class ApiResult<T> {
      * @return ok result with message and data
      */
     public static <T> ApiResult<T> success() {
-        return new ApiResult<T>(0, "success", null);
+        return new ApiResult<>(0, "success", null);
     }
 
     /**
@@ -54,7 +54,7 @@ public class ApiResult<T> {
      * @return base response with data
      */
     public static <T> ApiResult<T> success(T data) {
-        return new ApiResult<T>(0, SystemErrorType.SUCCESS.getMsg(), data);
+        return new ApiResult<>(0, SystemErrorType.SUCCESS.getMsg(), data);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ApiResult<T> {
      * @return base response with data
      */
     public static <T> ApiResult<T> fail(String msg) {
-        return new ApiResult<T>(1, msg, null);
+        return new ApiResult<>(1, msg, null);
     }
 
     public ApiResult<T> setData(T data) {

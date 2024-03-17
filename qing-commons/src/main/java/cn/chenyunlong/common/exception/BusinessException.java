@@ -26,7 +26,8 @@ import lombok.Getter;
 public class BusinessException extends RuntimeException {
 
     private BaseEnum<Integer> code;
-    private Object data;
+
+    @Getter private Object data;
 
     public BusinessException(BaseEnum<Integer> code) {
         super(code.getName());
@@ -51,10 +52,6 @@ public class BusinessException extends RuntimeException {
 
     public BaseEnum getCode() {
         return code;
-    }
-
-    public Object getData() {
-        return data;
     }
 
     public void setData(Object data) {

@@ -165,8 +165,8 @@ public class FileController {
             String bucketName = bucket.getName();
             String bucketLocation = bucket.getLocation();
 
-            log.info("存储桶名称：" + bucketName);
-            log.info("存储桶名称：" + bucketLocation);
+            log.info("存储桶名称：{}", bucketName);
+            log.info("存储桶地址：{}", bucketLocation);
         }
 
 
