@@ -1,0 +1,17 @@
+server:
+  port: 8761
+spring:
+  profiles:
+    active: local
+  application:
+    name: qing-eureka-server
+  main:
+    allow-bean-definition-overriding: true
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
