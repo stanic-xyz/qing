@@ -1,19 +1,12 @@
 server:
   port: 10086
 spring:
-  profiles:
-    active: dev
   application:
     name: qing-bootstrap-monitor
   cloud:
     consul:
       discovery:
         prefer-ip-address: true
-  boot:
-    admin:
-      discovery:
-        ignored-services:
-          - consul
 management:
   health:
     redis:

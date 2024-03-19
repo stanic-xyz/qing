@@ -6,14 +6,21 @@ spring:
   profiles:
     active: prod
   cloud:
-    consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
-      discovery:
-        register-health-check: true
-        prefer-ip-address: true
     config:
       server:
         default-label: master
         git:
           search-paths: config-repo
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+    metadata-map:
+      zone: default
+      status: UP
+      profile: prod

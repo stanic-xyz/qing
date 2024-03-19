@@ -31,6 +31,7 @@
         <module>qing-feign</module>
         <module>qing-commons</module>
         <module>qing-config-git</module>
+        <module>qing-eureka-server</module>
         <module>qing-service-cloud-gateway</module>
         <module>qing-domain</module>
         <module>qing-bus-server</module>
@@ -154,18 +155,17 @@
                 <artifactId>qing-camunda-spring-boot-starter</artifactId>
                 <version>0.0.2-SNAPSHOT</version>
             </dependency>
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.0.7</version>
+                <version>3.2.3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2022.0.3</version>
+                <version>2023.0.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

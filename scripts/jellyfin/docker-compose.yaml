@@ -1,0 +1,17 @@
+version: '3.5'
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    user: root
+    ports:
+      - protocol: tcp
+        target: 8096
+        published: 8096
+    volumes:
+      - /data/jellyfin/config:/config
+      - /data/jellyfin/cache:/cache
+      - type: bind
+        source: /data/media
+        target: /media
+    restart: 'always'

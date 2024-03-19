@@ -7,9 +7,3 @@ spring:
       discovery:
         enabled: false
         service-id: qing-config-git
-    consul:
-      host: 127.0.0.1
-      port: 8500
-      enabled: false
-      discovery:
-        enabled: false
