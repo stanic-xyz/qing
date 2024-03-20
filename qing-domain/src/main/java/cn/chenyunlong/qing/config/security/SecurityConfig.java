@@ -72,20 +72,21 @@ public class SecurityConfig {
                     "/v3/api-docs/**",
                     "/login",
                     "/api/auth/passLogin",
+                    "/actuator/**",
                     "/favicon.ico",
                     "/api/authorize/authing/login").permitAll();
                 authorize.anyRequest().hasRole("USER");
             })
             .formLogin(formLogin -> formLogin.usernameParameter("username")
-                .loginProcessingUrl("/auth/passLogin")
-                .permitAll()
+                                        .loginProcessingUrl("/auth/passLogin")
+                                        .permitAll()
             )
             .addFilterBefore(new MyAuthenticationProcessingFilter(),
                 UsernamePasswordAuthenticationFilter.class)
             .logout(logout -> logout.logoutSuccessUrl("/login.html"))
             .securityContext(httpSecuritySecurityContextConfigurer ->
-                httpSecuritySecurityContextConfigurer.securityContextRepository(
-                    securityContextRepository()))
+                                 httpSecuritySecurityContextConfigurer.securityContextRepository(
+                                     securityContextRepository()))
         ;
         http.exceptionHandling()
             .accessDeniedHandler(accessDeniedHandler)
