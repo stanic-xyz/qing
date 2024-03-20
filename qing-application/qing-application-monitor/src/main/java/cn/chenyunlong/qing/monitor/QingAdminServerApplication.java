@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.adminserver;
+package cn.chenyunlong.qing.monitor;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;

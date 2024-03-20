@@ -8,9 +8,3 @@ spring:
       discovery:
         enabled: true
         service-id: qing-config-git
-    consul:
-      host: ${CONSUL_HOST:localhost}
-      port: 8500
-      discovery:
-        register-health-check: true
-        prefer-ip-address: true
