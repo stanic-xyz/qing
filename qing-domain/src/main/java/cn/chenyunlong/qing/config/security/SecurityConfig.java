@@ -88,9 +88,9 @@ public class SecurityConfig {
                                  httpSecuritySecurityContextConfigurer.securityContextRepository(
                                      securityContextRepository()))
         ;
-        http.exceptionHandling()
-            .accessDeniedHandler(accessDeniedHandler)
-            .authenticationEntryPoint(authenticationEntryPoint);
+        http.exceptionHandling(exceptionHandling -> exceptionHandling
+                                                        .accessDeniedHandler(accessDeniedHandler)
+                                                        .authenticationEntryPoint(authenticationEntryPoint));
         return http.build();
     }
 
