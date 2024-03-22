@@ -23,7 +23,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>qing-config-git</artifactId>
+    <artifactId>qing-config-server</artifactId>
     <name>qing-config-git</name>
 
     <dependencies>
