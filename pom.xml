@@ -30,7 +30,7 @@
         <module>qing-application</module>
         <module>qing-feign</module>
         <module>qing-commons</module>
-        <module>qing-config-git</module>
+        <module>qing-config-server</module>
         <module>qing-eureka-server</module>
         <module>qing-service-cloud-gateway</module>
         <module>qing-domain</module>
