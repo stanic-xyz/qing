@@ -38,7 +38,7 @@
         <module>qing-codegen-plugin</module>
         <module>qing-starters</module>
         <module>qing-infrastructure</module>
-        <module>qing-ui</module>
+        <module>qing-third/javapoet</module>
     </modules>
 
     <url>https://www.chenyunlong.cn</url>
