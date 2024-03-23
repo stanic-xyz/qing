@@ -16,7 +16,7 @@ spec:
         - admin.chenyunlong.cn
     - secretName: chenyunlong-tls
   rules:
-    - host: api.chenyunlong.cn
+    - host: api.{{.Values.global.hostname}}
       http:
         paths:
           - path: /
@@ -26,7 +26,7 @@ spec:
                 name: gateway
                 port:
                   number: 9527
-    - host: config.chenyunlong.cn
+    - host: config.{{.Values.global.hostname}}
       http:
         paths:
           - path: /
@@ -36,7 +36,7 @@ spec:
                 name: config-app
                 port:
                   number: 8888
-    - host: admin.chenyunlong.cn
+    - host: admin.{{.Values.global.hostname}}
       http:
         paths:
           - path: /
