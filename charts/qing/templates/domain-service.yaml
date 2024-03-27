@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: qing
-  name: domain-deploy
+  name: domain
   labels:
     app: domain
 spec:
@@ -17,8 +17,8 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - name: domain-web
-          image: stanic-docker.pkg.coding.net/qing/qing/qing-domain-service:0.0.2.67
+        - name: domain
+          image: stanic-docker.pkg.coding.net/qing/qing/qing-domain-service:0.0.2-SNAPSHOT
           imagePullPolicy: IfNotPresent
           ports:
             - name: tcp-8080
@@ -33,7 +33,7 @@ kind: Service
 apiVersion: v1
 metadata:
   namespace: qing
-  name: domain-app
+  name: domain
   labels:
     app: domain
 spec:
@@ -42,6 +42,6 @@ spec:
   type: NodePort
   ports:
     - port: 8080
-      name: tcp-30080
+      name: tcp-8080
       protocol: TCP
       targetPort: 8080
