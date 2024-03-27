@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: qing
+  name: eureka
+  labels:
+    app: eureka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka
+  template:
+    metadata:
+      labels:
+        app: eureka
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: eureka
+          image: stanic-docker.pkg.coding.net/qing/qing/qing-eureka-server:0.0.2-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp-8761
+              containerPort: 8761
+          env:
+            - name: EUREKA_HOST
+              value: eureka.qing
+            - name: REDIS_HOST
+              value: redis.qing
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: qing
+  name: eureka
+  labels:
+    app: eureka
+spec:
+  selector:
+    app: eureka
+  type: NodePort
+  ports:
+    - name: tcp-8761
+      protocol: TCP
+      port: 8761
+      targetPort: 8761
