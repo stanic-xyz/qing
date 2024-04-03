@@ -1,18 +1,18 @@
-package cn.chenyunlong.qing.domain.anime.tag.service.impl;
+package cn.chenyunlong.qing.domain.anime.anime.service.impl;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.qing.domain.anime.tag.Tag;
-import cn.chenyunlong.qing.domain.anime.tag.dto.creator.TagCreator;
-import cn.chenyunlong.qing.domain.anime.tag.dto.query.TagQuery;
-import cn.chenyunlong.qing.domain.anime.tag.dto.updater.TagUpdater;
-import cn.chenyunlong.qing.domain.anime.tag.dto.vo.TagVO;
-import cn.chenyunlong.qing.domain.anime.tag.mapper.TagMapper;
-import cn.chenyunlong.qing.domain.anime.tag.repository.TagRepository;
-import cn.chenyunlong.qing.domain.anime.tag.service.ITagService;
+import cn.chenyunlong.qing.domain.anime.anime.Tag;
+import cn.chenyunlong.qing.domain.anime.anime.dto.creator.TagCreator;
+import cn.chenyunlong.qing.domain.anime.anime.dto.query.TagQuery;
+import cn.chenyunlong.qing.domain.anime.anime.dto.updater.TagUpdater;
+import cn.chenyunlong.qing.domain.anime.anime.dto.vo.TagVO;
+import cn.chenyunlong.qing.domain.anime.anime.mapper.TagMapper;
+import cn.chenyunlong.qing.domain.anime.anime.repository.TagRepository;
+import cn.chenyunlong.qing.domain.anime.anime.service.ITagService;
 import cn.hutool.core.lang.Assert;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;

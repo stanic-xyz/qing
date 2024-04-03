@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.domain.anime.tag.dto.creator;
+package cn.chenyunlong.qing.domain.anime.anime.dto.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

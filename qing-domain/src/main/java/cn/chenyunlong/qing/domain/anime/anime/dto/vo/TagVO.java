@@ -1,7 +1,7 @@
-package cn.chenyunlong.qing.domain.anime.tag.dto.vo;
+package cn.chenyunlong.qing.domain.anime.anime.dto.vo;
 
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
-import cn.chenyunlong.qing.domain.anime.tag.Tag;
+import cn.chenyunlong.qing.domain.anime.anime.Tag;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;

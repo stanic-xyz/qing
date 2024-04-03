@@ -19,11 +19,11 @@ public interface AnimeMapper {
 
     AnimeMapper INSTANCE = Mappers.getMapper(AnimeMapper.class);
 
-    Anime dtoToEntity(AnimeCreator dto);
+    AnimeCreator requestToCreator(AnimeCreateRequest createRequest);
+
+    Anime creatorToEntity(AnimeCreator request);
 
     AnimeUpdater request2Updater(AnimeUpdateRequest request);
-
-    AnimeCreator request2Dto(AnimeCreateRequest request);
 
     AnimeQuery request2Query(AnimeQueryRequest request);
 

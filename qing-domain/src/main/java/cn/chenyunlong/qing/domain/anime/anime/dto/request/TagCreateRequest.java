@@ -1,13 +1,12 @@
-package cn.chenyunlong.qing.domain.anime.tag.dto.response;
+package cn.chenyunlong.qing.domain.anime.anime.dto.request;
 
-import cn.chenyunlong.common.model.AbstractJpaResponse;
+import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 @Schema
-public class TagResponse extends AbstractJpaResponse {
-
-    static {
-    }
+@Data
+public class TagCreateRequest implements Request {
 
     @Schema(
         title = "name"

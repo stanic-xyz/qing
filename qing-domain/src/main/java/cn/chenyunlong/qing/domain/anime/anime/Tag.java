@@ -11,7 +11,7 @@
  *
  */
 
-package cn.chenyunlong.qing.domain.anime.tag;
+package cn.chenyunlong.qing.domain.anime.anime;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;

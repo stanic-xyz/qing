@@ -1,10 +1,10 @@
-package cn.chenyunlong.qing.domain.anime.tag.service;
+package cn.chenyunlong.qing.domain.anime.anime.service;
 
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.qing.domain.anime.tag.dto.creator.TagCreator;
-import cn.chenyunlong.qing.domain.anime.tag.dto.query.TagQuery;
-import cn.chenyunlong.qing.domain.anime.tag.dto.updater.TagUpdater;
-import cn.chenyunlong.qing.domain.anime.tag.dto.vo.TagVO;
+import cn.chenyunlong.qing.domain.anime.anime.dto.creator.TagCreator;
+import cn.chenyunlong.qing.domain.anime.anime.dto.query.TagQuery;
+import cn.chenyunlong.qing.domain.anime.anime.dto.updater.TagUpdater;
+import cn.chenyunlong.qing.domain.anime.anime.dto.vo.TagVO;
 import org.springframework.data.domain.Page;
 
 public interface ITagService {

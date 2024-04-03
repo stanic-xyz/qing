@@ -1,13 +1,12 @@
-package cn.chenyunlong.qing.domain.anime.tag.dto.updater;
+package cn.chenyunlong.qing.domain.anime.anime.dto.request;
 
-import cn.chenyunlong.qing.domain.anime.tag.Tag;
+import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Optional;
 import lombok.Data;
 
 @Schema
 @Data
-public class TagUpdater {
+public class TagUpdateRequest implements Request {
 
     @Schema(
         title = "name"
@@ -20,11 +19,6 @@ public class TagUpdater {
     private String instruction;
 
     private Long id;
-
-    public void updateTag(Tag param) {
-        Optional.ofNullable(getName()).ifPresent(param::setName);
-        Optional.ofNullable(getInstruction()).ifPresent(param::setInstruction);
-    }
 
     public String getName() {
         return name;
