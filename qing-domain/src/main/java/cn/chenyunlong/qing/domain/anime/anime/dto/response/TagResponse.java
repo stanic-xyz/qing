@@ -1,12 +1,13 @@
-package cn.chenyunlong.qing.domain.anime.tag.dto.request;
+package cn.chenyunlong.qing.domain.anime.anime.dto.response;
 
-import cn.chenyunlong.common.model.Request;
+import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 @Schema
-@Data
-public class TagUpdateRequest implements Request {
+public class TagResponse extends AbstractJpaResponse {
+
+    static {
+    }
 
     @Schema(
         title = "name"
@@ -17,8 +18,6 @@ public class TagUpdateRequest implements Request {
         title = "instruction"
     )
     private String instruction;
-
-    private Long id;
 
     public String getName() {
         return name;
@@ -34,13 +33,5 @@ public class TagUpdateRequest implements Request {
 
     public void setInstruction(String instruction) {
         this.instruction = instruction;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }

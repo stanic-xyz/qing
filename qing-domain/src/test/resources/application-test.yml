@@ -6,10 +6,6 @@ spring:
       password:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:qing;Mode=MYSQL
-  mail:
-    host: smtp.qq.com
-    username: 1576302867@qq.com
-    password: mliybwqnvphghgdg
   jpa:
     show-sql: true
     generate-ddl: true
@@ -17,9 +13,10 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
-  cloud:
-    consul:
-      enabled: false
+  mail:
+    host: smtp.qq.com
+    username: 1576302867@qq.com
+    password: mliybwqnvphghgdg
 logging:
   level:
     root: info

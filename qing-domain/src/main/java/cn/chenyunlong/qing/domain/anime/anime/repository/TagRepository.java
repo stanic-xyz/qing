@@ -1,7 +1,7 @@
-package cn.chenyunlong.qing.domain.anime.tag.repository;
+package cn.chenyunlong.qing.domain.anime.anime.repository;
 
 import cn.chenyunlong.jpa.support.BaseRepository;
-import cn.chenyunlong.qing.domain.anime.tag.Tag;
+import cn.chenyunlong.qing.domain.anime.anime.Tag;
 import org.springframework.data.jpa.repository.Query;
 
 public interface TagRepository extends BaseRepository<Tag, Long> {

@@ -103,4 +103,11 @@ public class Anime extends BaseJpaAggregate {
 
     @FieldDesc(description = "排序号")
     private Integer orderNo;
+
+
+    @Override
+    public void init() {
+        super.init();
+        setPlayStatus(PlayStatus.SERIALIZING);
+    }
 }

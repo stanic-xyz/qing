@@ -15,12 +15,11 @@ package cn.chenyunlong.common.model;
 
 import cn.chenyunlong.common.constants.BaseEnum;
 import cn.chenyunlong.common.constants.CodeEnum;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
-
-import java.util.Objects;
 
 /**
  * 公共返回结构
@@ -43,6 +42,13 @@ public final class JsonResult<T> {
     private String devMessage;
 
     private JsonResult() {
+    }
+
+    /**
+     * 成功
+     */
+    public static <E> JsonResult<E> success() {
+        return success(null);
     }
 
     /**
