@@ -8,6 +8,8 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.TagRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
+import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
+import cn.chenyunlong.qing.domain.anime.attachement.repository.AttachmentRepository;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
 import java.util.List;
@@ -22,7 +24,7 @@ public class IAnimeDomainServiceImpl implements IAnimeDomainService {
     private final AnimeCategoryRepository categoryRepository;
     private final TagRepository tagRepository;
     private final DistrictRepository districtRepository;
-
+    private final AttachmentRepository attachmentRepository;
 
     /**
      * 创建动漫信息
@@ -32,6 +34,7 @@ public class IAnimeDomainServiceImpl implements IAnimeDomainService {
         List<Tag> tagList = tagRepository.findAllById(request.getTagIds());
         District district = districtRepository.findById(request.getDistrictId()).orElseThrow();
         AnimeCategory animeCategory = categoryRepository.findById(request.getTypeId()).orElseThrow();
+        Attachment attachment = attachmentRepository.findById(request.getCoverUrlAttachmentId()).orElseThrow();
         AnimeCreateContext context = AnimeCreateContext.createContext(request, tagList, district, animeCategory);
         return animeService.createAnime(context);
     }

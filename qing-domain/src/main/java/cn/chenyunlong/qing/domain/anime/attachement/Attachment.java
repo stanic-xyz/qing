@@ -43,7 +43,7 @@ public class Attachment extends BaseJpaAggregate {
     private String mimeType;
 
     @FieldDesc(name = "文件地址", description = "文件上传地址")
-    private String url;
+    private String path;
 
     @FieldDesc(name = "文件大小")
     private Long fileSize;

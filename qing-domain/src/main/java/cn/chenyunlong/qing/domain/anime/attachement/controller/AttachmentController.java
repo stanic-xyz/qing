@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "附件管理")
 @RestController
 @Slf4j
-@RequestMapping("api/v1/attachment")
+@RequestMapping("api/v1/attachments")
 @RequiredArgsConstructor
 public class AttachmentController {
 

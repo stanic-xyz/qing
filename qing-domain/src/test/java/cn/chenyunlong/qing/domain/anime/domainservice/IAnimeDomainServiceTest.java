@@ -8,13 +8,17 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.creator.TagCreator;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeCategoryService;
 import cn.chenyunlong.qing.domain.anime.anime.service.ITagService;
+import cn.chenyunlong.qing.domain.anime.attachement.dto.creator.AttachmentCreator;
+import cn.chenyunlong.qing.domain.anime.attachement.service.IAttachmentService;
 import cn.chenyunlong.qing.domain.anime.district.dto.creator.DistrictCreator;
 import cn.chenyunlong.qing.domain.anime.district.service.IDistrictService;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MimeTypeUtils;
 
 class IAnimeDomainServiceTest extends AbstractDomainTests {
 
@@ -29,6 +33,9 @@ class IAnimeDomainServiceTest extends AbstractDomainTests {
 
     @Autowired
     private IAnimeDomainService animeDomainService;
+
+    @Autowired
+    private IAttachmentService attachmentService;
 
 
     @Test
@@ -88,6 +95,16 @@ class IAnimeDomainServiceTest extends AbstractDomainTests {
                                                    .build();
         Long categoryId = categoryService.createAnimeCategory(categoryCreator);
         createRequest.setTypeId(categoryId);
+
+        Long attachmentId = attachmentService.createAttachment(AttachmentCreator.builder()
+                                                                   .path("https://i0.hdslb.com/bfs/bangumi/image/95d2881427fd43431f6a696a05623675ecdce9d9.jpg@450w_600h.webp")
+                                                                   .fileId(IdUtil.getSnowflakeNextId())
+                                                                   .fileName("95d2881427fd43431f6a696a05623675ecdce9d9.jpg")
+                                                                   .fileSize(100000000000L)
+                                                                   .mimeType(MimeTypeUtils.APPLICATION_XML_VALUE)
+                                                                   .build());
+        createRequest.setCoverUrlAttachmentId(attachmentId);
+        createRequest.setCoverUrl("");
 
         Long animeId = animeDomainService.createAnime(createRequest);
         Assertions.assertNotNull(animeId);
