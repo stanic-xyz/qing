@@ -45,7 +45,7 @@ public class AttachmentUpdater {
         Optional.ofNullable(getFileId()).ifPresent(param::setFileId);
         Optional.ofNullable(getFileName()).ifPresent(param::setFileName);
         Optional.ofNullable(getMimeType()).ifPresent(param::setMimeType);
-        Optional.ofNullable(getUrl()).ifPresent(param::setUrl);
+        Optional.ofNullable(getUrl()).ifPresent(param::setPath);
         Optional.ofNullable(getFileSize()).ifPresent(param::setFileSize);
     }
 

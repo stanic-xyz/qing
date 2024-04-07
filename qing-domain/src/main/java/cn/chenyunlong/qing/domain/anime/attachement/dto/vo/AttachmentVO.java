@@ -40,7 +40,7 @@ public class AttachmentVO extends AbstractBaseJpaVo {
         title = "url",
         description = "文件地址"
     )
-    private String url;
+    private String path;
 
     @Schema(
         title = "fileSize",
@@ -56,47 +56,8 @@ public class AttachmentVO extends AbstractBaseJpaVo {
         this.setFileId(source.getFileId());
         this.setFileName(source.getFileName());
         this.setMimeType(source.getMimeType());
-        this.setUrl(source.getUrl());
+        this.setPath(source.getPath());
         this.setFileSize(source.getFileSize());
     }
 
-    public Long getFileId() {
-        return fileId;
-    }
-
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getMimeType() {
-        return mimeType;
-    }
-
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(Long fileSize) {
-        this.fileSize = fileSize;
-    }
 }
