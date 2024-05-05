@@ -6,12 +6,12 @@ import cn.chenyunlong.qing.domain.zan.service.selector.LikeFilterSelectorFactory
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@EnableConfigurationProperties(LikeFilterSelectorProperties.class)
+@ConditionalOnBean(LikeFilterSelectorProperties.class)
 public class EnvBasedLikeFilterNameSelectorFactory implements LikeFilterSelectorFactory {
 
     private final LikeFilterSelectorProperties likeFilterSelectorProperties;
