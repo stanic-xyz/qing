@@ -38,6 +38,7 @@
         <module>qing-codegen-plugin</module>
         <module>qing-starters</module>
         <module>qing-infrastructure</module>
+        <module>qing-domain-gen</module>
     </modules>
 
     <url>https://www.chenyunlong.cn</url>
@@ -101,6 +102,7 @@
         <lego.version>0.1.23</lego.version>
         <knife4j.version>4.1.0</knife4j.version>
         <querydsl.version>5.0.0</querydsl.version>
+        <maven.plugin.validation>NONE</maven.plugin.validation>
     </properties>
 
     <issueManagement>
@@ -311,6 +313,11 @@
                 <artifactId>spring-plugin-core</artifactId>
                 <version>3.0.0</version>
             </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>0.9.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -320,7 +327,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>2.5.2</version>
+                    <version>3.2.5</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

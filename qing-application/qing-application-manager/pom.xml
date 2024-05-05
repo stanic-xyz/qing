@@ -15,6 +15,7 @@
     <version>0.0.2-SNAPSHOT</version>
     <name>qing-application-manager</name>
     <description>qing-application-manager</description>
+
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,7 +46,6 @@
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-            <version>4.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -77,6 +77,10 @@
         <dependency>
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-infrastructure</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.graphql</groupId>
@@ -115,7 +119,7 @@
                 <executions>
                     <execution>
                         <id>compile</id>
-                        <phase>compile</phase>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
@@ -147,30 +151,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-compile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>default-testCompile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>testCompile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
                     <source>17</source>
                     <target>17</target>

@@ -29,8 +29,8 @@ import org.springframework.stereotype.Service;
 public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
 
     private final IUserService userService;
-    private final PasswordEncoder passwordEncoder;
     private final IEmailService emailService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
