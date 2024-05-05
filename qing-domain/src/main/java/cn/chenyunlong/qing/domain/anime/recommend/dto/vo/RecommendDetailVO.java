@@ -26,6 +26,8 @@ public class RecommendDetailVO extends RecommendVO {
         this.setVersion(source.getVersion());
         this.setName(source.getName());
         this.setInstruction(source.getInstruction());
-        this.animeVO = AnimeMapper.INSTANCE.entityToVo(anime);
+        if (anime != null) {
+            this.setAnimeVO(AnimeMapper.INSTANCE.entityToVo(anime));
+        }
     }
 }

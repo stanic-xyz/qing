@@ -5,6 +5,7 @@ import cn.chenyunlong.qing.domain.anime.anime.Tag;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
+import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -29,8 +30,11 @@ public class AnimeCreateContext {
     @NotNull
     private AnimeCategory animeCategory;
 
-    public static AnimeCreateContext createContext(AnimeCreateRequest createRequest, List<Tag> tagList, District district, AnimeCategory animeCategory) {
+    @NotNull
+    private Attachment attachment;
+
+    public static AnimeCreateContext createContext(AnimeCreateRequest createRequest, List<Tag> tagList, District district, AnimeCategory animeCategory, Attachment attachment) {
         AnimeCreator requestToCreator = AnimeMapper.INSTANCE.requestToCreator(createRequest);
-        return new AnimeCreateContext(requestToCreator, tagList, district, animeCategory);
+        return new AnimeCreateContext(requestToCreator, tagList, district, animeCategory, attachment);
     }
 }

@@ -46,13 +46,13 @@
         <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.3</version>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>3.5.5</version>
         </dependency>
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
-            <version>1.0.0-alpha-3</version>
+            <version>0.10.4</version>
         </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>
@@ -61,14 +61,13 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.0.19.Final</version>
+            <version>8.0.1.Final</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-commons</artifactId>
             <version>0.0.2-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>

@@ -1,8 +1,10 @@
 server:
   port: ${BUS_SERVER_PORT:8071}
 spring:
+  application:
+    name: qing-bus-server
   rabbitmq:
-    host: 192.168.129.77
+    host: 192.168.3.3
     port: ${RABBIT_MQ_PORT:5672}
     username: ${RABBIT_MQ_USERNAME:guest}
     password: ${RABBIT_MQ_PASSWORD:guest}

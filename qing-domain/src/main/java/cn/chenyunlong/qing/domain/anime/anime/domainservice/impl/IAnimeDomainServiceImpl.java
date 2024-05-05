@@ -31,11 +31,13 @@ public class IAnimeDomainServiceImpl implements IAnimeDomainService {
      */
     @Override
     public Long createAnime(AnimeCreateRequest request) {
+        // 创建动漫信息，给你看了，你就是不会
         List<Tag> tagList = tagRepository.findAllById(request.getTagIds());
         District district = districtRepository.findById(request.getDistrictId()).orElseThrow();
         AnimeCategory animeCategory = categoryRepository.findById(request.getTypeId()).orElseThrow();
         Attachment attachment = attachmentRepository.findById(request.getCoverUrlAttachmentId()).orElseThrow();
-        AnimeCreateContext context = AnimeCreateContext.createContext(request, tagList, district, animeCategory);
+        AnimeCreateContext context = AnimeCreateContext.createContext(request, tagList, district, animeCategory, attachment);
         return animeService.createAnime(context);
     }
+
 }

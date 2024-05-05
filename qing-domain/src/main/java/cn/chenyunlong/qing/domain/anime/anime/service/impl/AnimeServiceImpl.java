@@ -16,11 +16,17 @@ import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
+import cn.chenyunlong.qing.domain.anime.district.District;
+import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.map.MapUtil;
 import jakarta.validation.Validator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -38,6 +44,7 @@ public class AnimeServiceImpl implements IAnimeService {
     private final AnimeRepository animeRepository;
     private final AnimeCategoryRepository categoryRepository;
     private final Validator validator;
+    private final DistrictRepository districtRepository;
 
     /**
      * createImpl
@@ -121,5 +128,35 @@ public class AnimeServiceImpl implements IAnimeService {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return animeRepository.findAll(pageRequest).map(AnimeMapper.INSTANCE::entityToVo);
+    }
+
+    @Override
+    public List<AnimeVO> queryLatestUpdate() {
+        List<Anime> animeList = animeRepository.findAll(Sort.by("createdAt").ascending());
+        Map<Long, District> districtMap = null;
+
+        if (!animeList.isEmpty()) {
+            List<Long> districtIdList = animeList.stream().map(Anime::getDistrictId).toList();
+            List<District> districtList;
+            if (!districtIdList.isEmpty()) {
+                districtList = districtRepository.findAllById(districtIdList);
+            } else {
+                districtList = CollUtil.toList();
+            }
+            districtMap = districtList.stream().collect(Collectors.toMap(District::getId, o -> o));
+        }
+        if (districtMap == null) {
+            districtMap = MapUtil.newHashMap();
+        }
+
+        Map<Long, District> finalDistrictMap = districtMap;
+        return animeList.stream().map(animeInfo -> {
+            AnimeVO animeVO = AnimeMapper.INSTANCE.entityToVo(animeInfo);
+            if (finalDistrictMap.containsKey(animeVO.getDistrictId())) {
+                animeVO.setDistrictName(finalDistrictMap.get(animeVO.getDistrictId()).getName());
+            }
+            return animeVO;
+        }).toList();
+
     }
 }

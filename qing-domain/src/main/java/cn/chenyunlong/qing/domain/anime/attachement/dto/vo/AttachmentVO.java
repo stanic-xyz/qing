@@ -53,7 +53,6 @@ public class AttachmentVO extends AbstractBaseJpaVo {
         this.setId(source.getId());
         this.setCreatedAt(source.getCreatedAt());
         this.setUpdatedAt(source.getCreatedAt());
-        this.setFileId(source.getFileId());
         this.setFileName(source.getFileName());
         this.setMimeType(source.getMimeType());
         this.setPath(source.getPath());
