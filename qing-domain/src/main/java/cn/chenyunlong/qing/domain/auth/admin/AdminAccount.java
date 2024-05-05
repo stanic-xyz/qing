@@ -10,20 +10,16 @@ import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@EqualsAndHashCode(callSuper = false)
 @Getter
 @Setter
 @ToString
 @Entity
 @Table(name = "admin_account")
-@Data
 public class AdminAccount extends BaseJpaAggregate {
 
     @FieldDesc(name = "手机号")

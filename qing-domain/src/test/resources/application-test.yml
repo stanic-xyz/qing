@@ -1,7 +1,6 @@
 spring:
   datasource:
     hikari:
-      connection-init-sql: select 1
       username: sa
       password:
     driver-class-name: org.h2.Driver
@@ -10,7 +9,7 @@ spring:
     show-sql: true
     generate-ddl: true
     open-in-view: false
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: create-drop
   mail:
