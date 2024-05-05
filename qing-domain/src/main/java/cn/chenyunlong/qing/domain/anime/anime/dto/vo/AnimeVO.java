@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.vo;
 
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.Data;
@@ -14,24 +15,16 @@ import lombok.EqualsAndHashCode;
 )
 public class AnimeVO extends AbstractBaseJpaVo {
 
-    @Schema(
-        title = "name"
-    )
+    @Schema(title = "name")
     private String name;
 
-    @Schema(
-        title = "instruction"
-    )
+    @Schema(title = "instruction")
     private String instruction;
 
-    @Schema(
-        title = "districtId"
-    )
+    @Schema(title = "districtId")
     private Long districtId;
 
-    @Schema(
-        title = "districtName"
-    )
+    @Schema(title = "districtName")
     private String districtName;
 
     @Schema(
@@ -77,6 +70,7 @@ public class AnimeVO extends AbstractBaseJpaVo {
     @Schema(
         title = "premiereDate"
     )
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate premiereDate;
 
     @Schema(

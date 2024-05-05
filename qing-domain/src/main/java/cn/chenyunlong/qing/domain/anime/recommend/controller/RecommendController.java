@@ -4,6 +4,7 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
+import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.creator.RecommendCreator;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.query.RecommendQuery;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.request.RecommendCreateRequest;
@@ -39,57 +40,52 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecommendController {
 
     private final IRecommendService recommendService;
+    private final IAnimeService animeService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createRecommend(@Valid @RequestBody RecommendCreateRequest request) {
+    public JsonResult<Long> createRecommend(
+        @Valid
+        @RequestBody
+        RecommendCreateRequest request) {
         RecommendCreator creator = RecommendMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(recommendService.createRecommend(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateRecommend")
-    public JsonResult<String> updateRecommend(@RequestBody RecommendUpdateRequest request) {
+    public JsonResult<String> updateRecommend(
+        @RequestBody
+        RecommendUpdateRequest request) {
         RecommendUpdater updater = RecommendMapper.INSTANCE.request2Updater(request);
         recommendService.updateRecommend(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validRecommend(@PathVariable Long id) {
+    public JsonResult<String> validRecommend(
+        @PathVariable
+        Long id) {
         recommendService.validRecommend(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidRecommend(@PathVariable Long id) {
+    public JsonResult<String> invalidRecommend(
+        @PathVariable
+        Long id) {
         recommendService.invalidRecommend(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
     @GetMapping("findById/{id}")
-    public JsonResult<RecommendResponse> findById(@PathVariable Long id) {
+    public JsonResult<RecommendResponse> findById(
+        @PathVariable
+        Long id) {
         RecommendVO vo = recommendService.findById(id);
         RecommendResponse response = RecommendMapper.INSTANCE.vo2CustomResponse(vo);
+        response.setAnimeVO(animeService.findById(vo.getAnimeId()));
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<RecommendResponse>> page(
         @RequestBody

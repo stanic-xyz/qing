@@ -5,6 +5,7 @@
 .idea
 .fastRequest
 !.idea/icon.png
+!.idea/runConfigurations/
 
 # Eclipse
 .classpath
@@ -31,19 +32,6 @@ settings.xml
 logs
 
 doc/db/.back_Qing
-
-
-### Local file
-**/**-local.yml
-**/**-local.yaml
-**/**-local.properties
-**-local.yml
-**-local.yaml
-**-local.properties
-
-**.local
-### .env 配置文件
-local.env
 
 # 本地上传文件测试
 /docker/redis/data/

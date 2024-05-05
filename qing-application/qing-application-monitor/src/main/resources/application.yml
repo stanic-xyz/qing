@@ -17,7 +17,7 @@ management:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.3.16:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
   instance:
     prefer-ip-address: true
     leaseRenewalIntervalInSeconds: 10

@@ -1,2 +1,11 @@
 server:
-  port: 8888
+  port: 8080
+spring:
+  application:
+    name: qing-web-service
+  graphql:
+    graphiql:
+      enabled: true
+  h2:
+    console:
+      enabled: true

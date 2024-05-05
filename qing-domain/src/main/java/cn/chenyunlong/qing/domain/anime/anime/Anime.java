@@ -54,8 +54,11 @@ public class Anime extends BaseJpaAggregate {
     @FieldDesc(description = "区域名称")
     private String districtName;
 
-    @FieldDesc(description = "封面")
+    @FieldDesc(description = "封面地址")
     private String coverUrl;
+
+    @FieldDesc(description = "封面附件Id")
+    private Long coverAttachmentId;
 
     @FieldDesc(description = "类型信息")
     private Long typeId;

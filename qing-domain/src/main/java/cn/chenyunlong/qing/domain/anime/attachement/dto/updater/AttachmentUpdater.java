@@ -9,11 +9,6 @@ import lombok.Data;
 @Data
 public class AttachmentUpdater {
 
-    @Schema(
-        title = "fileId",
-        description = "文件ID"
-    )
-    private Long fileId;
 
     @Schema(
         title = "fileName",
@@ -42,58 +37,10 @@ public class AttachmentUpdater {
     private Long id;
 
     public void updateAttachment(Attachment param) {
-        Optional.ofNullable(getFileId()).ifPresent(param::setFileId);
         Optional.ofNullable(getFileName()).ifPresent(param::setFileName);
         Optional.ofNullable(getMimeType()).ifPresent(param::setMimeType);
         Optional.ofNullable(getUrl()).ifPresent(param::setPath);
         Optional.ofNullable(getFileSize()).ifPresent(param::setFileSize);
     }
 
-    public Long getFileId() {
-        return fileId;
-    }
-
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getMimeType() {
-        return mimeType;
-    }
-
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(Long fileSize) {
-        this.fileSize = fileSize;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

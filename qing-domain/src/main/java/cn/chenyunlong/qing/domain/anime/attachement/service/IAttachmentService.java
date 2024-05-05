@@ -17,7 +17,7 @@ public interface IAttachmentService {
     /**
      * update
      */
-    void updateAttachment(AttachmentUpdater updater);
+    void updateAttachment(Long id, AttachmentUpdater updater);
 
     /**
      * valid
@@ -35,7 +35,13 @@ public interface IAttachmentService {
     AttachmentVO findById(Long id);
 
     /**
+     * 根据id删除
+     */
+    void deleteById(Long id);
+
+    /**
      * findByPage
      */
     Page<AttachmentVO> findByPage(PageRequestWrapper<AttachmentQuery> query);
+
 }

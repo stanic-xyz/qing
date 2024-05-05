@@ -15,6 +15,7 @@ package cn.chenyunlong.qing.infrastructure.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
  * @author 陈云龙
  */
 @Data
+@Primary
 @Component
 @ConfigurationProperties(prefix = "qing")
 public class QingProperties {
