@@ -24,5 +24,8 @@ jobs:
           java-version: '17'
           distribution: 'adopt-hotspot'
           cache: maven
-      - name: Build Bootstrap Service
-        run: mvn clean install -pl qing-domain -am -f pom.xml && mvn clean install -pl qing-application/qing-application-manager -f pom.xml
+      - name: Build Web Service
+        run:
+          - mvn clean install -pl qing-domain -am -f pom.xml
+          - mvn clean install -pl qing-starters/qing-security-spring-boot-starter -f pom.xml
+          - mvn clean install -pl qing-application/qing-application-manager -f pom.xml
