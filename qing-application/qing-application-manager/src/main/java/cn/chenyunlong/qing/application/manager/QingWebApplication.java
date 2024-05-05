@@ -11,9 +11,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableCaching
 @EnableDiscoveryClient
 @SpringBootApplication
-@ComponentScan(basePackages = {"cn.chenyunlong.qing.domain", "cn.chenyunlong.qing.application.manager", "cn.chenyunlong.qing.infrastructure"})
+@ComponentScan(basePackages = {"cn.chenyunlong.qing.domain.*", "cn.chenyunlong.qing.application.manager.*", "cn.chenyunlong.qing.infrastructure.*"})
 @EnableJpaRepositories(basePackages = "cn.chenyunlong.qing.domain.*")
-@EntityScan(basePackages = "cn.chenyunlong.qing.domain.*")
+@EntityScan(basePackages = {"cn.chenyunlong.qing.domain.*"})
 public class QingWebApplication {
 
     /**

@@ -3,14 +3,13 @@ package cn.chenyunlong.qing.domain.entity.dto.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import cn.chenyunlong.qing.domain.entity.EntityType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @Schema
 public class EntityResponse extends AbstractJpaResponse {
-
-    static {
-    }
 
     @Schema(
         title = "name",

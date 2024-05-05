@@ -14,15 +14,16 @@ import cn.chenyunlong.qing.domain.anime.recommend.dto.vo.RecommendDetailVO;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.vo.RecommendVO;
 import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {
     CustomMapper.class,
     GenericEnumMapper.class,
     DateMapper.class
-})
+}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RecommendMapper {
-
+    
     RecommendMapper INSTANCE = Mappers.getMapper(RecommendMapper.class);
 
     Recommend dtoToEntity(RecommendCreator dto);
