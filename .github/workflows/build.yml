@@ -25,11 +25,8 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
       - name: Build Domain Service
-        run:
-          - mvn clean install -pl qing-domain -am -f pom.xml
+        run: mvn clean install -pl qing-domain -am -f pom.xml
       - name: Build Starter
-        run:
-          - mvn clean install -pl qing-starters/qing-security-spring-boot-starter -f pom.xml
+        run: mvn clean install -pl qing-starters/qing-security-spring-boot-starter -f pom.xml
       - name: Build Web Service
-        run:
-          - mvn clean install -pl qing-application/qing-application-manager -f pom.xml
+        run: mvn clean install -pl qing-application/qing-application-manager -f pom.xml
