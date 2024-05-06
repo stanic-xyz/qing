@@ -5,7 +5,4 @@ spring:
     name: qing-web-service
   graphql:
     graphiql:
-      enabled: true
-  h2:
-    console:
-      enabled: true
+      enabled: false

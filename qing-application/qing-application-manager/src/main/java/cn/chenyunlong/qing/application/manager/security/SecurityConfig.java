@@ -27,6 +27,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -61,12 +62,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain userLoginFilterChain(HttpSecurity http) throws Exception {
-        http.apply(authingLoginConfigurer);
-        http.apply(customPasswordDsl);
+        http.with(authingLoginConfigurer, Customizer.withDefaults());
+        http.with(customPasswordDsl, Customizer.withDefaults());
         http.securityMatcher("/**")
             .authorizeHttpRequests(authorize -> {
                 authorize.requestMatchers(
                     authingProperties.getRedirectUrlPrefix(),
+                    "/graphql",
                     "/swagger-ui/**",
                     "/h2-console/**",
                     "/doc.html",
@@ -99,4 +101,5 @@ public class SecurityConfig {
     public MySecurityContextRepository securityContextRepository() {
         return new MySecurityContextRepository(jwtTokenUtil, userDetailsService);
     }
+
 }
