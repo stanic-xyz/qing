@@ -25,7 +25,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -54,7 +53,6 @@ import org.hibernate.validator.constraints.Length;
 @GenMapper
 @Entity
 @Table(name = "verify_rule")
-@Data
 public class VerifyRule extends BaseJpaAggregate {
 
     @FieldDesc(name = "规则名称")

@@ -27,7 +27,7 @@ class AnimeMapperTest {
         typeCreator.setInstruction("test-Description");
         typeCreator.setName("name");
         typeCreator.setOrderNo(1);
-        Anime anime = AnimeMapper.INSTANCE.dtoToEntity(typeCreator);
+        Anime anime = AnimeMapper.INSTANCE.creatorToEntity(typeCreator);
 
         Assertions.assertEquals("test-Description", anime.getInstruction());
         Assertions.assertEquals("name", anime.getName());

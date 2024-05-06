@@ -36,9 +36,9 @@ public class DistrictServiceImpl implements IDistrictService {
     @Override
     public Long createDistrict(DistrictCreator creator) {
         Optional<District> district = EntityOperations.doCreate(districtRepository)
-            .create(() -> DistrictConverter.INSTANCE.dtoToEntity(creator))
-            .update(District::init)
-            .execute();
+                                          .create(() -> DistrictConverter.INSTANCE.dtoToEntity(creator))
+                                          .update(District::init)
+                                          .execute();
         return district.isPresent() ? district.get().getId() : 0;
     }
 
@@ -46,9 +46,9 @@ public class DistrictServiceImpl implements IDistrictService {
      * update
      */
     @Override
-    public void updateDistrict(DistrictUpdater updater) {
+    public void updateDistrict(Long id, DistrictUpdater updater) {
         EntityOperations.doUpdate(districtRepository)
-            .loadById(updater.getId())
+            .loadById(id)
             .update(updater::updateDistrict)
             .execute();
     }
@@ -93,5 +93,10 @@ public class DistrictServiceImpl implements IDistrictService {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return districtRepository.findAll(pageRequest).map(DistrictVO::new);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        districtRepository.deleteById(id);
     }
 }

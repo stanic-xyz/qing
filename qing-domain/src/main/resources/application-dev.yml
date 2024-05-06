@@ -13,11 +13,6 @@ spring:
     host: smtp.qq.com
     username: your_mail_count
     password: your_mail_token
-  cloud:
-    config:
-      enabled: false
-    consul:
-      enabled: false
   jpa:
     properties:
       hibernate:
@@ -53,7 +48,3 @@ qing:
     secret: 9d8cbf48467d38006f50f13d499f5abc
     token: 123123
     aes-key: ZcipcxwIwYh0WFFdBPZXlrxzNVmTWPq4OuVh4RzHGh6
-management:
-  endpoint:
-    consul:
-      enabled: false

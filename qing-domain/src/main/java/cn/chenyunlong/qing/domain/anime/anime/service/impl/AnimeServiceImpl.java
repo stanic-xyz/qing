@@ -7,20 +7,23 @@ import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
-import cn.chenyunlong.qing.domain.anime.anime.AnimeTagRel;
-import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
+import cn.chenyunlong.qing.domain.anime.anime.Tag;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeCreateContext;
 import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
-import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeTagRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
-import cn.chenyunlong.qing.domain.anime.tag.Tag;
-import cn.chenyunlong.qing.domain.anime.tag.repository.TagRepository;
+import cn.chenyunlong.qing.domain.anime.district.District;
+import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.map.MapUtil;
+import jakarta.validation.Validator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,7 +35,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -40,34 +43,26 @@ public class AnimeServiceImpl implements IAnimeService {
 
     private final AnimeRepository animeRepository;
     private final AnimeCategoryRepository categoryRepository;
-    private final AnimeTagRepository animeTagRepository;
-    private final TagRepository tagRepository;
+    private final Validator validator;
+    private final DistrictRepository districtRepository;
 
     /**
      * createImpl
      */
     @Override
-    public Long createAnime(AnimeCreator creator) {
+    public Long createAnime(AnimeCreateContext createContext) {
         Optional<Anime> anime = EntityOperations.doCreate(animeRepository)
-                                    .create(() -> {
-                                        AnimeCategory animeCategory = categoryRepository.getReferenceById(creator.getTypeId());
-                                        Assert.notNull(animeCategory, "分类信息不存在");
-                                        Anime entity = AnimeMapper.INSTANCE.dtoToEntity(creator);
-                                        entity.setTypeName(animeCategory.getName());
-
-                                        List<Tag> tagList = tagRepository.findAllById(creator.getTagIds());
-                                        Assert.equals(tagList.size(), creator.getTagIds().size(), "标签信息不存在");
-                                        List<AnimeTagRel> collected = tagList.stream().map(tag -> AnimeTagRel.builder()
-                                                                                                      .animeId(entity.getId())
-                                                                                                      .tagId(tag.getId())
-                                                                                                      .build()).toList();
-                                        entity.setTags(tagList.stream().map(Tag::getName).collect(Collectors.joining(",")));
-                                        animeTagRepository.saveAll(collected);
-                                        return entity;
-                                    })
+                                    .create(() -> AnimeMapper.INSTANCE.creatorToEntity(createContext.getAnimeCreator()))
                                     .update(Anime::init)
+                                    .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId()))
                                     .execute();
+        saveRel(anime, createContext.getTagList());
         return anime.isPresent() ? anime.get().getId() : 0;
+    }
+
+    private void saveRel(Optional<Anime> anime, List<Tag> tags) {
+
+
     }
 
     /**
@@ -120,6 +115,11 @@ public class AnimeServiceImpl implements IAnimeService {
         return anime.map(AnimeMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
     }
 
+    @Override
+    public void removeById(Long id) {
+        animeRepository.deleteById(id);
+    }
+
     /**
      * findByPage
      */
@@ -128,5 +128,35 @@ public class AnimeServiceImpl implements IAnimeService {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return animeRepository.findAll(pageRequest).map(AnimeMapper.INSTANCE::entityToVo);
+    }
+
+    @Override
+    public List<AnimeVO> queryLatestUpdate() {
+        List<Anime> animeList = animeRepository.findAll(Sort.by("createdAt").ascending());
+        Map<Long, District> districtMap = null;
+
+        if (!animeList.isEmpty()) {
+            List<Long> districtIdList = animeList.stream().map(Anime::getDistrictId).toList();
+            List<District> districtList;
+            if (!districtIdList.isEmpty()) {
+                districtList = districtRepository.findAllById(districtIdList);
+            } else {
+                districtList = CollUtil.toList();
+            }
+            districtMap = districtList.stream().collect(Collectors.toMap(District::getId, o -> o));
+        }
+        if (districtMap == null) {
+            districtMap = MapUtil.newHashMap();
+        }
+
+        Map<Long, District> finalDistrictMap = districtMap;
+        return animeList.stream().map(animeInfo -> {
+            AnimeVO animeVO = AnimeMapper.INSTANCE.entityToVo(animeInfo);
+            if (finalDistrictMap.containsKey(animeVO.getDistrictId())) {
+                animeVO.setDistrictName(finalDistrictMap.get(animeVO.getDistrictId()).getName());
+            }
+            return animeVO;
+        }).toList();
+
     }
 }

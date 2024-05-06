@@ -14,13 +14,14 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
 import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {
     GenericEnumMapper.class,
     DateMapper.class,
     CustomMapper.class
-})
+}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);

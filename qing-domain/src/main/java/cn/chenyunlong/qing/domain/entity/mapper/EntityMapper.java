@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.entity.dto.updater.EntityUpdater;
 import cn.chenyunlong.qing.domain.entity.dto.vo.EntityVO;
 import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(
@@ -20,7 +21,8 @@ import org.mapstruct.factory.Mappers;
         GenericEnumMapper.class,
         DateMapper.class,
         CustomMapper.class
-    }
+    },
+    unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public interface EntityMapper {
 

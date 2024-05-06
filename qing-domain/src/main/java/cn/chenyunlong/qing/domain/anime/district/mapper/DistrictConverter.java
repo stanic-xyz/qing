@@ -12,14 +12,15 @@ import cn.chenyunlong.qing.domain.anime.district.dto.updater.DistrictUpdater;
 import cn.chenyunlong.qing.domain.anime.district.dto.vo.DistrictVO;
 import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {
     CustomMapper.class,
-    DateMapper.class,
-})
+    DateMapper.class
+}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DistrictConverter {
-
+    
     DistrictConverter INSTANCE = Mappers.getMapper(DistrictConverter.class);
 
     District dtoToEntity(DistrictCreator dto);

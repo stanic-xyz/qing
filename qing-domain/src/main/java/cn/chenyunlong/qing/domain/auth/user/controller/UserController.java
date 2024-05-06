@@ -4,14 +4,11 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
-import cn.chenyunlong.qing.domain.auth.user.domainservice.IUserDomainService;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
-import cn.chenyunlong.qing.domain.auth.user.dto.request.LoginParam;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.UserCreateRequest;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.UserQueryRequest;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.UserUpdateRequest;
-import cn.chenyunlong.qing.domain.auth.user.dto.response.QingTokenResponse;
 import cn.chenyunlong.qing.domain.auth.user.dto.response.UserResponse;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
@@ -39,13 +36,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final IUserService userService;
-    private final IUserDomainService domainService;
 
     /**
      * 注册用户
      */
     @PostMapping
-    public JsonResult<Long> register(@RequestBody UserCreateRequest request) {
+    public JsonResult<Long> register(
+        @RequestBody
+        UserCreateRequest request) {
         UserCreator creator = UserMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(userService.register(creator));
     }
@@ -54,7 +52,9 @@ public class UserController {
      * update request
      */
     @PostMapping("updateUser")
-    public JsonResult<String> updateUser(@RequestBody UserUpdateRequest request) {
+    public JsonResult<String> updateUser(
+        @RequestBody
+        UserUpdateRequest request) {
         UserUpdater updater = UserMapper.INSTANCE.request2Updater(request);
         userService.updateUser(updater);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -64,7 +64,9 @@ public class UserController {
      * valid
      */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validUser(@PathVariable Long id) {
+    public JsonResult<String> validUser(
+        @PathVariable
+        Long id) {
         userService.validUser(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -73,7 +75,9 @@ public class UserController {
      * invalid
      */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidUser(@PathVariable Long id) {
+    public JsonResult<String> invalidUser(
+        @PathVariable
+        Long id) {
         userService.invalidUser(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,19 +86,12 @@ public class UserController {
      * findById
      */
     @GetMapping("findById/{id}")
-    public JsonResult<UserResponse> findById(@PathVariable Long id) {
+    public JsonResult<UserResponse> findById(
+        @PathVariable
+        Long id) {
         UserVO vo = userService.findById(id);
         UserResponse response = UserMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
-    }
-
-    /**
-     * findById
-     */
-    @PostMapping("login")
-    public JsonResult<QingTokenResponse> login(@RequestBody LoginParam loginParam) {
-        QingTokenResponse token = domainService.login(loginParam);
-        return JsonResult.success(token);
     }
 
     /**

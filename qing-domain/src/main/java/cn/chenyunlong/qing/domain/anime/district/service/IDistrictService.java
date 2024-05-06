@@ -17,7 +17,7 @@ public interface IDistrictService {
     /**
      * update
      */
-    void updateDistrict(DistrictUpdater updater);
+    void updateDistrict(Long id, DistrictUpdater updater);
 
     /**
      * valid
@@ -38,4 +38,6 @@ public interface IDistrictService {
      * findByPage
      */
     Page<DistrictVO> findByPage(PageRequestWrapper<DistrictQuery> query);
+
+    void deleteById(Long id);
 }

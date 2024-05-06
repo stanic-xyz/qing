@@ -5,4 +5,5 @@ import cn.chenyunlong.qing.domain.anime.anime.Anime;
 
 public interface AnimeRepository extends BaseRepository<Anime, Long> {
 
+
 }
