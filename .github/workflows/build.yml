@@ -15,22 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'adopt-hotspot'
           cache: maven
-      - name: Build Codegen Plugin
-        run: mvn clean install -pl qing-codegen-plugin/qing-codegen-apt -am -f pom.xml
-      - name: Build Security Starter
-        run: mvn clean install -pl qing-starters/qing-security-spring-boot-starter -f pom.xml
-      - name: Build Infrastructure
-        run: mvn clean install -pl qing-infrastructure -f pom.xml
-      - name: Build Domain Service
-        run: mvn clean install -pl qing-domain -am -f pom.xml
       - name: Build Web Service
-        run: cd qing-application/qing-application-manager && mvn clean package -DskipTests=true
+        run: mvn clean package -pl qing-application/qing-application-manager -am -f pom.xml
