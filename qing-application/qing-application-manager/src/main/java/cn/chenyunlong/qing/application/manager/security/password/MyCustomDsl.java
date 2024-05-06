@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.application.manager.security.password;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,8 +18,9 @@ public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurit
     public void init(HttpSecurity http) throws Exception {
         // any method that adds another configurer
         // must be done in the init method
-        http.csrf().disable();
-        http.formLogin();
+        // http.csrf(Customizer.withDefaults());
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.formLogin(Customizer.withDefaults());
     }
 
     @Override
