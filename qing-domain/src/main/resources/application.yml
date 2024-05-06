@@ -1,3 +1,5 @@
+server:
+  port: 8090
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -8,11 +10,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  cloud:
-    consul:
-      discovery:
-        prefer-ip-address: true
-        register-health-check: true
   datasource:
     hikari:
       connection-timeout: 6000

@@ -5,7 +5,7 @@
 replicaCount: 1
 
 global:
-  imageRegistry: "stanic-docker.pkg.coding.net/qing"
+  imageRegistry: "stanic-docker.pkg.coding.net"
   ## E.g.
   ## imagePullSecrets:
   ##   - myRegistryKeySecretName

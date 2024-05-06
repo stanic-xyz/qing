@@ -11,7 +11,6 @@ import cn.chenyunlong.qing.domain.auth.connection.dto.request.UserConnectionUpda
 import cn.chenyunlong.qing.domain.auth.connection.dto.response.UserConnectionResponse;
 import cn.chenyunlong.qing.domain.auth.connection.dto.updater.UserConnectionUpdater;
 import cn.chenyunlong.qing.domain.auth.connection.dto.vo.UserConnectionVO;
-import cn.chenyunlong.security.entity.ConnectionData;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -30,8 +29,6 @@ public interface UserConnectionMapper {
     UserConnectionCreator request2Dto(UserConnectionCreateRequest request);
 
     UserConnectionQuery request2Query(UserConnectionQueryRequest request);
-
-    ConnectionData entityToConnectionData(UserConnection userConnection);
 
     UserConnectionResponse vo2Response(UserConnectionVO vo);
 

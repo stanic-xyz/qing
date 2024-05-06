@@ -1,4 +1,4 @@
-FROM openjdk:17-slim AS qing-bootstrap-service
+FROM openjdk:17-slim AS qing-domain-service
 USER root
 MAINTAINER Stan<1576302867@qq.com>
 EXPOSE 8080

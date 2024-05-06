@@ -28,6 +28,9 @@ public class AnimeCreateRequest implements Request {
     @Schema(title = "districtName")
     private String districtName;
 
+    @Schema(title = "封面图片附件id")
+    private Long coverUrlAttachmentId;
+
     @Schema(title = "coverUrl")
     private String coverUrl;
 

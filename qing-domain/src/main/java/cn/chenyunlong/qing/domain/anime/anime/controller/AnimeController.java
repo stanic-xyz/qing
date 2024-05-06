@@ -5,7 +5,7 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
-import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.IAnimeDomainService;
 import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeQueryRequest;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "AnimeController", description = "番剧管理")
+@Tag(name = "番剧管理", description = "番剧管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/anime")
@@ -36,14 +36,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnimeController {
 
     private final IAnimeService animeService;
+    private final IAnimeDomainService animeDomainService;
 
     @Operation(summary = "创建动漫信息")
     @PostMapping
     public JsonResult<Long> createAnime(
         @RequestBody
         AnimeCreateRequest request) {
-        AnimeCreator creator = AnimeMapper.INSTANCE.request2Dto(request);
-        return JsonResult.success(animeService.createAnime(creator));
+        Long serviceAnime = animeDomainService.createAnime(request);
+        return JsonResult.success(serviceAnime);
     }
 
     @Operation(summary = "更新动漫信息")
@@ -64,6 +65,15 @@ public class AnimeController {
         AnimeVO vo = animeService.findById(id);
         AnimeResponse response = AnimeMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
+    }
+
+    @Operation(summary = "根据id移除动漫信息")
+    @GetMapping("removeById/{id}")
+    public JsonResult<Void> removeById(
+        @PathVariable
+        Long id) {
+        animeService.removeById(id);
+        return JsonResult.success();
     }
 
     @Operation(summary = "分页查询动漫信息")

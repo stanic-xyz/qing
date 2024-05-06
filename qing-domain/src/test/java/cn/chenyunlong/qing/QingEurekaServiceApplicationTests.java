@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @Slf4j
 @ActiveProfiles("test")
-@SpringBootTest(classes = QingBootstrapServiceApplication.class)
+@SpringBootTest(classes = QingAnimeDomainApplication.class)
 public class QingEurekaServiceApplicationTests {
 
     @Test

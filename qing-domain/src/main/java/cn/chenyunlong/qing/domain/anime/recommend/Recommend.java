@@ -7,6 +7,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,10 +24,16 @@ public class Recommend extends BaseJpaAggregate {
     @FieldDesc(description = "名称")
     private String name;
 
+    @FieldDesc(name = "推荐主题")
+    private String subject;
+
     @FieldDesc(description = "介绍")
     private String instruction;
 
     @FieldDesc(description = "推荐的动漫id")
     private Long animeId;
+
+    @FieldDesc(description = "推荐日期")
+    private LocalDate date;
 
 }

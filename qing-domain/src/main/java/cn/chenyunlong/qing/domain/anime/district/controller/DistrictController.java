@@ -19,9 +19,11 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +41,9 @@ public class DistrictController {
      * createRequest
      */
     @PostMapping
-    public JsonResult<Long> createDistrict(@RequestBody DistrictCreateRequest request) {
+    public JsonResult<Long> createDistrict(
+        @RequestBody
+        DistrictCreateRequest request) {
         DistrictCreator creator = DistrictConverter.INSTANCE.request2Dto(request);
         return JsonResult.success(districtService.createDistrict(creator));
     }
@@ -47,10 +51,14 @@ public class DistrictController {
     /**
      * update request
      */
-    @PostMapping("updateDistrict")
-    public JsonResult<String> updateDistrict(@RequestBody DistrictUpdateRequest request) {
+    @PutMapping("{id}")
+    public JsonResult<String> updateDistrict(
+        @PathVariable
+        Long id,
+        @RequestBody
+        DistrictUpdateRequest request) {
         DistrictUpdater updater = DistrictConverter.INSTANCE.request2Updater(request);
-        districtService.updateDistrict(updater);
+        districtService.updateDistrict(id, updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
@@ -58,7 +66,9 @@ public class DistrictController {
      * valid
      */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validDistrict(@PathVariable Long id) {
+    public JsonResult<String> validDistrict(
+        @PathVariable
+        Long id) {
         districtService.validDistrict(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -67,7 +77,9 @@ public class DistrictController {
      * invalid
      */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidDistrict(@PathVariable Long id) {
+    public JsonResult<String> invalidDistrict(
+        @PathVariable
+        Long id) {
         districtService.invalidDistrict(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -76,10 +88,23 @@ public class DistrictController {
      * findById
      */
     @GetMapping("findById/{id}")
-    public JsonResult<DistrictResponse> findById(@PathVariable Long id) {
+    public JsonResult<DistrictResponse> findById(
+        @PathVariable
+        Long id) {
         DistrictVO vo = districtService.findById(id);
         DistrictResponse response = DistrictConverter.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
+    }
+
+    /**
+     * findById
+     */
+    @DeleteMapping("{id}")
+    public JsonResult<Void> deleteById(
+        @PathVariable
+        Long id) {
+        districtService.deleteById(id);
+        return JsonResult.success();
     }
 
     /**
@@ -87,7 +112,8 @@ public class DistrictController {
      */
     @PostMapping("page")
     public JsonResult<PageResult<DistrictResponse>> page(
-        @RequestBody PageRequestWrapper<DistrictQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<DistrictQueryRequest> request) {
         PageRequestWrapper<DistrictQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(DistrictConverter.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());

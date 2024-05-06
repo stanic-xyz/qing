@@ -37,14 +37,14 @@ public abstract class BaseEntityOperation implements EntityOperation {
 
     static {
         validator = Validation
-            .buildDefaultValidatorFactory()
-            .getValidator();
+                        .buildDefaultValidatorFactory()
+                        .getValidator();
     }
 
     /**
      * 执行验证逻辑。
      *
-     * @param obj   t 泛型对象
+     * @param obj t 泛型对象
      * @param group 校验组
      */
     public <T> void doValidate(T obj, Class<? extends ValidateGroup> group) {
@@ -52,14 +52,14 @@ public abstract class BaseEntityOperation implements EntityOperation {
             validator.validate(obj, group, Default.class);
         if (!CollectionUtils.isEmpty(constraintViolations)) {
             List<ValidateResult> results = constraintViolations
-                .stream()
-                .map(constraintViolation ->
-                    new ValidateResult(
-                        constraintViolation
-                            .getPropertyPath()
-                            .toString(),
-                        constraintViolation.getMessage()))
-                .collect(Collectors.toList());
+                                               .stream()
+                                               .map(constraintViolation ->
+                                                        new ValidateResult(
+                                                            constraintViolation
+                                                                .getPropertyPath()
+                                                                .toString(),
+                                                            constraintViolation.getMessage()))
+                                               .collect(Collectors.toList());
             throw new ValidationException(results);
         }
     }

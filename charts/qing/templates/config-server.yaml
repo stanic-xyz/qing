@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: qing
+  name: config
+  labels:
+    app: config
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config
+  template:
+    metadata:
+      labels:
+        app: config
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: config
+          image: {{.Values.global.imageRegistry}}/qing/qing-config-server:0.0.2-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp-8888
+              containerPort: 8888
+          env:
+            - name: GIT_USER
+              value: "xxx_user"
+            - name: GIT_PASS
+              value: "xxx_pass"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: qing
+  name: config
+  labels:
+    app: config
+spec:
+  selector:
+    app: config
+  type: NodePort
+  ports:
+    - port: 8888
+      name: tcp-8888
+      protocol: TCP
+      targetPort: 8888

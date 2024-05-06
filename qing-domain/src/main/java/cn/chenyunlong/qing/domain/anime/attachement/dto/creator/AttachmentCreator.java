@@ -1,10 +1,16 @@
 package cn.chenyunlong.qing.domain.anime.attachement.dto.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Schema
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AttachmentCreator {
 
     @Schema(
@@ -37,43 +43,7 @@ public class AttachmentCreator {
     )
     private Long fileSize;
 
-    public Long getFileId() {
-        return fileId;
-    }
+    @Schema(title = "文件路径")
+    private String path;
 
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getMimeType() {
-        return mimeType;
-    }
-
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(Long fileSize) {
-        this.fileSize = fileSize;
-    }
 }

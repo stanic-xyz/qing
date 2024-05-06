@@ -36,9 +36,9 @@ public class AttachmentServiceImpl implements IAttachmentService {
     @Override
     public Long createAttachment(AttachmentCreator creator) {
         Optional<Attachment> attachment = EntityOperations.doCreate(attachmentRepository)
-            .create(() -> AttachmentMapper.INSTANCE.dtoToEntity(creator))
-            .update(Attachment::init)
-            .execute();
+                                              .create(() -> AttachmentMapper.INSTANCE.dtoToEntity(creator))
+                                              .update(Attachment::init)
+                                              .execute();
         return attachment.isPresent() ? attachment.get().getId() : 0;
     }
 
@@ -46,9 +46,9 @@ public class AttachmentServiceImpl implements IAttachmentService {
      * update
      */
     @Override
-    public void updateAttachment(AttachmentUpdater updater) {
+    public void updateAttachment(Long id, AttachmentUpdater updater) {
         EntityOperations.doUpdate(attachmentRepository)
-            .loadById(updater.getId())
+            .loadById(id)
             .update(updater::updateAttachment)
             .execute();
     }
@@ -83,6 +83,11 @@ public class AttachmentServiceImpl implements IAttachmentService {
         Optional<Attachment> attachment = attachmentRepository.findById(id);
         return new AttachmentVO(
             attachment.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        attachmentRepository.deleteById(id);
     }
 
     /**

@@ -1,7 +1,5 @@
 package cn.chenyunlong.qing.domain.attribute;
 
-import cn.chenyunlong.codegen.annotation.IgnoreDto;
-import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
@@ -28,7 +26,5 @@ public class Attribute extends BaseJpaAggregate {
     @Convert(converter = WebControlTypeConverter.class)
     private WebControlType controlType;
 
-    @IgnoreUpdater
-    @IgnoreDto
     private ValidStatus validStatus;
 }

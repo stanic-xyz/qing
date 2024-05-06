@@ -33,10 +33,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-config</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
@@ -59,15 +59,11 @@
         </dependency>
         <dependency>
             <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-jpa-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-codegen-api</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-codegen-apt</artifactId>
+            <artifactId>qing-jpa-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
@@ -95,11 +91,6 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>5.2.2</version>
-        </dependency>
-        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
@@ -107,7 +98,6 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -120,10 +110,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -158,10 +144,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>4.10.0</version>
@@ -184,10 +166,6 @@
             <artifactId>spring-boot-starter-graphql</artifactId>
         </dependency>
         <dependency>
-            <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-infrastructure</artifactId>
-        </dependency>
-        <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
         </dependency>
@@ -196,15 +174,9 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--配置Prometheus监控-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-            <version>4.1.0</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -238,35 +210,17 @@
             <optional>true</optional>
             <classifier>jakarta</classifier>
         </dependency>
-        <dependency>
-            <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-security-spring-boot-starter</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-oss-spring-boot-starter</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.geekhalo.lego</groupId>-->
-        <!--            <artifactId>lego-starter</artifactId>-->
-        <!--            <version>0.1.38</version>-->
-        <!--        </dependency>-->
     </dependencies>
 
     <build>
-        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -277,18 +231,13 @@
                     <source>17</source>
                     <target>17</target>
                     <encoding>UTF-8</encoding>
-                    <compilerArgs>
-                        <compilerArg>-AbaseDir=${project.basedir}</compilerArg>
-                        <!--<arg>-XprintProcessorInfo</arg>-->
-                        <compilerArg>-parameters</compilerArg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.chenyunlong.qing.QingBootstrapServiceApplication</mainClass>
+                    <mainClass>cn.chenyunlong.qing.QingAnimeDomainApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -301,7 +250,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

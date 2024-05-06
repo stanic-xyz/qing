@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "附件管理")
 @RestController
 @Slf4j
-@RequestMapping("api/v1/attachment")
+@RequestMapping("api/v1/attachments")
 @RequiredArgsConstructor
 public class AttachmentController {
 
@@ -51,12 +52,14 @@ public class AttachmentController {
     /**
      * update request
      */
-    @PostMapping("updateAttachment")
+    @PostMapping("{id}")
     public JsonResult<String> updateAttachment(
+        @PathVariable
+        Long id,
         @RequestBody
         AttachmentUpdateRequest request) {
         AttachmentUpdater updater = AttachmentMapper.INSTANCE.request2Updater(request);
-        attachmentService.updateAttachment(updater);
+        attachmentService.updateAttachment(id, updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
@@ -85,13 +88,21 @@ public class AttachmentController {
     /**
      * findById
      */
-    @GetMapping("findById/{id}")
+    @GetMapping("{id}")
     public JsonResult<AttachmentResponse> findById(
         @PathVariable
         Long id) {
         AttachmentVO vo = attachmentService.findById(id);
         AttachmentResponse response = AttachmentMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
+    }
+
+    @DeleteMapping("{id}")
+    public JsonResult<Void> deleteById(
+        @PathVariable
+        Long id) {
+        attachmentService.deleteById(id);
+        return JsonResult.success();
     }
 
     /**
