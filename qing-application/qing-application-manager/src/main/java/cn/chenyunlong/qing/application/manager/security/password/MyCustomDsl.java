@@ -18,8 +18,8 @@ public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurit
     public void init(HttpSecurity http) throws Exception {
         // any method that adds another configurer
         // must be done in the init method
-        http.csrf(Customizer.withDefaults());
-        // http.csrf().disable();
+        // http.csrf(Customizer.withDefaults());
+        http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(Customizer.withDefaults());
     }
 
