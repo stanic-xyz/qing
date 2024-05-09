@@ -1,13 +1,9 @@
-package cn.chenyunlong.qing.domain.anime.anime.controller;
+package cn.chenyunlong.qing.application.manager.web.anime;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
-import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCategoryCreator;
-import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeCategoryQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCategoryCreateRequest;
-import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCategoryQueryRequest;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCategoryUpdateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.dto.response.AnimeCategoryResponse;
 import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeCategoryUpdater;
@@ -15,11 +11,8 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeCategoryVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeCategoryMapper;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeCategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -91,30 +84,5 @@ public class AnimeCategoryController {
         AnimeCategoryVO vo = animeCategoryService.findById(id);
         AnimeCategoryResponse response = AnimeCategoryMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
-    }
-
-    /**
-     * findByPage request
-     */
-    @PostMapping("page")
-    public JsonResult<PageResult<AnimeCategoryResponse>> page(
-        @RequestBody
-        PageRequestWrapper<AnimeCategoryQueryRequest> request) {
-        PageRequestWrapper<AnimeCategoryQuery> wrapper = new PageRequestWrapper<>();
-        wrapper.setBean(AnimeCategoryMapper.INSTANCE.request2Query(request.getBean()));
-        wrapper.setSorts(request.getSorts());
-        wrapper.setPageSize(request.getPageSize());
-        wrapper.setPage(request.getPage());
-        Page<AnimeCategoryVO> page = animeCategoryService.findByPage(wrapper);
-        List<AnimeCategoryVO> categoryVOList = page.getContent();
-        return JsonResult.success(
-            PageResult.of(
-                categoryVOList.stream()
-                    .map(AnimeCategoryMapper.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-                                 );
     }
 }

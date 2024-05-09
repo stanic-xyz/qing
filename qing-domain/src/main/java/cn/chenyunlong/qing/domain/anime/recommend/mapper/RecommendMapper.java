@@ -23,7 +23,7 @@ import org.mapstruct.factory.Mappers;
     DateMapper.class
 }, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RecommendMapper {
-    
+
     RecommendMapper INSTANCE = Mappers.getMapper(RecommendMapper.class);
 
     Recommend dtoToEntity(RecommendCreator dto);
