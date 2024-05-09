@@ -34,8 +34,5 @@ public interface ITagService {
      */
     TagVO findById(Long id);
 
-    /**
-     * findByPage
-     */
-    Page<TagVO> findByPage(PageRequestWrapper<TagQuery> query);
+    Page<TagVO> findByPage(PageRequestWrapper<TagQuery> wrapper);
 }

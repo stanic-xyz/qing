@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.domain.anime.recommend.controller;
+package cn.chenyunlong.qing.application.manager.web.anime;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
@@ -13,7 +13,6 @@ import cn.chenyunlong.qing.domain.anime.recommend.dto.request.RecommendUpdateReq
 import cn.chenyunlong.qing.domain.anime.recommend.dto.response.RecommendResponse;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.updater.RecommendUpdater;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.vo.RecommendDetailVO;
-import cn.chenyunlong.qing.domain.anime.recommend.dto.vo.RecommendVO;
 import cn.chenyunlong.qing.domain.anime.recommend.mapper.RecommendMapper;
 import cn.chenyunlong.qing.domain.anime.recommend.service.IRecommendService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -74,16 +72,6 @@ public class RecommendController {
         Long id) {
         recommendService.invalidRecommend(id);
         return JsonResult.success(CodeEnum.Success.getName());
-    }
-
-    @GetMapping("findById/{id}")
-    public JsonResult<RecommendResponse> findById(
-        @PathVariable
-        Long id) {
-        RecommendVO vo = recommendService.findById(id);
-        RecommendResponse response = RecommendMapper.INSTANCE.vo2CustomResponse(vo);
-        response.setAnimeVO(animeService.findById(vo.getAnimeId()));
-        return JsonResult.success(response);
     }
 
     @PostMapping("page")

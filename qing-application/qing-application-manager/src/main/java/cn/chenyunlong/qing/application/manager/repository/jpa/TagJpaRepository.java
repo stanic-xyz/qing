@@ -1,11 +1,12 @@
-package cn.chenyunlong.qing.domain.anime.anime.repository;
+package cn.chenyunlong.qing.application.manager.repository.jpa;
 
-import cn.chenyunlong.jpa.support.BaseRepository;
+import cn.chenyunlong.jpa.support.BaseJpaRepository;
 import cn.chenyunlong.qing.domain.anime.anime.Tag;
-import java.util.List;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-public interface TagRepository extends BaseRepository<Tag, Long> {
+@Repository
+public interface TagJpaRepository extends BaseJpaRepository<Tag, Long> {
 
     /**
      * 判断标签名是否存在
@@ -18,6 +19,4 @@ public interface TagRepository extends BaseRepository<Tag, Long> {
      */
     @Query("select exists(select t from Tag t where t.name = ?1 and t.id != ?2)")
     boolean existsByNameAndNotId(String name, Long id);
-
-    List<Tag> findByIds(List<Long> tagIds);
 }

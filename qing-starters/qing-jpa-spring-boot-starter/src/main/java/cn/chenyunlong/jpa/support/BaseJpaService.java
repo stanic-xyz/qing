@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -29,11 +28,11 @@ public abstract class BaseJpaService {
     public BaseJpaService() {
     }
 
-    public <T, ID> EntityUpdater<T, ID> doUpdate(CrudRepository<T, ID> repository) {
+    public <T, ID> EntityUpdater<T, ID> doUpdate(BaseRepository<T, ID> repository) {
         return new EntityUpdater<>(repository);
     }
 
-    public <T, ID> EntityCreator<T, ID> doCreate(CrudRepository<T, ID> repository) {
+    public <T, ID> EntityCreator<T, ID> doCreate(BaseRepository<T, ID> repository) {
         return new EntityCreator<>(repository);
     }
 

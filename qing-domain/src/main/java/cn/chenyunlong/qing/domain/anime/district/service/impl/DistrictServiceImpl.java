@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.anime.district.dto.vo.DistrictVO;
 import cn.chenyunlong.qing.domain.anime.district.mapper.DistrictConverter;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
 import cn.chenyunlong.qing.domain.anime.district.service.IDistrictService;
+import jakarta.annotation.Resource;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DistrictServiceImpl implements IDistrictService {
 
+    @Resource
     private final DistrictRepository districtRepository;
 
     /**

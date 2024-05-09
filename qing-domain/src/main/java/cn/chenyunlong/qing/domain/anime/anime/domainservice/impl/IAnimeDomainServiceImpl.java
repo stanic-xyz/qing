@@ -12,6 +12,7 @@ import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
 import cn.chenyunlong.qing.domain.anime.attachement.repository.AttachmentRepository;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
+import jakarta.annotation.Resource;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,17 @@ import org.springframework.stereotype.Service;
 public class IAnimeDomainServiceImpl implements IAnimeDomainService {
 
     private final IAnimeService animeService;
+
+    @Resource
     private final AnimeCategoryRepository categoryRepository;
+
+    @Resource
     private final TagRepository tagRepository;
+
+    @Resource
     private final DistrictRepository districtRepository;
+
+    @Resource
     private final AttachmentRepository attachmentRepository;
 
     /**
@@ -32,7 +41,7 @@ public class IAnimeDomainServiceImpl implements IAnimeDomainService {
     @Override
     public Long createAnime(AnimeCreateRequest request) {
         // 创建动漫信息，给你看了，你就是不会
-        List<Tag> tagList = tagRepository.findAllById(request.getTagIds());
+        List<Tag> tagList = tagRepository.findByIds(request.getTagIds());
         District district = districtRepository.findById(request.getDistrictId()).orElseThrow();
         AnimeCategory animeCategory = categoryRepository.findById(request.getTypeId()).orElseThrow();
         Attachment attachment = attachmentRepository.findById(request.getCoverUrlAttachmentId()).orElseThrow();

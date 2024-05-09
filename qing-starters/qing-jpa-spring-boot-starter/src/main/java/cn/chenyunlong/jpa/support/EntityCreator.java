@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * 实体类控制器。
@@ -31,13 +30,13 @@ import org.springframework.data.repository.CrudRepository;
 public class EntityCreator<T, ID> extends BaseEntityOperation
     implements Create<T>, UpdateHandler<T>, Executor<T> {
 
-    private final CrudRepository<T, ID> repository;
+    private final BaseRepository<T, ID> repository;
     private T data;
     private Consumer<T> successHook = t -> log.info("save success");
     private Consumer<? super Throwable> errorHook =
         throwable -> log.error("插入数据发生了异常", throwable);
 
-    public EntityCreator(CrudRepository<T, ID> repository) {
+    public EntityCreator(BaseRepository<T, ID> repository) {
         this.repository = repository;
     }
 

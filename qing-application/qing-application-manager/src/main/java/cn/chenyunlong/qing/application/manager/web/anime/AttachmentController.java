@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.domain.anime.attachement.controller;
+package cn.chenyunlong.qing.application.manager.web.anime;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
