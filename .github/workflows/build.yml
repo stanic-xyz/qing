@@ -25,4 +25,4 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
       - name: Build Web Service
-        run: mvn clean package -pl qing-application/qing-application-manager -am -f pom.xml
+        run: mvn --no-transfer-progress clean package -pl qing-application/qing-application-manager -am -f pom.xml
