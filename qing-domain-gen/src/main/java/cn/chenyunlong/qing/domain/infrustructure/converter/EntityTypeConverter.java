@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrustructure.converter;
+package cn.chenyunlong.qing.domain.infrustructure.converter;
 
 import cn.chenyunlong.qing.domain.entity.EntityType;
 import jakarta.persistence.AttributeConverter;

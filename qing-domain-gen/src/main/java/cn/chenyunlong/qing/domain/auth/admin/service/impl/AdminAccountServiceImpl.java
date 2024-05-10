@@ -123,10 +123,10 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
             .toList();
         if (oldRoleIds.isEmpty()) {
             // 移除当前不存在的角色列表
-            adminAccountRoleRelRepository.deleteAllById(oldRoleIds);
+            adminAccountRoleRelRepository.deleteAllByIds(oldRoleIds);
         }
         List<AdminAccountRoleRel> roleRelList =
-            roleRepository.findAllById(roleIds).stream().map(role ->
+            roleRepository.findByIds(roleIds).stream().map(role ->
                 AdminAccountRoleRel.builder().adminAccountId(accountId).roleId(role.getId())
                     .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
@@ -149,10 +149,10 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
                 .toList();
         if (oldPlatformRels.isEmpty()) {
             // 移除当前不存在的角色列表
-            adminAccountPlatformRelRepository.deleteAllById(oldPlatformRels);
+            adminAccountPlatformRelRepository.deleteAllByIds(oldPlatformRels);
         }
         List<AdminAccountPlatformRel> roleRelList =
-            platformRepository.findAllById(platformIds).stream().map(role ->
+            platformRepository.findByIds(platformIds).stream().map(role ->
                 AdminAccountPlatformRel.builder().adminAccountId(accountId).platformId(role.getId())
                     .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
