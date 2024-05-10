@@ -15,4 +15,8 @@ public interface AdminAccountRoleRelRepository extends BaseRepository<AdminAccou
      */
     @Query("select a from AdminAccountRoleRel a where a.adminAccountId = ?1")
     List<AdminAccountRoleRel> listRoleByAccountId(Long accountId);
+
+    void deleteAllByIds(List<Long> oldRoleIds);
+
+    void saveAll(List<AdminAccountRoleRel> domainList);
 }

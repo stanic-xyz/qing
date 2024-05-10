@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.domain;
+package cn.chenyunlong.qing.domain.example;
 
 import cn.chenyunlong.codegen.annotation.GenController;
 import cn.chenyunlong.codegen.annotation.GenCreateRequest;

@@ -36,9 +36,9 @@ public class DepartmentServiceImpl implements IDepartmentService {
     @Override
     public Long createDepartment(DepartmentCreator creator) {
         Optional<Department> department = EntityOperations.doCreate(departmentRepository)
-            .create(() -> DepartmentMapper.INSTANCE.dtoToEntity(creator))
-            .update(Department::init)
-            .execute();
+                                              .create(() -> DepartmentMapper.INSTANCE.dtoToEntity(creator))
+                                              .update(Department::init)
+                                              .execute();
         return department.isPresent() ? department.get().getId() : 0;
     }
 
