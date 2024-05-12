@@ -16,7 +16,7 @@ package cn.chenyunlong.qing.domain.entity;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
-import cn.chenyunlong.qing.infrustructure.converter.EntityTypeConverter;
+import cn.chenyunlong.qing.domain.infrustructure.converter.EntityTypeConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;

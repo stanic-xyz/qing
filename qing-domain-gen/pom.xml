@@ -30,6 +30,14 @@
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-codegen-apt</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.plugin</groupId>
+            <artifactId>spring-plugin-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

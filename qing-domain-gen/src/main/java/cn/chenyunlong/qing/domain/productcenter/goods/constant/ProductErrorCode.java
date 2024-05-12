@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrustructure.constants;
+package cn.chenyunlong.qing.domain.productcenter.goods.constant;
 
 import cn.chenyunlong.common.constants.BaseEnum;
 import java.util.Optional;

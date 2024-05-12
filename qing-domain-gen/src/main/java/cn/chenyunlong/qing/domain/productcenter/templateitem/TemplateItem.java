@@ -4,7 +4,7 @@ import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
-import cn.chenyunlong.qing.infrustructure.converter.ComponentTypeConverter;
+import cn.chenyunlong.qing.domain.infrustructure.converter.ComponentTypeConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.type.ComponentType;
 
 @Getter
 @Setter

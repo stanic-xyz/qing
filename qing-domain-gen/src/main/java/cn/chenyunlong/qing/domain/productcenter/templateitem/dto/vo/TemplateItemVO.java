@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.domain.productcenter.templateitem.dto.vo;
 
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
+import cn.chenyunlong.qing.domain.productcenter.templateitem.ComponentType;
 import cn.chenyunlong.qing.domain.productcenter.templateitem.TemplateItem;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
@@ -9,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.type.ComponentType;
 
 @Schema
 @Data

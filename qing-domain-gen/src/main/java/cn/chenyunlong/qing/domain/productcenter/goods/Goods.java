@@ -7,7 +7,7 @@ import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
-import cn.chenyunlong.qing.infrustructure.constants.ProductErrorCode;
+import cn.chenyunlong.qing.domain.productcenter.goods.constant.ProductErrorCode;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

@@ -13,28 +13,18 @@
 
 package cn.chenyunlong.qing.domain.third.bilibili.model;
 
-import com.google.gson.annotations.Expose;
 
+import lombok.Getter;
+
+@Getter
 public class BgngumeResponse {
 
-    @Expose
+
     private Long code;
-    @Expose
+
     private AnimeData data;
-    @Expose
+
     private String message;
-
-    public Long getCode() {
-        return code;
-    }
-
-    public AnimeData getData() {
-        return data;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 
     public static class Builder {
 
