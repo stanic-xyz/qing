@@ -7,7 +7,6 @@ import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.IAnimeDomainService;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.impl.IAnimeDomainServiceImpl;
-import cn.chenyunlong.qing.domain.anime.anime.dto.creator.TagCreator;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
@@ -44,6 +43,12 @@ class IAnimeDomainServiceTest {
             }
 
             @Override
+            public Anime save(Anime entity) {
+                entity.setId(IdUtil.getSnowflakeNextId());
+                return entity;
+            }
+
+            @Override
             public void deleteById(Long id) {
 
             }
@@ -65,15 +70,9 @@ class IAnimeDomainServiceTest {
 
             @Override
             public void saveAll(List<Anime> domainList) {
-
-            }
-
-            @Override
-            public Anime save(Anime entity) {
-                entity.setId(IdUtil.getSnowflakeNextId());
-                return entity;
             }
         };
+
         AnimeCategoryRepository categoryRepository = Mockito.mock(AnimeCategoryRepository.class);
         TagRepository tagRepository = Mockito.mock(TagRepository.class);
         DistrictRepository districtRepository = Mockito.mock(DistrictRepository.class);
@@ -81,8 +80,6 @@ class IAnimeDomainServiceTest {
         IAnimeDomainService animeDomainService;
         Validator validator = Mockito.mock(Validator.class);
         IAnimeService animeService = new AnimeServiceImpl(animeRepository, categoryRepository, districtRepository, validator);
-
-        animeRepository = Mockito.mock(AnimeRepository.class);
 
         animeDomainService = new IAnimeDomainServiceImpl(animeService, categoryRepository, tagRepository, districtRepository, attachmentRepository);
 
@@ -107,7 +104,6 @@ class IAnimeDomainServiceTest {
         createRequest.setPlayHeat(String.valueOf(1430000000));
 
         // 创建一个标签
-        TagCreator tagCreator = TagCreator.builder().name("玄幻").instruction("玄幻").build();
         createRequest.setTagIds(CollUtil.toList(1L));
 
         // 创建一个区域
