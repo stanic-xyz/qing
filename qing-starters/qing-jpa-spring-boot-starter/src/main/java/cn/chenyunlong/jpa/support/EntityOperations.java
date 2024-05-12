@@ -13,8 +13,6 @@
 
 package cn.chenyunlong.jpa.support;
 
-import org.springframework.data.repository.CrudRepository;
-
 /**
  * 实体类型操作。
  *
@@ -22,11 +20,11 @@ import org.springframework.data.repository.CrudRepository;
  */
 public abstract class EntityOperations {
 
-    public static <T, ID> EntityUpdater<T, ID> doUpdate(CrudRepository<T, ID> repository) {
+    public static <T, ID> EntityUpdater<T, ID> doUpdate(BaseRepository<T, ID> repository) {
         return new EntityUpdater<>(repository);
     }
 
-    public static <T, ID> EntityCreator<T, ID> doCreate(CrudRepository<T, ID> repository) {
+    public static <T, ID> EntityCreator<T, ID> doCreate(BaseRepository<T, ID> repository) {
         return new EntityCreator<>(repository);
     }
 

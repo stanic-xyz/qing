@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.domain.anime.anime.repository;
 
 import cn.chenyunlong.jpa.support.BaseRepository;
 import cn.chenyunlong.qing.domain.anime.anime.Tag;
+import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 
 public interface TagRepository extends BaseRepository<Tag, Long> {
@@ -17,4 +18,6 @@ public interface TagRepository extends BaseRepository<Tag, Long> {
      */
     @Query("select exists(select t from Tag t where t.name = ?1 and t.id != ?2)")
     boolean existsByNameAndNotId(String name, Long id);
+
+    List<Tag> findByIds(List<Long> tagIds);
 }

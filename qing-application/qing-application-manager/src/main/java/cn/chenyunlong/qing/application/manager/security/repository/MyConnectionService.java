@@ -1,8 +1,5 @@
 package cn.chenyunlong.qing.application.manager.security.repository;
 
-import cn.chenyunlong.qing.domain.auth.connection.dto.creator.UserConnectionCreator;
-import cn.chenyunlong.qing.domain.auth.connection.repository.UserConnectionRepository;
-import cn.chenyunlong.qing.domain.auth.connection.service.IUserConnectionService;
 import cn.chenyunlong.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.security.entity.AuthUser;
 import cn.chenyunlong.security.entity.ConnectionData;
@@ -29,8 +26,8 @@ public class MyConnectionService implements ConnectionService {
 
     private final UmsUserDetailsService userDetailsService;
     private final AuthingProperties authingProperties;
-    private final IUserConnectionService userConnectionService;
-    private final UserConnectionRepository connectionRepository;
+    // private final IUserConnectionService userConnectionService;
+    // private final UserConnectionRepository connectionRepository;
 
 
     @Override
@@ -72,18 +69,18 @@ public class MyConnectionService implements ConnectionService {
      * @param userDetails 用户详情
      */
     private void registerConnection(AuthProvider provider, AuthUser authUser, UserDetails userDetails) {
-        UserConnectionCreator creator = UserConnectionCreator.builder()
-                                            .accessToken(authUser.getToken().getAccessToken())
-                                            .providerId(provider.getProviderId())
-                                            .displayName(authUser.getUsername())
-                                            .rank(1)
-                                            .imageUrl(authUser.getAvatar())
-                                            .refreshToken(authUser.getToken().getRefreshToken())
-                                            .expireTime(authUser.getToken().getExpireIn())
-                                            .userId(userDetails.getUsername())
-                                            .providerUserId(authUser.getUuid())
-                                            .build();
-        userConnectionService.createUserConnection(creator);
+        // UserConnectionCreator creator = UserConnectionCreator.builder()
+        //                                     .accessToken(authUser.getToken().getAccessToken())
+        //                                     .providerId(provider.getProviderId())
+        //                                     .displayName(authUser.getUsername())
+        //                                     .rank(1)
+        //                                     .imageUrl(authUser.getAvatar())
+        //                                     .refreshToken(authUser.getToken().getRefreshToken())
+        //                                     .expireTime(authUser.getToken().getExpireIn())
+        //                                     .userId(userDetails.getUsername())
+        //                                     .providerUserId(authUser.getUuid())
+        //                                     .build();
+        // userConnectionService.createUserConnection(creator);
     }
 
     @Override

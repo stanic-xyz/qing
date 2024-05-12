@@ -14,13 +14,12 @@ import cn.chenyunlong.qing.domain.anime.anime.mapper.TagMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.TagRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.ITagService;
 import cn.hutool.core.lang.Assert;
+import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class TagServiceImpl implements ITagService {
 
     private final EntityManager entityManager;
+
+    @Resource
     private final TagRepository tagRepository;
 
     /**
@@ -97,13 +98,8 @@ public class TagServiceImpl implements ITagService {
             tagOptional.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
     }
 
-    /**
-     * findByPage
-     */
     @Override
-    public Page<TagVO> findByPage(PageRequestWrapper<TagQuery> query) {
-        PageRequest pageRequest =
-            PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return tagRepository.findAll(pageRequest).map(TagVO::new);
+    public Page<TagVO> findByPage(PageRequestWrapper<TagQuery> wrapper) {
+        return null;
     }
 }

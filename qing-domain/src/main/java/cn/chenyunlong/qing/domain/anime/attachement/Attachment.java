@@ -18,6 +18,7 @@ import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -30,6 +31,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "anime_attachment")
 public class Attachment extends BaseJpaAggregate {

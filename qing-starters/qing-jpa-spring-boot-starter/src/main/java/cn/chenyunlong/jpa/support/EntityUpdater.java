@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.CrudRepository;
 
 /**
  * 实体类更新器。
@@ -33,12 +32,12 @@ import org.springframework.data.repository.CrudRepository;
 public class EntityUpdater<T, ID> extends BaseEntityOperation
     implements Loader<T, ID>, UpdateHandler<T>, Executor<T> {
 
-    private final CrudRepository<T, ID> repository;
+    private final BaseRepository<T, ID> repository;
     private T entity;
     private Consumer<T> successHook = t -> log.info("update success");
     private Consumer<? super Throwable> errorHook = Throwable::printStackTrace;
 
-    public EntityUpdater(CrudRepository<T, ID> repository) {
+    public EntityUpdater(BaseRepository<T, ID> repository) {
         this.repository = repository;
     }
 

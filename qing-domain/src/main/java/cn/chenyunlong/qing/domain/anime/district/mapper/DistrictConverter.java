@@ -20,7 +20,7 @@ import org.mapstruct.factory.Mappers;
     DateMapper.class
 }, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DistrictConverter {
-    
+
     DistrictConverter INSTANCE = Mappers.getMapper(DistrictConverter.class);
 
     District dtoToEntity(DistrictCreator dto);

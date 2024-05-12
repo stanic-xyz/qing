@@ -13,12 +13,26 @@
 
 package cn.chenyunlong.jpa.support;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface BaseRepository<T, ID> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T>, QuerydslPredicateExecutor<T> {
+public interface BaseRepository<T, ID> {
 
+    T save(T entity);
+
+    Optional<T> findById(ID id);
+
+    void deleteById(Long id);
+
+    Page<T> findAll(PageRequest pageRequest);
+
+    List<T> findByIds(List<Long> ids);
+
+    void deleteAllByIds(List<Long> ids);
+
+    void saveAll(List<T> domainList);
 }
