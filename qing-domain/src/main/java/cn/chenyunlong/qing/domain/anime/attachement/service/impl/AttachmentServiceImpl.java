@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.anime.attachement.dto.vo.AttachmentVO;
 import cn.chenyunlong.qing.domain.anime.attachement.mapper.AttachmentMapper;
 import cn.chenyunlong.qing.domain.anime.attachement.repository.AttachmentRepository;
 import cn.chenyunlong.qing.domain.anime.attachement.service.IAttachmentService;
+import jakarta.annotation.Resource;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AttachmentServiceImpl implements IAttachmentService {
 
+    @Resource
     private final AttachmentRepository attachmentRepository;
 
     /**

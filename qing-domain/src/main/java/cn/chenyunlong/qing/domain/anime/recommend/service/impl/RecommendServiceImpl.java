@@ -17,6 +17,7 @@ import cn.chenyunlong.qing.domain.anime.recommend.mapper.RecommendMapper;
 import cn.chenyunlong.qing.domain.anime.recommend.repository.RecommendRepository;
 import cn.chenyunlong.qing.domain.anime.recommend.service.IRecommendService;
 import cn.hutool.core.lang.Assert;
+import jakarta.annotation.Resource;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RecommendServiceImpl implements IRecommendService {
 
+    @Resource
     private final RecommendRepository recommendRepository;
+    @Resource
     private final AnimeRepository animeRepository;
 
     @Override
@@ -110,7 +113,7 @@ public class RecommendServiceImpl implements IRecommendService {
         Map<Long, Anime> animeMap = new HashMap<>();
         if (!content.isEmpty()) {
             List<Long> animeIds = content.stream().map(Recommend::getAnimeId).distinct().toList();
-            List<Anime> animeList = animeRepository.findAllById(animeIds);
+            List<Anime> animeList = animeRepository.findByIds(animeIds);
             animeMap.putAll(
                 animeList.stream().collect(Collectors.toMap(Anime::getId, anime -> anime)));
         }
@@ -130,7 +133,7 @@ public class RecommendServiceImpl implements IRecommendService {
         Map<Long, Anime> animeMap = new HashMap<>();
         if (!recommendList.isEmpty()) {
             List<Long> animeIds = recommendList.stream().map(Recommend::getAnimeId).distinct().toList();
-            List<Anime> animeList = animeRepository.findAllById(animeIds);
+            List<Anime> animeList = animeRepository.findByIds(animeIds);
             animeMap.putAll(
                 animeList.stream().collect(Collectors.toMap(Anime::getId, anime -> anime)));
         }
