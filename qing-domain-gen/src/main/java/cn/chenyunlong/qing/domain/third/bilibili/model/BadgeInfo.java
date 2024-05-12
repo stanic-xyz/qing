@@ -14,7 +14,6 @@
 package cn.chenyunlong.qing.domain.third.bilibili.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.Expose;
 import lombok.Data;
 
 @Data
@@ -24,7 +23,6 @@ public class BadgeInfo {
     private String bgColor;
     @JsonProperty("bg_color_night")
     private String bgColorNight;
-    @Expose
     private String text;
 
     public static class Builder {

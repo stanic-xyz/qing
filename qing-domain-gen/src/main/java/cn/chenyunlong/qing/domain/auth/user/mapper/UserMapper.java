@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.domain.auth.user.mapper;
 
+import cn.chenyunlong.common.infrustructure.CustomMapper;
 import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.common.mapper.GenericEnumMapper;
 import cn.chenyunlong.qing.domain.auth.user.QingUser;
@@ -11,7 +12,6 @@ import cn.chenyunlong.qing.domain.auth.user.dto.request.UserUpdateRequest;
 import cn.chenyunlong.qing.domain.auth.user.dto.response.UserResponse;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
-import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

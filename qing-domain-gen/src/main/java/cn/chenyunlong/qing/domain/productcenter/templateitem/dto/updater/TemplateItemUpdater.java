@@ -1,11 +1,11 @@
 package cn.chenyunlong.qing.domain.productcenter.templateitem.dto.updater;
 
+import cn.chenyunlong.qing.domain.productcenter.templateitem.ComponentType;
 import cn.chenyunlong.qing.domain.productcenter.templateitem.TemplateItem;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.Data;
-import org.hibernate.type.ComponentType;
 
 @Schema
 @Data

@@ -5,7 +5,7 @@ import cn.chenyunlong.common.annotation.TypeConverter;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
-import cn.chenyunlong.qing.infrustructure.converter.TemplateTypeConverter;
+import cn.chenyunlong.qing.domain.infrustructure.converter.TemplateTypeConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;

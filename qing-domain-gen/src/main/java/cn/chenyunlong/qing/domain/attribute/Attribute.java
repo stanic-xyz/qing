@@ -3,19 +3,19 @@ package cn.chenyunlong.qing.domain.attribute;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
-import cn.chenyunlong.qing.infrustructure.converter.WebControlTypeConverter;
+import cn.chenyunlong.qing.domain.infrustructure.converter.WebControlTypeConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
-@Data
+@Getter
+@Setter
 @ToString
 @Entity(name = "attribute")
-@EqualsAndHashCode(callSuper = true)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Attribute extends BaseJpaAggregate {
 

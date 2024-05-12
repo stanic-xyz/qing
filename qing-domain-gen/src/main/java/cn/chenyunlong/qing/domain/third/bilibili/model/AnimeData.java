@@ -14,20 +14,21 @@
 package cn.chenyunlong.qing.domain.third.bilibili.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.Expose;
 import java.util.List;
+import lombok.Getter;
 
+@Getter
 public class AnimeData {
 
     @JsonProperty("has_next")
     private Long hasNext;
-    @Expose
+
     private List<BiliAnime> list;
-    @Expose
+
     private Long num;
-    @Expose
+
     private Long size;
-    @Expose
+
     private Long total;
 
     public Long getHasNext() {
