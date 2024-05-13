@@ -1,9 +1,9 @@
 import moment from "moment";
-import type { CancelRequestSource, QingHttpRequestConfig, RequestInterceptors, RequestMethods } from "@/utils/http/types";
-import type { AxiosInstance, AxiosRequestConfig } from "axios";
+import type {CancelRequestSource, QingHttpRequestConfig, RequestInterceptors, RequestMethods} from "@/utils/http/types";
+import type {AxiosInstance, AxiosRequestConfig} from "axios";
 import axios from "axios";
-import { userInfoStore } from "@/stores/session";
-import { layer } from "@layui/layui-vue";
+import {userInfoStore} from "@/stores/session";
+import {layer} from "@layui/layui-vue";
 
 moment.locale("zh-cn");
 
@@ -178,7 +178,7 @@ class QingHttp {
       (response) => {
         // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
         // 否则的话抛出错误
-        console.log("结果拦截器里面", response);
+        console.debug("结果拦截器里面", response);
         if (response.status === 200) {
           return Promise.resolve(response);
         } else {

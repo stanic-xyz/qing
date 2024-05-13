@@ -1,25 +1,97 @@
 <template>
   <div id="container">
-    <div class="baseblock">
-      <div class="blockcontent" style="position: relative">
-        <span class="asciifont result_count">{{ 1 }}记录</span>
+    <div class="baseblock" style="margin: 0 10px">
+      <div v-for="(anime, index) in animeInfoList" :key="index">
+        <div class="card" style="display: flex; margin: 1rem 0">
+          <router-link :to="`/anime/${anime?.id}`" class="cell_poster">
+            <img src="https://cdn.aqdstatic.com:966/age/20180073_small.jpg" alt="发布信息" class="anime_icon1_img" height="auto" width="auto" referrerpolicy="no-referrer" style="width: auto; height: auto"/>
+            />
+          </router-link>
+          <div class="card-content" style="flex: 1; padding-left: 4px">
+            <div>
+              <router-link :to="`/anime/${anime.id}`" class="cell_imform_name">
+                <h2>
+                  {{ anime.name }}
+                </h2></router-link
+              >
+            </div>
+            <div class="vedio_detail_infos">
+              <div class="vedio_detail_info">
+                <span>动画种类：</span>
+                {{ anime.typeName }}
+              </div>
+              <div class="vedio_detail_info">
+                <span>原版名称：</span>
+                {{ anime.originalName }}
+              </div>
+              <div class="vedio_detail_info">
+                <span>其他名称：</span>
+                {{ anime.otherName }}
+              </div>
+              <div class="vedio_detail_info">
+                <span>首播时间：</span>
+                {{ anime.premiereDate }}
+              </div>
+              <div class="vedio_detail_info">
+                <span>播放状态：</span>
+                {{ anime.playStatus }}
+              </div>
+              <div class="vedio_detail_info">
+                <span>原作：</span>
+                {{ anime.author }}
+              </div>
+              <div class="vedio_detail_info">
+                <span>剧情类型：</span>
+                {{ anime.plotType }}
+              </div>
+              <div class="vedio_detail_info">
+                <span>制作公司：</span>
+                {{ anime.company }}
+              </div>
+              <div class="vedio_detail_info vedio_detail_info_desc">
+                <span>简介</span>
+                <div class="cell_imform_desc">
+                  {{ anime.instruction }}
+                </div>
+              </div>
+            </div>
+            <div class="cell_imform_btns">
+              <router-link :to="`/play/${anime.id}`" class="nbutton2 cell_res_button">资源详情</router-link>
+              <router-link :to="`play/${anime.id}`" class="nbutton2 cell_res_button">在线播放</router-link>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div v-for="(anime, index) in animeInfoList" :key="index">
-      <CatalogItem :anime="anime"></CatalogItem>
     </div>
     <div class="baseblock">
       <div class="blockcontent">
         <span class="asciifont result_count">{{ 1 }}记录</span>
       </div>
     </div>
-    <lay-page v-model="currentPage" :limit="limit" :show-page="true" :total="total"></lay-page>
+    <LayPage v-model="currentPage" :limit="limit" :show-page="true" :total="total"></LayPage>
   </div>
 </template>
 
+<style scoped src="../../assets/css/catalog.css" lang="less">
+#container {
+  margin: 0 auto;
+  padding: 0 0;
+}
+
+.vedio_detail_infos {
+  .vedio_detail_info {
+    min-width: 50%;
+    display: inline-block;
+
+    span {
+      color: lightgray;
+    }
+  }
+}
+</style>
+
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
-import CatalogItem from "@/views/catalog/CatalogItem.vue";
 import type {Anime} from "@/apis/anime/types";
 import {page} from "@/apis/anime";
 
@@ -41,36 +113,4 @@ onMounted(() => {
             console.log(error);
     });
 });
-const data = ref({
-  activeIndex: "1",
-  activeIndex2: "1",
-  currentDate: new Date(),
-  time: "2020年01月15日 21时50分19秒",
-  loading: true,
-  videoUrl: "https://1251316161.vod2.myqcloud.com/007a649dvodcq1251316161/75b32a815285890809903778875/5cAXY7aMUEQA.mp4",
-  totalCount: 10,
-  regionNames: ["全部", "日本", "中国", "欧美"],
-  genreNames: ["全部", "TV", "剧场版", "OVA"],
-  letterNames: ["全部", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
-  yearNames: ["全部", "2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000"],
-  seasonNames: ["全部", "1", "4", "7", "10"],
-  statusNames: ["全部", "连载", "完结", "未播放"],
-  labelNames: ["全部", "搞笑", "运动", "励志", "热血", "战斗", "竞技", "校园", "青春", "爱情", "冒险", "后宫", "百合", "治愈", "萝莉", "魔法", "悬疑", "推理", "奇幻", "科幻", "游戏", "神魔", "恐怖", "血腥", "机战", "战争", "犯罪", "历史", "社会", "职场", "剧情", "伪娘", "耽美", "童年", "教育", "亲子", "真人", "歌舞", "肉番", "美少女", "轻小说", "吸血鬼", "乙女向", "泡面番", "欢乐向"],
-  resourceNames: ["全部", "BDRIP", "AGE-RIP"],
-  orderNames: ["更新时间", "名称", "点击量"],
-  queryObject: {
-    region: "全部",
-    version: "全部",
-    letter: "全部",
-    year: "全部",
-    season: "全部",
-    label: "全部",
-    status: "全部",
-    order: "全部",
-    resource: "全部",
-  },
-  message: "test",
-});
 </script>
-
-<style scoped src="../../assets/css/catalog.css"></style>

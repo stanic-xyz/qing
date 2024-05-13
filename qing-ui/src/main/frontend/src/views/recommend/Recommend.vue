@@ -1,27 +1,7 @@
-<script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import type { Anime } from "@/apis/anime/types";
-import { page } from "@/apis/anime";
-
-const animeInfoList = ref<Anime[]>([]);
-
-onMounted(() => {
-  page({
-    pageSize: 10,
-    page: 0,
-  })
-    .then(function (response) {
-      console.log("获取到动漫信息内容", response.result.list || []);
-      animeInfoList.value = response.result.list || [];
-    })
-    .catch(function (error) {
-      console.log("异常了", error);
-    });
-});
-</script>
+<style scoped src="../../assets/css/play.css"></style>
 
 <template>
-  <div id="container">
+  <div>
     <div class="spaceBlock"></div>
     <div class="baseBlock">
       <div class="blockContent">
@@ -50,4 +30,24 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped src="../../assets/css/play.css"></style>
+<script lang="ts" setup>
+import {onMounted, ref} from "vue";
+import type {Anime} from "@/apis/anime/types";
+import {page} from "@/apis/anime";
+
+const animeInfoList = ref<Anime[]>([]);
+
+onMounted(() => {
+  page({
+    pageSize: 10,
+    page: 0,
+  })
+          .then(function (response) {
+            console.log("获取到动漫信息内容", response.result.list || []);
+            animeInfoList.value = response.result.list || [];
+          })
+          .catch(function (error) {
+            console.log("异常了", error);
+          });
+});
+</script>

@@ -24,5 +24,6 @@ declare module "@vue/runtime-core" {
     LayUpload: (typeof import("@layui/layui-vue"))["LayUpload"];
     LayMenu: (typeof import("@layui/layui-vue"))["LayMenu"];
     LayMenuItem: (typeof import("@layui/layui-vue"))["LayMenuItem"];
+    LayPage: (typeof import("@layui/layui-vue"))["LayPage"];
   }
 }

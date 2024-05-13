@@ -1,4 +1,4 @@
-@import './base.css';
+@import 'css/common/base.css';
 
 #app {
   margin: 0 auto;

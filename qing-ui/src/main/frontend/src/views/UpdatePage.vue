@@ -1,5 +1,6 @@
 <template>
-  <div id="container">
+  <div>
+    <div>一周更新</div>
     <div class="spaceBlock"></div>
     <div class="baseBlock">
       <div class="blockContent">
@@ -23,9 +24,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import type { Anime } from "@/apis/anime/types";
-import { page } from "@/apis/anime";
+import {onMounted, ref} from "vue";
+import type {Anime} from "@/apis/anime/types";
+import {page} from "@/apis/anime";
 
 const animeList = ref<Anime[]>([]);
 
