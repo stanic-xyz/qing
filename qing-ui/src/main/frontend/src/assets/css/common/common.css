@@ -45,7 +45,7 @@ body {
 
 @font-face {
   font-family: 'gamefont';
-  src: url('/age/static/font/gamefont.ttf');
+  src: url("../../font/gamefont.ttf");
 }
 
 
@@ -218,15 +218,6 @@ footer {
   padding: 24px 12px;
   margin: auto;
 }
-
-
-/*content ==== ==== ==== ==== ==== ==== ==== ==== */
-#container {
-  border: 4px solid #303030;
-  background-color: #202020;
-  min-height: calc(100vh - 160px - 56px - 128px - 8px);
-}
-
 
 /*baseblock ==== ==== ==== ==== ==== ==== ==== ==== */
 .baseblock .blocktitle {
@@ -543,69 +534,6 @@ footer {
   white-space: nowrap;
 }
 
-.cell_imform {
-  width: 828px;
-  display: inline-block;
-  vertical-align: top;
-  margin-left: 8px;
-}
-
-.cell_imform_name {
-  margin: 0 0 10px 0;
-  font-size: 1.15em;
-  display: inline-block;
-  text-decoration: none;
-  color: #d0e0f0;
-}
-
-.cell_imform_kvs {
-
-}
-
-.cell_imform_kv {
-  min-width: 270px;
-  margin: 3px 0;
-  display: inline-block;
-}
-
-.cell_imform_tag {
-  color: #808081;
-}
-
-.cell_imform_value {
-  color: #e0e0e0;
-}
-
-.cell_imform_kv_desc {
-  width: 100%;
-  /*override cell_imform_kv*/
-  display: block;
-}
-
-.cell_imform_kv_desc .cell_imform_tag {
-  float: left;
-  margin-right: -57px;
-}
-
-.cell_imform_desc {
-  color: #e0e0e0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  text-indent: 57px;
-  margin-bottom: 12px;
-}
-
-.cell_imform_btns {
-  margin-top: 16px;
-}
-
-.cell_res_button {
-  margin-right: 4px;
-}
-
 #result_count {
   position: absolute;
   margin-left: 10px;
@@ -697,9 +625,6 @@ li.comment {
 
 .blockdiff {
   background-color: #303030;
-}
-
-.blockdiff2 {
 }
 
 .hrspace2 {

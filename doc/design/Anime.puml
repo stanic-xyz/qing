@@ -1,0 +1,49 @@
+@startuml
+
+!include ./eventstorming/single.puml
+
+scale 1.5
+
+DomainEvent("动漫已创建") [
+动漫已创建
+]
+
+DomainEvent("动漫已经发布") [
+动漫已创建
+]
+
+DomainEvent("动漫已下架") [
+动漫已下架
+]
+
+DomainEvent("动漫已删除") [
+动漫已删除
+]
+
+DomainEvent("动漫已更新") [
+动漫已添加
+]
+
+DomainEvent("评论创建") [
+评论已创建
+]
+
+DomainEvent("评论已通过审核") [
+评论通过审核
+]
+
+DomainEvent("评论未通过审核") [
+评论未通过审核
+]
+
+DomainEvent("评论已被屏蔽") [
+评论已被屏蔽
+]
+
+Command("创建动漫") [
+创建动漫
+]
+
+创建动漫 -down-> 动漫已创建
+
+@enduml

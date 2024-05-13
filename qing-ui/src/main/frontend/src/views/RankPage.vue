@@ -1,10 +1,9 @@
 <template>
-  <!-- <el-calendar v-model="currentDate"></el-calendar> -->
-  <div id="container">这里是我的消息{{ data.activeIndex }}</div>
+  <div>排行榜</div>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
+import {reactive} from "vue";
 
 const data = reactive({
   activeIndex: "1",
