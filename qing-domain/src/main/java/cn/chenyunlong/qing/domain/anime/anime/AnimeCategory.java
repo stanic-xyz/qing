@@ -18,9 +18,8 @@ import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -28,9 +27,8 @@ import lombok.ToString;
  *
  * @author 陈云龙
  */
-@EqualsAndHashCode(callSuper = true)
-@Data
 @Getter
+@Setter
 @ToString
 @Entity(name = "anime_category")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

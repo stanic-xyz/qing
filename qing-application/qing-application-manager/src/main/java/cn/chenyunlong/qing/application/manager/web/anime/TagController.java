@@ -54,7 +54,7 @@ public class TagController {
 
     @PostMapping("valid/{id}")
     public JsonResult<String> validTag(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         tagService.validTag(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -62,7 +62,7 @@ public class TagController {
 
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidTag(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         tagService.invalidTag(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -70,7 +70,7 @@ public class TagController {
 
     @GetMapping("findById/{id}")
     public JsonResult<TagResponse> findById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         TagVO vo = tagService.findById(id);
         TagResponse response = TagMapper.INSTANCE.vo2CustomResponse(vo);

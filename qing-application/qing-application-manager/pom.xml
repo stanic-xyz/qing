@@ -75,10 +75,10 @@
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-commons</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-security-spring-boot-starter</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>cn.chenyunlong</groupId>-->
+        <!--            <artifactId>qing-security-spring-boot-starter</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-domain</artifactId>
@@ -100,13 +100,13 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>cn.chenyunlong.qing.application.manager.QingWebApplication</mainClass>
-                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

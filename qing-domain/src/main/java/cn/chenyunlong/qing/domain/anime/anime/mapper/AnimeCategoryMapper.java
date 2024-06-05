@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.domain.anime.anime.mapper;
 
 
+import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCategoryCreator;
 import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeCategoryQuery;
@@ -10,35 +11,27 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCategoryUpdateReq
 import cn.chenyunlong.qing.domain.anime.anime.dto.response.AnimeCategoryResponse;
 import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeCategoryUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeCategoryVO;
-import cn.hutool.core.bean.BeanUtil;
+import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
+@Mapper(uses = {CustomMapper.class, DateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AnimeCategoryMapper {
 
-    AnimeCategoryMapper INSTANCE = new AnimeCategoryMapper() {
+    AnimeCategoryMapper INSTANCE = Mappers.getMapper(AnimeCategoryMapper.class);
 
-    };
+    AnimeCategory dtoToEntity(AnimeCategoryCreator dto);
 
-    default AnimeCategory dtoToEntity(AnimeCategoryCreator dto) {
-        return BeanUtil.copyProperties(dto, AnimeCategory.class);
-    }
+    AnimeCategoryUpdater request2Updater(AnimeCategoryUpdateRequest request);
 
-    default AnimeCategoryUpdater request2Updater(AnimeCategoryUpdateRequest request) {
-        return BeanUtil.copyProperties(request, AnimeCategoryUpdater.class);
-    }
+    AnimeCategoryCreator request2Dto(AnimeCategoryCreateRequest request);
 
-    default AnimeCategoryCreator request2Dto(AnimeCategoryCreateRequest request) {
-        return BeanUtil.copyProperties(request, AnimeCategoryCreator.class);
-    }
+    AnimeCategoryQuery request2Query(AnimeCategoryQueryRequest request);
 
-    default AnimeCategoryQuery request2Query(AnimeCategoryQueryRequest request) {
-        return BeanUtil.copyProperties(request, AnimeCategoryQuery.class);
-    }
+    AnimeCategoryResponse vo2Response(AnimeCategoryVO vo);
 
-    default AnimeCategoryResponse vo2Response(AnimeCategoryVO vo) {
-        return BeanUtil.copyProperties(vo, AnimeCategoryResponse.class);
-    }
+    AnimeCategoryResponse vo2CustomResponse(AnimeCategoryVO vo);
 
-    default AnimeCategoryResponse vo2CustomResponse(AnimeCategoryVO vo) {
-        return vo2Response(vo);
-    }
+    AnimeCategoryVO entityToVo(AnimeCategory animeCategory);
 }

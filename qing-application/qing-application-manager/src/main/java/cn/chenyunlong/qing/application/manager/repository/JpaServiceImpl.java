@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 
 public abstract class JpaServiceImpl<R extends BaseJpaRepository<T, ID>, T, ID> implements BaseRepository<T, ID> {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     protected R baseJpaRepository;
 
@@ -20,31 +21,31 @@ public abstract class JpaServiceImpl<R extends BaseJpaRepository<T, ID>, T, ID> 
 
     @Override
     public Optional<T> findById(ID id) {
-        return Optional.empty();
+        return baseJpaRepository.findById(id);
     }
 
     @Override
-    public void deleteById(Long id) {
-
+    public void deleteById(ID id) {
+        baseJpaRepository.deleteById(id);
     }
 
     @Override
     public Page<T> findAll(PageRequest pageRequest) {
-        return null;
+        return baseJpaRepository.findAll(pageRequest);
     }
 
     @Override
-    public List<T> findByIds(List<Long> ids) {
-        return List.of();
+    public List<T> findByIds(List<ID> ids) {
+        return baseJpaRepository.findAllById(ids);
     }
 
     @Override
-    public void deleteAllByIds(List<Long> ids) {
-
+    public void deleteAllByIds(List<ID> ids) {
+        baseJpaRepository.deleteAllById(ids);
     }
 
     @Override
     public void saveAll(List<T> domainList) {
-
+        baseJpaRepository.saveAll(domainList);
     }
 }

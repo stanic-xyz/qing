@@ -1,12 +1,15 @@
 package cn.chenyunlong.qing.domain.anime.anime.service.impl;
 
+import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.Tag;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeCreateContext;
+import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeUpdater;
+import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
@@ -20,6 +23,9 @@ import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,5 +109,21 @@ public class AnimeServiceImpl implements IAnimeService {
     @Override
     public void removeById(Long id) {
         animeRepository.deleteById(id);
+    }
+
+    @Override
+    public AnimeVO findById(Long id) {
+        return animeRepository.findById(id).map(AnimeMapper.INSTANCE::entityToVo
+        ).orElse(null);
+    }
+
+    /**
+     * 分页查询
+     */
+    @Override
+    public Page<AnimeVO> findByPage(PageRequestWrapper<AnimeQuery> wrapper) {
+        PageRequest pageRequest =
+            PageRequest.of(wrapper.getPage(), wrapper.getPageSize(), Sort.Direction.DESC, "createdAt");
+        return animeRepository.findAll(pageRequest).map(AnimeMapper.INSTANCE::entityToVo);
     }
 }

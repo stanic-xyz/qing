@@ -29,7 +29,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -41,7 +40,7 @@ import reactor.core.publisher.Mono;
  * @since 2021/01/21
  */
 @Slf4j
-@Component
+// @Component
 @RequiredArgsConstructor
 public class AuthorizeFilter implements GlobalFilter, Ordered {
 

@@ -60,7 +60,7 @@ public class RecommendController {
 
     @PostMapping("valid/{id}")
     public JsonResult<String> validRecommend(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         recommendService.validRecommend(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -68,7 +68,7 @@ public class RecommendController {
 
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidRecommend(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         recommendService.invalidRecommend(id);
         return JsonResult.success(CodeEnum.Success.getName());

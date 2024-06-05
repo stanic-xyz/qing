@@ -26,13 +26,13 @@ public interface BaseRepository<T, ID> {
 
     Optional<T> findById(ID id);
 
-    void deleteById(Long id);
+    void deleteById(ID id);
 
     Page<T> findAll(PageRequest pageRequest);
 
-    List<T> findByIds(List<Long> ids);
+    List<T> findByIds(List<ID> ids);
 
-    void deleteAllByIds(List<Long> ids);
+    void deleteAllByIds(List<ID> ids);
 
     void saveAll(List<T> domainList);
 }

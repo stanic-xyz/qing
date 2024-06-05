@@ -5,4 +5,7 @@ spring:
     name: qing-web-service
   graphql:
     graphiql:
-      enabled: false
+      enabled: true
+qing:
+  api:
+    description: QING-WEB-APPLICATION

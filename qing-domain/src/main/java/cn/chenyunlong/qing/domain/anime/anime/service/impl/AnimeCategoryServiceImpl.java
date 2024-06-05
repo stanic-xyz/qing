@@ -2,10 +2,12 @@ package cn.chenyunlong.qing.domain.anime.anime.service.impl;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCategoryCreator;
+import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeCategoryQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeCategoryUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeCategoryVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeCategoryMapper;
@@ -15,6 +17,9 @@ import jakarta.annotation.Resource;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,8 +82,17 @@ public class AnimeCategoryServiceImpl implements IAnimeCategoryService {
      */
     @Override
     public AnimeCategoryVO findById(Long id) {
-        Optional<AnimeCategory> animeCategory = animeCategoryRepository.findById(id);
-        return new AnimeCategoryVO(
-            animeCategory.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        Optional<AnimeCategory> animeCategoryOptional = animeCategoryRepository.findById(id);
+        return animeCategoryOptional.map(AnimeCategoryMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
+    }
+
+    /**
+     * 分页查询
+     */
+    @Override
+    public Page<AnimeCategoryVO> findByPage(PageRequestWrapper<AnimeCategoryQuery> wrapper) {
+        PageRequest pageRequest =
+            PageRequest.of(wrapper.getPage(), wrapper.getPageSize(), Sort.Direction.DESC, "createdAt");
+        return animeCategoryRepository.findAll(pageRequest).map(AnimeCategoryMapper.INSTANCE::entityToVo);
     }
 }
