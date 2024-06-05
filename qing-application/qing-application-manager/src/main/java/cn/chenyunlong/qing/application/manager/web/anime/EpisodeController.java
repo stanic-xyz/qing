@@ -63,7 +63,7 @@ public class EpisodeController {
      */
     @PostMapping("valid/{id}")
     public JsonResult<String> validEpisode(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         episodeService.validEpisode(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -74,7 +74,7 @@ public class EpisodeController {
      */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidEpisode(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         episodeService.invalidEpisode(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -85,7 +85,7 @@ public class EpisodeController {
      */
     @GetMapping("findById/{id}")
     public JsonResult<EpisodeResponse> findById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         EpisodeVO vo = episodeService.findById(id);
         EpisodeResponse response = EpisodeMapper.INSTANCE.vo2CustomResponse(vo);

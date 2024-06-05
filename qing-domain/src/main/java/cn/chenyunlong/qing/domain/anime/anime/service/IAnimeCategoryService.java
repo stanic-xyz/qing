@@ -1,8 +1,11 @@
 package cn.chenyunlong.qing.domain.anime.anime.service;
 
+import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCategoryCreator;
+import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeCategoryQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeCategoryUpdater;
 import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeCategoryVO;
+import org.springframework.data.domain.Page;
 
 public interface IAnimeCategoryService {
 
@@ -30,4 +33,9 @@ public interface IAnimeCategoryService {
      * findById
      */
     AnimeCategoryVO findById(Long id);
+
+    /**
+     * 分页查询
+     */
+    Page<AnimeCategoryVO> findByPage(PageRequestWrapper<AnimeCategoryQuery> wrapper);
 }

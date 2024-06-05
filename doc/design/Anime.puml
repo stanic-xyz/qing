@@ -2,14 +2,16 @@
 
 !include ./eventstorming/single.puml
 
-scale 1.5
+scale 1
 
 DomainEvent("动漫已创建") [
 动漫已创建
+--字段--
+动漫Id
 ]
 
-DomainEvent("动漫已经发布") [
-动漫已创建
+DomainEvent("AnimePublished") [
+动漫已经发布
 ]
 
 DomainEvent("动漫已下架") [
@@ -36,14 +38,80 @@ DomainEvent("评论未通过审核") [
 评论未通过审核
 ]
 
+DomainEvent("评论已创建") [
+评论已创建
+]
+
 DomainEvent("评论已被屏蔽") [
 评论已被屏蔽
 ]
 
-Command("创建动漫") [
-创建动漫
+DomainEvent("评论已删除") [
+评论已删除
 ]
 
+Command("创建动漫") [
+创建动漫
+--字段--
+动漫Id
+动漫名称
+--约束--
+1、当前动漫没有被创建
+2、创建用户信息
+]
+
+Command("发布动漫")[
+发布动漫
+]
+
+Command("新增用户信息")[
+新增用户信息
+]
+
+Command("审批评论")[
+审批评论
+]
+
+Command("删除评论")[
+删除评论
+]
+
+Command("新增评论") [
+新增评论
+]
+
+Command("举报评论")[
+举报评论
+]
+
+Person("管理员")[
+管理员
+]
+
+Person("用户")[
+用户
+]
+
+Policy("审核策略")[
+审核策略
+]
+
+Aggregate("动漫")[
+动漫聚合
+]
+
+ReadModel("每月收入")[
+每月收入
+]
+
+管理员 -down-> 创建动漫
 创建动漫 -down-> 动漫已创建
+删除评论 -down-> 评论已删除
+用户 -down-> 新增评论
+新增评论 -down-> 评论已创建
+管理员 -down-> 删除评论
+用户 -down-> 删除评论
+管理员 -down-> 发布动漫
+发布动漫 -down-> AnimePublished
 
 @enduml

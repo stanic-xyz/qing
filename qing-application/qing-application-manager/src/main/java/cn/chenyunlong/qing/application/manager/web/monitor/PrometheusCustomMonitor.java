@@ -17,10 +17,12 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.util.concurrent.atomic.AtomicInteger;
+import lombok.Getter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.stereotype.Component;
 
+@Getter
 @Component
 @Endpoint(id = "test")
 public class PrometheusCustomMonitor implements InitializingBean {
@@ -33,22 +35,6 @@ public class PrometheusCustomMonitor implements InitializingBean {
 
     public PrometheusCustomMonitor(MeterRegistry registry) {
         this.registry = registry;
-    }
-
-    public Counter getRequestErrorCount() {
-        return requestErrorCount;
-    }
-
-    public Counter getLoginCount() {
-        return loginCount;
-    }
-
-    public DistributionSummary getLogErrorCount() {
-        return logErrorCount;
-    }
-
-    public AtomicInteger getFailCaseNum() {
-        return failCaseNum;
     }
 
     @Override

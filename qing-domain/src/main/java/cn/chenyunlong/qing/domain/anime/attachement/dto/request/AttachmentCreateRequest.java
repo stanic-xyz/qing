@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.domain.anime.attachement.dto.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Schema
@@ -30,7 +31,8 @@ public class AttachmentCreateRequest implements Request {
         title = "url",
         description = "文件地址"
     )
-    private String url;
+    @NotBlank
+    private String path;
 
     @Schema(
         title = "fileSize",

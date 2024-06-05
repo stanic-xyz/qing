@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.application.manager.web.web.system;
 
+import cn.chenyunlong.qing.application.manager.web.web.system.model.ConfigAccessRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,23 +42,19 @@ public class WxMpController {
      * 验证消息的确来自微信服务器
      * 开发者通过检验signature对请求进行校验。若确认此次GET请求来自微信服务器，请原样返回echostr参数内容，则接入生效
      *
-     * @param signature 微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
-     * @param timestamp 时间戳
-     * @param nonce 随机数
-     * @param echostr 随机字符串
      * @return 验证字符串
      */
     @GetMapping("send")
-    public String configAccess(String signature, String timestamp, String nonce, String echostr) {
+    public String configAccess(ConfigAccessRequest request) {
         // 校验签名
-        if (!wxMpService.checkSignature(timestamp, nonce, signature)) {
+        if (!wxMpService.checkSignature(request.getTimestamp(), request.getNonce(), request.getSignature())) {
             log.error("签名校验 ===》 非法请求");
             // 消息签名不正确，说明不是公众平台发过来的消息
             return null;
         }
         log.error("签名校验 ===》 验证成功");
         // 返回 echostr
-        return echostr;
+        return request.getEchostr();
     }
 
     /**
@@ -67,7 +64,7 @@ public class WxMpController {
      */
     @GetMapping("createMenu")
     public void createMenu() throws WxErrorException {
-        String json = "";
+        String json = "{}";
         String s = wxMpService.getMenuService().menuCreate(json);
         System.out.println(s);
     }

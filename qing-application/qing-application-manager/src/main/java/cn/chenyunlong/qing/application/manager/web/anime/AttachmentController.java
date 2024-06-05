@@ -54,7 +54,7 @@ public class AttachmentController {
      */
     @PostMapping("{id}")
     public JsonResult<String> updateAttachment(
-        @PathVariable
+        @PathVariable("id")
         Long id,
         @RequestBody
         AttachmentUpdateRequest request) {
@@ -68,7 +68,7 @@ public class AttachmentController {
      */
     @PostMapping("valid/{id}")
     public JsonResult<String> validAttachment(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         attachmentService.validAttachment(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -79,7 +79,7 @@ public class AttachmentController {
      */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidAttachment(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         attachmentService.invalidAttachment(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -90,7 +90,7 @@ public class AttachmentController {
      */
     @GetMapping("{id}")
     public JsonResult<AttachmentResponse> findById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         AttachmentVO vo = attachmentService.findById(id);
         AttachmentResponse response = AttachmentMapper.INSTANCE.vo2CustomResponse(vo);
@@ -99,7 +99,7 @@ public class AttachmentController {
 
     @DeleteMapping("{id}")
     public JsonResult<Void> deleteById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         attachmentService.deleteById(id);
         return JsonResult.success();

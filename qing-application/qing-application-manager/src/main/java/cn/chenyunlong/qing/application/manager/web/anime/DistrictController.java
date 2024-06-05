@@ -53,7 +53,7 @@ public class DistrictController {
      */
     @PutMapping("{id}")
     public JsonResult<String> updateDistrict(
-        @PathVariable
+        @PathVariable("id")
         Long id,
         @RequestBody
         DistrictUpdateRequest request) {
@@ -67,7 +67,7 @@ public class DistrictController {
      */
     @PostMapping("valid/{id}")
     public JsonResult<String> validDistrict(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         districtService.validDistrict(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -78,7 +78,7 @@ public class DistrictController {
      */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidDistrict(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         districtService.invalidDistrict(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -89,7 +89,7 @@ public class DistrictController {
      */
     @GetMapping("findById/{id}")
     public JsonResult<DistrictResponse> findById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         DistrictVO vo = districtService.findById(id);
         DistrictResponse response = DistrictConverter.INSTANCE.vo2CustomResponse(vo);
@@ -101,7 +101,7 @@ public class DistrictController {
      */
     @DeleteMapping("{id}")
     public JsonResult<Void> deleteById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         districtService.deleteById(id);
         return JsonResult.success();
