@@ -74,7 +74,6 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
      */
     @Version
     @Column(name = "version")
-    @Setter(AccessLevel.PRIVATE)
     private Integer version;
 
     /**

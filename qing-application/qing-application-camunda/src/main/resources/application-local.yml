@@ -1,0 +1,33 @@
+server:
+  port: 8595
+camunda:
+  bpm:
+    jpa:
+      enabled: true
+    metrics:
+      enabled: true
+    webapp:
+      application-path: /camunda
+      csrf:
+        deny-status: 403
+        random-class: java.security.SecureRandom
+        enable-same-site-cookie: true
+      header-security:
+        hsts-disabled: true
+    authorization:
+      enabled: false
+    admin-user:
+      id: admin
+      password: admin
+      first-name: 陈云龙
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.3.3:5432/camunda
+    hikari:
+      connection-init-sql: select 1
+      username: postgres
+      password: admin@123456
+  jpa:
+    show-sql: true
+

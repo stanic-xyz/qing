@@ -16,8 +16,12 @@ package cn.chenyunlong.qing.domain.rmi;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RegistryService {
+
+    private static final Logger log = LoggerFactory.getLogger(RegistryService.class);
 
     public static void main(String[] args) {
         try {
@@ -28,8 +32,8 @@ public class RegistryService {
             // 把远程对象注册到RMI注册服务器上，并命名为HelloRegistry
             registry.rebind("HelloRegistry", hello);
             System.out.println("======= 启动RMI服务成功! =======");
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        } catch (RemoteException exception) {
+            log.error("发生了RMI异常:", exception);
         }
     }
 }

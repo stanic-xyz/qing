@@ -7,6 +7,7 @@ import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.IAnimeDomainService;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.impl.IAnimeDomainServiceImpl;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeCreateContext;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
@@ -137,7 +138,7 @@ class IAnimeDomainServiceTest {
         createRequest.setCoverUrlAttachmentId(attachment.getId());
         createRequest.setCoverUrl("");
 
-        Long animeId = animeDomainService.createAnime(createRequest);
-        Assertions.assertNotNull(animeId);
+        AnimeCreateContext createContext = animeDomainService.createAnime(createRequest);
+        Assertions.assertNotNull(createContext);
     }
 }

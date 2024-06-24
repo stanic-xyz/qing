@@ -8,5 +8,4 @@ import org.springframework.stereotype.Service;
 @Service
 public class EpisodeRepositoryImpl extends JpaServiceImpl<EpisodeJpaRepository, Episode, Long> implements EpisodeRepository {
 
-
 }

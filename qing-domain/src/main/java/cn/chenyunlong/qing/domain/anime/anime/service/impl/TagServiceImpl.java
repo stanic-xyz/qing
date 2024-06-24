@@ -15,11 +15,12 @@ import cn.chenyunlong.qing.domain.anime.anime.repository.TagRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.ITagService;
 import cn.hutool.core.lang.Assert;
 import jakarta.annotation.Resource;
-import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 public class TagServiceImpl implements ITagService {
-
-    private final EntityManager entityManager;
 
     @Resource
     private final TagRepository tagRepository;
@@ -94,12 +93,13 @@ public class TagServiceImpl implements ITagService {
     @Override
     public TagVO findById(Long id) {
         Optional<Tag> tagOptional = tagRepository.findById(id);
-        return new TagVO(
-            tagOptional.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return tagOptional.map(TagMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
     }
 
     @Override
     public Page<TagVO> findByPage(PageRequestWrapper<TagQuery> wrapper) {
-        return null;
+        PageRequest pageRequest =
+            PageRequest.of(wrapper.getPage(), wrapper.getPageSize(), Sort.Direction.DESC, "createdAt");
+        return tagRepository.findAll(pageRequest).map(TagMapper.INSTANCE::entityToVo);
     }
 }

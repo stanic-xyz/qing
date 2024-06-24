@@ -6,6 +6,7 @@ import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.anime.anime.domainservice.IAnimeDomainService;
+import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeCreateContext;
 import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeQueryRequest;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping("api/v1/anime")
 @RequiredArgsConstructor
-public class AnimeController {
+public class AnimeController extends BaseController {
 
     private final IAnimeService animeService;
     private final IAnimeDomainService animeDomainService;
@@ -43,8 +44,8 @@ public class AnimeController {
     public JsonResult<Long> createAnime(
         @RequestBody
         AnimeCreateRequest request) {
-        Long serviceAnime = animeDomainService.createAnime(request);
-        return JsonResult.success(serviceAnime);
+        AnimeCreateContext createContext = animeDomainService.createAnime(request);
+        return success(createContext.getAnime().getId());
     }
 
     @Operation(summary = "更新动漫信息")

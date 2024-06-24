@@ -12,7 +12,7 @@ public interface IAnimeService {
     /**
      * create
      */
-    Long createAnime(AnimeCreateContext createContext);
+    void createAnime(AnimeCreateContext createContext);
 
     /**
      * update

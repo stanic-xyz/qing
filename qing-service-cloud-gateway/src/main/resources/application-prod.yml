@@ -1,0 +1,15 @@
+spring:
+  security:
+    user:
+      name: user
+      password: 123456
+  data:
+    redis:
+      database: 0
+      port: 6379
+      host: 127.0.0.1
+  cloud:
+    config:
+      enabled: false
+      discovery:
+        enabled: false

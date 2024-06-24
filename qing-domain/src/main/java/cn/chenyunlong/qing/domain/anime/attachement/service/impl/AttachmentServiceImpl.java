@@ -83,8 +83,7 @@ public class AttachmentServiceImpl implements IAttachmentService {
     @Override
     public AttachmentVO findById(Long id) {
         Optional<Attachment> attachment = attachmentRepository.findById(id);
-        return new AttachmentVO(
-            attachment.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return attachment.map(AttachmentMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
     }
 
     @Override
@@ -99,6 +98,6 @@ public class AttachmentServiceImpl implements IAttachmentService {
     public Page<AttachmentVO> findByPage(PageRequestWrapper<AttachmentQuery> query) {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return attachmentRepository.findAll(pageRequest).map(AttachmentVO::new);
+        return attachmentRepository.findAll(pageRequest).map(AttachmentMapper.INSTANCE::entityToVo);
     }
 }
