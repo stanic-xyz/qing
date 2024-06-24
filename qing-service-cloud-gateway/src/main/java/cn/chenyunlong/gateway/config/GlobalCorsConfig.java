@@ -44,7 +44,7 @@ public class GlobalCorsConfig {
         config.addAllowedMethod("*");
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
-        config.setAllowCredentials(true);
+        config.addAllowedOriginPattern("*");
         UrlBasedCorsConfigurationSource source =
             new UrlBasedCorsConfigurationSource(new PathPatternParser());
         source.registerCorsConfiguration("/**", config);
@@ -59,10 +59,10 @@ public class GlobalCorsConfig {
     @Bean
     public KeyResolver ipKeyResolver() {
         return exchange -> Mono.just(Objects
-            .requireNonNull(exchange
-                .getRequest()
-                .getRemoteAddress())
-            .getHostName());
+                                         .requireNonNull(exchange
+                                                             .getRequest()
+                                                             .getRemoteAddress())
+                                         .getHostName());
     }
 
 }

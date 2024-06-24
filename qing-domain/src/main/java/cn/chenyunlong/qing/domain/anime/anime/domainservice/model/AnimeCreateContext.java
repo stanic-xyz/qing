@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.domain.anime.anime.domainservice.model;
 
+import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.Tag;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
@@ -30,11 +31,13 @@ public class AnimeCreateContext {
     @NotNull
     private AnimeCategory animeCategory;
 
+    private Anime anime;
+
     @NotNull
     private Attachment attachment;
 
     public static AnimeCreateContext createContext(AnimeCreateRequest createRequest, List<Tag> tagList, District district, AnimeCategory animeCategory, Attachment attachment) {
         AnimeCreator requestToCreator = AnimeMapper.INSTANCE.requestToCreator(createRequest);
-        return new AnimeCreateContext(requestToCreator, tagList, district, animeCategory, attachment);
+        return new AnimeCreateContext(requestToCreator, tagList, district, animeCategory, null, attachment);
     }
 }

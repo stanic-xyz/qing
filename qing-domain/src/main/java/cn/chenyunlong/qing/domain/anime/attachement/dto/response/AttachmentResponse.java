@@ -2,8 +2,9 @@ package cn.chenyunlong.qing.domain.anime.attachement.dto.response;
 
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
-@Schema
+@Data @Schema
 public class AttachmentResponse extends AbstractJpaResponse {
 
     static {
@@ -39,43 +40,10 @@ public class AttachmentResponse extends AbstractJpaResponse {
     )
     private Long fileSize;
 
-    public Long getFileId() {
-        return fileId;
-    }
+    @Schema(
+        title = "文件地址",
+        description = "文件地址"
+    )
+    private String path;
 
-    public void setFileId(Long fileId) {
-        this.fileId = fileId;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getMimeType() {
-        return mimeType;
-    }
-
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(Long fileSize) {
-        this.fileSize = fileSize;
-    }
 }

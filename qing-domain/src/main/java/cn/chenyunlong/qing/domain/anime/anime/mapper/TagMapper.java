@@ -31,4 +31,6 @@ public interface TagMapper {
     TagResponse vo2CustomResponse(TagVO vo);
 
     TagResponse vo2Response(TagVO vo);
+
+    TagVO entityToVo(Tag tag);
 }

@@ -3,12 +3,16 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.request;
 import cn.chenyunlong.common.model.Request;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.Data;
 
 @Schema
 @Data
 public class AnimeUpdateRequest implements Request {
+
+    @NotNull
+    private Long id;
 
     @Schema(
         title = "name"
@@ -26,11 +30,6 @@ public class AnimeUpdateRequest implements Request {
     private Long districtId;
 
     @Schema(
-        title = "districtName"
-    )
-    private String districtName;
-
-    @Schema(
         title = "coverUrl"
     )
     private String coverUrl;
@@ -39,11 +38,6 @@ public class AnimeUpdateRequest implements Request {
         title = "typeId"
     )
     private Long typeId;
-
-    @Schema(
-        title = "typeName"
-    )
-    private String typeName;
 
     @Schema(
         title = "originalName"
@@ -100,11 +94,6 @@ public class AnimeUpdateRequest implements Request {
     )
     private String playHeat;
 
-    @Schema(
-        title = "orderNo"
-    )
+    @Schema(title = "orderNo")
     private Integer orderNo;
-
-    private Long id;
-
 }

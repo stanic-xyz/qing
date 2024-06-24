@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.domain.anime.attachement.mapper;
 
+import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
 import cn.chenyunlong.qing.domain.anime.attachement.dto.creator.AttachmentCreator;
 import cn.chenyunlong.qing.domain.anime.attachement.dto.query.AttachmentQuery;
@@ -9,35 +10,27 @@ import cn.chenyunlong.qing.domain.anime.attachement.dto.request.AttachmentUpdate
 import cn.chenyunlong.qing.domain.anime.attachement.dto.response.AttachmentResponse;
 import cn.chenyunlong.qing.domain.anime.attachement.dto.updater.AttachmentUpdater;
 import cn.chenyunlong.qing.domain.anime.attachement.dto.vo.AttachmentVO;
-import cn.hutool.core.bean.BeanUtil;
+import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
+@Mapper(uses = {CustomMapper.class, DateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AttachmentMapper {
 
-    AttachmentMapper INSTANCE = new AttachmentMapper() {
+    AttachmentMapper INSTANCE = Mappers.getMapper(AttachmentMapper.class);
 
-    };
+    Attachment dtoToEntity(AttachmentCreator dto);
 
-    default Attachment dtoToEntity(AttachmentCreator dto) {
-        return BeanUtil.copyProperties(dto, Attachment.class);
-    }
+    AttachmentUpdater request2Updater(AttachmentUpdateRequest request);
 
-    default AttachmentUpdater request2Updater(AttachmentUpdateRequest request) {
-        return BeanUtil.copyProperties(request, AttachmentUpdater.class);
-    }
+    AttachmentCreator request2Dto(AttachmentCreateRequest request);
 
-    default AttachmentCreator request2Dto(AttachmentCreateRequest request) {
-        return BeanUtil.copyProperties(request, AttachmentCreator.class);
-    }
+    AttachmentQuery request2Query(AttachmentQueryRequest request);
 
-    default AttachmentQuery request2Query(AttachmentQueryRequest request) {
-        return BeanUtil.copyProperties(request, AttachmentQuery.class);
-    }
+    AttachmentResponse vo2CustomResponse(AttachmentVO vo);
 
-    default AttachmentResponse vo2CustomResponse(AttachmentVO vo) {
-        return vo2Response(vo);
-    }
+    AttachmentResponse vo2Response(AttachmentVO vo);
 
-    default AttachmentResponse vo2Response(AttachmentVO vo) {
-        return BeanUtil.copyProperties(vo, AttachmentResponse.class);
-    }
+    AttachmentVO entityToVo(Attachment attachment1);
 }

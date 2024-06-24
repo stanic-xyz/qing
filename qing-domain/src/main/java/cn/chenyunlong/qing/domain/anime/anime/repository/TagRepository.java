@@ -10,7 +10,6 @@ public interface TagRepository extends BaseRepository<Tag, Long> {
     /**
      * 判断标签名是否存在
      */
-    @Query("select exists(select t from Tag t where t.name = ?1) ")
     boolean existsByName(String name);
 
     /**

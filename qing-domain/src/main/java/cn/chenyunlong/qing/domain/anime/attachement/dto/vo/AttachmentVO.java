@@ -1,20 +1,14 @@
 package cn.chenyunlong.qing.domain.anime.attachement.dto.vo;
 
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
-import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Schema
 @Data
 @EqualsAndHashCode(
     callSuper = true
-)
-@NoArgsConstructor(
-    access = AccessLevel.PROTECTED
 )
 public class AttachmentVO extends AbstractBaseJpaVo {
 
@@ -47,16 +41,4 @@ public class AttachmentVO extends AbstractBaseJpaVo {
         description = "文件大小"
     )
     private Long fileSize;
-
-    public AttachmentVO(Attachment source) {
-        super();
-        this.setId(source.getId());
-        this.setCreatedAt(source.getCreatedAt());
-        this.setUpdatedAt(source.getCreatedAt());
-        this.setFileName(source.getFileName());
-        this.setMimeType(source.getMimeType());
-        this.setPath(source.getPath());
-        this.setFileSize(source.getFileSize());
-    }
-
 }

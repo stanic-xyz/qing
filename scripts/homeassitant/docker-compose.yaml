@@ -1,0 +1,12 @@
+version: '3'
+services:
+  homeassistant:
+    image: homeassistant/home-assistant:latest
+    container_name: homeassistant
+    restart: always
+    volumes:
+      - /data/homeassistant/config:/config
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "8123:8123"

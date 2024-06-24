@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
+import cn.chenyunlong.qing.domain.anime.district.District;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
 import cn.hutool.core.lang.Assert;
 import jakarta.annotation.Resource;
@@ -50,19 +51,24 @@ public class AnimeServiceImpl implements IAnimeService {
      * createImpl
      */
     @Override
-    public Long createAnime(AnimeCreateContext createContext) {
-        Optional<Anime> anime = EntityOperations.doCreate(animeRepository)
-                                    .create(() -> AnimeMapper.INSTANCE.creatorToEntity(createContext.getAnimeCreator()))
-                                    .update(Anime::init)
-                                    .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId()))
-                                    .execute();
-        saveRel(anime, createContext.getTagList());
-        return anime.isPresent() ? anime.get().getId() : 0L;
+    public void createAnime(AnimeCreateContext createContext) {
+        EntityOperations.doCreate(animeRepository)
+            .create(() -> AnimeMapper.INSTANCE.creatorToEntity(createContext.getAnimeCreator()))
+            .update(Anime::init)
+            .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId()))
+            .execute()
+            .ifPresent(animeInfo -> {
+                createContext.setAnime(animeInfo);
+                saveRel(createContext, createContext.getTagList());
+            });
+
     }
 
-    private void saveRel(Optional<Anime> anime, List<Tag> tags) {
-
-
+    /**
+     * 保存标签信息
+     */
+    private void saveRel(AnimeCreateContext createContext, List<Tag> tags) {
+        createContext.setTagList(tags);
     }
 
     /**
@@ -72,14 +78,20 @@ public class AnimeServiceImpl implements IAnimeService {
     public void updateAnime(AnimeUpdater updater) {
         EntityOperations.doUpdate(animeRepository)
             .loadById(updater.getId())
-            .update(param -> {
-                if (!Objects.equals(param.getTypeId(), updater.getTypeId())) {
+            .update(anime -> {
+                updater.updateAnime(anime);
+                if (!Objects.equals(anime.getTypeId(), updater.getTypeId())) {
                     Long typeId = updater.getTypeId();
                     Optional<AnimeCategory> animeCategory = categoryRepository.findById(typeId);
                     Assert.isTrue(animeCategory.isPresent(), "分类信息不存在");
                     animeCategory.ifPresent(category -> updater.setTypeName(category.getName()));
                 }
-                updater.updateAnime(param);
+                if (!Objects.equals(anime.getDistrictId(), updater.getDistrictId())) {
+                    Long districtId = updater.getDistrictId();
+                    Optional<District> district = districtRepository.findById(districtId);
+                    Assert.isTrue(district.isPresent(), "地区信息不存在");
+                    district.ifPresent(districtName -> updater.setDistrictName(districtName.getName()));
+                }
             })
             .execute();
     }

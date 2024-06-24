@@ -19,11 +19,11 @@ public class TagRepositoryImpl extends JpaServiceImpl<TagJpaRepository, Tag, Lon
 
     @Override
     public boolean existsByName(String name) {
-        return false;
+        return tagJpaRepository.existsByName(name);
     }
 
     @Override
     public boolean existsByNameAndNotId(String name, Long id) {
-        return false;
+        return tagJpaRepository.existsByNameAndNotId(name, id);
     }
 }

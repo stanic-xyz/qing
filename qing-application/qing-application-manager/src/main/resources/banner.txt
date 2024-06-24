@@ -1,0 +1,15 @@
+${AnsiColor.GREEN}
+ ███████                                          ██          ██
+░██░░░░██                                        ░██         ░██
+░██   ░██  ██████  ███     ██  █████  ██████     ░██  ██████ ░██
+░███████  ██░░░░██░░██  █ ░██ ██░░░██░░██░░█     ░██ ██░░░░██░██████
+░██░░░░  ░██   ░██ ░██ ███░██░███████ ░██ ░      ░██░██   ░██░██░░░██
+░██      ░██   ░██ ░████░████░██░░░░  ░██    ██  ░██░██   ░██░██  ░██
+░██      ░░██████  ███░ ░░░██░░██████░███   ░░█████ ░░██████ ░██████
+░░        ░░░░░░  ░░░    ░░░  ░░░░░░ ░░░     ░░░░░   ░░░░░░  ░░░░░
+${AnsiColor.BRIGHT_RED}
+* Maintainer: 1576302867@qq.com & Stanic.xyz
+* OfficialWebsite: https://www.stanic.xyz/
+* SourceCode: https://github.com/PowerJob/PowerJob
+* PoweredBy:  SpringBoot${spring-boot.formatted-version}
+${AnsiColor.DEFAULT}

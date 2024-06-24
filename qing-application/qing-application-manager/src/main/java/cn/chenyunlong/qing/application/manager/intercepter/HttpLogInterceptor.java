@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.application.manager.intercepter;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,9 @@ public class HttpLogInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request,
+        @Nonnull
         HttpServletResponse response,
+        @Nonnull
         Object handler) throws Exception {
         startTime.set(System.currentTimeMillis());
         // 记录请求日志
@@ -41,7 +44,12 @@ public class HttpLogInterceptor implements HandlerInterceptor {
      * 还可以进行一些资源清理，类似于try-catch-finally中的finally，但仅调用处理器执行链中
      */
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+    public void afterCompletion(
+        @Nonnull
+        HttpServletRequest request,
+        @Nonnull
+        HttpServletResponse response,
+        @Nonnull
         Object handler, Exception ex) throws Exception {
         log.info("请求处理结束. 处理耗时: {}", System.currentTimeMillis() - startTime.get());
         startTime.remove();
