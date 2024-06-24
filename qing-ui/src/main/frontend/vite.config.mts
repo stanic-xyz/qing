@@ -13,28 +13,28 @@ export default defineConfig({
     vue(),
     vueJsx(),
     AutoImport({
-      resolvers: [LayuiVueResolver()],
+      resolvers: [LayuiVueResolver()]
     }),
     Components({
-      resolvers: [LayuiVueResolver()],
+      resolvers: [LayuiVueResolver()]
     }),
-    splitVendorChunkPlugin(),
+    splitVendorChunkPlugin()
   ],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
+      "@": fileURLToPath(new URL("./src", import.meta.url))
+    }
   },
   build: {
     rollupOptions: {},
-    watch: {},
+    watch: {}
   },
   server: {
     proxy: {
       [`^/api`]: {
-        target: "http://localhost:8080",
-        changeOrigin: true,
-      },
-    },
-  },
+        target: "http://192.168.3.3:8080",
+        changeOrigin: true
+      }
+    }
+  }
 });

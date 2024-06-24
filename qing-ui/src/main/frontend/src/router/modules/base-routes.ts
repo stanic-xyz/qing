@@ -3,6 +3,7 @@ import AuthingLogin from "@/views/login/AuthingLogin.vue";
 import ExceptionPage from "@/views/exception/ExceptionPage.vue";
 import Login from "@/views/login/Login.vue";
 import BaseLayout from "@/views/layouts/BaseLayout.vue";
+import BaseAdminLayout from "@/views/layouts/BaseAdminLayout.vue";
 
 export default [
   {
@@ -10,9 +11,32 @@ export default [
     redirect: "/home",
   },
   {
+    path: "/dashboard",
+    component: BaseAdminLayout,
+    meta: { title: "管理控制台" },
+    children: [
+      {
+        path: "/dashboard",
+        name: "dashboard",
+        component: () => import("../../views/admin/AnimeManage.vue"),
+        meta: {
+          title: "工作台",
+          requireAuth: true,
+          affix: true,
+          closable: false,
+        },
+      },
+    ],
+  },
+  {
     path: "/login",
     component: Login,
     meta: { title: "登录页面" },
+  },
+  {
+    path: "/manager",
+    component: () => import("../../views/admin/AnimeManage.vue"),
+    meta: { title: "动漫管理界面" },
   },
   {
     path: "/home",
@@ -122,10 +146,8 @@ export default [
       },
     ],
   },
-
   { path: "/users/:id", component: Activity },
   { path: "/login/authing", component: AuthingLogin },
-
   {
     path: "/error/401",
     component: () => import("../../views/error/401.vue"),

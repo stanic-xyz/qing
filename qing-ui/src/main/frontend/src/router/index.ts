@@ -1,7 +1,7 @@
-import type {NavigationGuardNext, RouteLocationNormalized, Router,} from "vue-router";
-import {createRouter, createWebHashHistory} from "vue-router";
+import { createWebHistory, type NavigationGuardNext, type RouteLocationNormalized, type Router } from "vue-router";
+import { createRouter } from "vue-router";
 import routes from "./modules/base-routes";
-import {userStore} from "@/stores/user";
+import { userStore } from "@/stores/user";
 
 /** 路由白名单 */
 const whiteList = ["/login"];
@@ -10,7 +10,7 @@ const whiteList = ["/login"];
  * 创建路由实例
  */
 const router: Router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 
@@ -24,29 +24,21 @@ const router: Router = createRouter({
  * @param to 目标
  * @param from 来至
  */
-router.beforeEach(
-  (
-    to: RouteLocationNormalized,
-    from: RouteLocationNormalized,
-    next: NavigationGuardNext,
-  ): void => {
-    const store = userStore();
+router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): void => {
+  const store = userStore();
 
-    if (to.meta.requireAuth) {
-      next();
-    } else if (to.matched.length == 0) {
-      next({ path: "/error/404" });
-    } else {
-      next();
-    }
-  },
-);
+  if (to.meta.requireAuth) {
+    next();
+  } else if (to.matched.length == 0) {
+    next({ path: "/error/404" });
+  } else {
+    next();
+  }
+});
 
-router.onError(
-  (error: any, to: RouteLocationNormalized, from: RouteLocationNormalized) => {
-    console.log("导航守卫发生了错误");
-  },
-);
+router.onError((error: any, to: RouteLocationNormalized, from: RouteLocationNormalized) => {
+  console.log("导航守卫发生了错误");
+});
 
 router.afterEach(() => {
   console.log("路由加载完毕");
