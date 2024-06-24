@@ -1,6 +1,6 @@
 ·
 <script lang="ts" setup>
-import { onMounted, reactive } from "vue";
+import {onMounted, reactive} from "vue";
 
 const state = reactive({
   count: 0,
@@ -26,11 +26,11 @@ onMounted(() => {
 <template>
   <div>
     <iframe
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-      height="720"
-      src="https://www.youtube.com/embed/CYIntGsjNMs"
-      width="1280"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            height="720"
+            src="https://www.youtube.com/embed/CYIntGsjNMs"
+            width="1280"
     ></iframe>
   </div>
 </template>

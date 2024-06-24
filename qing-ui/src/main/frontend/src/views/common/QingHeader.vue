@@ -98,9 +98,9 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive} from "vue";
-import {userInfoStore} from "@/stores/session";
-import {useRouter} from "vue-router";
+import { onMounted, reactive } from "vue";
+import { userInfoStore } from "@/stores/session";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const src = "https://files.authing.co/user-contents/photos/38c766c6-3e98-4321-a171-b95e60e379b8.png";
