@@ -1,5 +1,5 @@
 export interface Tag {
-  id: number;
-  name: string;
-  instruction: string;
+    id: number;
+    name: string;
+    instruction: string;
 }

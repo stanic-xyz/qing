@@ -1,9 +1,9 @@
 interface PromiseFn<T = any, R = T> {
-  (...arg: T[]): Promise<R>;
+    (...arg: T[]): Promise<R>;
 }
 
 interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
-  $el: T;
+    $el: T;
 }
 
 function parseInt(s: string | number, radix?: number): number;
