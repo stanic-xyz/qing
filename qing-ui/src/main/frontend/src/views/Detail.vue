@@ -50,7 +50,7 @@
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">标签：</span>
-                <span class="detail_imform_value">{{ data.anime.tags }}</span>
+                <span class="detail_imform_value">{{ data.anime.tagIds }}</span>
               </li>
               <li class="detail_imform_kv">
                 <span class="detail_imform_tag">官方网站：</span>
@@ -169,10 +169,10 @@
           </div>
           <div id="recommend_block" class="switchBlock">
             <ul class="ul_li_a4">
-              <li v-for="(anime, index) in relevantList" :key="index" class="anime_icon1">
-                <router-link :to="`/anime/${anime.id}`"><img alt="暂无" class="anime_icon1_img" height="205" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语_small.jpg" width="148" /></router-link>
-                <router-link :to="`/anime/${anime.id}`">
-                  <div class="anime_icon1_name">{{ anime.name }}</div>
+              <li v-for="({ id, name }, index) in []" :key="index" class="anime_icon1">
+                <router-link :to="`/anime/${id}`"><img alt="暂无" class="anime_icon1_img" height="205" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语_small.jpg" width="148"/></router-link>
+                <router-link :to="`/anime/${id}`">
+                  <div class="anime_icon1_name">{{ name }}</div>
                 </router-link>
               </li>
             </ul>
@@ -224,12 +224,9 @@
 <script lang="ts" setup>
 import {onMounted, reactive, ref} from "vue";
 import {findById} from "@/apis/anime";
-import AnimeInfo from "@/views/anime/AnimeInfo.vue";
 import {useRoute, useRouter} from "vue-router";
 import type {Anime} from "@/apis/anime/types";
 
-const currentPage = ref<number>(0);
-const pageSize = ref<number>(10);
 const data = reactive({
   activeIndex: "1",
   activeIndex2: "1",
@@ -271,7 +268,6 @@ onMounted(() => {
   }
 });
 
-const relevantList = ref<AnimeInfo>();
 const currentPlayListId = ref(0);
 const isCommentBoard = ref(false);
 const chooseReportTypes = ref([]);

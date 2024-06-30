@@ -40,7 +40,7 @@
     "@types/dplayer" : "^1.25.2",
     "@types/js-cookie" : "^3.0.2",
     "@types/jsdom" : "^20.0.1",
-    "@types/node" : "^18.11.12",
+    "@types/node" : "^20.10.0",
     "@vitejs/plugin-vue" : "^4.0.0",
     "@vitejs/plugin-vue-jsx" : "^3.0.0",
     "@vue/cli-plugin-babel" : "^5.0.8",

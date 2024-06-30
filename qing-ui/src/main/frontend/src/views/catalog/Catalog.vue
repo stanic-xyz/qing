@@ -46,7 +46,7 @@
               </div>
               <div class="vedio_detail_info">
                 <span>制作公司：</span>
-                {{ anime.company }}
+                {{ anime.companyName }}
               </div>
               <div class="vedio_detail_info vedio_detail_info_desc">
                 <span>简介</span>
