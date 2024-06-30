@@ -7,11 +7,15 @@ on:
   push:
     branches:
       - '**'
+    paths:
+      - "!qing-ui/src/main/frontend/**"
+      - "!.github/workflows/build-web.yml"
   pull_request:
     branches: [ main ]
 
 jobs:
   build:
+    timeout: 10
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
