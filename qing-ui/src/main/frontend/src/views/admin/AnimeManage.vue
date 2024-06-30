@@ -20,7 +20,7 @@
           <lay-form-item label="作者" prop="author">
             <lay-input id="author" v-model="animeDetailForm.author"></lay-input>
           </lay-form-item>
-          <lay-form-item label="公司" prop="companyName">
+          <lay-form-item label="制作公司" prop="companyName">
             <lay-select style="width: 100%" v-model="animeDetailForm.companyId" :show-search="true">
               <lay-select-option :value="1" label="原力动画"></lay-select-option>
             </lay-select>
