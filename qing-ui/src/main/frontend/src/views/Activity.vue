@@ -19,19 +19,13 @@ defineProps({
 });
 
 onMounted(() => {
-  console.log("fabule xnxi");
+  console.debug("fabule xnxi");
 });
 </script>
 
 <template>
   <div>
-    <iframe
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            height="720"
-            src="https://www.youtube.com/embed/CYIntGsjNMs"
-            width="1280"
-    ></iframe>
+    <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen height="720" src="https://www.youtube.com/embed/CYIntGsjNMs" width="1280"></iframe>
   </div>
 </template>
 
