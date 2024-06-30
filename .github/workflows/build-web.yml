@@ -7,7 +7,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "qing-ui/src/main/frontend"
+      - "qing-ui/src/main/frontend/**"
   pull_request:
     branches: [ "main" ]
 
