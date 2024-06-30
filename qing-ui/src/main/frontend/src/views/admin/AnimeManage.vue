@@ -1,10 +1,9 @@
 <template>
-  <div style="height: 800px">
+  <div style="height: 800px" ref="fullscreenTargetRef2">
     <lay-table v-if="!isEdit" ref="tableRef" v-model:selectedKey="selectedKey" v-model:selectedKeys="selectedKeys" size="md" :ellipsisTooltip="true" :even="true" :autoColsWidth="true" :columns="columns" :data-source="dataSource" :default-toolbar="toolbar" :page="page" :resize="false" :loading="loading" @change="change">
       <template #toolbar>
         <lay-button type="primary" size="md" @click="recommend">添加推荐</lay-button>
-        <lay-button size="md" @click="getCheckData3">获取选中数据</lay-button>
-        <lay-button size="md" @click="addAnime">新增</lay-button>
+        <lay-button type="primary" size="md" @click="addAnime">新增</lay-button>
       </template>
       <template #operator="{ row }">
         <lay-button size="xs" type="primary" @click="view(row)">编辑</lay-button>
@@ -58,77 +57,79 @@
       </div>
     </lay-layer>
 
-    <lay-layer v-model="addForm.isAdd" shade="false" :area="['1000px', '800px']" :btn="addForm.addAction" title="添加动漫">
-      <div style="color: rebeccapurple; margin-right: 1rem">
-        <lay-form :model="addForm.formData" ref="addFormRef" required>
-          <lay-form-item label="名称" prop="name">
-            <lay-input id="name" v-model="addForm.formData.name"></lay-input>
-          </lay-form-item>
-          <lay-form-item label="原作" prop="originalName">
-            <lay-input id="originalName" v-model="addForm.formData.originalName"></lay-input>
-          </lay-form-item>
-          <lay-form-item label="作者" prop="author">
-            <lay-input id="author" v-model="addForm.formData.author"></lay-input>
-          </lay-form-item>
-          <lay-form-item label="公司" prop="companyName">
-            <lay-select style="width: 100%" v-model="addForm.formData.companyId" :show-search="true">
-              <lay-select-option :value="1" label="原力动画"></lay-select-option>
-            </lay-select>
-          </lay-form-item>
-          <lay-form-item label="分类" prop="typeId">
-            <lay-select style="width: 100%" v-model="addForm.formData.typeId">
-              <lay-select-option v-for="{ id, name } of categoryList" :value="id" :label="name"></lay-select-option>
-            </lay-select>
-          </lay-form-item>
-          <lay-form-item label="剧情类型" prop="plotType">
-            <lay-input id="plotType" v-model="addForm.formData.plotType">></lay-input>
-          </lay-form-item>
-          <lay-form-item label="标签" :required="false">
-            <lay-select v-model="addForm.formData.tagIds" :show-search="true" :multiple="true">
-              <lay-select-option v-for="{ id, name } of tagInfoList" :value="id" :label="name"></lay-select-option>
-            </lay-select>
-          </lay-form-item>
-          <lay-form-item label="首播日期" prop="premiereDate" :required="false">
-            <lay-date-picker v-model="addForm.formData.premiereDate" placeholder="选择首播日期" allowClear></lay-date-picker>
-          </lay-form-item>
-          <lay-form-item label="地区" prop="districtId">
-            <lay-select style="width: 100%" v-model="addForm.formData.districtId">
-              <lay-select-option v-for="{ id, name } of districtInfoList" :value="id" :label="name"></lay-select-option>
-            </lay-select>
-          </lay-form-item>
-          <lay-form-item label="类型">
-            <lay-checkbox-group v-model="addForm.formData.animeType">
-              <lay-checkbox name="like" skin="primary" value="1">写作</lay-checkbox>
-              <lay-checkbox name="like" skin="primary" value="2">画画</lay-checkbox>
-              <lay-checkbox name="like" skin="primary" value="3">运动</lay-checkbox>
-            </lay-checkbox-group>
-          </lay-form-item>
-          <lay-form-item label="介绍" prop="desc">
-            <lay-textarea v-model="addForm.formData.instruction" placeholder="请输入描述"></lay-textarea>
-          </lay-form-item>
-          <lay-form-item label="官方网站" prop="desc">
-            <lay-input v-model="addForm.formData.officialWebsite" :disabled="false">
-              <template #prepend="{ disabled }">https://</template>
-            </lay-input>
-          </lay-form-item>
-        </lay-form>
-      </div>
-    </lay-layer>
+    <lay-fullscreen :target="fullscreenTargetRef2" :immersive="true" zIndex="12000" position="absolute" v-slot="{ enter, exit, toggle, isFullscreen }">
+      <lay-layer v-model="addForm.isAdd" shade="false" :area="['1000px', '800px']" :btn="addForm.addAction" title="新增动漫">
+        <lay-scroll height="600px">
+          <div style="color: rebeccapurple; margin-right: 1rem">
+            <lay-form :model="addForm.formData" ref="addFormRef" required>
+              <lay-form-item label="名称" prop="name">
+                <lay-input id="name" v-model="addForm.formData.name"></lay-input>
+              </lay-form-item>
+              <lay-form-item label="原作" prop="originalName">
+                <lay-input id="originalName" v-model="addForm.formData.originalName"></lay-input>
+              </lay-form-item>
+              <lay-form-item label="作者" prop="author">
+                <lay-input id="author" v-model="addForm.formData.author"></lay-input>
+              </lay-form-item>
+              <lay-form-item label="公司" prop="companyName">
+                <lay-select style="width: 100%" v-model="addForm.formData.companyId" :show-search="true">
+                  <lay-select-option :value="1" label="原力动画"></lay-select-option>
+                </lay-select>
+              </lay-form-item>
+              <lay-form-item label="分类" prop="typeId">
+                <lay-select style="width: 100%" v-model="addForm.formData.typeId">
+                  <lay-select-option v-for="{ id, name } of categoryList" :value="id" :label="name"></lay-select-option>
+                </lay-select>
+              </lay-form-item>
+              <lay-form-item label="剧情类型" prop="plotType">
+                <lay-input id="plotType" v-model="addForm.formData.plotType">></lay-input>
+              </lay-form-item>
+              <lay-form-item label="标签" :required="false">
+                <lay-select v-model="addForm.formData.tagIds" :show-search="true" :multiple="true">
+                  <lay-select-option v-for="{ id, name } of tagInfoList" :value="id" :label="name"></lay-select-option>
+                </lay-select>
+              </lay-form-item>
+              <lay-form-item label="首播日期" prop="premiereDate" :required="false">
+                <lay-date-picker v-model="addForm.formData.premiereDate" placeholder="选择首播日期" allowClear></lay-date-picker>
+              </lay-form-item>
+              <lay-form-item label="地区" prop="districtId">
+                <lay-select style="width: 100%" v-model="addForm.formData.districtId">
+                  <lay-select-option v-for="{ id, name } of districtInfoList" :value="id" :label="name"></lay-select-option>
+                </lay-select>
+              </lay-form-item>
+              <lay-form-item label="官方网站" prop="desc">
+                <lay-input v-model="addForm.formData.officialWebsite" :disabled="false"></lay-input>
+              </lay-form-item>
+              <lay-form-item label="类型">
+                <lay-checkbox-group v-model="addForm.formData.typeId">
+                  <lay-checkbox name="like" skin="primary" value="1">写作</lay-checkbox>
+                  <lay-checkbox name="like" skin="primary" value="2">画画</lay-checkbox>
+                  <lay-checkbox name="like" skin="primary" value="3">运动</lay-checkbox>
+                </lay-checkbox-group>
+              </lay-form-item>
+              <lay-form-item label="介绍" prop="desc">
+                <lay-textarea v-model="addForm.formData.instruction" placeholder="请输入描述"></lay-textarea>
+              </lay-form-item>
+            </lay-form>
+          </div>
+        </lay-scroll>
+      </lay-layer>
+    </lay-fullscreen>
   </div>
 </template>
 <style scoped lang="scss"></style>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue";
-import { layer } from "@layui/layui-vue";
-import { createAnime, findById, getAnimeList, updateAnime } from "@/apis/anime";
-import type { Anime } from "@/apis/anime/types";
-import { getTagList } from "@/apis/tags";
-import type { Tag } from "@/apis/tags/types";
-import { getDistrictList } from "@/apis/district";
-import type { District } from "@/apis/district/types";
-import { getCategoryList } from "@/apis/categories";
-import type { Category } from "@/apis/categories/types";
+import {onMounted, reactive, ref} from "vue";
+import {layer} from "@layui/layui-vue";
+import {createAnime, findById, getAnimeList, updateAnime} from "@/apis/anime";
+import type {Anime} from "@/apis/anime/types";
+import {getTagList} from "@/apis/tags";
+import type {Tag} from "@/apis/tags/types";
+import {getDistrictList} from "@/apis/district";
+import type {District} from "@/apis/district/types";
+import {getCategoryList} from "@/apis/categories";
+import type {Category} from "@/apis/categories/types";
 
 onMounted(() => {
   resolveCategories();
@@ -136,6 +137,8 @@ onMounted(() => {
   resolveDistricts();
   reloadAnimeInfo();
 });
+
+const fullscreenTargetRef2 = ref(null);
 
 const loading = ref(false);
 const tableRef = ref();
