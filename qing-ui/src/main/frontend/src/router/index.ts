@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalized, type Router} from "vue-router";
+import {createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized, type Router} from "vue-router";
 import routes from "./modules/base-routes";
 import {userStore} from "@/stores/user";
 
@@ -9,7 +9,7 @@ const whiteList = ["/login"];
  * 创建路由实例
  */
 const router: Router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes,
 });
 
