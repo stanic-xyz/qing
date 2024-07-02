@@ -49,9 +49,9 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
     @Override
     public Long createAdminAccount(AdminAccountCreator creator) {
         Optional<AdminAccount> adminAccount = EntityOperations.doCreate(adminAccountRepository)
-            .create(() -> AdminAccountMapper.INSTANCE.dtoToEntity(creator))
-            .update(AdminAccount::init)
-            .execute();
+                                                  .create(() -> AdminAccountMapper.INSTANCE.dtoToEntity(creator))
+                                                  .update(AdminAccount::init)
+                                                  .execute();
         return adminAccount.isPresent() ? adminAccount.get().getId() : 0;
     }
 
@@ -120,15 +120,15 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
             adminAccountRoleRelRepository.listRoleByAccountId(accountId);
 
         List<Long> oldRoleIds = adminAccountRoleRelList.stream().map(AdminAccountRoleRel::getId)
-            .toList();
+                                    .toList();
         if (oldRoleIds.isEmpty()) {
             // 移除当前不存在的角色列表
             adminAccountRoleRelRepository.deleteAllByIds(oldRoleIds);
         }
         List<AdminAccountRoleRel> roleRelList =
             roleRepository.findByIds(roleIds).stream().map(role ->
-                AdminAccountRoleRel.builder().adminAccountId(accountId).roleId(role.getId())
-                    .build()).toList();
+                                                               AdminAccountRoleRel.builder().adminAccountId(accountId).roleId(role.getId())
+                                                                   .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
             adminAccountRoleRelRepository.saveAll(roleRelList);
         }
@@ -153,8 +153,8 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
         }
         List<AdminAccountPlatformRel> roleRelList =
             platformRepository.findByIds(platformIds).stream().map(role ->
-                AdminAccountPlatformRel.builder().adminAccountId(accountId).platformId(role.getId())
-                    .build()).toList();
+                                                                       AdminAccountPlatformRel.builder().adminAccountId(accountId).platformId(role.getId())
+                                                                           .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
             adminAccountPlatformRelRepository.saveAll(roleRelList);
         }

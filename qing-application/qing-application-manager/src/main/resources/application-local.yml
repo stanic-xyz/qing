@@ -1,0 +1,68 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/qing
+    hikari:
+      connection-init-sql: select 1
+      username: postgres
+      password: admin@123456
+  data:
+    redis:
+      host: 192.168.3.20
+      port: 6379
+  mail:
+    host: smtp.qq.com
+    username: your_mail_count
+    password: your_mail_token
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: false
+    hibernate:
+      ddl-auto: none
+  h2:
+    console:
+      enabled: true
+qing:
+  openAopLog: true
+  api:
+    doc-disabled: false
+  index-size: 26
+  security:
+    jwt:
+      secret: 123123
+      header: jwt
+      expiration: 100000
+    authing:
+      appId: 65df6ba660dc95a7f1080c20
+      appSecret: 0918e82c8551918919812c434fb5ab85
+      appHost: https://stanic.authing.cn/65df6ba660dc95a7f1080c20
+      redirectUrl: http://localhost:8080/api/auth2/authorization
+      authLoginUrlPrefix: /api/auth2/authorization
+      auto-sign-up: true
+      login-page: http://localhost:5173/#/login/Authing
+  mp:
+    # 测试账号
+    appId: wx9e955703886af7c9
+    secret: 9d8cbf48467d38006f50f13d499f5abc
+    token: 123123
+    aes-key: ZcipcxwIwYh0WFFdBPZXlrxzNVmTWPq4OuVh4RzHGh6
+  oss:
+    enable: true
+    endpoint: https://anime-1255705827.cos.ap-guangzhou.myqcloud.com
+    access-key: AKIDfEcnqk1AA0dBoFVaS9ezf8OflhS0OZQ6
+    access-secret: LbhbK0ZoqhRxHSUKzTkuukU4STIzTvBE
+    region: ap-chongqing
+    bucket: anime-1255705827
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.3.37:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 192.167.3.3
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10

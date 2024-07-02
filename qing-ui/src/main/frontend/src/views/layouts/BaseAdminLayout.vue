@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import QingHeader from "@/views/common/QingHeader.vue";
-import QingFooter from "@/views/common/QingFooter.vue";
 import SideBar from "@/views/layouts/sideBar/SideBar.vue";
 import { onMounted } from "vue";
 
