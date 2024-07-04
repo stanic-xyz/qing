@@ -39,6 +39,7 @@
         <module>qing-starters</module>
         <module>qing-infrastructure</module>
         <module>qing-domain-gen</module>
+        <module>qing-infrustructure-anime</module>
     </modules>
 
     <url>https://www.chenyunlong.cn</url>
@@ -145,6 +146,11 @@
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-infrastructure</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-infrustructure-anime</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
