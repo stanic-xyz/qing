@@ -88,6 +88,10 @@
             <artifactId>qing-infrastructure</artifactId>
         </dependency>
         <dependency>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-infrustructure-anime</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.graphql</groupId>
             <artifactId>spring-graphql-test</artifactId>
             <scope>test</scope>
