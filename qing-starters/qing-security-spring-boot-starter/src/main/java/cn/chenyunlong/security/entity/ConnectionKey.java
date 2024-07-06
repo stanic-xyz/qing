@@ -16,8 +16,6 @@
 
 package cn.chenyunlong.security.entity;
 
-import lombok.Data;
-
 import java.io.Serializable;
 
 /**
@@ -25,30 +23,19 @@ import java.io.Serializable;
  * A composite key that consists of the providerId (e.g. "facebook") plus providerUserId (e.g. "125660").
  * Provides the basis for connection equals() and hashCode().
  *
+ * @param providerId 第三方服务商
+ * @param providerUserId 第三方用户id
  * @author Keith Donald
  */
-@Data
-public final class ConnectionKey implements Serializable {
-
-    /**
-     * 第三方服务商
-     */
-    private final String providerId;
-
-    /**
-     * 第三方用户id
-     */
-    private final String providerUserId;
+public record ConnectionKey(String providerId, String providerUserId) implements Serializable {
 
     /**
      * Creates a new {@link ConnectionKey}.
      *
-     * @param providerId     the id of the provider e.g. facebook
+     * @param providerId the id of the provider e.g. facebook
      * @param providerUserId id of the provider user account e.g. '125660'
      */
-    public ConnectionKey(String providerId, String providerUserId) {
-        this.providerId = providerId;
-        this.providerUserId = providerUserId;
+    public ConnectionKey {
     }
 
     /**
@@ -58,7 +45,8 @@ public final class ConnectionKey implements Serializable {
      *
      * @return The id of the provider as it is registered in the system.
      */
-    public String getProviderId() {
+    @Override
+    public String providerId() {
         return providerId;
     }
 
@@ -71,7 +59,8 @@ public final class ConnectionKey implements Serializable {
      *
      * @return The id of the external provider user representing the remote end of the connection.
      */
-    public String getProviderUserId() {
+    @Override
+    public String providerUserId() {
         return providerUserId;
     }
 
@@ -84,12 +73,6 @@ public final class ConnectionKey implements Serializable {
         }
         boolean sameProvider = providerId.equals(other.providerId);
         return providerUserId != null ? sameProvider && providerUserId.equals(other.providerUserId) : sameProvider && other.providerUserId == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int hashCode = providerId.hashCode();
-        return providerUserId != null ? hashCode + providerUserId.hashCode() : hashCode;
     }
 
     @Override

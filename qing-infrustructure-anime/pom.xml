@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>qing-infrustructure-anime</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

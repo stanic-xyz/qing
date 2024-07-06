@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.infrastructure.repository;
 
 import cn.chenyunlong.qing.domain.auth.role.RoleResourceRel;
 import cn.chenyunlong.qing.domain.auth.role.repository.RoleResourceRelRepository;
+import cn.chenyunlong.qing.infrastructure.repository.base.JpaServiceImpl;
 import cn.chenyunlong.qing.infrastructure.repository.jpa.RoleResourceRelJpaRepository;
 import org.springframework.stereotype.Service;
 

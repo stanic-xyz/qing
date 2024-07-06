@@ -17,7 +17,6 @@ import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
 import cn.hutool.core.lang.Assert;
-import jakarta.annotation.Resource;
 import jakarta.validation.Validator;
 import java.util.List;
 import java.util.Objects;
@@ -36,13 +35,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AnimeServiceImpl implements IAnimeService {
 
-    @Resource
     private final AnimeRepository animeRepository;
 
-    @Resource
     private final AnimeCategoryRepository categoryRepository;
 
-    @Resource
     private final DistrictRepository districtRepository;
 
     private final Validator validator;

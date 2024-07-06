@@ -86,6 +86,7 @@
         <dependency>
             <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-infrastructure</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cn.chenyunlong</groupId>
