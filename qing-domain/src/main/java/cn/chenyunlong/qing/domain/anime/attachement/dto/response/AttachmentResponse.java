@@ -3,8 +3,11 @@ package cn.chenyunlong.qing.domain.anime.attachement.dto.response;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Data @Schema
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Schema
 public class AttachmentResponse extends AbstractJpaResponse {
 
     static {

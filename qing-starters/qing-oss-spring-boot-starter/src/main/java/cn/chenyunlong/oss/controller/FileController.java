@@ -159,7 +159,6 @@ public class FileController {
     @Operation(summary = "上传文件到腾讯对象存储", description = "上传文件到腾讯对象存储")
     @PostMapping("cos/upload")
     public ApiResult<List<COSObjectSummary>> cosUpload() {
-        List<COSObjectSummary> cosObjects = new LinkedList<>();
         List<Bucket> buckets = cosClient.listBuckets();
         for (Bucket bucket : buckets) {
             String bucketName = bucket.getName();
@@ -180,6 +179,7 @@ public class FileController {
         // 设置最大遍历出多少个对象, 一次 listObject 最大支持1000
         listObjectsRequest.setMaxKeys(1000);
         ObjectListing objectListing;
+        List<COSObjectSummary> cosObjects = new LinkedList<>();
         do {
             try {
                 objectListing = cosClient.listObjects(listObjectsRequest);

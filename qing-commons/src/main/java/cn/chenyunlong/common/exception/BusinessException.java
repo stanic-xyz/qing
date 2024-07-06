@@ -16,6 +16,7 @@ package cn.chenyunlong.common.exception;
 
 import cn.chenyunlong.common.constants.BaseEnum;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 业务错误。
@@ -27,7 +28,8 @@ public class BusinessException extends RuntimeException {
 
     private BaseEnum<Integer> code;
 
-    @Getter private Object data;
+    @Setter
+    private Object data;
 
     public BusinessException(BaseEnum<Integer> code) {
         super(code.getName());
@@ -50,11 +52,4 @@ public class BusinessException extends RuntimeException {
         this.data = data;
     }
 
-    public BaseEnum getCode() {
-        return code;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
 }

@@ -18,10 +18,9 @@ import cn.chenyunlong.common.utils.BeanUtils;
 
 /**
  * 输出DTO的转换器接口。
- *
  * <b>The implementation type must be equal to DTO type</b>
  *
- * @param <DTO>    the implementation class type
+ * @param <DTO> the implementation class type
  * @param <DOMAIN> domain type
  * @author johnniang
  */
