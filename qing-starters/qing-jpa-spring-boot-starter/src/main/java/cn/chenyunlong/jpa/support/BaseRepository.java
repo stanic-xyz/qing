@@ -28,6 +28,8 @@ public interface BaseRepository<T, ID> {
 
     void deleteById(ID id);
 
+    List<T> findAll();
+
     Page<T> findAll(PageRequest pageRequest);
 
     List<T> findByIds(List<ID> ids);

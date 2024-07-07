@@ -3,7 +3,9 @@ package cn.chenyunlong.qing.infrastructure.repository.jpa.auth;
 import cn.chenyunlong.jpa.support.BaseJpaRepository;
 import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserJpaRepository extends BaseJpaRepository<QingUser, Long> {
 
     @Query("select u from QingUser u where u.username = ?1")

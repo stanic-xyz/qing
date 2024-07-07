@@ -20,7 +20,7 @@ CheckStyle 插件，并引入项目所提供的 checkstyle.xml 配置。
 - 进入编辑器配置（File | Settings | Editor | Code Style）
 - 导入 checkstyle.xm 配置：
 
-![](H:\workspace\GitHub\op\qing\checkstyle\checkstyle.webp)
+![](resources\checkstyle.webp)
 
 - 选择 ./config/checkstyle/checkstyle.xml 配置文件，点击确定即可。
 
