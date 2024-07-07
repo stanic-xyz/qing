@@ -38,7 +38,6 @@ public class OpenApiConfig {
                 openApi.addExtension("x-test123", "333");
                 openApi.getPaths().addExtension("x-abb", RandomUtil.randomInt(1, 100));
             }
-
         };
     }
 
