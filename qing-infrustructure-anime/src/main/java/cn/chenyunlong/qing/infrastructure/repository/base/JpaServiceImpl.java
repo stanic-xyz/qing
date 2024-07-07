@@ -18,6 +18,11 @@ public abstract class JpaServiceImpl<R extends BaseJpaRepository<T, ID>, T, ID> 
     protected R baseJpaRepository;
 
     @Override
+    public void afterPropertiesSet() throws Exception {
+        log.info("初始化：{}", baseJpaRepository);
+    }
+
+    @Override
     public T save(T entity) {
         return baseJpaRepository.save(entity);
     }
@@ -52,8 +57,4 @@ public abstract class JpaServiceImpl<R extends BaseJpaRepository<T, ID>, T, ID> 
         baseJpaRepository.saveAll(domainList);
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        log.info("初始化：{}", baseJpaRepository);
-    }
 }
