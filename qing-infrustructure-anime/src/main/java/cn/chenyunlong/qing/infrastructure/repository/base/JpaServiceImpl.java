@@ -38,6 +38,11 @@ public abstract class JpaServiceImpl<R extends BaseJpaRepository<T, ID>, T, ID> 
     }
 
     @Override
+    public List<T> findAll() {
+        return baseJpaRepository.findAll();
+    }
+
+    @Override
     public Page<T> findAll(PageRequest pageRequest) {
         return baseJpaRepository.findAll(pageRequest);
     }

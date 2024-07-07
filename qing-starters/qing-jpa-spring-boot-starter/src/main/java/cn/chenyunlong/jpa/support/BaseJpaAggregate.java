@@ -27,6 +27,7 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Version;
+import java.io.Serializable;
 import java.time.Instant;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -45,7 +46,7 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 @Data
 @Embeddable
 @MappedSuperclass
-public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggregate> {
+public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggregate> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
