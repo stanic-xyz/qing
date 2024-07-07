@@ -40,5 +40,10 @@ public interface ISysMenuService {
      */
     Page<SysMenuVO> findByPage(PageRequestWrapper<SysMenuQuery> query);
 
+    /**
+     * tree
+     */
     List<SysMenuVO> tree();
+
+
 }

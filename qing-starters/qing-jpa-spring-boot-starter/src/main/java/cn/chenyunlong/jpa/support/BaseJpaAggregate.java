@@ -16,6 +16,7 @@ package cn.chenyunlong.jpa.support;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
 import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
+import cn.hutool.core.lang.Assert;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -125,6 +126,7 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
     }
 
     public void invalid() {
+        Assert.equals(validStatus, ValidStatus.VALID, "数据已失效");
         setValidStatus(ValidStatus.INVALID);
     }
 

@@ -4,7 +4,7 @@
       <div v-for="(anime, index) in animeInfoList" :key="index">
         <div class="card" style="display: flex; margin: 1rem 0">
           <router-link :to="`/anime/${anime?.id}`" class="cell_poster">
-            <img src="https://cdn.aqdstatic.com:966/age/20180073_small.jpg" alt="发布信息" class="anime_icon1_img" height="auto" width="auto" referrerpolicy="no-referrer" style="width: auto; height: auto"/>
+            <img alt="发布信息" class="anime_icon1_img" height="auto" referrerpolicy="no-referrer" src="https://cdn.aqdstatic.com:966/age/20180073_small.jpg" style="width: auto; height: auto" width="auto"/>
             />
           </router-link>
           <div class="card-content" style="flex: 1; padding-left: 4px">
@@ -72,7 +72,7 @@
   </div>
 </template>
 
-<style scoped src="../../assets/css/catalog.css" lang="less">
+<style lang="less" scoped src="../../assets/css/catalog.css">
 #container {
   margin: 0 auto;
   padding: 0 0;

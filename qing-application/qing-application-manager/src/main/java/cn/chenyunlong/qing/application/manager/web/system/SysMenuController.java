@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.auth.menu.dto.updater.SysMenuUpdater;
 import cn.chenyunlong.qing.domain.auth.menu.dto.vo.SysMenuVO;
 import cn.chenyunlong.qing.domain.auth.menu.mapper.SysMenuMapper;
 import cn.chenyunlong.qing.domain.auth.menu.service.ISysMenuService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "菜单管理")
 @RestController
 @Slf4j
 @RequestMapping("api/v1/sys-menu")
@@ -118,7 +120,7 @@ public class SysMenuController {
     /**
      * 查询树状列表
      */
-    @PostMapping("tree")
+    @GetMapping("menuTree")
     public JsonResult<List<SysMenuResponse>> tree() {
         List<SysMenuVO> page = sysMenuService.tree();
         return JsonResult.success(page.stream().map(SysMenuMapper.INSTANCE::vo2CustomResponse).collect(Collectors.toList()));

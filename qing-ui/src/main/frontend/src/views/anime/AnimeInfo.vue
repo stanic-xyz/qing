@@ -1,7 +1,6 @@
 <script lang="ts" setup xmlns="">
 import { onMounted, type PropType, ref } from "vue";
 import type { Anime } from "@/apis/anime/types";
-import localstorage from "@/utils/localstorage";
 
 onMounted(() => {
   console.log("动漫详情加载成功", props.anime.id);
@@ -10,7 +9,6 @@ onMounted(() => {
 
 const animeId = ref(1);
 const loading = ref(true);
-
 
 const props = defineProps({
   anime: {
@@ -31,7 +29,8 @@ const props = defineProps({
       <div class="video_item">
         <div class="video_item--image position-relative">
           <img :alt="anime.name" :src="anime.coverUrl" class="video_thumbs lazyload d-block w-100" data-original="https://cdn.aqdstatic.com:966/age/20220255.jpg" referrerpolicy="no-referrer" style="display: block; width: 120px" />
-          <span class="video_item--info rounded-1 text-truncate">第08集</span></div>
+          <span class="video_item--info rounded-1 text-truncate">第08集</span>
+        </div>
         <div class="video_item-title text-truncate text-center py-2" style="color: black">
           <div class="link-light text-decoration-none stretched-link">
             {{ anime.name }}

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import SideBar from "@/views/layouts/sideBar/SideBar.vue";
-import { onMounted } from "vue";
+import SideBar from "@/components/sideBar/SideBar.vue";
+import {onMounted} from "vue";
 
 onMounted(() => {
   console.log("onMounted");
@@ -9,7 +9,7 @@ onMounted(() => {
 
 <template>
   <lay-layout class="dashboard">
-    <lay-header> 表头</lay-header>
+    <lay-header>表头</lay-header>
     <lay-layout>
       <lay-side>
         <side-bar />
@@ -21,7 +21,7 @@ onMounted(() => {
   </lay-layout>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .dashboard {
   .layui-header {
     line-height: 60px;

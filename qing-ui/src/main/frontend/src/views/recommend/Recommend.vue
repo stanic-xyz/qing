@@ -6,7 +6,7 @@
     <div class="baseBlock">
       <div class="blockContent">
         <ul class="ul_li_a6">
-          <li v-if="animeInfoList.length !== 0" v-for="(anime, index) in animeInfoList" :key="index" class="anime_icon2">
+          <li v-for="(anime, index) in animeInfoList" v-if="animeInfoList.length !== 0" :key="index" class="anime_icon2">
             <router-link :to="`/anime/${anime.id}`">
               <img :alt="anime.name" :src="anime.coverUrl" :title="anime.name" class="anime_icon2_img" height="208px" referrerpolicy="no-referrer" width="150px" />
               <span class="anime_icon1_name1">[TV 01-12]</span>

@@ -1,4 +1,4 @@
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @import "../../assets/css/header.css";
 
 .header-wrapper {

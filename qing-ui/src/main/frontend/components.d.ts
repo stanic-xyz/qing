@@ -33,6 +33,7 @@ declare module 'vue' {
     LaySelect: typeof import('@layui/layui-vue')['LaySelect']
     LaySelectOption: typeof import('@layui/layui-vue')['LaySelectOption']
     LaySide: typeof import('@layui/layui-vue')['LaySide']
+    LaySpace: typeof import('@layui/layui-vue')['LaySpace']
     LaySubMenu: typeof import('@layui/layui-vue')['LaySubMenu']
     LayTable: typeof import('@layui/layui-vue')['LayTable']
     LayTextarea: typeof import('@layui/layui-vue')['LayTextarea']
@@ -42,6 +43,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Selector: typeof import('./src/components/block/Selector.vue')['default']
+    SideBar: typeof import('./src/components/sideBar/SideBar.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     WelcomeItem: typeof import('./src/components/block/WelcomeItem.vue')['default']
   }
