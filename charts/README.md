@@ -1,14 +1,16 @@
 # Qing Helm Chart
 
-用于部署 [Qing](https://github.com/qing-dev/qing) 的 Helm Chart。
+用于部署 [Qing](https://github.com/stanic-xyz/qing) 的 Helm Chart。
 
 目前仅支持自动安装 PostgreSQL，需要使用其他类型的数据库可以通过指定 `externalDatabase.host` 等参数使用已有数据库。
 
 ## 使用指引
 
+正确的安装好helm之后,你可以按照下面的方式添加仓库
+
 ```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo add qing https://qing-sigs.github.io/charts/
+helm repo add qing https://stanic-xyz.github.io/helm-charts/
+helm repo add <alias> https://stanic-xyz.github.io/helm-charts
 helm repo update  # 从 chart 仓库中更新本地可用chart的信息
 helm install qing qing/qing
 ```
