@@ -38,5 +38,5 @@ doc/db/.back_Qing
 /codegen/
 /qing-config-git/src/main/resources/config/zhangli-service-provider/
 /charts/node_modules
-!qing-third/
+qing-third/
 application-local.yml

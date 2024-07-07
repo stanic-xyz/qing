@@ -4,6 +4,9 @@ networks:
   gitea:
     external: false
 
+volumes:
+  gitea-data:
+
 services:
   server:
     image: gitea/gitea:1.21.1
@@ -15,9 +18,7 @@ services:
     networks:
       - gitea
     volumes:
-      - ./gitea:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - gitea-data:/data
     ports:
       - "3000:3000"
       - "222:22"
