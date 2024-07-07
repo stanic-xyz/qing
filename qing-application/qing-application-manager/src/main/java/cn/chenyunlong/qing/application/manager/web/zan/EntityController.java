@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.domain.entity.controller;
+package cn.chenyunlong.qing.application.manager.web.zan;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
@@ -63,7 +63,7 @@ public class EntityController {
      */
     @PostMapping("valid/{id}")
     public JsonResult<String> validEntity(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         entityService.validEntity(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -74,7 +74,7 @@ public class EntityController {
      */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidEntity(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         entityService.invalidEntity(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -85,7 +85,7 @@ public class EntityController {
      */
     @GetMapping("findById/{id}")
     public JsonResult<EntityResponse> findById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         EntityVO vo = entityService.findById(id);
         EntityResponse response = EntityMapper.INSTANCE.vo2CustomResponse(vo);
