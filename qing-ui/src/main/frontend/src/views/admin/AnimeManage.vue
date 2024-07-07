@@ -1,9 +1,12 @@
 <template>
-  <div style="height: 800px" ref="fullscreenTargetRef2">
-    <lay-table v-if="!isEdit" ref="tableRef" v-model:selectedKey="selectedKey" v-model:selectedKeys="selectedKeys" size="md" :ellipsisTooltip="true" :even="true" :autoColsWidth="true" :columns="columns" :data-source="dataSource" :default-toolbar="toolbar" :page="page" :resize="false" :loading="loading" @change="change">
+  <div ref="fullscreenTargetRef2" style="height: 800px; background-color: #000000">
+    <lay-table v-if="!isEdit" ref="tableRef" v-model:selectedKey="selectedKey" v-model:selectedKeys="selectedKeys" :autoColsWidth="true" :columns="columns" :data-source="dataSource" :default-toolbar="toolbar" :ellipsisTooltip="true" :even="true" :loading="loading" :page="page" :resize="false" size="md" @change="change">
       <template #toolbar>
-        <lay-button type="primary" size="md" @click="recommend">添加推荐</lay-button>
-        <lay-button type="primary" size="md" @click="addAnime">新增</lay-button>
+        <lay-space>
+          <lay-button size="md" type="primary" @click="recommend">添加推荐</lay-button>
+          <lay-button size="md" type="primary" @click="addAnime">新增</lay-button>
+          <lay-button size="md" type="normal" @click="reload">刷新</lay-button>
+        </lay-space>
       </template>
       <template #operator="{ row }">
         <lay-button size="xs" type="primary" @click="view(row)">编辑</lay-button>
@@ -11,9 +14,9 @@
       </template>
     </lay-table>
 
-    <lay-layer v-model="isEdit" shade="false" :area="['1000px', '800px']" :btn="editorAction">
+    <lay-layer v-model="isEdit" :area="['1000px', '800px']" :btn="editorAction" shade="false">
       <div style="color: rebeccapurple; margin-right: 1rem">
-        <lay-form :model="animeDetailForm" ref="editorFormRef" required v-if="editShade">
+        <lay-form v-if="editShade" ref="editorFormRef" :model="animeDetailForm" required>
           <lay-form-item label="账户" prop="username">
             <lay-input id="username" v-model="animeDetailForm.name"></lay-input>
           </lay-form-item>
@@ -21,7 +24,7 @@
             <lay-input id="author" v-model="animeDetailForm.author"></lay-input>
           </lay-form-item>
           <lay-form-item label="制作公司" prop="companyName">
-            <lay-select style="width: 100%" v-model="animeDetailForm.companyId" :show-search="true">
+            <lay-select v-model="animeDetailForm.companyId" :show-search="true" style="width: 100%">
               <lay-select-option :value="1" label="原力动画"></lay-select-option>
             </lay-select>
           </lay-form-item>
@@ -35,12 +38,12 @@
           <!--              <lay-select-option :value="3" label="法国"></lay-select-option>-->
           <!--            </lay-select>-->
           <!--          </lay-form-item>-->
-          <lay-form-item label="首播日期" prop="premiereDate" :required="false">
-            <lay-date-picker v-model="animeDetailForm.premiereDate" placeholder="选择首播日期" allowClear></lay-date-picker>
+          <lay-form-item :required="false" label="首播日期" prop="premiereDate">
+            <lay-date-picker v-model="animeDetailForm.premiereDate" allowClear placeholder="选择首播日期"></lay-date-picker>
           </lay-form-item>
           <lay-form-item label="地区" prop="districtId">
-            <lay-select style="width: 100%" v-model="animeDetailForm.districtId">
-              <lay-select-option v-for="{ id, name } of districtInfoList" :value="id" :label="name"></lay-select-option>
+            <lay-select v-model="animeDetailForm.districtId" style="width: 100%">
+              <lay-select-option v-for="{ id, name } of districtInfoList" :label="name" :value="id"></lay-select-option>
             </lay-select>
           </lay-form-item>
           <lay-form-item label="类型">
@@ -57,11 +60,11 @@
       </div>
     </lay-layer>
 
-    <lay-fullscreen :target="fullscreenTargetRef2" :immersive="true" zIndex="12000" position="absolute" v-slot="{ enter, exit, toggle, isFullscreen }">
-      <lay-layer v-model="addForm.isAdd" shade="false" :area="['1000px', '800px']" :btn="addForm.addAction" title="新增动漫">
+    <lay-fullscreen v-slot="{ enter, exit, toggle, isFullscreen }" :immersive="true" :target="fullscreenTargetRef2" position="absolute" zIndex="12000">
+      <lay-layer v-model="addForm.isAdd" :area="['1000px', '800px']" :btn="addForm.addAction" shade="false" title="新增动漫">
         <lay-scroll height="600px">
           <div style="color: rebeccapurple; margin-right: 1rem">
-            <lay-form :model="addForm.formData" ref="addFormRef" required>
+            <lay-form ref="addFormRef" :model="addForm.formData" required>
               <lay-form-item label="名称" prop="name">
                 <lay-input id="name" v-model="addForm.formData.name"></lay-input>
               </lay-form-item>
@@ -72,29 +75,29 @@
                 <lay-input id="author" v-model="addForm.formData.author"></lay-input>
               </lay-form-item>
               <lay-form-item label="公司" prop="companyName">
-                <lay-select style="width: 100%" v-model="addForm.formData.companyId" :show-search="true">
+                <lay-select v-model="addForm.formData.companyId" :show-search="true" style="width: 100%">
                   <lay-select-option :value="1" label="原力动画"></lay-select-option>
                 </lay-select>
               </lay-form-item>
               <lay-form-item label="分类" prop="typeId">
-                <lay-select style="width: 100%" v-model="addForm.formData.typeId">
-                  <lay-select-option v-for="{ id, name } of categoryList" :value="id" :label="name"></lay-select-option>
+                <lay-select v-model="addForm.formData.typeId" style="width: 100%">
+                  <lay-select-option v-for="{ id, name } of categoryList" :label="name" :value="id"></lay-select-option>
                 </lay-select>
               </lay-form-item>
               <lay-form-item label="剧情类型" prop="plotType">
                 <lay-input id="plotType" v-model="addForm.formData.plotType">></lay-input>
               </lay-form-item>
-              <lay-form-item label="标签" :required="false">
-                <lay-select v-model="addForm.formData.tagIds" :show-search="true" :multiple="true">
-                  <lay-select-option v-for="{ id, name } of tagInfoList" :value="id" :label="name"></lay-select-option>
+              <lay-form-item :required="false" label="标签">
+                <lay-select v-model="addForm.formData.tagIds" :multiple="true" :show-search="true">
+                  <lay-select-option v-for="{ id, name } of tagInfoList" :label="name" :value="id"></lay-select-option>
                 </lay-select>
               </lay-form-item>
-              <lay-form-item label="首播日期" prop="premiereDate" :required="false">
-                <lay-date-picker v-model="addForm.formData.premiereDate" placeholder="选择首播日期" allowClear></lay-date-picker>
+              <lay-form-item :required="false" label="首播日期" prop="premiereDate">
+                <lay-date-picker v-model="addForm.formData.premiereDate" allowClear placeholder="选择首播日期"></lay-date-picker>
               </lay-form-item>
               <lay-form-item label="地区" prop="districtId">
-                <lay-select style="width: 100%" v-model="addForm.formData.districtId">
-                  <lay-select-option v-for="{ id, name } of districtInfoList" :value="id" :label="name"></lay-select-option>
+                <lay-select v-model="addForm.formData.districtId" style="width: 100%">
+                  <lay-select-option v-for="{ id, name } of districtInfoList" :label="name" :value="id"></lay-select-option>
                 </lay-select>
               </lay-form-item>
               <lay-form-item label="官方网站" prop="desc">
@@ -117,7 +120,7 @@
     </lay-fullscreen>
   </div>
 </template>
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>
 
 <script lang="ts" setup>
 import {onMounted, reactive, ref} from "vue";
@@ -226,6 +229,10 @@ const addForm = reactive({
 
 const addAnime = () => {
   addForm.isAdd = true;
+};
+
+const reload = () => {
+  reloadAnimeInfo();
 };
 
 const change = (newPage: any) => {

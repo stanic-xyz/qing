@@ -8,47 +8,14 @@
       <b-icon animation="spin-reverse" font-scale="1" icon="clock"></b-icon>
       <b-badge>这是你的名字</b-badge>
     </div>
-    <iframe
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-      height="360"
-      src="https://www.youtube.com/embed/ylLOn6KXzAc"
-      width="640"
-    ></iframe>
+    <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen height="360" src="https://www.youtube.com/embed/ylLOn6KXzAc" width="640"></iframe>
     <div>
       <b-iconstack font-scale="2" variant="white">
         <b-icon icon="square-fill" stacked variant="dark"></b-icon>
-        <b-icon
-          icon="arrow-up-short"
-          scale="0.5"
-          shift-h="-3"
-          shift-v="3"
-          stacked
-        ></b-icon>
-        <b-icon
-          icon="arrow-up-short"
-          rotate="90"
-          scale="0.5"
-          shift-h="3"
-          shift-v="3"
-          stacked
-        ></b-icon>
-        <b-icon
-          icon="arrow-up-short"
-          rotate="180"
-          scale="0.5"
-          shift-h="3"
-          shift-v="-3"
-          stacked
-        ></b-icon>
-        <b-icon
-          icon="arrow-up-short"
-          rotate="270"
-          scale="0.5"
-          shift-h="-3"
-          shift-v="-3"
-          stacked
-        ></b-icon>
+        <b-icon icon="arrow-up-short" scale="0.5" shift-h="-3" shift-v="3" stacked></b-icon>
+        <b-icon icon="arrow-up-short" rotate="90" scale="0.5" shift-h="3" shift-v="3" stacked></b-icon>
+        <b-icon icon="arrow-up-short" rotate="180" scale="0.5" shift-h="3" shift-v="-3" stacked></b-icon>
+        <b-icon icon="arrow-up-short" rotate="270" scale="0.5" shift-h="-3" shift-v="-3" stacked></b-icon>
       </b-iconstack>
       <b-iconstack font-scale="5">
         <b-icon icon="square" stacked></b-icon>

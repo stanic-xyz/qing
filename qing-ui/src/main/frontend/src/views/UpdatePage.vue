@@ -61,7 +61,7 @@ onMounted(() => {
     });
 });
 </script>
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .alert {
   text-align: left;
   margin: 10px;

@@ -1,22 +1,8 @@
 <template>
   <header id="nav">
-    <form
-      id="top_search_from"
-      class="search_form"
-      method="get"
-      @submit="handleSelect"
-    >
+    <form id="top_search_from" class="search_form" method="get" @submit="handleSelect">
       <label for="top_search_input"></label>
-      <input
-        id="top_search_input"
-        autocapitalize="on"
-        autocomplete="on"
-        class="search_input"
-        name="keyword"
-        placeholder="输入关键字"
-        spellcheck="false"
-        value=""
-      />
+      <input id="top_search_input" autocapitalize="on" autocomplete="on" class="search_input" name="keyword" placeholder="输入关键字" spellcheck="false" value=""/>
       <input class="search_submit" type="submit" value="" />
       <input name="page" type="hidden" value="1" />
     </form>

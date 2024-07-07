@@ -2,9 +2,9 @@
   <div>
     <button @click="submitFile">上传</button>
     <div class="about">
-      <LayUpload v-model="file" @done="doneHandle" multiple :cut="true" :auto="false" :drag="true">
+      <LayUpload v-model="file" :auto="false" :cut="true" :drag="true" multiple @done="doneHandle">
         <template #preview>
-          <img v-if="data" :src="data.url" style="width: 100px" alt="上传图片预览" />
+          <img v-if="data" :src="data.url" alt="上传图片预览" style="width: 100px"/>
         </template>
       </LayUpload>
     </div>

@@ -5,9 +5,7 @@
     </div>
     <div class="loginOut">
       <span class="svg_title svg_title_user"></span>
-      <router-link id="comment_user" class="loginOut_btn2" to="/login"
-        >登陆
-      </router-link>
+      <router-link id="comment_user" class="loginOut_btn2" to="/login">登陆</router-link>
     </div>
   </div>
 </template>
@@ -19,6 +17,7 @@ const data = reactive({
   activeIndex: "1",
   activeIndex2: "1",
 });
+
 onMounted(() => {
   console.log(data);
 });

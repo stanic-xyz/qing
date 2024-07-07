@@ -657,45 +657,45 @@ core:
   menu:
     title: Menus
     empty:
-      title: There is no menu currently.
-      message: You can try to refresh or create a new menu.
+      title: There is no menus currently.
+      message: You can try to refresh or create a new menus.
     menu_item_empty:
-      title: There are no menu items currently.
-      message: You can try to refresh or create a new menu item.
+      title: There are no menus items currently.
+      message: You can try to refresh or create a new menus item.
     operations:
       set_primary:
-        button: Set as primary menu
+        button: Set as primary menus
         toast_success: Setting successful
       delete_menu:
-        title: Are you sure you want to delete this menu?
-        description: All menu items under this menu will be deleted at the same time, and this operation cannot be undone.
+        title: Are you sure you want to delete this menus?
+        description: All menus items under this menus will be deleted at the same time, and this operation cannot be undone.
       delete_menu_item:
-        title: Are you sure you want to delete this menu item?
-        description: All sub-menu items will be deleted at the same time, and cannot be restored after deletion.
+        title: Are you sure you want to delete this menus item?
+        description: All sub-menus items will be deleted at the same time, and cannot be restored after deletion.
       add_sub_menu_item:
-        button: Add sub menu item
+        button: Add sub menus item
     list:
       fields:
         primary: Primary
         items_count: "{count} items"
     menu_editing_modal:
       titles:
-        create: Create menu
-        update: Update menu
+        create: Create menus
+        update: Update menus
       fields:
         display_name:
           label: Display name
     menu_item_editing_modal:
       titles:
-        create: Create menu item
-        update: Update menu item
+        create: Create menus item
+        update: Update menus item
       groups:
         general: General
         annotations: Annotations
       fields:
         parent:
           label: Parent
-          placeholder: Select the parent menu item
+          placeholder: Select the parent menus item
         ref_kind:
           label: Type
           placeholder: "Please select {label}"

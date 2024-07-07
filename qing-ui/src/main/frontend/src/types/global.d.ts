@@ -1,5 +1,6 @@
 import type {FunctionalComponent} from "vue";
 import {type RouteComponent, type RouteLocationNormalized} from "vue-router";
+import type {Recordable} from "@layui/layui-vue/types/types";
 
 /**
  * 全局类型声明，无需引入直接在 `.vue` 、`.ts` 、`.tsx` 文件使用即可获得类型提示

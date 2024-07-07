@@ -23,7 +23,6 @@ public class SysMenu extends BaseEntity {
      */
     private Long menuId;
 
-
     /**
      * 菜单名称
      */

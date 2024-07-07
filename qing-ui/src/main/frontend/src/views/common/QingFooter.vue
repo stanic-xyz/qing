@@ -32,7 +32,7 @@ onMounted(() => {
   console.log("Footer加载完毕！");
 });
 </script>
-<style scoped lang="scss">
+<style lang="scss" scoped>
 #footer_container {
   max-width: 1140px;
 

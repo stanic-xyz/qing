@@ -3,11 +3,11 @@
     <div class="login-panel">
       <div class="content-panel">
         <div class="login-logo">
-          <img src="../../assets/logo.png" alt="登录Logo" />
+          <img alt="登录Logo" src="../../assets/logo.png"/>
         </div>
         <div class="split-line"></div>
         <div class="login-form-wrapper">
-          <LayForm class="login-form" :model="loginFormData" :use-CN="true" required requiredIcons="layui-icon-heart-fill" @submit="handleBtn" :pane="pine" size="md" style="color: whitesmoke">
+          <LayForm :model="loginFormData" :pane="pine" :use-CN="true" class="login-form" required requiredIcons="layui-icon-heart-fill" size="md" style="color: whitesmoke" @submit="handleBtn">
             <lay-form-item label="账户" prop="username">
               <lay-input v-model="loginFormData.username"></lay-input>
             </lay-form-item>
@@ -15,7 +15,7 @@
               <LayInput v-model="loginFormData.password" type="password"></LayInput>
             </lay-form-item>
             <LayFormItem>
-              <lay-button type="primary" @click="handleBtn" style="display: inline-block">提交</lay-button>
+              <lay-button style="display: inline-block" type="primary" @click="handleBtn">提交</lay-button>
             </LayFormItem>
           </LayForm>
         </div>
@@ -65,7 +65,7 @@ const handleBtn = () => {
   //   });
 };
 </script>
-<style scoped lang="scss">
+<style lang="scss" scoped>
 //@import url(../../assets/base.css);
 
 .layui-container {
