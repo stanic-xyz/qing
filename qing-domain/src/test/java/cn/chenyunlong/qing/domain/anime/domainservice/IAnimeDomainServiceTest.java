@@ -22,13 +22,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import jakarta.validation.Validator;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.util.MimeTypeUtils;
 
 
@@ -36,43 +33,12 @@ class IAnimeDomainServiceTest {
 
     @Test
     void create() {
-        AnimeRepository animeRepository = new AnimeRepository() {
-
-            @Override
-            public Optional<Anime> findById(Long animeId) {
-                return Optional.empty();
-            }
-
-            @Override
-            public Anime save(Anime entity) {
-                entity.setId(IdUtil.getSnowflakeNextId());
-                return entity;
-            }
-
-            @Override
-            public void deleteById(Long id) {
-
-            }
-
-            @Override
-            public Page<Anime> findAll(PageRequest pageRequest) {
-                return null;
-            }
-
-            @Override
-            public List<Anime> findByIds(List<Long> ids) {
-                return List.of();
-            }
-
-            @Override
-            public void deleteAllByIds(List<Long> ids) {
-
-            }
-
-            @Override
-            public void saveAll(List<Anime> domainList) {
-            }
-        };
+        AnimeRepository animeRepository = Mockito.mock(AnimeRepository.class);
+        Mockito.when(animeRepository.save(Mockito.any(Anime.class))).thenAnswer(invocation -> {
+            Anime anime = invocation.getArgument(0, Anime.class);
+            anime.setId(IdUtil.getSnowflakeNextId());
+            return anime;
+        });
 
         AnimeCategoryRepository categoryRepository = Mockito.mock(AnimeCategoryRepository.class);
         TagRepository tagRepository = Mockito.mock(TagRepository.class);

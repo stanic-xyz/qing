@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.domain.auth.user.dto.request;
 
 import cn.chenyunlong.common.model.Request;
-import cn.chenyunlong.qing.domain.auth.user.controller.validator.PasswordConsistency;
+import cn.chenyunlong.qing.domain.auth.user.dto.validator.PasswordConsistency;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
