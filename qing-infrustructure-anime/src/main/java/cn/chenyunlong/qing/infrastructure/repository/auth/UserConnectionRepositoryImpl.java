@@ -5,14 +5,17 @@ import cn.chenyunlong.qing.domain.auth.connection.repository.UserConnectionRepos
 import cn.chenyunlong.qing.infrastructure.repository.base.JpaServiceImpl;
 import cn.chenyunlong.qing.infrastructure.repository.jpa.auth.UserConnectionJpaRepository;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserConnectionRepositoryImpl extends JpaServiceImpl<UserConnectionJpaRepository, UserConnection, Long> implements UserConnectionRepository {
 
+    private final UserConnectionJpaRepository userConnectionJpaRepository;
 
     @Override
     public List<UserConnection> findConnectionByProviderIdAndProviderUserId(String providerId, String providerUserId) {
-        return List.of();
+        return userConnectionJpaRepository.findConnectionByProviderIdAndProviderUserId(providerId, providerUserId);
     }
 }

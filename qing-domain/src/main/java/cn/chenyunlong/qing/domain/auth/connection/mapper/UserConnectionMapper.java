@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.domain.auth.connection.dto.query.UserConnectionQuery;
 import cn.chenyunlong.qing.domain.auth.connection.dto.request.UserConnectionCreateRequest;
 import cn.chenyunlong.qing.domain.auth.connection.dto.request.UserConnectionQueryRequest;
 import cn.chenyunlong.qing.domain.auth.connection.dto.request.UserConnectionUpdateRequest;
+import cn.chenyunlong.qing.domain.auth.connection.dto.response.UserConnectionData;
 import cn.chenyunlong.qing.domain.auth.connection.dto.response.UserConnectionResponse;
 import cn.chenyunlong.qing.domain.auth.connection.dto.updater.UserConnectionUpdater;
 import cn.chenyunlong.qing.domain.auth.connection.dto.vo.UserConnectionVO;
@@ -33,4 +34,6 @@ public interface UserConnectionMapper {
     UserConnectionResponse vo2Response(UserConnectionVO vo);
 
     UserConnectionResponse vo2CustomResponse(UserConnectionVO vo);
+
+    UserConnectionData entityToConnectionData(UserConnection connection);
 }
