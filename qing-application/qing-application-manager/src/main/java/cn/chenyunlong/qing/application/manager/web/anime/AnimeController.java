@@ -45,7 +45,7 @@ public class AnimeController extends BaseController {
         @RequestBody
         AnimeCreateRequest request) {
         AnimeCreateContext createContext = animeDomainService.createAnime(request);
-        return success(createContext.getAnime().getId());
+        return JsonResult.success(createContext.getAnime().getId());
     }
 
     @Operation(summary = "更新动漫信息")

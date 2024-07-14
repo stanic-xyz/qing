@@ -13,7 +13,6 @@
 
 package cn.chenyunlong.qing.security.configures.my;
 
-import java.net.PasswordAuthentication;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -23,12 +22,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
-public class MyAuthenticationProvider implements AuthenticationProvider {
+public class QingAuthenticationProvider implements AuthenticationProvider {
 
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
@@ -44,7 +41,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(presentedUsername);
 
-        //仅仅校验密码
+        // 校验密码
         if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
             log.debug("Authentication failed: password does not match stored value");
             throw new BadCredentialsException("Bad credentials");
@@ -55,6 +52,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return PasswordAuthentication.class.isAssignableFrom(clazz);
+        return QingLoginToken.class.isAssignableFrom(clazz);
     }
 }

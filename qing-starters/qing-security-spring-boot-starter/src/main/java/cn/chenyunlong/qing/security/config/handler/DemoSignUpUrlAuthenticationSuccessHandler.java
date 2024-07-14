@@ -42,8 +42,7 @@ import org.springframework.security.web.savedrequest.SavedRequest;
  * @author YongWu zheng
  * @version V2.0  Created by 2020/10/30 10:19
  */
-public class DemoSignUpUrlAuthenticationSuccessHandler
-    extends SavedRequestAwareAuthenticationSuccessHandler {
+public class DemoSignUpUrlAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private RequestCache requestCache = new HttpSessionRequestCache();
 
@@ -52,13 +51,11 @@ public class DemoSignUpUrlAuthenticationSuccessHandler
         HttpServletResponse response, Authentication authentication)
         throws IOException {
 
-
         // start: 判断是否为临时用户, 进行相关逻辑的处理
         final Object principal = authentication.getPrincipal();
         if (principal instanceof TemporaryUser temporaryUser) {
             // 自己的处理逻辑, 如返回 json 数据
             // ...
-
             return;
         }
         // end: 判断是否为临时用户, 进行相关逻辑的处理

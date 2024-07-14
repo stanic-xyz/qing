@@ -11,17 +11,17 @@
  *
  */
 
-package cn.chenyunlong.qing.security.base.extension;
+package cn.chenyunlong.qing.security.configures.my;
 
-import cn.chenyunlong.qing.security.base.BaseJwtUser;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
-/**
- * 基础用户接口
- *
- * @author 陈云龙
- * @since 2022/11/11
- */
-public class QingBaseUser extends BaseJwtUser {
+@Data
+public class MyLoginRequest {
 
+    @NotBlank(message = "code不能为空")
+    private String username;
 
+    @NotBlank(message = "state不能为空")
+    private String password;
 }

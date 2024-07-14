@@ -15,6 +15,7 @@ package cn.chenyunlong.qing.security.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,10 +32,22 @@ public class SecurityProperties {
      * 匿名访问地址
      */
     private String anonUrl = "";
+
+    /**
+     * 默认生成的账户密码
+     */
+    private String defaultPassword = "123456";
+
     /**
      * token有效时间  默认1天
      */
     private long jwtTimeOut = 10086400L;
+
+    /**
+     * 令牌自定义标识
+     */
+    private String tokenHeader = HttpHeaders.AUTHORIZATION;
+
     /**
      * 安全密钥
      */

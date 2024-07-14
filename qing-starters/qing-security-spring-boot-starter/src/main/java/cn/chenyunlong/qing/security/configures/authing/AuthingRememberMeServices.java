@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.RememberMeServices;
 
 public class AuthingRememberMeServices implements RememberMeServices {
+
     public AuthingRememberMeServices(AuthingProperties authingProperty) {
     }
 

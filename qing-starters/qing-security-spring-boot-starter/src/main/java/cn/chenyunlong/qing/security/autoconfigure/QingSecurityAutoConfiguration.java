@@ -6,7 +6,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.ComponentScan;
 
 @Slf4j
-
 @ComponentScan(basePackages = "cn.chenyunlong.qing.security.**")
 public class QingSecurityAutoConfiguration implements InitializingBean {
 
@@ -15,13 +14,10 @@ public class QingSecurityAutoConfiguration implements InitializingBean {
      * and satisfied {@link BeanFactoryAware}, {@code ApplicationContextAware} etc.
      * <p>This method allows the bean instance to perform validation of its overall
      * configuration and final initialization when all bean properties have been set.
-     *
-     * @throws Exception in the event of misconfiguration (such as failure to set an
-     *                   essential property) or if initialization fails for any other reason
      */
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         // 检查配置信息是否正确
+        log.info("qing security auto configuration success");
     }
-
 }

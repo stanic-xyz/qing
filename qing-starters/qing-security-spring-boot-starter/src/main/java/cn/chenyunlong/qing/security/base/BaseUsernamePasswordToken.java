@@ -28,11 +28,11 @@ public abstract class BaseUsernamePasswordToken extends AbstractAuthenticationTo
      * 用户名-密码 Token构造函数
      *
      * @param authorities 权限列表
-     * @param username    用户名
-     * @param password    密码
+     * @param username 用户名
+     * @param password 密码
      */
     public BaseUsernamePasswordToken(Collection<? extends GrantedAuthority> authorities,
-                                     String username, String password) {
+        String username, String password) {
         super(authorities);
         this.username = username;
         this.password = password;

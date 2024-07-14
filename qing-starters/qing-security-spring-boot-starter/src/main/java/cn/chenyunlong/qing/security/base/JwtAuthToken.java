@@ -23,6 +23,7 @@ import org.springframework.security.core.GrantedAuthority;
  * Jwt认证令牌
  */
 public class JwtAuthToken implements Authentication {
+
     private final String token;
     @Setter
     @Getter

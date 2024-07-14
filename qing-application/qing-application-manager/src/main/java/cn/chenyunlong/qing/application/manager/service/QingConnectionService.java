@@ -37,47 +37,46 @@ public class QingConnectionService implements ConnectionService {
 
 
     @Override
-    public UserDetails signUp(AuthUser authUser, AuthProvider provider, String encodeState) throws RegisterUserFailureException {
-        String username = authUser.getUsername();
-        String[] usernames = userDetailsService.generateUsernames(authUser);
+    public UserDetails signUp(AuthUser authUser, String encodeState) throws RegisterUserFailureException {
+        String nickName = authUser.getUsername();
+        String[] usernames = userDetailsService.generateUserNickNames(authUser);
         try {
             // 重名检查
-            username = null;
-            final List<Boolean> existedByUserIds = userDetailsService.existedByUsernames(usernames);
+            nickName = null;
+            final List<Boolean> existedByUserIds = userDetailsService.existedByNickNames(usernames);
             for (int i = 0, len = existedByUserIds.size(); i < len; i++) {
                 if (!existedByUserIds.get(i)) {
-                    username = usernames[i];
+                    nickName = usernames[i];
                     break;
                 }
             }
             // 用户重名, 自动注册失败
-            if (username == null) {
+            if (nickName == null) {
                 // 生成一个随机用户名
-                username = "用户" + IdUtil.simpleUUID().toUpperCase();
+                nickName = "用户" + IdUtil.simpleUUID().toUpperCase();
             }
             // 解密 encodeState  https://gitee.com/pcore/just-auth-spring-security-starter/issues/I22JC7
             // 注册到本地账户
-            UserDetails userDetails = userDetailsService.registerUser(authUser, username, authingProperties.getDefaultAuthorities(), encodeState);
+            UserDetails userDetails = userDetailsService.registerUser(authUser, nickName, authingProperties.getDefaultAuthorities(), encodeState);
             // 第三方授权登录信息绑定到本地账号, 且添加第三方授权登录信息到 user_connection 与 auth_token
-            registerConnection(provider, authUser, userDetails);
+            registerConnection(authUser, userDetails);
             return userDetails;
         } catch (Exception exception) {
-            log.error(String.format("OAuth2自动注册失败: error=%s, username=%s, authUser=%s", exception.getMessage(), username, JSONUtil.toJsonPrettyStr(authUser)), exception);
-            throw new RegisterUserFailureException(ErrorCodeEnum.USER_REGISTER_FAILURE, username);
+            log.error(String.format("OAuth2自动注册失败: error=%s, nickName=%s, authUser=%s", exception.getMessage(), nickName, JSONUtil.toJsonPrettyStr(authUser)), exception);
+            throw new RegisterUserFailureException(ErrorCodeEnum.USER_REGISTER_FAILURE, nickName);
         }
     }
 
     /**
      * 绑定用户
      *
-     * @param provider 用户提供者
      * @param authUser 用户信息
      * @param userDetails 用户详情
      */
-    private void registerConnection(AuthProvider provider, AuthUser authUser, UserDetails userDetails) {
+    private void registerConnection(AuthUser authUser, UserDetails userDetails) {
         UserConnectionCreator creator = UserConnectionCreator.builder()
                                             .accessToken(authUser.getToken().getAccessToken())
-                                            .providerId(provider.getProviderId())
+                                            .providerId(authUser.getSource().getProviderId())
                                             .displayName(authUser.getUsername())
                                             .rank(1)
                                             .imageUrl(authUser.getAvatar())

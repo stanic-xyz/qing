@@ -11,11 +11,11 @@
  *
  */
 
-package cn.chenyunlong.qing.security.configures.authing;
+package cn.chenyunlong.qing.security.configures.my;
 
-import cn.chenyunlong.qing.security.configures.authing.properties.AuthingProperties;
+import cn.chenyunlong.qing.security.config.SecurityProperties;
+import cn.chenyunlong.qing.security.configures.my.properties.MyLoginProperties;
 import cn.chenyunlong.qing.security.service.UmsUserDetailsService;
-import cn.chenyunlong.qing.security.signup.ConnectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -23,28 +23,26 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-@EnableConfigurationProperties(AuthingProperties.class)
+@EnableConfigurationProperties(MyLoginProperties.class)
 @RequiredArgsConstructor
-public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<AuthingLoginConfigurer, HttpSecurity>
-    implements InitializingBean {
+public final class QingLoginConfigurer extends AbstractHttpConfigurer<QingLoginConfigurer, HttpSecurity> implements InitializingBean {
 
-    private final AuthingProperties authingProperty;
-    private final ConnectionService connectionService;
+    private final SecurityProperties securityProperties;
     private final UmsUserDetailsService userDetailsService;
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
-    private final AuthingProperties authingProperties;
+    private final SecurityContextRepository securityContextRepository;
 
     @Override
     public void afterPropertiesSet() {
-        log.info("Authing应用{{}}配置完毕！", authingProperty.getAppName());
+        log.info("本地登录应用配置完毕：配置信息{}", securityProperties);
     }
 
     @Override
@@ -58,22 +56,13 @@ public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<Authing
     public void configure(HttpSecurity httpSecurity) throws Exception {
         super.configure(httpSecurity);
         AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
-        AuthingLoginFilter authingLoginFilter = getAuthingLoginFilter(authenticationManager);
-        AuthingProvider authingProvider = new AuthingProvider(authingProperty, userDetailsService, connectionService);
-        httpSecurity.authenticationProvider(authingProvider);
-        httpSecurity.addFilterBefore(authingLoginFilter, UsernamePasswordAuthenticationFilter.class);
+        QingLoginFilter loginFilter = new QingLoginFilter(authenticationManager);
+        loginFilter.setAuthenticationSuccessHandler(new MyAuthenticationSuccessHandler(securityProperties));
+        loginFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        QingAuthenticationProvider authenticationProvider = new QingAuthenticationProvider(userDetailsService, new BCryptPasswordEncoder());
+        httpSecurity.authenticationProvider(authenticationProvider);
+        httpSecurity.securityContext(configurer -> configurer.securityContextRepository(securityContextRepository));
+        httpSecurity.addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.authenticationManager(authenticationManager);
     }
-
-    private AuthingLoginFilter getAuthingLoginFilter(AuthenticationManager authenticationManager) {
-        AuthingLoginFilter authingLoginFilter = new AuthingLoginFilter(authenticationManager, authingProperty);
-        if (authenticationFailureHandler != null) {
-            authingLoginFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-        }
-        if (authenticationSuccessHandler != null) {
-            authingLoginFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-        }
-        authingLoginFilter.setRememberMeServices(new AuthingRememberMeServices(authingProperty));
-        return authingLoginFilter;
-    }
-
 }

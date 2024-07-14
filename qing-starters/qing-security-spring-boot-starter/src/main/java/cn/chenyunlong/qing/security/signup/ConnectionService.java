@@ -44,12 +44,11 @@ public interface ConnectionService {
      * username_{providerId}_{providerUserId}.
      *
      * @param authUser the user info from the provider sign-in attempt
-     * @param provider 第三方服务商, 如: qq, github
      * @param encodeState 加密后的 state.   {@code https://gitee.com/pcore/just-auth-spring-security-starter/issues/I22JC7}
      * @return the new user UserDetails.
      * @throws RegisterUserFailureException 用户重名或注册失败
      */
-    UserDetails signUp(AuthUser authUser, AuthProvider provider, String encodeState) throws RegisterUserFailureException;
+    UserDetails signUp(AuthUser authUser, String encodeState) throws RegisterUserFailureException;
 
     /**
      * 根据传入的参数更新第三方授权登录的用户信息, 包括 accessToken 信息,

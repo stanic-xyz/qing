@@ -6,6 +6,7 @@ import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.qing.domain.auth.user.QingUser;
+import cn.chenyunlong.qing.domain.auth.user.converter.SysUserMapper;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
@@ -13,7 +14,9 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.UserMapper;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -81,7 +84,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserVO findById(Long id) {
         Optional<QingUser> user = userRepository.findById(id);
-        return new UserVO(user.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return user.map(SysUserMapper.INSTANCE::entityToUserVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
     }
 
     /**
@@ -91,7 +94,7 @@ public class UserServiceImpl implements IUserService {
     public Page<UserVO> findByPage(PageRequestWrapper<UserQuery> query) {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return userRepository.findAll(pageRequest).map(UserVO::new);
+        return userRepository.findAll(pageRequest).map(SysUserMapper.INSTANCE::entityToUserVo);
     }
 
     @Override
@@ -99,9 +102,22 @@ public class UserServiceImpl implements IUserService {
         return Optional.ofNullable(userRepository.findByUsername(username));
     }
 
+    /**
+     * 根据用户名查询用户
+     */
+    @Override
+    public Optional<QingUser> findByEmail(String email) {
+        return Optional.ofNullable(userRepository.findByEmail(email));
+    }
+
     @Override
     public Optional<QingUser> loadUserByUserId(String userId) {
         QingUser qingUser = userRepository.findUserByUserId(userId);
         return Optional.ofNullable(qingUser);
+    }
+
+    @Override
+    public List<QingUser> findByUserNickNames(Set<String> nickNames) {
+        return userRepository.findByUserNames(nickNames);
     }
 }

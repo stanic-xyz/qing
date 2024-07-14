@@ -25,24 +25,27 @@ import java.util.List;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * token 拦截器，加入上下文参数 user-agent ，也可以加入其它的扩展
  */
-@Component
+// @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     public static final String USER_AGENT = "user-agent";
-    private static final String LANCOO_TOKEN_PREFIX = "X-Token=";
+    private static final String TOKEN_PREFIX = "X-Token=";
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain chain)
+    protected void doFilterInternal(
+        @NonNull
+        HttpServletRequest request,
+        @NonNull
+        HttpServletResponse response,
+        @NonNull
+        FilterChain chain)
         throws ServletException, IOException {
         List<AntPathRequestMatcher> list = Lists.newArrayList();
         list.add(new AntPathRequestMatcher("/auth/**"));
@@ -74,7 +77,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
      * @param request request
      * @return token
      */
-    private String resolveToken(@NonNull HttpServletRequest request) {
+    private String resolveToken(
+        @NonNull
+        HttpServletRequest request) {
 
         //从query参数里面获取
         String tokenInParameters = request.getParameter("lg_tk");
@@ -83,7 +88,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         //从请求头里面获取
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(LANCOO_TOKEN_PREFIX)) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_PREFIX)) {
             return bearerToken.substring(8);
         }
         if (StringUtils.hasText(bearerToken)) {
@@ -103,7 +108,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
      * @param request 请求体
      * @return token中的cookie
      */
-    private String getTokenFromCookies(@NonNull HttpServletRequest request) {
+    private String getTokenFromCookies(
+        @NonNull
+        HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return null;

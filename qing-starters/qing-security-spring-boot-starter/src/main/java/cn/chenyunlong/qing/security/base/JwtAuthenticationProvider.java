@@ -39,7 +39,7 @@ public class JwtAuthenticationProvider extends BaseAuthenticationProvider
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String token = (String) authentication.getCredentials();
+        String token = authentication.getCredentials().toString();
         BaseJwtUser jwtUser;
         if (Objects.isNull(userContextAware)) {
             return authentication;

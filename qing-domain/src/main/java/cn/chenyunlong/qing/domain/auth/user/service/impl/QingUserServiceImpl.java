@@ -6,6 +6,7 @@ import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
 import cn.chenyunlong.qing.domain.auth.user.QingUser;
+import cn.chenyunlong.qing.domain.auth.user.converter.SysUserMapper;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.QingUserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.QingUserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.QingUserUpdater;
@@ -36,9 +37,9 @@ public class QingUserServiceImpl implements IQingUserService {
     @Override
     public Long createQingUser(QingUserCreator creator) {
         Optional<QingUser> qingUser = EntityOperations.doCreate(qingUserRepository)
-            .create(() -> QingUserMapper.INSTANCE.dtoToEntity(creator))
-            .update(QingUser::init)
-            .execute();
+                                          .create(() -> QingUserMapper.INSTANCE.dtoToEntity(creator))
+                                          .update(QingUser::init)
+                                          .execute();
         return qingUser.isPresent() ? qingUser.get().getId() : 0;
     }
 
@@ -81,8 +82,7 @@ public class QingUserServiceImpl implements IQingUserService {
     @Override
     public QingUserVO findById(Long id) {
         Optional<QingUser> qingUser = qingUserRepository.findById(id);
-        return new QingUserVO(
-            qingUser.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return qingUser.map(SysUserMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
     }
 
     /**
@@ -92,6 +92,6 @@ public class QingUserServiceImpl implements IQingUserService {
     public Page<QingUserVO> findByPage(PageRequestWrapper<QingUserQuery> query) {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return qingUserRepository.findAll(pageRequest).map(QingUserVO::new);
+        return qingUserRepository.findAll(pageRequest).map(SysUserMapper.INSTANCE::entityToVo);
     }
 }
