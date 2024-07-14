@@ -15,12 +15,10 @@ package cn.chenyunlong.qing.security.config;
 
 import cn.chenyunlong.qing.security.base.extension.DummyUserContextAware;
 import cn.chenyunlong.qing.security.base.extension.UserContextAware;
-import cn.chenyunlong.qing.security.config.filter.MyAuthenticationProcessingFilter;
-import cn.chenyunlong.qing.security.config.jwt.MySecurityContextRepository;
-import cn.chenyunlong.qing.security.config.password.MyCustomDsl;
 import cn.chenyunlong.qing.security.config.utils.JwtTokenUtil;
 import cn.chenyunlong.qing.security.configures.authing.AuthingLoginConfigurer;
 import cn.chenyunlong.qing.security.configures.authing.properties.AuthingProperties;
+import cn.chenyunlong.qing.security.configures.my.QingLoginConfigurer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -28,11 +26,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 /**
  * spring security 配置类 自动注入JwtAuthenticationProvider
@@ -45,12 +44,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final AuthingProperties authingProperties;
+    private final SecurityProperties securityProperties;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
     private final AuthingLoginConfigurer authingLoginConfigurer;
-    private final MyCustomDsl customPasswordDsl;
     private final AccessDeniedHandler accessDeniedHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final QingLoginConfigurer qingLoginConfigurer;
+    private final SecurityContextRepository securityContextRepository;
 
     @Bean
     @ConditionalOnMissingBean(UserContextAware.class)
@@ -60,8 +61,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain userLoginFilterChain(HttpSecurity http) throws Exception {
-        http.with(authingLoginConfigurer, authingLoginConfigurer -> {
+        http.formLogin(AbstractHttpConfigurer::disable);
+        http.with(authingLoginConfigurer, authingLogin -> {
 
+        });
+        http.with(qingLoginConfigurer, qingLogin -> {
         });
         http.securityMatcher("/**")
             .authorizeHttpRequests(authorize -> {
@@ -69,38 +73,22 @@ public class SecurityConfig {
                     authingProperties.getRedirectUrlPrefix(),
                     "/swagger-ui/**",
                     "/doc.html",
+                    "/webjars/**",
                     "/v3/api-docs/**",
-                    "/login",
-                    "/api/auth/passLogin",
                     "/favicon.ico",
+                    authingProperties.getAuthLoginUrlPrefix(),
                     "/api/authorize/authing/login").permitAll();
                 authorize.anyRequest().hasRole("USER");
-            })
-            .formLogin(formLogin -> formLogin.usernameParameter("username")
-                                        .loginProcessingUrl("/auth/passLogin")
-                                        .permitAll()
-            )
-            .addFilterBefore(new MyAuthenticationProcessingFilter(),
-                UsernamePasswordAuthenticationFilter.class)
-            .logout(logout -> logout.logoutSuccessUrl("/login.html"))
-            .securityContext(httpSecuritySecurityContextConfigurer ->
-                                 httpSecuritySecurityContextConfigurer.securityContextRepository(
-                                     securityContextRepository()));
+            });
         http.exceptionHandling((exceptionHandling) -> {
                 // 异常处理器
                 exceptionHandling
-                    .accessDeniedPage("/ errors/ access-denied")
-                    .authenticationEntryPoint(authenticationEntryPoint)
+                    .accessDeniedPage("/errors/access-denied")
+                    // .authenticationEntryPoint(authenticationEntryPoint)
                     .accessDeniedHandler(accessDeniedHandler);
             }
         );
         return http.build();
-    }
-
-
-    @Bean
-    public MySecurityContextRepository securityContextRepository() {
-        return new MySecurityContextRepository(jwtTokenUtil, userDetailsService);
     }
 
 }

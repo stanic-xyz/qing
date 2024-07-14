@@ -47,14 +47,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 @RequiredArgsConstructor
 public class AuthingProvider implements AuthenticationProvider {
 
-    private final AuthingProperties authing;
+    private final AuthingProperties authingProperties;
     private final UmsUserDetailsService userDetailsService;
     private final ConnectionService connectionService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        AuthingLoginToken loginToken = (AuthingLoginToken) authentication;
 
+        AuthingLoginToken loginToken = (AuthingLoginToken) authentication;
         //1、从第三方获取 Userinfo
         AuthingLoginRequest loginRequest = loginToken.getLoginRequest();
         log.info("【Authing】通过Authing登录：流程开始");
@@ -65,11 +65,10 @@ public class AuthingProvider implements AuthenticationProvider {
         OIDCTokenResponse accessToken;
         try {
             accessToken = authenticationClient.getAccessTokenByCode(loginRequest.getCode());
-        } catch (Exception e) {
-            throw new AuthenticationCredentialsNotFoundException("Authing认证失败");
+        } catch (Exception exception) {
+            throw new AuthenticationCredentialsNotFoundException("Authing认证失败：" + exception.getMessage());
         }
         log.info("【Authing】通过Authing登录成功：accessToken:{}", accessToken.getAccessToken());
-
         UserInfo userInfo = authenticationClient.getUserInfoByAccessToken(accessToken.getAccessToken());
         log.info("【Authing】通过Authing登录成功：userInfo:{}", JSONUtil.toJsonPrettyStr(userInfo));
         String name = userInfo.getName();
@@ -78,45 +77,45 @@ public class AuthingProvider implements AuthenticationProvider {
         //2 查询是否已经有第三方的授权记录, List 按 rank 排序, 直接取第一条记录
         //3 获取 securityContext 中的 authenticationToken, 判断是否为本地登录用户(不含匿名用户)
 
-        UserDetails userDetails;
         //4.1 没有第三方登录记录, 自动注册 或 绑定 或 临时创建第三方登录用户
-        List<ConnectionData> connectionDataList;
         AuthProvider provider = AuthProvider.AUTHING;
-        connectionDataList = connectionService.findConnectionByProviderIdAndProviderUserId(provider, userInfo.getSub());
+        List<ConnectionData> connectionDataList = connectionService.findConnectionByProviderIdAndProviderUserId(provider, userInfo.getSub());
         // 没有关联的用户并且开启了用户自动注册功能
+        UserDetails userDetails;
         if (CollectionUtil.isNotEmpty(connectionDataList)) {
             log.info("【Authing】通过Authing登录成功：关联到用户信息:{}", connectionDataList.stream().map(ConnectionData::getUserId).collect(Collectors.joining(",")));
-            ConnectionData connectionData;
-            connectionData = connectionDataList.stream().min(Comparator.comparing(ConnectionData::getRank))
-                                 .orElseThrow(() -> new IllegalArgumentException("未找到匹配的用户信息"));
+            ConnectionData connectionData = connectionDataList.stream()
+                                                .min(Comparator.comparing(ConnectionData::getRank))
+                                                .orElseThrow(() -> new IllegalArgumentException("未找到匹配的用户信息"));
             userDetails = userDetailsService.loadUserByUserId(connectionData.getUserId());
         } else {
             log.info("【Authing】通过Authing登录成功：未关联到用户信息, 开始自动注册");
             // 自动注册
-            AuthUser authUser = AuthUser.builder()
-                                    .username(userInfo.getName())
-                                    .uuid(userInfo.getSub())
-                                    .avatar(userInfo.getPicture())
-                                    .source(provider)
-                                    .token(AuthToken.builder()
-                                               .accessCode(accessToken.getAccessToken())
-                                               .expireIn(accessToken.getExpiresIn().longValue())
-                                               .code(loginRequest.getCode())
-                                               .userId(userInfo.getSub())
-                                               .idToken(accessToken.getIdToken())
-                                               .openId(userInfo.getSub())
-                                               .refreshToken(accessToken.getRefreshToken())
-                                               .build())
-                                    .build();
+            AuthUser authUser;
+            authUser = AuthUser.builder()
+                           .username(userInfo.getName())
+                           .uuid(userInfo.getSub())
+                           .avatar(userInfo.getPicture())
+                           .source(provider)
+                           .token(AuthToken.builder()
+                                      .accessCode(accessToken.getAccessToken())
+                                      .expireIn(accessToken.getExpiresIn().longValue())
+                                      .code(loginRequest.getCode())
+                                      .userId(userInfo.getSub())
+                                      .idToken(accessToken.getIdToken())
+                                      .openId(userInfo.getSub())
+                                      .refreshToken(accessToken.getRefreshToken())
+                                      .build())
+                           .build();
             // 启用自动注册，进入自动注册流程
-            if (authing.getAutoSignUp()) {
+            if (authingProperties.getAutoSignUp()) {
                 log.info("【Authing】通过Authing登录成功：启用自动注册，进入自动注册流程");
-                userDetails = connectionService.signUp(authUser, provider, loginRequest.getState());
+                userDetails = connectionService.signUp(authUser, loginRequest.getState());
                 log.info("【Authing】通过Authing登录成功：自动注册成功, 用户信息:{}", userDetails.getUsername());
             } else {
                 // 未启用自动注册，返回临时用户
                 log.info("【Authing】通过Authing登录成功：未启用自动注册，返回临时用户");
-                SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authing.getDefaultAuthorities());
+                SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authingProperties.getDefaultAuthorities());
                 userDetails = TemporaryUser.builder()
                                   .username(authUser.getUsername())
                                   .password("123456")
@@ -141,10 +140,10 @@ public class AuthingProvider implements AuthenticationProvider {
 
     private AuthenticationClient getAuthenticationClient() {
         AuthenticationClientOptions clientOptions = new AuthenticationClientOptions();
-        clientOptions.setAppId(authing.getAppId());
-        clientOptions.setAppSecret(authing.getAppSecret());
-        clientOptions.setAppHost(authing.getAppHost());
-        clientOptions.setRedirectUri(authing.getRedirectUrl());
+        clientOptions.setAppId(authingProperties.getAppId());
+        clientOptions.setAppSecret(authingProperties.getAppSecret());
+        clientOptions.setAppHost(authingProperties.getAppHost());
+        clientOptions.setRedirectUri(authingProperties.getRedirectUrl());
         // 1.2初始化 AuthenticationClient
         AuthenticationClient authenticationClient;
         try {

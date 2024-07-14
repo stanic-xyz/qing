@@ -1,8 +1,9 @@
 package cn.chenyunlong.qing.security.config.jwt;
 
+import cn.chenyunlong.qing.security.config.SecurityProperties;
 import cn.chenyunlong.qing.security.config.utils.JwtTokenUtil;
+import cn.chenyunlong.qing.security.constant.Constants;
 import cn.hutool.core.util.StrUtil;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +15,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class MySecurityContextRepository implements SecurityContextRepository {
 
-    @Resource
     private final JwtTokenUtil jwtTokenUtil;
-    @Resource
     private final UserDetailsService userService;
+    private final SecurityProperties securityProperties;
 
     @Override
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
@@ -29,11 +31,10 @@ public class MySecurityContextRepository implements SecurityContextRepository {
 
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         // 从请求头中读取token
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StrUtil.isBlank(token) || !StrUtil.startWith(token, "Bearer ")) {
+        String token = resolveToken(request);
+        if (StrUtil.isBlank(token)) {
             return securityContext;
         }
-        token = token.replaceFirst("Bearer ", "");
         // 拿到 用户名
         String username = jwtTokenUtil.getUserNameFromToken(token);
         if (StrUtil.isBlank(username)) {
@@ -44,9 +45,8 @@ public class MySecurityContextRepository implements SecurityContextRepository {
         if (user == null) {
             return securityContext;
         }
-        UsernamePasswordAuthenticationToken authenticationToken =
-            UsernamePasswordAuthenticationToken.authenticated(user.getUsername(),
-                user.getPassword(), user.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.authenticated(user.getUsername(),
+            user.getPassword(), user.getAuthorities());
         authenticationToken.setDetails(user);
         securityContext.setAuthentication(authenticationToken);
         // 返回
@@ -54,17 +54,27 @@ public class MySecurityContextRepository implements SecurityContextRepository {
     }
 
     @Override
-    public void saveContext(SecurityContext context, HttpServletRequest request,
-        HttpServletResponse response) {
+    public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
         // 不用保存, 只要前端持续发送token就好
     }
 
     @Override
     public boolean containsContext(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (jwtTokenUtil.isTokenExpired(token)) {
-            return false;
+        return StrUtil.isNotBlank(token) && jwtTokenUtil.isTokenExpired(token);
+    }
+
+    /**
+     * 获取请求token
+     */
+    private String resolveToken(HttpServletRequest request) {
+        String token = request.getHeader(securityProperties.getTokenHeader());
+        if (StrUtil.isBlank(token)) {
+            return null;
         }
-        return StrUtil.isNotBlank(token);
+        if (token.startsWith(Constants.TOKEN_PREFIX)) {
+            token = token.replace(Constants.TOKEN_PREFIX, "");
+        }
+        return token;
     }
 }

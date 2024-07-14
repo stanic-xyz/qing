@@ -42,9 +42,10 @@ public class JwtTokenUtil {
      * 根据负责生成JWT的token
      */
     private String generateToken(Map<String, Object> claims) {
+        Date expirationDate = generateExpirationDate();
         return Jwts.builder()
                    .setClaims(claims)
-                   .setExpiration(generateExpirationDate())
+                   .setExpiration(expirationDate)
                    .signWith(SignatureAlgorithm.HS512, secret)
                    .compact();
     }

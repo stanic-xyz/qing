@@ -42,7 +42,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException {
+        Authentication authentication) throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
         String username = (String) authentication.getPrincipal();
@@ -50,12 +50,12 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         JwtBuilder builder = Jwts.builder();
         //设置主体信息
         String token = builder.setSubject(username)
-            //设置过期时间
-            .setExpiration(
-                new Date(System.currentTimeMillis() + securityProperties.getJwtTimeOut()))
-            .setId(authentication.getPrincipal().toString())
-            .signWith(SignatureAlgorithm.HS512, securityProperties.getSecretKey())
-            .compact();
+                           //设置过期时间
+                           .setExpiration(
+                               new Date(System.currentTimeMillis() + securityProperties.getJwtTimeOut()))
+                           .setId(authentication.getPrincipal().toString())
+                           .signWith(SignatureAlgorithm.HS512, securityProperties.getSecretKey())
+                           .compact();
         ApiResult<String> success = ApiResult.success(token);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(success));

@@ -11,9 +11,9 @@
  *
  */
 
-package cn.chenyunlong.qing.security.configures.authing;
+package cn.chenyunlong.qing.security.configures.my;
 
-import cn.chenyunlong.qing.security.configures.authing.properties.AuthingProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,18 +24,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-public class AuthingLoginFilter extends AbstractAuthenticationProcessingFilter {
+public class QingLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    public AuthingLoginFilter(AuthenticationManager authenticationManager, AuthingProperties authingProperties) {
-        super(AntPathRequestMatcher.antMatcher(HttpMethod.GET, authingProperties.getAuthLoginUrlPrefix()), authenticationManager);
+    public QingLoginFilter(AuthenticationManager authenticationManager) {
+        super(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/login"), authenticationManager);
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
-        AuthingLoginRequest loginRequest = new AuthingLoginRequest();
-        loginRequest.setCode(request.getParameter("code"));
-        loginRequest.setState(request.getParameter("state"));
-        AuthingLoginToken passToken = new AuthingLoginToken(loginRequest);
+        ObjectMapper mapper = new ObjectMapper();
+        // post请求，是从前端来的请求
+        MyLoginRequest loginRequest = mapper.readValue(request.getReader(), MyLoginRequest.class);
+        QingLoginToken passToken = new QingLoginToken(loginRequest);
         return this.getAuthenticationManager().authenticate(passToken);
     }
 }

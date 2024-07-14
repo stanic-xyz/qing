@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.application.manager.exception;
 
-import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.exception.AbstractException;
 import cn.chenyunlong.common.model.JsonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,11 +29,10 @@ public class GlobalExceptionHandler {
         return JsonResult.fail("未知异常!");
     }
 
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler(AbstractException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    JsonResult<Void> handleException(BusinessException exception) {
-        log.error("业务异常：{}", exception.getMessage());
+    JsonResult<Void> handleException(AbstractException exception) {
         return JsonResult.fail("业务异常：%s!".formatted(exception.getMessage()));
     }
 }

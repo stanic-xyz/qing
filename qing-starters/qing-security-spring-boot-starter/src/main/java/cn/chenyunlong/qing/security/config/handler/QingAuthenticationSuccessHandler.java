@@ -17,14 +17,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class QingAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthingProperties authingProperties;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-        Authentication authentication) throws IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         // start: 判断是否为临时用户, 进行相关逻辑的处理
         Object principal = authentication.getPrincipal();
         String token = "";
@@ -36,7 +35,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             token = jwtTokenUtil.generateToken(user);
         }
         response.sendRedirect(
-            authingProperties.getLoginPage() + "?accessToken=%s&tempUser=%s".formatted(token,
-                tempUser));
+            authingProperties.getLoginPage() + "?accessToken=%s&tempUser=%s".formatted(token, tempUser));
     }
 }

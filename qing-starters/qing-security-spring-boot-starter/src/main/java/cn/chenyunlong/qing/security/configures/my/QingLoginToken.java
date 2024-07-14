@@ -11,27 +11,20 @@
  *
  */
 
-package cn.chenyunlong.qing.security.configures.authing;
+package cn.chenyunlong.qing.security.configures.my;
 
-import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
 import cn.hutool.core.collection.CollUtil;
 import java.util.Collection;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 @Data
-public class AuthingLoginToken implements Authentication {
+public class QingLoginToken implements Authentication {
 
-    private AuthingLoginRequest loginRequest;
+    private MyLoginRequest loginRequest;
 
-    @Getter
-    @Setter
-    private OIDCTokenResponse response;
-
-    public AuthingLoginToken(AuthingLoginRequest loginRequest) {
+    public QingLoginToken(MyLoginRequest loginRequest) {
         this.loginRequest = loginRequest;
     }
 
@@ -42,7 +35,7 @@ public class AuthingLoginToken implements Authentication {
 
     @Override
     public Object getCredentials() {
-        return loginRequest.getCode();
+        return loginRequest.getPassword();
     }
 
     @Override
@@ -52,7 +45,7 @@ public class AuthingLoginToken implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return "admin";
+        return loginRequest.getUsername();
     }
 
     @Override

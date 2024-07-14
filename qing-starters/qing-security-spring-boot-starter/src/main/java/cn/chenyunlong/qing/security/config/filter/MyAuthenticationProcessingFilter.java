@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -41,17 +42,15 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 
 
     public MyAuthenticationProcessingFilter() {
-        super(new AntPathRequestMatcher("/login", "POST"));
+        super(new AntPathRequestMatcher("/login", HttpMethod.POST.name()));
     }
-
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest,
         HttpServletResponse httpServletResponse)
         throws AuthenticationException {
         //TODO 完善认证过程
-        UsernamePasswordAuthenticationToken authRequest;
-        authRequest = new UsernamePasswordAuthenticationToken("", "", null);
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken("", "", null);
         return this.getAuthenticationManager().authenticate(authRequest);
     }
 

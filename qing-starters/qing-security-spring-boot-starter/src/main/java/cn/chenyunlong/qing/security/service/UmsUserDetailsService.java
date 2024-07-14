@@ -29,13 +29,13 @@ public interface UmsUserDetailsService extends UserDetailsService, UserDetailsRe
     UserDetails loadUserByUserId(String userId) throws UsernameNotFoundException;
 
     /**
-     * {@link #existedByUsernames(String...)} usernames 生成规则.
+     * {@link #existedByNickNames(String...)} usernames 生成规则.
      * 如需自定义重新实现此逻辑
      *
      * @param authUser 第三方用户信息
      * @return 返回一个 username 数组
      */
-    default String[] generateUsernames(AuthUser authUser) {
+    default String[] generateUserNickNames(AuthUser authUser) {
         return new String[] {
             authUser.getUsername(),
             // providerId = authUser.getSource()
@@ -49,11 +49,11 @@ public interface UmsUserDetailsService extends UserDetailsService, UserDetailsRe
      * 在本地账户中检查是否存在 usernames, usernames 为本地账户的 usernames.<br>
      * 注意: 如果在你本地账户用户名允许重名, 直接都返回 true(List = [true, true, true])
      *
-     * @param usernames usernames 为本地账户的 username, 一般通过调用 {@link #generateUsernames(AuthUser)} 获取
+     * @param nicknames usernames 为本地账户的 username, 一般通过调用 {@link #generateUserNickNames(AuthUser)} 获取
      * @return usernames    是否存在的列表(true 表示存在), 与传入的 usernames 顺序一一对应
      * @throws IOException 数据库查询异常
      */
-    List<Boolean> existedByUsernames(String... usernames) throws IOException;
+    List<Boolean> existedByNickNames(String... nicknames) throws IOException;
 
 
 }

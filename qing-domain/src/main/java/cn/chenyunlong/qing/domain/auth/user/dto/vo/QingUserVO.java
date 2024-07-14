@@ -2,26 +2,20 @@ package cn.chenyunlong.qing.domain.auth.user.dto.vo;
 
 import cn.chenyunlong.common.enums.MFAType;
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
-import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Schema
 @Data
 @EqualsAndHashCode(
     callSuper = true
 )
-@NoArgsConstructor(
-    access = AccessLevel.PROTECTED
-)
 public class QingUserVO extends AbstractBaseJpaVo {
 
     @Schema(title = "uid", description = "用户唯一ID")
-    private Long uid;
+    private long uid;
 
     @Schema(
         title = "username",
@@ -83,22 +77,4 @@ public class QingUserVO extends AbstractBaseJpaVo {
     )
     private String mfaKey;
 
-    public QingUserVO(QingUser source) {
-        super();
-        this.setId(source.getId());
-        this.setCreatedAt(source.getCreatedAt());
-        this.setUpdatedAt(source.getCreatedAt());
-        this.setVersion(source.getVersion());
-        this.setUid(source.getUid());
-        this.setUsername(source.getUsername());
-        this.setNickname(source.getNickname());
-        this.setPassword(source.getPassword());
-        this.setPhone(source.getPhone());
-        this.setEmail(source.getEmail());
-        this.setAvatar(source.getAvatar());
-        this.setDescription(source.getDescription());
-        this.setExpireTime(source.getExpireTime());
-        this.setMfaType(source.getMfaType());
-        this.setMfaKey(source.getMfaKey());
-    }
 }

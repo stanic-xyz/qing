@@ -41,9 +41,10 @@ public class QingUser extends BaseJpaAggregate {
     private Long uid;
 
     @FieldDesc(name = "用户名", description = "用户（唯一），用于前端显示！")
+    @Column(unique = true)
     private String username;
 
-    @FieldDesc(name = "昵称")
+    @FieldDesc(name = "昵称", description = "用户名称（唯一），用于前端显示！")
     @Column(unique = true)
     private String nickname;
 
