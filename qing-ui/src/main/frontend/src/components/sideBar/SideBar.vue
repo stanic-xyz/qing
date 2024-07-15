@@ -3,7 +3,7 @@
     <template v-for="{ menuId, menuName, children } of menuItems">
       <lay-sub-menu :id="menuId">
         <template #title>
-          <lay-icon type="layui-icon-home"></lay-icon>
+          <lay-icon type="layui-icon-home"/>
           {{ menuName }}
         </template>
         <lay-menu-item v-for="{ menuId, menuName } of children" :id="menuId">{{ menuName }}</lay-menu-item>

@@ -53,7 +53,7 @@ public class JwtTokenUtil {
     /**
      * 从token中获取JWT中的负载
      */
-    private Claims getClaimsFromToken(String token) {
+    public Claims getClaimsFromToken(String token) {
         Claims claims = null;
         try {
             claims = Jwts.parser()

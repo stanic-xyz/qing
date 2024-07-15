@@ -1,23 +1,42 @@
 <template>
-  <LayContainer class="layui-container">
-    <div class="login-panel">
-      <div class="content-panel">
-        <div class="login-logo">
-          <img alt="登录Logo" src="../../assets/logo.png"/>
-        </div>
-        <div class="split-line"></div>
-        <div class="login-form-wrapper">
-          <LayForm :model="loginFormData" :pane="pine" :use-CN="true" class="login-form" required requiredIcons="layui-icon-heart-fill" size="md" style="color: whitesmoke" @submit="handleBtn">
-            <lay-form-item label="账户" prop="username">
-              <lay-input v-model="loginFormData.username"></lay-input>
-            </lay-form-item>
-            <lay-form-item label="密码" prop="password">
-              <LayInput v-model="loginFormData.password" type="password"></LayInput>
-            </lay-form-item>
-            <LayFormItem>
-              <lay-button style="display: inline-block" type="primary" @click="handleBtn">提交</lay-button>
-            </LayFormItem>
-          </LayForm>
+  <LayContainer class="h-100">
+    <div class="my-login-page">
+      <div class="row justify-content-md-center h-100">
+        <div class="card-wrapper">
+          <div class="brand">
+            <img src="../../assets/img/logo.jpg" alt="logo"/>
+          </div>
+          <div class="card fat">
+            <div class="card-body">
+              <h4 class="card-title">登录</h4>
+              <form method="POST" class="my-login-validation">
+                <div class="form-group">
+                  <label for="email">手机号/邮箱</label>
+                  <input id="email" type="email" class="form-control" name="email" value="" required autofocus v-model="loginFormData.username"/>
+                  <div class="invalid-feedback">Email is invalid</div>
+                </div>
+                <div class="form-group">
+                  <label for="password">密码</label>
+                  <input id="password" type="password" class="form-control" name="password" v-model="loginFormData.password" required data-eye/>
+                  <div class="invalid-feedback">请输入密码！</div>
+                </div>
+                <div class="form-group">
+                  <div class="custom-checkbox custom-control">
+                    <input type="checkbox" name="remember" id="remember" class="custom-control-input" v-model="loginFormData.rememberMe"/>
+                    <label for="remember" class="custom-control-label">记住账号</label>
+                  </div>
+                </div>
+                <div class="form-group m-0">
+                  <button type="submit" class="btn btn-primary btn-block" @click.prevent="handleBtn">Login</button>
+                </div>
+                <lay-space spaceAlign="center" :fill="false">
+                  <div class="mt-4 text-center">没有账号？ <a href="register.html">创建</a>&nbsp;</div>
+                  <div class="mt-4 text-center"><a href="forgot.html"> 忘记密码？</a></div>
+                </lay-space>
+              </form>
+            </div>
+          </div>
+          <div class="footer">Copyright &copy; 2017 &mdash; Your Company</div>
         </div>
       </div>
     </div>
@@ -25,10 +44,11 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive, ref} from "vue";
-import {LayContainer, layer, LayForm, LayFormItem} from "@layui/layui-vue";
+import {reactive} from "vue";
+import {LayContainer, layer} from "@layui/layui-vue";
 import {userInfoStore} from "@/stores/session";
 import {useRouter} from "vue-router";
+import {formLogin} from "@/apis/auth";
 
 // “ref”是用来存储值的响应式数据源。
 // 理论上我们在展示该字符串的时候不需要将其包装在 ref() 中，
@@ -36,105 +56,31 @@ import {useRouter} from "vue-router";
 const loginFormData = reactive({
   username: "",
   password: "",
+  rememberMe: false,
 });
 
-const pine = ref(true);
 const router = useRouter();
 defineEmits(["loginSuccess"]);
 
 const handleBtn = () => {
   // 模拟登录
-  const userInfoSto = userInfoStore();
-  let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLnlKjmiLc4MTg1ZTgyNDU1IiwiY3JlYXRlZCI6MTcxMDAwMTY5MzM0MywiZXhwIjoyNTc0MDAyOTMxfQ.84k9O6Ares7s8BqhrR12-WDe7z9T9cEPe8uC4s38qe44ExYhNrBY-uHkuWTq0TImE_AF5KjpCCgYUPTQJegOqA";
-  userInfoSto.username = "user那么少";
-  userInfoSto.login(token);
-  layer.msg("登录成功");
-  console.log(router);
-  router.push("/profile");
-  // formLogin(loginFormData.username, loginFormData.password)
-  //   .then(function (response) {
-  //     console.log("发起请求成功了", response);
-  //     const userInfoSto = userInfoStore();
-  //     let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLnlKjmiLc4MTg1ZTgyNDU1IiwiY3JlYXRlZCI6MTcxMDAwMTY5MzM0MywiZXhwIjoyNTc0MDAyOTMxfQ.84k9O6Ares7s8BqhrR12-WDe7z9T9cEPe8uC4s38qe44ExYhNrBY-uHkuWTq0TImE_AF5KjpCCgYUPTQJegOqA";
-  //     userInfoSto.username = "user那么少";
-  //     userInfoSto.login(token);
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //     layer.msg("登录失败");
-  //   });
+  console.debug("正在登录");
+  formLogin(loginFormData.username, loginFormData.password)
+          .then(function (response) {
+            console.log("发起请求成功了", response.data.data);
+            const userInfoSto = userInfoStore();
+            let token = response.data.data;
+            userInfoSto.username = "user那么少";
+            userInfoSto.login(token);
+            router.push("/profile");
+          })
+          .catch(function (error) {
+            console.log(error);
+            layer.msg("登录失败");
+          });
 };
 </script>
 <style lang="scss" scoped>
-//@import url(../../assets/base.css);
-
-.layui-container {
-  padding: 0;
-  background-color: #000000;
-
-  .login-panel {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-items: center;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100vw;
-    background-image: url("../../assets/img/loginbg.jpg");
-  }
-
-  .content-panel {
-    border-radius: 10px;
-    background-color: rgb(40, 40, 40);
-    border: 1px solid red;
-    margin: 0 auto 0;
-    height: 50vh;
-    width: 50vw;
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    align-content: center;
-    justify-content: space-around;
-
-    .login-logo {
-      width: 40%;
-      display: flex;
-      justify-items: center;
-      justify-content: center;
-      align-items: center;
-      border-radius: 10px;
-
-      img {
-        width: 100px;
-        height: 100px;
-      }
-    }
-
-    .split-line {
-      width: 2px;
-      height: 100%;
-      background: linear-gradient(135deg, #02835300, #be8f8f, #02835300);
-    }
-
-    .login-form {
-      color: white;
-      flex: 1;
-      width: 400px;
-      max-width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-items: center;
-      justify-content: center;
-
-      input {
-        color: white;
-        background-color: blue;
-        flex: 1;
-        width: 400px;
-        max-width: 100%;
-      }
-    }
-  }
-}
+@import url(../../assets/css/common/bootstrap.min.css);
+@import url(../../assets/css/login/my-login.css);
 </style>

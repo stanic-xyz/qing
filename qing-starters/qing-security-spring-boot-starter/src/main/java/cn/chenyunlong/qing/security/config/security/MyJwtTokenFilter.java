@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.security.config.security;
 
+import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,40 +21,38 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-public class MyJwtTokenFilter extends AbstractAuthenticationProcessingFilter {
+public class MyJwtTokenFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_QUERY = "token";
     private static final String AUTHORIZATION_COOKIES = "qing_token";
     private final TokenProvider tokenProvider;
 
-    public MyJwtTokenFilter(String defaultFilterProcessesUrl, TokenProvider tokenProvider) {
-        super(defaultFilterProcessesUrl);
+    public MyJwtTokenFilter(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 
 
     /**
-     * 授权。
-     *
-     * @param request  from which to extract parameters and perform the authentication
-     * @param response the response, which may be needed if the implementation has to do a
-     *                 redirect as part of a multi-stage authentication process (such as OIDC).
-     * @return 授权信息
-     * @throws AuthenticationException 授权异常
-     * @throws IOException             io异常
-     * @throws ServletException        Servlet异常
+     * Same contract as for {@code doFilter}, but guaranteed to be
+     * just invoked once per request within a single request thread.
+     * See {@link #shouldNotFilterAsyncDispatch()} for details.
+     * <p>Provides HttpServletRequest and HttpServletResponse arguments instead of the
+     * default ServletRequest and ServletResponse ones.
      */
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-                                                HttpServletResponse response)
-        throws AuthenticationException, IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 已经认证过的，直接放行
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String jwt = resolveToken(request);
         if (StringUtils.hasText(jwt)) {
             // 从自定义tokenProvider中解析用户
@@ -63,14 +62,16 @@ public class MyJwtTokenFilter extends AbstractAuthenticationProcessingFilter {
                 try {
                     Authentication authentication = this.tokenProvider.getAuthentication(jwt);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    return this.getAuthenticationManager().authenticate(authentication);
                 } catch (Exception exp) {
-                    logger.info("token验证错误！");
+                    throw new BadCredentialsException("token认证失败，请重新登陆！");
                 }
+            } else {
+                throw new BadCredentialsException("token非法！！");
             }
         }
-        return null;
+        filterChain.doFilter(request, response);
     }
+
 
     private String resolveToken(HttpServletRequest request) {
         String headerToken = request.getParameter(AUTHORIZATION_QUERY);

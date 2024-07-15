@@ -27,7 +27,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class QingLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     public QingLoginFilter(AuthenticationManager authenticationManager) {
-        super(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/login"), authenticationManager);
+        super(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/login"), authenticationManager);
     }
 
     @Override
