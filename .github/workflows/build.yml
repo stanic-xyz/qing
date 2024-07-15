@@ -8,8 +8,15 @@ on:
     branches:
       - '**'
     paths:
-      - "!qing-ui/src/main/frontend/**"
       - ".github/workflows/build.yml"
+      - "pom.xml"
+      - "qing-bom/**"
+      - "qing-commons"
+      - "qing-domain/**"
+      - "qing-starters/**"
+      - "qing-infrastructure/**"
+      - "qing-infrastructure-anime/**"
+      - "qing-application/qing-application-manager/**"
   pull_request:
     branches: [ main ]
 

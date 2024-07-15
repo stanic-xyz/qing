@@ -150,7 +150,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-infrustructure-anime</artifactId>
+                <artifactId>qing-infrastructure-anime</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

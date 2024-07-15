@@ -94,6 +94,7 @@ public class AuthingProvider implements AuthenticationProvider {
             AuthUser authUser;
             authUser = AuthUser.builder()
                            .username(userInfo.getName())
+                           .nickname(userInfo.getNickname())
                            .uuid(userInfo.getSub())
                            .avatar(userInfo.getPicture())
                            .source(provider)
@@ -135,6 +136,7 @@ public class AuthingProvider implements AuthenticationProvider {
         // 7 创建成功认证 token 并返回
         Auth2AuthenticationToken auth2AuthenticationToken = new Auth2AuthenticationToken(userDetails, userDetails.getAuthorities(), provider.getProviderId());
         auth2AuthenticationToken.setDetails(loginToken.getDetails());
+        auth2AuthenticationToken.setAuthenticated(true);
         return auth2AuthenticationToken;
     }
 

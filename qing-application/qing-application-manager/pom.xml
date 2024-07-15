@@ -94,7 +94,7 @@
         </dependency>
         <dependency>
             <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-infrustructure-anime</artifactId>
+            <artifactId>qing-infrastructure-anime</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.chenyunlong</groupId>

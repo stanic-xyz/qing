@@ -9,7 +9,7 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>qing-infrustructure-anime</artifactId>
+    <artifactId>qing-infrastructure-anime</artifactId>
     <packaging>jar</packaging>
 
     <properties>

@@ -37,6 +37,7 @@ public interface UmsUserDetailsService extends UserDetailsService, UserDetailsRe
      */
     default String[] generateUserNickNames(AuthUser authUser) {
         return new String[] {
+            authUser.getNickname(),
             authUser.getUsername(),
             // providerId = authUser.getSource()
             authUser.getUsername() + "_" + authUser.getSource(),
