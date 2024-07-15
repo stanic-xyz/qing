@@ -38,11 +38,10 @@ public class QingConnectionService implements ConnectionService {
 
     @Override
     public UserDetails signUp(AuthUser authUser, String encodeState) throws RegisterUserFailureException {
-        String nickName = authUser.getUsername();
+        String nickName = authUser.getNickname();
         String[] usernames = userDetailsService.generateUserNickNames(authUser);
         try {
             // 重名检查
-            nickName = null;
             final List<Boolean> existedByUserIds = userDetailsService.existedByNickNames(usernames);
             for (int i = 0, len = existedByUserIds.size(); i < len; i++) {
                 if (!existedByUserIds.get(i)) {
