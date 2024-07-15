@@ -15,6 +15,8 @@ package cn.chenyunlong.qing.security.config;
 
 import cn.chenyunlong.qing.security.base.extension.DummyUserContextAware;
 import cn.chenyunlong.qing.security.base.extension.UserContextAware;
+import cn.chenyunlong.qing.security.config.security.MyJwtTokenFilter;
+import cn.chenyunlong.qing.security.config.security.TokenProvider;
 import cn.chenyunlong.qing.security.config.utils.JwtTokenUtil;
 import cn.chenyunlong.qing.security.configures.authing.AuthingLoginConfigurer;
 import cn.chenyunlong.qing.security.configures.authing.properties.AuthingProperties;
@@ -31,6 +33,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
 
 /**
@@ -52,6 +55,7 @@ public class SecurityConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final QingLoginConfigurer qingLoginConfigurer;
     private final SecurityContextRepository securityContextRepository;
+    private final TokenProvider tokenProvider;
 
     @Bean
     @ConditionalOnMissingBean(UserContextAware.class)
@@ -78,8 +82,9 @@ public class SecurityConfig {
                     "/favicon.ico",
                     authingProperties.getAuthLoginUrlPrefix(),
                     "/api/authorize/authing/login").permitAll();
-                authorize.anyRequest().hasRole("USER");
+                authorize.anyRequest().authenticated();
             });
+
         http.exceptionHandling((exceptionHandling) -> {
                 // 异常处理器
                 exceptionHandling
@@ -88,6 +93,7 @@ public class SecurityConfig {
                     .accessDeniedHandler(accessDeniedHandler);
             }
         );
+        http.addFilterBefore(new MyJwtTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

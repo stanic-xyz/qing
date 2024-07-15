@@ -5,15 +5,7 @@ const serviceUrl = "api";
 
 /** 登录 */
 export const formLogin = (username: string, password: string) => {
-    return http.post(serviceUrl + "/auth/passLogin", {
-        username: username,
-        password: password,
-    });
-};
-
-/** 登录 */
-export const login = (username: string, password: string) => {
-    return http.post("api/authorize/formLogin", {
+    return http.post(serviceUrl + "/login", {
         username: username,
         password: password,
     });

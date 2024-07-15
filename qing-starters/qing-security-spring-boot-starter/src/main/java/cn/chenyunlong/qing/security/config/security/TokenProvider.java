@@ -14,18 +14,11 @@
 package cn.chenyunlong.qing.security.config.security;
 
 import cn.chenyunlong.qing.security.config.SecurityProperties;
-import cn.chenyunlong.qing.security.config.security.dto.UserInfoVO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.chenyunlong.qing.security.config.utils.JwtTokenUtil;
+import cn.hutool.core.collection.CollUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,105 +43,7 @@ public class TokenProvider {
     private static final String FIELD_USER_ID = "userId";
     private static final String USER_INFO = "userInfo";
     private final SecurityProperties securityProperties;
-    private final ObjectMapper objectMapper;
-
-
-    /**
-     * 通过token获取用户信息。
-     *
-     * @param jwtToken token 信息
-     * @return 用户信息
-     */
-    @SuppressWarnings("unused")
-    public UserInfoVO getUserNameFromToken(String jwtToken) {
-        try {
-            Claims claims = Jwts.parser().setSigningKey(securityProperties.getSecretKey())
-                .parseClaimsJws(jwtToken).getBody();
-
-            return objectMapper.readValue(claims.getSubject(), UserInfoVO.class);
-        } catch (SecurityException | MalformedJwtException e) {
-            log.debug("Invalid JWT signature.");
-        } catch (ExpiredJwtException e) {
-            log.debug("Expired JWT token.");
-        } catch (UnsupportedJwtException e) {
-            log.debug("Unsupported JWT token.");
-        } catch (IllegalArgumentException e) {
-            log.debug("JWT token compact of handler are invalid.");
-        } catch (JsonProcessingException e) {
-            log.debug("parse jsonObject failed.");
-        } catch (Exception e) {
-            log.error("解析jwt token 错误", e);
-        }
-        return null;
-    }
-
-    /**
-     * 酱token生成jwt生成token信息。
-     *
-     * @param authentication token
-     * @param rememberMe     是否记住我，认证信息时间设置为一个月
-     * @return jwtToken信息
-     */
-    public String createJwtToken(Authentication authentication, boolean rememberMe) {
-        String authorities = authentication
-            .getAuthorities()
-            .stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.joining(","));
-
-        long now = System.currentTimeMillis();
-        Date validity;
-        //是否颁发一个长久的令牌
-        if (rememberMe) {
-            validity = new Date(now + securityProperties.getTokenValidityInMilliseconds());
-        } else {
-            validity =
-                new Date(now + securityProperties.getTokenValidityInMillisecondsForRememberMe());
-        }
-
-        return Jwts
-            .builder()
-            .setSubject((String) authentication.getPrincipal())
-            .claim(AUTHORITIES_HEADER, authorities)
-            .claim(USER_INFO, authentication.getPrincipal())
-            .signWith(SignatureAlgorithm.HS256, securityProperties.getSecretKey())
-            .setExpiration(validity)
-            .compact();
-    }
-
-    /**
-     * 酱token生成jwt生成token信息。
-     *
-     * @param userinfoVo token
-     * @param rememberMe 是否记住我，认证信息时间设置为一个月
-     * @return jwtToken信息
-     */
-    public String createJwtToken(UserInfoVO userinfoVo, boolean rememberMe) {
-        long now = System.currentTimeMillis();
-        Date validity;
-        //是否颁发一个长久的令牌
-        if (rememberMe) {
-            validity = new Date(now + securityProperties.getTokenValidityInMilliseconds());
-        } else {
-            validity =
-                new Date(now + securityProperties.getTokenValidityInMillisecondsForRememberMe());
-        }
-
-        try {
-            return Jwts
-                .builder()
-                .setSubject(objectMapper.writeValueAsString(userinfoVo))
-                .claim(AUTHORITIES_HEADER, "authorities")
-                .claim(FIELD_USER_ID, "")
-                .claim("userAgent", "")
-                .signWith(SignatureAlgorithm.HS512, securityProperties.getSecretKey())
-                .setExpiration(validity)
-                .compact();
-        } catch (JsonProcessingException e) {
-            log.error("生成jwttoken异常！", e);
-        }
-        return null;
-    }
+    private final JwtTokenUtil jwtTokenUtil;
 
     /**
      * 从jwt中获取token信息。
@@ -156,14 +51,17 @@ public class TokenProvider {
      * @param jwt jwt认证信息
      */
     public Authentication getAuthentication(String jwt) {
-        Claims claims =
-            Jwts.parser().setSigningKey(securityProperties.getSecretKey()).parseClaimsJws(jwt)
-                .getBody();
-
-        Collection<? extends GrantedAuthority> authorities = Arrays
-            .stream(claims.get(AUTHORITIES_HEADER).toString().split(","))
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
+        Claims claims = jwtTokenUtil.getClaimsFromToken(jwt);
+        Collection<? extends GrantedAuthority> authorities;
+        Object object = claims.get(AUTHORITIES_HEADER);
+        if (object != null) {
+            authorities = Arrays
+                              .stream(object.toString().split(","))
+                              .map(SimpleGrantedAuthority::new)
+                              .collect(Collectors.toList());
+        } else {
+            authorities = CollUtil.newArrayList();
+        }
         return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
     }
 
@@ -174,12 +72,6 @@ public class TokenProvider {
      * @return json是否合法
      */
     public boolean validateToken(String jwtToken) {
-        try {
-            Jwts.parser().setSigningKey(securityProperties.getSecretKey()).parseClaimsJws(jwtToken);
-            return true;
-        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException
-                 | ExpiredJwtException | IllegalArgumentException ignore) {
-            return false;
-        }
+        return !jwtTokenUtil.isTokenExpired(jwtToken);
     }
 }
