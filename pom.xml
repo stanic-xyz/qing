@@ -39,7 +39,7 @@
         <module>qing-starters</module>
         <module>qing-infrastructure</module>
         <module>qing-domain-gen</module>
-        <module>qing-infrustructure-anime</module>
+        <module>qing-infrastructure-anime</module>
     </modules>
 
     <url>https://www.chenyunlong.cn</url>
