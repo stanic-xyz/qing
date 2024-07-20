@@ -52,7 +52,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         String token = builder.setSubject(username)
                            //设置过期时间
                            .setExpiration(
-                               new Date(System.currentTimeMillis() + securityProperties.getJwtTimeOut()))
+                               new Date(System.currentTimeMillis() + securityProperties.getJwtTimeOutSecond()))
                            .setId(authentication.getPrincipal().toString())
                            .signWith(SignatureAlgorithm.HS512, securityProperties.getSecretKey())
                            .compact();
