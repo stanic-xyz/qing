@@ -1,32 +1,30 @@
 package cn.chenyunlong.qing.security.config.utils;
 
+import cn.chenyunlong.qing.security.config.SecurityProperties;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Data
 @Slf4j
-@ConfigurationProperties(prefix = "qing.security.jwt")
 @Component
 public class JwtTokenUtil {
 
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
 
-    private String secret;
-    private Long expiration;
-    private String header = "jwt";
+    private final SecurityProperties securityProperties;
 
     /**
      * 根据用户信息生成token
@@ -46,24 +44,25 @@ public class JwtTokenUtil {
         return Jwts.builder()
                    .setClaims(claims)
                    .setExpiration(expirationDate)
-                   .signWith(SignatureAlgorithm.HS512, secret)
+                   .signWith(SignatureAlgorithm.HS512, securityProperties.getSecretKey())
                    .compact();
     }
 
     /**
      * 从token中获取JWT中的负载
      */
-    public Claims getClaimsFromToken(String token) {
+    public Claims getClaimsFromToken(String jwtToken) {
         Claims claims = null;
         try {
             claims = Jwts.parser()
-                         .setSigningKey(secret)
-                         .parseClaimsJws(token)
-                         .getBody();
+                         .setSigningKey(securityProperties.getSecretKey())
+                         .parseClaimsJws(jwtToken).getBody();
         } catch (ExpiredJwtException exception) {
-            log.info("JWT已过期:{},jwt:{}", exception.getMessage(), token);
+            log.info("JWT已过期:{},jwt:{}", exception.getMessage(), jwtToken);
+        } catch (SignatureException exception) {
+            log.info("JWT签名验证失败:{}", exception.getMessage(), exception);
         } catch (Exception e) {
-            log.info("JWT格式验证失败:{}", token);
+            log.info("JWT格式验证失败:{}", jwtToken);
         }
         return claims;
     }
@@ -72,7 +71,7 @@ public class JwtTokenUtil {
      * 生成token的过期时间
      */
     private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + expiration * 1000);
+        return new Date(System.currentTimeMillis() + securityProperties.getJwtTimeOutSecond() * 1000);
     }
 
     /**
@@ -123,22 +122,21 @@ public class JwtTokenUtil {
         if (StrUtil.isEmpty(oldToken)) {
             return null;
         }
-        String token = oldToken.substring(header.length());
-        if (StrUtil.isEmpty(token)) {
+        if (StrUtil.isEmpty(oldToken)) {
             return null;
         }
         //token校验不通过
-        Claims claims = getClaimsFromToken(token);
+        Claims claims = getClaimsFromToken(oldToken);
         if (claims == null) {
             return null;
         }
         //如果token已经过期，不支持刷新
-        if (isTokenExpired(token)) {
+        if (isTokenExpired(oldToken)) {
             return null;
         }
         //如果token在20分钟之内刚刷新过，返回原token
-        if (tokenRefreshJustBefore(token, 20 * 60)) {
-            return token;
+        if (tokenRefreshJustBefore(oldToken, 20 * 60)) {
+            return oldToken;
         } else {
             claims.put(CLAIM_KEY_CREATED, new Date());
             return generateToken(claims);

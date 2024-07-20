@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.qing.security.config;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +43,7 @@ public class SecurityProperties {
     /**
      * token有效时间  默认1天
      */
-    private long jwtTimeOut = 10086400L;
+    private long jwtTimeOutSecond = TimeUnit.DAYS.toSeconds(1);
 
     /**
      * 令牌自定义标识
@@ -60,4 +62,9 @@ public class SecurityProperties {
      * “记住我”密钥过期时间
      */
     private long tokenValidityInMillisecondsForRememberMe = 30 * 24 * 60 * 1000;
+
+    /**
+     * 白名单
+     */
+    private List<String> whiteList;
 }

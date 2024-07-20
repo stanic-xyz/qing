@@ -48,10 +48,10 @@ public class TokenProvider {
     /**
      * 从jwt中获取token信息。
      *
-     * @param jwt jwt认证信息
+     * @param jwtToken jwt认证信息
      */
-    public Authentication getAuthentication(String jwt) {
-        Claims claims = jwtTokenUtil.getClaimsFromToken(jwt);
+    public Authentication getAuthentication(String jwtToken) {
+        Claims claims = jwtTokenUtil.getClaimsFromToken(jwtToken);
         Collection<? extends GrantedAuthority> authorities;
         Object object = claims.get(AUTHORITIES_HEADER);
         if (object != null) {

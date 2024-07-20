@@ -164,6 +164,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.yomahub</groupId>
+                <artifactId>tlog-all-spring-boot-starter</artifactId>
+                <version>1.5.2</version>
+            </dependency>
+            <dependency>
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-camunda-spring-boot-starter</artifactId>
                 <version>0.0.2-SNAPSHOT</version>

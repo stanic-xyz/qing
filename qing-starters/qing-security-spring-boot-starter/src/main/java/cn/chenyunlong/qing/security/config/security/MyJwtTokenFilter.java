@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.qing.security.config.security;
 
+import cn.chenyunlong.qing.security.config.SecurityProperties;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -24,6 +25,7 @@ import java.util.Optional;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -33,11 +35,13 @@ public class MyJwtTokenFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION_QUERY = "token";
     private static final String AUTHORIZATION_COOKIES = "qing_token";
     private final TokenProvider tokenProvider;
+    private final SecurityProperties securityProperties;
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-    public MyJwtTokenFilter(TokenProvider tokenProvider) {
+    public MyJwtTokenFilter(TokenProvider tokenProvider, SecurityProperties securityProperties) {
         this.tokenProvider = tokenProvider;
+        this.securityProperties = securityProperties;
     }
-
 
     /**
      * Same contract as for {@code doFilter}, but guaranteed to be
@@ -48,6 +52,11 @@ public class MyJwtTokenFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 白名单里面的直接跳过
+        if (securityProperties.getWhiteList().stream().anyMatch(pathMatcher -> antPathMatcher.match(pathMatcher, request.getRequestURI()))) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         // 已经认证过的，直接放行
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);

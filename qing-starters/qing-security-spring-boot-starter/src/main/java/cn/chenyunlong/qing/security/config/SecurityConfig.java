@@ -21,6 +21,8 @@ import cn.chenyunlong.qing.security.config.utils.JwtTokenUtil;
 import cn.chenyunlong.qing.security.configures.authing.AuthingLoginConfigurer;
 import cn.chenyunlong.qing.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.qing.security.configures.my.QingLoginConfigurer;
+import cn.hutool.core.collection.CollUtil;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -35,6 +37,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.PathMatcher;
 
 /**
  * spring security 配置类 自动注入JwtAuthenticationProvider
@@ -64,7 +69,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain userLoginFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain userLoginFilterChain(HttpSecurity http, PathMatcher mvcPathMatcher) throws Exception {
         http.formLogin(AbstractHttpConfigurer::disable);
         http.with(authingLoginConfigurer, authingLogin -> {
 
@@ -73,15 +78,20 @@ public class SecurityConfig {
         });
         http.securityMatcher("/**")
             .authorizeHttpRequests(authorize -> {
-                authorize.requestMatchers(
-                    authingProperties.getRedirectUrlPrefix(),
-                    "/swagger-ui/**",
-                    "/doc.html",
-                    "/webjars/**",
-                    "/v3/api-docs/**",
-                    "/favicon.ico",
-                    authingProperties.getAuthLoginUrlPrefix(),
-                    "/api/authorize/authing/login").permitAll();
+                // 框架内部的白名单
+                authorize.requestMatchers(authingProperties.getRedirectUrlPrefix(),
+                    authingProperties.getAuthLoginUrlPrefix()).permitAll();
+                List<String> whiteList = securityProperties.getWhiteList();
+                if (CollUtil.isNotEmpty(whiteList)) {
+                    RequestMatcher[] requestMatchers = new RequestMatcher[CollUtil.size(securityProperties.getWhiteList())];
+                    for (int i = 0; i < whiteList.size(); i++) {
+                        String pattern = whiteList.get(i);
+                        RequestMatcher requestMatcher = new AntPathRequestMatcher(pattern);
+                        requestMatchers[i] = requestMatcher;
+                    }
+                    authorize.requestMatchers(requestMatchers).permitAll();
+                }
+
                 authorize.anyRequest().authenticated();
             });
 
@@ -93,7 +103,7 @@ public class SecurityConfig {
                     .accessDeniedHandler(accessDeniedHandler);
             }
         );
-        http.addFilterBefore(new MyJwtTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new MyJwtTokenFilter(tokenProvider, securityProperties), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
