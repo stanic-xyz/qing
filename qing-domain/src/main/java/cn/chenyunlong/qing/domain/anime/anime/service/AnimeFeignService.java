@@ -3,7 +3,7 @@ package cn.chenyunlong.qing.domain.anime.anime.service;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
-import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateRequest;
+import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateCommand;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeQueryRequest;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeUpdateRequest;
 import cn.chenyunlong.qing.domain.anime.anime.dto.response.AnimeResponse;
@@ -24,7 +24,9 @@ public interface AnimeFeignService {
      * 创建
      */
     @PostMapping("createAnime")
-    JsonResult<Long> createAnime(@RequestBody AnimeCreateRequest request);
+    JsonResult<Long> createAnime(
+        @RequestBody
+        AnimeCreateCommand request);
 
     /**
      * 更新请求

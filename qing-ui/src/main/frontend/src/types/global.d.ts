@@ -247,6 +247,18 @@ declare global {
     }
 
     /**
+     * @description 整体路由配置表（包括完整子路由）
+     */
+    export interface Page {
+        disabled: boolean;
+        current: number;
+        limit: number;
+        total: number;
+        pages: number;
+        limits: number[];
+    }
+
+    /**
      * 平台里所有组件实例都能访问到的全局属性对象的类型声明
      */
     interface GlobalPropertiesApi {

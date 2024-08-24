@@ -83,7 +83,7 @@ public class TemplateCategoryServiceImpl implements ITemplateCategoryService {
     public TemplateCategoryVO findById(Long id) {
         Optional<TemplateCategory> templateCategory = templateCategoryRepository.findById(id);
         return new TemplateCategoryVO(
-            templateCategory.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            templateCategory.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

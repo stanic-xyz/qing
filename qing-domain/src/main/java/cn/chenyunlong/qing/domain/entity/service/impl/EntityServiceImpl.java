@@ -81,7 +81,7 @@ public class EntityServiceImpl implements IEntityService {
     @Override
     public EntityVO findById(Long id) {
         Optional<Entity> entity = entityRepository.findById(id);
-        return new EntityVO(entity.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new EntityVO(entity.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

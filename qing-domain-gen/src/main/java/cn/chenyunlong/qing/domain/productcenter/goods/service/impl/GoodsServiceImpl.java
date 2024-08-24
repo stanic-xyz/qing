@@ -81,7 +81,7 @@ public class GoodsServiceImpl implements IGoodsService {
     @Override
     public GoodsVO findById(Long id) {
         Optional<Goods> goods = goodsRepository.findById(id);
-        return new GoodsVO(goods.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new GoodsVO(goods.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

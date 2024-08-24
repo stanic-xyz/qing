@@ -1,6 +1,6 @@
 import {http} from "@/utils/service";
 import type {Anime} from "@/apis/anime/types";
-import type {QingPageResponse, QingResponse} from "@/utils/http/types";
+import type {QingPageResponse, QingPageResponseDetail, QingResponse} from "@/utils/http/types";
 import type {PageRequest} from "@/apis/auth/types";
 
 const serviceUrl = "api/v1/anime";
@@ -8,7 +8,7 @@ const serviceUrl = "api/v1/anime";
 /** 卡片列表 */
 export const getAnimeList = (data?: object) => {
     console.log("请求参数", data);
-    return http.request<QingResponse<QingPageResponse<Anime>>>("post", serviceUrl + "/page", data);
+    return http.request<QingResponse<QingPageResponseDetail<Anime>>>("post", serviceUrl + "/page", data);
 };
 
 /** 卡片列表 */
@@ -23,7 +23,7 @@ export const updateAnime = (id: string, data?: Anime) => {
     return http.request<QingResponse<QingPageResponse<Anime>>>("post", serviceUrl + "/updateAnime", data);
 };
 
-/** 更新动漫信息 */
+/** 启用动漫信息 */
 export const valid = (id: string) => {
     console.log("请求参数:{}", id);
     return http.request<QingResponse<string>>("post", serviceUrl + "/valid/" + id);
@@ -44,5 +44,5 @@ export const findById = (id: number) => {
 /** 分页查询动漫信息 */
 export const page = (data: PageRequest<Anime>) => {
     console.log("禁用：请求参数:{}", JSON.stringify(data));
-    return http.request<QingResponse<QingPageResponse<Anime>>>("post", serviceUrl + "/page", data);
+    return http.request<QingResponse<QingPageResponseDetail<Anime>>>("post", serviceUrl + "/page", data);
 };

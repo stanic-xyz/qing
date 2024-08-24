@@ -1,11 +1,16 @@
 package cn.chenyunlong.qing.domain.anime.anime.dto.updater;
 
 import cn.chenyunlong.qing.domain.anime.anime.Anime;
+import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
+import cn.chenyunlong.qing.domain.anime.anime.Tag;
+import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
+import cn.chenyunlong.qing.domain.anime.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import lombok.Data;
 
 @Schema
@@ -32,10 +37,8 @@ public class AnimeUpdater {
     )
     private String districtName;
 
-    @Schema(
-        title = "coverUrl"
-    )
-    private String coverUrl;
+    @Schema(title = "封面的附件Id")
+    private Long coverAttachmentId;
 
     @Schema(
         title = "typeId"
@@ -90,7 +93,7 @@ public class AnimeUpdater {
     @Schema(
         title = "tags"
     )
-    private String tags;
+    private List<Long> tags;
 
     @Schema(
         title = "officialWebsite"
@@ -109,30 +112,36 @@ public class AnimeUpdater {
 
     private Long id;
 
-    public void updateAnime(Anime param) {
-        Optional.ofNullable(getName()).ifPresent(param::setName);
-        Optional.ofNullable(getInstruction()).ifPresent(param::setInstruction);
-        Optional.ofNullable(getDistrictId()).ifPresent(param::setDistrictId);
-        Optional.ofNullable(getDistrictName()).ifPresent(param::setDistrictName);
-        Optional.ofNullable(getCoverUrl()).ifPresent(param::setCoverUrl);
-        Optional.ofNullable(getTypeId()).ifPresent(param::setTypeId);
-        Optional.ofNullable(getTypeName()).ifPresent(param::setTypeName);
-        Optional.ofNullable(getOriginalName()).ifPresent(param::setOriginalName);
-        Optional.ofNullable(getOtherName()).ifPresent(param::setOtherName);
-        Optional.ofNullable(getAuthor()).ifPresent(param::setAuthor);
-        Optional.ofNullable(getCompanyId()).ifPresent(param::setCompanyId);
-        Optional.ofNullable(getCompanyName()).ifPresent(param::setCompanyName);
-        Optional.ofNullable(getPremiereDate()).ifPresent(param::setPremiereDate);
-        Optional.ofNullable(getPlayStatus()).ifPresent(param::setPlayStatus);
-        Optional.ofNullable(getPlotType()).ifPresent(param::setPlotType);
-        Optional.ofNullable(getTags()).ifPresent(param::setTags);
-        Optional.ofNullable(getOfficialWebsite()).ifPresent(param::setOfficialWebsite);
-        Optional.ofNullable(getPlayHeat()).ifPresent(param::setPlayHeat);
-        Optional.ofNullable(getOrderNo()).ifPresent(param::setOrderNo);
-    }
-
-    public Consumer<Anime> bindConsumer(Anime param, Consumer<Anime> consumer) {
-        updateAnime(param);
-        return consumer;
+    public void updateAnime(Anime anime, List<Tag> tagList, District district, AnimeCategory animeCategory, Attachment coverAttachment) {
+        Optional.ofNullable(getName()).ifPresent(anime::setName);
+        Optional.ofNullable(getInstruction()).ifPresent(anime::setInstruction);
+        Optional.ofNullable(getDistrictId()).ifPresent(anime::setDistrictId);
+        Optional.ofNullable(getDistrictName()).ifPresent(anime::setDistrictName);
+        Optional.ofNullable(coverAttachment).ifPresent(attachment -> {
+            anime.setCoverAttachmentId(attachment.getId());
+            anime.setCoverUrl(attachment.getPath());
+        });
+        Optional.ofNullable(district).ifPresent(district1 -> {
+            anime.setDistrictId(district1.getId());
+            anime.setDistrictName(district1.getName());
+        });
+        Optional.ofNullable(animeCategory).ifPresent(district1 -> {
+            anime.setTypeId(district1.getId());
+            anime.setTypeName(district1.getName());
+        });
+        Optional.ofNullable(getTypeId()).ifPresent(anime::setTypeId);
+        Optional.ofNullable(getTypeName()).ifPresent(anime::setTypeName);
+        Optional.ofNullable(getOriginalName()).ifPresent(anime::setOriginalName);
+        Optional.ofNullable(getOtherName()).ifPresent(anime::setOtherName);
+        Optional.ofNullable(getAuthor()).ifPresent(anime::setAuthor);
+        Optional.ofNullable(getCompanyId()).ifPresent(anime::setCompanyId);
+        Optional.ofNullable(getCompanyName()).ifPresent(anime::setCompanyName);
+        Optional.ofNullable(getPremiereDate()).ifPresent(anime::setPremiereDate);
+        Optional.ofNullable(getPlayStatus()).ifPresent(anime::setPlayStatus);
+        Optional.ofNullable(getPlotType()).ifPresent(anime::setPlotType);
+        Optional.ofNullable(tagList).ifPresent(tagLis -> anime.setTags(tagLis.stream().map(Tag::getName).collect(Collectors.joining(","))));
+        Optional.ofNullable(getOfficialWebsite()).ifPresent(anime::setOfficialWebsite);
+        Optional.ofNullable(getPlayHeat()).ifPresent(anime::setPlayHeat);
+        Optional.ofNullable(getOrderNo()).ifPresent(anime::setOrderNo);
     }
 }

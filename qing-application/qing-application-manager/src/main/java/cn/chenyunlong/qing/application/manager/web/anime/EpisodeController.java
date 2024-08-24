@@ -15,10 +15,12 @@ import cn.chenyunlong.qing.domain.anime.episode.dto.vo.EpisodeVO;
 import cn.chenyunlong.qing.domain.anime.episode.mapper.EpisodeMapper;
 import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "单集管理")
 @RestController
 @Slf4j
+@Validated
 @RequestMapping("api/v1/episode")
 @RequiredArgsConstructor
 public class EpisodeController {
@@ -40,6 +43,7 @@ public class EpisodeController {
      */
     @PostMapping
     public JsonResult<Long> createEpisode(
+        @Valid
         @RequestBody
         EpisodeCreateRequest request) {
         EpisodeCreator creator = EpisodeMapper.INSTANCE.request2Dto(request);

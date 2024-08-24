@@ -83,7 +83,7 @@ public class GoodsLifeCycleServiceImpl implements IGoodsLifeCycleService {
     public GoodsLifeCycleVO findById(Long id) {
         Optional<GoodsLifeCycle> goodsLifeCycle = goodsLifeCycleRepository.findById(id);
         return new GoodsLifeCycleVO(
-            goodsLifeCycle.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            goodsLifeCycle.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

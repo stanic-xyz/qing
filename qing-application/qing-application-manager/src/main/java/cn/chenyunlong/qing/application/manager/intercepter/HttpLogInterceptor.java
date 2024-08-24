@@ -33,7 +33,7 @@ public class HttpLogInterceptor implements HandlerInterceptor {
         // 记录请求日志
         log.info("用户访问地址:{}, 请求方式: {}，请求地址：{}", request.getRemoteAddr(),
             request.getMethod(), request.getServletPath());
-        log.info("----------------请求头.start.....");
+        log.info("----------------请求处理开始----------------");
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 

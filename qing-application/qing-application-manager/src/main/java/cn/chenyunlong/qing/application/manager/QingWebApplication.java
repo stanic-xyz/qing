@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.application.manager;
 
+import org.babyfish.jimmer.client.EnableImplicitApi;
+import org.babyfish.jimmer.sql.EnableDtoGeneration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -12,6 +14,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {"cn.chenyunlong.qing.domain", "cn.chenyunlong.qing.application.manager.*", "cn.chenyunlong.qing.infrastructure.**"})
 @EntityScan(basePackages = {"cn.chenyunlong.qing.domain.*"})
+@EnableDtoGeneration
+@EnableImplicitApi
 public class QingWebApplication {
 
     /**

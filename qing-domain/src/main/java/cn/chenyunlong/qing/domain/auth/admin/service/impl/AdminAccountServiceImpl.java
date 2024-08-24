@@ -95,7 +95,7 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
     public AdminAccountVO findById(Long id) {
         Optional<AdminAccount> adminAccount = adminAccountRepository.findById(id);
         return new AdminAccountVO(
-            adminAccount.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            adminAccount.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

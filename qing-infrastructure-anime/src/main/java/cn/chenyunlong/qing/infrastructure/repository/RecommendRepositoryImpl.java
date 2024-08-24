@@ -6,15 +6,18 @@ import cn.chenyunlong.qing.infrastructure.repository.base.JpaServiceImpl;
 import cn.chenyunlong.qing.infrastructure.repository.jpa.RecommendJpaRepository;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class RecommendRepositoryImpl extends JpaServiceImpl<RecommendJpaRepository, Recommend, Long> implements RecommendRepository {
 
+    private final RecommendJpaRepository recommendJpaRepository;
 
     @Override
     public Recommend findByAnimeId(Long animeId) {
-        return null;
+        return recommendJpaRepository.findByAnimeId(animeId);
     }
 
     @Override

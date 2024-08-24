@@ -9,6 +9,6 @@ public class AnimeEvents {
     public static class AnimeCreated {
 
         Anime anime;
-
     }
+
 }

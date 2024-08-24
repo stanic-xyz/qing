@@ -46,3 +46,35 @@ export interface QingPageResponse<T> {
     pageNumber: number;
     list: T[];
 }
+
+export interface Sort {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+}
+
+export interface QingPage {
+    pageNumber: number;
+    pageSize: number;
+    totalPages: number;
+    offset: number;
+    paged: boolean;
+    sort: Sort;
+}
+
+export interface QingPageResponseDetail<T> {
+    total: number;
+    totalPages: number;
+    pageSize: number;
+    pageNumber: number;
+    content: T[];
+    last: boolean;
+    totalElements: number;
+    size: number;
+    number: number;
+    sort: Sort;
+    first: boolean;
+    numberOfElements: number;
+    empty: boolean;
+    pageable: QingPage;
+}

@@ -82,7 +82,7 @@ public class PlatformServiceImpl implements IPlatformService {
     public PlatformVO findById(Long id) {
         Optional<Platform> platform = platformRepository.findById(id);
         return new PlatformVO(
-            platform.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            platform.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

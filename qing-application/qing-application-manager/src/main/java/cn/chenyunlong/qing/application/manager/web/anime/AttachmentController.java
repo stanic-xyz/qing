@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "附件管理")
 @RestController
@@ -102,6 +104,15 @@ public class AttachmentController {
         @PathVariable("id")
         Long id) {
         attachmentService.deleteById(id);
+        return JsonResult.success();
+    }
+
+    @PostMapping("upload")
+    public JsonResult<Void> upload(
+        @RequestParam
+        MultipartFile file) {
+        long size = file.getSize();
+        log.info("上传的文件大小：{}", size);
         return JsonResult.success();
     }
 

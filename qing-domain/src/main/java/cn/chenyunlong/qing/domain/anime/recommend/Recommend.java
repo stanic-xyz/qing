@@ -30,6 +30,9 @@ public class Recommend extends BaseJpaAggregate {
     @FieldDesc(description = "介绍")
     private String instruction;
 
+    @FieldDesc(description = "推荐人")
+    private String recommendUserId;
+
     @FieldDesc(description = "推荐的动漫id")
     private Long animeId;
 

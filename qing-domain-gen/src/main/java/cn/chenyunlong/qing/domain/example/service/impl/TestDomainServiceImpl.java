@@ -81,7 +81,7 @@ public class TestDomainServiceImpl implements ITestDomainService {
     @Override
     public TestDomainVO findById(Long id) {
         Optional<TestDomain> testDomain = testDomainRepository.findById(id);
-        return new TestDomainVO(testDomain.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new TestDomainVO(testDomain.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

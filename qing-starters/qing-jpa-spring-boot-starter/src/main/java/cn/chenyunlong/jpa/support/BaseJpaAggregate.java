@@ -30,6 +30,7 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Version;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -81,17 +82,19 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
     /**
      * 创建人。
      */
+    @Column(name = "createBy")
     private String createBy;
 
     /**
      * 更新人。
      */
+    @Column(name = "updateBy")
     private String updateBy;
 
     /**
      * 备注。
      */
-    @Column
+    @Column(name = "remark")
     private String remark;
 
 
@@ -116,7 +119,6 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
         this.setVersion(this.version + 1);
     }
 
-
     public void init() {
         setValidStatus(ValidStatus.VALID);
     }
@@ -130,4 +132,8 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
         setValidStatus(ValidStatus.INVALID);
     }
 
+    @Override
+    public Collection<Object> domainEvents() {
+        return super.domainEvents();
+    }
 }

@@ -104,9 +104,10 @@ public class OpenApiConfig {
         SecurityScheme scheme = new SecurityScheme()
                                     .type(SecurityScheme.Type.HTTP)
                                     .bearerFormat("JWT")
+                                    .name("Authorization")
                                     .scheme("bearer");
         // 设置 spring security jwt accessToken 认证的请求头 Authorization: Bearer xxx.xxx.xxx
-        openAPI.components(new Components().addSecuritySchemes("authScheme", scheme));
+        openAPI.components(new Components().addSecuritySchemes("Authorization", scheme));
         return openAPI;
     }
 }

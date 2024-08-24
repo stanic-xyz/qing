@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -52,7 +53,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         String token = builder.setSubject(username)
                            //设置过期时间
                            .setExpiration(
-                               new Date(System.currentTimeMillis() + securityProperties.getJwtTimeOutSecond()))
+                               new Date(System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(securityProperties.getJwtTimeOutSecond())))
                            .setId(authentication.getPrincipal().toString())
                            .signWith(SignatureAlgorithm.HS512, securityProperties.getSecretKey())
                            .compact();

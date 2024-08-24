@@ -99,7 +99,7 @@ public class SecurityConfig {
                 // 异常处理器
                 exceptionHandling
                     .accessDeniedPage("/errors/access-denied")
-                    // .authenticationEntryPoint(authenticationEntryPoint)
+                    .authenticationEntryPoint(authenticationEntryPoint)
                     .accessDeniedHandler(accessDeniedHandler);
             }
         );

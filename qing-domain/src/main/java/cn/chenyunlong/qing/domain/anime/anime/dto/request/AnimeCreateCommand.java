@@ -1,18 +1,20 @@
 package cn.chenyunlong.qing.domain.anime.anime.dto.request;
 
 import cn.chenyunlong.common.model.Request;
-import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
+import cn.hutool.core.date.DatePattern;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
 
 @Schema
 @Data
-public class AnimeCreateRequest implements Request {
+public class AnimeCreateCommand implements Request {
 
     @NotBlank
     @Schema(title = "name")
@@ -22,23 +24,16 @@ public class AnimeCreateRequest implements Request {
     @Schema(title = "instruction")
     private String instruction;
 
+    @NotNull
     @Schema(title = "districtId")
     private Long districtId;
 
-    @Schema(title = "districtName")
-    private String districtName;
+    @Schema(title = "封面的附件Id")
+    private Long coverAttachmentId;
 
-    @Schema(title = "封面图片附件id")
-    private Long coverUrlAttachmentId;
-
-    @Schema(title = "coverUrl")
-    private String coverUrl;
-
+    @NotNull
     @Schema(title = "typeId")
     private Long typeId;
-
-    @Schema(title = "typeName")
-    private String typeName;
 
     @Schema(title = "originalName")
     private String originalName;
@@ -52,28 +47,18 @@ public class AnimeCreateRequest implements Request {
     @Schema(title = "companyId")
     private Long companyId;
 
-    @Schema(title = "companyName")
-    private String companyName;
-
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @Schema(title = "premiereDate")
+    @JsonFormat(pattern = DatePattern.NORM_DATE_PATTERN)
     private LocalDate premiereDate;
-
-    @Schema(title = "playStatus")
-    private PlayStatus playStatus;
 
     @Schema(title = "plotType")
     private String plotType;
 
+    @NotNull
     @Schema(title = "tags")
     private List<Long> tagIds;
 
     @Schema(title = "officialWebsite")
     private String officialWebsite;
-
-    @Schema(title = "playHeat")
-    private String playHeat;
-
-    @Schema(title = "orderNo")
-    private Integer orderNo;
 }

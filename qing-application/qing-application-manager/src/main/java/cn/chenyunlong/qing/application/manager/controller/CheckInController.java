@@ -22,7 +22,7 @@ public class CheckInController {
     }
 
     @Data
-    private static class CheckInReq {
+    public static class CheckInReq {
 
         private String plate;
         private String time;

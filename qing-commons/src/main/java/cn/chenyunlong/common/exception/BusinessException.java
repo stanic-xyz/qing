@@ -17,6 +17,7 @@ package cn.chenyunlong.common.exception;
 import cn.chenyunlong.common.constants.BaseEnum;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
 /**
  * 业务错误。
@@ -24,7 +25,7 @@ import lombok.Setter;
  * @author gim 强制业务异常必须提供code码，便于统一维护
  */
 @Getter
-public class BusinessException extends RuntimeException {
+public class BusinessException extends AbstractException {
 
     private BaseEnum<Integer> code;
 
@@ -36,8 +37,10 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
-    public BusinessException(Object data) {
-        this.data = data;
+    public BusinessException(String message) {
+        // TODO 这里明显不对
+        super(message);
+        this.data = null;
     }
 
     /**
@@ -52,4 +55,13 @@ public class BusinessException extends RuntimeException {
         this.data = data;
     }
 
+    /**
+     * Http status code
+     *
+     * @return {@link HttpStatus}
+     */
+    @Override
+    public HttpStatus getStatus() {
+        return HttpStatus.OK;
+    }
 }

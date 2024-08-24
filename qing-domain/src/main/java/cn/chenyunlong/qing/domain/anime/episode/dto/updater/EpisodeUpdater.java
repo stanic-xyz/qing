@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class EpisodeUpdater {
 
+    private Long id;
+
     @Schema(
         title = "name",
         description = "名称"
@@ -16,69 +18,24 @@ public class EpisodeUpdater {
     private String name;
 
     @Schema(
-        title = "animeId",
-        description = "动漫ID"
-    )
-    private Long animeId;
-
-    @Schema(
-        title = "collectionId",
-        description = "播放源ID"
-    )
-    private Long collectionId;
-
-    @Schema(
-        title = "collectionName",
+        title = "description",
         description = "播放源名称"
     )
-    private String collectionName;
+    private String description;
 
-    private Long id;
+    @Schema(
+        title = "playUrl",
+        description = "播放源地址"
+    )
+    private String playUrl;
+
+    private Integer episodeNumber;
 
     public void updateEpisode(Episode param) {
         Optional.ofNullable(getName()).ifPresent(param::setName);
-        Optional.ofNullable(getAnimeId()).ifPresent(param::setAnimeId);
-        Optional.ofNullable(getCollectionId()).ifPresent(param::setCollectionId);
-        Optional.ofNullable(getCollectionName()).ifPresent(param::setCollectionName);
+        Optional.ofNullable(getDescription()).ifPresent(param::setDescription);
+        Optional.ofNullable(getPlayUrl()).ifPresent(param::setPlayUrl);
+        Optional.ofNullable(getEpisodeNumber()).ifPresent(param::setEpisodeNumber);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getAnimeId() {
-        return animeId;
-    }
-
-    public void setAnimeId(Long animeId) {
-        this.animeId = animeId;
-    }
-
-    public Long getCollectionId() {
-        return collectionId;
-    }
-
-    public void setCollectionId(Long collectionId) {
-        this.collectionId = collectionId;
-    }
-
-    public String getCollectionName() {
-        return collectionName;
-    }
-
-    public void setCollectionName(String collectionName) {
-        this.collectionName = collectionName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

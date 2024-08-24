@@ -12,7 +12,6 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>qing-application-manager</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
     <name>qing-application-manager</name>
     <description>qing-application-manager</description>
 
@@ -109,6 +108,15 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-jimmer-spring-boot-starter</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>or</groupId>-->
+        <!--            <artifactId>jimmer-core</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -172,6 +180,18 @@
                     <source>17</source>
                     <target>17</target>
                     <encoding>UTF-8</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.babyfish.jimmer</groupId>
+                            <artifactId>jimmer-apt</artifactId>
+                            <version>${jimmer.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>

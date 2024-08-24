@@ -29,10 +29,8 @@ public class AnimeUpdateRequest implements Request {
     )
     private Long districtId;
 
-    @Schema(
-        title = "coverUrl"
-    )
-    private String coverUrl;
+    @Schema(title = "封面的附件Id")
+    private Long coverAttachmentId;
 
     @Schema(
         title = "typeId"

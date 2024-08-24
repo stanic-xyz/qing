@@ -25,8 +25,17 @@
     </parent>
 
     <artifactId>qing-bom</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
 
     <name>qing-bom</name>
     <packaging>pom</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-jpa-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

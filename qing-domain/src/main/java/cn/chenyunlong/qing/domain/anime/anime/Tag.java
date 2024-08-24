@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.domain.anime.anime;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -36,7 +36,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "anime_tag")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Tag extends BaseJpaAggregate {
+public class Tag extends BaseEntity {
 
     @NotBlank(message = "名称不能为空")
     @FieldDesc(description = "名称")

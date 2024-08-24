@@ -111,7 +111,7 @@ public class ZanServiceImpl implements IZanService {
     @Override
     public ZanVO findById(Long id) {
         Optional<Zan> zan = zanRepository.findById(id);
-        return new ZanVO(zan.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new ZanVO(zan.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

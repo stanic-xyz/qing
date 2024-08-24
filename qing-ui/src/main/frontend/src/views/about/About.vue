@@ -61,4 +61,6 @@ const submitFile = () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+@import url(../../assets/css/common/common.css);
+</style>

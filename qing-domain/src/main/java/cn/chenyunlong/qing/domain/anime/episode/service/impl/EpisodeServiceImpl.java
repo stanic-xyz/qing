@@ -13,6 +13,8 @@ import cn.chenyunlong.qing.domain.anime.episode.dto.vo.EpisodeVO;
 import cn.chenyunlong.qing.domain.anime.episode.mapper.EpisodeMapper;
 import cn.chenyunlong.qing.domain.anime.episode.repository.EpisodeRepository;
 import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
+import cn.chenyunlong.qing.domain.anime.playlist.repository.PlayListRepository;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,15 +32,28 @@ public class EpisodeServiceImpl implements IEpisodeService {
 
     private final EpisodeRepository episodeRepository;
 
+    private final PlayListRepository playListRepository;
+
     /**
      * createImpl
      */
     @Override
     public Long createEpisode(EpisodeCreator creator) {
+        playListRepository.findById(creator.getPlayListId()).orElseThrow(() -> new RuntimeException("播放列表不存在"));
+        Integer maxEpisodeNumber;
+        // 设置当前最大集数
+        if (Objects.isNull(creator.getEpisodeNumber())) {
+            maxEpisodeNumber = episodeRepository.findMaxEpisodeNumberByPlayListId(creator.getPlayListId());
+            if (maxEpisodeNumber == null || maxEpisodeNumber <= 0) {
+                maxEpisodeNumber = 0;
+            }
+            creator.setEpisodeNumber(maxEpisodeNumber + 1);
+        }
+        // TODO 判断当前集数是否重复
         Optional<Episode> episode = EntityOperations.doCreate(episodeRepository)
-            .create(() -> EpisodeMapper.INSTANCE.dtoToEntity(creator))
-            .update(Episode::init)
-            .execute();
+                                        .create(() -> EpisodeMapper.INSTANCE.dtoToEntity(creator))
+                                        .update(Episode::init)
+                                        .execute();
         return episode.isPresent() ? episode.get().getId() : 0;
     }
 
@@ -81,8 +96,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
     @Override
     public EpisodeVO findById(Long id) {
         Optional<Episode> episode = episodeRepository.findById(id);
-        return new EpisodeVO(
-            episode.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return episode.map(EpisodeMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     /**
@@ -92,6 +106,6 @@ public class EpisodeServiceImpl implements IEpisodeService {
     public Page<EpisodeVO> findByPage(PageRequestWrapper<EpisodeQuery> query) {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return episodeRepository.findAll(pageRequest).map(EpisodeVO::new);
+        return episodeRepository.findAll(pageRequest).map(EpisodeMapper.INSTANCE::entityToVo);
     }
 }

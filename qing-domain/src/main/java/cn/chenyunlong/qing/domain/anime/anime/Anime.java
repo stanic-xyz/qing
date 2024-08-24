@@ -14,7 +14,8 @@
 package cn.chenyunlong.qing.domain.anime.anime;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.jpa.support.BaseJpaAggregate;
+import cn.chenyunlong.jpa.support.domain.BaseEntity;
+import cn.chenyunlong.qing.domain.anime.anime.events.AnimeEvents;
 import cn.chenyunlong.qing.infrustructure.converter.PlayStatusConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -40,7 +41,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "anime_info")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Anime extends BaseJpaAggregate {
+public class Anime extends BaseEntity {
 
     @FieldDesc(description = "名称")
     private String name;
@@ -107,10 +108,11 @@ public class Anime extends BaseJpaAggregate {
     @FieldDesc(description = "排序号")
     private Integer orderNo;
 
-
-    @Override
-    public void init() {
+    public void create() {
         super.init();
         setPlayStatus(PlayStatus.SERIALIZING);
+        setPlayHeat("0");
+        registerEvent(new AnimeEvents.AnimeCreated(this));
     }
+
 }

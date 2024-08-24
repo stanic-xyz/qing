@@ -27,7 +27,7 @@ public enum CodeEnum implements BaseEnum<Integer> {
     Fail(0, "操作失败"),
 
 
-    NotFindError(10001, "未查询到信息"),
+    NotFoundError(10001, "未查询到信息"),
     SaveError(10002, "保存信息失败"),
     UpdateError(10003, "更新信息失败"),
     ValidateError(10004, "数据检验失败"),

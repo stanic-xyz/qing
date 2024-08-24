@@ -1,6 +1,12 @@
 package cn.chenyunlong.qing.domain.anime.anime.dto.creator;
 
+import cn.chenyunlong.qing.domain.anime.anime.Anime;
+import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
+import cn.chenyunlong.qing.domain.anime.anime.Tag;
+import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
+import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
+import cn.chenyunlong.qing.domain.anime.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +35,9 @@ public class AnimeCreator {
         title = "districtName"
     )
     private String districtName;
+
+    @Schema(title = "封面的附件Id")
+    private Long coverAttachmentId;
 
     @Schema(
         title = "coverUrl"
@@ -105,4 +114,14 @@ public class AnimeCreator {
     )
     private Integer orderNo;
 
+    @Schema(hidden = true)
+    private String operateUserId;
+
+    public Anime create(List<Tag> tagList, District district, AnimeCategory animeCategory, Attachment attachment) {
+        this.setCompanyName("");
+        this.setTypeName(animeCategory.getName());
+        this.setDistrictName(district.getName());
+        this.setTagIds(tagList.stream().map(Tag::getId).toList());
+        return AnimeMapper.INSTANCE.creatorToEntity(this);
+    }
 }

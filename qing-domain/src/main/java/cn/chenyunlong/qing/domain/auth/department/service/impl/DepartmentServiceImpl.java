@@ -82,7 +82,7 @@ public class DepartmentServiceImpl implements IDepartmentService {
     public DepartmentVO findById(Long id) {
         Optional<Department> department = departmentRepository.findById(id);
         return new DepartmentVO(
-            department.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            department.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**
