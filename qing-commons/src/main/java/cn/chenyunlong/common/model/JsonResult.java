@@ -115,6 +115,18 @@ public final class JsonResult<T> {
         return jsonResult;
     }
 
+    /**
+     * 成功
+     */
+    public static <E> JsonResult<E> notFound() {
+        JsonResult<E> jsonResult = new JsonResult<>();
+        jsonResult.setCode(CodeEnum.NotFoundError.getValue());
+        jsonResult.setMessage("资源不存在");
+        jsonResult.setResult(null);
+        jsonResult.setCode(HttpStatus.NOT_FOUND.value());
+        return jsonResult;
+    }
+
     public static <E> JsonResult<E> unAuthorized(String message) {
         JsonResult<E> jsonResult = new JsonResult<>();
         jsonResult.setCode(CodeEnum.Fail.getValue());

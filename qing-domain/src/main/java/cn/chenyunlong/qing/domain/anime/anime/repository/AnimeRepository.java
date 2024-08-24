@@ -8,4 +8,11 @@ public interface AnimeRepository extends BaseRepository<Anime, Long> {
 
 
     Optional<Anime> findById(Long animeId);
+
+    /**
+     * 根据名称查询
+     *
+     * @param name 动漫名称
+     */
+    Integer existsByName(String name);
 }

@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.domain.anime.recommend.dto.creator;
 
+import cn.chenyunlong.common.annotation.FieldDesc;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -18,4 +19,7 @@ public class RecommendCreator {
     private String instruction;
 
     private Long animeId;
+
+    @FieldDesc(description = "推荐人")
+    private String recommendUserId;
 }

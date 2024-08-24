@@ -25,6 +25,7 @@ const props = defineProps({
 
 <template>
   <div class="card-container" style="width: 130px; margin: 15px; padding: 5px">
+    这里是一个动态路由
     <router-link :to="`/anime/${anime.id}`">
       <div class="video_item">
         <div class="video_item--image position-relative">

@@ -38,12 +38,10 @@ public class TagServiceImpl implements ITagService {
      */
     @Override
     public Long createTag(TagCreator creator) {
+        boolean existsByName = tagRepository.existsByName(creator.getName());
+        Assert.isFalse(existsByName, "标签名称已存在");
         Optional<Tag> tag = EntityOperations.doCreate(tagRepository)
-                                .create(() -> {
-                                    boolean existsByName = tagRepository.existsByName(creator.getName());
-                                    Assert.isFalse(existsByName, "标签名称已存在");
-                                    return TagMapper.INSTANCE.dtoToEntity(creator);
-                                })
+                                .create(() -> TagMapper.INSTANCE.dtoToEntity(creator))
                                 .update(Tag::init)
                                 .execute();
         return tag.isPresent() ? tag.get().getId() : 0;
@@ -54,14 +52,13 @@ public class TagServiceImpl implements ITagService {
      */
     @Override
     public void updateTag(TagUpdater updater) {
+        // 判断标签是否和其他标签重名
+        boolean existsByNameAndNotId = tagRepository.existsByNameAndNotId(updater.getName(), updater.getId());
+        Assert.isFalse(existsByNameAndNotId, "标签名称已存在");
+
         EntityOperations.doUpdate(tagRepository)
             .loadById(updater.getId())
-            .update(param -> {
-                // 判断标签是否和其他标签重名
-                boolean existsByNameAndNotId = tagRepository.existsByNameAndNotId(updater.getName(), updater.getId());
-                Assert.isFalse(existsByNameAndNotId, "标签名称已存在");
-                updater.updateTag(param);
-            })
+            .update(updater::updateTag)
             .execute();
     }
 
@@ -93,7 +90,7 @@ public class TagServiceImpl implements ITagService {
     @Override
     public TagVO findById(Long id) {
         Optional<Tag> tagOptional = tagRepository.findById(id);
-        return tagOptional.map(TagMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
+        return tagOptional.map(TagMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     @Override

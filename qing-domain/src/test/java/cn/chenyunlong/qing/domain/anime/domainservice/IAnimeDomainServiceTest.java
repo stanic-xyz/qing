@@ -4,13 +4,12 @@ import static org.mockito.Mockito.doAnswer;
 
 import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
-import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.IAnimeDomainService;
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.impl.IAnimeDomainServiceImpl;
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeCreateContext;
-import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateRequest;
+import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
+import cn.chenyunlong.qing.domain.anime.anime.dto.request.AnimeCreateCommand;
+import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
+import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeTagRelRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.TagRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
 import cn.chenyunlong.qing.domain.anime.anime.service.impl.AnimeServiceImpl;
@@ -44,31 +43,22 @@ class IAnimeDomainServiceTest {
         TagRepository tagRepository = Mockito.mock(TagRepository.class);
         DistrictRepository districtRepository = Mockito.mock(DistrictRepository.class);
         AttachmentRepository attachmentRepository = Mockito.mock(AttachmentRepository.class);
-        IAnimeDomainService animeDomainService;
+        AnimeTagRelRepository animeTagRelRepository = Mockito.mock(AnimeTagRelRepository.class);
+
+
         Validator validator = Mockito.mock(Validator.class);
-        IAnimeService animeService = new AnimeServiceImpl(animeRepository, categoryRepository, districtRepository, validator);
+        IAnimeService animeService = new AnimeServiceImpl(animeRepository, categoryRepository, districtRepository, tagRepository, attachmentRepository, validator, animeTagRelRepository);
 
-        animeDomainService = new IAnimeDomainServiceImpl(animeService, categoryRepository, tagRepository, districtRepository, attachmentRepository);
-
-        AnimeCreateRequest createRequest = new AnimeCreateRequest();
+        AnimeCreateCommand createRequest = new AnimeCreateCommand();
         createRequest.setName("凡人修仙传");
-        createRequest.setCompanyName("起点中文网");
         createRequest.setAuthor("忘语");
         createRequest.setInstruction(
             "看机智的凡人小子韩立如何稳健发展、步步为营，战魔道、夺至宝、驰骋星海、快意恩仇，成为纵横三界的强者。他日仙界重相逢，一声道友尽沧桑。");
-        createRequest.setPlayStatus(PlayStatus.SERIALIZING);
         createRequest.setPlotType("TV动画");
-        createRequest.setOrderNo(1);
         createRequest.setOfficialWebsite("https://www.bilibili.com/bangumi/media/md28223043");
         createRequest.setDistrictId(1L);
-        createRequest.setDistrictName("中国");
-        createRequest.setTypeName("喜剧");
         createRequest.setPremiereDate(LocalDate.now());
-        createRequest.setCoverUrl(
-            "https://i0.hdslb.com/bfs/bangumi/image/95d2881427fd43431f6a696a05623675ecdce9d9" +
-                ".jpg@450w_600h.webp");
         createRequest.setPremiereDate(LocalDate.of(2022, 7, 5));
-        createRequest.setPlayHeat(String.valueOf(1430000000));
 
         // 创建一个标签
         createRequest.setTagIds(CollUtil.toList(1L));
@@ -101,10 +91,10 @@ class IAnimeDomainServiceTest {
 
         doAnswer(invocation -> Optional.of(attachment)).when(attachmentRepository).findById(attachment.getId());
 
-        createRequest.setCoverUrlAttachmentId(attachment.getId());
-        createRequest.setCoverUrl("");
+        createRequest.setCoverAttachmentId(attachment.getId());
 
-        AnimeCreateContext createContext = animeDomainService.createAnime(createRequest);
-        Assertions.assertNotNull(createContext);
+        AnimeCreator creator = AnimeMapper.INSTANCE.requestToCreator(createRequest);
+        Long animeId = animeService.createAnime(creator);
+        Assertions.assertNotNull(animeId);
     }
 }

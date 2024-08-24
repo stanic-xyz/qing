@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.domain.anime.episode.mapper;
 
+import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.qing.domain.anime.episode.Episode;
 import cn.chenyunlong.qing.domain.anime.episode.dto.creator.EpisodeCreator;
 import cn.chenyunlong.qing.domain.anime.episode.dto.query.EpisodeQuery;
@@ -9,35 +10,27 @@ import cn.chenyunlong.qing.domain.anime.episode.dto.request.EpisodeUpdateRequest
 import cn.chenyunlong.qing.domain.anime.episode.dto.response.EpisodeResponse;
 import cn.chenyunlong.qing.domain.anime.episode.dto.updater.EpisodeUpdater;
 import cn.chenyunlong.qing.domain.anime.episode.dto.vo.EpisodeVO;
-import cn.hutool.core.bean.BeanUtil;
+import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
+@Mapper(uses = {CustomMapper.class, DateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface EpisodeMapper {
 
-    EpisodeMapper INSTANCE = new EpisodeMapper() {
+    EpisodeMapper INSTANCE = Mappers.getMapper(EpisodeMapper.class);
 
-    };
+    Episode dtoToEntity(EpisodeCreator dto);
 
-    default Episode dtoToEntity(EpisodeCreator dto) {
-        return BeanUtil.copyProperties(dto, Episode.class);
-    }
+    EpisodeUpdater request2Updater(EpisodeUpdateRequest request);
 
-    default EpisodeUpdater request2Updater(EpisodeUpdateRequest request) {
-        return BeanUtil.copyProperties(request, EpisodeUpdater.class);
-    }
+    EpisodeCreator request2Dto(EpisodeCreateRequest request);
 
-    default EpisodeCreator request2Dto(EpisodeCreateRequest request) {
-        return BeanUtil.copyProperties(request, EpisodeCreator.class);
-    }
+    EpisodeQuery request2Query(EpisodeQueryRequest request);
 
-    default EpisodeQuery request2Query(EpisodeQueryRequest request) {
-        return BeanUtil.copyProperties(request, EpisodeQuery.class);
-    }
+    EpisodeResponse vo2CustomResponse(EpisodeVO vo);
 
-    default EpisodeResponse vo2CustomResponse(EpisodeVO vo) {
-        return vo2Response(vo);
-    }
+    EpisodeResponse vo2Response(EpisodeVO vo);
 
-    default EpisodeResponse vo2Response(EpisodeVO vo) {
-        return BeanUtil.copyProperties(vo, EpisodeResponse.class);
-    }
+    EpisodeVO entityToVo(Episode episode);
 }

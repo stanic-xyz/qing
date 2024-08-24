@@ -82,7 +82,7 @@ public class TemplateServiceImpl implements ITemplateService {
     public TemplateVO findById(Long id) {
         Optional<Template> template = templateRepository.findById(id);
         return new TemplateVO(
-            template.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            template.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

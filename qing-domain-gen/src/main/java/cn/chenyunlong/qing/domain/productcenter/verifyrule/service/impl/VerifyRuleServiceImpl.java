@@ -82,7 +82,7 @@ public class VerifyRuleServiceImpl implements IVerifyRuleService {
     public VerifyRuleVO findById(Long id) {
         Optional<VerifyRule> verifyRule = verifyRuleRepository.findById(id);
         return new VerifyRuleVO(
-            verifyRule.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            verifyRule.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

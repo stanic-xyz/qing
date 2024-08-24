@@ -82,7 +82,7 @@ public class ProductServiceImpl implements IProductService {
     public ProductVO findById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         return new ProductVO(
-            product.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            product.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

@@ -82,7 +82,7 @@ public class AttributeServiceImpl implements IAttributeService {
     public AttributeVO findById(Long id) {
         Optional<Attribute> attribute = attributeRepository.findById(id);
         return new AttributeVO(
-            attribute.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            attribute.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

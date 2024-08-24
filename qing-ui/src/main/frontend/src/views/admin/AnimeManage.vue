@@ -148,15 +148,12 @@ const tableRef = ref();
 const toolbar = ["filter", "export", "print"];
 const selectedKey = ref("1");
 const selectedKeys = ref(["2", "3", "6", "7"]);
-const tags = ref([{}]);
 
-const page = reactive({ current: 1, limit: 10, total: 100 });
+const page = reactive<Page>({disabled: false, current: 1, limit: 10, total: 0, pages: 0, limits: [10, 20, 30, 40]});
 
 const recommend = () => {
   layer.msg("添加推荐" + selectedKeys.value);
 };
-
-const getCheckData3 = () => {};
 
 const columns = [
   { fixed: "left", type: "checkbox", title: "复选" },
@@ -237,8 +234,8 @@ const reload = () => {
 
 const change = (newPage: any) => {
   console.debug("分页信息发生变化", newPage);
-  page.current = newPage.current;
   reloadAnimeInfo();
+  console.debug("重新加载动漫信息", page);
 };
 
 const tagInfoList = ref<Tag[]>();
@@ -290,15 +287,17 @@ function resolveDistricts() {
 
 function reloadAnimeInfo() {
   loading.value = true;
+  console.debug("分页信息", page);
   getAnimeList({
-    pageSize: "10",
+    pageSize: page.limit,
     page: page.current - 1,
   }).then((anime) => {
-    loading.value = false;
-    dataSource.value = anime.result.list;
+    dataSource.value = anime.result.content;
     console.log("加载动漫信息成功", anime);
-    page.current = anime.result.pageNumber + 1;
-    page.total = anime.result.total;
+    page.total = anime.result.totalElements;
+    page.pages = anime.result.pageable.totalPages;
+    console.debug("当前分页信息", page);
+    loading.value = false;
   });
 }
 </script>

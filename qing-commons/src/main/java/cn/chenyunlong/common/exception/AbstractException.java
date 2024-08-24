@@ -57,7 +57,9 @@ public abstract class AbstractException extends RuntimeException {
      * @return current exception.
      */
     @NonNull
-    public AbstractException setErrorData(@Nullable Object errorData) {
+    public AbstractException setErrorData(
+        @Nullable
+        Object errorData) {
         this.errorData = errorData;
         return this;
     }

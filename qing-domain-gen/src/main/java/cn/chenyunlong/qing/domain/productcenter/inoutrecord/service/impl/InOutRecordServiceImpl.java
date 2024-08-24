@@ -82,7 +82,7 @@ public class InOutRecordServiceImpl implements IInOutRecordService {
     public InOutRecordVO findById(Long id) {
         Optional<InOutRecord> inOutRecord = inOutRecordRepository.findById(id);
         return new InOutRecordVO(
-            inOutRecord.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            inOutRecord.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

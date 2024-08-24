@@ -16,7 +16,6 @@ package cn.chenyunlong.qing.domain.anime.episode;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -43,11 +42,14 @@ public class Episode extends BaseJpaAggregate {
     private Long animeId;
 
     @FieldDesc(name = "播放源ID")
-    private Long collectionId;
+    private Long playListId;
 
-    @FieldDesc(name = "播放源名称")
-    private String collectionName;
+    @FieldDesc(name = "描述信息")
+    private String description;
 
-    @ManyToOne
-    private PlaySource playSource;
+    @FieldDesc(name = "播放地址")
+    private String playUrl;
+
+    @FieldDesc(name = "集数", description = "集数")
+    private Integer episodeNumber;
 }

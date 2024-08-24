@@ -81,7 +81,7 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public BrandVO findById(Long id) {
         Optional<Brand> brand = brandRepository.findById(id);
-        return new BrandVO(brand.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new BrandVO(brand.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

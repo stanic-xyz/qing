@@ -45,21 +45,18 @@ public class RecommendServiceImpl implements IRecommendService {
 
     @Override
     public Long createRecommend(RecommendCreator creator) {
-        Optional<Recommend> recommend = EntityOperations.doCreate(recommendRepository)
-                                            .create(() -> {
-                                                Optional<Anime> optionalAnime = animeRepository.findById(creator.getAnimeId());
-                                                if (optionalAnime.isEmpty()) {
-                                                    throw new IllegalArgumentException("anime not found");
-                                                }
-                                                Anime anime = optionalAnime.get();
-                                                Recommend oldRecommend = recommendRepository.findByAnimeId(anime.getId());
-                                                Assert.isNull(oldRecommend, "该动漫信息已经在推荐列表中了");
-                                                Recommend newRecommend = RecommendMapper.INSTANCE.dtoToEntity(creator);
-                                                newRecommend.setAnimeId(anime.getId());
-                                                return newRecommend;
-                                            })
-                                            .update(Recommend::init)
-                                            .execute();
+        Optional<Anime> optionalAnime = animeRepository.findById(creator.getAnimeId());
+        if (optionalAnime.isEmpty()) {
+            throw new IllegalArgumentException("动漫信息不存在");
+        }
+        Anime anime = optionalAnime.get();
+        Recommend oldRecommend = recommendRepository.findByAnimeId(anime.getId());
+        Assert.isNull(oldRecommend, "该动漫信息已经在推荐列表中了");
+        Optional<Recommend> recommend;
+        recommend = EntityOperations.doCreate(recommendRepository)
+                        .create(() -> RecommendMapper.INSTANCE.dtoToEntity(creator))
+                        .update(Recommend::init)
+                        .execute();
         return recommend.isPresent() ? recommend.get().getId() : 0;
     }
 
@@ -98,7 +95,7 @@ public class RecommendServiceImpl implements IRecommendService {
         Optional<Recommend> recommend = recommendRepository.findById(id);
 
         return new RecommendVO(
-            recommend.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            recommend.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

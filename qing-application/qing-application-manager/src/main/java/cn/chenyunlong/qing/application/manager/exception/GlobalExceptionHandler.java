@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
@@ -26,7 +27,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     JsonResult<Void> handleException(Exception exception) {
         log.error("未知异常", exception);
-        return JsonResult.fail("未知异常!");
+        return JsonResult.notFound();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    JsonResult<Void> handleException() {
+        return JsonResult.notFound();
     }
 
     @ExceptionHandler(AbstractException.class)

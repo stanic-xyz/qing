@@ -81,7 +81,7 @@ public class TypeServiceImpl implements ITypeService {
     @Override
     public TypeVO findById(Long id) {
         Optional<Type> type = typeRepository.findById(id);
-        return type.map(TypeMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
+        return type.map(TypeMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     /**

@@ -83,8 +83,7 @@ public class DistrictServiceImpl implements IDistrictService {
     @Override
     public DistrictVO findById(Long id) {
         Optional<District> district = districtRepository.findById(id);
-        return new DistrictVO(
-            district.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return district.map(DistrictConverter.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     /**
@@ -94,7 +93,7 @@ public class DistrictServiceImpl implements IDistrictService {
     public Page<DistrictVO> findByPage(PageRequestWrapper<DistrictQuery> query) {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return districtRepository.findAll(pageRequest).map(DistrictVO::new);
+        return districtRepository.findAll(pageRequest).map(DistrictConverter.INSTANCE::entityToVo);
     }
 
     @Override

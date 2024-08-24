@@ -84,7 +84,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserVO findById(Long id) {
         Optional<QingUser> user = userRepository.findById(id);
-        return user.map(SysUserMapper.INSTANCE::entityToUserVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
+        return user.map(SysUserMapper.INSTANCE::entityToUserVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     /**

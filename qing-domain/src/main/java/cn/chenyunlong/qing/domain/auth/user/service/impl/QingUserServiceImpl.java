@@ -82,7 +82,7 @@ public class QingUserServiceImpl implements IQingUserService {
     @Override
     public QingUserVO findById(Long id) {
         Optional<QingUser> qingUser = qingUserRepository.findById(id);
-        return qingUser.map(SysUserMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
+        return qingUser.map(SysUserMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     /**

@@ -81,7 +81,7 @@ public class StoreServiceImpl implements IStoreService {
     @Override
     public StoreVO findById(Long id) {
         Optional<Store> store = storeRepository.findById(id);
-        return new StoreVO(store.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new StoreVO(store.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

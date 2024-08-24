@@ -91,7 +91,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Override
     public SysMenuVO findById(Long id) {
         Optional<SysMenu> sysMenu = sysMenuRepository.findById(id);
-        return sysMenu.map(SysMenuMapper.INSTANCE::entityToVO).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
+        return sysMenu.map(SysMenuMapper.INSTANCE::entityToVO).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     /**

@@ -81,7 +81,7 @@ public class ShopServiceImpl implements IShopService {
     @Override
     public ShopVO findById(Long id) {
         Optional<Shop> shop = shopRepository.findById(id);
-        return new ShopVO(shop.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new ShopVO(shop.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

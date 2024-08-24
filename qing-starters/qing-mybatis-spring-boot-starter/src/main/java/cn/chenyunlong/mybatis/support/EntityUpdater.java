@@ -61,7 +61,7 @@ public class EntityUpdater<T> extends BaseEntityOperation implements Loader<T>,
         Preconditions.checkArgument(Objects.nonNull(id), "id is null");
         T t = baseMapper.selectById(id);
         if (Objects.isNull(t)) {
-            throw new BusinessException(CodeEnum.NotFindError);
+            throw new BusinessException(CodeEnum.NotFoundError);
         } else {
             this.entity = t;
         }

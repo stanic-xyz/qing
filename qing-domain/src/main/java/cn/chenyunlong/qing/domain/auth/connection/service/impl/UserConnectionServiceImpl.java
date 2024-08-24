@@ -83,7 +83,7 @@ public class UserConnectionServiceImpl implements IUserConnectionService {
     public UserConnectionVO findById(Long id) {
         Optional<UserConnection> userConnection = userConnectionRepository.findById(id);
         return new UserConnectionVO(
-            userConnection.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            userConnection.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

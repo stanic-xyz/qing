@@ -1,11 +1,22 @@
-import Activity from "@/views/Activity.vue";
 import AuthingLogin from "@/views/login/AuthingLogin.vue";
 import ExceptionPage from "@/views/exception/ExceptionPage.vue";
+import BaseAdminLayout from "@/views/layouts/BaseAdminLayout.vue";
 import Login from "@/views/login/Login.vue";
 import BaseLayout from "@/views/layouts/BaseLayout.vue";
-import BaseAdminLayout from "@/views/layouts/BaseAdminLayout.vue";
+import Activity from "@/views/Activity.vue";
+import AnimeManage from "@/views/admin/AnimeManage.vue";
+import Home from "@/views/home/Home.vue";
+import Recommend from "@/views/recommend/Recommend.vue";
+import UpdatePage from "@/views/UpdatePage.vue";
+import Catalog from "@/views/catalog/Catalog.vue";
+import RankPage from "@/views/RankPage.vue";
+import Detail from "@/views/Detail.vue";
+import Component from "@/views/examples/component/Component.vue";
+import PlayPage from "@/views/PlayPage.vue";
+import About from "@/views/about/About.vue";
+import SearchPage from "@/views/SearchPage.vue";
 
-export default [
+const routerList = [
     {
         path: "/",
         redirect: "/home",
@@ -18,7 +29,7 @@ export default [
             {
                 path: "/dashboard",
                 name: "dashboard",
-                component: () => import("../../views/admin/AnimeManage.vue"),
+                component: () => AnimeManage,
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -35,7 +46,7 @@ export default [
     },
     {
         path: "/manager",
-        component: () => import("../../views/admin/AnimeManage.vue"),
+        component: AnimeManage,
         meta: {title: "动漫管理界面"},
     },
     {
@@ -47,7 +58,7 @@ export default [
             {
                 path: "/home",
                 name: "Home",
-                component: () => import("../../views/home/Home.vue"),
+                component: Home,
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -58,7 +69,7 @@ export default [
             {
                 path: "/recommend",
                 name: "recommend",
-                component: () => import("../../views/recommend/Recommend.vue"),
+                component: Recommend,
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -69,7 +80,7 @@ export default [
             {
                 path: "/update",
                 name: "update",
-                component: () => import("../../views/UpdatePage.vue"),
+                component: UpdatePage,
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -80,7 +91,7 @@ export default [
             {
                 path: "/catalog",
                 name: "catalog",
-                component: () => import("@/views/catalog/Catalog.vue"),
+                component: Catalog,
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -91,7 +102,7 @@ export default [
             {
                 path: "/rank",
                 name: "rank",
-                component: () => import("../../views/RankPage.vue"),
+                component: RankPage,
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -102,7 +113,7 @@ export default [
             {
                 path: "/anime/:animeId",
                 name: "anime",
-                component: () => import("../../views/Detail.vue"),
+                component: Detail,
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -113,7 +124,7 @@ export default [
             {
                 path: "/examples/component",
                 name: "example-component",
-                component: () => import("../../views/examples/component/Component.vue"),
+                component: Component,
                 meta: {
                     title: "组件",
                     requireAuth: false,
@@ -124,17 +135,17 @@ export default [
             {
                 path: "/play/:animeId",
                 name: "play",
-                component: () => import("../../views/PlayPage.vue"),
+                component: PlayPage,
             },
             {
                 path: "/profile",
                 name: "profile",
-                component: () => import("../../views/about/About.vue"),
+                component: About,
             },
             {
                 path: "/search",
                 name: "search",
-                component: () => import("../../views/SearchPage.vue"),
+                component: SearchPage,
             },
             {
                 path: "/login",
@@ -142,7 +153,7 @@ export default [
                 meta: {
                     requiresAuth: false,
                 },
-                component: () => import("../../views/login/Login.vue"),
+                component: Login,
             },
         ],
     },
@@ -171,3 +182,31 @@ export default [
     // 将匹配所有内容并将其放在 `$route.params.pathMatch` 下
     {path: "/:pathMatch(.*)*", name: "NotFound", component: ExceptionPage},
 ];
+
+// 假设你有一个pages文件夹，里面包含了多个页面组件
+const pages = import.meta.glob("../../views/anime/*.vue");
+
+console.log("读取到所有的页面信息", pages);
+
+Object.keys(pages).forEach((key) => {
+    console.log("modList", key);
+
+    const name = key
+            .replace(/^\.\.\/\.\.\/views\/anime\//, "")
+            .replace(/\.vue$/, "")
+            .toLowerCase();
+
+    console.log("name", name);
+
+    const mod = pages[key];
+
+    console.log("modList", mod);
+
+    // routerList.push({
+    //     path: `/anime/${name}`,
+    //     name: name,
+    //     component: mod,
+    // });
+});
+
+export default routerList;

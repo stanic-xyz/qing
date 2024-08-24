@@ -82,7 +82,7 @@ public class ProductSkuServiceImpl implements IProductSkuService {
     public ProductSkuVO findById(Long id) {
         Optional<ProductSku> productSku = productSkuRepository.findById(id);
         return new ProductSkuVO(
-            productSku.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            productSku.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

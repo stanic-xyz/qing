@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.request.AuthGithubRequest;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.babyfish.jimmer.jackson.ImmutableModule;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -59,13 +60,14 @@ public class QingConfiguration implements InitializingBean {
     }
 
     @Bean
-    public ObjectMapper getObjectMapper() {
+    public ObjectMapper getObjectMapper(ImmutableModule immutableModule) {
         ObjectMapper objectMapper = new ObjectMapper();
         //这里进行一些配置
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JavaTimeModule module = new JavaTimeModule();
         objectMapper.registerModule(module);
+        objectMapper.registerModule(immutableModule);
         return objectMapper;
     }
 

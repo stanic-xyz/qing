@@ -81,7 +81,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public RoleVO findById(Long id) {
         Optional<Role> role = roleRepository.findById(id);
-        return new RoleVO(role.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+        return new RoleVO(role.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

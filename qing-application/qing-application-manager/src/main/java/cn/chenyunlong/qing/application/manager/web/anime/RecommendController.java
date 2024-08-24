@@ -13,8 +13,10 @@ import cn.chenyunlong.qing.domain.anime.recommend.dto.request.RecommendUpdateReq
 import cn.chenyunlong.qing.domain.anime.recommend.dto.response.RecommendResponse;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.updater.RecommendUpdater;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.vo.RecommendDetailVO;
+import cn.chenyunlong.qing.domain.anime.recommend.dto.vo.RecommendVO;
 import cn.chenyunlong.qing.domain.anime.recommend.mapper.RecommendMapper;
 import cn.chenyunlong.qing.domain.anime.recommend.service.IRecommendService;
+import cn.chenyunlong.qing.security.util.SpringSecurityUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +49,7 @@ public class RecommendController {
         @RequestBody
         RecommendCreateRequest request) {
         RecommendCreator creator = RecommendMapper.INSTANCE.request2Dto(request);
+        creator.setRecommendUserId(SpringSecurityUtils.getCurrentUsername());
         return JsonResult.success(recommendService.createRecommend(creator));
     }
 
@@ -72,6 +76,14 @@ public class RecommendController {
         Long id) {
         recommendService.invalidRecommend(id);
         return JsonResult.success(CodeEnum.Success.getName());
+    }
+
+    @GetMapping("findById/{id}")
+    public JsonResult<RecommendResponse> findById(
+        @PathVariable("id")
+        Long id) {
+        RecommendVO recommendVO = recommendService.findById(id);
+        return JsonResult.success(RecommendMapper.INSTANCE.vo2CustomResponse(recommendVO));
     }
 
     @PostMapping("page")

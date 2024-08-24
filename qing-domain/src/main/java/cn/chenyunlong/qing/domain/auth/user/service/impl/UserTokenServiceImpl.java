@@ -82,7 +82,7 @@ public class UserTokenServiceImpl implements IUserTokenService {
     public UserTokenVO findById(Long id) {
         Optional<UserToken> userToken = userTokenRepository.findById(id);
         return new UserTokenVO(
-            userToken.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            userToken.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

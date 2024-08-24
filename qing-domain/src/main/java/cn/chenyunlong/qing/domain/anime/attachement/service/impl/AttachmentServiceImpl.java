@@ -83,7 +83,7 @@ public class AttachmentServiceImpl implements IAttachmentService {
     @Override
     public AttachmentVO findById(Long id) {
         Optional<Attachment> attachment = attachmentRepository.findById(id);
-        return attachment.map(AttachmentMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
+        return attachment.map(AttachmentMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     @Override

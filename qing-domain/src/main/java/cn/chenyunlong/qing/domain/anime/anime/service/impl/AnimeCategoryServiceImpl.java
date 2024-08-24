@@ -83,7 +83,7 @@ public class AnimeCategoryServiceImpl implements IAnimeCategoryService {
     @Override
     public AnimeCategoryVO findById(Long id) {
         Optional<AnimeCategory> animeCategoryOptional = animeCategoryRepository.findById(id);
-        return animeCategoryOptional.map(AnimeCategoryMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFindError));
+        return animeCategoryOptional.map(AnimeCategoryMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     /**

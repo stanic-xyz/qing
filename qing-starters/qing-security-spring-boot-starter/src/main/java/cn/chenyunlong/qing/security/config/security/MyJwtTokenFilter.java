@@ -14,6 +14,8 @@
 package cn.chenyunlong.qing.security.config.security;
 
 import cn.chenyunlong.qing.security.config.SecurityProperties;
+import cn.chenyunlong.qing.security.exception.IllegalTokenException;
+import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -62,17 +64,17 @@ public class MyJwtTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        String jwt = resolveToken(request);
-        if (StringUtils.hasText(jwt)) {
+        String jwtToken = resolveToken(request);
+        if (StrUtil.isNotBlank(jwtToken)) {
             // 从自定义tokenProvider中解析用户
             // 这里仍然是调用我们自定义的UserDetailsService，查库，检查用户名是否存在，
             // 如果是伪造的token,可能DB中就找不到username这个人了，抛出异常，认证失败
-            if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
+            if (this.tokenProvider.validateToken(jwtToken)) {
                 try {
-                    Authentication authentication = this.tokenProvider.getAuthentication(jwt);
+                    Authentication authentication = this.tokenProvider.getAuthentication(jwtToken);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                } catch (Exception exp) {
-                    throw new BadCredentialsException("token认证失败，请重新登陆！");
+                } catch (Exception exception) {
+                    throw new IllegalTokenException("token认证失败，请重新登陆！");
                 }
             } else {
                 throw new BadCredentialsException("token非法！！");

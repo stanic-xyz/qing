@@ -1,26 +1,33 @@
 package cn.chenyunlong.qing.domain.anime.anime.service.impl;
 
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
-import cn.chenyunlong.jpa.support.EntityOperations;
+import cn.chenyunlong.jpa.support.BaseJpaService;
 import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
+import cn.chenyunlong.qing.domain.anime.anime.AnimeTagRel;
 import cn.chenyunlong.qing.domain.anime.anime.Tag;
-import cn.chenyunlong.qing.domain.anime.anime.domainservice.model.AnimeCreateContext;
+import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
 import cn.chenyunlong.qing.domain.anime.anime.dto.query.AnimeQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.updater.AnimeUpdater;
+import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeDetailVO;
 import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
+import cn.chenyunlong.qing.domain.anime.anime.mapper.TagMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
+import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeTagRelRepository;
+import cn.chenyunlong.qing.domain.anime.anime.repository.TagRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
+import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
+import cn.chenyunlong.qing.domain.anime.attachement.repository.AttachmentRepository;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
-import cn.hutool.core.lang.Assert;
 import jakarta.validation.Validator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -33,38 +40,48 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AnimeServiceImpl implements IAnimeService {
+public class AnimeServiceImpl extends BaseJpaService implements IAnimeService {
 
     private final AnimeRepository animeRepository;
-
     private final AnimeCategoryRepository categoryRepository;
-
     private final DistrictRepository districtRepository;
-
+    private final TagRepository tagRepository;
+    private final AttachmentRepository attachmentRepository;
     private final Validator validator;
+    private final AnimeTagRelRepository animeTagRelRepository;
 
     /**
      * createImpl
      */
     @Override
-    public void createAnime(AnimeCreateContext createContext) {
-        EntityOperations.doCreate(animeRepository)
-            .create(() -> AnimeMapper.INSTANCE.creatorToEntity(createContext.getAnimeCreator()))
-            .update(Anime::init)
-            .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId()))
-            .execute()
-            .ifPresent(animeInfo -> {
-                createContext.setAnime(animeInfo);
-                saveRel(createContext, createContext.getTagList());
-            });
-
+    public Long createAnime(AnimeCreator creator) {
+        List<Tag> tagList = tagRepository.findByIds(creator.getTagIds());
+        District district = districtRepository.findById(creator.getDistrictId()).orElseThrow(() -> new NotFoundException("地区不存在"));
+        AnimeCategory animeCategory = categoryRepository.findById(creator.getTypeId()).orElseThrow(() -> new NotFoundException("类型不存在"));
+        Attachment attachment = attachmentRepository.findById(creator.getCoverAttachmentId()).orElseThrow(() -> new NotFoundException("封面附件不存在"));
+        // 检查名称是否存在
+        if (animeRepository.existsByName(creator.getName()) > 0) {
+            throw new NotFoundException("动漫名称已存在");
+        }
+        Optional<Anime> optionalAnime = doCreate(animeRepository)
+                                            .create(() -> creator.create(tagList, district, animeCategory, attachment))
+                                            .update(Anime::create)
+                                            .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId()))
+                                            .execute();
+        Anime anime = optionalAnime.orElseThrow();
+        saveRel(anime, tagList);
+        return optionalAnime.map(BaseJpaAggregate::getId).orElse(null);
     }
 
     /**
-     * 保存标签信息
+     * 保存关联信息
+     *
+     * @param anime 动漫信息
+     * @param tagList tag列表
      */
-    private void saveRel(AnimeCreateContext createContext, List<Tag> tags) {
-        createContext.setTagList(tags);
+    private void saveRel(Anime anime, List<Tag> tagList) {
+        List<AnimeTagRel> animeTagRelList = tagList.stream().map(tag -> new AnimeTagRel(null, anime.getId(), tag.getId())).collect(Collectors.toList());
+        animeTagRelRepository.saveAll(animeTagRelList);
     }
 
     /**
@@ -72,23 +89,14 @@ public class AnimeServiceImpl implements IAnimeService {
      */
     @Override
     public void updateAnime(AnimeUpdater updater) {
-        EntityOperations.doUpdate(animeRepository)
-            .loadById(updater.getId())
-            .update(anime -> {
-                updater.updateAnime(anime);
-                if (!Objects.equals(anime.getTypeId(), updater.getTypeId())) {
-                    Long typeId = updater.getTypeId();
-                    Optional<AnimeCategory> animeCategory = categoryRepository.findById(typeId);
-                    Assert.isTrue(animeCategory.isPresent(), "分类信息不存在");
-                    animeCategory.ifPresent(category -> updater.setTypeName(category.getName()));
-                }
-                if (!Objects.equals(anime.getDistrictId(), updater.getDistrictId())) {
-                    Long districtId = updater.getDistrictId();
-                    Optional<District> district = districtRepository.findById(districtId);
-                    Assert.isTrue(district.isPresent(), "地区信息不存在");
-                    district.ifPresent(districtName -> updater.setDistrictName(districtName.getName()));
-                }
-            })
+        Optional<Anime> animeOptional = animeRepository.findById(updater.getId());
+        List<Tag> tagList = tagRepository.findByIds(updater.getTags());
+        District district = districtRepository.findById(updater.getDistrictId()).orElseThrow(() -> new NotFoundException("地区不存在"));
+        AnimeCategory animeCategory = categoryRepository.findById(updater.getTypeId()).orElseThrow(() -> new NotFoundException("类型不存在"));
+        Attachment attachment = attachmentRepository.findById(updater.getCoverAttachmentId()).orElseThrow(() -> new NotFoundException("封面附件不存在"));
+        doUpdate(animeRepository)
+            .load(animeOptional::get)
+            .update(anime -> updater.updateAnime(anime, tagList, district, animeCategory, attachment))
             .execute();
     }
 
@@ -97,7 +105,7 @@ public class AnimeServiceImpl implements IAnimeService {
      */
     @Override
     public void validAnime(Long id) {
-        EntityOperations.doUpdate(animeRepository)
+        doUpdate(animeRepository)
             .loadById(id)
             .update(BaseJpaAggregate::valid)
             .execute();
@@ -108,7 +116,7 @@ public class AnimeServiceImpl implements IAnimeService {
      */
     @Override
     public void invalidAnime(Long id) {
-        EntityOperations.doUpdate(animeRepository)
+        doUpdate(animeRepository)
             .loadById(id)
             .update(BaseJpaAggregate::invalid)
             .execute();
@@ -122,6 +130,23 @@ public class AnimeServiceImpl implements IAnimeService {
     @Override
     public AnimeVO findById(Long id) {
         return animeRepository.findById(id).map(AnimeMapper.INSTANCE::entityToVo
+        ).orElse(null);
+    }
+
+    /**
+     * 根据Id查询
+     *
+     * @param id 根据Id查询详情
+     */
+    @Override
+    public AnimeDetailVO findDetailById(Long id) {
+        return animeRepository.findById(id).map(anime -> {
+                AnimeDetailVO animeDetailVO = AnimeMapper.INSTANCE.entityToDetailVo(anime);
+                List<AnimeTagRel> animeTagRelList = animeTagRelRepository.listTagByAnimeId(anime.getId());
+                List<Tag> tagList = tagRepository.findByIds(animeTagRelList.stream().map(AnimeTagRel::getTagId).collect(Collectors.toList()));
+                animeDetailVO.setTagVOList(tagList.stream().map(TagMapper.INSTANCE::entityToVo).collect(Collectors.toList()));
+                return animeDetailVO;
+            }
         ).orElse(null);
     }
 

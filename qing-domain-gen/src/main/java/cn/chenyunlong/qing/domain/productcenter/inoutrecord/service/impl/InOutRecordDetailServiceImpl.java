@@ -83,7 +83,7 @@ public class InOutRecordDetailServiceImpl implements IInOutRecordDetailService {
     public InOutRecordDetailVO findById(Long id) {
         Optional<InOutRecordDetail> inOutRecordDetail = inOutRecordDetailRepository.findById(id);
         return new InOutRecordDetailVO(
-            inOutRecordDetail.orElseThrow(() -> new BusinessException(CodeEnum.NotFindError)));
+            inOutRecordDetail.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 
     /**

@@ -41,6 +41,7 @@
     <modules>
         <module>qing-jpa-spring-boot-starter</module>
         <module>qing-mybatis-spring-boot-starter</module>
+        <module>qing-jimmer-spring-boot-starter</module>
         <module>qing-oss-spring-boot-starter</module>
         <module>qing-security-spring-boot-starter</module>
         <module>qing-flowable-spring-boot-starter</module>

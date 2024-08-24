@@ -34,4 +34,6 @@ public interface DistrictConverter {
     DistrictResponse vo2CustomResponse(DistrictVO vo);
 
     DistrictResponse vo2Response(DistrictVO vo);
+
+    DistrictVO entityToVo(District district);
 }
