@@ -46,5 +46,6 @@
         <module>qing-security-spring-boot-starter</module>
         <module>qing-flowable-spring-boot-starter</module>
         <module>qing-dingtalk-spring-boot-starter</module>
+        <module>qing-registry-spring-boot-starter</module>
     </modules>
 </project>

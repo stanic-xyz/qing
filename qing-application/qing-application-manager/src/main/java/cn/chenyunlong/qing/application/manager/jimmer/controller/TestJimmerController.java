@@ -34,6 +34,7 @@ public class TestJimmerController {
     @Api
     @GetMapping("jimmer")
     public Page<Book> testJimmer() {
+
         return findBooks(1, 10, null, null, null, null, null, null, null, null, Gender.MALE);
     }
 

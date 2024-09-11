@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: 192.168.3.37:8848

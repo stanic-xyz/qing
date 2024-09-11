@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
  * @author : Gim
  * @since : 2019/11/25 16:20
  */
-@Target(ElementType.FIELD)
+@Target(value = {ElementType.FIELD, ElementType.METHOD})
 public @interface FieldDesc {
 
     /**
