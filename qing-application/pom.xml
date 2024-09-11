@@ -28,5 +28,6 @@
         <module>qing-application-manager</module>
         <module>qing-application-monitor</module>
         <module>qing-application-camunda</module>
+        <module>qing-application-demo</module>
     </modules>
 </project>

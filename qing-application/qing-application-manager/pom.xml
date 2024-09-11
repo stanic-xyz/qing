@@ -72,6 +72,16 @@
         </dependency>
         <dependency>
             <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-registry-spring-boot-starter</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.babyfish.jimmer</groupId>
+            <artifactId>jimmer-sql</artifactId>
+            <version>${jimmer.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-commons</artifactId>
         </dependency>
         <dependency>
@@ -113,10 +123,6 @@
             <artifactId>qing-jimmer-spring-boot-starter</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>or</groupId>-->
-        <!--            <artifactId>jimmer-core</artifactId>-->
-        <!--        </dependency>-->
     </dependencies>
 
     <build>

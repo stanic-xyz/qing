@@ -70,7 +70,7 @@ public class AuthingProvider implements AuthenticationProvider {
         }
         log.info("【Authing】通过Authing登录成功：accessToken:{}", accessToken.getAccessToken());
         UserInfo userInfo = authenticationClient.getUserInfoByAccessToken(accessToken.getAccessToken());
-        log.info("【Authing】通过Authing登录成功：userInfo:{}", JSONUtil.toJsonPrettyStr(userInfo));
+        log.info("【Authing】通过Authing登录成功：userInfo:\n{}", JSONUtil.toJsonPrettyStr(userInfo));
         String name = userInfo.getName();
         log.info("【Authing】通过Authing登录成功：authing用户名:{}，sub：{}", name, userInfo.getSub());
 
