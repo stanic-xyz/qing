@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.application.manager.web.system;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.auth.role.dto.creator.RoleCreator;
 import cn.chenyunlong.qing.domain.auth.role.dto.query.RoleQuery;
 import cn.chenyunlong.qing.domain.auth.role.dto.request.RoleCreateRequest;
@@ -15,7 +14,6 @@ import cn.chenyunlong.qing.domain.auth.role.dto.vo.RoleVO;
 import cn.chenyunlong.qing.domain.auth.role.mapper.RoleMapper;
 import cn.chenyunlong.qing.domain.auth.role.service.IRoleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -63,7 +61,7 @@ public class RoleController {
      */
     @PostMapping("valid/{id}")
     public JsonResult<String> validRole(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         roleService.validRole(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -74,7 +72,7 @@ public class RoleController {
      */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidRole(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         roleService.invalidRole(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -85,7 +83,7 @@ public class RoleController {
      */
     @GetMapping("findById/{id}")
     public JsonResult<RoleResponse> findById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         RoleVO vo = roleService.findById(id);
         RoleResponse response = RoleMapper.INSTANCE.vo2CustomResponse(vo);
@@ -96,7 +94,7 @@ public class RoleController {
      * findByPage request
      */
     @PostMapping("page")
-    public JsonResult<PageResult<RoleResponse>> page(
+    public JsonResult<Page<RoleResponse>> page(
         @RequestBody
         PageRequestWrapper<RoleQueryRequest> request) {
         PageRequestWrapper<RoleQuery> wrapper = new PageRequestWrapper<>();
@@ -105,14 +103,6 @@ public class RoleController {
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<RoleVO> page = roleService.findByPage(wrapper);
-        return JsonResult.success(
-            PageResult.of(
-                page.getContent().stream()
-                    .map(RoleMapper.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-        );
+        return JsonResult.success(page.map(RoleMapper.INSTANCE::vo2CustomResponse));
     }
 }

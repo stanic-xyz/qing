@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.application.manager.web.anime;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.anime.type.dto.creator.TypeCreator;
 import cn.chenyunlong.qing.domain.anime.type.dto.query.TypeQuery;
 import cn.chenyunlong.qing.domain.anime.type.dto.request.TypeCreateRequest;
@@ -15,7 +14,6 @@ import cn.chenyunlong.qing.domain.anime.type.dto.vo.TypeVO;
 import cn.chenyunlong.qing.domain.anime.type.mapper.TypeMapper;
 import cn.chenyunlong.qing.domain.anime.type.service.ITypeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -96,7 +94,7 @@ public class TypeController {
      * findByPage request
      */
     @PostMapping("page")
-    public JsonResult<PageResult<TypeResponse>> page(
+    public JsonResult<Page<TypeResponse>> page(
         @RequestBody
         PageRequestWrapper<TypeQueryRequest> request) {
         PageRequestWrapper<TypeQuery> wrapper = new PageRequestWrapper<>();
@@ -105,14 +103,6 @@ public class TypeController {
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<TypeVO> page = typeService.findByPage(wrapper);
-        return JsonResult.success(
-            PageResult.of(
-                page.getContent().stream()
-                    .map(TypeMapper.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-        );
+        return JsonResult.success(page.map(TypeMapper.INSTANCE::vo2CustomResponse));
     }
 }

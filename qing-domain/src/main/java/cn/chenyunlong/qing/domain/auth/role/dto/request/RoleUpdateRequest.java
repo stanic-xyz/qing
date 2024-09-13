@@ -8,10 +8,10 @@ import lombok.Data;
 @Data
 public class RoleUpdateRequest implements Request {
 
-    @Schema(
-        title = "role",
-        description = "角色编码"
-    )
+    @Schema(title = "id", description = "角色Id")
+    private Long id;
+
+    @Schema(title = "role", description = "角色编码")
     private String role;
 
     @Schema(
@@ -31,14 +31,4 @@ public class RoleUpdateRequest implements Request {
         description = "备注"
     )
     private String remark;
-
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

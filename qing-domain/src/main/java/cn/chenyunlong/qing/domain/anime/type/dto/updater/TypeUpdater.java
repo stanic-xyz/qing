@@ -9,44 +9,16 @@ import lombok.Data;
 @Data
 public class TypeUpdater {
 
-    @Schema(
-        title = "name"
-    )
+    private Long id;
+
+    @Schema(title = "name")
     private String name;
 
-    @Schema(
-        title = "instruction"
-    )
+    @Schema(title = "instruction")
     private String instruction;
-
-    private Long id;
 
     public void updateType(Type param) {
         Optional.ofNullable(getName()).ifPresent(param::setName);
         Optional.ofNullable(getInstruction()).ifPresent(param::setInstruction);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getInstruction() {
-        return instruction;
-    }
-
-    public void setInstruction(String instruction) {
-        this.instruction = instruction;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }

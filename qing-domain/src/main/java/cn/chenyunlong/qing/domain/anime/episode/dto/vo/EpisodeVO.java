@@ -29,6 +29,8 @@ public class EpisodeVO extends AbstractBaseJpaVo {
     )
     private Long animeId;
 
+    private String playUrl;
+
     @Schema(
         title = "collectionId",
         description = "播放源ID"

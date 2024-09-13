@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.application.manager.web.anime;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.anime.episode.dto.creator.EpisodeCreator;
 import cn.chenyunlong.qing.domain.anime.episode.dto.query.EpisodeQuery;
 import cn.chenyunlong.qing.domain.anime.episode.dto.request.EpisodeCreateRequest;
@@ -16,7 +15,6 @@ import cn.chenyunlong.qing.domain.anime.episode.mapper.EpisodeMapper;
 import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -96,11 +94,8 @@ public class EpisodeController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
-    public JsonResult<PageResult<EpisodeResponse>> page(
+    public JsonResult<Page<EpisodeResponse>> page(
         @RequestBody
         PageRequestWrapper<EpisodeQueryRequest> request) {
         PageRequestWrapper<EpisodeQuery> wrapper = new PageRequestWrapper<>();
@@ -109,14 +104,6 @@ public class EpisodeController {
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<EpisodeVO> page = episodeService.findByPage(wrapper);
-        return JsonResult.success(
-            PageResult.of(
-                page.getContent().stream()
-                    .map(EpisodeMapper.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-        );
+        return JsonResult.success(page.map(EpisodeMapper.INSTANCE::vo2CustomResponse));
     }
 }
