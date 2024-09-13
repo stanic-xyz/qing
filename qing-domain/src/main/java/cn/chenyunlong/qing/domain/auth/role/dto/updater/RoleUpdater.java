@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class RoleUpdater {
 
+    private Long id;
+
     @Schema(
         title = "role",
         description = "角色编码"
@@ -33,20 +35,10 @@ public class RoleUpdater {
     )
     private String remark;
 
-    private Long id;
-
     public void updateRole(Role param) {
         Optional.ofNullable(getRole()).ifPresent(param::setRole);
         Optional.ofNullable(getName()).ifPresent(param::setName);
         Optional.ofNullable(getPlatformId()).ifPresent(param::setPlatformId);
         Optional.ofNullable(getRemark()).ifPresent(param::setRemark);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }

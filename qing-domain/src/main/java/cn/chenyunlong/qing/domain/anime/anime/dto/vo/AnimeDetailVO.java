@@ -2,6 +2,8 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.vo;
 
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
+import cn.chenyunlong.qing.domain.anime.episode.dto.vo.EpisodeVO;
+import cn.chenyunlong.qing.domain.anime.playlist.dto.vo.PlayListVO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
@@ -105,4 +107,8 @@ public class AnimeDetailVO extends AbstractBaseJpaVo {
     private Integer orderNo;
 
     private List<TagVO> tagVOList;
+
+    private List<EpisodeVO> episodeList;
+
+    private List<PlayListVO> playLists;
 }

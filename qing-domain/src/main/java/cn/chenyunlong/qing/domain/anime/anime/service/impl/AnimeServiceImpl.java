@@ -24,8 +24,17 @@ import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
 import cn.chenyunlong.qing.domain.anime.attachement.repository.AttachmentRepository;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
+import cn.chenyunlong.qing.domain.anime.episode.Episode;
+import cn.chenyunlong.qing.domain.anime.episode.mapper.EpisodeMapper;
+import cn.chenyunlong.qing.domain.anime.episode.repository.EpisodeRepository;
+import cn.chenyunlong.qing.domain.anime.playlist.PlayList;
+import cn.chenyunlong.qing.domain.anime.playlist.dto.vo.PlayListVO;
+import cn.chenyunlong.qing.domain.anime.playlist.mapper.PlayListMapper;
+import cn.chenyunlong.qing.domain.anime.playlist.repository.PlayListRepository;
+import cn.hutool.core.collection.CollUtil;
 import jakarta.validation.Validator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +58,8 @@ public class AnimeServiceImpl extends BaseJpaService implements IAnimeService {
     private final AttachmentRepository attachmentRepository;
     private final Validator validator;
     private final AnimeTagRelRepository animeTagRelRepository;
+    private final PlayListRepository playListRepository;
+    private final EpisodeRepository episodeRepository;
 
     /**
      * createImpl
@@ -143,8 +154,22 @@ public class AnimeServiceImpl extends BaseJpaService implements IAnimeService {
         return animeRepository.findById(id).map(anime -> {
                 AnimeDetailVO animeDetailVO = AnimeMapper.INSTANCE.entityToDetailVo(anime);
                 List<AnimeTagRel> animeTagRelList = animeTagRelRepository.listTagByAnimeId(anime.getId());
+
                 List<Tag> tagList = tagRepository.findByIds(animeTagRelList.stream().map(AnimeTagRel::getTagId).collect(Collectors.toList()));
                 animeDetailVO.setTagVOList(tagList.stream().map(TagMapper.INSTANCE::entityToVo).collect(Collectors.toList()));
+
+            List<PlayList> playListList = playListRepository.listByAnime(anime.getId());
+
+            List<Episode> episodeList = episodeRepository.listByAnimeId(anime.getId());
+            Map<Long, List<Episode>> longListMap = episodeList.stream().collect(Collectors.groupingBy(Episode::getPlayListId));
+
+            animeDetailVO.setPlayLists(playListList.stream().map(playList -> {
+                PlayListVO playListVO = PlayListMapper.INSTANCE.entityToVo(playList);
+                List<Episode> episodes = longListMap.getOrDefault(playList.getId(), CollUtil.toList());
+                playListVO.setEpisodeList(episodes.stream().map(EpisodeMapper.INSTANCE::entityToVo).collect(Collectors.toList()));
+                return playListVO;
+            }).collect(Collectors.toList()));
+
                 return animeDetailVO;
             }
         ).orElse(null);

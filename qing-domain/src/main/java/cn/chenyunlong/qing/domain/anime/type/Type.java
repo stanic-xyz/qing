@@ -31,7 +31,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Entity(name = "type")
+@Entity(name = "anime_type")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Type extends BaseJpaAggregate {
 

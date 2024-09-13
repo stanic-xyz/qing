@@ -1,7 +1,9 @@
 package cn.chenyunlong.qing.domain.anime.playlist.dto.vo;
 
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
+import cn.chenyunlong.qing.domain.anime.episode.dto.vo.EpisodeVO;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,4 +33,6 @@ public class PlayListVO extends AbstractBaseJpaVo {
         title = "icon"
     )
     private String icon;
+
+    private List<EpisodeVO> episodeList;
 }

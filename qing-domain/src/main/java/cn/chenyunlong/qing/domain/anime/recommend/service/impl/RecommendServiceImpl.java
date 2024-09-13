@@ -93,7 +93,6 @@ public class RecommendServiceImpl implements IRecommendService {
     @Override
     public RecommendVO findById(Long id) {
         Optional<Recommend> recommend = recommendRepository.findById(id);
-
         return new RecommendVO(
             recommend.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
