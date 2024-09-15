@@ -17,6 +17,8 @@ import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
 import cn.chenyunlong.qing.domain.anime.attachement.repository.AttachmentRepository;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
+import cn.chenyunlong.qing.domain.anime.episode.repository.EpisodeRepository;
+import cn.chenyunlong.qing.domain.anime.playlist.repository.PlayListRepository;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import jakarta.validation.Validator;
@@ -47,7 +49,10 @@ class IAnimeDomainServiceTest {
 
 
         Validator validator = Mockito.mock(Validator.class);
-        IAnimeService animeService = new AnimeServiceImpl(animeRepository, categoryRepository, districtRepository, tagRepository, attachmentRepository, validator, animeTagRelRepository);
+        EpisodeRepository episodeRepository = Mockito.mock(EpisodeRepository.class);
+        PlayListRepository playListRepository = Mockito.mock(PlayListRepository.class);
+
+        IAnimeService animeService = new AnimeServiceImpl(animeRepository, categoryRepository, districtRepository, tagRepository, attachmentRepository, validator, animeTagRelRepository, playListRepository, episodeRepository);
 
         AnimeCreateCommand createRequest = new AnimeCreateCommand();
         createRequest.setName("凡人修仙传");
