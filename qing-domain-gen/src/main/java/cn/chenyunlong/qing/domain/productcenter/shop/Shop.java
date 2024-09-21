@@ -67,21 +67,4 @@ public class Shop extends BaseJpaAggregate {
 
     @FieldDesc(name = "联系人")
     private String contactUser;
-
-    @Convert(converter = ValidStatusConverter.class)
-    @IgnoreUpdater
-    @IgnoreCreator
-    private ValidStatus validStatus;
-
-    public void init() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void valid() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void invalid() {
-        setValidStatus(ValidStatus.INVALID);
-    }
 }

@@ -46,7 +46,7 @@ import org.springframework.data.domain.Page;
 
 class BookRepositoryTest {
 
-    private static final String JDBC_URL = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=0;DB_CLOSE_ON_EXIT=FALSE";
+    private static final String JDBC_URL = "jdbc:h2:mem:test_db;DB_CLOSE_DELAY=0;DB_CLOSE_ON_EXIT=FALSE";
     private static final Logger log = LoggerFactory.getLogger(BookRepositoryTest.class);
     private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new ImmutableModule());
 
@@ -153,11 +153,6 @@ class BookRepositoryTest {
     @Test
     @DisplayName("根据DTO查询复杂视图")
     void fetchByDtoLanguageForComplexView() throws SQLException, IOException {
-        // 加载测试数据
-        ClassPathResource pathResource = new ClassPathResource("sql/jimmer-demo-data.sql");
-
-        String sql = IoUtil.read(pathResource.getInputStream(), StandardCharsets.UTF_8);
-
         try (Connection connection = dataSource.getConnection()) {
 
             ConnectionManager connectionManager = ConnectionManager.singleConnectionManager(connection);

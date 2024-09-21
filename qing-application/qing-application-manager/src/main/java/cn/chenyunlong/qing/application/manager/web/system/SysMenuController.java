@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.application.manager.web.system;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.auth.menu.dto.creator.SysMenuCreator;
 import cn.chenyunlong.qing.domain.auth.menu.dto.query.SysMenuQuery;
 import cn.chenyunlong.qing.domain.auth.menu.dto.request.SysMenuCreateRequest;
@@ -89,7 +88,7 @@ public class SysMenuController {
         @PathVariable("id")
         Long id) {
         SysMenuVO vo = sysMenuService.findById(id);
-        SysMenuResponse response = SysMenuMapper.INSTANCE.vo2CustomResponse(vo);
+        SysMenuResponse response = SysMenuMapper.INSTANCE.vo2Response(vo);
         return JsonResult.success(response);
     }
 
@@ -97,7 +96,7 @@ public class SysMenuController {
      * findByPage request
      */
     @PostMapping("page")
-    public JsonResult<PageResult<SysMenuResponse>> page(
+    public JsonResult<Page<SysMenuResponse>> page(
         @RequestBody
         PageRequestWrapper<SysMenuQueryRequest> request) {
         PageRequestWrapper<SysMenuQuery> wrapper = new PageRequestWrapper<>();
@@ -106,15 +105,7 @@ public class SysMenuController {
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<SysMenuVO> page = sysMenuService.findByPage(wrapper);
-        return JsonResult.success(
-            PageResult.of(
-                page.getContent().stream()
-                    .map(SysMenuMapper.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-        );
+        return JsonResult.success(page.map(SysMenuMapper.INSTANCE::vo2Response));
     }
 
     /**
@@ -122,7 +113,16 @@ public class SysMenuController {
      */
     @GetMapping("menuTree")
     public JsonResult<List<SysMenuResponse>> tree() {
-        List<SysMenuVO> page = sysMenuService.tree();
-        return JsonResult.success(page.stream().map(SysMenuMapper.INSTANCE::vo2CustomResponse).collect(Collectors.toList()));
+        List<SysMenuVO> menuVOList = sysMenuService.tree();
+        List<SysMenuResponse> menuResponseList = convertMenuToResponse(menuVOList);
+        return JsonResult.success(menuResponseList);
+    }
+
+    private static List<SysMenuResponse> convertMenuToResponse(List<SysMenuVO> menuVOList) {
+        return menuVOList.stream().map(menuVO -> {
+            SysMenuResponse sysMenuResponse = SysMenuMapper.INSTANCE.vo2Response(menuVO);
+            sysMenuResponse.setChildren(convertMenuToResponse(menuVO.getChildren()));
+            return sysMenuResponse;
+        }).collect(Collectors.toList());
     }
 }

@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.common.constants;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * 校验状态。
  *
@@ -28,6 +30,8 @@ public enum ValidStatus implements BaseEnum<Integer> {
      * 无效。
      */
     INVALID(0, "invalid");
+
+    @JsonValue
     private final Integer code;
     private final String name;
 

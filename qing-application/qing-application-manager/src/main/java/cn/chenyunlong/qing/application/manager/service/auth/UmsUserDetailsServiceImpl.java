@@ -7,6 +7,7 @@ import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
 import cn.chenyunlong.qing.infrastructure.support.email.IEmailService;
 import cn.chenyunlong.qing.security.config.SecurityProperties;
 import cn.chenyunlong.qing.security.entity.AuthUser;
+import cn.chenyunlong.qing.security.enums.ErrorCodeEnum;
 import cn.chenyunlong.qing.security.exception.RegisterUserFailureException;
 import cn.chenyunlong.qing.security.service.UmsUserDetailsService;
 import cn.hutool.core.util.IdUtil;
@@ -22,7 +23,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -31,7 +31,6 @@ import org.springframework.stereotype.Service;
 public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
 
     private final IUserService userService;
-    private final PasswordEncoder passwordEncoder;
     private final IEmailService emailService;
     private final SecurityProperties securityProperties;
 
@@ -88,21 +87,20 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
     @Override
     public UserDetails registerUser(AuthUser authUser, String nickname, String defaultAuthority, String decodeState) throws RegisterUserFailureException {
         UserCreator creator = new UserCreator();
-        creator.setUid(IdUtil.getSnowflakeNextId());
         creator.setUsername(IdUtil.getSnowflakeNextIdStr());
         creator.setNickname(nickname);
         creator.setEmail(authUser.getEmail());
         creator.setDescription(authUser.getRemark());
         // 默认密码，123456
-        String encodedPassword = passwordEncoder.encode(securityProperties.getDefaultPassword());
-        creator.setPassword(encodedPassword);
+
+        creator.setPassword(securityProperties.getDefaultPassword());
         creator.setAvatar(authUser.getAvatar());
         creator.setMfaType(MFAType.NONE);
         emailService.addEmailTaskToList();
-        userService.register(creator);
+        QingUser register = userService.register(creator).orElseThrow(() -> new RegisterUserFailureException(ErrorCodeEnum.USER_REGISTER_FAILURE, authUser.getUsername()));
         return User.builder()
-                   .username(String.valueOf(creator.getUid()))
-                   .password(encodedPassword)
+                   .username(String.valueOf(register.getUid()))
+                   .password(register.getPassword())
                    .disabled(false)
                    .accountExpired(false)
                    .accountLocked(false)

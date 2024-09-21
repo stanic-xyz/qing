@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.domain.auth.department.mapper;
 
+import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.qing.domain.auth.department.Department;
 import cn.chenyunlong.qing.domain.auth.department.dto.creator.DepartmentCreator;
 import cn.chenyunlong.qing.domain.auth.department.dto.query.DepartmentQuery;
@@ -9,35 +10,28 @@ import cn.chenyunlong.qing.domain.auth.department.dto.request.DepartmentUpdateRe
 import cn.chenyunlong.qing.domain.auth.department.dto.response.DepartmentResponse;
 import cn.chenyunlong.qing.domain.auth.department.dto.updater.DepartmentUpdater;
 import cn.chenyunlong.qing.domain.auth.department.dto.vo.DepartmentVO;
-import cn.hutool.core.bean.BeanUtil;
+import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
+@Mapper(uses = {
+    CustomMapper.class,
+    DateMapper.class
+}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DepartmentMapper {
 
-    DepartmentMapper INSTANCE = new DepartmentMapper() {
+    DepartmentMapper INSTANCE = Mappers.getMapper(DepartmentMapper.class);
 
-    };
+    Department dtoToEntity(DepartmentCreator dto);
 
-    default Department dtoToEntity(DepartmentCreator dto) {
-        return BeanUtil.copyProperties(dto, Department.class);
-    }
+    DepartmentUpdater request2Updater(DepartmentUpdateRequest request);
 
-    default DepartmentUpdater request2Updater(DepartmentUpdateRequest request) {
-        return BeanUtil.copyProperties(request, DepartmentUpdater.class);
-    }
+    DepartmentCreator request2Dto(DepartmentCreateRequest request);
 
-    default DepartmentCreator request2Dto(DepartmentCreateRequest request) {
-        return BeanUtil.copyProperties(request, DepartmentCreator.class);
-    }
+    DepartmentQuery request2Query(DepartmentQueryRequest request);
 
-    default DepartmentQuery request2Query(DepartmentQueryRequest request) {
-        return BeanUtil.copyProperties(request, DepartmentQuery.class);
-    }
+    DepartmentResponse vo2Response(DepartmentVO vo);
 
-    default DepartmentResponse vo2Response(DepartmentVO vo) {
-        return BeanUtil.copyProperties(vo, DepartmentResponse.class);
-    }
-
-    default DepartmentResponse vo2CustomResponse(DepartmentVO vo) {
-        return vo2Response(vo);
-    }
+    DepartmentResponse vo2CustomResponse(DepartmentVO vo);
 }

@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.security.config;
 
 import cn.chenyunlong.common.constants.BaseEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum AuthErrorMsg implements BaseEnum<Integer> {
     /**
@@ -35,6 +36,7 @@ public enum AuthErrorMsg implements BaseEnum<Integer> {
     AuthFailure(70000013, "认证失败"),
     DeviceNotSupport(70000014, "设备未识别");
 
+    @JsonValue
     private final Integer code;
     private final String name;
 

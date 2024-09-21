@@ -76,21 +76,4 @@ public class GoodsLifeCycle extends BaseJpaAggregate {
 
     @FieldDesc(name = "备注")
     private String remark;
-
-    @Convert(converter = ValidStatusConverter.class)
-    @IgnoreUpdater
-    @IgnoreCreator
-    private ValidStatus validStatus;
-
-    public void init() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void valid() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void invalid() {
-        setValidStatus(ValidStatus.INVALID);
-    }
 }

@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.application.manager.web.system;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.QingUserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.QingUserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.request.QingUserCreateRequest;
@@ -15,7 +14,6 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.QingUserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.QingUserMapper;
 import cn.chenyunlong.qing.domain.auth.user.service.IQingUserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,58 +33,50 @@ public class QingUserController {
 
     private final IQingUserService qingUserService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createQingUser(@RequestBody QingUserCreateRequest request) {
+    public JsonResult<Long> createQingUser(
+        @RequestBody
+        QingUserCreateRequest request) {
         QingUserCreator creator = QingUserMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(qingUserService.createQingUser(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateQingUser")
-    public JsonResult<String> updateQingUser(@RequestBody QingUserUpdateRequest request) {
+    public JsonResult<String> updateQingUser(
+        @RequestBody
+        QingUserUpdateRequest request) {
         QingUserUpdater updater = QingUserMapper.INSTANCE.request2Updater(request);
         qingUserService.updateQingUser(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validQingUser(@PathVariable Long id) {
+    public JsonResult<String> validQingUser(
+        @PathVariable
+        Long id) {
         qingUserService.validQingUser(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidQingUser(@PathVariable Long id) {
+    public JsonResult<String> invalidQingUser(
+        @PathVariable
+        Long id) {
         qingUserService.invalidQingUser(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
     @GetMapping("findById/{id}")
-    public JsonResult<QingUserResponse> findById(@PathVariable Long id) {
+    public JsonResult<QingUserResponse> findById(
+        @PathVariable
+        Long id) {
         QingUserVO vo = qingUserService.findById(id);
         QingUserResponse response = QingUserMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
-    public JsonResult<PageResult<QingUserResponse>> page(
+    public JsonResult<Page<QingUserResponse>> page(
         @RequestBody
         PageRequestWrapper<QingUserQueryRequest> request) {
         PageRequestWrapper<QingUserQuery> wrapper = new PageRequestWrapper<>();
@@ -95,14 +85,6 @@ public class QingUserController {
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<QingUserVO> page = qingUserService.findByPage(wrapper);
-        return JsonResult.success(
-            PageResult.of(
-                page.getContent().stream()
-                    .map(QingUserMapper.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-        );
+        return JsonResult.success(page.map(QingUserMapper.INSTANCE::vo2CustomResponse));
     }
 }

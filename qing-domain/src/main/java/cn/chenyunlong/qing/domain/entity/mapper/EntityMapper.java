@@ -39,4 +39,6 @@ public interface EntityMapper {
     EntityResponse vo2CustomResponse(EntityVO vo);
 
     EntityResponse vo2Response(EntityVO vo);
+
+    EntityVO entity2Vo(Entity vo);
 }

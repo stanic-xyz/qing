@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @Slf4j
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public abstract class JpaServiceImpl<R extends BaseJpaRepository<T, ID>, T, ID> implements BaseRepository<T, ID>, InitializingBean {
 
     // @Resource 默认是按照名称匹配的，所以这里会如果使用@Resource的话，就会匹配到很多的实现
@@ -18,7 +19,7 @@ public abstract class JpaServiceImpl<R extends BaseJpaRepository<T, ID>, T, ID> 
     protected R baseJpaRepository;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         log.debug("初始化Jpa仓储类型：{}", baseJpaRepository.getClass().getName());
     }
 

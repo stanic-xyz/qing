@@ -5,9 +5,7 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.jpa.support.EntityOperations;
-import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
-import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
 import cn.chenyunlong.qing.domain.zan.LikeContext;
 import cn.chenyunlong.qing.domain.zan.LikeModel;
@@ -56,14 +54,8 @@ public class ZanServiceImpl implements IZanService {
      */
     @Override
     public Long createZan(ZanCreator creator) {
-        Optional<Entity> entity = entityRepository.findById(creator.getEntityId());
-        if (entity.isEmpty()) {
-            throw new BusinessException("创建zan失败，实体不存在");
-        }
-        Optional<QingUser> userRepositoryById = userRepository.findById(creator.getUserId());
-        if (userRepositoryById.isEmpty()) {
-            throw new BusinessException("创建zan失败，用户不存在");
-        }
+        entityRepository.findById(creator.getEntityId()).orElseThrow(() -> new BusinessException("创建zan失败，实体不存在"));
+        userRepository.findById(creator.getUserId()).orElseThrow(() -> new BusinessException("创建zan失败，用户不存在"));
         Optional<Zan> zan = EntityOperations.doCreate(zanRepository)
                                 .create(() -> ZanMapper.INSTANCE.dtoToEntity(creator))
                                 .update(Zan::init)

@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.domain.auth.department.dto.request;
 
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Schema
@@ -26,13 +27,7 @@ public class DepartmentUpdateRequest implements Request {
     )
     private Integer sortNum;
 
+    @NotNull
     private Long id;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

@@ -56,12 +56,4 @@ public class InOutRecord extends BaseJpaAggregate {
     public void init() {
         setValidStatus(ValidStatus.VALID);
     }
-
-    public void valid() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void invalid() {
-        setValidStatus(ValidStatus.INVALID);
-    }
 }

@@ -9,12 +9,6 @@ import lombok.Data;
 public class UserCreator {
 
     @Schema(
-        title = "uid",
-        description = "用户唯一ID"
-    )
-    private Long uid;
-
-    @Schema(
         title = "username",
         description = "用户名"
     )

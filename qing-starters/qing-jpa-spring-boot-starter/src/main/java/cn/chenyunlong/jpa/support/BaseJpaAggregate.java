@@ -18,6 +18,7 @@ import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
 import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
 import cn.hutool.core.lang.Assert;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
@@ -124,14 +125,16 @@ public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggr
     }
 
     public void valid() {
+        Assert.notEquals(validStatus, ValidStatus.VALID, "状态错误");
         setValidStatus(ValidStatus.VALID);
     }
 
     public void invalid() {
-        Assert.equals(validStatus, ValidStatus.VALID, "数据已失效");
+        Assert.notEquals(validStatus, ValidStatus.INVALID, "状态错误");
         setValidStatus(ValidStatus.INVALID);
     }
 
+    @Nonnull
     @Override
     public Collection<Object> domainEvents() {
         return super.domainEvents();

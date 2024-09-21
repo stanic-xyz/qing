@@ -36,9 +36,9 @@ public class PlatformServiceImpl implements IPlatformService {
     @Override
     public Long createPlatform(PlatformCreator creator) {
         Optional<Platform> platform = EntityOperations.doCreate(platformRepository)
-            .create(() -> PlatformMapper.INSTANCE.dtoToEntity(creator))
-            .update(Platform::init)
-            .execute();
+                                          .create(() -> PlatformMapper.INSTANCE.dtoToEntity(creator))
+                                          .update(Platform::init)
+                                          .execute();
         return platform.isPresent() ? platform.get().getId() : 0;
     }
 

@@ -32,7 +32,5 @@ public interface SysMenuMapper {
 
     SysMenuResponse vo2Response(SysMenuVO vo);
 
-    SysMenuResponse vo2CustomResponse(SysMenuVO vo);
-
     SysMenuVO entityToVO(SysMenu sysMenu);
 }

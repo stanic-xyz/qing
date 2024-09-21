@@ -2,8 +2,10 @@ package cn.chenyunlong.qing.application.manager.exception;
 
 import cn.chenyunlong.common.exception.AbstractException;
 import cn.chenyunlong.common.model.JsonResult;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,6 +21,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     JsonResult<Void> handleArgumentException(IllegalArgumentException exception) {
         String message = exception.getMessage();
+        return JsonResult.fail(message);
+    }
+
+    @ExceptionHandler(BindException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    JsonResult<Void> handleIllegalStateException(BindException exception) {
+        String message = Objects.requireNonNull(exception.getBindingResult().getFieldError()).getDefaultMessage();
         return JsonResult.fail(message);
     }
 

@@ -13,6 +13,7 @@ import cn.chenyunlong.qing.domain.auth.role.dto.vo.RoleVO;
 import cn.chenyunlong.qing.domain.auth.role.mapper.RoleMapper;
 import cn.chenyunlong.qing.domain.auth.role.repository.RoleRepository;
 import cn.chenyunlong.qing.domain.auth.role.service.IRoleService;
+import cn.hutool.core.lang.Assert;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,21 +31,22 @@ public class RoleServiceImpl implements IRoleService {
 
     private final RoleRepository roleRepository;
 
-    /**
-     * createImpl
-     */
     @Override
     public Long createRole(RoleCreator creator) {
-        Optional<Role> role = EntityOperations.doCreate(roleRepository)
-                                  .create(() -> RoleMapper.INSTANCE.dtoToEntity(creator))
-                                  .update(Role::init)
-                                  .execute();
-        return role.isPresent() ? role.get().getId() : 0;
+
+        Role role = roleRepository.findRoleByRole(creator.getRole());
+        Assert.isNull(role, "角色已存在");
+
+        Role byRoleName = roleRepository.findRoleByRoleName(creator.getName());
+        Assert.isNull(byRoleName, "角色名称不能重复");
+
+        Optional<Role> optionalRole = EntityOperations.doCreate(roleRepository)
+                                          .create(() -> RoleMapper.INSTANCE.dtoToEntity(creator))
+                                          .update(Role::init)
+                                          .execute();
+        return optionalRole.isPresent() ? optionalRole.get().getId() : 0;
     }
 
-    /**
-     * update
-     */
     @Override
     public void updateRole(RoleUpdater updater) {
         EntityOperations.doUpdate(roleRepository)

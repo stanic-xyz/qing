@@ -41,7 +41,9 @@ public class AdminAccountController {
      * createRequest
      */
     @PostMapping
-    public JsonResult<Long> createAdminAccount(@RequestBody AdminAccountCreateRequest request) {
+    public JsonResult<Long> createAdminAccount(
+        @RequestBody
+        AdminAccountCreateRequest request) {
         AdminAccountCreator creator = AdminAccountMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(adminAccountService.createAdminAccount(creator));
     }
@@ -50,7 +52,9 @@ public class AdminAccountController {
      * update request
      */
     @PostMapping("updateAdminAccount")
-    public JsonResult<String> updateAdminAccount(@RequestBody AdminAccountUpdateRequest request) {
+    public JsonResult<String> updateAdminAccount(
+        @RequestBody
+        AdminAccountUpdateRequest request) {
         AdminAccountUpdater updater = AdminAccountMapper.INSTANCE.request2Updater(request);
         adminAccountService.updateAdminAccount(updater);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -60,7 +64,9 @@ public class AdminAccountController {
      * valid
      */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validAdminAccount(@PathVariable Long id) {
+    public JsonResult<String> validAdminAccount(
+        @PathVariable("id")
+        Long id) {
         adminAccountService.validAdminAccount(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -69,7 +75,9 @@ public class AdminAccountController {
      * invalid
      */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidAdminAccount(@PathVariable Long id) {
+    public JsonResult<String> invalidAdminAccount(
+        @PathVariable("id")
+        Long id) {
         adminAccountService.invalidAdminAccount(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -78,7 +86,9 @@ public class AdminAccountController {
      * 为用户分配角色
      */
     @PostMapping(value = "assignRolesToUser")
-    public JsonResult<String> assignRolesToUser(@RequestBody UserRolesRequest request) {
+    public JsonResult<String> assignRolesToUser(
+        @RequestBody
+        UserRolesRequest request) {
         adminAccountService.assignRolesToUser(request.getAccountId(), request.getRoleIds());
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -87,7 +97,9 @@ public class AdminAccountController {
      * 为用户分配平台
      */
     @PostMapping("assignPlatformsToUser")
-    public JsonResult<String> assignPlatformsToUser(@RequestBody UserAuthPlatformsRequest request) {
+    public JsonResult<String> assignPlatformsToUser(
+        @RequestBody
+        UserAuthPlatformsRequest request) {
         adminAccountService.assignPlatformsToUser(request.getPlatformIds(), request.getAccountId());
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -96,7 +108,9 @@ public class AdminAccountController {
      * findById
      */
     @GetMapping("findById/{id}")
-    public JsonResult<AdminAccountResponse> findById(@PathVariable Long id) {
+    public JsonResult<AdminAccountResponse> findById(
+        @PathVariable("id")
+        Long id) {
         AdminAccountVO vo = adminAccountService.findById(id);
         AdminAccountResponse response = AdminAccountMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);
