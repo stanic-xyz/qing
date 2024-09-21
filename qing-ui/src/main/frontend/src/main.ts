@@ -4,7 +4,6 @@ import {createPinia} from "pinia";
 import App from "./App.vue";
 import router from "./router";
 
-// import "./assets/css/common/common.css";
 import LayUI from "@layui/layui-vue";
 
 const app = createApp(App);

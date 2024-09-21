@@ -50,7 +50,7 @@ onMounted(() => {
     ],
   })
     .then(function (response) {
-      const animeDataList = response.result.list || [];
+      const animeDataList = response.result.content || [];
       console.log("获取到动漫信息内容", animeDataList);
       animeDataList.forEach((anime) => {
         animeList.value.push(anime);

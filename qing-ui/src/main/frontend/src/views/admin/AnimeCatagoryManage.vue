@@ -1,6 +1,6 @@
 <template>
   <div ref="fullscreenTargetRef2" style="height: 800px; background-color: #000000">
-    <lay-table v-if="!isEdit" ref="tableRef" v-model:selectedKey="selectedKey" v-model:selectedKeys="selectedKeys" :autoColsWidth="true" :columns="columns" :data-source="dataSource" :default-toolbar="toolbar" :ellipsisTooltip="true" :even="true" :loading="loading" :page="page" :resize="false" size="md" @change="change">
+    <lay-table v-if="!isEdit" ref="tableRef" v-model:selectedKey="selectedKey" v-model:selectedKeys="selectedKeys" :autoColsWidth="true" :columns="columns" :data-source="dataSource" :default-toolbar="toolbar" :ellipsisTooltip="true" :even="true" :loading="loading" :page="page" :resize="false" size="md">
       <template #toolbar>
         <lay-space>
           <lay-button size="md" type="primary" @click="recommend">添加推荐</lay-button>
@@ -21,9 +21,9 @@
 import {onMounted, reactive, ref} from "vue";
 import {layer} from "@layui/layui-vue";
 import {createAnime, findById} from "@/apis/anime";
-import type {Tag} from "@/apis/tags/types";
 import {getCategoryList} from "@/apis/categories";
 import type {Anime} from "@/apis/anime/types";
+import type {Category} from "@/apis/categories/types";
 
 onMounted(() => {
   resolveCategoryList();
@@ -86,7 +86,7 @@ const addAnime = () => {
   addForm.isAdd = true;
 };
 
-const dataSource = ref<Tag[]>();
+const dataSource = ref<Category[]>();
 
 const view = (anime: any) => {
   isEdit.value = true;

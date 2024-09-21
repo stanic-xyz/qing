@@ -153,7 +153,7 @@ const routerList = [
                 meta: {
                     requiresAuth: false,
                 },
-                component: Login,
+                component: () => import("../../views/login/Login.vue"),
             },
         ],
     },
@@ -188,25 +188,25 @@ const pages = import.meta.glob("../../views/anime/*.vue");
 
 console.log("读取到所有的页面信息", pages);
 
-Object.keys(pages).forEach((key) => {
-    console.log("modList", key);
-
-    const name = key
-            .replace(/^\.\.\/\.\.\/views\/anime\//, "")
-            .replace(/\.vue$/, "")
-            .toLowerCase();
-
-    console.log("name", name);
-
-    const mod = pages[key];
-
-    console.log("modList", mod);
-
-    // routerList.push({
-    //     path: `/anime/${name}`,
-    //     name: name,
-    //     component: mod,
-    // });
-});
+// Object.keys(pages).forEach((key) => {
+//     console.log("modList", key);
+//
+//     const name = key
+//             .replace(/^\.\.\/\.\.\/views\/anime\//, "")
+//             .replace(/\.vue$/, "")
+//             .toLowerCase();
+//
+//     console.log("name", name);
+//
+//     const mod = pages[key];
+//
+//     console.log("modList", mod);
+//
+//     // routerList.push({
+//     //     path: `/anime/${name}`,
+//     //     name: name,
+//     //     component: mod,
+//     // });
+// });
 
 export default routerList;

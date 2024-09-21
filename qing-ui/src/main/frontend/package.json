@@ -18,6 +18,7 @@
     "artplayer" : "^5.1.1",
     "axios" : "1.6.0",
     "bootstrap" : "^5.2.3",
+    "bootstrap-icons" : "^1.11.3",
     "bootstrap-vue" : "^2.23.1",
     "cos-js-sdk-v5" : "^1.7.0",
     "dplayer" : "^1.27.1",

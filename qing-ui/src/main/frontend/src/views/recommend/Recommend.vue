@@ -43,8 +43,8 @@ onMounted(() => {
     page: 0,
   })
           .then(function (response) {
-            console.log("获取到动漫信息内容", response.result.list || []);
-            animeInfoList.value = response.result.list || [];
+            console.log("获取到动漫信息内容", response.result.content || []);
+            animeInfoList.value = response.result.content || [];
           })
           .catch(function (error) {
             console.log("异常了", error);
