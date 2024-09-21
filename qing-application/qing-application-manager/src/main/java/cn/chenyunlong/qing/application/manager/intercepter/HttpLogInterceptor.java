@@ -51,7 +51,7 @@ public class HttpLogInterceptor implements HandlerInterceptor {
         HttpServletResponse response,
         @Nonnull
         Object handler, Exception ex) throws Exception {
-        log.info("请求处理结束. 处理耗时: {}", System.currentTimeMillis() - startTime.get());
+        log.info("请求处理结束. 处理耗时: {} ms", System.currentTimeMillis() - startTime.get());
         startTime.remove();
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }

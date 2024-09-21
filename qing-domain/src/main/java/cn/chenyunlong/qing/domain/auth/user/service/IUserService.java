@@ -16,7 +16,7 @@ public interface IUserService {
     /**
      * create
      */
-    Long register(UserCreator creator);
+    Optional<QingUser> register(UserCreator creator);
 
     /**
      * update

@@ -17,6 +17,7 @@ package cn.chenyunlong.qing.domain.entity;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import cn.chenyunlong.qing.domain.entity.converter.EntityTypeConverter;
+import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ import lombok.ToString;
 public class Entity extends BaseJpaAggregate {
 
     @FieldDesc(name = "用户名", description = "用户（唯一），用于前端显示！")
+    @Column(unique = true)
     private String name;
 
     @Convert(converter = EntityTypeConverter.class)
@@ -48,9 +50,4 @@ public class Entity extends BaseJpaAggregate {
 
     @FieldDesc(name = "点赞数量")
     private Long zanCount;
-
-    @Override
-    public void init() {
-        super.init();
-    }
 }

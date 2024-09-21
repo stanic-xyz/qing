@@ -23,6 +23,9 @@ input AuthorInput {
      * #allScalars(this)/#allScalars(Author): All scalar fields of `Author`, exclude `BaseEntity`
      */
     #allScalars(this)
+    -firstName
+    lastName
+    gender
 }
 
 specification AuthorSpecification {

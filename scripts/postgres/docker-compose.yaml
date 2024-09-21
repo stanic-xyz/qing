@@ -2,6 +2,7 @@ services:
   postgres_db: # 服务名称
     image: stanic-docker.stanic.xyz/library/postgres:latest # 指定镜像及其版本
     container_name: docker_postgres # 指定容器的名称
+    restart: always
     environment:
       POSTGRES_PASSWORD: admin@123456
       #POSTGRES_DB: default

@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.domain.auth.menu.dto.response;
 
 import cn.chenyunlong.common.model.AbstractJpaResponse;
-import cn.chenyunlong.qing.domain.auth.menu.SysMenu;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Data;
@@ -108,5 +107,5 @@ public class SysMenuResponse extends AbstractJpaResponse {
         title = "children",
         description = "children"
     )
-    private List<SysMenu> children;
+    private List<SysMenuResponse> children;
 }

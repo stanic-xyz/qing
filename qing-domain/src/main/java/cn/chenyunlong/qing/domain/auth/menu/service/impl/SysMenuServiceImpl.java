@@ -41,10 +41,15 @@ public class SysMenuServiceImpl implements ISysMenuService {
         Optional<SysMenu> sysMenu = EntityOperations.doCreate(sysMenuRepository)
                                         .create(() -> {
                                             SysMenu menuEntity = SysMenuMapper.INSTANCE.dtoToEntity(creator);
-                                            SysMenu parentMenu = sysMenuRepository.findById(creator.getParentId())
-                                                                     .orElseThrow(() -> new NotFoundException("parent menu not found"));
-                                            menuEntity.setParentId(parentMenu.getId());
-                                            menuEntity.setParentName(parentMenu.getMenuName());
+                                            Optional.ofNullable(creator.getParentId()).ifPresentOrElse(parentId -> {
+                                                SysMenu parentMenu = sysMenuRepository.findById(creator.getParentId())
+                                                                         .orElseThrow(() -> new NotFoundException("parent menu not found"));
+                                                menuEntity.setParentId(parentMenu.getId());
+                                                menuEntity.setParentName(parentMenu.getMenuName());
+                                            }, () -> {
+                                                menuEntity.setParentId(null);
+                                                menuEntity.setParentName(null);
+                                            });
                                             return menuEntity;
                                         })
                                         .update(SysMenu::init)

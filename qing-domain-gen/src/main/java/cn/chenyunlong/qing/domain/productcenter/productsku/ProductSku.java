@@ -37,19 +37,4 @@ public class ProductSku extends BaseJpaAggregate {
      */
     @FieldDesc(name = "sku信息")
     private String skuData;
-
-    @Convert(converter = ValidStatusConverter.class)
-    private ValidStatus validStatus;
-
-    public void init() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void valid() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void invalid() {
-        setValidStatus(ValidStatus.INVALID);
-    }
 }

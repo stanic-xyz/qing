@@ -35,20 +35,4 @@ public class Brand extends BaseJpaAggregate {
 
     @FieldDesc(name = "供应商")
     private String provider;
-
-
-    @Convert(converter = ValidStatusConverter.class)
-    private ValidStatus validStatus;
-
-    public void init() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void valid() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void invalid() {
-        setValidStatus(ValidStatus.INVALID);
-    }
 }

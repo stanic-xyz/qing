@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EntityServiceImpl implements IEntityService {
 
+
     private final EntityRepository entityRepository;
 
     /**
@@ -81,7 +82,7 @@ public class EntityServiceImpl implements IEntityService {
     @Override
     public EntityVO findById(Long id) {
         Optional<Entity> entity = entityRepository.findById(id);
-        return new EntityVO(entity.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
+        return entity.map(EntityMapper.INSTANCE::entity2Vo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     /**
@@ -91,7 +92,7 @@ public class EntityServiceImpl implements IEntityService {
     public Page<EntityVO> findByPage(PageRequestWrapper<EntityQuery> query) {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return entityRepository.findAll(pageRequest).map(EntityVO::new);
+        return entityRepository.findAll(pageRequest).map(EntityMapper.INSTANCE::entity2Vo);
     }
 
     @Override

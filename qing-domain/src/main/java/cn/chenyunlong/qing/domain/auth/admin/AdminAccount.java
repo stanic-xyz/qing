@@ -3,10 +3,8 @@ package cn.chenyunlong.qing.domain.auth.admin;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
-import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
 import cn.hutool.core.util.IdUtil;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -33,8 +31,10 @@ public class AdminAccount extends BaseJpaAggregate {
     @FieldDesc(name = "用户名")
     private String username;
 
+    @FieldDesc(name = "用户ID")
     private String uid;
 
+    @FieldDesc(name = "真实姓名")
     private String realName;
 
     @FieldDesc(name = "部门ID")
@@ -44,9 +44,6 @@ public class AdminAccount extends BaseJpaAggregate {
     @Column(columnDefinition = "text")
     private String extInfo;
 
-    @Convert(converter = ValidStatusConverter.class)
-    private ValidStatus validStatus;
-
     /**
      * 初始化方法，在创建聚合根时调用
      */
@@ -55,13 +52,5 @@ public class AdminAccount extends BaseJpaAggregate {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         setPassword(encoder.encode(getPassword()));
         setUid(IdUtil.randomUUID().replaceAll("-", ""));
-    }
-
-    public void valid() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void invalid() {
-        setValidStatus(ValidStatus.INVALID);
     }
 }

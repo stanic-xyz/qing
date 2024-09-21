@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.application.manager.web.anime;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.TagCreator;
 import cn.chenyunlong.qing.domain.anime.anime.dto.query.TagQuery;
 import cn.chenyunlong.qing.domain.anime.anime.dto.request.TagCreateRequest;
@@ -15,7 +14,6 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.vo.TagVO;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.TagMapper;
 import cn.chenyunlong.qing.domain.anime.anime.service.ITagService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -78,7 +76,7 @@ public class TagController {
     }
 
     @PostMapping("page")
-    public JsonResult<PageResult<TagResponse>> page(
+    public JsonResult<Page<TagResponse>> page(
         @RequestBody
         PageRequestWrapper<TagQueryRequest> request) {
         PageRequestWrapper<TagQuery> wrapper = new PageRequestWrapper<>();
@@ -87,14 +85,6 @@ public class TagController {
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<TagVO> page = tagService.findByPage(wrapper);
-        return JsonResult.success(
-            PageResult.of(
-                page.getContent().stream()
-                    .map(TagMapper.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-        );
+        return JsonResult.success(page.map(TagMapper.INSTANCE::vo2CustomResponse));
     }
 }

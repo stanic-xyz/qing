@@ -51,19 +51,4 @@ public class Product extends BaseJpaAggregate {
     private SerializeType serializeType;
 
     private Long pid;
-
-    @Convert(converter = ValidStatusConverter.class)
-    private ValidStatus validStatus;
-
-    public void init() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void valid() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void invalid() {
-        setValidStatus(ValidStatus.INVALID);
-    }
 }

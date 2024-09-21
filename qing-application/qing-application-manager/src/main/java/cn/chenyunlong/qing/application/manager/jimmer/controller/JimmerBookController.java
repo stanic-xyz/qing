@@ -57,6 +57,7 @@ public class JimmerBookController implements Fetchers {
         @RequestParam(name = "name", required = false)
         String name
     ) {
+        System.out.println("name = " + name);
         return null;
     }
 

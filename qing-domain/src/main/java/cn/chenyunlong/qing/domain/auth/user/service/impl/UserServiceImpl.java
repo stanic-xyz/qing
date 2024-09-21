@@ -14,6 +14,8 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.UserMapper;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.IdUtil;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,17 +35,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * createImpl
      */
     @Override
-    public Long register(UserCreator creator) {
-        Optional<QingUser> user = EntityOperations.doCreate(userRepository)
-                                      .create(() -> UserMapper.INSTANCE.dtoToEntity(creator))
-                                      .update(QingUser::init)
-                                      .execute();
-        return user.isPresent() ? user.get().getId() : 0;
+    public Optional<QingUser> register(UserCreator creator) {
+        QingUser byUsername = userRepository.findByUsername(creator.getUsername());
+        Assert.isNull(byUsername, "用户名已存在");
+        QingUser byEmail = userRepository.findByEmail(creator.getEmail());
+        Assert.isNull(byEmail, "邮箱已存在");
+        return EntityOperations.doCreate(userRepository)
+                   .create(() -> {
+                       QingUser qingUser = UserMapper.INSTANCE.dtoToEntity(creator);
+                       // 生成用户唯一Id
+                       qingUser.setUid(IdUtil.getSnowflakeNextId());
+                       qingUser.setPassword(passwordEncoder.encode(creator.getPassword()));
+                       return qingUser;
+                   })
+                   .update(QingUser::init)
+                   .errorHook(Throwable::printStackTrace)
+                   .execute();
     }
 
     /**
@@ -52,7 +66,7 @@ public class UserServiceImpl implements IUserService {
     public void updateUser(UserUpdater updater) {
         EntityOperations.doUpdate(userRepository)
             .loadById(updater.getId())
-            .update(updater::updateUser)
+            .update(qingUser -> updater.updateUser(qingUser, passwordEncoder))
             .execute();
     }
 

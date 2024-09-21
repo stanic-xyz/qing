@@ -39,7 +39,9 @@ public class DepartmentController {
      * createRequest
      */
     @PostMapping
-    public JsonResult<Long> createDepartment(@RequestBody DepartmentCreateRequest request) {
+    public JsonResult<Long> createDepartment(
+        @RequestBody
+        DepartmentCreateRequest request) {
         DepartmentCreator creator = DepartmentMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(departmentService.createDepartment(creator));
     }
@@ -48,7 +50,9 @@ public class DepartmentController {
      * update request
      */
     @PostMapping("updateDepartment")
-    public JsonResult<String> updateDepartment(@RequestBody DepartmentUpdateRequest request) {
+    public JsonResult<String> updateDepartment(
+        @RequestBody
+        DepartmentUpdateRequest request) {
         DepartmentUpdater updater = DepartmentMapper.INSTANCE.request2Updater(request);
         departmentService.updateDepartment(updater);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -58,7 +62,9 @@ public class DepartmentController {
      * valid
      */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validDepartment(@PathVariable Long id) {
+    public JsonResult<String> validDepartment(
+        @PathVariable("id")
+        Long id) {
         departmentService.validDepartment(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -67,7 +73,9 @@ public class DepartmentController {
      * invalid
      */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidDepartment(@PathVariable Long id) {
+    public JsonResult<String> invalidDepartment(
+        @PathVariable("id")
+        Long id) {
         departmentService.invalidDepartment(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -76,7 +84,9 @@ public class DepartmentController {
      * findById
      */
     @GetMapping("findById/{id}")
-    public JsonResult<DepartmentResponse> findById(@PathVariable Long id) {
+    public JsonResult<DepartmentResponse> findById(
+        @PathVariable("id")
+        Long id) {
         DepartmentVO vo = departmentService.findById(id);
         DepartmentResponse response = DepartmentMapper.INSTANCE.vo2CustomResponse(vo);
         return JsonResult.success(response);

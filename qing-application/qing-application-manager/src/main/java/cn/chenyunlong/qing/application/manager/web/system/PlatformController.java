@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.application.manager.web.system;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.auth.platform.dto.creator.PlatformCreator;
 import cn.chenyunlong.qing.domain.auth.platform.dto.query.PlatformQuery;
 import cn.chenyunlong.qing.domain.auth.platform.dto.request.PlatformCreateRequest;
@@ -15,7 +14,6 @@ import cn.chenyunlong.qing.domain.auth.platform.dto.vo.PlatformVO;
 import cn.chenyunlong.qing.domain.auth.platform.mapper.PlatformMapper;
 import cn.chenyunlong.qing.domain.auth.platform.service.IPlatformService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,9 +33,6 @@ public class PlatformController {
 
     private final IPlatformService platformService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createPlatform(
         @RequestBody
@@ -46,9 +41,6 @@ public class PlatformController {
         return JsonResult.success(platformService.createPlatform(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updatePlatform")
     public JsonResult<String> updatePlatform(
         @RequestBody
@@ -58,9 +50,6 @@ public class PlatformController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validPlatform(
         @PathVariable("id")
@@ -69,9 +58,6 @@ public class PlatformController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidPlatform(
         @PathVariable("id")
@@ -80,9 +66,6 @@ public class PlatformController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
     @GetMapping("findById/{id}")
     public JsonResult<PlatformResponse> findById(
         @PathVariable("id")
@@ -92,11 +75,8 @@ public class PlatformController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
-    public JsonResult<PageResult<PlatformResponse>> page(
+    public JsonResult<Page<PlatformResponse>> page(
         @RequestBody
         PageRequestWrapper<PlatformQueryRequest> request) {
         PageRequestWrapper<PlatformQuery> wrapper = new PageRequestWrapper<>();
@@ -105,14 +85,6 @@ public class PlatformController {
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<PlatformVO> page = platformService.findByPage(wrapper);
-        return JsonResult.success(
-            PageResult.of(
-                page.getContent().stream()
-                    .map(PlatformMapper.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-        );
+        return JsonResult.success(page.map(PlatformMapper.INSTANCE::vo2CustomResponse));
     }
 }

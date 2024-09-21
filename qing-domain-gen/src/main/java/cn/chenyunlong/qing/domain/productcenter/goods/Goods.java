@@ -65,16 +65,4 @@ public class Goods extends BaseJpaAggregate {
         }
         setValidStatus(ValidStatus.INVALID);
     }
-
-    public void init() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void valid() {
-        setValidStatus(ValidStatus.VALID);
-    }
-
-    public void invalid() {
-        setValidStatus(ValidStatus.INVALID);
-    }
 }
