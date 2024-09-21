@@ -1,6 +1,7 @@
 import {createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized, type Router} from "vue-router";
 
 import {userStore} from "@/stores/user";
+import routerList from "@/router/modules/base-routes";
 
 /** 自动导入全部静态路由，无需再手动引入！匹配 src/router/modules 目录（任何嵌套级别）中具有 .ts 扩展名的所有文件，除了 remaining.ts 文件
  * 如何匹配所有文件请看：https://github.com/mrmlnc/fast-glob#basic-syntax
@@ -11,7 +12,7 @@ const modules: Record<string, any> = import.meta.glob(["./modules/**/*.ts", "!./
 });
 
 /** 原始静态路由（未做任何处理） */
-const routes: any[] = [];
+const routes: any[] = routerList;
 
 Object.keys(modules).forEach((key) => {
     routes.push(modules[key].default);
@@ -39,12 +40,20 @@ const router: Router = createRouter({
  * @param from 来至
  */
 router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): void => {
+    console.log(to);
+    // 在白名单内的路由，直接放行
+    for (let i = 0; i < whiteList.length; i++) {
+        if (to.path == whiteList[i]) {
+            next();
+            return
+        }
+    }
     const store = userStore();
-
     if (to.meta.requireAuth) {
         next();
     } else if (to.matched.length == 0) {
-        next({path: "/error/404"});
+        // next({path: "/error/404"});
+        next();
     } else {
         next();
     }

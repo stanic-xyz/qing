@@ -73,6 +73,7 @@
 </template>
 
 <style lang="less" scoped src="../../assets/css/catalog.css">
+
 #container {
   margin: 0 auto;
   padding: 0 0;
@@ -106,8 +107,8 @@ onMounted(() => {
     page: 0,
   })
           .then(function (response) {
-            console.log("获取到动漫信息内容", response.result.list || []);
-            animeInfoList.value = response.result.list || [];
+            console.log("获取到动漫信息内容", response.result.content || []);
+            animeInfoList.value = response.result.content || [];
           })
           .catch(function (error) {
             console.log(error);

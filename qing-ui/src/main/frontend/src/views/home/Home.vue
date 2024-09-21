@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import { getAnimeList } from "@/apis/anime";
-import type { Anime } from "@/apis/anime/types";
+import {onMounted, ref} from "vue";
+import {getAnimeList} from "@/apis/anime";
+import type {Anime} from "@/apis/anime/types";
 
 const pagination = ref({ current: 0, pageSize: 12, total: 0 });
 const animeInfoList = ref<Anime[]>([]);
@@ -64,7 +64,7 @@ const getCardListData = async () => {
   const result = animeListResponse.result;
   pagination.value.total = result.total;
   console.log("请求结束后的分页信息,总页数：", pagination.value.total);
-  animeInfoList.value = result.list;
+  animeInfoList.value = result.content;
 };
 
 onMounted(() => {

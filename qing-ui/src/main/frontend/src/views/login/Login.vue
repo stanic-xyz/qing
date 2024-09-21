@@ -20,6 +20,7 @@
                   <input id="password" type="password" class="form-control" name="password" v-model="loginFormData.password" required data-eye/>
                   <div class="invalid-feedback">请输入密码！</div>
                 </div>
+                <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue"></i>
                 <div class="form-group">
                   <div class="custom-checkbox custom-control">
                     <input type="checkbox" name="remember" id="remember" class="custom-control-input" v-model="loginFormData.rememberMe"/>
