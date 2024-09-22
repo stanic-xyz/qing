@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -83,7 +82,7 @@ public class AuthingProvider implements AuthenticationProvider {
         // 没有关联的用户并且开启了用户自动注册功能
         UserDetails userDetails;
         if (CollectionUtil.isNotEmpty(connectionDataList)) {
-            log.info("【Authing】通过Authing登录成功：关联到用户信息:{}", connectionDataList.stream().map(ConnectionData::getUserId).collect(Collectors.joining(",")));
+            log.info("【Authing】通过Authing登录成功：关联到用户信息:{}", connectionDataList.stream().map(ConnectionData::getUserId).toList());
             ConnectionData connectionData = connectionDataList.stream()
                                                 .min(Comparator.comparing(ConnectionData::getRank))
                                                 .orElseThrow(() -> new IllegalArgumentException("未找到匹配的用户信息"));

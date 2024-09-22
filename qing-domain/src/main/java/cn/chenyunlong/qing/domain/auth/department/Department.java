@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "department")
+@Table(name = "sys_department")
 public class Department extends BaseJpaAggregate {
 
     @FieldDesc(name = "部门名称")

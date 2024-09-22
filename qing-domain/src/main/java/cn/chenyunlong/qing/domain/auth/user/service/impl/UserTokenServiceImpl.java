@@ -36,9 +36,9 @@ public class UserTokenServiceImpl implements IUserTokenService {
     @Override
     public Long createUserToken(UserTokenCreator creator) {
         Optional<UserToken> userToken = EntityOperations.doCreate(userTokenRepository)
-            .create(() -> UserTokenMapper.INSTANCE.dtoToEntity(creator))
-            .update(UserToken::init)
-            .execute();
+                                            .create(() -> UserTokenMapper.INSTANCE.dtoToEntity(creator))
+                                            .update(UserToken::init)
+                                            .execute();
         return userToken.isPresent() ? userToken.get().getId() : 0;
     }
 
@@ -81,8 +81,7 @@ public class UserTokenServiceImpl implements IUserTokenService {
     @Override
     public UserTokenVO findById(Long id) {
         Optional<UserToken> userToken = userTokenRepository.findById(id);
-        return new UserTokenVO(
-            userToken.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
+        return userToken.map(UserTokenMapper.INSTANCE::entity2Vo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     /**
@@ -92,6 +91,6 @@ public class UserTokenServiceImpl implements IUserTokenService {
     public Page<UserTokenVO> findByPage(PageRequestWrapper<UserTokenQuery> query) {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return userTokenRepository.findAll(pageRequest).map(UserTokenVO::new);
+        return userTokenRepository.findAll(pageRequest).map(UserTokenMapper.INSTANCE::entity2Vo);
     }
 }

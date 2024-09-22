@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.application.manager.web.anime;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.anime.attachement.dto.creator.AttachmentCreator;
 import cn.chenyunlong.qing.domain.anime.attachement.dto.query.AttachmentQuery;
 import cn.chenyunlong.qing.domain.anime.attachement.dto.request.AttachmentCreateRequest;
@@ -16,7 +15,6 @@ import cn.chenyunlong.qing.domain.anime.attachement.mapper.AttachmentMapper;
 import cn.chenyunlong.qing.domain.anime.attachement.service.IAttachmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,9 +37,6 @@ public class AttachmentController {
 
     private final IAttachmentService attachmentService;
 
-    /**
-     * createRequest
-     */
     @Operation(summary = "新建附件")
     @PostMapping
     public JsonResult<Long> createAttachment(
@@ -51,9 +46,6 @@ public class AttachmentController {
         return JsonResult.success(attachmentService.createAttachment(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("{id}")
     public JsonResult<String> updateAttachment(
         @PathVariable("id")
@@ -65,31 +57,6 @@ public class AttachmentController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
-    @PostMapping("valid/{id}")
-    public JsonResult<String> validAttachment(
-        @PathVariable("id")
-        Long id) {
-        attachmentService.validAttachment(id);
-        return JsonResult.success(CodeEnum.Success.getName());
-    }
-
-    /**
-     * invalid
-     */
-    @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidAttachment(
-        @PathVariable("id")
-        Long id) {
-        attachmentService.invalidAttachment(id);
-        return JsonResult.success(CodeEnum.Success.getName());
-    }
-
-    /**
-     * findById
-     */
     @GetMapping("{id}")
     public JsonResult<AttachmentResponse> findById(
         @PathVariable("id")
@@ -116,11 +83,8 @@ public class AttachmentController {
         return JsonResult.success();
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
-    public JsonResult<PageResult<AttachmentResponse>> page(
+    public JsonResult<Page<AttachmentResponse>> page(
         @RequestBody
         PageRequestWrapper<AttachmentQueryRequest> request) {
         PageRequestWrapper<AttachmentQuery> wrapper = new PageRequestWrapper<>();
@@ -129,14 +93,6 @@ public class AttachmentController {
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<AttachmentVO> page = attachmentService.findByPage(wrapper);
-        return JsonResult.success(
-            PageResult.of(
-                page.getContent().stream()
-                    .map(AttachmentMapper.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-        );
+        return JsonResult.success(page.map(AttachmentMapper.INSTANCE::vo2CustomResponse));
     }
 }

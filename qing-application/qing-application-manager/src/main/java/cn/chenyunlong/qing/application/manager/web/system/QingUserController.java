@@ -52,7 +52,7 @@ public class QingUserController {
 
     @PostMapping("valid/{id}")
     public JsonResult<String> validQingUser(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         qingUserService.validQingUser(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -60,7 +60,7 @@ public class QingUserController {
 
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidQingUser(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         qingUserService.invalidQingUser(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -68,7 +68,7 @@ public class QingUserController {
 
     @GetMapping("findById/{id}")
     public JsonResult<QingUserResponse> findById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         QingUserVO vo = qingUserService.findById(id);
         QingUserResponse response = QingUserMapper.INSTANCE.vo2CustomResponse(vo);

@@ -1,6 +1,8 @@
 package cn.chenyunlong.qing.application.manager.service.auth;
 
 import cn.chenyunlong.common.enums.MFAType;
+import cn.chenyunlong.qing.domain.auth.role.Role;
+import cn.chenyunlong.qing.domain.auth.role.service.IRoleService;
 import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
@@ -13,12 +15,12 @@ import cn.chenyunlong.qing.security.service.UmsUserDetailsService;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,21 +35,25 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
     private final IUserService userService;
     private final IEmailService emailService;
     private final SecurityProperties securityProperties;
+    private final IRoleService roleService;
 
     @Override
-    public UserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
-        Optional<QingUser> userOptional = userService.loadUserByUserId(userId);
-        if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException("用户名未找到!");
-        }
-        QingUser qingUser = userOptional.get();
+    public UserDetails loadUserByUserId(Long userId) throws UsernameNotFoundException {
+        QingUser qingUser = userService.loadUserById(userId).orElseThrow(() -> new UsernameNotFoundException("用户名未找到!"));
+        return buildUserDetails(qingUser);
+    }
+
+    @NotNull
+    private UserDetails buildUserDetails(QingUser qingUser) {
+        List<Role> roleList = roleService.listRoleByUser(qingUser.getId());
+
         return User.builder()
-                   .username(String.valueOf(qingUser.getUid()))
+                   .username(qingUser.getUsername())
                    .password(qingUser.getPassword())
                    .credentialsExpired(false)
                    .accountExpired(false)
-                   .authorities(AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_VISIT, ROLE_USER"))
-                   .disabled(false)
+                   .authorities(AuthorityUtils.createAuthorityList(roleList.stream().map(Role::getRole).toList()))
+                   .disabled(qingUser.getValidStatus().boolValue())
                    .build();
     }
 
@@ -72,16 +78,7 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
         }
         QingUser qingUser = userOptional.get();
         log.info("Demo ======>: 登录用户名：{}, 登录成功", username);
-        return User.builder()
-                   .username(qingUser.getUsername())
-                   .password(qingUser.getPassword())
-                   .credentialsExpired(false)
-                   .accountExpired(false)
-                   .accountLocked(false)
-                   .accountExpired(false)
-                   .disabled(false)
-                   .authorities(AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_VISIT, ROLE_USER"))
-                   .build();
+        return buildUserDetails(qingUser);
     }
 
     @Override
@@ -98,14 +95,6 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
         creator.setMfaType(MFAType.NONE);
         emailService.addEmailTaskToList();
         QingUser register = userService.register(creator).orElseThrow(() -> new RegisterUserFailureException(ErrorCodeEnum.USER_REGISTER_FAILURE, authUser.getUsername()));
-        return User.builder()
-                   .username(String.valueOf(register.getUid()))
-                   .password(register.getPassword())
-                   .disabled(false)
-                   .accountExpired(false)
-                   .accountLocked(false)
-                   .credentialsExpired(false)
-                   .authorities(Collections.emptyList())
-                   .build();
+        return buildUserDetails(register);
     }
 }

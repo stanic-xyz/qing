@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.domain.auth.user.dto.vo;
 
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
-import cn.chenyunlong.qing.domain.auth.user.UserToken;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
     callSuper = true
 )
 @NoArgsConstructor(
-    access = AccessLevel.PROTECTED
+    access = AccessLevel.PUBLIC
 )
 public class UserTokenVO extends AbstractBaseJpaVo {
 
@@ -35,12 +34,4 @@ public class UserTokenVO extends AbstractBaseJpaVo {
         description = "昵称"
     )
     private String nickname;
-
-    public UserTokenVO(UserToken source) {
-        super();
-        this.setId(source.getId());
-        this.setCreatedAt(source.getCreatedAt());
-        this.setUpdatedAt(source.getCreatedAt());
-        this.setUid(source.getUid());
-    }
 }

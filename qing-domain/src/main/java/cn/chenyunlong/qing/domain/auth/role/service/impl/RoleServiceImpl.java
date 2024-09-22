@@ -14,6 +14,7 @@ import cn.chenyunlong.qing.domain.auth.role.mapper.RoleMapper;
 import cn.chenyunlong.qing.domain.auth.role.repository.RoleRepository;
 import cn.chenyunlong.qing.domain.auth.role.service.IRoleService;
 import cn.hutool.core.lang.Assert;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -94,5 +95,13 @@ public class RoleServiceImpl implements IRoleService {
         PageRequest pageRequest =
             PageRequest.of(query.getPage(), query.getPageSize(), Sort.Direction.DESC, "createdAt");
         return roleRepository.findAll(pageRequest).map(RoleVO::new);
+    }
+
+    /**
+     * 根据用户查询角色
+     */
+    @Override
+    public List<Role> listRoleByUser(Long userId) {
+        return roleRepository.findRolesByUserId(userId);
     }
 }

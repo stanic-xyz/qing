@@ -61,7 +61,7 @@ public class UserConnectionController {
      */
     @PostMapping("valid/{id}")
     public JsonResult<String> validUserConnection(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         userConnectionService.validUserConnection(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -72,7 +72,7 @@ public class UserConnectionController {
      */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidUserConnection(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         userConnectionService.invalidUserConnection(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -83,7 +83,7 @@ public class UserConnectionController {
      */
     @GetMapping("findById/{id}")
     public JsonResult<UserConnectionResponse> findById(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
         UserConnectionVO vo = userConnectionService.findById(id);
         UserConnectionResponse response = UserConnectionMapper.INSTANCE.vo2CustomResponse(vo);

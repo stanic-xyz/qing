@@ -1,5 +1,8 @@
 package cn.chenyunlong.qing.domain.auth.user.mapper;
 
+import cn.chenyunlong.common.infrustructure.CustomMapper;
+import cn.chenyunlong.common.mapper.DateMapper;
+import cn.chenyunlong.common.mapper.GenericEnumMapper;
 import cn.chenyunlong.qing.domain.auth.user.UserToken;
 import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserTokenCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserTokenQuery;
@@ -9,35 +12,30 @@ import cn.chenyunlong.qing.domain.auth.user.dto.request.UserTokenUpdateRequest;
 import cn.chenyunlong.qing.domain.auth.user.dto.response.UserTokenResponse;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserTokenUpdater;
 import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserTokenVO;
-import cn.hutool.core.bean.BeanUtil;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
+@Mapper(uses = {
+    GenericEnumMapper.class,
+    DateMapper.class,
+    CustomMapper.class
+}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserTokenMapper {
 
-    UserTokenMapper INSTANCE = new UserTokenMapper() {
+    UserTokenMapper INSTANCE = Mappers.getMapper(UserTokenMapper.class);
 
-    };
+    UserToken dtoToEntity(UserTokenCreator dto);
 
-    default UserToken dtoToEntity(UserTokenCreator dto) {
-        return BeanUtil.copyProperties(dto, UserToken.class);
-    }
+    UserTokenUpdater request2Updater(UserTokenUpdateRequest request);
 
-    default UserTokenUpdater request2Updater(UserTokenUpdateRequest request) {
-        return BeanUtil.copyProperties(request, UserTokenUpdater.class);
-    }
+    UserTokenCreator request2Dto(UserTokenCreateRequest request);
 
-    default UserTokenCreator request2Dto(UserTokenCreateRequest request) {
-        return BeanUtil.copyProperties(request, UserTokenCreator.class);
-    }
+    UserTokenQuery request2Query(UserTokenQueryRequest request);
 
-    default UserTokenQuery request2Query(UserTokenQueryRequest request) {
-        return BeanUtil.copyProperties(request, UserTokenQuery.class);
-    }
+    UserTokenResponse vo2Response(UserTokenVO vo);
 
-    default UserTokenResponse vo2Response(UserTokenVO vo) {
-        return BeanUtil.copyProperties(vo, UserTokenResponse.class);
-    }
+    UserTokenResponse vo2CustomResponse(UserTokenVO vo);
 
-    default UserTokenResponse vo2CustomResponse(UserTokenVO vo) {
-        return vo2Response(vo);
-    }
+    UserTokenVO entity2Vo(UserToken userToken);
 }
