@@ -24,12 +24,6 @@ export const updateMenu = (id: string, data?: MenuItem) => {
 };
 
 /** 更新动漫标签信息 */
-export const valid = (id: string) => {
-    console.log("请求参数:{}", id);
-    return http.request<QingResponse<string>>("post", serviceUrl + "/valid/" + id);
-};
-
-/** 更新动漫标签信息 */
 export const invalid = (id: string) => {
     console.log("禁用：请求参数:{}", id);
     return http.request<QingResponse<QingPageResponse<string>>>("post", serviceUrl + "/invalid/" + id);

@@ -7,12 +7,15 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+      Breadcrumb: typeof import('./src/components/breadcrumb/index.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     LayBody: typeof import('@layui/layui-vue')['LayBody']
+      LayBreadcrumb: typeof import('@layui/layui-vue')['LayBreadcrumb']
+      LayBreadcrumbItem: typeof import('@layui/layui-vue')['LayBreadcrumbItem']
     LayButton: typeof import('@layui/layui-vue')['LayButton']
     LayCheckbox: typeof import('@layui/layui-vue')['LayCheckbox']
     LayCheckboxGroup: typeof import('@layui/layui-vue')['LayCheckboxGroup']
@@ -36,6 +39,8 @@ declare module 'vue' {
     LaySide: typeof import('@layui/layui-vue')['LaySide']
     LaySpace: typeof import('@layui/layui-vue')['LaySpace']
     LaySubMenu: typeof import('@layui/layui-vue')['LaySubMenu']
+      LayTab: typeof import('@layui/layui-vue')['LayTab']
+      LayTabItem: typeof import('@layui/layui-vue')['LayTabItem']
     LayTable: typeof import('@layui/layui-vue')['LayTable']
     LayTag: typeof import('@layui/layui-vue')['LayTag']
     LayTextarea: typeof import('@layui/layui-vue')['LayTextarea']

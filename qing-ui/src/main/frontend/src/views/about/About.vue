@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import {onMounted, ref} from "vue";
 import COS from "cos-js-sdk-v5";
-import { createTempSecret } from "@/apis/cos";
+import {createTempSecret} from "@/apis/cos";
 
 const data = ref();
 const username = ref("username");
@@ -62,5 +62,4 @@ const submitFile = () => {
 </script>
 
 <style scoped>
-@import url(../../assets/css/common/common.css);
 </style>
