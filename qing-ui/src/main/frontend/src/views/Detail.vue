@@ -102,9 +102,9 @@
       <div class="blockline1" style="margin: 8px"></div>
       <div id="playlist-div" class="baseblock">
         <div class="blocktitle">在线播放：</div>
-        <ul v-for="(listInfo, index) in data.playList" id="menu0" :key="index" class="menu0">
-          <li v-if="index === data.menuIndex" style="display: block" v-bind:class="{ on: index === data.menuIndex }" @click="next(listInfo.id)">
-            {{ listInfo?.name }}
+        <ul v-for="(list, index) in data.anime.playLists" id="menu0" :key="index" class="menu0">
+          <li v-if="index === data.menuIndex" style="display: block" v-bind:class="{ on: index === data.menuIndex }" @click="next(list.id)">
+            {{ list?.name }}
           </li>
         </ul>
         <div id="main0" class="main0">
@@ -223,9 +223,9 @@
 
 <script lang="ts" setup>
 import {onMounted, reactive, ref} from "vue";
-import {findById} from "@/apis/anime";
+import {findDetailById} from "@/apis/anime";
 import {useRoute, useRouter} from "vue-router";
-import type {Anime} from "@/apis/anime/types";
+import type {AnimeDetail} from "@/apis/anime/types";
 
 const data = reactive({
   activeIndex: "1",
@@ -234,14 +234,7 @@ const data = reactive({
   menuIndex: 0,
   time: "2020年01月15日 21时50分19秒",
   loading: true,
-  anime: {} as Anime,
-  playList: [
-    {
-      id: 1,
-      name: "列表1",
-      episodeList: [{name: "test"}],
-    },
-  ],
+  anime: {} as AnimeDetail,
   reportTypes: [
     {
       id: "1",
@@ -254,7 +247,7 @@ onMounted(() => {
   const id = useRoute().params.animeId;
   console.log("加载了id", id);
   if (typeof id === "string") {
-    findById(Number.parseInt(id))
+    findDetailById(Number.parseInt(id))
             .then((response) => {
               console.log("获取到了结果了", response.result);
               data.anime = response.result;

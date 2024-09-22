@@ -79,5 +79,5 @@ function changeWeek(id: Number) {
 </script>
 
 <style scoped>
-@import url("@/assets/css/common/base.css");
+@import url("@/assets/css/common/base-css.css");
 </style>

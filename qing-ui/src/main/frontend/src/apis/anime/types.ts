@@ -1,3 +1,5 @@
+import type {PlayListDetail} from "@/apis/playList/types";
+
 export interface Anime {
     id: number;
     animeId: string;
@@ -19,4 +21,8 @@ export interface Anime {
     tagIds: number[];
     officialWebsite: string;
     playHeat: string;
+}
+
+export interface AnimeDetail extends Anime {
+    playLists: PlayListDetail[];
 }

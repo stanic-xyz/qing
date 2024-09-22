@@ -1,109 +1,137 @@
+<template>
+  <div class="qing-header">
+    <div class="qing-header-wrapper x-container">
+      <div class="qing-header-logo">
+        <img src="../../assets/img/logo.png" alt="qing" height="38px"/>
+      </div>
+      <div class="qing-header-content">
+        <div class="qing-header-tab active" v-for="(link, index) in data.links" :key="index" @click="handleSelect(link)">{{ link.name }}</div>
+      </div>
+      <div class="qing-header-search">
+        <input name="query" id="query" type="search" class="qing-header-search-input" placeholder="输入番名搜索" maxlength="8" value=""/>
+        <button class="qing-header-search-icon">
+          <lay-icon size="24px" type="layui-icon-search"></lay-icon>
+        </button>
+      </div>
+      <div class="qing-header-operation">
+        <button class="qing-header-operation-history">
+          <lay-icon size="24px" type="layui-icon-time"></lay-icon>
+        </button>
+        <lay-dropdown trigger="hover" updateAtScroll>
+          <button class="qing-header-operation-login">用户中心</button>
+          <template #content>
+            <lay-dropdown-menu>
+              <lay-dropdown-menu-item>选项一</lay-dropdown-menu-item>
+              <lay-dropdown-menu-item>选项二</lay-dropdown-menu-item>
+              <lay-dropdown-menu-item>选项三</lay-dropdown-menu-item>
+            </lay-dropdown-menu>
+          </template>
+        </lay-dropdown>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style lang="scss" scoped>
-@import "../../assets/css/header.css";
-
-.header-wrapper {
+.qing-header {
+  position: sticky;
   width: 100%;
-  box-sizing: border-box;
-  background-color: #292929;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  padding: 1rem 1rem 1rem 1rem;
+  background-color: #212529;
+  padding: 16px;
 
-  .header-container {
-    width: 1140px;
-    height: 100px;
-    padding-left: 1rem;
+  .qing-header-wrapper {
     display: flex;
-    flex-direction: row;
-    align-items: center;
     justify-content: space-between;
+    flex-direction: row;
+    height: 40px;
+    align-items: center;
 
-    .logo {
+    .qing-header-logo {
       display: block;
-      padding: 0 1rem;
-      height: 100px;
+    }
 
-      a {
-        font-size: 20px;
+    .qing-header-content {
+      background: #212529;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      align-content: space-between;
+      margin-left: 1rem;
+      margin-right: auto !important;
+
+      .qing-header-logo {
+        height: 38px;
+      }
+
+      .qing-header-tab {
+        color: #e8e8e8;
+        font-size: 16px;
+        margin-right: 1rem;
+        margin-left: 1rem !important;
+        cursor: pointer;
+        display: inline-block;
+
+        ::after {
+          background-color: gray;
+        }
+
+        &:hover {
+          color: red;
+        }
       }
     }
-  }
 
-  .nav {
-    width: 1140px;
-    max-width: 1140px;
-    height: 56px;
-    background-color: #292929;
-    margin: auto;
-    padding-left: 1rem;
+    .qing-header-search {
+      height: 36px;
+      display: flex;
+      margin-right: 1rem !important;
+      border-radius: 5px;
 
-    .nav_button {
-      box-sizing: border-box;
-      display: inline-block;
-      height: 56px;
-      line-height: 56px;
-      padding: 0;
-      margin: 0 10px;
-      font-size: 1.2em;
-      text-decoration: none;
-      border-top-left-radius: 1px;
-      border-top-right-radius: 2px;
-      color: white;
+      .qing-header-search-input {
+        padding: 0 1rem;
+        color: var(--bs-body-color);
+      }
+
+      .qing-header-search-icon {
+        height: 36px;
+        width: 36px;
+      }
     }
 
-    .nav_button:hover,
-    .nav_button:active {
-      background-color: #303030;
-      color: red;
-    }
+    .qing-header-operation {
+      display: flex;
+      justify-content: center;
 
-    .nav_button_current {
-      background-color: #303030;
-      color: red;
-      position: relative;
+      .qing-header-operation-history {
+        color: white;
+        background-color: #dc3545;
+        border-color: #dc3545;
+        height: 36px;
+        width: 36px;
+        font-size: 16px;
+        margin-right: 2px;
+        border-radius: 5px;
+      }
 
-      &:after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        bottom: -1rem;
-        transform: translateX(-50%);
-        width: 100%;
-        height: 2px;
-        background-color: red;
+      .qing-header-operation-login {
+        color: white;
+        height: 36px;
+        border-radius: 5px;
+        padding: 0 1rem;
+        background-color: #dc3545;
+        border-color: #dc3545;
       }
     }
   }
 }
 </style>
 
-<template>
-  <div class="header-wrapper">
-    <div class="header-container">
-      <div id="logo">
-        <router-link to="/"><span style="display: inline-block; padding-left: 1rem">飞翔动漫</span></router-link>
-      </div>
-    </div>
-    <div class="nav" style="position: relative; left: 0">
-      <ul>
-        <li v-for="(link, index) in data.links" v-bind:key="index">
-          <router-link :class="{ nav_button_current: data.activeIndex === link.index }" class="nav_button" v-bind:to="link.path" @click="handleSelect(link.index)">{{ link.name }}</router-link>
-        </li>
-      </ul>
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { onMounted, reactive } from "vue";
-import { userInfoStore } from "@/stores/session";
-import { useRouter } from "vue-router";
+import {onMounted, reactive} from "vue";
+import {userInfoStore} from "@/stores/session";
+import {useRouter} from "vue-router";
 
 const router = useRouter();
-const src = "https://files.authing.co/user-contents/photos/38c766c6-3e98-4321-a171-b95e60e379b8.png";
 const data = reactive({
   time: new Date(),
   activeIndex: 1,
@@ -137,11 +165,11 @@ const data = reactive({
 });
 
 onMounted(() => {
-  console.log("Header加载完毕！");
+  console.log("Header加载成功！");
 });
 
 function handleSelect(event: any) {
-  data.activeIndex = event;
+  router.push({path: event.path});
 }
 
 function handleLogin() {
