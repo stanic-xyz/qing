@@ -49,6 +49,10 @@ public class QingUser extends BaseJpaAggregate {
     private String nickname;
 
     private String password;
+
+    @FieldDesc(name = "密码过期")
+    private Boolean credentialsExpired;
+
     private String phone;
     private String email;
     private String avatar;

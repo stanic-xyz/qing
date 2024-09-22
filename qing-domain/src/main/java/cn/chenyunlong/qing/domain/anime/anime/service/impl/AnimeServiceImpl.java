@@ -169,7 +169,6 @@ public class AnimeServiceImpl extends BaseJpaService implements IAnimeService {
                 playListVO.setEpisodeList(episodes.stream().map(EpisodeMapper.INSTANCE::entityToVo).collect(Collectors.toList()));
                 return playListVO;
             }).collect(Collectors.toList()));
-
                 return animeDetailVO;
             }
         ).orElse(null);

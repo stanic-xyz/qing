@@ -56,7 +56,7 @@ public interface IUserService {
     /**
      * 根据用户id查询用户
      */
-    Optional<QingUser> loadUserByUserId(String userId);
+    Optional<QingUser> loadUserById(Long userId);
 
     /**
      * 根据用户昵称查询用户，查询用户昵称是否冲突

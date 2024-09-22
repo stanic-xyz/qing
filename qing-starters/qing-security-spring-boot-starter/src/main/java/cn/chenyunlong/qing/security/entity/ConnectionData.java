@@ -36,10 +36,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConnectionData implements Serializable {
+
     /**
      * 本地用户id
      */
-    private String userId;
+    private Long userId;
     /**
      * 第三方服务商
      */

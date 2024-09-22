@@ -17,7 +17,9 @@ import cn.chenyunlong.qing.domain.auth.admin.repository.AdminAccountPlatformRelR
 import cn.chenyunlong.qing.domain.auth.admin.repository.AdminAccountRepository;
 import cn.chenyunlong.qing.domain.auth.admin.repository.AdminAccountRoleRelRepository;
 import cn.chenyunlong.qing.domain.auth.admin.service.IAdminAccountService;
+import cn.chenyunlong.qing.domain.auth.platform.Platform;
 import cn.chenyunlong.qing.domain.auth.platform.repository.PlatformRepository;
+import cn.chenyunlong.qing.domain.auth.role.Role;
 import cn.chenyunlong.qing.domain.auth.role.repository.RoleRepository;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
@@ -119,16 +121,18 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
         List<AdminAccountRoleRel> adminAccountRoleRelList =
             adminAccountRoleRelRepository.listRoleByAccountId(accountId);
 
-        List<Long> oldRoleIds = adminAccountRoleRelList.stream().map(AdminAccountRoleRel::getId)
-                                    .toList();
-        if (oldRoleIds.isEmpty()) {
-            // 移除当前不存在的角色列表
+        List<Long> oldRoleIds = adminAccountRoleRelList.stream().map(AdminAccountRoleRel::getId).toList();
+        // 移除当前不存在的角色列表
+        if (CollUtil.isNotEmpty(oldRoleIds)) {
             adminAccountRoleRelRepository.deleteAllByIds(oldRoleIds);
         }
-        List<AdminAccountRoleRel> roleRelList =
-            roleRepository.findByIds(roleIds).stream().map(role ->
-                                                               AdminAccountRoleRel.builder().adminAccountId(accountId).roleId(role.getId())
-                                                                   .build()).toList();
+        List<Role> roleList = roleRepository.findByIds(roleIds);
+        // 判断角色是否全部存在
+        Assert.isTrue(CollUtil.size(roleList) == CollUtil.size(roleIds), "角色不存在");
+        List<AdminAccountRoleRel> roleRelList = roleList.stream().map(role -> AdminAccountRoleRel.builder()
+                                                                                  .adminAccountId(accountId)
+                                                                                  .roleId(role.getId())
+                                                                                  .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
             adminAccountRoleRelRepository.saveAll(roleRelList);
         }
@@ -151,10 +155,12 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
             // 移除当前不存在的角色列表
             adminAccountPlatformRelRepository.deleteAllByIds(oldPlatformRels);
         }
+        List<Platform> platformList = platformRepository.findByIds(platformIds);
+        // 判断平台是否全部存在
+        Assert.isTrue(CollUtil.size(platformList) == CollUtil.size(platformIds), "平台不存在");
         List<AdminAccountPlatformRel> roleRelList =
-            platformRepository.findByIds(platformIds).stream().map(role ->
-                                                                       AdminAccountPlatformRel.builder().adminAccountId(accountId).platformId(role.getId())
-                                                                           .build()).toList();
+            platformList.stream().map(role -> AdminAccountPlatformRel.builder().adminAccountId(accountId).platformId(role.getId())
+                                                  .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
             adminAccountPlatformRelRepository.saveAll(roleRelList);
         }

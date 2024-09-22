@@ -17,7 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Setter
 @ToString
 @Entity
-@Table(name = "admin_account")
+@Table(name = "sys_admin_account")
 public class AdminAccount extends BaseJpaAggregate {
 
     @FieldDesc(name = "手机号")

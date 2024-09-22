@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 
 @GenRepository
 @Entity
-@Table(name = "role_resource_rel")
+@Table(name = "sys_role_resource_rel")
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class RoleResourceRel extends BaseJpaAggregate {

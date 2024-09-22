@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @GenRepository
 @Entity
-@Table(name = "admin_account_role_rel")
+@Table(name = "sys_admin_account_role_rel")
 @Data
 @Builder
 @NoArgsConstructor

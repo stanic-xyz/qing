@@ -26,7 +26,7 @@ public interface UmsUserDetailsService extends UserDetailsService, UserDetailsRe
      * @throws UsernameNotFoundException 没有此 userId 的用户
      * @see UserDetailsService#loadUserByUsername(String)
      */
-    UserDetails loadUserByUserId(String userId) throws UsernameNotFoundException;
+    UserDetails loadUserByUserId(Long userId) throws UsernameNotFoundException;
 
     /**
      * {@link #existedByNickNames(String...)} usernames 生成规则.

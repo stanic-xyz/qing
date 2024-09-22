@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 @GenRepository
 @Entity
-@Table(name = "admin_account_platform_rel")
+@Table(name = "sys_admin_account_platform_rel")
 @Data
 @Builder
 @NoArgsConstructor

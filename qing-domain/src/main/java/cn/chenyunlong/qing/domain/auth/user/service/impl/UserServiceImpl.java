@@ -125,9 +125,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Optional<QingUser> loadUserByUserId(String userId) {
-        QingUser qingUser = userRepository.findUserByUserId(userId);
-        return Optional.ofNullable(qingUser);
+    public Optional<QingUser> loadUserById(Long userId) {
+        return userRepository.findById(userId);
     }
 
     @Override
