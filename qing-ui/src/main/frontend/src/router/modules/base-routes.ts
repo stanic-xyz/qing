@@ -153,7 +153,7 @@ const routerList = [
                 meta: {
                     requiresAuth: false,
                 },
-                component: () => import("../../views/login/Login.vue"),
+                component: Login,
             },
         ],
     },

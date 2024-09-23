@@ -1,18 +1,19 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.config.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.vitest.json"
-    }
-  ]
-  //  "compilerOptions": {
-  //      "importsNotUsedAsValues": "remove",
-  //      "isolatedModules": false,
-  //  }
+  "files" : [],
+  "references" : [
+    //    {
+    //      "path" : "./tsconfig.config.json"
+    //    },
+    //    {
+    //      "path" : "./tsconfig.app.json"
+    //    },
+    //    {
+    //      "path" : "./tsconfig.vitest.json"
+    //    }
+  ],
+  "compilerOptions" : {
+    "importsNotUsedAsValues" : "remove",
+    "verbatimModuleSyntax" : true,
+    "ignoreDeprecations" : "5.0"
+  }
 }
