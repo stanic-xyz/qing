@@ -13,8 +13,8 @@
 
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
-import COS from "cos-js-sdk-v5";
 import {createTempSecret} from "@/apis/cos";
+import * as COS from "cos-js-sdk-v5";
 
 const data = ref();
 const username = ref("username");
@@ -61,5 +61,4 @@ const submitFile = () => {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

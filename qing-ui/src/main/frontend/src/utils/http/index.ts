@@ -1,11 +1,8 @@
-import moment from "moment";
 import type {CancelRequestSource, QingHttpRequestConfig, RequestInterceptors, RequestMethods} from "@/utils/http/types";
 import type {AxiosInstance, AxiosRequestConfig} from "axios";
 import axios from "axios";
 import {userInfoStore} from "@/stores/session";
 import {layer} from "@layui/layui-vue";
-
-moment.locale("zh-cn");
 
 const defaultConfig: AxiosRequestConfig = {
     // 请求超时时间

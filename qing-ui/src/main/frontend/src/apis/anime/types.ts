@@ -9,7 +9,7 @@ export interface Anime {
     districtId: number;
     instruction: string;
     districtName: string;
-    typeId: number;
+    typeId: Number;
     typeName: string;
     originalName: string;
     otherName: string;

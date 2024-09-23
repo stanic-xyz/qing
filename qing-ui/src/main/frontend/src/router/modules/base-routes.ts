@@ -184,9 +184,9 @@ const routerList = [
 ];
 
 // 假设你有一个pages文件夹，里面包含了多个页面组件
-const pages = import.meta.glob("../../views/anime/*.vue");
+// const pages = import.meta.glob("../../views/anime/*.vue");
 
-console.log("读取到所有的页面信息", pages);
+// console.log("读取到所有的页面信息", pages);
 
 // Object.keys(pages).forEach((key) => {
 //     console.log("modList", key);
