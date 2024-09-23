@@ -109,7 +109,7 @@
         </ul>
         <div id="main0" class="main0">
           <div
-            v-for="(listInfo, index) in data.playList"
+                  v-for="(listInfo, index) in data.anime.playLists"
             :key="index"
             :style="{
               display: index === currentPlayListId ? 'block' : 'none',

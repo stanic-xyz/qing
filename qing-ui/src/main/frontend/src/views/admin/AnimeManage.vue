@@ -141,6 +141,15 @@ onMounted(() => {
   reloadAnimeInfo();
 });
 
+interface Page {
+  disabled: boolean;
+  current: number;
+  limit: number;
+  total: number;
+  pages: number;
+  limits: number[];
+}
+
 const fullscreenTargetRef2 = ref(null);
 
 const loading = ref(false);
