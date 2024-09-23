@@ -7,16 +7,16 @@ import routerList from "@/router/modules/base-routes";
  * 如何匹配所有文件请看：https://github.com/mrmlnc/fast-glob#basic-syntax
  * 如何排除文件请看：https://cn.vitejs.dev/guide/features.html#negative-patterns
  */
-const modules: Record<string, any> = import.meta.glob(["./modules/**/*.ts", "!./modules/**/remaining.ts"], {
-    eager: true,
-});
+// const modules: Record<string, any> = import.meta.glob(["./modules/**/*.ts", "!./modules/**/remaining.ts"], {
+//     eager: true,
+// });
 
 /** 原始静态路由（未做任何处理） */
 const routes: any[] = routerList;
 
-Object.keys(modules).forEach((key) => {
-    routes.push(modules[key].default);
-});
+// Object.keys(modules).forEach((key) => {
+//     routes.push(modules[key].default);
+// });
 
 /** 路由白名单 */
 const whiteList = ["/login"];
@@ -45,7 +45,7 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, n
     for (let i = 0; i < whiteList.length; i++) {
         if (to.path == whiteList[i]) {
             next();
-            return
+            return;
         }
     }
     const store = userStore();

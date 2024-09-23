@@ -47,7 +47,7 @@
             </lay-select>
           </lay-form-item>
           <lay-form-item label="类型">
-            <lay-checkbox-group v-model="animeType">
+            <lay-checkbox-group>
               <lay-checkbox name="like" skin="primary" value="1">写作</lay-checkbox>
               <lay-checkbox name="like" skin="primary" value="2">画画</lay-checkbox>
               <lay-checkbox name="like" skin="primary" value="3">运动</lay-checkbox>
@@ -104,7 +104,7 @@
                 <lay-input v-model="addForm.formData.officialWebsite" :disabled="false"></lay-input>
               </lay-form-item>
               <lay-form-item label="类型">
-                <lay-checkbox-group v-model="addForm.formData.typeId">
+                <lay-checkbox-group>
                   <lay-checkbox name="like" skin="primary" value="1">写作</lay-checkbox>
                   <lay-checkbox name="like" skin="primary" value="2">画画</lay-checkbox>
                   <lay-checkbox name="like" skin="primary" value="3">运动</lay-checkbox>
@@ -183,7 +183,7 @@ const columns = [
   { title: "操作", width: "150px", customSlot: "operator", key: "operator", fixed: "right", ignoreExport: true },
 ];
 
-const animeType = ref([1]);
+const animeType = ref<string[]>([]);
 // 编辑动漫信息相关
 const animeDetailForm = ref<Anime>({} as Anime);
 const editShade = ref(false);
