@@ -6,10 +6,11 @@ import QingFooter from "@/views/common/QingFooter.vue";
 <template>
   <div>
     <QingHeader></QingHeader>
-    <div class="x-container">
+    <div id="main-content" class="x-container" style="min-height: 85vh">
       <router-view></router-view>
     </div>
     <QingFooter></QingFooter>
+    <lay-backtop target="#main-content"></lay-backtop>
   </div>
 </template>
 
