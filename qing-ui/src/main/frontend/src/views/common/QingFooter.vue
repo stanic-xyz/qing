@@ -1,73 +1,49 @@
 <template>
-  <footer id="footer">
-    <div id="footer_container">
-      <div class="pannel">
-        <div class="pannel_head">
-          <h3 class="title">快速链接：</h3>
-        </div>
-        <ul class="link_text">
-          <li>
-            <a href="https://www.chenyunlong.cn" target="_blank" title="博客地址">博客地址</a>
-          </li>
-          <li>
-            <a href="https://www.chenyunlong.cn/admin" target="_blank" title="博客后台地址">博客后台地址</a>
-          </li>
-          <li>
-            <a href="https://status.chenyunlong.cn" target="_blank" title="状态查看">服务器状态</a>
-          </li>
-        </ul>
-
-        <span class="email">
-          如果你有任何关于此网站的问题，请发邮件至
-          <a href="mailto:bangumi@chenyunlong.cn">bangumi@chenyunlong.cn</a>
-        </span>
+  <div class="qing-footer">
+    <div class="footer_container x-container">
+      <div>快速链接</div>
+      <div class="link_text">
+        <a href="https://www.chenyunlong.cn" target="_blank" title="博客地址">博客地址</a>
+        <a href="https://www.chenyunlong.cn/admin" target="_blank" title="博客后台地址">博客后台地址</a>
+        <a href="https://status.chenyunlong.cn" target="_blank" title="状态查看">服务器状态</a>
       </div>
+      <span class="email">
+        如果你有任何关于此网站的问题，请发邮件至
+        <a href="mailto:bangumi@chenyunlong.cn">bangumi@chenyunlong.cn</a>
+      </span>
+      <div class="email">Copyright © 2024 动漫狂人</div>
     </div>
-  </footer>
+  </div>
 </template>
 <script lang="ts" setup>
-import {onMounted} from "vue";
+import { onMounted } from "vue";
 
 onMounted(() => {
   console.log("Footer加载完毕！");
 });
 </script>
 <style lang="scss" scoped>
-#footer_container {
-  max-width: 1140px;
+.qing-footer {
+  width: 100%;
+  background-color: #212529;
+  padding: 16px;
+  color: #e8e8e8;
 
-  .link_text {
-    padding: 10px 0;
-    color: #ddd;
+  .footer_container {
+    width: 1140px;
+    max-width: 1140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #e8e8e8;
 
-    li {
-      margin-right: 10px;
-      color: white;
-
-      &:hover {
-        text-decoration: underline;
-      }
-
-      a {
-        color: #ddd;
-      }
-    }
-  }
-
-  .email {
     a {
-      color: #ddd;
+      padding-right: 16px;
+      color: #e8e8e8;
 
       &:hover {
-        text-decoration: underline;
+        color: red;
       }
-    }
-  }
-
-  .pannel {
-    .pannel_head {
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.125);
     }
   }
 }
