@@ -25,6 +25,10 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+defaults:
+  run:
+    working-directory: docs
+
 jobs:
   # 构建工作
   build:
