@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.application.manager.web.anime;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.anime.district.dto.creator.DistrictCreator;
 import cn.chenyunlong.qing.domain.anime.district.dto.query.DistrictQuery;
 import cn.chenyunlong.qing.domain.anime.district.dto.request.DistrictCreateRequest;
@@ -15,7 +14,6 @@ import cn.chenyunlong.qing.domain.anime.district.dto.vo.DistrictVO;
 import cn.chenyunlong.qing.domain.anime.district.mapper.DistrictConverter;
 import cn.chenyunlong.qing.domain.anime.district.service.IDistrictService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -111,7 +109,7 @@ public class DistrictController {
      * findByPage request
      */
     @PostMapping("page")
-    public JsonResult<PageResult<DistrictResponse>> page(
+    public JsonResult<Page<DistrictResponse>> page(
         @RequestBody
         PageRequestWrapper<DistrictQueryRequest> request) {
         PageRequestWrapper<DistrictQuery> wrapper = new PageRequestWrapper<>();
@@ -120,14 +118,6 @@ public class DistrictController {
         wrapper.setPageSize(request.getPageSize());
         wrapper.setPage(request.getPage());
         Page<DistrictVO> page = districtService.findByPage(wrapper);
-        return JsonResult.success(
-            PageResult.of(
-                page.getContent().stream()
-                    .map(DistrictConverter.INSTANCE::vo2CustomResponse)
-                    .collect(Collectors.toList()),
-                page.getTotalElements(),
-                page.getSize(),
-                page.getNumber())
-        );
+        return JsonResult.success(page.map(DistrictConverter.INSTANCE::vo2CustomResponse));
     }
 }
