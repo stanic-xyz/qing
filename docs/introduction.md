@@ -28,4 +28,4 @@ docker run -d --name halo -p 8090:8090 -v ~/.halo2:/root/.halo2 halohub/halo:2.1
 
 [![license](https://img.shields.io/badge/licence-MuLan%20PSL%20V2.0-orange?style=flat-square)](https://github.com/stanic-xyz/qing/blob/main/LICENSE.txt)
 
-Qing 使用 Mulan PSL v2 协议开源，请遵守开源协议。
+本项目基于 Mulan PSL v2 开源协议开源，请遵守开源协议。
