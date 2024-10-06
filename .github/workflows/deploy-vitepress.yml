@@ -44,6 +44,8 @@ jobs:
         with:
           node-version: 20
       - uses: pnpm/action-setup@v4.0.0 # 如果使用 pnpm，请取消注释
+        with: 
+          version: 9.6.0
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Install dependencies
