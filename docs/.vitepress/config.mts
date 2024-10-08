@@ -5,12 +5,25 @@ export default defineConfig({
     base: "/qing",
     title: "Qing",
     description: "项目文档",
+    head: [
+        ['link', {rel: 'icon', type: 'image/svg+xml', href: '/logo-mini.svg'}],
+        ['link', {rel: 'icon', type: 'image/png', href: '/favicon.png'}],
+    ],
     themeConfig: {
+        search: {
+            provider: 'local'
+        },
+        logo: {
+            src: '/logo-mini.svg',
+            alt: 'Qing',
+            width: 24, height: 24
+        },
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             {text: '首页', link: '/'},
-            {text: '示例', link: '/markdown-examples'},
-            {text: '设计', link: '/design/动漫管理网站'}
+            {text: '文档', link: '/category/文档'},
+            {text: '设计', link: '/design/动漫管理网站'},
+            {text: '代码生成器', link: '/category/代码生成器'}
         ],
         sidebar: [
             {
@@ -19,29 +32,14 @@ export default defineConfig({
                 link: '/introduction'
             },
             {
-                text: '用户指南',
-                collapsed: false,
+                text: '设计文档',
+                collapsed: true,
                 items: [
-                    {
-                        text: 'Markdown 示例',
-                        collapsed: true,
-                        items: [
-                            {
-                                text: 'Markdown Examples', link: '/markdown-examples'
-                            }
-                        ]
-                    },
-                    {text: '代码生成器', link: '/代码生成器/readme.md'},
-                    {
-                        text: '设计文档',
-                        collapsed: true,
-                        items: [
-                            {text: '总体设计', link: '/design/动漫管理网站'},
-                            {text: '数据库设计', link: '/db/readme'},
-                        ]
-                    },
+                    {text: '总体设计', link: '/design/动漫管理网站'},
+                    {text: '数据库设计', link: '/db/readme'},
                 ]
             },
+            {text: '代码生成器', link: '/category/代码生成器'},
             {
                 text: '关于文档',
                 collapsed: false,
@@ -51,10 +49,10 @@ export default defineConfig({
                 text: '博客',
                 collapsed: true,
                 items: [
-                    {text: 'K3s', link: '/blog/K3s环境使用Let‘s Encrypt证书的部署及自动配置https域名-阿里云域名解析管理'},
-                    {text: '安装Ubuntu', link: '/blog/在Ubuntu中安装PostgreSql并配置远程访问'},
-                    {text: '安装Harbor', link: '/blog/安装Harbor'},
-                    {text: 'Docker镜像', link: '/blog/搭建Docker镜像加速'}
+                    {text: 'K3s', link: '/博客/K3s环境使用Let‘s Encrypt证书的部署及自动配置https域名-阿里云域名解析管理'},
+                    {text: '安装Ubuntu', link: '/博客/在Ubuntu中安装PostgreSql并配置远程访问'},
+                    {text: '安装Harbor', link: '/博客/安装Harbor'},
+                    {text: 'Docker镜像', link: '/博客/搭建Docker镜像加速'}
                 ]
             },
         ],
@@ -71,4 +69,11 @@ export default defineConfig({
     },
     lastUpdated: true,
     ignoreDeadLinks: true,
+    markdown: {
+        math: true,
+        image: {
+            lazyLoading: true
+        },
+        anchor: {}
+    },
 })

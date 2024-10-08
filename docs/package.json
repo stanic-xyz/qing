@@ -1,5 +1,9 @@
 {
   "devDependencies" : {
+    "@types/node" : "^22.7.4",
+    "markdown-it-anchor" : "^9.2.0",
+    "markdown-it-mathjax3" : "^4.3.2",
+    "markdown-it-plantuml" : "^1.4.1",
     "vitepress" : "^1.3.4"
   },
   "scripts" : {
