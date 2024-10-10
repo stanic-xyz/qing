@@ -53,20 +53,14 @@ public class TemplateServiceImpl implements ITemplateService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validTemplate(Long id) {
         EntityOperations.doUpdate(templateRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidTemplate(Long id) {
         EntityOperations.doUpdate(templateRepository)

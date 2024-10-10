@@ -53,20 +53,14 @@ public class TestDomainServiceImpl implements ITestDomainService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validTestDomain(Long id) {
         EntityOperations.doUpdate(testDomainRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidTestDomain(Long id) {
         EntityOperations.doUpdate(testDomainRepository)

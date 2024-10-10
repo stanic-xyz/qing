@@ -35,9 +35,6 @@ public class TemplateCategoryController {
 
     private final ITemplateCategoryService templateCategoryService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createTemplateCategory(
         @RequestBody
@@ -46,32 +43,27 @@ public class TemplateCategoryController {
         return JsonResult.success(templateCategoryService.createTemplateCategory(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateTemplateCategory")
     public JsonResult<String> updateTemplateCategory(
-        @RequestBody
-        TemplateCategoryUpdateRequest request) {
+            @RequestBody
+            TemplateCategoryUpdateRequest request) {
         TemplateCategoryUpdater updater = TemplateCategoryMapper.INSTANCE.request2Updater(request);
         templateCategoryService.updateTemplateCategory(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validTemplateCategory(@PathVariable Long id) {
+    public JsonResult<String> validTemplateCategory(
+        @PathVariable
+        Long id) {
         templateCategoryService.validTemplateCategory(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidTemplateCategory(@PathVariable Long id) {
+    public JsonResult<String> invalidTemplateCategory(
+        @PathVariable
+        Long id) {
         templateCategoryService.invalidTemplateCategory(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -86,9 +78,6 @@ public class TemplateCategoryController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<TemplateCategoryResponse>> page(
         @RequestBody

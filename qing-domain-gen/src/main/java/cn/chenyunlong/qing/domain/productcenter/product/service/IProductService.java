@@ -19,14 +19,8 @@ public interface IProductService {
      */
     void updateProduct(ProductUpdater updater);
 
-    /**
-     * valid
-     */
     void validProduct(Long id);
 
-    /**
-     * invalid
-     */
     void invalidProduct(Long id);
 
     /**

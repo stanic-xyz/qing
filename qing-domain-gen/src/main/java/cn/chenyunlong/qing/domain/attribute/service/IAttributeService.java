@@ -19,14 +19,8 @@ public interface IAttributeService {
      */
     void updateAttribute(AttributeUpdater updater);
 
-    /**
-     * valid
-     */
     void validAttribute(Long id);
 
-    /**
-     * invalid
-     */
     void invalidAttribute(Long id);
 
     /**

@@ -35,18 +35,14 @@ public class GoodsController {
 
     private final IGoodsService goodsService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createGoods(@RequestBody GoodsCreateRequest request) {
+    public JsonResult<Long> createGoods(
+        @RequestBody
+        GoodsCreateRequest request) {
         GoodsCreator creator = GoodsMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(goodsService.createGoods(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateGoods")
     public JsonResult<String> updateGoods(@RequestBody GoodsUpdateRequest request) {
         GoodsUpdater updater = GoodsMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class GoodsController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validGoods(@PathVariable Long id) {
+    public JsonResult<String> validGoods(
+        @PathVariable
+        Long id) {
         goodsService.validGoods(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidGoods(@PathVariable Long id) {
+    public JsonResult<String> invalidGoods(
+        @PathVariable
+        Long id) {
         goodsService.invalidGoods(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class GoodsController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<GoodsResponse>> page(
         @RequestBody

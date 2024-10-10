@@ -35,18 +35,14 @@ public class ProductSkuController {
 
     private final IProductSkuService productSkuService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createProductSku(@RequestBody ProductSkuCreateRequest request) {
+    public JsonResult<Long> createProductSku(
+        @RequestBody
+        ProductSkuCreateRequest request) {
         ProductSkuCreator creator = ProductSkuMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(productSkuService.createProductSku(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateProductSku")
     public JsonResult<String> updateProductSku(@RequestBody ProductSkuUpdateRequest request) {
         ProductSkuUpdater updater = ProductSkuMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class ProductSkuController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validProductSku(@PathVariable Long id) {
+    public JsonResult<String> validProductSku(
+        @PathVariable
+        Long id) {
         productSkuService.validProductSku(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidProductSku(@PathVariable Long id) {
+    public JsonResult<String> invalidProductSku(
+        @PathVariable
+        Long id) {
         productSkuService.invalidProductSku(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class ProductSkuController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<ProductSkuResponse>> page(
         @RequestBody

@@ -33,9 +33,6 @@ public class TestDomainController {
 
     private final ITestDomainService testDomainService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createTestDomain(
         @RequestBody
@@ -44,21 +41,15 @@ public class TestDomainController {
         return JsonResult.success(testDomainService.createTestDomain(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateTestDomain")
     public JsonResult<String> updateTestDomain(
-        @RequestBody
-        TestDomainUpdateRequest request) {
+            @RequestBody
+            TestDomainUpdateRequest request) {
         TestDomainUpdater updater = TestDomainMapper.INSTANCE.request2Updater(request);
         testDomainService.updateTestDomain(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validTestDomain(
         @PathVariable
@@ -67,9 +58,6 @@ public class TestDomainController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidTestDomain(
         @PathVariable
@@ -90,9 +78,6 @@ public class TestDomainController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<TestDomainResponse>> page(
         @RequestBody

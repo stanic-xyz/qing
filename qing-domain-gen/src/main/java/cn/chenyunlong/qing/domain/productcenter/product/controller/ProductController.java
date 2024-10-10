@@ -35,18 +35,14 @@ public class ProductController {
 
     private final IProductService productService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createProduct(@RequestBody ProductCreateRequest request) {
+    public JsonResult<Long> createProduct(
+        @RequestBody
+        ProductCreateRequest request) {
         ProductCreator creator = ProductMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(productService.createProduct(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateProduct")
     public JsonResult<String> updateProduct(@RequestBody ProductUpdateRequest request) {
         ProductUpdater updater = ProductMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class ProductController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validProduct(@PathVariable Long id) {
+    public JsonResult<String> validProduct(
+        @PathVariable
+        Long id) {
         productService.validProduct(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidProduct(@PathVariable Long id) {
+    public JsonResult<String> invalidProduct(
+        @PathVariable
+        Long id) {
         productService.invalidProduct(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class ProductController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<ProductResponse>> page(
         @RequestBody

@@ -53,20 +53,14 @@ public class VerifyRuleServiceImpl implements IVerifyRuleService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validVerifyRule(Long id) {
         EntityOperations.doUpdate(verifyRuleRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidVerifyRule(Long id) {
         EntityOperations.doUpdate(verifyRuleRepository)

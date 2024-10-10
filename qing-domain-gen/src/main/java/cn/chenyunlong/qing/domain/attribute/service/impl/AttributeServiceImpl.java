@@ -53,20 +53,14 @@ public class AttributeServiceImpl implements IAttributeService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validAttribute(Long id) {
         EntityOperations.doUpdate(attributeRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidAttribute(Long id) {
         EntityOperations.doUpdate(attributeRepository)

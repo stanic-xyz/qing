@@ -19,14 +19,8 @@ public interface IGoodsLifeCycleService {
      */
     void updateGoodsLifeCycle(GoodsLifeCycleUpdater updater);
 
-    /**
-     * valid
-     */
     void validGoodsLifeCycle(Long id);
 
-    /**
-     * invalid
-     */
     void invalidGoodsLifeCycle(Long id);
 
     /**

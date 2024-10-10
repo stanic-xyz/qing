@@ -35,18 +35,14 @@ public class ShopController {
 
     private final IShopService shopService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createShop(@RequestBody ShopCreateRequest request) {
+    public JsonResult<Long> createShop(
+        @RequestBody
+        ShopCreateRequest request) {
         ShopCreator creator = ShopMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(shopService.createShop(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateShop")
     public JsonResult<String> updateShop(@RequestBody ShopUpdateRequest request) {
         ShopUpdater updater = ShopMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class ShopController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validShop(@PathVariable Long id) {
+    public JsonResult<String> validShop(
+        @PathVariable
+        Long id) {
         shopService.validShop(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidShop(@PathVariable Long id) {
+    public JsonResult<String> invalidShop(
+        @PathVariable
+        Long id) {
         shopService.invalidShop(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class ShopController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<ShopResponse>> page(
         @RequestBody

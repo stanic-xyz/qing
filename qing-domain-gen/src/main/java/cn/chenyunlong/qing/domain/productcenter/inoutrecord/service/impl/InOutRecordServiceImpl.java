@@ -53,20 +53,14 @@ public class InOutRecordServiceImpl implements IInOutRecordService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validInOutRecord(Long id) {
         EntityOperations.doUpdate(inOutRecordRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidInOutRecord(Long id) {
         EntityOperations.doUpdate(inOutRecordRepository)

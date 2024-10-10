@@ -19,14 +19,8 @@ public interface IStoreService {
      */
     void updateStore(StoreUpdater updater);
 
-    /**
-     * valid
-     */
     void validStore(Long id);
 
-    /**
-     * invalid
-     */
     void invalidStore(Long id);
 
     /**

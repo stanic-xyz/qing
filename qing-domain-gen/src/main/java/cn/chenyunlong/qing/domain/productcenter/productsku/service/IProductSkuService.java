@@ -19,14 +19,8 @@ public interface IProductSkuService {
      */
     void updateProductSku(ProductSkuUpdater updater);
 
-    /**
-     * valid
-     */
     void validProductSku(Long id);
 
-    /**
-     * invalid
-     */
     void invalidProductSku(Long id);
 
     /**
