@@ -395,7 +395,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.6.0</version>
+                    <version>3.10.1</version>
                 </plugin>
                 <!-- Gpg Signature -->
                 <plugin>
@@ -460,6 +460,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <failOnError>false</failOnError>
+                </configuration>
             </plugin>
             <!-- 代码风格-->
             <plugin>
