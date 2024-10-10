@@ -2,7 +2,6 @@ package cn.chenyunlong.qing.application.manager.exception;
 
 import cn.chenyunlong.common.exception.AbstractException;
 import cn.chenyunlong.common.model.JsonResult;
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -11,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
@@ -32,14 +33,6 @@ public class GlobalExceptionHandler {
         return JsonResult.fail(message);
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    JsonResult<Void> handleException(Exception exception) {
-        log.error("未知异常", exception);
-        return JsonResult.notFound();
-    }
-
     @ResponseBody
     @ExceptionHandler(NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -52,5 +45,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     JsonResult<Void> handleException(AbstractException exception) {
         return JsonResult.fail("业务异常：%s!".formatted(exception.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    JsonResult<Void> handleException(Exception exception) {
+        log.error("未知异常", exception);
+        return JsonResult.notFound();
     }
 }

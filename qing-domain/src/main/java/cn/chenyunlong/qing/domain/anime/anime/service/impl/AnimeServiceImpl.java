@@ -20,8 +20,6 @@ import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeTagRelRepository;
 import cn.chenyunlong.qing.domain.anime.anime.repository.TagRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeService;
-import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
-import cn.chenyunlong.qing.domain.anime.attachement.repository.AttachmentRepository;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
 import cn.chenyunlong.qing.domain.anime.episode.Episode;
@@ -32,11 +30,6 @@ import cn.chenyunlong.qing.domain.anime.playlist.dto.vo.PlayListVO;
 import cn.chenyunlong.qing.domain.anime.playlist.mapper.PlayListMapper;
 import cn.chenyunlong.qing.domain.anime.playlist.repository.PlayListRepository;
 import cn.hutool.core.collection.CollUtil;
-import jakarta.validation.Validator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -44,6 +37,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
@@ -55,8 +53,6 @@ public class AnimeServiceImpl extends BaseJpaService implements IAnimeService {
     private final AnimeCategoryRepository categoryRepository;
     private final DistrictRepository districtRepository;
     private final TagRepository tagRepository;
-    private final AttachmentRepository attachmentRepository;
-    private final Validator validator;
     private final AnimeTagRelRepository animeTagRelRepository;
     private final PlayListRepository playListRepository;
     private final EpisodeRepository episodeRepository;
@@ -69,16 +65,15 @@ public class AnimeServiceImpl extends BaseJpaService implements IAnimeService {
         List<Tag> tagList = tagRepository.findByIds(creator.getTagIds());
         District district = districtRepository.findById(creator.getDistrictId()).orElseThrow(() -> new NotFoundException("地区不存在"));
         AnimeCategory animeCategory = categoryRepository.findById(creator.getTypeId()).orElseThrow(() -> new NotFoundException("类型不存在"));
-        Attachment attachment = attachmentRepository.findById(creator.getCoverAttachmentId()).orElseThrow(() -> new NotFoundException("封面附件不存在"));
         // 检查名称是否存在
         if (animeRepository.existsByName(creator.getName()) > 0) {
             throw new NotFoundException("动漫名称已存在");
         }
         Optional<Anime> optionalAnime = doCreate(animeRepository)
-                                            .create(() -> creator.create(tagList, district, animeCategory, attachment))
-                                            .update(Anime::create)
-                                            .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId()))
-                                            .execute();
+            .create(() -> creator.create(tagList, district, animeCategory))
+            .update(Anime::create)
+            .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId()))
+            .execute();
         Anime anime = optionalAnime.orElseThrow();
         saveRel(anime, tagList);
         return optionalAnime.map(BaseJpaAggregate::getId).orElse(null);
@@ -87,7 +82,7 @@ public class AnimeServiceImpl extends BaseJpaService implements IAnimeService {
     /**
      * 保存关联信息
      *
-     * @param anime 动漫信息
+     * @param anime   动漫信息
      * @param tagList tag列表
      */
     private void saveRel(Anime anime, List<Tag> tagList) {
@@ -104,16 +99,12 @@ public class AnimeServiceImpl extends BaseJpaService implements IAnimeService {
         List<Tag> tagList = tagRepository.findByIds(updater.getTags());
         District district = districtRepository.findById(updater.getDistrictId()).orElseThrow(() -> new NotFoundException("地区不存在"));
         AnimeCategory animeCategory = categoryRepository.findById(updater.getTypeId()).orElseThrow(() -> new NotFoundException("类型不存在"));
-        Attachment attachment = attachmentRepository.findById(updater.getCoverAttachmentId()).orElseThrow(() -> new NotFoundException("封面附件不存在"));
         doUpdate(animeRepository)
             .load(animeOptional::get)
-            .update(anime -> updater.updateAnime(anime, tagList, district, animeCategory, attachment))
+            .update(anime -> updater.updateAnime(anime, tagList, district, animeCategory))
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validAnime(Long id) {
         doUpdate(animeRepository)
@@ -122,9 +113,6 @@ public class AnimeServiceImpl extends BaseJpaService implements IAnimeService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidAnime(Long id) {
         doUpdate(animeRepository)

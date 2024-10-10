@@ -6,25 +6,41 @@ import cn.chenyunlong.qing.application.manager.jimmer.dto.book.SimpleView;
 import cn.chenyunlong.qing.application.manager.jimmer.entity.Book;
 import cn.chenyunlong.qing.application.manager.jimmer.repository.BookRepository;
 import jakarta.annotation.Nullable;
-import java.util.List;
 import org.babyfish.jimmer.client.FetchBy;
 import org.babyfish.jimmer.sql.fetcher.Fetcher;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@PreAuthorize("permitAll()")
 @RestController
 public class JimmerBookController implements Fetchers {
 
+    /**
+     * Simple Book DTO which can only access `id` and `name` of `Book` itself
+     */
+    private static final Fetcher<Book> SIMPLE_BOOK =
+        BOOK_FETCHER
+            .name()
+            .store(BOOK_STORE_FETCHER.name());
+    /**
+     * Complex Book DTO which can access not only properties of `Book` itself,
+     * but also associated `BookStore` and `Author` objects with names
+     */
+    private static final Fetcher<Book> COMPLEX_BOOK =
+        BOOK_FETCHER
+            .allScalarFields()
+            .store(BOOK_STORE_FETCHER.name())
+            .authors(AUTHOR_FETCHER.firstName().lastName()
+            );
     private final BookRepository bookRepository;
 
     public JimmerBookController(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
+    @PreAuthorize("permitAll()")
     @Nullable
     @GetMapping("book/{id}")
     @FetchBy("COMPLEX_BOOK")
@@ -60,24 +76,4 @@ public class JimmerBookController implements Fetchers {
         System.out.println("name = " + name);
         return null;
     }
-
-
-    /**
-     * Simple Book DTO which can only access `id` and `name` of `Book` itself
-     */
-    private static final Fetcher<Book> SIMPLE_BOOK =
-        BOOK_FETCHER
-            .name()
-            .store(BOOK_STORE_FETCHER.name());
-
-    /**
-     * Complex Book DTO which can access not only properties of `Book` itself,
-     * but also associated `BookStore` and `Author` objects with names
-     */
-    private static final Fetcher<Book> COMPLEX_BOOK =
-        BOOK_FETCHER
-            .allScalarFields()
-            .store(BOOK_STORE_FETCHER.name())
-            .authors(AUTHOR_FETCHER.firstName().lastName()
-            );
 }

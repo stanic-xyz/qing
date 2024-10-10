@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.application.manager.web.web.content;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Arrays;
 
 public enum ReleaseStatus {

@@ -14,8 +14,9 @@
 package cn.chenyunlong.common.exception;
 
 import cn.chenyunlong.common.model.ValidateResult;
-import java.util.List;
 import lombok.Getter;
+
+import java.util.List;
 
 /**
  * 校验错误异常

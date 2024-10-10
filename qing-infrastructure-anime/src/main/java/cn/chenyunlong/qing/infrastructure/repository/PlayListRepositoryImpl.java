@@ -4,9 +4,10 @@ import cn.chenyunlong.qing.domain.anime.playlist.PlayList;
 import cn.chenyunlong.qing.domain.anime.playlist.repository.PlayListRepository;
 import cn.chenyunlong.qing.infrastructure.repository.base.JpaServiceImpl;
 import cn.chenyunlong.qing.infrastructure.repository.jpa.PlayListJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

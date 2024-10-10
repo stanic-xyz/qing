@@ -19,14 +19,8 @@ public interface IEpisodeService {
      */
     void updateEpisode(EpisodeUpdater updater);
 
-    /**
-     * valid
-     */
     void validEpisode(Long id);
 
-    /**
-     * invalid
-     */
     void invalidEpisode(Long id);
 
     /**

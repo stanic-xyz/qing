@@ -21,7 +21,7 @@ public class SendTaskStartListener implements TaskListener {
     @Override
     public void notify(final DelegateTask task) {
         System.out.println("ExecutionListener--事件：【"
-                               + task.getName() + "】--触发了");
+            + task.getName() + "】--触发了");
         task.setVariable("checkResult", 1);
         task.setAssignee("admin");
     }

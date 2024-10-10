@@ -16,12 +16,13 @@
 
 package cn.chenyunlong.qing.security.token;
 
-import java.util.Collection;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
+
+import java.util.Collection;
 
 /**
  * An implementation of an {@link AbstractAuthenticationToken} that represents an OAuth

@@ -40,12 +40,9 @@ public class CommonEnumRegistry implements InitializingBean {
 
     @Getter
     private final Map<Class<?>, List<CommonEnum>> classDict = Maps.newLinkedHashMap();
-
+    private final ResourceLoader resourceLoader;
     @Value("${baseEnum.basePackage:''}")
     private String basePackage;
-
-    private final ResourceLoader resourceLoader;
-
 
     private String toPackage(String basePackage) {
         String result = basePackage.replace(".", "/");
@@ -65,19 +62,19 @@ public class CommonEnumRegistry implements InitializingBean {
             return;
         }
         ResourcePatternResolver resourcePatternResolver =
-                ResourcePatternUtils.getResourcePatternResolver(this.resourceLoader);
+            ResourcePatternUtils.getResourcePatternResolver(this.resourceLoader);
         MetadataReaderFactory metadataReaderFactory = new SimpleMetadataReaderFactory();
         try {
             String pkg = toPackage(this.basePackage);
             // 对 basePackage 包进行扫描
             String packageSearchPath =
-                    ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + pkg + DEFAULT_RESOURCE_PATTERN;
+                ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + pkg + DEFAULT_RESOURCE_PATTERN;
             Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
             for (Resource resource : resources) {
                 if (resource.isReadable()) {
                     try {
                         MetadataReader metadataReader =
-                                metadataReaderFactory.getMetadataReader(resource);
+                            metadataReaderFactory.getMetadataReader(resource);
                         ClassMetadata classMetadata = metadataReader.getClassMetadata();
 
                         String[] interfaceNames = classMetadata.getInterfaceNames();
@@ -90,9 +87,9 @@ public class CommonEnumRegistry implements InitializingBean {
                             if (cls.isEnum() && CommonEnum.class.isAssignableFrom(cls)) {
                                 Object[] enumConstants = cls.getEnumConstants();
                                 List<CommonEnum> commonEnums = Arrays.stream(enumConstants)
-                                        .filter(e -> e instanceof CommonEnum)
-                                        .map(e -> (CommonEnum) e)
-                                        .collect(Collectors.toList());
+                                    .filter(e -> e instanceof CommonEnum)
+                                    .map(e -> (CommonEnum) e)
+                                    .collect(Collectors.toList());
 
                                 String key = convertKeyFromClassName(cls.getSimpleName());
 

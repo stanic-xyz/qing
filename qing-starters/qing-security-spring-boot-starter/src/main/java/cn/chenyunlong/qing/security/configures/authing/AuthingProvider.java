@@ -29,10 +29,6 @@ import cn.chenyunlong.qing.security.token.Auth2AuthenticationToken;
 import cn.chenyunlong.qing.security.userdetails.TemporaryUser;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Comparator;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -41,6 +37,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Comparator;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -84,29 +85,29 @@ public class AuthingProvider implements AuthenticationProvider {
         if (CollectionUtil.isNotEmpty(connectionDataList)) {
             log.info("【Authing】通过Authing登录成功：关联到用户信息:{}", connectionDataList.stream().map(ConnectionData::getUserId).toList());
             ConnectionData connectionData = connectionDataList.stream()
-                                                .min(Comparator.comparing(ConnectionData::getRank))
-                                                .orElseThrow(() -> new IllegalArgumentException("未找到匹配的用户信息"));
+                .min(Comparator.comparing(ConnectionData::getRank))
+                .orElseThrow(() -> new IllegalArgumentException("未找到匹配的用户信息"));
             userDetails = userDetailsService.loadUserByUserId(connectionData.getUserId());
         } else {
             log.info("【Authing】通过Authing登录成功：未关联到用户信息, 开始自动注册");
             // 自动注册
             AuthUser authUser;
             authUser = AuthUser.builder()
-                           .username(userInfo.getName())
-                           .nickname(userInfo.getNickname())
-                           .uuid(userInfo.getSub())
-                           .avatar(userInfo.getPicture())
-                           .source(provider)
-                           .token(AuthToken.builder()
-                                      .accessCode(accessToken.getAccessToken())
-                                      .expireIn(accessToken.getExpiresIn().longValue())
-                                      .code(loginRequest.getCode())
-                                      .userId(userInfo.getSub())
-                                      .idToken(accessToken.getIdToken())
-                                      .openId(userInfo.getSub())
-                                      .refreshToken(accessToken.getRefreshToken())
-                                      .build())
-                           .build();
+                .username(userInfo.getName())
+                .nickname(userInfo.getNickname())
+                .uuid(userInfo.getSub())
+                .avatar(userInfo.getPicture())
+                .source(provider)
+                .token(AuthToken.builder()
+                    .accessCode(accessToken.getAccessToken())
+                    .expireIn(accessToken.getExpiresIn().longValue())
+                    .code(loginRequest.getCode())
+                    .userId(userInfo.getSub())
+                    .idToken(accessToken.getIdToken())
+                    .openId(userInfo.getSub())
+                    .refreshToken(accessToken.getRefreshToken())
+                    .build())
+                .build();
             // 启用自动注册，进入自动注册流程
             if (authingProperties.getAutoSignUp()) {
                 log.info("【Authing】通过Authing登录成功：启用自动注册，进入自动注册流程");
@@ -117,12 +118,12 @@ public class AuthingProvider implements AuthenticationProvider {
                 log.info("【Authing】通过Authing登录成功：未启用自动注册，返回临时用户");
                 SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authingProperties.getDefaultAuthorities());
                 userDetails = TemporaryUser.builder()
-                                  .username(authUser.getUsername())
-                                  .password("123456")
-                                  .authorities(grantedAuthority)
-                                  .encodeState(loginRequest.getState())
-                                  .authUser(authUser)
-                                  .build();
+                    .username(authUser.getUsername())
+                    .password("123456")
+                    .authorities(grantedAuthority)
+                    .encodeState(loginRequest.getState())
+                    .authUser(authUser)
+                    .build();
             }
         }
         //4.2 第三方登录用户已存在, 直接登录

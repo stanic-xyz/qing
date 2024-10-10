@@ -2,9 +2,10 @@ package cn.chenyunlong.qing.domain.auth.menu.dto.vo;
 
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 @Schema
 @Data

@@ -6,8 +6,9 @@ import cn.chenyunlong.qing.domain.auth.role.dto.creator.RoleCreator;
 import cn.chenyunlong.qing.domain.auth.role.dto.query.RoleQuery;
 import cn.chenyunlong.qing.domain.auth.role.dto.updater.RoleUpdater;
 import cn.chenyunlong.qing.domain.auth.role.dto.vo.RoleVO;
-import java.util.List;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface IRoleService {
 
@@ -21,14 +22,8 @@ public interface IRoleService {
      */
     void updateRole(RoleUpdater updater);
 
-    /**
-     * valid
-     */
     void validRole(Long id);
 
-    /**
-     * invalid
-     */
     void invalidRole(Long id);
 
     /**

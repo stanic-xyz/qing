@@ -17,13 +17,14 @@ import cn.chenyunlong.qing.security.signup.ConnectionService;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -69,21 +70,21 @@ public class QingConnectionService implements ConnectionService {
     /**
      * 绑定用户
      *
-     * @param authUser 用户信息
+     * @param authUser    用户信息
      * @param userDetails 用户详情
      */
     private void registerConnection(AuthUser authUser, UserDetails userDetails) {
         UserConnectionCreator creator = UserConnectionCreator.builder()
-                                            .accessToken(authUser.getToken().getAccessToken())
-                                            .providerId(authUser.getSource().getProviderId())
-                                            .displayName(authUser.getUsername())
-                                            .rank(1)
-                                            .imageUrl(authUser.getAvatar())
-                                            .refreshToken(authUser.getToken().getRefreshToken())
-                                            .expireTime(authUser.getToken().getExpireIn())
-                                            .userId(userDetails.getUsername())
-                                            .providerUserId(authUser.getUuid())
-                                            .build();
+            .accessToken(authUser.getToken().getAccessToken())
+            .providerId(authUser.getSource().getProviderId())
+            .displayName(authUser.getUsername())
+            .rank(1)
+            .imageUrl(authUser.getAvatar())
+            .refreshToken(authUser.getToken().getRefreshToken())
+            .expireTime(authUser.getToken().getExpireIn())
+            .userId(userDetails.getUsername())
+            .providerUserId(authUser.getUuid())
+            .build();
         userConnectionService.createUserConnection(creator);
     }
 
@@ -105,15 +106,15 @@ public class QingConnectionService implements ConnectionService {
 
     @Override
     public List<ConnectionData> findConnectionByProviderIdAndProviderUserId(AuthProvider provider,
-        String providerUserId) {
+                                                                            String providerUserId) {
         return connectionRepository.findConnectionByProviderIdAndProviderUserId(provider.getProviderId(),
                 providerUserId)
-                   .stream()
-                   .map(connection -> {
-                       UserConnectionData connectionData = UserConnectionMapper.INSTANCE.entityToConnectionData(connection);
-                       return BeanUtil.copyProperties(connectionData, ConnectionData.class);
-                   })
-                   .collect(Collectors.toList());
+            .stream()
+            .map(connection -> {
+                UserConnectionData connectionData = UserConnectionMapper.INSTANCE.entityToConnectionData(connection);
+                return BeanUtil.copyProperties(connectionData, ConnectionData.class);
+            })
+            .collect(Collectors.toList());
     }
 
     @Override

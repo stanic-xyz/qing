@@ -17,17 +17,14 @@ import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.domain.BaseEntity;
 import cn.chenyunlong.qing.domain.anime.anime.events.AnimeEvents;
 import cn.chenyunlong.qing.infrustructure.converter.PlayStatusConverter;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 动漫信息。
@@ -56,10 +53,7 @@ public class Anime extends BaseEntity {
     private String districtName;
 
     @FieldDesc(description = "封面地址")
-    private String coverUrl;
-
-    @FieldDesc(description = "封面附件Id")
-    private Long coverAttachmentId;
+    private String cover;
 
     @FieldDesc(description = "类型信息")
     private Long typeId;

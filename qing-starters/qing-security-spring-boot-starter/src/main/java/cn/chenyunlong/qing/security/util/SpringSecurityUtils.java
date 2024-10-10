@@ -1,10 +1,11 @@
 package cn.chenyunlong.qing.security.util;
 
 import cn.chenyunlong.qing.security.base.BaseJwtUser;
-import java.util.Objects;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Objects;
 
 public class SpringSecurityUtils {
 

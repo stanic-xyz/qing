@@ -13,7 +13,6 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserTokenVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.UserTokenMapper;
 import cn.chenyunlong.qing.domain.auth.user.repository.UserTokenRepository;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserTokenService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -36,9 +37,9 @@ public class UserTokenServiceImpl implements IUserTokenService {
     @Override
     public Long createUserToken(UserTokenCreator creator) {
         Optional<UserToken> userToken = EntityOperations.doCreate(userTokenRepository)
-                                            .create(() -> UserTokenMapper.INSTANCE.dtoToEntity(creator))
-                                            .update(UserToken::init)
-                                            .execute();
+            .create(() -> UserTokenMapper.INSTANCE.dtoToEntity(creator))
+            .update(UserToken::init)
+            .execute();
         return userToken.isPresent() ? userToken.get().getId() : 0;
     }
 
@@ -53,9 +54,6 @@ public class UserTokenServiceImpl implements IUserTokenService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validUserToken(Long id) {
         EntityOperations.doUpdate(userTokenRepository)
@@ -64,9 +62,6 @@ public class UserTokenServiceImpl implements IUserTokenService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidUserToken(Long id) {
         EntityOperations.doUpdate(userTokenRepository)

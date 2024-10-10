@@ -17,12 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "用户连接表")
 @RestController
@@ -33,9 +28,6 @@ public class UserConnectionController {
 
     private final IUserConnectionService userConnectionService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createUserConnection(
         @RequestBody
@@ -44,9 +36,6 @@ public class UserConnectionController {
         return JsonResult.success(userConnectionService.createUserConnection(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateUserConnection")
     public JsonResult<String> updateUserConnection(
         @RequestBody
@@ -56,9 +45,6 @@ public class UserConnectionController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validUserConnection(
         @PathVariable("id")
@@ -67,9 +53,6 @@ public class UserConnectionController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidUserConnection(
         @PathVariable("id")
@@ -78,9 +61,7 @@ public class UserConnectionController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
+
     @GetMapping("findById/{id}")
     public JsonResult<UserConnectionResponse> findById(
         @PathVariable("id")

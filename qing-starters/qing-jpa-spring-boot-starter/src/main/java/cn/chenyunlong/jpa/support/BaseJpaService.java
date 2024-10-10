@@ -8,11 +8,12 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.groups.Default;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
 
 /**
  * 基础JPA处理服务。
@@ -43,8 +44,8 @@ public abstract class BaseJpaService {
             constraintViolations = validator.validate(t, group, Default.class);
         if (!CollectionUtils.isEmpty(constraintViolations)) {
             List<ValidateResult> results = constraintViolations.stream()
-                                               .map((cv) -> new ValidateResult(cv.getPropertyPath().toString(), cv.getMessage()))
-                                               .collect(Collectors.toList());
+                .map((cv) -> new ValidateResult(cv.getPropertyPath().toString(), cv.getMessage()))
+                .collect(Collectors.toList());
             throw new ValidationException(results);
         }
     }

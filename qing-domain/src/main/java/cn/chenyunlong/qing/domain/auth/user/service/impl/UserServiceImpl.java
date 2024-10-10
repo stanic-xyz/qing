@@ -16,9 +16,6 @@ import cn.chenyunlong.qing.domain.auth.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.auth.user.service.IUserService;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +24,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -47,16 +48,16 @@ public class UserServiceImpl implements IUserService {
         QingUser byEmail = userRepository.findByEmail(creator.getEmail());
         Assert.isNull(byEmail, "邮箱已存在");
         return EntityOperations.doCreate(userRepository)
-                   .create(() -> {
-                       QingUser qingUser = UserMapper.INSTANCE.dtoToEntity(creator);
-                       // 生成用户唯一Id
-                       qingUser.setUid(IdUtil.getSnowflakeNextId());
-                       qingUser.setPassword(passwordEncoder.encode(creator.getPassword()));
-                       return qingUser;
-                   })
-                   .update(QingUser::init)
-                   .errorHook(Throwable::printStackTrace)
-                   .execute();
+            .create(() -> {
+                QingUser qingUser = UserMapper.INSTANCE.dtoToEntity(creator);
+                // 生成用户唯一Id
+                qingUser.setUid(IdUtil.getSnowflakeNextId());
+                qingUser.setPassword(passwordEncoder.encode(creator.getPassword()));
+                return qingUser;
+            })
+            .update(QingUser::init)
+            .errorHook(Throwable::printStackTrace)
+            .execute();
     }
 
     /**
@@ -70,9 +71,6 @@ public class UserServiceImpl implements IUserService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validUser(Long id) {
         EntityOperations.doUpdate(userRepository)
@@ -81,9 +79,6 @@ public class UserServiceImpl implements IUserService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidUser(Long id) {
         EntityOperations.doUpdate(userRepository)

@@ -1,13 +1,9 @@
 package cn.chenyunlong.qing.application.manager.jimmer.entity;
 
-import java.util.List;
-import org.babyfish.jimmer.sql.Entity;
-import org.babyfish.jimmer.sql.GeneratedValue;
-import org.babyfish.jimmer.sql.GenerationType;
-import org.babyfish.jimmer.sql.Id;
-import org.babyfish.jimmer.sql.Key;
-import org.babyfish.jimmer.sql.OneToMany;
+import org.babyfish.jimmer.sql.*;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 @Entity
 public interface BookStore {

@@ -1,8 +1,9 @@
 package cn.chenyunlong.qing.domain.auth.admin.dto.request;
 
 import cn.chenyunlong.common.model.Request;
-import java.util.List;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class UserAuthPlatformsRequest implements Request {

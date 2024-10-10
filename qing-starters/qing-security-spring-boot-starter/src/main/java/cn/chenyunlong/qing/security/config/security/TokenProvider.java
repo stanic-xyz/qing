@@ -17,9 +17,6 @@ import cn.chenyunlong.qing.security.config.SecurityProperties;
 import cn.chenyunlong.qing.security.config.utils.JwtTokenUtil;
 import cn.hutool.core.collection.CollUtil;
 import io.jsonwebtoken.Claims;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +24,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Token操作方法。
@@ -56,9 +57,9 @@ public class TokenProvider {
         Object object = claims.get(AUTHORITIES_HEADER);
         if (object != null) {
             authorities = Arrays
-                              .stream(object.toString().split(","))
-                              .map(SimpleGrantedAuthority::new)
-                              .collect(Collectors.toList());
+                .stream(object.toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
         } else {
             authorities = CollUtil.newArrayList();
         }

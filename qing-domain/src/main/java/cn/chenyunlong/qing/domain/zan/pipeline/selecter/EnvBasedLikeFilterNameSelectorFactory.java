@@ -3,11 +3,12 @@ package cn.chenyunlong.qing.domain.zan.pipeline.selecter;
 import cn.chenyunlong.qing.domain.zan.pipeline.BizEnum;
 import cn.chenyunlong.qing.domain.zan.service.config.LikeFilterSelectorProperties;
 import cn.chenyunlong.qing.domain.zan.service.selector.LikeFilterSelectorFactory;
-import java.util.Collections;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

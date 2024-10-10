@@ -13,9 +13,10 @@
 
 package cn.chenyunlong.common.model.page;
 
+import lombok.Data;
+
 import java.io.Serial;
 import java.io.Serializable;
-import lombok.Data;
 
 @Data
 public class QueryRequest implements Serializable {

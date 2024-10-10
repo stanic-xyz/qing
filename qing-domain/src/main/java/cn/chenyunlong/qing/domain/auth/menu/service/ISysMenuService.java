@@ -5,8 +5,9 @@ import cn.chenyunlong.qing.domain.auth.menu.dto.creator.SysMenuCreator;
 import cn.chenyunlong.qing.domain.auth.menu.dto.query.SysMenuQuery;
 import cn.chenyunlong.qing.domain.auth.menu.dto.updater.SysMenuUpdater;
 import cn.chenyunlong.qing.domain.auth.menu.dto.vo.SysMenuVO;
-import java.util.List;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface ISysMenuService {
 
@@ -20,14 +21,8 @@ public interface ISysMenuService {
      */
     void updateSysMenu(SysMenuUpdater updater);
 
-    /**
-     * valid
-     */
     void validSysMenu(Long id);
 
-    /**
-     * invalid
-     */
     void invalidSysMenu(Long id);
 
     /**

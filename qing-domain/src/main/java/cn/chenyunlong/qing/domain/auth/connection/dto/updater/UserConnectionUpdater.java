@@ -2,8 +2,9 @@ package cn.chenyunlong.qing.domain.auth.connection.dto.updater;
 
 import cn.chenyunlong.qing.domain.auth.connection.UserConnection;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Optional;
 import lombok.Data;
+
+import java.util.Optional;
 
 @Schema
 @Data

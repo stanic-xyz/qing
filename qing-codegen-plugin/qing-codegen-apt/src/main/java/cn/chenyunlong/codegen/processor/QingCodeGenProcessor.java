@@ -13,16 +13,11 @@
 
 package cn.chenyunlong.codegen.processor;
 
-import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.fatalError;
-import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.log;
-import static com.google.common.base.Throwables.getStackTraceAsString;
-
 import cn.chenyunlong.codegen.context.CodeGenContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.hutool.core.map.MapUtil;
-import java.util.*;
-import java.util.stream.Collectors;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -33,6 +28,12 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.fatalError;
+import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.log;
+import static com.google.common.base.Throwables.getStackTraceAsString;
 
 /**
  * 代码生成器注册器。

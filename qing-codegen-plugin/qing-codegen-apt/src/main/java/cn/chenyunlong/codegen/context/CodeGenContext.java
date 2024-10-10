@@ -13,11 +13,11 @@
 
 package cn.chenyunlong.codegen.context;
 
-import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.log;
-
 import cn.chenyunlong.codegen.constraint.CondeGenConstant;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
+
+import javax.annotation.processing.ProcessingEnvironment;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
@@ -25,7 +25,8 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.processing.ProcessingEnvironment;
+
+import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.log;
 
 /**
  * 通过SPI 加载所有的CodeGenProcessor 识别要处理的annotation标记类。

@@ -3,10 +3,11 @@ package cn.chenyunlong.qing.domain.auth.user.dto.updater;
 import cn.chenyunlong.common.enums.MFAType;
 import cn.chenyunlong.qing.domain.auth.user.QingUser;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
-import java.util.Optional;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Schema
 @Data

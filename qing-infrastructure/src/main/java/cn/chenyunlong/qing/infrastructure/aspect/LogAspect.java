@@ -20,9 +20,6 @@ import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.alibaba.fastjson.JSONObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -33,6 +30,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * 日志记录切面。
@@ -233,7 +234,7 @@ public class LogAspect {
         }
         //单独的对象
         return obj instanceof MultipartFile || obj instanceof HttpServletRequest
-               || obj instanceof HttpServletResponse || obj instanceof BindingResult;
+            || obj instanceof HttpServletResponse || obj instanceof BindingResult;
     }
 
     /**

@@ -101,7 +101,7 @@ function __on_sendcomment() {
         alert("登陆功能已修复，请登陆后发言")
     }
     var encode_version = 'sojson.v5', yqpcz = '__0x6d4a1',
-            __0x6d4a1 = ['wq4mw7/CmF4=', 'w6XDrMOmwprCgg==', 'eRfDo8OoZQ==', 'IUnCmSzDgyfDjw==', 'S0pEJ8KxUMOSwqlq', 'asOow5tBwqk=', '5Lqc6ICk5Yi16ZuCw7A4wqEAwqHCisKHwr0/', 'TjpSwqZ3WMOmG8Oz', 'MhvDm8OOwqk=', 'XsKOwrAgwrFzwoU=', 'UyHCmcOyREsv', 'N2DDnXUC', 'BcOIwowrdgc=', 'GcOwNxbDqg==', 'JcKMw4ZORw==', 'Jm/ChVfDhw==', 'w7U3w4PCksKm', 'w7jDnHDCpcOF', 'wrgOw5PDlcO7', 'w4HDkMODYcK/D8O0PMKjShFZcw==', 'F8KFT8Ktwp3Ckw/CqXI=', 'M8O0dUFY', 'e1zDtMOGZg==', 'w6LChsKLCBo=', 'EMKJXSbDjQ==', 'T8KPWMK2wp3ChA==', 'wpRjw5BEZQ==', 'JHsWwq3DoQ==', 'HsKKUAvDqw==', 'wopnw5BzZA3DgQ==', 'wqAkw5PCpmw=', 'w68MBSvDow==', 'MljDsVQq', 'FMKIw6xETQ=='];
+        __0x6d4a1 = ['wq4mw7/CmF4=', 'w6XDrMOmwprCgg==', 'eRfDo8OoZQ==', 'IUnCmSzDgyfDjw==', 'S0pEJ8KxUMOSwqlq', 'asOow5tBwqk=', '5Lqc6ICk5Yi16ZuCw7A4wqEAwqHCisKHwr0/', 'TjpSwqZ3WMOmG8Oz', 'MhvDm8OOwqk=', 'XsKOwrAgwrFzwoU=', 'UyHCmcOyREsv', 'N2DDnXUC', 'BcOIwowrdgc=', 'GcOwNxbDqg==', 'JcKMw4ZORw==', 'Jm/ChVfDhw==', 'w7U3w4PCksKm', 'w7jDnHDCpcOF', 'wrgOw5PDlcO7', 'w4HDkMODYcK/D8O0PMKjShFZcw==', 'F8KFT8Ktwp3Ckw/CqXI=', 'M8O0dUFY', 'e1zDtMOGZg==', 'w6LChsKLCBo=', 'EMKJXSbDjQ==', 'T8KPWMK2wp3ChA==', 'wpRjw5BEZQ==', 'JHsWwq3DoQ==', 'HsKKUAvDqw==', 'wopnw5BzZA3DgQ==', 'wqAkw5PCpmw=', 'w68MBSvDow==', 'MljDsVQq', 'FMKIw6xETQ=='];
     (function (_0x3aee46, _0x59ba69) {
         var _0x3ea520 = function (_0x1dd9c6) {
             while (--_0x1dd9c6) {
@@ -227,7 +227,7 @@ function __on_sendcomment() {
                             'QNctg': _0x15f5('0xd', 'KvKZ')
                         };
                         var _0x583897,
-                                _0x3a66ce = new RegExp(_0x2061a3[_0x15f5('0xe', 'Ox#l')](_0x2061a3[_0x15f5('0xf', 'v78#')](_0x2061a3[_0x15f5('0x10', '7jQL')], _0x30755b), _0x2061a3[_0x15f5('0x11', '6O7p')]));
+                            _0x3a66ce = new RegExp(_0x2061a3[_0x15f5('0xe', 'Ox#l')](_0x2061a3[_0x15f5('0xf', 'v78#')](_0x2061a3[_0x15f5('0x10', '7jQL')], _0x30755b), _0x2061a3[_0x15f5('0x11', '6O7p')]));
                         if (_0x583897 = document[_0x15f5('0x12', 'KvKZ')][_0x15f5('0x13', 'Z@&Q')](_0x3a66ce)) {
                             return _0x2061a3[_0x15f5('0x14', 'g#CQ')](unescape, _0x583897[0x2])
                         } else {
@@ -258,7 +258,7 @@ function __on_sendcomment() {
     }
     encode_version = 'sojson.v5';
     var encode_version = 'sojson.v5', woaew = '__0x6d4a2',
-            __0x6d4a2 = ['w4TCkxtLwofCuBE=', 'YsKYwok/w5M=', 'DWwZJDPDksOi', 'wocjwrkSXQ==', 'XG5tw6Y2', 'OMOpSErDhw==', 'AA7DksO/w4gM', 'w5prw6vCrFI=', 'w7U3L8K1bQ==', 'Z8K5wrJIwrE=', 'L8OKZcKaGcOoTcOUwqIFYw==', 'YCPDs1bDrQPDvg==', 'dcOrVsOlwoA=', 'OcORb2nDtg==', 'FcKQdxtY', 'dsKSQz8V', 'McKZVzd2Xg==', 'VyEpUy4=', 'ASUlQC97HGdz', 'wqzDryzCjMKSWAE='];
+        __0x6d4a2 = ['w4TCkxtLwofCuBE=', 'YsKYwok/w5M=', 'DWwZJDPDksOi', 'wocjwrkSXQ==', 'XG5tw6Y2', 'OMOpSErDhw==', 'AA7DksO/w4gM', 'w5prw6vCrFI=', 'w7U3L8K1bQ==', 'Z8K5wrJIwrE=', 'L8OKZcKaGcOoTcOUwqIFYw==', 'YCPDs1bDrQPDvg==', 'dcOrVsOlwoA=', 'OcORb2nDtg==', 'FcKQdxtY', 'dsKSQz8V', 'McKZVzd2Xg==', 'VyEpUy4=', 'ASUlQC97HGdz', 'wqzDryzCjMKSWAE='];
     (function (_0x57c88f, _0x2383d8) {
         var _0x4b2391 = function (_0x58c926) {
             while (--_0x58c926) {
@@ -336,7 +336,7 @@ function __on_sendcomment() {
                 }, 'HMzQD': '=([^;]*)(;|$)'
             };
             var _0x4d0811,
-                    _0x524d79 = new RegExp(_0x37083b[_0x1691('0x0', 'H$R$')](_0x37083b[_0x1691('0x1', '@5Y)')]('(^|\x20)', _0x1d75de), _0x37083b[_0x1691('0x2', '&6Xe')]));
+                _0x524d79 = new RegExp(_0x37083b[_0x1691('0x0', 'H$R$')](_0x37083b[_0x1691('0x1', '@5Y)')]('(^|\x20)', _0x1d75de), _0x37083b[_0x1691('0x2', '&6Xe')]));
             if (_0x4d0811 = document[_0x1691('0x3', '@5Y)')][_0x1691('0x4', 'wcel')](_0x524d79)) {
                 return unescape(_0x4d0811[0x2])
             } else {
@@ -425,11 +425,11 @@ function __set_on_sendcomment() {
 function __timeCycle(time) {
     var unixTimestamp = new Date(time * 1000);
     var Y = unixTimestamp.getFullYear(),
-            M = ((unixTimestamp.getMonth() + 1) > 10 ? (unixTimestamp.getMonth() + 1) : '0' + (unixTimestamp.getMonth() + 1)),
-            D = (unixTimestamp.getDate() > 10 ? unixTimestamp.getDate() : '0' + unixTimestamp.getDate()),
-            h = (unixTimestamp.getHours() < 10) ? "0" + unixTimestamp.getHours() : unixTimestamp.getHours(),
-            min = (unixTimestamp.getMinutes() < 10) ? "0" + unixTimestamp.getMinutes() : unixTimestamp.getMinutes(),
-            s = (unixTimestamp.getSeconds() < 10) ? "0" + unixTimestamp.getSeconds() : unixTimestamp.getSeconds();
+        M = ((unixTimestamp.getMonth() + 1) > 10 ? (unixTimestamp.getMonth() + 1) : '0' + (unixTimestamp.getMonth() + 1)),
+        D = (unixTimestamp.getDate() > 10 ? unixTimestamp.getDate() : '0' + unixTimestamp.getDate()),
+        h = (unixTimestamp.getHours() < 10) ? "0" + unixTimestamp.getHours() : unixTimestamp.getHours(),
+        min = (unixTimestamp.getMinutes() < 10) ? "0" + unixTimestamp.getMinutes() : unixTimestamp.getMinutes(),
+        s = (unixTimestamp.getSeconds() < 10) ? "0" + unixTimestamp.getSeconds() : unixTimestamp.getSeconds();
     return Y + '-' + M + '-' + D + " " + h + ":" + min + ":" + s
 }
 

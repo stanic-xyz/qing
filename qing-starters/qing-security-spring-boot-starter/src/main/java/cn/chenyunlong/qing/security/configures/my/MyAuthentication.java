@@ -13,9 +13,10 @@
 
 package cn.chenyunlong.qing.security.configures.my;
 
-import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 /**
  * 个人授权信息。

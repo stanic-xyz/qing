@@ -17,12 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "动漫分类")
 @RestController
@@ -33,9 +28,6 @@ public class AnimeCategoryController {
 
     private final IAnimeCategoryService animeCategoryService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createAnimeCategory(
         @RequestBody
@@ -44,9 +36,6 @@ public class AnimeCategoryController {
         return JsonResult.success(animeCategoryService.createAnimeCategory(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateAnimeCategory")
     public JsonResult<String> updateAnimeCategory(
         @RequestBody
@@ -56,9 +45,6 @@ public class AnimeCategoryController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validAnimeCategory(
         @PathVariable("id")
@@ -67,9 +53,6 @@ public class AnimeCategoryController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidAnimeCategory(
         @PathVariable("id")
@@ -78,9 +61,7 @@ public class AnimeCategoryController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
+
     @GetMapping("findById/{id}")
     public JsonResult<AnimeCategoryResponse> findById(
         @PathVariable("id")

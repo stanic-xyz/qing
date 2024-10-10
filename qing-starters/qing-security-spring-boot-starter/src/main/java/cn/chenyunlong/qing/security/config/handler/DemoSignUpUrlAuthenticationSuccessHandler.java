@@ -24,17 +24,18 @@
 
 package cn.chenyunlong.qing.security.config.handler;
 
-import static org.springframework.util.StringUtils.hasText;
-
 import cn.chenyunlong.qing.security.userdetails.TemporaryUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
+
+import java.io.IOException;
+
+import static org.springframework.util.StringUtils.hasText;
 
 /**
  * 演示 signUpUrl 设置为 null 时的一种处理方式
@@ -48,7 +49,7 @@ public class DemoSignUpUrlAuthenticationSuccessHandler extends SavedRequestAware
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
-        HttpServletResponse response, Authentication authentication)
+                                        HttpServletResponse response, Authentication authentication)
         throws IOException {
 
         // start: 判断是否为临时用户, 进行相关逻辑的处理

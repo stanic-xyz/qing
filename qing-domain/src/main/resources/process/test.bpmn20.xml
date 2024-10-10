@@ -13,10 +13,10 @@
   -->
 
 <definitions
-        xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-        xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-        typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
-        targetNamespace="http://www.flowable.org/processdef">
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
+    targetNamespace="http://www.flowable.org/processdef">
     <process id="test" name="test" isExecutable="true">
     </process>
     <bpmndi:BPMNDiagram id="BPMNDiagram_test">

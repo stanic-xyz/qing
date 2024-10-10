@@ -20,14 +20,8 @@ public interface IZanService {
      */
     void updateZan(ZanUpdater updater);
 
-    /**
-     * valid
-     */
     void validZan(Long id);
 
-    /**
-     * invalid
-     */
     void invalidZan(Long id);
 
     /**

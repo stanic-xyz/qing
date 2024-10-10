@@ -14,7 +14,6 @@ import cn.chenyunlong.qing.domain.anime.attachement.mapper.AttachmentMapper;
 import cn.chenyunlong.qing.domain.anime.attachement.repository.AttachmentRepository;
 import cn.chenyunlong.qing.domain.anime.attachement.service.IAttachmentService;
 import jakarta.annotation.Resource;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -38,9 +39,9 @@ public class AttachmentServiceImpl implements IAttachmentService {
     @Override
     public Long createAttachment(AttachmentCreator creator) {
         Optional<Attachment> attachment = EntityOperations.doCreate(attachmentRepository)
-                                              .create(() -> AttachmentMapper.INSTANCE.dtoToEntity(creator))
-                                              .update(Attachment::init)
-                                              .execute();
+            .create(() -> AttachmentMapper.INSTANCE.dtoToEntity(creator))
+            .update(Attachment::init)
+            .execute();
         return attachment.isPresent() ? attachment.get().getId() : 0;
     }
 
@@ -55,9 +56,6 @@ public class AttachmentServiceImpl implements IAttachmentService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validAttachment(Long id) {
         EntityOperations.doUpdate(attachmentRepository)
@@ -66,9 +64,6 @@ public class AttachmentServiceImpl implements IAttachmentService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidAttachment(Long id) {
         EntityOperations.doUpdate(attachmentRepository)

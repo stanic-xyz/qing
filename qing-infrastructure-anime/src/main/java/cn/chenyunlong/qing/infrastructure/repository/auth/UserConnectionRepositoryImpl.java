@@ -4,9 +4,10 @@ import cn.chenyunlong.qing.domain.auth.connection.UserConnection;
 import cn.chenyunlong.qing.domain.auth.connection.repository.UserConnectionRepository;
 import cn.chenyunlong.qing.infrastructure.repository.base.JpaServiceImpl;
 import cn.chenyunlong.qing.infrastructure.repository.jpa.auth.UserConnectionJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

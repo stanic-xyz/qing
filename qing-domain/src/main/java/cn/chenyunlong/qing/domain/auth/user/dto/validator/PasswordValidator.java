@@ -11,7 +11,7 @@ public class PasswordValidator
 
     @Override
     public boolean isValid(RegisterPassword password,
-        ConstraintValidatorContext constraintValidatorContext) {
+                           ConstraintValidatorContext constraintValidatorContext) {
         if (password == null) {
             return true;
         }

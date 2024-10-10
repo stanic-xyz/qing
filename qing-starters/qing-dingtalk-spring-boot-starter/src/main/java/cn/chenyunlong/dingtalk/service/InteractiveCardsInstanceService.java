@@ -6,13 +6,14 @@ import com.aliyun.tea.TeaException;
 import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.models.RuntimeOptions;
 import jakarta.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * 吊顶卡片接口。
@@ -63,12 +64,12 @@ public class InteractiveCardsInstanceService {
             }
 
             log.info("InteractiveCardsInstanceService_createAndDeliverBox instance success,"
-                     + " openConversationId={}, outTrackId={}.", openConversationId, outTrackId);
+                + " openConversationId={}, outTrackId={}.", openConversationId, outTrackId);
             return openTopBoxes(openConversationId, outTrackId);
         } catch (TeaException e) {
             log.error(
                 "InteractiveCardsInstanceService_createAndDeliverBox throw TeaException, errCode={}, "
-                + "errorMessage={}", e.getCode(), e.getMessage(), e);
+                    + "errorMessage={}", e.getCode(), e.getMessage(), e);
             throw e;
         } catch (Exception e) {
             log.error("InteractiveCardsInstanceService_createAndDeliverBox throw Exception", e);
@@ -100,7 +101,7 @@ public class InteractiveCardsInstanceService {
             || response.body.processQueryKey.isEmpty()) {
             log.error(
                 "InteractiveCardsInstanceService_instance interactiveCardCreateInstanceWithOptions return"
-                + " error, response={}", response);
+                    + " error, response={}", response);
             return null;
         }
 

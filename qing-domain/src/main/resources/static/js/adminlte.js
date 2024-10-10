@@ -219,16 +219,16 @@ if (typeof jQuery === 'undefined') {
         $(this.element).removeClass(ClassName.collapsed);
 
         $(this.element)
-                .children(Selector.header + ', ' + Selector.body + ', ' + Selector.footer)
-                .children(Selector.tools)
-                .find('.' + expandIcon)
-                .removeClass(expandIcon)
-                .addClass(collapseIcon);
+            .children(Selector.header + ', ' + Selector.body + ', ' + Selector.footer)
+            .children(Selector.tools)
+            .find('.' + expandIcon)
+            .removeClass(expandIcon)
+            .addClass(collapseIcon);
 
         $(this.element).children(Selector.body + ', ' + Selector.footer)
-                .slideDown(this.options.animationSpeed, function () {
-                    $(this.element).trigger(expandedEvent);
-                }.bind(this));
+            .slideDown(this.options.animationSpeed, function () {
+                $(this.element).trigger(expandedEvent);
+            }.bind(this));
     };
 
     BoxWidget.prototype.collapse = function () {
@@ -237,17 +237,17 @@ if (typeof jQuery === 'undefined') {
         var expandIcon = this.options.expandIcon;
 
         $(this.element)
-                .children(Selector.header + ', ' + Selector.body + ', ' + Selector.footer)
-                .children(Selector.tools)
-                .find('.' + collapseIcon)
-                .removeClass(collapseIcon)
-                .addClass(expandIcon);
+            .children(Selector.header + ', ' + Selector.body + ', ' + Selector.footer)
+            .children(Selector.tools)
+            .find('.' + collapseIcon)
+            .removeClass(collapseIcon)
+            .addClass(expandIcon);
 
         $(this.element).children(Selector.body + ', ' + Selector.footer)
-                .slideUp(this.options.animationSpeed, function () {
-                    $(this.element).addClass(ClassName.collapsed);
-                    $(this.element).trigger(collapsedEvent);
-                }.bind(this));
+            .slideUp(this.options.animationSpeed, function () {
+                $(this.element).addClass(ClassName.collapsed);
+                $(this.element).trigger(collapsedEvent);
+            }.bind(this));
     };
 
     BoxWidget.prototype.remove = function () {
@@ -762,7 +762,7 @@ if (typeof jQuery === 'undefined') {
 
     PushMenu.prototype.init = function () {
         if (this.options.expandOnHover
-                || ($('body').is(Selector.mini + Selector.layoutFixed))) {
+            || ($('body').is(Selector.mini + Selector.layoutFixed))) {
             this.expandOnHover();
             $('body').addClass(ClassName.expandFeature);
         }
@@ -800,10 +800,10 @@ if (typeof jQuery === 'undefined') {
 
         if (windowWidth > this.options.collapseScreenSize) {
             $('body').removeClass(ClassName.collapsed)
-                    .trigger($.Event(Event.expanded));
+                .trigger($.Event(Event.expanded));
         } else {
             $('body').addClass(ClassName.open)
-                    .trigger($.Event(Event.expanded));
+                .trigger($.Event(Event.expanded));
         }
     };
 
@@ -811,17 +811,17 @@ if (typeof jQuery === 'undefined') {
         var windowWidth = $(window).width();
         if (windowWidth > this.options.collapseScreenSize) {
             $('body').addClass(ClassName.collapsed)
-                    .trigger($.Event(Event.collapsed));
+                .trigger($.Event(Event.collapsed));
         } else {
             $('body').removeClass(ClassName.open + ' ' + ClassName.collapsed)
-                    .trigger($.Event(Event.collapsed));
+                .trigger($.Event(Event.collapsed));
         }
     };
 
     PushMenu.prototype.expandOnHover = function () {
         $(Selector.mainSidebar).hover(function () {
             if ($('body').is(Selector.mini + Selector.collapsed)
-                    && $(window).width() > this.options.collapseScreenSize) {
+                && $(window).width() > this.options.collapseScreenSize) {
                 this.expand();
             }
         }.bind(this), function () {
@@ -834,14 +834,14 @@ if (typeof jQuery === 'undefined') {
     PushMenu.prototype.expand = function () {
         setTimeout(function () {
             $('body').removeClass(ClassName.collapsed)
-                    .addClass(ClassName.expanded);
+                .addClass(ClassName.expanded);
         }, this.options.expandTransitionDelay);
     };
 
     PushMenu.prototype.collapse = function () {
         setTimeout(function () {
             $('body').removeClass(ClassName.expanded)
-                    .addClass(ClassName.collapsed);
+                .addClass(ClassName.collapsed);
         }, this.options.expandTransitionDelay);
     };
 

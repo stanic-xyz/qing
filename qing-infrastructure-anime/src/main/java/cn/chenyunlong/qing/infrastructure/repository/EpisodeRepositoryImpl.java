@@ -4,9 +4,10 @@ import cn.chenyunlong.qing.domain.anime.episode.Episode;
 import cn.chenyunlong.qing.domain.anime.episode.repository.EpisodeRepository;
 import cn.chenyunlong.qing.infrastructure.repository.base.JpaServiceImpl;
 import cn.chenyunlong.qing.infrastructure.repository.jpa.EpisodeJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

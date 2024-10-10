@@ -23,12 +23,12 @@ public class DefaultFilterChain<T extends EventContext> implements EventFilterCh
      * 初始化一个默认的过滤器链
      *
      * @param description 过滤器链描述信息
-     * @param last 最后一个链接
+     * @param last        最后一个链接
      * @param eventFilter 过滤器
      */
     public DefaultFilterChain(String description,
-        EventFilterChain<T> last,
-        EventFilter<T> eventFilter) {
+                              EventFilterChain<T> last,
+                              EventFilter<T> eventFilter) {
         this.next = last;
         this.eventFilter = eventFilter;
         this.description = description;

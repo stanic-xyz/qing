@@ -14,7 +14,6 @@ import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeCategoryMapper;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.domain.anime.anime.service.IAnimeCategoryService;
 import jakarta.annotation.Resource;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -38,9 +39,9 @@ public class AnimeCategoryServiceImpl implements IAnimeCategoryService {
     @Override
     public Long createAnimeCategory(AnimeCategoryCreator creator) {
         Optional<AnimeCategory> animeCategory = EntityOperations.doCreate(animeCategoryRepository)
-                                                    .create(() -> AnimeCategoryMapper.INSTANCE.dtoToEntity(creator))
-                                                    .update(AnimeCategory::init)
-                                                    .execute();
+            .create(() -> AnimeCategoryMapper.INSTANCE.dtoToEntity(creator))
+            .update(AnimeCategory::init)
+            .execute();
         return animeCategory.isPresent() ? animeCategory.get().getId() : 0;
     }
 
@@ -55,9 +56,6 @@ public class AnimeCategoryServiceImpl implements IAnimeCategoryService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validAnimeCategory(Long id) {
         EntityOperations.doUpdate(animeCategoryRepository)
@@ -66,9 +64,6 @@ public class AnimeCategoryServiceImpl implements IAnimeCategoryService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidAnimeCategory(Long id) {
         EntityOperations.doUpdate(animeCategoryRepository)

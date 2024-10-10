@@ -1,15 +1,15 @@
 package cn.chenyunlong.qing.domain.anime.anime.events;
 
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class AnimeEventsProcessor {
 
 
-    @EventListener(AnimeEvents.AnimeCreated.class)
+    @TransactionalEventListener(value = AnimeEvents.AnimeCreated.class, phase = TransactionPhase.BEFORE_COMMIT)
     public void processAnimeEvent(AnimeEvents.AnimeCreated animeCreated) {
-
         String tags = animeCreated.getAnime().getTags();
 
         // 实现事件处理逻辑

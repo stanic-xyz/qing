@@ -26,13 +26,14 @@ import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.squareup.javapoet.*;
 import com.squareup.javapoet.TypeSpec.Builder;
-import java.util.Optional;
-import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import java.util.Optional;
 
 /**
  * 处理Feign接口的代码生成处理器。

@@ -14,10 +14,6 @@ import cn.chenyunlong.qing.security.exception.RegisterUserFailureException;
 import cn.chenyunlong.qing.security.service.UmsUserDetailsService;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +22,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -48,13 +49,13 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
         List<Role> roleList = roleService.listRoleByUser(qingUser.getId());
 
         return User.builder()
-                   .username(qingUser.getUsername())
-                   .password(qingUser.getPassword())
-                   .credentialsExpired(false)
-                   .accountExpired(false)
-                   .authorities(AuthorityUtils.createAuthorityList(roleList.stream().map(Role::getRole).toList()))
-                   .disabled(qingUser.getValidStatus().boolValue())
-                   .build();
+            .username(qingUser.getUsername())
+            .password(qingUser.getPassword())
+            .credentialsExpired(false)
+            .accountExpired(false)
+            .authorities(AuthorityUtils.createAuthorityList(roleList.stream().map(Role::getRole).toList()))
+            .disabled(qingUser.getValidStatus().boolValue())
+            .build();
     }
 
     @Override

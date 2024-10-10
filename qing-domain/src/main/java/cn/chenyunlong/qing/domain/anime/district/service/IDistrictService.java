@@ -19,14 +19,8 @@ public interface IDistrictService {
      */
     void updateDistrict(Long id, DistrictUpdater updater);
 
-    /**
-     * valid
-     */
     void validDistrict(Long id);
 
-    /**
-     * invalid
-     */
     void invalidDistrict(Long id);
 
     /**

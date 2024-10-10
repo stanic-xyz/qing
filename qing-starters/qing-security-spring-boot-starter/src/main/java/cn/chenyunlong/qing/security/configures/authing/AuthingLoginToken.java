@@ -15,12 +15,13 @@ package cn.chenyunlong.qing.security.configures.authing;
 
 import cn.authing.sdk.java.dto.authentication.OIDCTokenResponse;
 import cn.hutool.core.collection.CollUtil;
-import java.util.Collection;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 @Data
 public class AuthingLoginToken implements Authentication {

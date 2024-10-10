@@ -14,17 +14,13 @@ import cn.chenyunlong.qing.domain.auth.menu.dto.vo.SysMenuVO;
 import cn.chenyunlong.qing.domain.auth.menu.mapper.SysMenuMapper;
 import cn.chenyunlong.qing.domain.auth.menu.service.ISysMenuService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Tag(name = "菜单管理")
 @RestController
@@ -35,9 +31,14 @@ public class SysMenuController {
 
     private final ISysMenuService sysMenuService;
 
-    /**
-     * createRequest
-     */
+    private static List<SysMenuResponse> convertMenuToResponse(List<SysMenuVO> menuVOList) {
+        return menuVOList.stream().map(menuVO -> {
+            SysMenuResponse sysMenuResponse = SysMenuMapper.INSTANCE.vo2Response(menuVO);
+            sysMenuResponse.setChildren(convertMenuToResponse(menuVO.getChildren()));
+            return sysMenuResponse;
+        }).collect(Collectors.toList());
+    }
+
     @PostMapping
     public JsonResult<Long> createSysMenu(
         @RequestBody
@@ -46,9 +47,6 @@ public class SysMenuController {
         return JsonResult.success(sysMenuService.createSysMenu(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateSysMenu")
     public JsonResult<String> updateSysMenu(
         @RequestBody
@@ -58,9 +56,6 @@ public class SysMenuController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validSysMenu(
         @PathVariable("id")
@@ -69,9 +64,6 @@ public class SysMenuController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidSysMenu(
         @PathVariable("id")
@@ -80,9 +72,6 @@ public class SysMenuController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
     @GetMapping("findById/{id}")
     public JsonResult<SysMenuResponse> findById(
         @PathVariable("id")
@@ -92,9 +81,6 @@ public class SysMenuController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<Page<SysMenuResponse>> page(
         @RequestBody
@@ -116,13 +102,5 @@ public class SysMenuController {
         List<SysMenuVO> menuVOList = sysMenuService.tree();
         List<SysMenuResponse> menuResponseList = convertMenuToResponse(menuVOList);
         return JsonResult.success(menuResponseList);
-    }
-
-    private static List<SysMenuResponse> convertMenuToResponse(List<SysMenuVO> menuVOList) {
-        return menuVOList.stream().map(menuVO -> {
-            SysMenuResponse sysMenuResponse = SysMenuMapper.INSTANCE.vo2Response(menuVO);
-            sysMenuResponse.setChildren(convertMenuToResponse(menuVO.getChildren()));
-            return sysMenuResponse;
-        }).collect(Collectors.toList());
     }
 }

@@ -2,13 +2,14 @@ package cn.chenyunlong.qing.infrastructure.repository.base;
 
 import cn.chenyunlong.jpa.support.BaseJpaRepository;
 import cn.chenyunlong.jpa.support.BaseRepository;
-import java.util.List;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")

@@ -13,8 +13,9 @@
 
 package cn.chenyunlong.common.model;
 
-import java.time.Instant;
 import lombok.Data;
+
+import java.time.Instant;
 
 /**
  * jpa-vo基础基。

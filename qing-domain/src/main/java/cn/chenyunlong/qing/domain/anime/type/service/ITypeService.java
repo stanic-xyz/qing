@@ -19,14 +19,8 @@ public interface ITypeService {
      */
     void updateType(TypeUpdater updater);
 
-    /**
-     * valid
-     */
     void validType(Long id);
 
-    /**
-     * invalid
-     */
     void invalidType(Long id);
 
     /**

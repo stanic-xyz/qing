@@ -13,26 +13,27 @@
 
 package cn.chenyunlong.codegen.processor;
 
-import static com.google.common.truth.Truth.assert_;
-import static com.google.testing.compile.CompilationSubject.assertThat;
-import static com.google.testing.compile.Compiler.javac;
-import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
-
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
 import io.swagger.v3.oas.annotations.media.Schema;
+import junit.framework.TestCase;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
+
+import javax.tools.JavaFileObject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import javax.tools.JavaFileObject;
-import junit.framework.TestCase;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
+
+import static com.google.common.truth.Truth.assert_;
+import static com.google.testing.compile.CompilationSubject.assertThat;
+import static com.google.testing.compile.Compiler.javac;
+import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 @SuppressWarnings("deprecation")
 @Schema

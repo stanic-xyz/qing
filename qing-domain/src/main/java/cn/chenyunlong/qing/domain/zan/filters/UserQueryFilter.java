@@ -21,7 +21,7 @@ public class UserQueryFilter extends AbstractEventFilter<LikeContext> {
         ZanCreateRequest createRequest = eventContext.getCreateRequest();
         Long userId = createRequest.getUserId();
         QingUser qingUser = userService.findById(userId)
-                                .orElseThrow(() -> new NotFoundException("未查询到用户：" + userId));
+            .orElseThrow(() -> new NotFoundException("未查询到用户：" + userId));
         // 将用户信息添加到上下文中
         eventContext.getLikeModel().setQingUser(qingUser);
     }

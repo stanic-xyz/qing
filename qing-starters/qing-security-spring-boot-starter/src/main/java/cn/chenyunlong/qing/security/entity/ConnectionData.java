@@ -17,11 +17,12 @@
 package cn.chenyunlong.qing.security.entity;
 
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * A data transfer object that allows the internal state of a Connection to be persisted and transferred between layers of an application.

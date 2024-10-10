@@ -23,13 +23,14 @@ import cn.chenyunlong.common.model.Request;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Objects;
-import java.util.Set;
+import lombok.Data;
+
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import lombok.Data;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * 支持创建器的生成器

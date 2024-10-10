@@ -15,16 +15,12 @@ import cn.chenyunlong.qing.domain.zan.dto.vo.ZanVO;
 import cn.chenyunlong.qing.domain.zan.mapper.ZanMapper;
 import cn.chenyunlong.qing.domain.zan.service.IZanService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 @Tag(name = "点赞管理")
 @RestController
@@ -35,9 +31,6 @@ public class ZanController {
 
     private final IZanService zanService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createZan(
         @RequestBody
@@ -46,9 +39,6 @@ public class ZanController {
         return JsonResult.success(zanService.createZan(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateZan")
     public JsonResult<String> updateZan(
         @RequestBody
@@ -58,9 +48,6 @@ public class ZanController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validZan(
         @PathVariable("id")
@@ -69,9 +56,6 @@ public class ZanController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidZan(
         @PathVariable("id")
@@ -80,9 +64,7 @@ public class ZanController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
+
     @GetMapping("findById/{id}")
     public JsonResult<ZanResponse> findById(
         @PathVariable("id")
@@ -92,9 +74,6 @@ public class ZanController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<ZanResponse>> page(
         @RequestBody

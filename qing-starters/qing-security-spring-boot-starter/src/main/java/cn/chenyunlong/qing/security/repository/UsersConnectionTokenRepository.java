@@ -25,9 +25,10 @@ package cn.chenyunlong.qing.security.repository;
 
 import cn.chenyunlong.qing.security.entity.AuthToken;
 import cn.chenyunlong.qing.security.enums.EnableRefresh;
-import java.util.List;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+
+import java.util.List;
 
 /**
  * A data access interface for managing a global store of users connections token to service providers.

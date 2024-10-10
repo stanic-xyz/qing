@@ -14,8 +14,6 @@ import cn.chenyunlong.qing.domain.auth.role.mapper.RoleMapper;
 import cn.chenyunlong.qing.domain.auth.role.repository.RoleRepository;
 import cn.chenyunlong.qing.domain.auth.role.service.IRoleService;
 import cn.hutool.core.lang.Assert;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -42,9 +43,9 @@ public class RoleServiceImpl implements IRoleService {
         Assert.isNull(byRoleName, "角色名称不能重复");
 
         Optional<Role> optionalRole = EntityOperations.doCreate(roleRepository)
-                                          .create(() -> RoleMapper.INSTANCE.dtoToEntity(creator))
-                                          .update(Role::init)
-                                          .execute();
+            .create(() -> RoleMapper.INSTANCE.dtoToEntity(creator))
+            .update(Role::init)
+            .execute();
         return optionalRole.isPresent() ? optionalRole.get().getId() : 0;
     }
 
@@ -56,9 +57,6 @@ public class RoleServiceImpl implements IRoleService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validRole(Long id) {
         EntityOperations.doUpdate(roleRepository)
@@ -67,9 +65,6 @@ public class RoleServiceImpl implements IRoleService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidRole(Long id) {
         EntityOperations.doUpdate(roleRepository)

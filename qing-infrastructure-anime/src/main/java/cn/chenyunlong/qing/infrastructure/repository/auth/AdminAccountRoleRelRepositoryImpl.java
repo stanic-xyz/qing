@@ -4,9 +4,10 @@ import cn.chenyunlong.qing.domain.auth.admin.AdminAccountRoleRel;
 import cn.chenyunlong.qing.domain.auth.admin.repository.AdminAccountRoleRelRepository;
 import cn.chenyunlong.qing.infrastructure.repository.base.JpaServiceImpl;
 import cn.chenyunlong.qing.infrastructure.repository.jpa.AdminAccountRoleJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

@@ -18,17 +18,6 @@ package cn.chenyunlong.qing.security.userdetails;
 
 import cn.chenyunlong.qing.security.entity.AuthUser;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +28,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
+
+import java.io.Serializable;
+import java.util.*;
+import java.util.function.Function;
 
 /**
  * 用于第三方授权登录时, 未开启自动注册且用户是第一次授权登录的临时用户.
@@ -54,11 +47,6 @@ import org.springframework.util.Assert;
 public class TemporaryUser implements UserDetails, CredentialsContainer {
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
-
-
-    // ~ Instance fields
-    // ================================================================================================
-    private String password;
     private final String username;
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
     private final Set<GrantedAuthority> authorities;
@@ -68,6 +56,9 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
     private final boolean enabled;
     private final AuthUser authUser;
     private final String encodeState;
+    // ~ Instance fields
+    // ================================================================================================
+    private String password;
 
     // ~ Constructors
     // ===================================================================================================
@@ -75,17 +66,17 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
     /**
      * Calls the more complex constructor with all boolean arguments set to {@code true}.
      *
-     * @param username 用户名默认为: username + "_" + providerId + "_" + providerUserId
-     * @param password 密码
+     * @param username    用户名默认为: username + "_" + providerId + "_" + providerUserId
+     * @param password    密码
      * @param authorities 权限默认为 {@link Auth2Properties#defaultAuthorities}
-     * @param authUser 第三方授权登录的用户信息
+     * @param authUser    第三方授权登录的用户信息
      * @param encodeState 第三方授权登录的流程中加密后的 state 参数
      */
     public TemporaryUser(String username,
-        String password,
-        Collection<? extends GrantedAuthority> authorities,
-        AuthUser authUser,
-        String encodeState) {
+                         String password,
+                         Collection<? extends GrantedAuthority> authorities,
+                         AuthUser authUser,
+                         String encodeState) {
         this(username, password, true, true, true, true,
             authorities, authUser, encodeState);
     }
@@ -95,27 +86,27 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
      * Construct the <code>User</code> with the details required by
      * {@link org.springframework.security.authentication.dao.DaoAuthenticationProvider}.
      *
-     * @param username the username presented to the
-     * <code>DaoAuthenticationProvider</code>
-     * @param password the password that should be presented to the
-     * <code>DaoAuthenticationProvider</code>
-     * @param enabled set to <code>true</code> if the user is enabled
-     * @param accountNonExpired set to <code>true</code> if the account has not expired
+     * @param username              the username presented to the
+     *                              <code>DaoAuthenticationProvider</code>
+     * @param password              the password that should be presented to the
+     *                              <code>DaoAuthenticationProvider</code>
+     * @param enabled               set to <code>true</code> if the user is enabled
+     * @param accountNonExpired     set to <code>true</code> if the account has not expired
      * @param credentialsNonExpired set to <code>true</code> if the credentials have not
-     * expired
-     * @param accountNonLocked set to <code>true</code> if the account is not locked
-     * @param authorities the authorities that should be granted to the caller if they
-     * presented the correct username and password and the user is enabled. Not null.
-     * @param authUser 第三方授权登录的用户信息
-     * @param encodeState 第三方授权登录的流程中加密后的 state 参数
+     *                              expired
+     * @param accountNonLocked      set to <code>true</code> if the account is not locked
+     * @param authorities           the authorities that should be granted to the caller if they
+     *                              presented the correct username and password and the user is enabled. Not null.
+     * @param authUser              第三方授权登录的用户信息
+     * @param encodeState           第三方授权登录的流程中加密后的 state 参数
      * @throws IllegalArgumentException if a <code>null</code> value was passed either as
      *                                  a parameter or as an element in the <code>GrantedAuthority</code> collection
      */
     public TemporaryUser(String username, String password, boolean enabled,
-        boolean accountNonExpired, boolean credentialsNonExpired,
-        boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
-        AuthUser authUser,
-        String encodeState) {
+                         boolean accountNonExpired, boolean credentialsNonExpired,
+                         boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
+                         AuthUser authUser,
+                         String encodeState) {
 
         if (((username == null) || "".equals(username)) || (password == null)) {
             throw new IllegalArgumentException(
@@ -136,54 +127,6 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
     // ~ Methods
     // ========================================================================================================
 
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public AuthUser getAuthUser() {
-        return authUser;
-    }
-
-    public String getEncodeState() {
-        return encodeState;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    @Override
-    public void eraseCredentials() {
-        password = null;
-    }
-
     private static SortedSet<GrantedAuthority> sortAuthorities(
         Collection<? extends GrantedAuthority> authorities) {
         Assert.notNull(authorities, "Cannot pass a null GrantedAuthority collection");
@@ -199,85 +142,6 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
         }
 
         return sortedAuthorities;
-    }
-
-    private static class AuthorityComparator implements Comparator<GrantedAuthority>,
-                                                            Serializable {
-
-        private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
-
-        @Override
-        public int compare(GrantedAuthority g1, GrantedAuthority g2) {
-            // Neither should ever be null as each entry is checked before adding it to
-            // the set.
-            // If the authority is null, it is a custom authority and should precede
-            // others.
-            if (g2.getAuthority() == null) {
-                return -1;
-            }
-
-            if (g1.getAuthority() == null) {
-                return 1;
-            }
-
-            return g1.getAuthority().compareTo(g2.getAuthority());
-        }
-    }
-
-    /**
-     * Returns {@code true} if the supplied object is a {@code User} instance with the
-     * same {@code username} value.
-     * <p>
-     * In other words, the objects are equal if they have the same username, representing
-     * the same principal.
-     */
-    @Override
-    public boolean equals(Object rhs) {
-        if (rhs instanceof TemporaryUser) {
-            return username.equals(((TemporaryUser) rhs).username);
-        }
-        return false;
-    }
-
-    /**
-     * Returns the hashcode of the {@code username}.
-     */
-    @Override
-    public int hashCode() {
-        return username.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(super.toString()).append(": ");
-        sb.append("Username: ").append(this.username).append("; ");
-        sb.append("Password: [PROTECTED]; ");
-        sb.append("Enabled: ").append(this.enabled).append("; ");
-        sb.append("AccountNonExpired: ").append(this.accountNonExpired).append("; ");
-        sb.append("credentialsNonExpired: ").append(this.credentialsNonExpired)
-            .append("; ");
-        sb.append("AccountNonLocked: ").append(this.accountNonLocked).append("; ");
-        sb.append("authUser: ").append(this.authUser.toString()).append("; ");
-        sb.append("encodeState: ").append(this.encodeState).append("; ");
-
-        if (!authorities.isEmpty()) {
-            sb.append("Granted Authorities: ");
-
-            boolean first = true;
-            for (GrantedAuthority auth : authorities) {
-                if (!first) {
-                    sb.append(",");
-                }
-                first = false;
-
-                sb.append(auth);
-            }
-        } else {
-            sb.append("Not granted any authorities");
-        }
-
-        return sb.toString();
     }
 
     /**
@@ -365,6 +229,133 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
         return builder().passwordEncoder(encoder::encode);
     }
 
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public AuthUser getAuthUser() {
+        return authUser;
+    }
+
+    public String getEncodeState() {
+        return encodeState;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    @Override
+    public void eraseCredentials() {
+        password = null;
+    }
+
+    /**
+     * Returns {@code true} if the supplied object is a {@code User} instance with the
+     * same {@code username} value.
+     * <p>
+     * In other words, the objects are equal if they have the same username, representing
+     * the same principal.
+     */
+    @Override
+    public boolean equals(Object rhs) {
+        if (rhs instanceof TemporaryUser) {
+            return username.equals(((TemporaryUser) rhs).username);
+        }
+        return false;
+    }
+
+    /**
+     * Returns the hashcode of the {@code username}.
+     */
+    @Override
+    public int hashCode() {
+        return username.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString()).append(": ");
+        sb.append("Username: ").append(this.username).append("; ");
+        sb.append("Password: [PROTECTED]; ");
+        sb.append("Enabled: ").append(this.enabled).append("; ");
+        sb.append("AccountNonExpired: ").append(this.accountNonExpired).append("; ");
+        sb.append("credentialsNonExpired: ").append(this.credentialsNonExpired)
+            .append("; ");
+        sb.append("AccountNonLocked: ").append(this.accountNonLocked).append("; ");
+        sb.append("authUser: ").append(this.authUser.toString()).append("; ");
+        sb.append("encodeState: ").append(this.encodeState).append("; ");
+
+        if (!authorities.isEmpty()) {
+            sb.append("Granted Authorities: ");
+
+            boolean first = true;
+            for (GrantedAuthority auth : authorities) {
+                if (!first) {
+                    sb.append(",");
+                }
+                first = false;
+
+                sb.append(auth);
+            }
+        } else {
+            sb.append("Not granted any authorities");
+        }
+
+        return sb.toString();
+    }
+
+    private static class AuthorityComparator implements Comparator<GrantedAuthority>,
+        Serializable {
+
+        private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
+
+        @Override
+        public int compare(GrantedAuthority g1, GrantedAuthority g2) {
+            // Neither should ever be null as each entry is checked before adding it to
+            // the set.
+            // If the authority is null, it is a custom authority and should precede
+            // others.
+            if (g2.getAuthority() == null) {
+                return -1;
+            }
+
+            if (g1.getAuthority() == null) {
+                return 1;
+            }
+
+            return g1.getAuthority().compareTo(g2.getAuthority());
+        }
+    }
+
     /**
      * Builds the user to be added. At minimum the username, password, and authorities
      * should provided. The remaining attributes have reasonable defaults.
@@ -449,7 +440,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
          * </p>
          *
          * @param roles the roles for this user (i.e. USER, ADMIN, etc). Cannot be null,
-         * contain null values or start with "ROLE_"
+         *              contain null values or start with "ROLE_"
          * @return the {@link UserBuilder} for method chaining (i.e. to populate
          * additional attributes for this user)
          */
@@ -458,7 +449,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
                 roles.length);
             for (String role : roles) {
                 Assert.isTrue(!role.startsWith("ROLE_"), () -> role
-                                                                   + " cannot start with ROLE_ (it is automatically added)");
+                    + " cannot start with ROLE_ (it is automatically added)");
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
             }
             return authorities(authorities);
@@ -468,7 +459,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
          * Populates the authorities. This attribute is required.
          *
          * @param authorities the authorities for this user. Cannot be null, or contain
-         * null values
+         *                    null values
          * @return the {@link UserBuilder} for method chaining (i.e. to populate
          * additional attributes for this user)
          * @see #roles(String...)
@@ -481,7 +472,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
          * Populates the authorities. This attribute is required.
          *
          * @param authorities the authorities for this user. Cannot be null, or contain
-         * null values
+         *                    null values
          * @return the {@link UserBuilder} for method chaining (i.e. to populate
          * additional attributes for this user)
          * @see #roles(String...)
@@ -495,7 +486,7 @@ public class TemporaryUser implements UserDetails, CredentialsContainer {
          * Populates the authorities. This attribute is required.
          *
          * @param authorities the authorities for this user (i.e. ROLE_USER, ROLE_ADMIN,
-         * etc). Cannot be null, or contain null values
+         *                    etc). Cannot be null, or contain null values
          * @return the {@link UserBuilder} for method chaining (i.e. to populate
          * additional attributes for this user)
          * @see #roles(String...)

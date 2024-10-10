@@ -13,11 +13,12 @@
 
 package cn.chenyunlong.jpa.support;
 
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.NoRepositoryBean;
+
+import java.util.List;
+import java.util.Optional;
 
 @NoRepositoryBean
 public interface BaseRepository<T, ID> {

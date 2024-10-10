@@ -21,10 +21,11 @@ import cn.chenyunlong.qing.security.entity.ConnectionData;
 import cn.chenyunlong.qing.security.enums.AuthProvider;
 import cn.chenyunlong.qing.security.exception.RegisterUserFailureException;
 import cn.chenyunlong.qing.security.exception.UpdateConnectionException;
-import java.util.List;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.MultiValueMap;
+
+import java.util.List;
 
 
 /**
@@ -43,7 +44,7 @@ public interface ConnectionService {
      * {@code authUser.getUsername() + "_" + authUser.getSource() +  "_" + authUser.getUuid()} 即
      * username_{providerId}_{providerUserId}.
      *
-     * @param authUser the user info from the provider sign-in attempt
+     * @param authUser    the user info from the provider sign-in attempt
      * @param encodeState 加密后的 state.   {@code https://gitee.com/pcore/just-auth-spring-security-starter/issues/I22JC7}
      * @return the new user UserDetails.
      * @throws RegisterUserFailureException 用户重名或注册失败
@@ -53,7 +54,7 @@ public interface ConnectionService {
     /**
      * 根据传入的参数更新第三方授权登录的用户信息, 包括 accessToken 信息,
      *
-     * @param authUser {@link AuthUser}
+     * @param authUser       {@link AuthUser}
      * @param connectionData 第三方授权登录的用户信息
      * @throws UpdateConnectionException 更新异常
      */
@@ -62,8 +63,8 @@ public interface ConnectionService {
     /**
      * 第三方授权登录信息{@link AuthUser}绑定到本地账号{@link UserDetails}, 且添加第三方授权登录信息到 user_connection 与 auth_token
      *
-     * @param principal 本地用户数据
-     * @param authUser 第三方用户信息
+     * @param principal  本地用户数据
+     * @param authUser   第三方用户信息
      * @param providerId 第三方服务商 Id
      */
     void binding(UserDetails principal, AuthUser authUser, String providerId);
@@ -71,8 +72,8 @@ public interface ConnectionService {
     /**
      * 解除绑定(第三方)
      *
-     * @param userId 用户 Id
-     * @param providerId 第三方服务商 Id
+     * @param userId         用户 Id
+     * @param providerId     第三方服务商 Id
      * @param providerUserId 第三方用户 Id
      */
     void unbinding(String userId, String providerId, String providerUserId);
@@ -80,7 +81,7 @@ public interface ConnectionService {
     /**
      * 根据 providerId 与 providerUserId 获取 ConnectionData list.
      *
-     * @param provider 第三方服务商, 如: qq, github
+     * @param provider       第三方服务商, 如: qq, github
      * @param providerUserId 第三方用户 Id
      * @return connection data list
      */

@@ -19,14 +19,8 @@ public interface IDepartmentService {
      */
     void updateDepartment(DepartmentUpdater updater);
 
-    /**
-     * valid
-     */
     void validDepartment(Long id);
 
-    /**
-     * invalid
-     */
     void invalidDepartment(Long id);
 
     /**

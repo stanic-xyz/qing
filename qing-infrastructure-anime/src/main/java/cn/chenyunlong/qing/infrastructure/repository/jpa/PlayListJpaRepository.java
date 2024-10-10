@@ -2,9 +2,10 @@ package cn.chenyunlong.qing.infrastructure.repository.jpa;
 
 import cn.chenyunlong.jpa.support.BaseJpaRepository;
 import cn.chenyunlong.qing.domain.anime.playlist.PlayList;
-import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface PlayListJpaRepository extends BaseJpaRepository<PlayList, Long> {

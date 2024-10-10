@@ -4,9 +4,10 @@ import cn.chenyunlong.qing.domain.anime.anime.AnimeTagRel;
 import cn.chenyunlong.qing.domain.anime.anime.repository.AnimeTagRelRepository;
 import cn.chenyunlong.qing.infrastructure.repository.base.JpaServiceImpl;
 import cn.chenyunlong.qing.infrastructure.repository.jpa.AnimeTagRelJpaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

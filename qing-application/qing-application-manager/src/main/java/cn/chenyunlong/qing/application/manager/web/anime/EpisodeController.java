@@ -19,12 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "单集管理")
 @RestController
@@ -36,9 +31,6 @@ public class EpisodeController {
 
     private final IEpisodeService episodeService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createEpisode(
         @Valid
@@ -48,9 +40,6 @@ public class EpisodeController {
         return JsonResult.success(episodeService.createEpisode(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateEpisode")
     public JsonResult<String> updateEpisode(
         @RequestBody
@@ -60,9 +49,6 @@ public class EpisodeController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validEpisode(
         @PathVariable("id")
@@ -71,9 +57,6 @@ public class EpisodeController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidEpisode(
         @PathVariable("id")
@@ -82,9 +65,7 @@ public class EpisodeController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
+
     @GetMapping("findById/{id}")
     public JsonResult<EpisodeResponse> findById(
         @PathVariable("id")

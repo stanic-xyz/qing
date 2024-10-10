@@ -14,9 +14,10 @@
 package cn.chenyunlong.common.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Objects;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import java.util.Objects;
 
 public class HttpContextUtil {
 

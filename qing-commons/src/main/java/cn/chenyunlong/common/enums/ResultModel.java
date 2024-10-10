@@ -13,9 +13,10 @@
 
 package cn.chenyunlong.common.enums;
 
-import java.lang.reflect.Field;
 import lombok.Data;
 import org.slf4j.Logger;
+
+import java.lang.reflect.Field;
 
 /**
  * <p>

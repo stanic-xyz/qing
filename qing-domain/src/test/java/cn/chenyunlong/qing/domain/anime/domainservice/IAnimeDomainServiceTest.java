@@ -1,7 +1,5 @@
 package cn.chenyunlong.qing.domain.anime.domainservice;
 
-import static org.mockito.Mockito.doAnswer;
-
 import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.dto.creator.AnimeCreator;
@@ -21,13 +19,15 @@ import cn.chenyunlong.qing.domain.anime.episode.repository.EpisodeRepository;
 import cn.chenyunlong.qing.domain.anime.playlist.repository.PlayListRepository;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
-import jakarta.validation.Validator;
-import java.time.LocalDate;
-import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.util.MimeTypeUtils;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
+import static org.mockito.Mockito.doAnswer;
 
 
 class IAnimeDomainServiceTest {
@@ -47,12 +47,10 @@ class IAnimeDomainServiceTest {
         AttachmentRepository attachmentRepository = Mockito.mock(AttachmentRepository.class);
         AnimeTagRelRepository animeTagRelRepository = Mockito.mock(AnimeTagRelRepository.class);
 
-
-        Validator validator = Mockito.mock(Validator.class);
         EpisodeRepository episodeRepository = Mockito.mock(EpisodeRepository.class);
         PlayListRepository playListRepository = Mockito.mock(PlayListRepository.class);
 
-        IAnimeService animeService = new AnimeServiceImpl(animeRepository, categoryRepository, districtRepository, tagRepository, attachmentRepository, validator, animeTagRelRepository, playListRepository, episodeRepository);
+        IAnimeService animeService = new AnimeServiceImpl(animeRepository, categoryRepository, districtRepository, tagRepository, animeTagRelRepository, playListRepository, episodeRepository);
 
         AnimeCreateCommand createRequest = new AnimeCreateCommand();
         createRequest.setName("凡人修仙传");

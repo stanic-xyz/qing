@@ -15,8 +15,6 @@ package cn.chenyunlong.gateway.filter;
 
 import cn.chenyunlong.gateway.config.IgnoreUrlsConfig;
 import cn.chenyunlong.gateway.constrant.AuthConstant;
-import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -28,6 +26,9 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.util.List;
 
 /**
  * 白名单路径访问时需要移除JWT请求头。

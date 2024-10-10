@@ -18,12 +18,13 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.validator.UpdateGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.google.common.base.Preconditions;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 实体类更新器。
@@ -32,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class EntityUpdater<T> extends BaseEntityOperation implements Loader<T>,
-                                                                         UpdateHandler<T>, Executor<T> {
+    UpdateHandler<T>, Executor<T> {
 
     private final BaseMapper<T> baseMapper;
     private T entity;

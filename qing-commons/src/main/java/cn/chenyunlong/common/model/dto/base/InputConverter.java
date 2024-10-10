@@ -17,9 +17,10 @@ package cn.chenyunlong.common.model.dto.base;
 
 import cn.chenyunlong.common.utils.BeanUtils;
 import cn.chenyunlong.common.utils.ReflectionUtils;
+
+import javax.annotation.Nullable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
-import javax.annotation.Nullable;
 
 /**
  * 用于输入DTO的转换器接口。

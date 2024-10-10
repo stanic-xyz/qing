@@ -510,9 +510,9 @@
             function doSubmit() {
                 // make sure form attrs are set
                 var t = $form.attr2('target'),
-                        a = $form.attr2('action'),
-                        mp = 'multipart/form-data',
-                        et = $form.attr('enctype') || $form.attr('encoding') || mp;
+                    a = $form.attr2('action'),
+                    mp = 'multipart/form-data',
+                    et = $form.attr('enctype') || $form.attr('encoding') || mp;
 
                 // update form attrs in IE friendly way
                 form.setAttribute('target', id);
@@ -566,12 +566,12 @@
                                 // if using the $.param format that allows for multiple values with the same name
                                 if ($.isPlainObject(s.extraData[n]) && s.extraData[n].hasOwnProperty('name') && s.extraData[n].hasOwnProperty('value')) {
                                     extraInputs.push(
-                                            $('<input type="hidden" name="' + s.extraData[n].name + '">').val(s.extraData[n].value)
-                                                    .appendTo(form)[0]);
+                                        $('<input type="hidden" name="' + s.extraData[n].name + '">').val(s.extraData[n].value)
+                                            .appendTo(form)[0]);
                                 } else {
                                     extraInputs.push(
-                                            $('<input type="hidden" name="' + n + '">').val(s.extraData[n])
-                                                    .appendTo(form)[0]);
+                                        $('<input type="hidden" name="' + n + '">').val(s.extraData[n])
+                                            .appendTo(form)[0]);
                                 }
                             }
                         }
@@ -799,8 +799,8 @@
             var httpData = function (xhr, type, s) { // mostly lifted from jq1.4.4
 
                 var ct = xhr.getResponseHeader('content-type') || '',
-                        xml = type === 'xml' || !type && ct.indexOf('xml') >= 0,
-                        data = xml ? xhr.responseXML : xhr.responseText;
+                    xml = type === 'xml' || !type && ct.indexOf('xml') >= 0,
+                    data = xml ? xhr.responseXML : xhr.responseText;
 
                 if (xml && data.documentElement.nodeName === 'parsererror') {
                     if ($.error) {
@@ -860,16 +860,16 @@
 
         if (options.delegation) {
             $(document)
-                    .off('submit.form-plugin', this.selector, doAjaxSubmit)
-                    .off('click.form-plugin', this.selector, captureSubmittingElement)
-                    .on('submit.form-plugin', this.selector, options, doAjaxSubmit)
-                    .on('click.form-plugin', this.selector, options, captureSubmittingElement);
+                .off('submit.form-plugin', this.selector, doAjaxSubmit)
+                .off('click.form-plugin', this.selector, captureSubmittingElement)
+                .on('submit.form-plugin', this.selector, options, doAjaxSubmit)
+                .on('click.form-plugin', this.selector, options, captureSubmittingElement);
             return this;
         }
 
         return this.ajaxFormUnbind()
-                .bind('submit.form-plugin', options, doAjaxSubmit)
-                .bind('click.form-plugin', options, captureSubmittingElement);
+            .bind('submit.form-plugin', options, doAjaxSubmit)
+            .bind('click.form-plugin', options, captureSubmittingElement);
     };
 
 // private event handlers
@@ -1114,9 +1114,9 @@
         }
 
         if (successful && (!n || el.disabled || t == 'reset' || t == 'button' ||
-                (t == 'checkbox' || t == 'radio') && !el.checked ||
-                (t == 'submit' || t == 'image') && el.form && el.form.clk != el ||
-                tag == 'select' && el.selectedIndex == -1)) {
+            (t == 'checkbox' || t == 'radio') && !el.checked ||
+            (t == 'submit' || t == 'image') && el.form && el.form.clk != el ||
+            tag == 'select' && el.selectedIndex == -1)) {
             return null;
         }
 
@@ -1185,7 +1185,7 @@
                 //  $('#myForm').clearForm('.special:hidden')
                 // the above would clean hidden inputs that have the class of 'special'
                 if ((includeHidden === true && /hidden/.test(t)) ||
-                        (typeof includeHidden == 'string' && $(this).is(includeHidden))) {
+                    (typeof includeHidden == 'string' && $(this).is(includeHidden))) {
                     this.value = '';
                 }
             }

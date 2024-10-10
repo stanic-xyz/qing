@@ -13,8 +13,6 @@
 
 package cn.chenyunlong.mybatis.support;
 
-import static org.springframework.util.CollectionUtils.isEmpty;
-
 import cn.chenyunlong.common.exception.ValidationException;
 import cn.chenyunlong.common.model.ValidateResult;
 import cn.chenyunlong.common.validator.ValidateGroup;
@@ -22,9 +20,12 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.groups.Default;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
  * 基础实体操作。

@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.security.constant;
 
 import io.jsonwebtoken.Claims;
+
 import java.util.Locale;
 
 /**

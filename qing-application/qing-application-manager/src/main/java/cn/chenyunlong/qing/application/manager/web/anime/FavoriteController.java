@@ -14,16 +14,12 @@ import cn.chenyunlong.qing.domain.anime.faverate.dto.updater.FavoriteUpdater;
 import cn.chenyunlong.qing.domain.anime.faverate.dto.vo.FavoriteVO;
 import cn.chenyunlong.qing.domain.anime.faverate.mapper.FavoriteMapper;
 import cn.chenyunlong.qing.domain.anime.faverate.service.IFavoriteService;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -33,9 +29,6 @@ public class FavoriteController {
 
     private final IFavoriteService favoriteService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createFavorite(
         @RequestBody
@@ -44,9 +37,6 @@ public class FavoriteController {
         return JsonResult.success(favoriteService.createFavorite(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateFavorite")
     public JsonResult<String> updateFavorite(
         @RequestBody
@@ -56,9 +46,6 @@ public class FavoriteController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validFavorite(
         @PathVariable("id")
@@ -67,9 +54,6 @@ public class FavoriteController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidFavorite(
         @PathVariable("id")
@@ -78,9 +62,7 @@ public class FavoriteController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
+
     @GetMapping("findById/{id}")
     public JsonResult<FavoriteResponse> findById(
         @PathVariable("id")
@@ -90,9 +72,6 @@ public class FavoriteController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<FavoriteResponse>> page(
         @RequestBody

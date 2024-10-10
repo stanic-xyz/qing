@@ -14,8 +14,6 @@ import cn.chenyunlong.qing.domain.anime.episode.mapper.EpisodeMapper;
 import cn.chenyunlong.qing.domain.anime.episode.repository.EpisodeRepository;
 import cn.chenyunlong.qing.domain.anime.episode.service.IEpisodeService;
 import cn.chenyunlong.qing.domain.anime.playlist.repository.PlayListRepository;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -51,9 +52,9 @@ public class EpisodeServiceImpl implements IEpisodeService {
         }
         // TODO 判断当前集数是否重复
         Optional<Episode> episode = EntityOperations.doCreate(episodeRepository)
-                                        .create(() -> EpisodeMapper.INSTANCE.dtoToEntity(creator))
-                                        .update(Episode::init)
-                                        .execute();
+            .create(() -> EpisodeMapper.INSTANCE.dtoToEntity(creator))
+            .update(Episode::init)
+            .execute();
         return episode.isPresent() ? episode.get().getId() : 0;
     }
 
@@ -68,9 +69,6 @@ public class EpisodeServiceImpl implements IEpisodeService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validEpisode(Long id) {
         EntityOperations.doUpdate(episodeRepository)
@@ -79,9 +77,6 @@ public class EpisodeServiceImpl implements IEpisodeService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidEpisode(Long id) {
         EntityOperations.doUpdate(episodeRepository)

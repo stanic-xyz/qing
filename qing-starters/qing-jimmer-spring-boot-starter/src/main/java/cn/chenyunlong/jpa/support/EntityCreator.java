@@ -15,12 +15,13 @@ package cn.chenyunlong.jpa.support;
 
 import cn.chenyunlong.common.validator.CreateGroup;
 import com.google.common.base.Preconditions;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 实体类控制器。

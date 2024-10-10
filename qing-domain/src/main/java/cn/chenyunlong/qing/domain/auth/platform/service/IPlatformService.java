@@ -19,14 +19,8 @@ public interface IPlatformService {
      */
     void updatePlatform(PlatformUpdater updater);
 
-    /**
-     * valid
-     */
     void validPlatform(Long id);
 
-    /**
-     * invalid
-     */
     void invalidPlatform(Long id);
 
     /**

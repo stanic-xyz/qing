@@ -25,14 +25,15 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import lombok.Data;
+
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import lombok.Data;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * 更新一代处理器

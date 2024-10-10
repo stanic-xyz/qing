@@ -22,9 +22,10 @@ import cn.chenyunlong.qing.security.entity.ConnectionKey;
 import cn.chenyunlong.qing.security.exception.DuplicateConnectionException;
 import cn.chenyunlong.qing.security.exception.NoSuchConnectionException;
 import cn.chenyunlong.qing.security.exception.NotConnectedException;
+import org.springframework.util.MultiValueMap;
+
 import java.util.List;
 import java.util.Set;
-import org.springframework.util.MultiValueMap;
 
 /**
  * 第三方授权登录用户信息增删改查, 绑定与解绑及查询是否绑定与解绑接口.

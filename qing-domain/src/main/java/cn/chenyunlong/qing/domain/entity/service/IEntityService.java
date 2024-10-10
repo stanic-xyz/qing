@@ -19,14 +19,8 @@ public interface IEntityService {
      */
     void updateEntity(EntityUpdater updater);
 
-    /**
-     * valid
-     */
     void validEntity(Long id);
 
-    /**
-     * invalid
-     */
     void invalidEntity(Long id);
 
     /**

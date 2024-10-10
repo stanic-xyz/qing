@@ -13,17 +13,18 @@
 
 package cn.chenyunlong.codegen.processor.api;
 
-import static com.google.testing.compile.CompilationSubject.assertThat;
-import static com.google.testing.compile.Compiler.javac;
-
 import cn.chenyunlong.codegen.processor.QingCodeGenProcessor;
 import cn.hutool.core.io.resource.ClassPathResource;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.JavaFileObjects;
+import junit.framework.TestCase;
+
+import javax.tools.JavaFileObject;
 import java.io.File;
 import java.util.ArrayList;
-import javax.tools.JavaFileObject;
-import junit.framework.TestCase;
+
+import static com.google.testing.compile.CompilationSubject.assertThat;
+import static com.google.testing.compile.Compiler.javac;
 
 public class GenCreateRequestProcessorTest extends TestCase {
 

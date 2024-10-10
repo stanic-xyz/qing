@@ -18,12 +18,6 @@ import cn.chenyunlong.qing.domain.anime.recommend.repository.RecommendRepository
 import cn.chenyunlong.qing.domain.anime.recommend.service.IRecommendService;
 import cn.hutool.core.lang.Assert;
 import jakarta.annotation.Resource;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,6 +25,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -54,9 +55,9 @@ public class RecommendServiceImpl implements IRecommendService {
         Assert.isNull(oldRecommend, "该动漫信息已经在推荐列表中了");
         Optional<Recommend> recommend;
         recommend = EntityOperations.doCreate(recommendRepository)
-                        .create(() -> RecommendMapper.INSTANCE.dtoToEntity(creator))
-                        .update(Recommend::init)
-                        .execute();
+            .create(() -> RecommendMapper.INSTANCE.dtoToEntity(creator))
+            .update(Recommend::init)
+            .execute();
         return recommend.isPresent() ? recommend.get().getId() : 0;
     }
 
@@ -76,9 +77,6 @@ public class RecommendServiceImpl implements IRecommendService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidRecommend(Long id) {
         EntityOperations.doUpdate(recommendRepository)

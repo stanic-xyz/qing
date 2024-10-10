@@ -19,14 +19,8 @@ public interface IUserTokenService {
      */
     void updateUserToken(UserTokenUpdater updater);
 
-    /**
-     * valid
-     */
     void validUserToken(Long id);
 
-    /**
-     * invalid
-     */
     void invalidUserToken(Long id);
 
     /**
