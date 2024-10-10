@@ -19,14 +19,8 @@ public interface ITestDomainService {
      */
     void updateTestDomain(TestDomainUpdater updater);
 
-    /**
-     * valid
-     */
     void validTestDomain(Long id);
 
-    /**
-     * invalid
-     */
     void invalidTestDomain(Long id);
 
     /**

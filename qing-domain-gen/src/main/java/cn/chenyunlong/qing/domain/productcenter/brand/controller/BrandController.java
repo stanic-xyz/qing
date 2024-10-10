@@ -35,18 +35,14 @@ public class BrandController {
 
     private final IBrandService brandService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createBrand(@RequestBody BrandCreateRequest request) {
+    public JsonResult<Long> createBrand(
+        @RequestBody
+        BrandCreateRequest request) {
         BrandCreator creator = BrandMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(brandService.createBrand(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateBrand")
     public JsonResult<String> updateBrand(@RequestBody BrandUpdateRequest request) {
         BrandUpdater updater = BrandMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class BrandController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validBrand(@PathVariable Long id) {
+    public JsonResult<String> validBrand(
+        @PathVariable
+        Long id) {
         brandService.validBrand(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidBrand(@PathVariable Long id) {
+    public JsonResult<String> invalidBrand(
+        @PathVariable
+        Long id) {
         brandService.invalidBrand(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class BrandController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<BrandResponse>> page(
         @RequestBody

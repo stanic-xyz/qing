@@ -53,20 +53,14 @@ public class ProductSkuServiceImpl implements IProductSkuService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validProductSku(Long id) {
         EntityOperations.doUpdate(productSkuRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidProductSku(Long id) {
         EntityOperations.doUpdate(productSkuRepository)

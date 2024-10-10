@@ -35,18 +35,14 @@ public class VerifyRuleController {
 
     private final IVerifyRuleService verifyRuleService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createVerifyRule(@RequestBody VerifyRuleCreateRequest request) {
+    public JsonResult<Long> createVerifyRule(
+        @RequestBody
+        VerifyRuleCreateRequest request) {
         VerifyRuleCreator creator = VerifyRuleMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(verifyRuleService.createVerifyRule(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateVerifyRule")
     public JsonResult<String> updateVerifyRule(@RequestBody VerifyRuleUpdateRequest request) {
         VerifyRuleUpdater updater = VerifyRuleMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class VerifyRuleController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validVerifyRule(@PathVariable Long id) {
+    public JsonResult<String> validVerifyRule(
+        @PathVariable
+        Long id) {
         verifyRuleService.validVerifyRule(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidVerifyRule(@PathVariable Long id) {
+    public JsonResult<String> invalidVerifyRule(
+        @PathVariable
+        Long id) {
         verifyRuleService.invalidVerifyRule(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class VerifyRuleController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<VerifyRuleResponse>> page(
         @RequestBody

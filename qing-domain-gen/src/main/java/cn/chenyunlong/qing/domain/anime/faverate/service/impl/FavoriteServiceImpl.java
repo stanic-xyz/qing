@@ -13,9 +13,11 @@ import cn.chenyunlong.qing.domain.anime.faverate.dto.vo.FavoriteVO;
 import cn.chenyunlong.qing.domain.anime.faverate.mapper.FavoriteMapper;
 import cn.chenyunlong.qing.domain.anime.faverate.repository.FavoriteRepository;
 import cn.chenyunlong.qing.domain.anime.faverate.service.IFavoriteService;
+
 import java.lang.Long;
 import java.lang.Override;
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -37,9 +39,9 @@ public class FavoriteServiceImpl implements IFavoriteService {
     @Override
     public Long createFavorite(FavoriteCreator creator) {
         Optional<Favorite> favorite = EntityOperations.doCreate(favoriteRepository)
-        .create(() -> FavoriteMapper.INSTANCE.dtoToEntity(creator))
-        .update(Favorite::init)
-        .execute();
+            .create(() -> FavoriteMapper.INSTANCE.dtoToEntity(creator))
+            .update(Favorite::init)
+            .execute();
         return favorite.isPresent() ? favorite.get().getId() : 0;
     }
 
@@ -49,31 +51,25 @@ public class FavoriteServiceImpl implements IFavoriteService {
     @Override
     public void updateFavorite(FavoriteUpdater updater) {
         EntityOperations.doUpdate(favoriteRepository)
-        .loadById(updater.getId())
-        .update(updater::updateFavorite)
-        .execute();
+            .loadById(updater.getId())
+            .update(updater::updateFavorite)
+            .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validFavorite(Long id) {
         EntityOperations.doUpdate(favoriteRepository)
-        .loadById(id)
-        .update(BaseJpaAggregate::valid)
-        .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::valid)
+            .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidFavorite(Long id) {
         EntityOperations.doUpdate(favoriteRepository)
-        .loadById(id)
-        .update(BaseJpaAggregate::invalid)
-        .execute();
+            .loadById(id)
+            .update(BaseJpaAggregate::invalid)
+            .execute();
     }
 
     /**
@@ -81,7 +77,7 @@ public class FavoriteServiceImpl implements IFavoriteService {
      */
     @Override
     public FavoriteVO findById(Long id) {
-        Optional<Favorite> favorite =  favoriteRepository.findById(id);
+        Optional<Favorite> favorite = favoriteRepository.findById(id);
         return new FavoriteVO(favorite.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError)));
     }
 

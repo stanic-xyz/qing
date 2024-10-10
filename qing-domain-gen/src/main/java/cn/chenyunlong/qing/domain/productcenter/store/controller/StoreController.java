@@ -35,18 +35,14 @@ public class StoreController {
 
     private final IStoreService storeService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createStore(@RequestBody StoreCreateRequest request) {
+    public JsonResult<Long> createStore(
+        @RequestBody
+        StoreCreateRequest request) {
         StoreCreator creator = StoreMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(storeService.createStore(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateStore")
     public JsonResult<String> updateStore(@RequestBody StoreUpdateRequest request) {
         StoreUpdater updater = StoreMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class StoreController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validStore(@PathVariable Long id) {
+    public JsonResult<String> validStore(
+        @PathVariable
+        Long id) {
         storeService.validStore(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidStore(@PathVariable Long id) {
+    public JsonResult<String> invalidStore(
+        @PathVariable
+        Long id) {
         storeService.invalidStore(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class StoreController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<StoreResponse>> page(
         @RequestBody

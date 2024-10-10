@@ -35,9 +35,6 @@ public class InOutRecordDetailController {
 
     private final IInOutRecordDetailService inOutRecordDetailService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createInOutRecordDetail(
         @RequestBody
@@ -46,33 +43,28 @@ public class InOutRecordDetailController {
         return JsonResult.success(inOutRecordDetailService.createInOutRecordDetail(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateInOutRecordDetail")
     public JsonResult<String> updateInOutRecordDetail(
-        @RequestBody
-        InOutRecordDetailUpdateRequest request) {
+            @RequestBody
+            InOutRecordDetailUpdateRequest request) {
         InOutRecordDetailUpdater updater =
-            InOutRecordDetailMapper.INSTANCE.request2Updater(request);
+                InOutRecordDetailMapper.INSTANCE.request2Updater(request);
         inOutRecordDetailService.updateInOutRecordDetail(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validInOutRecordDetail(@PathVariable Long id) {
+    public JsonResult<String> validInOutRecordDetail(
+        @PathVariable
+        Long id) {
         inOutRecordDetailService.validInOutRecordDetail(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidInOutRecordDetail(@PathVariable Long id) {
+    public JsonResult<String> invalidInOutRecordDetail(
+        @PathVariable
+        Long id) {
         inOutRecordDetailService.invalidInOutRecordDetail(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -87,9 +79,6 @@ public class InOutRecordDetailController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<InOutRecordDetailResponse>> page(
         @RequestBody

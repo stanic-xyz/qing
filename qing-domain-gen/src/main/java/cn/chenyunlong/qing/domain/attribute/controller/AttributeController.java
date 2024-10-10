@@ -35,18 +35,14 @@ public class AttributeController {
 
     private final IAttributeService attributeService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createAttribute(@RequestBody AttributeCreateRequest request) {
+    public JsonResult<Long> createAttribute(
+        @RequestBody
+        AttributeCreateRequest request) {
         AttributeCreator creator = AttributeMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(attributeService.createAttribute(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateAttribute")
     public JsonResult<String> updateAttribute(@RequestBody AttributeUpdateRequest request) {
         AttributeUpdater updater = AttributeMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class AttributeController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validAttribute(@PathVariable Long id) {
+    public JsonResult<String> validAttribute(
+        @PathVariable
+        Long id) {
         attributeService.validAttribute(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidAttribute(@PathVariable Long id) {
+    public JsonResult<String> invalidAttribute(
+        @PathVariable
+        Long id) {
         attributeService.invalidAttribute(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,12 +76,10 @@ public class AttributeController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<AttributeResponse>> page(
-        @RequestBody PageRequestWrapper<AttributeQueryRequest> request) {
+        @RequestBody
+        PageRequestWrapper<AttributeQueryRequest> request) {
         PageRequestWrapper<AttributeQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(AttributeMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());

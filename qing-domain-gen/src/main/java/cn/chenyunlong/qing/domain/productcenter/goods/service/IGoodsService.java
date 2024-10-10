@@ -19,14 +19,8 @@ public interface IGoodsService {
      */
     void updateGoods(GoodsUpdater updater);
 
-    /**
-     * valid
-     */
     void validGoods(Long id);
 
-    /**
-     * invalid
-     */
     void invalidGoods(Long id);
 
     /**

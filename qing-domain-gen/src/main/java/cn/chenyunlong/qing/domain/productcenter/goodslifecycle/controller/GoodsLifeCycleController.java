@@ -35,41 +35,35 @@ public class GoodsLifeCycleController {
 
     private final IGoodsLifeCycleService goodsLifeCycleService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createGoodsLifeCycle(@RequestBody GoodsLifeCycleCreateRequest request) {
+    public JsonResult<Long> createGoodsLifeCycle(
+        @RequestBody
+        GoodsLifeCycleCreateRequest request) {
         GoodsLifeCycleCreator creator = GoodsLifeCycleMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(goodsLifeCycleService.createGoodsLifeCycle(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateGoodsLifeCycle")
     public JsonResult<String> updateGoodsLifeCycle(
-        @RequestBody
-        GoodsLifeCycleUpdateRequest request) {
+            @RequestBody
+            GoodsLifeCycleUpdateRequest request) {
         GoodsLifeCycleUpdater updater = GoodsLifeCycleMapper.INSTANCE.request2Updater(request);
         goodsLifeCycleService.updateGoodsLifeCycle(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validGoodsLifeCycle(@PathVariable Long id) {
+    public JsonResult<String> validGoodsLifeCycle(
+        @PathVariable
+        Long id) {
         goodsLifeCycleService.validGoodsLifeCycle(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidGoodsLifeCycle(@PathVariable Long id) {
+    public JsonResult<String> invalidGoodsLifeCycle(
+        @PathVariable
+        Long id) {
         goodsLifeCycleService.invalidGoodsLifeCycle(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -84,9 +78,6 @@ public class GoodsLifeCycleController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<GoodsLifeCycleResponse>> page(
         @RequestBody

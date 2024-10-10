@@ -53,20 +53,14 @@ public class ShopServiceImpl implements IShopService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validShop(Long id) {
         EntityOperations.doUpdate(shopRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidShop(Long id) {
         EntityOperations.doUpdate(shopRepository)

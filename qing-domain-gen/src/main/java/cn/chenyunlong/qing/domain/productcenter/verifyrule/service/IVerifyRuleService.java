@@ -19,14 +19,8 @@ public interface IVerifyRuleService {
      */
     void updateVerifyRule(VerifyRuleUpdater updater);
 
-    /**
-     * valid
-     */
     void validVerifyRule(Long id);
 
-    /**
-     * invalid
-     */
     void invalidVerifyRule(Long id);
 
     /**

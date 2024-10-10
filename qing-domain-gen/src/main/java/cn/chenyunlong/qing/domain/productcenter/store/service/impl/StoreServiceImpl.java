@@ -53,20 +53,14 @@ public class StoreServiceImpl implements IStoreService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validStore(Long id) {
         EntityOperations.doUpdate(storeRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidStore(Long id) {
         EntityOperations.doUpdate(storeRepository)

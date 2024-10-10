@@ -35,18 +35,14 @@ public class TemplateItemController {
 
     private final ITemplateItemService templateItemService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createTemplateItem(@RequestBody TemplateItemCreateRequest request) {
+    public JsonResult<Long> createTemplateItem(
+        @RequestBody
+        TemplateItemCreateRequest request) {
         TemplateItemCreator creator = TemplateItemMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(templateItemService.createTemplateItem(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateTemplateItem")
     public JsonResult<String> updateTemplateItem(@RequestBody TemplateItemUpdateRequest request) {
         TemplateItemUpdater updater = TemplateItemMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class TemplateItemController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validTemplateItem(@PathVariable Long id) {
+    public JsonResult<String> validTemplateItem(
+        @PathVariable
+        Long id) {
         templateItemService.validTemplateItem(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidTemplateItem(@PathVariable Long id) {
+    public JsonResult<String> invalidTemplateItem(
+        @PathVariable
+        Long id) {
         templateItemService.invalidTemplateItem(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class TemplateItemController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<TemplateItemResponse>> page(
         @RequestBody

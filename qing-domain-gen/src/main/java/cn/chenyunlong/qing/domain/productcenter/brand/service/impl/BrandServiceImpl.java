@@ -53,20 +53,14 @@ public class BrandServiceImpl implements IBrandService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validBrand(Long id) {
         EntityOperations.doUpdate(brandRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidBrand(Long id) {
         EntityOperations.doUpdate(brandRepository)

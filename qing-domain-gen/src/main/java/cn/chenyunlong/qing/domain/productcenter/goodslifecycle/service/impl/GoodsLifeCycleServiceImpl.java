@@ -54,20 +54,14 @@ public class GoodsLifeCycleServiceImpl implements IGoodsLifeCycleService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validGoodsLifeCycle(Long id) {
         EntityOperations.doUpdate(goodsLifeCycleRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidGoodsLifeCycle(Long id) {
         EntityOperations.doUpdate(goodsLifeCycleRepository)

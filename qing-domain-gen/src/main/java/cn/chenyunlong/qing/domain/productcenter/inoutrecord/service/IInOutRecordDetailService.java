@@ -19,14 +19,8 @@ public interface IInOutRecordDetailService {
      */
     void updateInOutRecordDetail(InOutRecordDetailUpdater updater);
 
-    /**
-     * valid
-     */
     void validInOutRecordDetail(Long id);
 
-    /**
-     * invalid
-     */
     void invalidInOutRecordDetail(Long id);
 
     /**

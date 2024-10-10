@@ -53,20 +53,14 @@ public class GoodsServiceImpl implements IGoodsService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validGoods(Long id) {
         EntityOperations.doUpdate(goodsRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidGoods(Long id) {
         EntityOperations.doUpdate(goodsRepository)

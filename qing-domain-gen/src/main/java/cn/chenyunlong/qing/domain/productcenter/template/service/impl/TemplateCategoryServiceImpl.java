@@ -54,20 +54,14 @@ public class TemplateCategoryServiceImpl implements ITemplateCategoryService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validTemplateCategory(Long id) {
         EntityOperations.doUpdate(templateCategoryRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidTemplateCategory(Long id) {
         EntityOperations.doUpdate(templateCategoryRepository)

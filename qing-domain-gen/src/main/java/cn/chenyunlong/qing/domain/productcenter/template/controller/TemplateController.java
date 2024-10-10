@@ -35,18 +35,14 @@ public class TemplateController {
 
     private final ITemplateService templateService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createTemplate(@RequestBody TemplateCreateRequest request) {
+    public JsonResult<Long> createTemplate(
+        @RequestBody
+        TemplateCreateRequest request) {
         TemplateCreator creator = TemplateMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(templateService.createTemplate(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateTemplate")
     public JsonResult<String> updateTemplate(@RequestBody TemplateUpdateRequest request) {
         TemplateUpdater updater = TemplateMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class TemplateController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validTemplate(@PathVariable Long id) {
+    public JsonResult<String> validTemplate(
+        @PathVariable
+        Long id) {
         templateService.validTemplate(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidTemplate(@PathVariable Long id) {
+    public JsonResult<String> invalidTemplate(
+        @PathVariable
+        Long id) {
         templateService.invalidTemplate(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class TemplateController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<TemplateResponse>> page(
         @RequestBody

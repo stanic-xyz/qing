@@ -19,14 +19,8 @@ public interface IShopService {
      */
     void updateShop(ShopUpdater updater);
 
-    /**
-     * valid
-     */
     void validShop(Long id);
 
-    /**
-     * invalid
-     */
     void invalidShop(Long id);
 
     /**

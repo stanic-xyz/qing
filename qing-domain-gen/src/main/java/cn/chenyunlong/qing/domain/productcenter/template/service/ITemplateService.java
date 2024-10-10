@@ -19,14 +19,8 @@ public interface ITemplateService {
      */
     void updateTemplate(TemplateUpdater updater);
 
-    /**
-     * valid
-     */
     void validTemplate(Long id);
 
-    /**
-     * invalid
-     */
     void invalidTemplate(Long id);
 
     /**

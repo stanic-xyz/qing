@@ -19,14 +19,8 @@ public interface ITemplateCategoryService {
      */
     void updateTemplateCategory(TemplateCategoryUpdater updater);
 
-    /**
-     * valid
-     */
     void validTemplateCategory(Long id);
 
-    /**
-     * invalid
-     */
     void invalidTemplateCategory(Long id);
 
     /**

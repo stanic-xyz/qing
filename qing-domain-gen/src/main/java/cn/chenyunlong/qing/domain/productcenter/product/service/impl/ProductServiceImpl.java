@@ -53,20 +53,14 @@ public class ProductServiceImpl implements IProductService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validProduct(Long id) {
         EntityOperations.doUpdate(productRepository)
-            .loadById(id)
-            .update(BaseJpaAggregate::valid)
-            .execute();
+                .loadById(id)
+                .update(BaseJpaAggregate::valid)
+                .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidProduct(Long id) {
         EntityOperations.doUpdate(productRepository)

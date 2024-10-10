@@ -19,14 +19,8 @@ public interface IBrandService {
      */
     void updateBrand(BrandUpdater updater);
 
-    /**
-     * valid
-     */
     void validBrand(Long id);
 
-    /**
-     * invalid
-     */
     void invalidBrand(Long id);
 
     /**

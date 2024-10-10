@@ -35,18 +35,14 @@ public class InOutRecordController {
 
     private final IInOutRecordService inOutRecordService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
-    public JsonResult<Long> createInOutRecord(@RequestBody InOutRecordCreateRequest request) {
+    public JsonResult<Long> createInOutRecord(
+        @RequestBody
+        InOutRecordCreateRequest request) {
         InOutRecordCreator creator = InOutRecordMapper.INSTANCE.request2Dto(request);
         return JsonResult.success(inOutRecordService.createInOutRecord(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateInOutRecord")
     public JsonResult<String> updateInOutRecord(@RequestBody InOutRecordUpdateRequest request) {
         InOutRecordUpdater updater = InOutRecordMapper.INSTANCE.request2Updater(request);
@@ -54,20 +50,18 @@ public class InOutRecordController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
-    public JsonResult<String> validInOutRecord(@PathVariable Long id) {
+    public JsonResult<String> validInOutRecord(
+        @PathVariable
+        Long id) {
         inOutRecordService.validInOutRecord(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
-    public JsonResult<String> invalidInOutRecord(@PathVariable Long id) {
+    public JsonResult<String> invalidInOutRecord(
+        @PathVariable
+        Long id) {
         inOutRecordService.invalidInOutRecord(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
@@ -82,9 +76,6 @@ public class InOutRecordController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<InOutRecordResponse>> page(
         @RequestBody
