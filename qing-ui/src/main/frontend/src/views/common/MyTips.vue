@@ -17,7 +17,8 @@ export default {
     };
   },
   methods: {
-    create: function () {},
+    create: function () {
+    },
     handleSelect(key: string, keyPath: string) {
       console.log(key, keyPath);
     },

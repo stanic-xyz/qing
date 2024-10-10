@@ -10,7 +10,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, reactive } from "vue";
+import {onMounted, reactive} from "vue";
 
 const data = reactive({
   time: new Date(),

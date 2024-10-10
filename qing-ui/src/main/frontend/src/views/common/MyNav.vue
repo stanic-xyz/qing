@@ -3,13 +3,13 @@
     <form id="top_search_from" class="search_form" method="get" @submit="handleSelect">
       <label for="top_search_input"></label>
       <input id="top_search_input" autocapitalize="on" autocomplete="on" class="search_input" name="keyword" placeholder="输入关键字" spellcheck="false" value=""/>
-      <input class="search_submit" type="submit" value="" />
-      <input name="page" type="hidden" value="1" />
+      <input class="search_submit" type="submit" value=""/>
+      <input name="page" type="hidden" value="1"/>
     </form>
   </header>
 </template>
 <script lang="ts" setup>
-import { reactive } from "vue";
+import {reactive} from "vue";
 
 defineProps<{
   title?: string;
@@ -22,7 +22,7 @@ function handleSelect(payload: Event) {
 reactive({
   activeIndex: "1",
   navList: [
-    { groupName: "首页", route: "/", groupIcon: "", groupActive: true },
+    {groupName: "首页", route: "/", groupIcon: "", groupActive: true},
     {
       groupName: "目录",
       route: "/catalog",

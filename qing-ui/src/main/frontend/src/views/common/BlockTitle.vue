@@ -1,5 +1,5 @@
 <template>
-  <hr class="hrspace clear" style="width: 98%" />
+  <hr class="hrspace clear" style="width: 98%"/>
   <div class="blocktitle">
     <router-link to="/update">{{ name }}</router-link>
   </div>

@@ -4,33 +4,33 @@
       <div class="row justify-content-md-center h-100">
         <div class="card-wrapper">
           <div class="brand">
-            <img src="../../assets/img/logo.jpg" alt="logo"/>
+            <img alt="logo" src="../../assets/img/logo.jpg"/>
           </div>
           <div class="card fat">
             <div class="card-body">
               <h4 class="card-title">登录</h4>
-              <form method="POST" class="my-login-validation">
+              <form class="my-login-validation" method="POST">
                 <div class="form-group">
                   <label for="email">手机号/邮箱</label>
-                  <input id="email" type="email" class="form-control" name="email" value="" required autofocus v-model="loginFormData.username"/>
+                  <input id="email" v-model="loginFormData.username" autofocus class="form-control" name="email" required type="email" value=""/>
                   <div class="invalid-feedback">Email is invalid</div>
                 </div>
                 <div class="form-group">
                   <label for="password">密码</label>
-                  <input id="password" type="password" class="form-control" name="password" v-model="loginFormData.password" required data-eye/>
+                  <input id="password" v-model="loginFormData.password" class="form-control" data-eye name="password" required type="password"/>
                   <div class="invalid-feedback">请输入密码！</div>
                 </div>
                 <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue"></i>
                 <div class="form-group">
                   <div class="custom-checkbox custom-control">
-                    <input type="checkbox" name="remember" id="remember" class="custom-control-input" v-model="loginFormData.rememberMe"/>
-                    <label for="remember" class="custom-control-label">记住账号</label>
+                    <input id="remember" v-model="loginFormData.rememberMe" class="custom-control-input" name="remember" type="checkbox"/>
+                    <label class="custom-control-label" for="remember">记住账号</label>
                   </div>
                 </div>
                 <div class="form-group m-0">
-                  <button type="submit" class="btn btn-primary btn-block" @click.prevent="handleBtn">Login</button>
+                  <button class="btn btn-primary btn-block" type="submit" @click.prevent="handleBtn">Login</button>
                 </div>
-                <lay-space spaceAlign="center" :fill="false">
+                <lay-space :fill="false" spaceAlign="center">
                   <div class="mt-4 text-center">没有账号？ <a href="register.html">创建</a>&nbsp;</div>
                   <div class="mt-4 text-center"><a href="forgot.html"> 忘记密码？</a></div>
                 </lay-space>

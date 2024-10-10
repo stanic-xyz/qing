@@ -32,17 +32,17 @@
         <b-icon aria-hidden="true" icon="gear-fill"></b-icon>
         Settings
       </b-button>
-      <br />
+      <br/>
       <b-button class="mb-2" variant="primary">
         Pay now
         <b-icon aria-hidden="true" icon="credit-card"></b-icon>
       </b-button>
-      <br />
+      <br/>
       <b-button class="mb-2" variant="outline-info">
         <b-icon aria-hidden="true" icon="power"></b-icon>
         Logout
       </b-button>
-      <br />
+      <br/>
       <b-button class="mb-2" size="lg" variant="info">
         <b-icon aria-label="Help" icon="question-circle-fill"></b-icon>
       </b-button>

@@ -73,7 +73,8 @@ export default {
       ],
     };
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     handleSelect(key: string, keyPath: string) {
       console.log(key, keyPath);

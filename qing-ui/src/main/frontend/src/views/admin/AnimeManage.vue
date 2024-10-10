@@ -165,22 +165,22 @@ const recommend = () => {
 };
 
 const columns = [
-  { fixed: "left", type: "checkbox", title: "复选" },
-  { title: "名称", width: "80px", key: "name" },
-  { title: "作者", width: "80px", key: "author" },
-  { title: "公司名称", key: "companyName", width: "80px" },
-  { title: "创建时间", width: "80px", key: "createdAt" },
-  { title: "热度", width: "80px", key: "playHeat" },
-  { title: "播放状态", width: "80px", key: "playStatus" },
-  { title: "动漫类型", width: "120px", key: "plotType" },
-  { title: "首播时间", width: "120px", key: "premiereDate" },
+  {fixed: "left", type: "checkbox", title: "复选"},
+  {title: "名称", width: "80px", key: "name"},
+  {title: "作者", width: "80px", key: "author"},
+  {title: "公司名称", key: "companyName", width: "80px"},
+  {title: "创建时间", width: "80px", key: "createdAt"},
+  {title: "热度", width: "80px", key: "playHeat"},
+  {title: "播放状态", width: "80px", key: "playStatus"},
+  {title: "动漫类型", width: "120px", key: "plotType"},
+  {title: "首播时间", width: "120px", key: "premiereDate"},
   {
     title: "备注",
     width: "400px",
     key: "instruction",
     ellipsisTooltip: true,
   },
-  { title: "操作", width: "150px", customSlot: "operator", key: "operator", fixed: "right", ignoreExport: true },
+  {title: "操作", width: "150px", customSlot: "operator", key: "operator", fixed: "right", ignoreExport: true},
 ];
 
 const animeType = ref<string[]>([]);
@@ -195,7 +195,7 @@ const editorAction = ref([
     callback: () => {
       console.debug(animeDetailForm.value);
       updateAnime(editAnimeId.value, animeDetailForm.value);
-      layer.confirm("确认操作", { shade: false });
+      layer.confirm("确认操作", {shade: false});
     },
   },
   {
@@ -220,7 +220,7 @@ const addForm = reactive({
       callback: () => {
         console.debug("新增动漫信息", addForm.formData);
         createAnime(addForm.formData);
-        layer.confirm("确认操作", { shade: false });
+        layer.confirm("确认操作", {shade: false});
       },
     },
     {

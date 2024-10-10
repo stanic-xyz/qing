@@ -3,7 +3,7 @@
     <div class="div_left">
       <div class="baseblock">
         <div class="blockcontent">
-          <img :alt="data.anime.name" class="poster" height="356px" referrerpolicy="no-referrer" src="https://cdn.aqdstatic.com:966/age/20010004.jpg" width="256px" />
+          <img :alt="data.anime.name" class="poster" height="356px" referrerpolicy="no-referrer" src="https://cdn.aqdstatic.com:966/age/20010004.jpg" width="256px"/>
         </div>
       </div>
       <div class="baseblock">
@@ -110,11 +110,11 @@
         <div id="main0" class="main0">
           <div
                   v-for="(listInfo, index) in data.anime.playLists"
-            :key="index"
-            :style="{
+                  :key="index"
+                  :style="{
               display: index === currentPlayListId ? 'block' : 'none',
             }"
-            class="movurl"
+                  class="movurl"
           >
             <ul v-for="(episode, index) in episodeList" :key="index">
               <li>
@@ -134,7 +134,7 @@
             <span class="res_links_pswd_tag">(提取码:</span>
             <span class="res_links_pswd">fe5e)</span></span
           >
-          <br />
+          <br/>
         </div>
       </div>
 
@@ -144,15 +144,15 @@
         <div class="report_div">
           <div id="report_form">
             <div>
-              <input id="report_aid" v-model="data.anime.id" name="cid" type="hidden" />
-              <label v-for="(type, index) in data.reportTypes" :key="index"> <input v-model="chooseReportTypes" name="link_invalid" type="radio" v-bind:value="type.name" />{{ type.name }}</label>
-              <br />
+              <input id="report_aid" v-model="data.anime.id" name="cid" type="hidden"/>
+              <label v-for="(type, index) in data.reportTypes" :key="index"> <input v-model="chooseReportTypes" name="link_invalid" type="radio" v-bind:value="type.name"/>{{ type.name }}</label>
+              <br/>
               <label>
                 {{ chooseReportTypes }}
-                <br />
+                <br/>
                 <textarea v-model="reportDetail" autocapitalize="off" autocomplete="off" name="detail" placeholder="请告诉我们详细情况~" spellcheck="true"></textarea>
               </label>
-              <br />
+              <br/>
               <button class="nbutton" value="提交" @click="sendReport">提交</button>
             </div>
           </div>
@@ -180,19 +180,19 @@
           <div id="comments_block" class="switchBlock">
             <form id="comment_form" action="javascript:void(0)" method="GET">
               <div>
-                <input id="comment_id" name="cid" type="hidden" value="${data?.anime?.id}" />
+                <input id="comment_id" name="cid" type="hidden" value="${data?.anime?.id}"/>
                 <label for="comment_content"></label>
                 <textarea id="comment_content" autocapitalize="off" autocomplete="off" csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm" maxlength="255" name="comment_content" placeholder="说点什么吧" spellcheck="false" tid="20180132" wrap="SOFT"></textarea>
                 <label class="comment_imform_tag" for="comment_user">昵称：</label>
-                <input id="comment_user" autocapitalize="off" autocomplete="off" name="comment_user" placeholder="名字" readonly spellcheck="false" value="游客" />
-                <input class="nbutton" name="" type="submit" />
+                <input id="comment_user" autocapitalize="off" autocomplete="off" name="comment_user" placeholder="名字" readonly spellcheck="false" value="游客"/>
+                <input class="nbutton" name="" type="submit"/>
               </div>
             </form>
 
             <!-- 评论列表 -->
             <ul id="comment_list" style="margin-top: 16px">
               <li v-for="(comment, index) in commentList" :key="index" class="comment">
-                <hr class="hrspace2" />
+                <hr class="hrspace2"/>
                 <div class="comment_cell_user">
                   {{ comment.username }}
                 </div>
@@ -203,7 +203,7 @@
                   </div>
                 </div>
               </li>
-              <hr class="hrspace2" />
+              <hr class="hrspace2"/>
               <div id="current_comment_page"></div>
             </ul>
 
