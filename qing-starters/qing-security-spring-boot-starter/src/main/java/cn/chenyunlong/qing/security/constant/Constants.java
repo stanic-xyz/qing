@@ -7,6 +7,7 @@ import java.util.Locale;
 /**
  * 通用常量信息
  */
+@SuppressWarnings("unused")
 public class Constants {
 
     /**
