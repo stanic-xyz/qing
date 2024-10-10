@@ -19,14 +19,8 @@ public interface IFavoriteService {
      */
     void updateFavorite(FavoriteUpdater updater);
 
-    /**
-     * valid
-     */
     void validFavorite(Long id);
 
-    /**
-     * invalid
-     */
     void invalidFavorite(Long id);
 
     /**

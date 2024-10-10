@@ -39,9 +39,9 @@ qike123.switchTab = function (i, o, p) {
         if (n.delay > 0) {
             k && clearTimeout(k);
             k = setTimeout(function () {
-                        m(a)
-                    },
-                    n.delay)
+                    m(a)
+                },
+                n.delay)
         } else {
             m(a)
         }
@@ -104,7 +104,7 @@ function PlayHistoryClass() {
     this.getPlayArray = function () {
         cookieStr = document.cookie;
         var start = cookieStr.indexOf("qike123=") + "qike123=".length, end = cookieStr.indexOf("_$_|", start),
-                allCookieStr = unescape(cookieStr.substring(start, end))
+            allCookieStr = unescape(cookieStr.substring(start, end))
         if (end == -1) {
             allCookieStr = "";
             return;
@@ -140,8 +140,8 @@ function PlayHistoryClass() {
     this.addPlayHistory = function (name, url) {
         var count = 10; //播放历史列表调用条数
         var code_name = escape(name) + "^", code_url = escape(url) + "_$_",
-                expireTime = new Date(new Date().setDate(new Date().getDate() + 30)),
-                timeAndPathStr = "|; expires=" + expireTime.toGMTString() + "; path=/";
+            expireTime = new Date(new Date().setDate(new Date().getDate() + 30)),
+            timeAndPathStr = "|; expires=" + expireTime.toGMTString() + "; path=/";
         if (cookieStr.indexOf("qike123=") != -1 || cookieStr.indexOf("_$_|") != -1) {
             var newCookieStr = "";
             if (allVideoArray.length < count) {

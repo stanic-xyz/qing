@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.domain.anime.anime;
 
 import cn.chenyunlong.common.constants.BaseEnum;
+
 import java.util.Optional;
 
 public enum PlayStatus implements BaseEnum<Integer> {

@@ -13,11 +13,12 @@
 
 package cn.chenyunlong.common.utils;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * 反射工具集。

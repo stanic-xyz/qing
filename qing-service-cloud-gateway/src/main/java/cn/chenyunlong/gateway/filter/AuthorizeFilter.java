@@ -17,7 +17,6 @@ import cn.chenyunlong.gateway.constrant.AuthConstant;
 import cn.chenyunlong.gateway.utils.JwtUtil;
 import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;
-import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -32,6 +31,8 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * 白名单路径访问时需要移除JWT请求头。

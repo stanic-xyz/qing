@@ -3,8 +3,9 @@ package cn.chenyunlong.qing.domain.auth.user.dto.request;
 import cn.chenyunlong.common.enums.MFAType;
 import cn.chenyunlong.common.model.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Schema
 @Data

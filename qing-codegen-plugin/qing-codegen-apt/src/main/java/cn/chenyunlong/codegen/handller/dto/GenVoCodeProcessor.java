@@ -54,38 +54,38 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
                               boolean useLombok) {
         Set<VariableElement> fields =
-                findFields(typeElement,
-                        variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
+            findFields(typeElement,
+                variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
         Builder builder = TypeSpec
-                .classBuilder(sourceClassName)
-                .superclass(AbstractBaseJpaVo.class)
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class);
+            .classBuilder(sourceClassName)
+            .superclass(AbstractBaseJpaVo.class)
+            .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(Schema.class);
         if (useLombok) {
             builder.addAnnotation(Data.class);
             builder.addAnnotation(///////////
-                    AnnotationSpec.builder(EqualsAndHashCode.class).addMember("callSuper", "$L", true)
-                            .build());
-            builder.addAnnotation(AnnotationSpec
-                    .builder(NoArgsConstructor.class)
-                    .addMember("access", "$T.PROTECTED", AccessLevel.class)
+                AnnotationSpec.builder(EqualsAndHashCode.class).addMember("callSuper", "$L", true)
                     .build());
+            builder.addAnnotation(AnnotationSpec
+                .builder(NoArgsConstructor.class)
+                .addMember("access", "$T.PROTECTED", AccessLevel.class)
+                .build());
         }
         addSetterAndGetterMethod(builder, fields);
         MethodSpec.Builder constructorSpecBuilder = MethodSpec
-                .constructorBuilder()
-                .addParameter(TypeName.get(typeElement.asType()), "source")
-                .addModifiers(Modifier.PUBLIC);
+            .constructorBuilder()
+            .addParameter(TypeName.get(typeElement.asType()), "source")
+            .addModifiers(Modifier.PUBLIC);
         constructorSpecBuilder.addStatement("super()")
-                .addStatement("this.setId(source.getId());")
-                .addStatement("this.setCreatedAt(source.getCreatedAt());")
-                .addStatement("this.setUpdatedAt(source.getCreatedAt());")
-                .addStatement("this.setVersion(source.getVersion());");
+            .addStatement("this.setId(source.getId());")
+            .addStatement("this.setCreatedAt(source.getCreatedAt());")
+            .addStatement("this.setUpdatedAt(source.getCreatedAt());")
+            .addStatement("this.setVersion(source.getVersion());");
 
         fields.forEach(
-                variableElement -> constructorSpecBuilder.addStatement("this.set$L(source.get$L())",
-                        getFieldDefaultName(variableElement), getFieldDefaultName(variableElement)));
+            variableElement -> constructorSpecBuilder.addStatement("this.set$L(source.get$L())",
+                getFieldDefaultName(variableElement), getFieldDefaultName(variableElement)));
         builder.addMethod(constructorSpecBuilder.build());
         genJavaSourceFile(typeElement, builder);
     }

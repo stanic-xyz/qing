@@ -19,14 +19,8 @@ public interface ITagService {
      */
     void updateTag(TagUpdater updater);
 
-    /**
-     * valid
-     */
     void validTag(Long id);
 
-    /**
-     * invalid
-     */
     void invalidTag(Long id);
 
     /**

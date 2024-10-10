@@ -19,10 +19,11 @@ import cn.chenyunlong.jpa.support.BaseJpaAggregate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 /**
  * 用户信息

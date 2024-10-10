@@ -10,12 +10,13 @@ import com.aliyun.tea.TeaException;
 import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.models.RuntimeOptions;
 import jakarta.annotation.PostConstruct;
-import java.util.Objects;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * 互动卡片服务。
@@ -79,7 +80,7 @@ public class RobotInteractiveCardsService {
             if (Objects.isNull(response) || Objects.isNull(response.getBody())) {
                 log.error(
                     "RobotInteractiveCardsService_send sendRobotInteractiveCardWithOptions return null, "
-                    + "response={}", response);
+                        + "response={}", response);
                 return null;
             }
 
@@ -87,7 +88,7 @@ public class RobotInteractiveCardsService {
         } catch (TeaException e) {
             log.error(
                 "RobotInteractiveCardsService_send sendRobotInteractiveCardWithOptions throw TeaException,"
-                + " errCode={}, errorMessage={}", e.getCode(), e.getMessage(), e);
+                    + " errCode={}, errorMessage={}", e.getCode(), e.getMessage(), e);
             throw e;
         } catch (Exception e) {
             log.error(

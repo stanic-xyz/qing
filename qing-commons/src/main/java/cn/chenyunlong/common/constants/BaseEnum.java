@@ -14,6 +14,7 @@
 package cn.chenyunlong.common.constants;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -27,18 +28,18 @@ public interface BaseEnum<V> {
     /**
      * 根据Code解析枚举。
      *
-     * @param code 枚举代码
+     * @param code  枚举代码
      * @param clazz 枚举枚举类型
-     * @param <T> 枚举类型的泛型
+     * @param <T>   枚举类型的泛型
      * @return 枚举
      */
     static <T extends BaseEnum<V>, V> T parseByCode(V code, Class<T> clazz) {
         T[] enumConstants = clazz.getEnumConstants();
         return Arrays
-                   .stream(enumConstants)
-                   .filter(baseEnum -> Objects.equals(baseEnum.getValue(), code))
-                   .findFirst()
-                   .orElse(null);
+            .stream(enumConstants)
+            .filter(baseEnum -> Objects.equals(baseEnum.getValue(), code))
+            .findFirst()
+            .orElse(null);
     }
 
     /**

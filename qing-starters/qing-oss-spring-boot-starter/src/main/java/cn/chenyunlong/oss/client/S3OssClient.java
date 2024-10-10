@@ -19,9 +19,10 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
+import lombok.RequiredArgsConstructor;
+
 import java.io.InputStream;
 import java.net.URL;
-import lombok.RequiredArgsConstructor;
 
 /**
  * s3 是一个协议。

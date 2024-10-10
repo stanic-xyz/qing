@@ -19,14 +19,8 @@ public interface IQingUserService {
      */
     void updateQingUser(QingUserUpdater updater);
 
-    /**
-     * valid
-     */
     void validQingUser(Long id);
 
-    /**
-     * invalid
-     */
     void invalidQingUser(Long id);
 
     /**

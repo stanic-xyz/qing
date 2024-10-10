@@ -16,11 +16,12 @@ package cn.chenyunlong.qing.application.manager.web.monitor;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.MeterRegistry;
-import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Component

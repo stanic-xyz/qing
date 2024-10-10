@@ -13,10 +13,11 @@
 
 package cn.chenyunlong.common.model.page;
 
+import lombok.Data;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import lombok.Data;
 
 /**
  * 表格分页数据对象

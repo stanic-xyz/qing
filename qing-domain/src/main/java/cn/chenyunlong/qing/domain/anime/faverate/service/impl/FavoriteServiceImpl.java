@@ -13,7 +13,6 @@ import cn.chenyunlong.qing.domain.anime.faverate.dto.vo.FavoriteVO;
 import cn.chenyunlong.qing.domain.anime.faverate.mapper.FavoriteMapper;
 import cn.chenyunlong.qing.domain.anime.faverate.repository.FavoriteRepository;
 import cn.chenyunlong.qing.domain.anime.faverate.service.IFavoriteService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -37,9 +38,9 @@ public class FavoriteServiceImpl implements IFavoriteService {
     public Long createFavorite(FavoriteCreator creator) {
         Optional<Favorite> favorite;
         favorite = EntityOperations.doCreate(favoriteRepository)
-                       .create(() -> FavoriteMapper.INSTANCE.dtoToEntity(creator))
-                       .update(Favorite::init)
-                       .execute();
+            .create(() -> FavoriteMapper.INSTANCE.dtoToEntity(creator))
+            .update(Favorite::init)
+            .execute();
         return favorite.isPresent() ? favorite.get().getId() : 0;
     }
 
@@ -54,9 +55,6 @@ public class FavoriteServiceImpl implements IFavoriteService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validFavorite(Long id) {
         EntityOperations.doUpdate(favoriteRepository)
@@ -65,9 +63,6 @@ public class FavoriteServiceImpl implements IFavoriteService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidFavorite(Long id) {
         EntityOperations.doUpdate(favoriteRepository)

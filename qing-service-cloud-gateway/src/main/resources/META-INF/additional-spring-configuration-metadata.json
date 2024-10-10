@@ -1,9 +1,9 @@
 {
-  "properties": [
-    {
-      "name": "secure.ignore.urls",
-      "type": "java.lang.String",
-      "description": "网关白名单配置."
-    }
-  ]
+    "properties": [
+        {
+            "name": "secure.ignore.urls",
+            "type": "java.lang.String",
+            "description": "网关白名单配置."
+        }
+    ]
 }

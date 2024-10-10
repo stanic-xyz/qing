@@ -14,11 +14,12 @@ import cn.chenyunlong.qing.domain.anime.anime.dto.vo.AnimeVO;
 import cn.chenyunlong.qing.infrustructure.converter.CustomMapper;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(uses = {CustomMapper.class, DateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AnimeMapper {

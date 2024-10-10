@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.domain.zan.pipeline.selecter;
 
 import cn.chenyunlong.qing.domain.zan.pipeline.EventFilter;
 import cn.chenyunlong.qing.domain.zan.pipeline.context.EventContext;
+
 import java.util.List;
 
 public class LocalListBasedFilterSelector implements FilterSelector {

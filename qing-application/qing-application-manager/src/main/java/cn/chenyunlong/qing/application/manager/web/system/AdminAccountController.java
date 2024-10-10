@@ -6,27 +6,19 @@ import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
 import cn.chenyunlong.qing.domain.auth.admin.dto.creator.AdminAccountCreator;
 import cn.chenyunlong.qing.domain.auth.admin.dto.query.AdminAccountQuery;
-import cn.chenyunlong.qing.domain.auth.admin.dto.request.AdminAccountCreateRequest;
-import cn.chenyunlong.qing.domain.auth.admin.dto.request.AdminAccountQueryRequest;
-import cn.chenyunlong.qing.domain.auth.admin.dto.request.AdminAccountUpdateRequest;
-import cn.chenyunlong.qing.domain.auth.admin.dto.request.UserAuthPlatformsRequest;
-import cn.chenyunlong.qing.domain.auth.admin.dto.request.UserRolesRequest;
+import cn.chenyunlong.qing.domain.auth.admin.dto.request.*;
 import cn.chenyunlong.qing.domain.auth.admin.dto.response.AdminAccountResponse;
 import cn.chenyunlong.qing.domain.auth.admin.dto.updater.AdminAccountUpdater;
 import cn.chenyunlong.qing.domain.auth.admin.dto.vo.AdminAccountVO;
 import cn.chenyunlong.qing.domain.auth.admin.mapper.AdminAccountMapper;
 import cn.chenyunlong.qing.domain.auth.admin.service.IAdminAccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 @Tag(name = "管理员账号管理")
 @RestController
@@ -37,9 +29,6 @@ public class AdminAccountController {
 
     private final IAdminAccountService adminAccountService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createAdminAccount(
         @RequestBody
@@ -48,9 +37,6 @@ public class AdminAccountController {
         return JsonResult.success(adminAccountService.createAdminAccount(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateAdminAccount")
     public JsonResult<String> updateAdminAccount(
         @RequestBody
@@ -60,9 +46,6 @@ public class AdminAccountController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validAdminAccount(
         @PathVariable("id")
@@ -71,9 +54,6 @@ public class AdminAccountController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidAdminAccount(
         @PathVariable("id")
@@ -104,9 +84,7 @@ public class AdminAccountController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
+
     @GetMapping("findById/{id}")
     public JsonResult<AdminAccountResponse> findById(
         @PathVariable("id")
@@ -116,9 +94,6 @@ public class AdminAccountController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<PageResult<AdminAccountResponse>> page(
         @RequestBody

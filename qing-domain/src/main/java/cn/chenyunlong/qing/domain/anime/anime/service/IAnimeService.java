@@ -20,14 +20,8 @@ public interface IAnimeService {
      */
     void updateAnime(AnimeUpdater updater);
 
-    /**
-     * valid
-     */
     void validAnime(Long id);
 
-    /**
-     * invalid
-     */
     void invalidAnime(Long id);
 
     /**

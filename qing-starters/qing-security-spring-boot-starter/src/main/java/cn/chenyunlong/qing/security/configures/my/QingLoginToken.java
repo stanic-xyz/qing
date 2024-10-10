@@ -14,10 +14,11 @@
 package cn.chenyunlong.qing.security.configures.my;
 
 import cn.hutool.core.collection.CollUtil;
-import java.util.Collection;
 import lombok.Data;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 @Data
 public class QingLoginToken implements Authentication {

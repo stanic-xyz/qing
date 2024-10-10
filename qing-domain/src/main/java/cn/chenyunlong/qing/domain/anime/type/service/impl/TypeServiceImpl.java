@@ -13,7 +13,6 @@ import cn.chenyunlong.qing.domain.anime.type.dto.vo.TypeVO;
 import cn.chenyunlong.qing.domain.anime.type.mapper.TypeMapper;
 import cn.chenyunlong.qing.domain.anime.type.repository.TypeRepository;
 import cn.chenyunlong.qing.domain.anime.type.service.ITypeService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -36,9 +37,9 @@ public class TypeServiceImpl implements ITypeService {
     @Override
     public Long createType(TypeCreator creator) {
         Optional<Type> type = EntityOperations.doCreate(typeRepository)
-                                  .create(() -> TypeMapper.INSTANCE.dtoToEntity(creator))
-                                  .update(Type::init)
-                                  .execute();
+            .create(() -> TypeMapper.INSTANCE.dtoToEntity(creator))
+            .update(Type::init)
+            .execute();
         return type.isPresent() ? type.get().getId() : 0;
     }
 
@@ -53,9 +54,6 @@ public class TypeServiceImpl implements ITypeService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validType(Long id) {
         EntityOperations.doUpdate(typeRepository)
@@ -64,9 +62,6 @@ public class TypeServiceImpl implements ITypeService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidType(Long id) {
         EntityOperations.doUpdate(typeRepository)

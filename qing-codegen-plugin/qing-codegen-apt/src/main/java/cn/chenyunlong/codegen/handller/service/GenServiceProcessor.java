@@ -68,13 +68,13 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
         boolean containsNull = StringUtils.containsNull(nameContext.getCreatorPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec
-                    .methodBuilder("create" + typeElement.getSimpleName())
-                    .addParameter(ClassName.get(nameContext.getCreatorPackageName(),
-                            nameContext.getCreatorClassName()), "creator")
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                    .addJavadoc("create")
-                    .returns(Long.class)
-                    .build());
+                .methodBuilder("create" + typeElement.getSimpleName())
+                .addParameter(ClassName.get(nameContext.getCreatorPackageName(),
+                    nameContext.getCreatorClassName()), "creator")
+                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                .addJavadoc("create")
+                .returns(Long.class)
+                .build());
         }
         return Optional.empty();
     }
@@ -83,64 +83,64 @@ public class GenServiceProcessor extends AbstractCodeGenProcessor {
         boolean containsNull = StringUtils.containsNull(nameContext.getUpdaterPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec
-                    .methodBuilder("update" + typeElement.getSimpleName())
-                    .addParameter(ClassName.get(nameContext.getUpdaterPackageName(),
-                            nameContext.getUpdaterClassName()), "updater")
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                    .addJavadoc("update")
-                    .build());
+                .methodBuilder("update" + typeElement.getSimpleName())
+                .addParameter(ClassName.get(nameContext.getUpdaterPackageName(),
+                    nameContext.getUpdaterClassName()), "updater")
+                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                .addJavadoc("update")
+                .build());
         }
         return Optional.empty();
     }
 
     private Optional<MethodSpec> validMethod(TypeElement typeElement) {
         return Optional.of(MethodSpec
-                .methodBuilder("valid" + typeElement.getSimpleName())
-                .addParameter(Long.class, "id")
-                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .addJavadoc("valid")
-                .build());
+            .methodBuilder("valid" + typeElement.getSimpleName())
+            .addParameter(Long.class, "id")
+            .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+            .addJavadoc("valid")
+            .build());
     }
 
     private Optional<MethodSpec> invalidMethod(TypeElement typeElement) {
         return Optional.of(MethodSpec
-                .methodBuilder("invalid" + typeElement.getSimpleName())
-                .addParameter(Long.class, "id")
-                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .addJavadoc("invalid")
-                .build());
+            .methodBuilder("invalid" + typeElement.getSimpleName())
+            .addParameter(Long.class, "id")
+            .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+            .addJavadoc("invalid")
+            .build());
     }
 
     private Optional<MethodSpec> findByIdMethod(NameContext nameContext) {
         boolean containsNull = StringUtils.containsNull(nameContext.getVoPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec
-                    .methodBuilder("findById")
-                    .addParameter(Long.class, "id")
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                    .addJavadoc("findById")
-                    .returns(
-                            ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()))
-                    .build());
+                .methodBuilder("findById")
+                .addParameter(Long.class, "id")
+                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                .addJavadoc("findById")
+                .returns(
+                    ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()))
+                .build());
         }
         return Optional.empty();
     }
 
     private Optional<MethodSpec> findByPageMethod(NameContext nameContext) {
         boolean containsNull =
-                StringUtils.containsNull(nameContext.getQueryPackageName(),
-                        nameContext.getVoPackageName());
+            StringUtils.containsNull(nameContext.getQueryPackageName(),
+                nameContext.getVoPackageName());
         if (!containsNull) {
             return Optional.of(MethodSpec
-                    .methodBuilder("findByPage")
-                    .addParameter(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class),
-                            ClassName.get(nameContext.getQueryPackageName(),
-                                    nameContext.getQueryClassName())), "query")
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                    .addJavadoc("findByPage")
-                    .returns(ParameterizedTypeName.get(ClassName.get(Page.class),
-                            ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName())))
-                    .build());
+                .methodBuilder("findByPage")
+                .addParameter(ParameterizedTypeName.get(ClassName.get(PageRequestWrapper.class),
+                    ClassName.get(nameContext.getQueryPackageName(),
+                        nameContext.getQueryClassName())), "query")
+                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                .addJavadoc("findByPage")
+                .returns(ParameterizedTypeName.get(ClassName.get(Page.class),
+                    ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName())))
+                .build());
         }
         return Optional.empty();
     }

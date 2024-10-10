@@ -5,17 +5,20 @@ import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import cn.chenyunlong.qing.domain.anime.anime.Tag;
 import cn.chenyunlong.qing.domain.anime.anime.mapper.AnimeMapper;
-import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDate;
 import java.util.List;
-import lombok.Data;
 
 @Schema
 @Data
 public class AnimeCreator {
 
+    private static final Logger log = LoggerFactory.getLogger(AnimeCreator.class);
     @Schema(
         title = "name"
     )
@@ -36,13 +39,10 @@ public class AnimeCreator {
     )
     private String districtName;
 
-    @Schema(title = "封面的附件Id")
-    private Long coverAttachmentId;
-
     @Schema(
-        title = "coverUrl"
+        title = "封面"
     )
-    private String coverUrl;
+    private String cover;
 
     @Schema(
         title = "typeId"
@@ -117,7 +117,7 @@ public class AnimeCreator {
     @Schema(hidden = true)
     private String operateUserId;
 
-    public Anime create(List<Tag> tagList, District district, AnimeCategory animeCategory, Attachment attachment) {
+    public Anime create(List<Tag> tagList, District district, AnimeCategory animeCategory) {
         this.setCompanyName("");
         this.setTypeName(animeCategory.getName());
         this.setDistrictName(district.getName());

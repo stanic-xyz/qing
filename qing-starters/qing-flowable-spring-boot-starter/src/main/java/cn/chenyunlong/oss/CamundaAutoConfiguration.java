@@ -14,8 +14,6 @@
 package cn.chenyunlong.oss;
 
 import jakarta.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
@@ -25,6 +23,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.HashMap;
 
 @Slf4j
 @Configuration

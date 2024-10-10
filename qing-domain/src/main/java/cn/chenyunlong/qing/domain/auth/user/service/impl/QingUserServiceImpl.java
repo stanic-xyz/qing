@@ -14,7 +14,6 @@ import cn.chenyunlong.qing.domain.auth.user.dto.vo.QingUserVO;
 import cn.chenyunlong.qing.domain.auth.user.mapper.QingUserMapper;
 import cn.chenyunlong.qing.domain.auth.user.repository.QingUserRepository;
 import cn.chenyunlong.qing.domain.auth.user.service.IQingUserService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -37,9 +38,9 @@ public class QingUserServiceImpl implements IQingUserService {
     @Override
     public Long createQingUser(QingUserCreator creator) {
         Optional<QingUser> qingUser = EntityOperations.doCreate(qingUserRepository)
-                                          .create(() -> QingUserMapper.INSTANCE.dtoToEntity(creator))
-                                          .update(QingUser::init)
-                                          .execute();
+            .create(() -> QingUserMapper.INSTANCE.dtoToEntity(creator))
+            .update(QingUser::init)
+            .execute();
         return qingUser.isPresent() ? qingUser.get().getId() : 0;
     }
 
@@ -54,9 +55,6 @@ public class QingUserServiceImpl implements IQingUserService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validQingUser(Long id) {
         EntityOperations.doUpdate(qingUserRepository)
@@ -65,9 +63,6 @@ public class QingUserServiceImpl implements IQingUserService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidQingUser(Long id) {
         EntityOperations.doUpdate(qingUserRepository)

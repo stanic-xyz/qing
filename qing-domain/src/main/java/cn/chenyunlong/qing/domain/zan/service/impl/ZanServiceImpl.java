@@ -24,7 +24,6 @@ import cn.chenyunlong.qing.domain.zan.repository.ZanRepository;
 import cn.chenyunlong.qing.domain.zan.service.IZanService;
 import cn.chenyunlong.qing.domain.zan.service.plugin.SmsPlugin;
 import cn.chenyunlong.qing.domain.zan.service.selector.LikeFilterSelectorFactory;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,6 +33,8 @@ import org.springframework.plugin.core.PluginRegistry;
 import org.springframework.plugin.core.config.EnablePluginRegistries;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -57,9 +58,9 @@ public class ZanServiceImpl implements IZanService {
         entityRepository.findById(creator.getEntityId()).orElseThrow(() -> new BusinessException("创建zan失败，实体不存在"));
         userRepository.findById(creator.getUserId()).orElseThrow(() -> new BusinessException("创建zan失败，用户不存在"));
         Optional<Zan> zan = EntityOperations.doCreate(zanRepository)
-                                .create(() -> ZanMapper.INSTANCE.dtoToEntity(creator))
-                                .update(Zan::init)
-                                .execute();
+            .create(() -> ZanMapper.INSTANCE.dtoToEntity(creator))
+            .update(Zan::init)
+            .execute();
         return zan.isPresent() ? zan.get().getId() : 0;
     }
 
@@ -75,9 +76,6 @@ public class ZanServiceImpl implements IZanService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validZan(Long id) {
         EntityOperations.doUpdate(zanRepository)
@@ -86,9 +84,6 @@ public class ZanServiceImpl implements IZanService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidZan(Long id) {
         EntityOperations.doUpdate(zanRepository)

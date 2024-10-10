@@ -2,10 +2,11 @@ package cn.chenyunlong.qing.domain.zan.pipeline;
 
 
 import cn.chenyunlong.qing.domain.zan.LikeContext;
-import java.util.LinkedList;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Filter组成的流水线，每一条流水线代表了一种业务。
@@ -35,7 +36,7 @@ public class FilterChainPipeline<T extends LikeContext> {
      * 添加过滤器到第一个。
      *
      * @param description 描述信息
-     * @param filter 过滤器
+     * @param filter      过滤器
      * @return 当前流水线, 始终返回过滤器流水线的第一个链
      */
     public FilterChainPipeline<T> addFirst(String description, EventFilter<T> filter) {
@@ -53,7 +54,7 @@ public class FilterChainPipeline<T extends LikeContext> {
      * 添加过滤器到最后一个。
      *
      * @param description 描述信息
-     * @param filter 过滤器
+     * @param filter      过滤器
      * @return 当前流水线, 始终返回过滤器流水线的第一个链
      */
     public FilterChainPipeline<T> addLast(String description, EventFilter<T> filter) {

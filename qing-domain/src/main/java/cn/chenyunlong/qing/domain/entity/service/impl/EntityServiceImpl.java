@@ -13,7 +13,6 @@ import cn.chenyunlong.qing.domain.entity.dto.vo.EntityVO;
 import cn.chenyunlong.qing.domain.entity.mapper.EntityMapper;
 import cn.chenyunlong.qing.domain.entity.repository.EntityRepository;
 import cn.chenyunlong.qing.domain.entity.service.IEntityService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -37,9 +38,9 @@ public class EntityServiceImpl implements IEntityService {
     @Override
     public Long createEntity(EntityCreator creator) {
         Optional<Entity> entity = EntityOperations.doCreate(entityRepository)
-                                      .create(() -> EntityMapper.INSTANCE.dtoToEntity(creator))
-                                      .update(Entity::init)
-                                      .execute();
+            .create(() -> EntityMapper.INSTANCE.dtoToEntity(creator))
+            .update(Entity::init)
+            .execute();
         return entity.isPresent() ? entity.get().getId() : 0;
     }
 
@@ -54,9 +55,6 @@ public class EntityServiceImpl implements IEntityService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validEntity(Long id) {
         EntityOperations.doUpdate(entityRepository)
@@ -65,9 +63,6 @@ public class EntityServiceImpl implements IEntityService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidEntity(Long id) {
         EntityOperations.doUpdate(entityRepository)

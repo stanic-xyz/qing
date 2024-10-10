@@ -7,11 +7,12 @@ import com.aliyun.dingtalkrobot_1_0.models.OrgGroupSendRequest;
 import com.aliyun.dingtalkrobot_1_0.models.OrgGroupSendResponse;
 import com.aliyun.tea.TeaException;
 import jakarta.annotation.PostConstruct;
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * 钉钉机器人消息服务。
@@ -85,7 +86,7 @@ public class RobotGroupMessagesService {
         } catch (TeaException e) {
             log.error(
                 "RobotGroupMessagesService_send orgGroupSendWithOptions throw TeaException, errCode={}, "
-                + "errorMessage={}", e.getCode(), e.getMessage(), e);
+                    + "errorMessage={}", e.getCode(), e.getMessage(), e);
             throw e;
         } catch (Exception e) {
             log.error("RobotGroupMessagesService_send orgGroupSendWithOptions throw Exception", e);

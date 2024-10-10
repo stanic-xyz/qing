@@ -13,7 +13,6 @@ import cn.chenyunlong.qing.domain.auth.department.dto.vo.DepartmentVO;
 import cn.chenyunlong.qing.domain.auth.department.mapper.DepartmentMapper;
 import cn.chenyunlong.qing.domain.auth.department.repository.DepartmentRepository;
 import cn.chenyunlong.qing.domain.auth.department.service.IDepartmentService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -36,9 +37,9 @@ public class DepartmentServiceImpl implements IDepartmentService {
     @Override
     public Long createDepartment(DepartmentCreator creator) {
         Optional<Department> department = EntityOperations.doCreate(departmentRepository)
-                                              .create(() -> DepartmentMapper.INSTANCE.dtoToEntity(creator))
-                                              .update(Department::init)
-                                              .execute();
+            .create(() -> DepartmentMapper.INSTANCE.dtoToEntity(creator))
+            .update(Department::init)
+            .execute();
         return department.isPresent() ? department.get().getId() : 0;
     }
 
@@ -53,9 +54,6 @@ public class DepartmentServiceImpl implements IDepartmentService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validDepartment(Long id) {
         EntityOperations.doUpdate(departmentRepository)
@@ -64,9 +62,6 @@ public class DepartmentServiceImpl implements IDepartmentService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidDepartment(Long id) {
         EntityOperations.doUpdate(departmentRepository)

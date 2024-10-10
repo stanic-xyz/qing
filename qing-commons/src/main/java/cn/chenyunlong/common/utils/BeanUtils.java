@@ -14,14 +14,15 @@
 package cn.chenyunlong.common.utils;
 
 import cn.chenyunlong.common.exception.BeanUtilsException;
-import java.beans.PropertyDescriptor;
-import java.util.HashSet;
-import java.util.Set;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import java.beans.PropertyDescriptor;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Bean实用程序。

@@ -14,14 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-import javax.sql.DataSource;
 import org.babyfish.jimmer.UnloadedException;
 import org.babyfish.jimmer.jackson.ImmutableModule;
 import org.babyfish.jimmer.spring.repository.support.SpringPageFactory;
@@ -42,6 +34,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 
 class BookRepositoryTest {
@@ -79,55 +80,55 @@ class BookRepositoryTest {
             // 导入测试数据
             ConnectionManager connectionManager = ConnectionManager.singleConnectionManager(connection);
             JSqlClient sqlClient = JSqlClient
-                                       .newBuilder()
-                                       .addCustomizers(builder -> {
-                                           log.info("打印sql的执行器 = {}", builder);
-                                           builder.setExecutor(Executor.log());
-                                       })
-                                       .setDialect(new H2Dialect())
-                                       // 添加过滤器
-                                       .addFilters(new TenantFilter(new TenantProvider()))
-                                       .setInListPaddingEnabled(true)
-                                       .setConnectionManager(connectionManager)
-                                       .setSqlFormatter(SqlFormatter.pretty("    ", 1, 80))
-                                       .build()
-                                       .filters(filterConfig -> {
-                                           // 禁用过滤器
-                                           filterConfig.disableByTypes(TenantFilter.class);
-                                       });
+                .newBuilder()
+                .addCustomizers(builder -> {
+                    log.info("打印sql的执行器 = {}", builder);
+                    builder.setExecutor(Executor.log());
+                })
+                .setDialect(new H2Dialect())
+                // 添加过滤器
+                .addFilters(new TenantFilter(new TenantProvider()))
+                .setInListPaddingEnabled(true)
+                .setConnectionManager(connectionManager)
+                .setSqlFormatter(SqlFormatter.pretty("    ", 1, 80))
+                .build()
+                .filters(filterConfig -> {
+                    // 禁用过滤器
+                    filterConfig.disableByTypes(TenantFilter.class);
+                });
 
             String name = "a";
             BookTable table = BookTable.$;
             BookFetcher bookFetcher = Fetchers.BOOK_FETCHER;
             Fetcher<Book> fetcher = bookFetcher
-                                        .allScalarFields()
-                                        .edition()
-                                        .price(false)
-                                        .authors(Fetchers.AUTHOR_FETCHER.firstName());
+                .allScalarFields()
+                .edition()
+                .price(false)
+                .authors(Fetchers.AUTHOR_FETCHER.firstName());
             ConfigurableRootQuery<BookTable, Book> query = sqlClient
-                                                               .createQuery(table)
-                                                               // 下面这种情况，查询不出来数据
-                                                               // .where(
-                                                               //     Expression.tuple(table.name(), table.edition())
-                                                               //         .eq(new Tuple2<>("Programming TypeScript", 3))
-                                                               // )
-                                                               .where(
-                                                                   table.name().like("Programming"),
-                                                                   table.name().isNotNull(),
-                                                                   table.name().ilikeIf("programming", LikeMode.START),
-                                                                   table.name().in(CollUtil.toList("Programming TypeScript", "GraphQL in Action", "GraphQL in Action")),
-                                                                   Predicate.or(
-                                                                       table.name().ilikeIf(name),
-                                                                       table.price().betweenIf(new BigDecimal(1), null)
-                                                                   )
-                                                               )
-                                                               .select(table.fetch(fetcher));
+                .createQuery(table)
+                // 下面这种情况，查询不出来数据
+                // .where(
+                //     Expression.tuple(table.name(), table.edition())
+                //         .eq(new Tuple2<>("Programming TypeScript", 3))
+                // )
+                .where(
+                    table.name().like("Programming"),
+                    table.name().isNotNull(),
+                    table.name().ilikeIf("programming", LikeMode.START),
+                    table.name().in(CollUtil.toList("Programming TypeScript", "GraphQL in Action", "GraphQL in Action")),
+                    Predicate.or(
+                        table.name().ilikeIf(name),
+                        table.price().betweenIf(new BigDecimal(1), null)
+                    )
+                )
+                .select(table.fetch(fetcher));
             long unlimitedCount = query.fetchUnlimitedCount();
             log.info("unlimitedCount = {}", unlimitedCount);
 
             Page<Book> bookPage = query
-                                      .limit(1, 2)
-                                      .fetchPage(1, 2, connection, SpringPageFactory.getInstance());
+                .limit(1, 2)
+                .fetchPage(1, 2, connection, SpringPageFactory.getInstance());
             System.out.println("bookList = " + bookPage);
 
             System.out.println("bookList = " + objectMapper.writer().writeValueAsString(bookPage));
@@ -157,23 +158,23 @@ class BookRepositoryTest {
 
             ConnectionManager connectionManager = ConnectionManager.singleConnectionManager(connection);
             JSqlClient sqlClient = JSqlClient
-                                       .newBuilder()
-                                       .setConnectionManager(connectionManager)
-                                       .setSqlFormatter(SqlFormatter.pretty("    ", 1, 80))
-                                       .build();
+                .newBuilder()
+                .setConnectionManager(connectionManager)
+                .setSqlFormatter(SqlFormatter.pretty("    ", 1, 80))
+                .build();
 
             String name = "a";
             BookTable table = BookTable.$;
             org.babyfish.jimmer.Page<ComplexBookView> viewPage = sqlClient
-                                                                     .createQuery(table)
-                                                                     .where(table.name().ilike(name))
-                                                                     .select(table.fetch(ComplexBookView.class))
-                                                                     .limit(1, 2).fetchPage(1, 2, connection);
+                .createQuery(table)
+                .where(table.name().ilike(name))
+                .select(table.fetch(ComplexBookView.class))
+                .limit(1, 2).fetchPage(1, 2, connection);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new ImmutableModule());
             String sequenceWriter = objectMapper
-                                        .writerWithDefaultPrettyPrinter()
-                                        .writeValueAsString(viewPage);
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(viewPage);
 
             System.out.println("sequenceWriter = " + sequenceWriter);
 

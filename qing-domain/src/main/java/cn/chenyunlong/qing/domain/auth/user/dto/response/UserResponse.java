@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.domain.auth.user.dto.response;
 import cn.chenyunlong.common.enums.MFAType;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 
 @Schema

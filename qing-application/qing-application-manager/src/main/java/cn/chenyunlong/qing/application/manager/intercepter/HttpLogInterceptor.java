@@ -25,10 +25,10 @@ public class HttpLogInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request,
-        @Nonnull
-        HttpServletResponse response,
-        @Nonnull
-        Object handler) throws Exception {
+                             @Nonnull
+                             HttpServletResponse response,
+                             @Nonnull
+                                 Object handler) throws Exception {
         startTime.set(System.currentTimeMillis());
         // 记录请求日志
         log.info("用户访问地址:{}, 请求方式: {}，请求地址：{}", request.getRemoteAddr(),

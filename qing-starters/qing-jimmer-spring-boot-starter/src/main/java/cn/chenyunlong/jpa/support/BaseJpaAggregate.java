@@ -17,14 +17,15 @@ import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.domain.AggregateId;
 import cn.hutool.core.lang.Assert;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import org.springframework.data.domain.AbstractAggregateRoot;
+
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.Collection;
 
 /**
  * 基础jpa类型。

@@ -17,7 +17,6 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.qing.security.base.extension.UserContextAware;
 import cn.chenyunlong.qing.security.exception.CustomAuthenticationException;
 import cn.chenyunlong.qing.security.exception.ParseTokenException;
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +24,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 @Component
 @Slf4j

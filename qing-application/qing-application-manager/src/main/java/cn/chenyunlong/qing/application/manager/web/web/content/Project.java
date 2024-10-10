@@ -13,8 +13,9 @@
 
 package cn.chenyunlong.qing.application.manager.web.web.content;
 
-import java.util.List;
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 public class Project {

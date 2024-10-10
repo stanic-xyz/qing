@@ -3,8 +3,9 @@ package cn.chenyunlong.qing.domain.entity.dto.updater;
 import cn.chenyunlong.qing.domain.entity.Entity;
 import cn.chenyunlong.qing.domain.entity.EntityType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Optional;
 import lombok.Data;
+
+import java.util.Optional;
 
 @Schema
 @Data

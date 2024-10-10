@@ -19,14 +19,8 @@ public interface IUserConnectionService {
      */
     void updateUserConnection(UserConnectionUpdater updater);
 
-    /**
-     * valid
-     */
     void validUserConnection(Long id);
 
-    /**
-     * invalid
-     */
     void invalidUserConnection(Long id);
 
     /**

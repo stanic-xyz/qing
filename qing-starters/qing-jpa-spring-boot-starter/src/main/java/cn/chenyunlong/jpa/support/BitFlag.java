@@ -14,8 +14,9 @@
 package cn.chenyunlong.jpa.support;
 
 import cn.chenyunlong.common.constants.BaseEnum;
-import java.util.Optional;
 import lombok.Getter;
+
+import java.util.Optional;
 
 @Getter
 public enum BitFlag implements BaseEnum<Integer> {

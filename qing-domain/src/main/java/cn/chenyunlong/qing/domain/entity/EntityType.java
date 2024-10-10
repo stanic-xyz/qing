@@ -1,8 +1,9 @@
 package cn.chenyunlong.qing.domain.entity;
 
 import cn.chenyunlong.common.constants.BaseEnum;
-import java.util.Optional;
 import lombok.Getter;
+
+import java.util.Optional;
 
 /**
  * 实体类型 个人或者团体。

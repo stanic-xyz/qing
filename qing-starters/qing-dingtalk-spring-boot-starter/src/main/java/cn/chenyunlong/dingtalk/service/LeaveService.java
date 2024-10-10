@@ -8,12 +8,13 @@ import com.aliyun.tea.TeaException;
 import com.aliyun.teautil.Common;
 import com.aliyun.teautil.models.RuntimeOptions;
 import jakarta.annotation.PostConstruct;
-import java.util.Collections;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 钉钉机器人消息服务。

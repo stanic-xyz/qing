@@ -23,8 +23,6 @@ import cn.chenyunlong.qing.domain.auth.role.Role;
 import cn.chenyunlong.qing.domain.auth.role.repository.RoleRepository;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -32,6 +30,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -51,9 +52,9 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
     @Override
     public Long createAdminAccount(AdminAccountCreator creator) {
         Optional<AdminAccount> adminAccount = EntityOperations.doCreate(adminAccountRepository)
-                                                  .create(() -> AdminAccountMapper.INSTANCE.dtoToEntity(creator))
-                                                  .update(AdminAccount::init)
-                                                  .execute();
+            .create(() -> AdminAccountMapper.INSTANCE.dtoToEntity(creator))
+            .update(AdminAccount::init)
+            .execute();
         return adminAccount.isPresent() ? adminAccount.get().getId() : 0;
     }
 
@@ -68,9 +69,6 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validAdminAccount(Long id) {
         EntityOperations.doUpdate(adminAccountRepository)
@@ -79,9 +77,6 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidAdminAccount(Long id) {
         EntityOperations.doUpdate(adminAccountRepository)
@@ -130,9 +125,9 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
         // 判断角色是否全部存在
         Assert.isTrue(CollUtil.size(roleList) == CollUtil.size(roleIds), "角色不存在");
         List<AdminAccountRoleRel> roleRelList = roleList.stream().map(role -> AdminAccountRoleRel.builder()
-                                                                                  .adminAccountId(accountId)
-                                                                                  .roleId(role.getId())
-                                                                                  .build()).toList();
+            .adminAccountId(accountId)
+            .roleId(role.getId())
+            .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
             adminAccountRoleRelRepository.saveAll(roleRelList);
         }
@@ -160,7 +155,7 @@ public class AdminAccountServiceImpl implements IAdminAccountService {
         Assert.isTrue(CollUtil.size(platformList) == CollUtil.size(platformIds), "平台不存在");
         List<AdminAccountPlatformRel> roleRelList =
             platformList.stream().map(role -> AdminAccountPlatformRel.builder().adminAccountId(accountId).platformId(role.getId())
-                                                  .build()).toList();
+                .build()).toList();
         if (CollUtil.isNotEmpty(roleRelList)) {
             adminAccountPlatformRelRepository.saveAll(roleRelList);
         }

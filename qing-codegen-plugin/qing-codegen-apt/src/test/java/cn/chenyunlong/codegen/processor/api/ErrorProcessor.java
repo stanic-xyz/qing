@@ -14,7 +14,7 @@
 package cn.chenyunlong.codegen.processor.api;
 
 import com.google.common.collect.ImmutableSet;
-import java.util.Set;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -23,6 +23,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
+import java.util.Set;
 
 final class ErrorProcessor extends AbstractProcessor {
     Messager messager;

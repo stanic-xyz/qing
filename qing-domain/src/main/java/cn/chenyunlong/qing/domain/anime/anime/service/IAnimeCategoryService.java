@@ -19,14 +19,8 @@ public interface IAnimeCategoryService {
      */
     void updateAnimeCategory(AnimeCategoryUpdater updater);
 
-    /**
-     * valid
-     */
     void validAnimeCategory(Long id);
 
-    /**
-     * invalid
-     */
     void invalidAnimeCategory(Long id);
 
     /**

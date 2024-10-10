@@ -19,24 +19,16 @@ import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
 import cn.hutool.core.lang.Assert;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.annotation.Nonnull;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Version;
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.Collection;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import org.springframework.data.domain.AbstractAggregateRoot;
+
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.Collection;
 
 /**
  * 基础jpa类型。

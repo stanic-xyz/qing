@@ -16,7 +16,6 @@ import cn.chenyunlong.qing.domain.anime.playlist.mapper.PlayListMapper;
 import cn.chenyunlong.qing.domain.anime.playlist.repository.PlayListRepository;
 import cn.chenyunlong.qing.domain.anime.playlist.service.IPlayListService;
 import cn.hutool.core.lang.Assert;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +23,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -47,9 +48,9 @@ public class PlayListServiceImpl implements IPlayListService {
         PlayList oldPlayList = playListRepository.findByAnimeIdAndName(creator.getAnimeId(), creator.getName());
         Assert.isNull(oldPlayList, "播放列表名称已存在");
         Optional<PlayList> playList = EntityOperations.doCreate(playListRepository)
-                                          .create(() -> PlayListMapper.INSTANCE.dtoToEntity(creator))
-                                          .update(PlayList::init)
-                                          .execute();
+            .create(() -> PlayListMapper.INSTANCE.dtoToEntity(creator))
+            .update(PlayList::init)
+            .execute();
         return playList.isPresent() ? playList.get().getId() : 0;
     }
 
@@ -64,9 +65,6 @@ public class PlayListServiceImpl implements IPlayListService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validPlayList(Long id) {
         EntityOperations.doUpdate(playListRepository)
@@ -75,9 +73,6 @@ public class PlayListServiceImpl implements IPlayListService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidPlayList(Long id) {
         EntityOperations.doUpdate(playListRepository)

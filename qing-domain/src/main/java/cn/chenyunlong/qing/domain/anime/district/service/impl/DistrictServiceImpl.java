@@ -14,7 +14,6 @@ import cn.chenyunlong.qing.domain.anime.district.mapper.DistrictConverter;
 import cn.chenyunlong.qing.domain.anime.district.repository.DistrictRepository;
 import cn.chenyunlong.qing.domain.anime.district.service.IDistrictService;
 import jakarta.annotation.Resource;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -38,9 +39,9 @@ public class DistrictServiceImpl implements IDistrictService {
     @Override
     public Long createDistrict(DistrictCreator creator) {
         Optional<District> district = EntityOperations.doCreate(districtRepository)
-                                          .create(() -> DistrictConverter.INSTANCE.dtoToEntity(creator))
-                                          .update(District::init)
-                                          .execute();
+            .create(() -> DistrictConverter.INSTANCE.dtoToEntity(creator))
+            .update(District::init)
+            .execute();
         return district.isPresent() ? district.get().getId() : 0;
     }
 
@@ -55,9 +56,6 @@ public class DistrictServiceImpl implements IDistrictService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validDistrict(Long id) {
         EntityOperations.doUpdate(districtRepository)
@@ -66,9 +64,6 @@ public class DistrictServiceImpl implements IDistrictService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidDistrict(Long id) {
         EntityOperations.doUpdate(districtRepository)

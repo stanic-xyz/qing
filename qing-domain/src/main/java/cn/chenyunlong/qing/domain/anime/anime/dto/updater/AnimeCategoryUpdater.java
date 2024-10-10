@@ -3,8 +3,9 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.updater;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.hutool.core.lang.Assert;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Optional;
 import lombok.Data;
+
+import java.util.Optional;
 
 @Schema
 @Data

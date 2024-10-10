@@ -22,7 +22,6 @@ import cn.chenyunlong.qing.security.configures.authing.AuthingLoginConfigurer;
 import cn.chenyunlong.qing.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.qing.security.configures.my.QingLoginConfigurer;
 import cn.hutool.core.collection.CollUtil;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -40,6 +39,8 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.PathMatcher;
+
+import java.util.List;
 
 /**
  * spring security 配置类 自动注入JwtAuthenticationProvider

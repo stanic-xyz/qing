@@ -14,9 +14,6 @@ import cn.chenyunlong.qing.domain.auth.menu.dto.vo.SysMenuVO;
 import cn.chenyunlong.qing.domain.auth.menu.mapper.SysMenuMapper;
 import cn.chenyunlong.qing.domain.auth.menu.repository.SysMenuRepository;
 import cn.chenyunlong.qing.domain.auth.menu.service.ISysMenuService;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +21,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -39,21 +40,21 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Override
     public Long createSysMenu(SysMenuCreator creator) {
         Optional<SysMenu> sysMenu = EntityOperations.doCreate(sysMenuRepository)
-                                        .create(() -> {
-                                            SysMenu menuEntity = SysMenuMapper.INSTANCE.dtoToEntity(creator);
-                                            Optional.ofNullable(creator.getParentId()).ifPresentOrElse(parentId -> {
-                                                SysMenu parentMenu = sysMenuRepository.findById(creator.getParentId())
-                                                                         .orElseThrow(() -> new NotFoundException("parent menu not found"));
-                                                menuEntity.setParentId(parentMenu.getId());
-                                                menuEntity.setParentName(parentMenu.getMenuName());
-                                            }, () -> {
-                                                menuEntity.setParentId(null);
-                                                menuEntity.setParentName(null);
-                                            });
-                                            return menuEntity;
-                                        })
-                                        .update(SysMenu::init)
-                                        .execute();
+            .create(() -> {
+                SysMenu menuEntity = SysMenuMapper.INSTANCE.dtoToEntity(creator);
+                Optional.ofNullable(creator.getParentId()).ifPresentOrElse(parentId -> {
+                    SysMenu parentMenu = sysMenuRepository.findById(creator.getParentId())
+                        .orElseThrow(() -> new NotFoundException("parent menu not found"));
+                    menuEntity.setParentId(parentMenu.getId());
+                    menuEntity.setParentName(parentMenu.getMenuName());
+                }, () -> {
+                    menuEntity.setParentId(null);
+                    menuEntity.setParentName(null);
+                });
+                return menuEntity;
+            })
+            .update(SysMenu::init)
+            .execute();
         return sysMenu.isPresent() ? sysMenu.get().getId() : 0;
     }
 
@@ -68,9 +69,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validSysMenu(Long id) {
         EntityOperations.doUpdate(sysMenuRepository)
@@ -79,9 +77,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidSysMenu(Long id) {
         EntityOperations.doUpdate(sysMenuRepository)
@@ -115,13 +110,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
     public List<SysMenuVO> tree() {
         final List<SysMenu> menuList = sysMenuRepository.findAll();
         return menuList.stream()
-                   .filter(sysMenu -> Objects.isNull(sysMenu.getParentId()))
-                   .map(sysMenu -> {
-                       SysMenuVO menuVO = SysMenuMapper.INSTANCE.entityToVO(sysMenu);
-                       resolveChildMenu(menuVO, menuList);
-                       return menuVO;
-                   })
-                   .toList();
+            .filter(sysMenu -> Objects.isNull(sysMenu.getParentId()))
+            .map(sysMenu -> {
+                SysMenuVO menuVO = SysMenuMapper.INSTANCE.entityToVO(sysMenu);
+                resolveChildMenu(menuVO, menuList);
+                return menuVO;
+            })
+            .toList();
     }
 
     /**
@@ -129,13 +124,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     private void resolveChildMenu(SysMenuVO parentMenu, List<SysMenu> menuList) {
         List<SysMenuVO> menuVOList = menuList.stream()
-                                         .filter(childMenu -> Objects.nonNull(childMenu.getParentId()))
-                                         .filter(childMenu -> Objects.equals(parentMenu.getId(), childMenu.getParentId()))
-                                         .map(childMenu -> {
-                                             SysMenuVO entityToVO = SysMenuMapper.INSTANCE.entityToVO(childMenu);
-                                             resolveChildMenu(entityToVO, menuList);
-                                             return entityToVO;
-                                         }).toList();
+            .filter(childMenu -> Objects.nonNull(childMenu.getParentId()))
+            .filter(childMenu -> Objects.equals(parentMenu.getId(), childMenu.getParentId()))
+            .map(childMenu -> {
+                SysMenuVO entityToVO = SysMenuMapper.INSTANCE.entityToVO(childMenu);
+                resolveChildMenu(entityToVO, menuList);
+                return entityToVO;
+            }).toList();
         parentMenu.setChildren(menuVOList);
     }
 }

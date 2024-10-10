@@ -3,11 +3,12 @@ package cn.chenyunlong.qing.domain.anime.playlist.dto.vo;
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import cn.chenyunlong.qing.domain.anime.episode.dto.vo.EpisodeVO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Schema
 @Data

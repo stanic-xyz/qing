@@ -21,7 +21,7 @@ public class EntityQueryFilter extends AbstractEventFilter<LikeContext> {
         ZanCreateRequest createRequest = eventContext.getCreateRequest();
         Long entityId = createRequest.getEntityId();
         Entity entity = entityService.findById(entityId)
-                            .orElseThrow(() -> new NotFoundException("未查询到实体信息：" + entityId));
+            .orElseThrow(() -> new NotFoundException("未查询到实体信息：" + entityId));
         // 将处理信息添加到上下文中
         eventContext.getLikeModel().setEntity(entity);
     }

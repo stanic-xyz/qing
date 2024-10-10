@@ -11,6 +11,7 @@
 * `What is the new development version for "JavaPoet"? (com.squareup.javapoet) X.Y.(Z + 1)-SNAPSHOT:` -
   输入 `X.(Y + 1).0-SNAPSHOT`.
 * 提示是输入你的 GPG 密码 。
+
 5. 访问Sonatype Nexus，并 promote 该版本.
 
 如果第4步或者第5步执行失败:

@@ -5,10 +5,11 @@ import cn.chenyunlong.qing.application.manager.jimmer.dto.book.BookInput;
 import cn.chenyunlong.qing.application.manager.jimmer.entity.Book;
 import cn.chenyunlong.qing.application.manager.jimmer.entity.BookTable;
 import jakarta.annotation.Nullable;
-import java.util.List;
 import org.babyfish.jimmer.sql.JSqlClient;
 import org.babyfish.jimmer.sql.fetcher.Fetcher;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class BookRepository {
@@ -38,14 +39,14 @@ public class BookRepository {
     ) {
         BookTable table = Tables.BOOK_TABLE;
         return sqlClient
-                   .createQuery(table)
-                   .whereIf(
-                       name != null && !name.isEmpty(),
-                       table.name().ilike(name)
-                   )
-                   .select(
-                       table.fetch(fetcher)
-                   ).execute();
+            .createQuery(table)
+            .whereIf(
+                name != null && !name.isEmpty(),
+                table.name().ilike(name)
+            )
+            .select(
+                table.fetch(fetcher)
+            ).execute();
     }
 
     public void save(BookInput bookIn) {

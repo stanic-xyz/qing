@@ -16,12 +16,13 @@ package cn.chenyunlong.qing.security.base;
 import cn.chenyunlong.qing.security.util.HandleHttpErrorUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 
 @Component
@@ -30,7 +31,7 @@ public class BaseCustomAuthenticationFailureHandler implements AuthenticationFai
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-        AuthenticationException e)
+                                        AuthenticationException e)
         throws IOException {
         try {
             HandleHttpErrorUtil.handleHttpError(response, e);

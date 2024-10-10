@@ -1,13 +1,9 @@
 package cn.chenyunlong.qing.application.manager.jimmer.entity;
 
 import cn.chenyunlong.qing.application.manager.jimmer.enumes.Gender;
+import org.babyfish.jimmer.sql.*;
+
 import java.util.List;
-import org.babyfish.jimmer.sql.Entity;
-import org.babyfish.jimmer.sql.GeneratedValue;
-import org.babyfish.jimmer.sql.GenerationType;
-import org.babyfish.jimmer.sql.Id;
-import org.babyfish.jimmer.sql.Key;
-import org.babyfish.jimmer.sql.ManyToMany;
 
 @Entity
 public interface Author {

@@ -14,11 +14,12 @@
 package cn.chenyunlong.qing.security.base;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
-import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 
 /**
  * 基础session 数据 通过token 直接能换取的信息

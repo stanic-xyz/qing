@@ -16,11 +16,12 @@ package cn.chenyunlong.qing.security.util;
 import cn.chenyunlong.qing.security.exception.CustomAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
+
+import java.io.Serializable;
 
 @Slf4j
 public class HandleHttpErrorUtil {

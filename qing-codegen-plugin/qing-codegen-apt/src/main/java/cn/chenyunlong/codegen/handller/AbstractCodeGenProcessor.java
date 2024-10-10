@@ -13,8 +13,6 @@
 
 package cn.chenyunlong.codegen.handller;
 
-import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.fatalError;
-
 import cn.chenyunlong.codegen.annotation.*;
 import cn.chenyunlong.codegen.context.CodeGenContext;
 import cn.chenyunlong.codegen.context.NameContext;
@@ -38,13 +36,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.squareup.javapoet.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.function.Predicate;
+
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -53,6 +45,15 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.function.Predicate;
+
+import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.fatalError;
 
 /**
  * 基础代码一代处理器。
@@ -491,7 +492,7 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         try {
             File pathFile = Paths.get(sourcePath).toFile();
             File file = new File(pathFile, packageName.replace(".", File.separator)
-                                           + File.separator + typeSpec.name + ".java");
+                + File.separator + typeSpec.name + ".java");
             if (!file.exists() || overwrite()) {
                 javaFile.writeToFile(pathFile);
             }

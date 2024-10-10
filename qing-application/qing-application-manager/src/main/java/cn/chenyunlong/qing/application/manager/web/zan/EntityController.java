@@ -17,12 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "实体管理", description = "实体管理")
 @RestController
@@ -33,9 +28,6 @@ public class EntityController {
 
     private final IEntityService entityService;
 
-    /**
-     * createRequest
-     */
     @PostMapping
     public JsonResult<Long> createEntity(
         @RequestBody
@@ -44,9 +36,6 @@ public class EntityController {
         return JsonResult.success(entityService.createEntity(creator));
     }
 
-    /**
-     * update request
-     */
     @PostMapping("updateEntity")
     public JsonResult<String> updateEntity(
         @RequestBody
@@ -56,9 +45,6 @@ public class EntityController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * valid
-     */
     @PostMapping("valid/{id}")
     public JsonResult<String> validEntity(
         @PathVariable("id")
@@ -67,9 +53,6 @@ public class EntityController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * invalid
-     */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidEntity(
         @PathVariable("id")
@@ -78,9 +61,7 @@ public class EntityController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    /**
-     * findById
-     */
+
     @GetMapping("findById/{id}")
     public JsonResult<EntityResponse> findById(
         @PathVariable("id")
@@ -90,9 +71,6 @@ public class EntityController {
         return JsonResult.success(response);
     }
 
-    /**
-     * findByPage request
-     */
     @PostMapping("page")
     public JsonResult<Page<EntityResponse>> page(
         @RequestBody

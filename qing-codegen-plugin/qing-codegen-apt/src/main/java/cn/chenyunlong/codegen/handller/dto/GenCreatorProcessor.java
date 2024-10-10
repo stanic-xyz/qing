@@ -23,16 +23,17 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeSpec.Builder;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import lombok.Data;
 
 /**
  * Creator 代码生成处理器。
@@ -74,7 +75,7 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
         }
         addSetterAndGetterMethod(builder, findFields(typeElement,
             variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreCreator.class))
-                               && !dtoIgnore(variableElement)));
+                && !dtoIgnore(variableElement)));
         genJavaSourceFile(typeElement, builder);
     }
 

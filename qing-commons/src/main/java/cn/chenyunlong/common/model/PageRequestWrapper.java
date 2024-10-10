@@ -21,12 +21,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnegative;
 import lombok.Data;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+
+import javax.annotation.Nonnegative;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 分页包装器
@@ -73,10 +74,10 @@ public class PageRequestWrapper<T> {
         Sort sort = Sort.unsorted();
         if (CollUtil.isNotEmpty(sorts)) {
             sort = Sort.by(sorts.stream()
-                               .map(orderRequest ->
-                                        Sort.Order.by(orderRequest.getProperty())
-                                            .with(Sort.Direction.fromString(orderRequest.getDirection())))
-                               .collect(Collectors.toList()));
+                .map(orderRequest ->
+                    Sort.Order.by(orderRequest.getProperty())
+                        .with(Sort.Direction.fromString(orderRequest.getDirection())))
+                .collect(Collectors.toList()));
         }
         return PageRequest.of(page, pageSize).withSort(sort);
     }

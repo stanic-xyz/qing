@@ -17,8 +17,9 @@
 package cn.chenyunlong.qing.security.exception;
 
 import cn.chenyunlong.qing.security.repository.UsersConnectionRepository;
-import java.io.Serial;
 import org.springframework.security.core.SpringSecurityCoreVersion;
+
+import java.io.Serial;
 
 /**
  * Base exception class for {@link UsersConnectionRepository} failures.

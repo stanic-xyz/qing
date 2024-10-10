@@ -2,14 +2,15 @@ package cn.chenyunlong.common.model.vo;
 
 import cn.chenyunlong.common.enums.CommonEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

@@ -13,7 +13,6 @@ import cn.chenyunlong.qing.domain.auth.connection.dto.vo.UserConnectionVO;
 import cn.chenyunlong.qing.domain.auth.connection.mapper.UserConnectionMapper;
 import cn.chenyunlong.qing.domain.auth.connection.repository.UserConnectionRepository;
 import cn.chenyunlong.qing.domain.auth.connection.service.IUserConnectionService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -54,9 +55,6 @@ public class UserConnectionServiceImpl implements IUserConnectionService {
             .execute();
     }
 
-    /**
-     * valid
-     */
     @Override
     public void validUserConnection(Long id) {
         EntityOperations.doUpdate(userConnectionRepository)
@@ -65,9 +63,6 @@ public class UserConnectionServiceImpl implements IUserConnectionService {
             .execute();
     }
 
-    /**
-     * invalid
-     */
     @Override
     public void invalidUserConnection(Long id) {
         EntityOperations.doUpdate(userConnectionRepository)

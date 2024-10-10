@@ -24,14 +24,15 @@ import com.google.auto.service.AutoService;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Objects;
-import java.util.Set;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * 处理Response的代码生成

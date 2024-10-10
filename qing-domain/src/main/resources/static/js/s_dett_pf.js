@@ -13,8 +13,8 @@
 
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
-            typeof define === 'function' && define.amd ? define(factory) :
-                    (factory());
+        typeof define === 'function' && define.amd ? define(factory) :
+            (factory());
 }(this, (function () {
     'use strict';
 
@@ -24,16 +24,16 @@
     function finallyConstructor(callback) {
         var constructor = this.constructor;
         return this.then(
-                function (value) {
-                    return constructor.resolve(callback()).then(function () {
-                        return value;
-                    });
-                },
-                function (reason) {
-                    return constructor.resolve(callback()).then(function () {
-                        return constructor.reject(reason);
-                    });
-                }
+            function (value) {
+                return constructor.resolve(callback()).then(function () {
+                    return value;
+                });
+            },
+            function (reason) {
+                return constructor.resolve(callback()).then(function () {
+                    return constructor.reject(reason);
+                });
+            }
         );
     }
 
@@ -103,8 +103,8 @@
             if (newValue === self)
                 throw new TypeError('A promise cannot be resolved with itself.');
             if (
-                    newValue &&
-                    (typeof newValue === 'object' || typeof newValue === 'function')
+                newValue &&
+                (typeof newValue === 'object' || typeof newValue === 'function')
             ) {
                 var then = newValue.then;
                 if (newValue instanceof Promise) {
@@ -165,16 +165,16 @@
         var done = false;
         try {
             fn(
-                    function (value) {
-                        if (done) return;
-                        done = true;
-                        resolve(self, value);
-                    },
-                    function (reason) {
-                        if (done) return;
-                        done = true;
-                        reject(self, reason);
-                    }
+                function (value) {
+                    if (done) return;
+                    done = true;
+                    resolve(self, value);
+                },
+                function (reason) {
+                    if (done) return;
+                    done = true;
+                    reject(self, reason);
+                }
             );
         } catch (ex) {
             if (done) return;
@@ -211,11 +211,11 @@
                         var then = val.then;
                         if (typeof then === 'function') {
                             then.call(
-                                    val,
-                                    function (val) {
-                                        res(i, val);
-                                    },
-                                    reject
+                                val,
+                                function (val) {
+                                    res(i, val);
+                                },
+                                reject
                             );
                             return;
                         }
@@ -261,13 +261,13 @@
 
 // Use polyfill for setImmediate for performance gains
     Promise._immediateFn =
-            (typeof setImmediate === 'function' &&
-                    function (fn) {
-                        setImmediate(fn);
-                    }) ||
+        (typeof setImmediate === 'function' &&
             function (fn) {
-                setTimeoutFunc(fn, 0);
-            };
+                setImmediate(fn);
+            }) ||
+        function (fn) {
+            setTimeoutFunc(fn, 0);
+        };
 
     Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
         if (typeof console !== 'undefined' && console) {

@@ -4,14 +4,14 @@ import cn.chenyunlong.qing.domain.anime.anime.Anime;
 import cn.chenyunlong.qing.domain.anime.anime.AnimeCategory;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import cn.chenyunlong.qing.domain.anime.anime.Tag;
-import cn.chenyunlong.qing.domain.anime.attachement.Attachment;
 import cn.chenyunlong.qing.domain.anime.district.District;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.Data;
 
 @Schema
 @Data
@@ -38,7 +38,7 @@ public class AnimeUpdater {
     private String districtName;
 
     @Schema(title = "封面的附件Id")
-    private Long coverAttachmentId;
+    private String cover;
 
     @Schema(
         title = "typeId"
@@ -112,15 +112,12 @@ public class AnimeUpdater {
 
     private Long id;
 
-    public void updateAnime(Anime anime, List<Tag> tagList, District district, AnimeCategory animeCategory, Attachment coverAttachment) {
+    public void updateAnime(Anime anime, List<Tag> tagList, District district, AnimeCategory animeCategory) {
         Optional.ofNullable(getName()).ifPresent(anime::setName);
         Optional.ofNullable(getInstruction()).ifPresent(anime::setInstruction);
         Optional.ofNullable(getDistrictId()).ifPresent(anime::setDistrictId);
         Optional.ofNullable(getDistrictName()).ifPresent(anime::setDistrictName);
-        Optional.ofNullable(coverAttachment).ifPresent(attachment -> {
-            anime.setCoverAttachmentId(attachment.getId());
-            anime.setCoverUrl(attachment.getPath());
-        });
+        Optional.ofNullable(getCover()).ifPresent(anime::setCover);
         Optional.ofNullable(district).ifPresent(district1 -> {
             anime.setDistrictId(district1.getId());
             anime.setDistrictName(district1.getName());

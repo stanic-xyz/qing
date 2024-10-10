@@ -3,8 +3,9 @@ package cn.chenyunlong.qing.domain.auth.menu.dto.request;
 import cn.chenyunlong.common.model.Request;
 import cn.chenyunlong.qing.domain.auth.menu.SysMenu;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 import lombok.Data;
+
+import java.util.List;
 
 @Schema
 @Data

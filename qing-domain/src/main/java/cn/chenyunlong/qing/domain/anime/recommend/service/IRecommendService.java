@@ -6,9 +6,10 @@ import cn.chenyunlong.qing.domain.anime.recommend.dto.query.RecommendQuery;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.updater.RecommendUpdater;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.vo.RecommendDetailVO;
 import cn.chenyunlong.qing.domain.anime.recommend.dto.vo.RecommendVO;
+import org.springframework.data.domain.Page;
+
 import java.time.LocalDate;
 import java.util.List;
-import org.springframework.data.domain.Page;
 
 public interface IRecommendService {
 
@@ -22,14 +23,8 @@ public interface IRecommendService {
      */
     void updateRecommend(RecommendUpdater updater);
 
-    /**
-     * valid
-     */
     void validRecommend(Long id);
 
-    /**
-     * invalid
-     */
     void invalidRecommend(Long id);
 
     /**

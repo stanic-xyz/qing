@@ -1,11 +1,12 @@
 package cn.chenyunlong.qing.security.service;
 
 import cn.chenyunlong.qing.security.entity.AuthUser;
-import java.io.IOException;
-import java.util.List;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 用户名密码、手机短信登录、第三方授权登录及自动注册、用户注册服务：<br><br>
@@ -36,7 +37,7 @@ public interface UmsUserDetailsService extends UserDetailsService, UserDetailsRe
      * @return 返回一个 username 数组
      */
     default String[] generateUserNickNames(AuthUser authUser) {
-        return new String[] {
+        return new String[]{
             authUser.getNickname(),
             authUser.getUsername(),
             // providerId = authUser.getSource()

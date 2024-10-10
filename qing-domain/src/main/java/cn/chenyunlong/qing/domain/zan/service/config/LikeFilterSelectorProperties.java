@@ -1,11 +1,12 @@
 package cn.chenyunlong.qing.domain.zan.service.config;
 
 import cn.chenyunlong.qing.domain.zan.pipeline.BizEnum;
-import java.util.List;
-import java.util.Map;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 @Data
 @Component

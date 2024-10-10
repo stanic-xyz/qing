@@ -3,10 +3,11 @@ package cn.chenyunlong.common.controller;
 import cn.chenyunlong.common.enums.BusinessStatus;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.vo.CommonEnumVO;
-import java.util.Arrays;
-import java.util.List;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("enum")

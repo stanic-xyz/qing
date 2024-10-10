@@ -19,14 +19,8 @@ public interface IPlayListService {
      */
     void updatePlayList(PlayListUpdater updater);
 
-    /**
-     * valid
-     */
     void validPlayList(Long id);
 
-    /**
-     * invalid
-     */
     void invalidPlayList(Long id);
 
     /**

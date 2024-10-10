@@ -19,14 +19,8 @@ public interface IAttachmentService {
      */
     void updateAttachment(Long id, AttachmentUpdater updater);
 
-    /**
-     * valid
-     */
     void validAttachment(Long id);
 
-    /**
-     * invalid
-     */
     void invalidAttachment(Long id);
 
     /**

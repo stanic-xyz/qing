@@ -5,7 +5,6 @@ import cn.chenyunlong.qing.application.manager.jimmer.entity.BookTable;
 import cn.chenyunlong.qing.application.manager.jimmer.enumes.Gender;
 import cn.chenyunlong.qing.application.manager.jimmer.repository.BookRepository;
 import jakarta.annotation.Nullable;
-import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.babyfish.jimmer.Page;
 import org.babyfish.jimmer.client.meta.Api;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 @Api
 @ResponseBody
 @RestController
@@ -26,13 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TestJimmerController {
 
+    private static final BookTable T = BookTable.$;
     private final JSqlClient sqlClient;
     private final BookRepository bookRepository;
 
-    private static final BookTable T = BookTable.$;
-
     @Api
-    @GetMapping("jimmer")
+    @GetMapping("")
     public Page<Book> testJimmer() {
 
         return findBooks(1, 10, null, null, null, null, null, null, null, null, Gender.MALE);
@@ -65,29 +65,29 @@ public class TestJimmerController {
         Gender authorGender
     ) {
         return sqlClient
-                   .createQuery(T)
-                   .where(T.name().ilikeIf(name))
-                   .where(T.price().betweenIf(minPrice, maxPrice))
-                   .where(T.store().name().ilikeIf(storeName))
-                   .where(T.store().website().ilikeIf(storeWebsite))
-                   .where(
-                       T.authors(author ->
-                                     Predicate.or(
-                                         author.firstName().ilikeIf(authorName),
-                                         author.lastName().ilikeIf(authorName)
-                                     )
-                       )
-                   )
-                   .where(T.authors(author -> author.gender().eqIf(authorGender)))
-                   .orderBy(
-                       Order.makeOrders(
-                           T,
-                           sortCode != null ? sortCode : "name asc, edition desc"
-                       )
-                   )
-                   .select(
-                       BookTable.$.__disableJoin("这里不可以关联").fetch(fetcher)
-                   )
-                   .fetchPage(pageIndex, pageSize);
+            .createQuery(T)
+            .where(T.name().ilikeIf(name))
+            .where(T.price().betweenIf(minPrice, maxPrice))
+            .where(T.store().name().ilikeIf(storeName))
+            .where(T.store().website().ilikeIf(storeWebsite))
+            .where(
+                T.authors(author ->
+                    Predicate.or(
+                        author.firstName().ilikeIf(authorName),
+                        author.lastName().ilikeIf(authorName)
+                    )
+                )
+            )
+            .where(T.authors(author -> author.gender().eqIf(authorGender)))
+            .orderBy(
+                Order.makeOrders(
+                    T,
+                    sortCode != null ? sortCode : "name asc, edition desc"
+                )
+            )
+            .select(
+                BookTable.$.__disableJoin("这里不可以关联").fetch(fetcher)
+            )
+            .fetchPage(pageIndex, pageSize);
     }
 }

@@ -6,10 +6,11 @@ import cn.chenyunlong.qing.domain.auth.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.domain.auth.user.dto.query.UserQuery;
 import cn.chenyunlong.qing.domain.auth.user.dto.updater.UserUpdater;
 import cn.chenyunlong.qing.domain.auth.user.dto.vo.UserVO;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.springframework.data.domain.Page;
 
 public interface IUserService {
 
@@ -23,14 +24,8 @@ public interface IUserService {
      */
     void updateUser(UserUpdater updater);
 
-    /**
-     * valid
-     */
     void validUser(Long id);
 
-    /**
-     * invalid
-     */
     void invalidUser(Long id);
 
     /**

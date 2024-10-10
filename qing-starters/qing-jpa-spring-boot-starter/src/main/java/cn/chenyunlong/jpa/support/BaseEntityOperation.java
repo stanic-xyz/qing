@@ -20,10 +20,11 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.groups.Default;
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.util.CollectionUtils;
 
 /**
  * 基础实体操作。
@@ -37,14 +38,14 @@ public abstract class BaseEntityOperation implements EntityOperation {
 
     static {
         validator = Validation
-                        .buildDefaultValidatorFactory()
-                        .getValidator();
+            .buildDefaultValidatorFactory()
+            .getValidator();
     }
 
     /**
      * 执行验证逻辑。
      *
-     * @param obj t 泛型对象
+     * @param obj   t 泛型对象
      * @param group 校验组
      */
     public <T> void doValidate(T obj, Class<? extends ValidateGroup> group) {
@@ -52,14 +53,14 @@ public abstract class BaseEntityOperation implements EntityOperation {
             validator.validate(obj, group, Default.class);
         if (!CollectionUtils.isEmpty(constraintViolations)) {
             List<ValidateResult> results = constraintViolations
-                                               .stream()
-                                               .map(constraintViolation ->
-                                                        new ValidateResult(
-                                                            constraintViolation
-                                                                .getPropertyPath()
-                                                                .toString(),
-                                                            constraintViolation.getMessage()))
-                                               .collect(Collectors.toList());
+                .stream()
+                .map(constraintViolation ->
+                    new ValidateResult(
+                        constraintViolation
+                            .getPropertyPath()
+                            .toString(),
+                        constraintViolation.getMessage()))
+                .collect(Collectors.toList());
             throw new ValidationException(results);
         }
     }

@@ -4,9 +4,10 @@ import cn.chenyunlong.common.model.AbstractBaseJpaVo;
 import cn.chenyunlong.qing.domain.anime.anime.PlayStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.LocalDate;
 
 @Schema
 @Data
@@ -30,7 +31,7 @@ public class AnimeVO extends AbstractBaseJpaVo {
     @Schema(
         title = "coverUrl"
     )
-    private String coverUrl;
+    private String cover;
 
     @Schema(
         title = "typeId"

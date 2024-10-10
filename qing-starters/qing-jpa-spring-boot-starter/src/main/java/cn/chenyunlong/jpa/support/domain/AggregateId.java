@@ -2,6 +2,7 @@ package cn.chenyunlong.jpa.support.domain;
 
 import cn.hutool.core.lang.Assert;
 import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -47,13 +48,10 @@ public class AggregateId implements Serializable {
         }
         AggregateId other = (AggregateId) obj;
         if (aggregateId == null) {
-            if (other.aggregateId != null) {
-                return false;
-            }
+            return other.aggregateId == null;
         } else {
             return aggregateId.equals(other.aggregateId);
         }
-        return true;
     }
 
     @Override

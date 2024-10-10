@@ -19,8 +19,9 @@ package cn.chenyunlong.qing.security.exception;
 import cn.chenyunlong.qing.security.entity.ConnectionData;
 import cn.chenyunlong.qing.security.entity.ConnectionKey;
 import cn.chenyunlong.qing.security.repository.UsersConnectionRepository;
-import java.io.Serial;
 import org.springframework.security.core.SpringSecurityCoreVersion;
+
+import java.io.Serial;
 
 /**
  * Thrown by a {@link UsersConnectionRepository} when attempting to fetch a {@link ConnectionData} and no such

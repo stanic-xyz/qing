@@ -23,7 +23,7 @@ import java.io.Serializable;
  * A composite key that consists of the providerId (e.g. "facebook") plus providerUserId (e.g. "125660").
  * Provides the basis for connection equals() and hashCode().
  *
- * @param providerId 第三方服务商
+ * @param providerId     第三方服务商
  * @param providerUserId 第三方用户id
  * @author Keith Donald
  */
@@ -32,7 +32,7 @@ public record ConnectionKey(String providerId, String providerUserId) implements
     /**
      * Creates a new {@link ConnectionKey}.
      *
-     * @param providerId the id of the provider e.g. facebook
+     * @param providerId     the id of the provider e.g. facebook
      * @param providerUserId id of the provider user account e.g. '125660'
      */
     public ConnectionKey {
