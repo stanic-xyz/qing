@@ -12,7 +12,7 @@ const {menuItem} = defineProps({
 
 <template>
   <template v-if="menuItem.children && menuItem.children.length && menuItem.children.length > 0">
-    <lay-sub-menu :title="menuItem.menuName" :id="menuItem.id" v-if="menuItem.children && menuItem.children.length > 0">
+    <lay-sub-menu v-if="menuItem.children && menuItem.children.length > 0" :id="menuItem.id" :title="menuItem.menuName">
       <template #title>
         <lay-icon type="layui-icon-home"></lay-icon>
         {{ menuItem.menuName }}
@@ -23,7 +23,7 @@ const {menuItem} = defineProps({
     </lay-sub-menu>
   </template>
   <template v-else>
-    <lay-menu-item :title="menuItem.menuName" :id="menuItem.id">
+    <lay-menu-item :id="menuItem.id" :title="menuItem.menuName">
       <router-link :to="menuItem.path">
         <lay-icon type="layui-icon-home"></lay-icon>
         {{ menuItem.menuName }}

@@ -16,7 +16,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import {onMounted} from "vue";
 
 onMounted(() => {
   console.log("Footer加载完毕！");

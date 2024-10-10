@@ -8,7 +8,7 @@
         <ul class="ul_li_a6">
           <li v-for="(anime, index) in animeList" :key="index" class="anime_icon2">
             <router-link :to="`/anime/${anime.id}`">
-              <img :alt="anime.name" :src="anime.coverUrl" :title="anime.name" class="anime_icon2_img" height="208px" referrerpolicy="no-referrer" width="150px" />
+              <img :alt="anime.name" :src="anime.coverUrl" :title="anime.name" class="anime_icon2_img" height="208px" referrerpolicy="no-referrer" width="150px"/>
               <span class="anime_icon1_name1">02:00 第10话</span>
             </router-link>
             <h4 class="anime_icon2_name">
@@ -49,16 +49,16 @@ onMounted(() => {
       },
     ],
   })
-    .then(function (response) {
-      const animeDataList = response.result.content || [];
-      console.log("获取到动漫信息内容", animeDataList);
-      animeDataList.forEach((anime) => {
-        animeList.value.push(anime);
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+          .then(function (response) {
+            const animeDataList = response.result.content || [];
+            console.log("获取到动漫信息内容", animeDataList);
+            animeDataList.forEach((anime) => {
+              animeList.value.push(anime);
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
 });
 </script>
 <style lang="scss" scoped>

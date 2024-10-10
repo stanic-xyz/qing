@@ -2,13 +2,13 @@
   <div class="qing-header">
     <div class="qing-header-wrapper x-container">
       <div class="qing-header-logo">
-        <img src="../../assets/img/logo.png" alt="qing" height="38px" />
+        <img alt="qing" height="38px" src="../../assets/img/logo.png"/>
       </div>
       <div class="qing-header-content">
-        <div class="qing-header-tab active" v-for="(link, index) in data.links" :key="index" @click="handleSelect(link)">{{ link.name }}</div>
+        <div v-for="(link, index) in data.links" :key="index" class="qing-header-tab active" @click="handleSelect(link)">{{ link.name }}</div>
       </div>
       <div class="qing-header-search">
-        <input name="query" id="query" type="search" class="qing-header-search-input" placeholder="输入番名搜索" maxlength="8" value="" />
+        <input id="query" class="qing-header-search-input" maxlength="8" name="query" placeholder="输入番名搜索" type="search" value=""/>
         <button class="qing-header-search-icon">
           <lay-icon size="24px" type="layui-icon-search"></lay-icon>
         </button>
@@ -127,9 +127,9 @@
 </style>
 
 <script lang="ts" setup>
-import { onMounted, reactive } from "vue";
-import { userInfoStore } from "@/stores/session";
-import { useRouter } from "vue-router";
+import {onMounted, reactive} from "vue";
+import {userInfoStore} from "@/stores/session";
+import {useRouter} from "vue-router";
 
 const router = useRouter();
 const data = reactive({
@@ -169,7 +169,7 @@ onMounted(() => {
 });
 
 function handleSelect(event: any) {
-  router.push({ path: event.path });
+  router.push({path: event.path});
 }
 
 function handleLogin() {

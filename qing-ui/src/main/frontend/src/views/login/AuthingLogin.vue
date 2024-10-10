@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { onMounted } from "vue";
-import { userInfoStore } from "@/stores/session";
-import { useRouter } from "vue-router";
+import {onMounted} from "vue";
+import {userInfoStore} from "@/stores/session";
+import {useRouter} from "vue-router";
 
 // “ref”是用来存储值的响应式数据源。
 // 理论上我们在展示该字符串的时候不需要将其包装在 ref() 中，

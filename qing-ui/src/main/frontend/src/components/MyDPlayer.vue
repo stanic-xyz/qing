@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import DPlayer from "dplayer";
-import { onMounted, ref } from "vue";
+import {onMounted, ref} from "vue";
 
 const props = defineProps({
   player: DPlayer,
@@ -18,7 +18,7 @@ let dp = ref<DPlayer>();
 const dPlayerData = ref({
   style: "width:100%;height:auto;position: absolute;bottom: 0;right: 0;",
 });
-const info = ref({ video: "视频链接", pic: "封面图链接" });
+const info = ref({video: "视频链接", pic: "封面图链接"});
 
 onMounted(() => {
   dp.value = new DPlayer({

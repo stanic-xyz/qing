@@ -56,61 +56,61 @@ function changeList(listId: any) {
       <div class="blockcontent">
         <table>
           <tbody>
-            <tr>
-              <td>
-                <router-link :to="`'/anime/${anime.id}`">
-                  <img id="play_poster_img" alt="番剧剧照" height="260" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语.jpg" width="187"/>
-                </router-link>
-              </td>
-              <td>
-                <ul id="play_imform">
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">地区：</span>
-                    <span class="play_imform_val">{{ anime.districtName }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">动画种类：</span>
-                    <span class="play_imform_val">{{ anime.typeName }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">原作：</span>
-                    <span class="play_imform_val">{{ anime.author }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">原版名称：</span>
-                    <span class="play_imform_val">{{ anime.originalName }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">其它名称：</span>
-                    <span class="play_imform_val">{{ anime.otherName }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">制作公司：</span>
-                    <span class="play_imform_val">{{ anime.companyName }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">首播时间：</span>
-                    <span class="play_imform_val">{{ anime.premiereDate }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">播放状态：</span>
-                    <span class="play_imform_val">{{ anime.playStatus }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">剧情类型：</span>
-                    <span class="play_imform_val">{{ anime.tagIds }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">更新时间：</span>
-                    <span class="play_imform_val">{{ anime.premiereDate }}</span>
-                  </li>
-                  <li class="play_imform_kv">
-                    <span class="play_imform_tag">官方网站：</span>
-                    <span class="play_imform_val">{{ anime.officialWebsite }}</span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
+          <tr>
+            <td>
+              <router-link :to="`'/anime/${anime.id}`">
+                <img id="play_poster_img" alt="番剧剧照" height="260" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语.jpg" width="187"/>
+              </router-link>
+            </td>
+            <td>
+              <ul id="play_imform">
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">地区：</span>
+                  <span class="play_imform_val">{{ anime.districtName }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">动画种类：</span>
+                  <span class="play_imform_val">{{ anime.typeName }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">原作：</span>
+                  <span class="play_imform_val">{{ anime.author }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">原版名称：</span>
+                  <span class="play_imform_val">{{ anime.originalName }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">其它名称：</span>
+                  <span class="play_imform_val">{{ anime.otherName }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">制作公司：</span>
+                  <span class="play_imform_val">{{ anime.companyName }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">首播时间：</span>
+                  <span class="play_imform_val">{{ anime.premiereDate }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">播放状态：</span>
+                  <span class="play_imform_val">{{ anime.playStatus }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">剧情类型：</span>
+                  <span class="play_imform_val">{{ anime.tagIds }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">更新时间：</span>
+                  <span class="play_imform_val">{{ anime.premiereDate }}</span>
+                </li>
+                <li class="play_imform_kv">
+                  <span class="play_imform_tag">官方网站：</span>
+                  <span class="play_imform_val">{{ anime.officialWebsite }}</span>
+                </li>
+              </ul>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -184,20 +184,20 @@ function changeList(listId: any) {
               <textarea id="comment_content" autocapitalize="off" autocomplete="off" autocorrect="off" csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm" name="comment_content" placeholder="说点什么吧" spellcheck="false" tid="20180132" wrap="SOFT"></textarea>
               <label class="comment_imform_tag">昵称：</label>
               <input id="comment_user" autocapitalize="off" autocomplete="off" autocorrect="off" class="" name="comment_user" placeholder="名字" readonly="true" spellcheck="false" value="游客" wrap="SOFT"/>
-              <input class="nbutton" name="" type="submit" />
+              <input class="nbutton" name="" type="submit"/>
             </div>
           </form>
           <!-- 评论列表 -->
           <ul id="comment_list" style="margin-top: 16px">
             <li v-for="(item, index) in array" :key="index" class="comment">
-              <hr class="hrspace2" />
+              <hr class="hrspace2"/>
               <div class="comment_cell_user">游客{{ index }}-120023001980153</div>
               <div class="comment_cell_content">
                 <div>测试评论信息{{ index }}</div>
                 <div class="comment_cell_time asciifont">2020-09-12 17:56:57</div>
               </div>
             </li>
-            <hr class="hrspace2" />
+            <hr class="hrspace2"/>
             <div id="current_comment_page" page=""></div>
           </ul>
           <!-- 评论翻页 -->
