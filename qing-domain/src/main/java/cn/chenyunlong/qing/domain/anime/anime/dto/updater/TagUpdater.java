@@ -3,9 +3,11 @@ package cn.chenyunlong.qing.domain.anime.anime.dto.updater;
 import cn.chenyunlong.qing.domain.anime.anime.Tag;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.Optional;
 
+@Getter
 @Schema
 @Data
 public class TagUpdater {
@@ -25,29 +27,5 @@ public class TagUpdater {
     public void updateTag(Tag param) {
         Optional.ofNullable(getName()).ifPresent(param::setName);
         Optional.ofNullable(getInstruction()).ifPresent(param::setInstruction);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getInstruction() {
-        return instruction;
-    }
-
-    public void setInstruction(String instruction) {
-        this.instruction = instruction;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }
