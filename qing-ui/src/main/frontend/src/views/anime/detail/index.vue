@@ -1,66 +1,155 @@
+<style lang="scss">
+.content-wrapper {
+  background-color: rgb(33, 37, 41);
+  margin-top: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  color: white;
+
+  .div-left {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+
+    .cover {
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      text-align: center;
+
+      img {
+        width: 256px;
+      }
+    }
+
+    .summary {
+      height: 2rem;
+      display: flex;
+      align-content: center;
+      justify-content: space-between;
+      margin: 1rem;
+    }
+
+    .detail-info {
+      background-color: #0b2e13;
+    }
+  }
+
+  .div-right {
+    display: flex;
+    flex-direction: column;
+
+    .description {
+      padding: 1rem 0;
+
+      .detail-info-name {
+        h2 {
+          color: #d0e0f0;
+        }
+      }
+
+      .detail-info-divider {
+        width: 100%;
+        color: rgba(153, 153, 153, 0.5);
+      }
+    }
+
+    .playlist-wrapper {
+      width: 100%;
+
+      .playlist-header {
+        width: 100%;
+        padding-top: 1rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+        font-size: 1rem;
+
+        .playlist-title-icon {
+          color: #dc3545;
+        }
+
+        .playlist-title {
+          margin-left: 0.5rem;
+          color: #dc3545;
+        }
+
+        .playlist-notice {
+          color: darkgray;
+        }
+      }
+    }
+  }
+}
+</style>
+
 <template>
-  <div id="container">
-    <div class="div_left">
-      <div class="baseblock">
-        <div class="blockcontent">
-          <img :alt="data.anime.name" class="poster" height="356px" referrerpolicy="no-referrer" src="https://cdn.aqdstatic.com:966/age/20010004.jpg" width="256px"/>
-        </div>
+  <div class="x-container content-wrapper">
+    <div class="div-left">
+      <div class="cover">
+        <img :alt="data.anime.name" class="poster" height="356px" referrerpolicy="no-referrer" src="https://cdn.aqdstatic.com:966/age/20010004.jpg" width="256px"/>
       </div>
-      <div class="baseblock">
-        <div class="blockcontent">
-          <div class="baseblock2">
-            <div class="blocktitle detail_title1">基本信息：</div>
-            <ul class="blockcontent">
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">地区：</span>
-                <span class="detail_imform_value">{{ data.anime.name }}</span>
-                <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">动画种类：</span>
-                <span class="detail_imform_value">{{ data.anime.typeName }}</span>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">动画名称：</span>
-                <span class="detail_imform_value">{{ data.anime.name }}</span>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">原版名称：</span>
-                <span class="detail_imform_value">{{ data.anime.originalName }}</span>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">作者：</span>
-                <span class="detail_imform_value">{{ data.anime.author }}</span>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">制作公司：</span>
-                <span class="detail_imform_value">{{ data.anime.companyName }}</span>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">首播时间：</span>
-                <span class="detail_imform_value">{{ data.anime.premiereDate }}</span>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">播放状态：</span>
-                <span class="detail_imform_value">{{ data.anime.playStatus }}</span>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">剧情类型：</span>
-                <span class="detail_imform_value">{{ data.anime.plotType }}</span>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">标签：</span>
-                <span class="detail_imform_value">{{ data.anime.tagIds }}</span>
-              </li>
-              <li class="detail_imform_kv">
-                <span class="detail_imform_tag">官方网站：</span>
-                <span class="detail_imform_value">
-                  <a :href="data?.anime?.officialWebsite" target="_blank">{{ data?.anime?.officialWebsite }}</a>
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="summary">
+        <button>测试信息</button>
+        <button>测试信息</button>
+        <button>测试信息</button>
+      </div>
+
+      <div class="detail-info">
+        <div class="blocktitle detail_title1">基本信息：</div>
+        <ul class="blockcontent">
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">地区：</span>
+            <span class="detail_imform_value">{{ data.anime.name }}</span>
+            <a class="detail_imform_show_full" href="javascript:detail_show_full();">&lt;&lt;展开</a>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">动画种类：</span>
+            <span class="detail_imform_value">{{ data.anime.typeName }}</span>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">动画名称：</span>
+            <span class="detail_imform_value">{{ data.anime.name }}</span>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">原版名称：</span>
+            <span class="detail_imform_value">{{ data.anime.originalName }}</span>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">作者：</span>
+            <span class="detail_imform_value">{{ data.anime.author }}</span>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">制作公司：</span>
+            <span class="detail_imform_value">{{ data.anime.companyName }}</span>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">首播时间：</span>
+            <span class="detail_imform_value">{{ data.anime.premiereDate }}</span>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">播放状态：</span>
+            <span class="detail_imform_value">{{ data.anime.playStatus }}</span>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">剧情类型：</span>
+            <span class="detail_imform_value">{{ data.anime.plotType }}</span>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">标签：</span>
+            <span class="detail_imform_value">{{ data.anime.tagIds }}</span>
+          </li>
+          <li class="detail_imform_kv">
+            <span class="detail_imform_tag">官方网站：</span>
+            <span class="detail_imform_value">
+              <a :href="data?.anime?.officialWebsite" target="_blank">{{ data?.anime?.officialWebsite }}</a>
+            </span>
+          </li>
+        </ul>
       </div>
       <div class="baseblock">
         <div class="blockcontent">
@@ -83,45 +172,42 @@
         </div>
       </div>
     </div>
-    <div class="div_right">
-      <div class="baseblock">
-        <div class="blockcontent">
-          <h4 class="detail_imform_name">
+    <div class="div-right">
+      <div class="description">
+        <div class="detail-info-name">
+          <h2>
             {{ data.anime.name }}
-          </h4>
+          </h2>
         </div>
-      </div>
-      <div class="blockline1" style="margin: 8px"></div>
-      <div class="baseblock">
-        <div class="blockcontent">
-          <div class="detail_imform_desc_pre">
-            <p>{{ data.anime.instruction }}</p>
+        <hr class="detail-info-divider"/>
+        <div class="baseblock">
+          <div class="blockcontent">
+            <div class="detail_imform_desc_pre">
+              <p>{{ data.anime.instruction }}</p>
+            </div>
           </div>
         </div>
       </div>
-      <div class="blockline1" style="margin: 8px"></div>
-      <div id="playlist-div" class="baseblock">
-        <div class="blocktitle">在线播放：</div>
-        <ul v-for="(list, index) in data.anime.playLists" id="menu0" :key="index" class="menu0">
-          <li v-if="index === data.menuIndex" style="display: block" v-bind:class="{ on: index === data.menuIndex }" @click="next(list.id)">
-            {{ list?.name }}
-          </li>
-        </ul>
-        <div id="main0" class="main0">
-          <div
-                  v-for="(listInfo, index) in data.anime.playLists"
-                  :key="index"
-                  :style="{
-              display: index === currentPlayListId ? 'block' : 'none',
-            }"
-                  class="movurl"
-          >
-            <ul v-for="(episode, index) in episodeList" :key="index">
-              <li>
-                <router-link :title="episode.name" :to="`/anime/${data.anime.id}/play/{listId}/{episodeId}(animeId=${data.anime.id}`" target="_self">{{ episode.name }}</router-link>
-              </li>
-            </ul>
+      <div class="playlist-wrapper">
+        <div class="playlist-header">
+          <div>
+            <span>
+              <lay-icon type="layui-icon-play" class="playlist-title-icon"></lay-icon>
+              <span class="playlist-title">在线播放</span>
+            </span>
           </div>
+          <small class="playlist-notice">视频如果未正常播放或者卡顿，请切换播放源，优先选择 VIP 播放源!</small>
+        </div>
+        <hr/>
+
+        <div class="playlist">
+          <lay-tab v-model="selectTab" type="button">
+            <lay-tab-item :title="list.name" v-if="true" id="1" v-for="(list, index) in data.anime.playLists" :key="index">
+              <lay-button type="normal" v-for="(episodeInfo, episodeIndex) in list.episodeList" :key="episodeIndex">
+                <router-link :title="episodeInfo.name" :to="`/anime/${data.anime.id}/play/{listId}/{episodeId}(animeId=${data.anime.id}`" target="_self">{{ episodeInfo.name }}</router-link>
+              </lay-button>
+            </lay-tab-item>
+          </lay-tab>
         </div>
       </div>
 
@@ -170,7 +256,7 @@
           <div id="recommend_block" class="switchBlock">
             <ul class="ul_li_a4">
               <li v-for="({ id, name }, index) in []" :key="index" class="anime_icon1">
-                <router-link :to="`/anime/${id}`"><img alt="暂无" class="anime_icon1_img" height="205" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语_small.jpg" width="148"/></router-link>
+                <router-link :to="`/anime/${id}`"><img alt="暂无" class="anime_icon1_img" height="205" referrerpolicy="no-referrer" src="../../../assets/img/anime/伤物语_small.jpg" width="148"/></router-link>
                 <router-link :to="`/anime/${id}`">
                   <div class="anime_icon1_name">{{ name }}</div>
                 </router-link>
@@ -226,6 +312,8 @@ import {onMounted, reactive, ref} from "vue";
 import {findDetailById} from "@/apis/anime";
 import {useRoute, useRouter} from "vue-router";
 import type {AnimeDetail} from "@/apis/anime/types";
+
+const selectTab = ref("1");
 
 const data = reactive({
   activeIndex: "1",
@@ -335,5 +423,3 @@ function sendReport() {
   alert(reportDetail.value);
 }
 </script>
-
-<style scoped src="../assets/css/detail.css"></style>
