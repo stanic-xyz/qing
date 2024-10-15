@@ -74,8 +74,8 @@ public class TestDomain extends BaseEntity {
                 </execution>
             </executions>
             <configuration>
-                <source>17</source>
-                <target>17</target>
+                <source>${maven.compiler.source}</source>
+                <target>${maven.compiler.source}</target>
                 <encoding>UTF-8</encoding>
                 <compilerArgs>
                     <!-- 指定源文件生成目录 ${project.basedir} 表示当前项目（子模块）的项目绝对地址，-A表示使用自定义编译选项-->

@@ -10,7 +10,7 @@ import Recommend from "@/views/recommend/Recommend.vue";
 import UpdatePage from "@/views/UpdatePage.vue";
 import Catalog from "@/views/catalog/Catalog.vue";
 import RankPage from "@/views/RankPage.vue";
-import Detail from "@/views/Detail.vue";
+import Detail from "@/views/anime/detail/index.vue";
 import Component from "@/views/examples/component/Component.vue";
 import PlayPage from "@/views/PlayPage.vue";
 import About from "@/views/about/About.vue";
