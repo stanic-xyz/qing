@@ -21,11 +21,11 @@ import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.javapoet.AnnotationSpec;
+import org.springframework.javapoet.TypeSpec;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
