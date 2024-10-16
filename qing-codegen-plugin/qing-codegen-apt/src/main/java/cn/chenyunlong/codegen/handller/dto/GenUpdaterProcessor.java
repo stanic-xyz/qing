@@ -20,12 +20,12 @@ import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeSpec;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.javapoet.CodeBlock;
+import org.springframework.javapoet.MethodSpec;
+import org.springframework.javapoet.TypeName;
+import org.springframework.javapoet.TypeSpec;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;

@@ -1,4 +1,4 @@
-FROM openjdk:17-slim AS qing-bootstrap-monitor
+FROM openjdk:21-slim AS qing-bootstrap-monitor
 USER root
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"

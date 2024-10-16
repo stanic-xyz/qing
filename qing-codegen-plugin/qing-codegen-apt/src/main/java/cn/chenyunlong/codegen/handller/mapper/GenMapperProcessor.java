@@ -21,7 +21,7 @@ import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.hutool.core.bean.BeanUtil;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.*;
+import org.springframework.javapoet.*;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;
