@@ -22,11 +22,11 @@ import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeSpec;
 import org.springframework.data.domain.Page;
+import org.springframework.javapoet.ClassName;
+import org.springframework.javapoet.MethodSpec;
+import org.springframework.javapoet.ParameterizedTypeName;
+import org.springframework.javapoet.TypeSpec;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;

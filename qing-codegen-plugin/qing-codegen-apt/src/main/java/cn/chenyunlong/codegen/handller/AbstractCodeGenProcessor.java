@@ -34,8 +34,8 @@ import cn.chenyunlong.common.annotation.TypeConverter;
 import cn.hutool.core.annotation.AnnotationUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
-import com.squareup.javapoet.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.javapoet.*;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;

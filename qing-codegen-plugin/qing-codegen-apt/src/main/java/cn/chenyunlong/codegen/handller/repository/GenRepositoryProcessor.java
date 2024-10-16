@@ -20,9 +20,9 @@ import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.jpa.support.BaseRepository;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeSpec;
+import org.springframework.javapoet.ClassName;
+import org.springframework.javapoet.ParameterizedTypeName;
+import org.springframework.javapoet.TypeSpec;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Modifier;

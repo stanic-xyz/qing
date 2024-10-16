@@ -1,4 +1,4 @@
-FROM openjdk:17-slim AS qing-feign-client
+FROM openjdk:21-slim AS qing-feign-client
 USER root
 MAINTAINER Stan<1576302867@qq.com>
 LABEL maintainer="Stan <1576302867@qq.com>>"

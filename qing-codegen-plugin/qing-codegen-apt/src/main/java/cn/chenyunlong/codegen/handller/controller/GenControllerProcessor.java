@@ -25,10 +25,10 @@ import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.javapoet.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.processing.RoundEnvironment;
