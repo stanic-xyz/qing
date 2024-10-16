@@ -32,10 +32,6 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.squareup/javapoet -->
         <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javapoet</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
         </dependency>

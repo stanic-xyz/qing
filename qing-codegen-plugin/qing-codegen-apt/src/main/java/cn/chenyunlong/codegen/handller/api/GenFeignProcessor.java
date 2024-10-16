@@ -24,8 +24,7 @@ import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
-import com.squareup.javapoet.*;
-import com.squareup.javapoet.TypeSpec.Builder;
+import org.springframework.javapoet.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +54,7 @@ public class GenFeignProcessor extends AbstractCodeGenProcessor {
             CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL,
                 typeElement.getSimpleName().toString());
         GenFeign annotation = typeElement.getAnnotation(GenFeign.class);
-        Builder builder = TypeSpec
+        TypeSpec.Builder builder = TypeSpec
             .interfaceBuilder(nameContext.getFeignClassName())
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(AnnotationSpec

@@ -19,11 +19,10 @@ import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeSpec;
-import com.squareup.javapoet.TypeSpec.Builder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.javapoet.TypeName;
+import org.springframework.javapoet.TypeSpec;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
@@ -67,7 +66,7 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
                               boolean useLombok) {
         // lombok - mapstruct 集成
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        Builder builder =
+        TypeSpec.Builder builder =
             TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Schema.class);
         if (useLombok) {
