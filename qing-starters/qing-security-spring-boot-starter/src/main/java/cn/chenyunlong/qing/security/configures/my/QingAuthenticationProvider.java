@@ -43,7 +43,7 @@ public class QingAuthenticationProvider implements AuthenticationProvider {
 
         // 校验密码
         if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
-            log.debug("认证失败: 密码与存储值不匹配");
+            log.info("认证失败: 密码与存储值不匹配");
             throw new BadCredentialsException("Bad credentials");
         }
         return authentication;
