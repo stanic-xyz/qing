@@ -78,7 +78,7 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
             }
         }
         QingUser qingUser = userOptional.get();
-        log.info("Demo ======>: 登录用户名：{}, 登录成功", username);
+        log.info("Demo ======>: 登录用户名：{}, 查询成功", username);
         return buildUserDetails(qingUser);
     }
 
