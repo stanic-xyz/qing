@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, ref} from "vue";
-import {getAnimeList} from "@/apis/anime";
-import type {Anime} from "@/apis/anime/types";
+import { onMounted, ref } from "vue";
+import { getAnimeList } from "@/apis/anime";
+import type { Anime } from "@/apis/anime/types";
 
-const pagination = ref({current: 0, pageSize: 12, total: 0});
+const pagination = ref({ current: 0, pageSize: 12, total: 0 });
 const animeInfoList = ref<Anime[]>([]);
 const weekList = ref([
   {
