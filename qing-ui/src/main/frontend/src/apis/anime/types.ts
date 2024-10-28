@@ -4,7 +4,7 @@ export interface Anime {
     id: number;
     animeId: string;
     name: string;
-    coverUrl: string;
+    cover: string;
     premiereDate: string;
     districtId: number;
     instruction: string;

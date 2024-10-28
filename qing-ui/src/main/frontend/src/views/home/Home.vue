@@ -1,6 +1,6 @@
 <template>
   <!-- 首页-->
-  <div style="display: flex; flex-direction: row">
+  <div class="x-container content-wrapper">
     <div class="h-full">
       <div class="h-full">左边部分</div>
       <div class="h-full">左边部分</div>
@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import { getAnimeList } from "@/apis/anime";
-import type { Anime } from "@/apis/anime/types";
+import {onMounted, ref} from "vue";
+import {getAnimeList} from "@/apis/anime";
+import type {Anime} from "@/apis/anime/types";
 
 const pagination = ref({ current: 0, pageSize: 12, total: 0 });
 const animeInfoList = ref<Anime[]>([]);
