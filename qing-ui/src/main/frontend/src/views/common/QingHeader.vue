@@ -95,6 +95,7 @@
       .qing-header-search-icon {
         height: 36px;
         width: 36px;
+        cursor: pointer;
       }
     }
 
@@ -111,6 +112,7 @@
         font-size: 16px;
         margin-right: 2px;
         border-radius: 5px;
+        cursor: pointer;
       }
 
       .qing-header-operation-login {
@@ -120,6 +122,7 @@
         padding: 0 1rem;
         background-color: #dc3545;
         border-color: #dc3545;
+        cursor: pointer;
       }
     }
   }
