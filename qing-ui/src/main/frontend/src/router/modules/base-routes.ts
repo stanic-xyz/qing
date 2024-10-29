@@ -6,15 +6,10 @@ import BaseLayout from "@/views/layouts/BaseLayout.vue";
 import Activity from "@/views/Activity.vue";
 import AnimeManage from "@/views/admin/AnimeManage.vue";
 import Home from "@/views/home/Home.vue";
-import Recommend from "@/views/recommend/Recommend.vue";
-import UpdatePage from "@/views/UpdatePage.vue";
-import Catalog from "@/views/catalog/Catalog.vue";
-import RankPage from "@/views/RankPage.vue";
 import Detail from "@/views/anime/detail/index.vue";
-import Component from "@/views/examples/component/Component.vue";
 import PlayPage from "@/views/PlayPage.vue";
 import About from "@/views/about/About.vue";
-import SearchPage from "@/views/SearchPage.vue";
+import Recommend from "@/views/recommend/Recommend.vue";
 
 const routerList = [
     {
@@ -24,7 +19,7 @@ const routerList = [
     {
         path: "/dashboard",
         component: BaseAdminLayout,
-        meta: {title: "管理控制台"},
+        meta: { title: "管理控制台" },
         children: [
             {
                 path: "/dashboard",
@@ -42,18 +37,18 @@ const routerList = [
     {
         path: "/login",
         component: Login,
-        meta: {title: "登录页面"},
+        meta: { title: "登录页面" },
     },
     {
         path: "/manager",
         component: AnimeManage,
-        meta: {title: "动漫管理界面"},
+        meta: { title: "动漫管理界面" },
     },
     {
         path: "/home",
         redirect: "/home",
         component: BaseLayout,
-        meta: {title: "工作空间"},
+        meta: { title: "工作空间" },
         children: [
             {
                 path: "/home",
@@ -80,7 +75,7 @@ const routerList = [
             {
                 path: "/update",
                 name: "update",
-                component: UpdatePage,
+                component: () => import("@/views/UpdatePage.vue"),
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -91,7 +86,7 @@ const routerList = [
             {
                 path: "/catalog",
                 name: "catalog",
-                component: Catalog,
+                component: () => import("@/views/catalog/Catalog.vue"),
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -102,7 +97,7 @@ const routerList = [
             {
                 path: "/rank",
                 name: "rank",
-                component: RankPage,
+                component: () => import("@/views/RankPage.vue"),
                 meta: {
                     title: "工作台",
                     requireAuth: true,
@@ -124,7 +119,7 @@ const routerList = [
             {
                 path: "/examples/component",
                 name: "example-component",
-                component: Component,
+                component: () => import("@/views/examples/component/Component.vue"),
                 meta: {
                     title: "组件",
                     requireAuth: false,
@@ -145,7 +140,7 @@ const routerList = [
             {
                 path: "/search",
                 name: "search",
-                component: SearchPage,
+                component: () => import("@/views/SearchPage.vue"),
             },
             {
                 path: "/login",
@@ -157,30 +152,30 @@ const routerList = [
             },
         ],
     },
-    {path: "/users/:id", component: Activity},
-    {path: "/login/authing", component: AuthingLogin},
+    { path: "/users/:id", component: Activity },
+    { path: "/login/authing", component: AuthingLogin },
     {
         path: "/error/401",
         component: () => import("../../views/error/401.vue"),
-        meta: {title: "401"},
+        meta: { title: "401" },
     },
     {
         path: "/error/403",
         component: () => import("../../views/error/403.vue"),
-        meta: {title: "403"},
+        meta: { title: "403" },
     },
     {
         path: "/error/404",
         component: () => import("../../views/error/404.vue"),
-        meta: {title: "404"},
+        meta: { title: "404" },
     },
     {
         path: "/error/500",
         component: () => import("../../views/error/500.vue"),
-        meta: {title: "500"},
+        meta: { title: "500" },
     },
     // 将匹配所有内容并将其放在 `$route.params.pathMatch` 下
-    {path: "/:pathMatch(.*)*", name: "NotFound", component: ExceptionPage},
+    { path: "/:pathMatch(.*)*", name: "NotFound", component: ExceptionPage },
 ];
 
 // 假设你有一个pages文件夹，里面包含了多个页面组件
