@@ -1,21 +1,226 @@
 <template>
   <!-- 首页-->
+  <div class="x-container content-wrapper notice" style="text-align: center">
+    <mark>AGE动漫 备用地址：<a style="color: red">www.stanic.xyz</a> 欢迎大家分享给身边朋友！为确保正常观看，请使用 谷歌浏览器</mark>
+  </div>
   <div class="x-container content-wrapper">
-    <div class="h-full">
-      <div class="h-full">左边部分</div>
-      <div class="h-full">左边部分</div>
+    <div class="content-panel">
+      <div class="update">
+        <div class="update-header">
+          <span class="update-header-title">最近更新</span>
+          <button class="update-header-more">更多>></button>
+        </div>
+        <div class="update-body">
+          <ul>
+            <li v-for="anime of animeInfoList" :key="anime.id">
+              <a>
+                <div class="anime">
+                  <img :src="anime.cover" alt="" />
+                  <span>{{ anime.name }}</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="update">
+        <div class="update-header">
+          <span class="update-header-title">本周推荐</span>
+          <button class="update-header-more">更多>></button>
+        </div>
+        <div class="update-body">
+          <ul>
+            <li v-for="anime of animeInfoList" :key="anime.id">
+              <a>
+                <div class="anime">
+                  <img :src="anime.cover" alt="" />
+                  <span>{{ anime.name }}</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div class="h-full">右边的更新内容去</div>
+    <div class="content-right">
+      <div class="content-right-title">本周放送列表</div>
+      <ul class="content-right-week">
+        <li v-for="week of weekList" :class="{ current: activeWeekIndex === week.weekId }" :key="week.weekId" @click="changeWeek(week.weekId)">{{ week.name }}</li>
+      </ul>
+      <div>
+        <ul>
+          <li v-for="anime of animeInfoList" :key="anime.id">
+            <div class="list-item">
+              <span>{{ anime.name }}</span>
+              <span>00：59 第15集</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="content-right-title">最近更新</div>
+      <div>
+        <ul>
+          <li v-for="anime of animeInfoList" :key="anime.id">
+            <div class="list-item">
+              <span>{{ anime.name }}</span>
+              <span>00：59 第15集</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
   <!-- 底部 -->
 </template>
 
-<script lang="ts" setup>
-import {onMounted, ref} from "vue";
-import {getAnimeList} from "@/apis/anime";
-import type {Anime} from "@/apis/anime/types";
+<style scoped lang="scss">
+@import url("@/assets/css/common/base-css.css");
 
-const pagination = ref({ current: 0, pageSize: 12, total: 0 });
+.notice {
+  text-align: center;
+
+  a {
+    cursor: pointer;
+  }
+}
+
+.content-wrapper {
+  width: 100%;
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+
+  .content-panel {
+    width: 70%;
+
+    .update {
+      width: 100%;
+
+      .update-header {
+        width: 100%;
+        line-height: 2rem;
+        height: 2rem;
+        display: flex;
+        font-size: 1rem;
+        flex-direction: row;
+        justify-content: space-between;
+        border-bottom: 1px solid gray;
+        align-items: center;
+
+        .update-header-more {
+          padding: 0 10px;
+          display: inline-block;
+          font-size: 0.8rem;
+          height: 1rem;
+          line-height: 1rem;
+          cursor: pointer;
+        }
+      }
+
+      .update-body {
+        background-color: #202020;
+
+        ul {
+          width: 100%;
+          margin: 10px 0;
+
+          li {
+            display: inline-block;
+            width: 20%;
+            overflow: hidden;
+            margin: 5px 0;
+            cursor: pointer;
+            padding-right: 10px;
+
+            .anime {
+              display: flex;
+              flex-direction: column;
+              transition: all linear 0.3s;
+              overflow: hidden;
+
+              img {
+                display: inline-block;
+                width: 100%;
+                transition: all linear 0.3s;
+
+                &:hover {
+                  transform: scale(1.1);
+                }
+              }
+
+              span {
+                display: block;
+                color: #fff;
+                width: 100%;
+                text-align: center;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .content-right {
+    width: 30%;
+    position: relative;
+
+    .content-right-title {
+      line-height: 2rem;
+      border-bottom: 1px solid gray;
+      background-color: black;
+    }
+
+    .content-right-week {
+      display: flex;
+      justify-content: space-around;
+      height: 2rem;
+      line-height: 2rem;
+      margin-top: 10px;
+
+      li {
+        width: 47.5px;
+        text-align: center;
+        cursor: pointer;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+
+      .current {
+        background-color: rgb(40, 40, 40);
+        border: 1px solid gray;
+        border-bottom: none;
+      }
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      line-height: 2rem;
+      font-size: 1rem;
+      border-bottom: 1px dashed #3c3f42;
+      cursor: pointer;
+      background-color: rgb(40, 40, 40);
+
+      &:hover {
+        background-color: red;
+      }
+    }
+  }
+}
+</style>
+
+<script lang="ts" setup>
+import { onMounted, ref } from "vue";
+import { getAnimeList } from "@/apis/anime";
+import type { Anime } from "@/apis/anime/types";
+
+const pagination = ref({ current: 0, pageSize: 10, total: 0 });
 const animeInfoList = ref<Anime[]>([]);
 const weekList = ref([
   {
@@ -48,7 +253,7 @@ const weekList = ref([
   },
 ]);
 
-const activeWeekIndex = ref<Number>(0);
+const activeWeekIndex = ref<Number>(1);
 
 const getUserInfo = async () => {
   console.log("用户当前登录状态", false);
@@ -65,6 +270,7 @@ const getCardListData = async () => {
   pagination.value.total = result.total;
   console.log("请求结束后的分页信息,总页数：", pagination.value.total);
   animeInfoList.value = result.content;
+  console.info("读取到了", animeInfoList.value);
 };
 
 onMounted(() => {
@@ -77,7 +283,3 @@ function changeWeek(id: Number) {
   activeWeekIndex.value = id;
 }
 </script>
-
-<style scoped>
-@import url("@/assets/css/common/base-css.css");
-</style>
