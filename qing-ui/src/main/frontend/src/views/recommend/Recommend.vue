@@ -117,7 +117,7 @@
     <div class="anime-info-item" v-for="(anime, index) in animeInfoList" :key="index">
       <div class="anime-content-cover">
         <router-link :to="`/anime/${anime.id}`">
-          <img :alt="anime.name" :src="anime.cover" :title="anime.name" class="video_thumbs" referrerpolicy="no-referrer"/>
+          <img :alt="anime.name" :src="anime.cover" :title="anime.name" class="video_thumbs" referrerpolicy="no-referrer" />
         </router-link>
       </div>
       <div class="anime-content-detail">
@@ -171,9 +171,9 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, ref} from "vue";
-import type {Anime} from "@/apis/anime/types";
-import {page} from "@/apis/anime";
+import { onMounted, ref } from "vue";
+import type { Anime } from "@/apis/anime/types";
+import { page } from "@/apis/anime";
 
 const animeInfoList = ref<Anime[]>([]);
 
@@ -182,12 +182,12 @@ onMounted(() => {
     pageSize: 10,
     page: 0,
   })
-          .then(function (response) {
-            console.log("获取到动漫信息内容", response.result.content || []);
-            animeInfoList.value = response.result.content || [];
-          })
-          .catch(function (error) {
-            console.log("异常了", error);
-          });
+    .then(function (response) {
+      console.log("获取到动漫信息内容", response.result.content || []);
+      animeInfoList.value = response.result.content || [];
+    })
+    .catch(function (error) {
+      console.log("异常了", error);
+    });
 });
 </script>
