@@ -190,7 +190,7 @@
   <div class="x-container content-wrapper">
     <div class="div-left">
       <div class="cover">
-        <img :alt="data.anime.name" class="poster" height="356px" referrerpolicy="no-referrer" src="https://cdn.aqdstatic.com:966/age/20010004.jpg" width="256px" />
+        <img :alt="data.anime.name" class="poster" height="356px" referrerpolicy="no-referrer" :src="data.anime.cover" width="256px"/>
       </div>
       <div class="summary">
         <div class="summary-item">
@@ -303,10 +303,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue";
-import { findDetailById } from "@/apis/anime";
-import { useRoute, useRouter } from "vue-router";
-import type { AnimeDetail } from "@/apis/anime/types";
+import {onMounted, reactive, ref} from "vue";
+import {findDetailById} from "@/apis/anime";
+import {useRoute, useRouter} from "vue-router";
+import type {AnimeDetail} from "@/apis/anime/types";
 
 const selectTab = ref(1);
 

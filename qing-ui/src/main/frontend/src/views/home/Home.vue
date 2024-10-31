@@ -13,12 +13,12 @@
         <div class="update-body">
           <ul>
             <li v-for="anime of animeInfoList" :key="anime.id">
-              <a>
+              <router-link :to="`/anime/${anime.id}`">
                 <div class="anime">
                   <img :src="anime.cover" alt="" />
                   <span>{{ anime.name }}</span>
                 </div>
-              </a>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -31,12 +31,12 @@
         <div class="update-body">
           <ul>
             <li v-for="anime of animeInfoList" :key="anime.id">
-              <a>
+              <router-link :to="`/anime/${anime.id}`">
                 <div class="anime">
                   <img :src="anime.cover" alt="" />
                   <span>{{ anime.name }}</span>
                 </div>
-              </a>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -51,7 +51,9 @@
         <ul>
           <li v-for="anime of animeInfoList" :key="anime.id">
             <div class="list-item">
-              <span>{{ anime.name }}</span>
+              <router-link class="list-item-name" :to="`/anime/${anime.id}`">
+                <span>{{ anime.name }}</span>
+              </router-link>
               <span>00：59 第15集</span>
             </div>
           </li>
@@ -62,7 +64,9 @@
         <ul>
           <li v-for="anime of animeInfoList" :key="anime.id">
             <div class="list-item">
-              <span>{{ anime.name }}</span>
+              <router-link class="list-item-name" :to="`/anime/${anime.id}`">
+                <span>{{ anime.name }}</span>
+              </router-link>
               <span>00：59 第15集</span>
             </div>
           </li>
@@ -92,9 +96,11 @@
 
   .content-panel {
     width: 70%;
+    margin-right: 5px;
 
     .update {
       width: 100%;
+      margin-right: 5px;
 
       .update-header {
         width: 100%;
@@ -168,7 +174,6 @@
 
   .content-right {
     width: 30%;
-    position: relative;
 
     .content-right-title {
       line-height: 2rem;
@@ -189,6 +194,12 @@
         cursor: pointer;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
+
+        &:hover {
+          background-color: red;
+          border: 1px solid gray;
+          border-bottom: none;
+        }
       }
 
       .current {
@@ -206,6 +217,15 @@
       border-bottom: 1px dashed #3c3f42;
       cursor: pointer;
       background-color: rgb(40, 40, 40);
+      color: white;
+
+      .list-item-name {
+        color: white;
+
+        &:hover {
+          text-decoration-line: underline;
+        }
+      }
 
       &:hover {
         background-color: red;
@@ -216,9 +236,9 @@
 </style>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import { getAnimeList } from "@/apis/anime";
-import type { Anime } from "@/apis/anime/types";
+import {onMounted, ref} from "vue";
+import {getAnimeList} from "@/apis/anime";
+import type {Anime} from "@/apis/anime/types";
 
 const pagination = ref({ current: 0, pageSize: 10, total: 0 });
 const animeInfoList = ref<Anime[]>([]);
