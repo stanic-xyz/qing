@@ -141,7 +141,6 @@ class QingHttp {
                 // }
                 function (config) {
                     const store = userInfoStore();
-                    console.log("执行拦截器", store.token);
                     config.headers.Authorization = store.tokenHeader;
                     // 在发送请求之前做些什么
                     if (config.method === "post") {
@@ -175,7 +174,6 @@ class QingHttp {
                 (response) => {
                     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
                     // 否则的话抛出错误
-                    console.debug("结果拦截器里面", response);
                     if (response.status === 200) {
                         return Promise.resolve(response);
                     }

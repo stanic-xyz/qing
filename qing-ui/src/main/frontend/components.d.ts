@@ -45,7 +45,6 @@ declare module 'vue' {
         LayTag: typeof import('@layui/layui-vue')['LayTag']
         LayTextarea: typeof import('@layui/layui-vue')['LayTextarea']
         LayUpload: typeof import('@layui/layui-vue')['LayUpload']
-        MyDPlayer: typeof import('./src/components/MyDPlayer.vue')['default']
         NavItem: typeof import('./src/components/block/Nav-Item.vue')['default']
         RouterLink: typeof import('vue-router')['RouterLink']
         RouterView: typeof import('vue-router')['RouterView']

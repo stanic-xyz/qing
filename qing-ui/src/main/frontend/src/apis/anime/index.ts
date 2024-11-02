@@ -37,18 +37,18 @@ export const invalid = (id: string) => {
 
 /** 更新动漫信息 */
 export const findById = (id: number) => {
-    console.log("禁用：请求参数:{}", id);
+    console.log("请求参数:{}", id);
     return http.request<QingResponse<Anime>>("get", serviceUrl + "/findById/" + id);
 };
 
 /** 更新动漫信息 */
 export const findDetailById = (id: number) => {
-    console.log("禁用：请求参数:{}", id);
+    console.log("请求参数:{}", id);
     return http.request<QingResponse<AnimeDetail>>("get", serviceUrl + "/findDetailById/" + id);
 };
 
 /** 分页查询动漫信息 */
 export const page = (data: PageRequest<Anime>) => {
-    console.log("禁用：请求参数:{}", JSON.stringify(data));
+    console.log("请求参数:{}", JSON.stringify(data));
     return http.request<QingResponse<QingPageResponseDetail<Anime>>>("post", serviceUrl + "/page", data);
 };

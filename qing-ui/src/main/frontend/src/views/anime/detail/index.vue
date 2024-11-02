@@ -179,6 +179,11 @@
           &:hover {
             background-color: #dc3545;
           }
+
+          span {
+            display: inline-block;
+            color: white;
+          }
         }
       }
     }
@@ -291,7 +296,9 @@
           <div class="playlist-content-content" v-for="(list, index) in data.anime.playLists" :key="index" v-show="selectTab === list.id">
             <ul>
               <li class="playlist-content-playlist-episode-item" v-for="(episode, episodeIndex) in list.episodeList" :key="episodeIndex">
-                {{ episode.name }}
+                <router-link :to="`/play/${data.anime.id}/${list.id}/${episode.id}`">
+                  <span>{{ episode.name }}</span>
+                </router-link>
                 <div class="playing">播放中</div>
               </li>
             </ul>
@@ -347,81 +354,7 @@ onMounted(() => {
   }
 });
 
-const currentPlayListId = ref(0);
-const isCommentBoard = ref(false);
-const chooseReportTypes = ref([]);
-const reportDetail = ref("");
-const episodeList = ref<any>([
-  {
-    id: "12123",
-    name: "测试名称",
-  },
-]);
-const commentList = reactive([
-  {
-    createTime: {
-      nano: 0,
-      year: 2021,
-      monthValue: 7,
-      dayOfMonth: 28,
-      hour: 23,
-      minute: 21,
-      second: 40,
-      month: "JULY",
-      dayOfWeek: "WEDNESDAY",
-      dayOfYear: 209,
-      chronology: {
-        id: "ISO",
-        calendarType: "iso8601",
-      },
-    },
-    updateTime: {
-      nano: 0,
-      year: 2021,
-      monthValue: 7,
-      dayOfMonth: 28,
-      hour: 23,
-      minute: 21,
-      second: 39,
-      month: "JULY",
-      dayOfWeek: "WEDNESDAY",
-      dayOfYear: 209,
-      chronology: {
-        id: "ISO",
-        calendarType: "iso8601",
-      },
-    },
-    searchValue: "",
-    createBy: "",
-    updateBy: "",
-    remark: "",
-    id: "1420404091520241666",
-    cid: 20000001,
-    username: "游客",
-    content: "啦啦啦",
-    ipAddress: null,
-  },
-]);
-
-function next(animeId: any) {
-  console.log(animeId);
-}
-
-function nextPage() {
-  console.log("翻页到下一页评论");
-}
-
 function choseTab(playListId: number) {
-  this.selectTab = playListId;
-}
-
-function changeRecommendBoard() {
-  isCommentBoard.value = !isCommentBoard.value;
-  console.log(isCommentBoard.value);
-}
-
-function sendReport() {
-  console.log("发起了举报");
-  alert(reportDetail.value);
+  selectTab.value = playListId;
 }
 </script>
