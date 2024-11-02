@@ -1,210 +1,306 @@
-<script lang="ts" setup>
-import {onMounted, reactive, ref} from "vue";
-import MyDPlayer from "@/components/MyDPlayer.vue";
-import type {Anime} from "@/apis/anime/types";
-import {findDetailById} from "@/apis/anime";
+<style scoped lang="scss">
+@import url("@/assets/css/common/base-css.css");
 
-const el = ref();
-const anime = ref<Anime>({} as Anime);
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
 
-const data = reactive({
-  activeIndex: "1",
-  activeIndex2: "1",
-  currentDate: new Date(),
-  time: "2020年01月15日 21时50分19秒",
-  loading: true,
-  videoUrl: "https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/test.mp4",
-});
+  .age-frame-div {
+    width: 100%;
+    height: auto;
+  }
 
-const array = ref([1, 2, 3, 4, 5, 6, 7]);
+  .operation {
+    background-color: rgb(1, 1, 33);
+    color: white;
+    height: 2rem;
+    line-height: 2rem;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    border-radius: 5px;
 
-const playList = ref([
-  {
-    id: 1,
-    name: "播放列表1",
-    episodeList: [
-      {
-        id: 1,
-        name: "测试名称",
-      },
-    ],
-  },
-]);
-const currentListId = ref(0);
-const currentEpisodeId = ref(0);
-onMounted(() => {
-  el.value; // <div>
-  anime.value = {} as Anime;
-  findDetailById(anime.value.id).then((res) => {
-    console.log(res);
-  });
-});
+    .operation-content {
+      display: inline-flex;
+      width: 20%;
+      justify-content: space-between;
+    }
+  }
 
-function changeList(listId: any) {
-  currentListId.value = listId;
+  .anime-info-item {
+    width: 100%;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid rgb(1, 1, 33);
+    background-color: rgb(1, 1, 33);
+
+    .anime-content-cover {
+      width: 172px;
+      height: auto;
+      overflow: hidden;
+
+      a {
+        text-decoration: none;
+        display: block !important;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 5px;
+
+        img {
+          width: 172px;
+          display: inline;
+          vertical-align: middle;
+
+          &:hover {
+            opacity: 0.7;
+            transform: scale(1.1);
+          }
+        }
+
+        .video_thumbs {
+          transition: all linear 0.3s;
+        }
+      }
+    }
+
+    .anime-content-detail {
+      width: 100%;
+      padding: 0 0 0 1rem;
+
+      .anime-content-detail-title {
+        a {
+          font-size: 18px;
+          color: #d0e0f0;
+        }
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .anime-content-detail-info {
+        min-width: 50%;
+        display: inline-block;
+        line-height: 2rem;
+        color: #d0e0f0;
+
+        span {
+          color: #808081;
+        }
+      }
+
+      .anime-content-detail-info-description {
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+      }
+    }
+  }
+
+  .playlist-wrapper {
+    width: 100%;
+    color: white;
+
+    .playlist-header {
+      width: 100%;
+      padding-top: 1rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      align-content: center;
+      font-size: 1rem;
+      color: white;
+
+      .playlist-title-icon {
+        color: #dc3545;
+      }
+
+      .playlist-title {
+        margin-left: 0.5rem;
+        color: #dc3545;
+      }
+
+      .playlist-notice {
+        color: darkgray;
+      }
+    }
+  }
+
+  .playlist-content {
+    width: 100%;
+    color: white;
+
+    .playlist-content-tab {
+      width: 100%;
+      display: flex;
+
+      .playlist-content-tab-item {
+        background-color: rgb(33, 37, 41);
+        line-height: 1rem !important;
+        text-align: center;
+        padding: 0.5rem;
+        color: rgba(255, 255, 255, 0.55);
+        border-radius: 10px 10px 0 0;
+        width: 100px;
+        cursor: pointer;
+
+        &:hover {
+          color: white;
+        }
+
+        .playlist-title-icon {
+          color: darkred;
+        }
+      }
+
+      .selected {
+        background-color: red;
+        color: white;
+      }
+    }
+
+    .playlist-content-content {
+      width: 100%;
+      min-height: 240px;
+      max-height: 500px;
+      background-color: rgb(55, 55, 56);
+      padding: 1rem;
+
+      .playlist-content-playlist-episode-item {
+        display: inline-block;
+        border: 1px solid gray;
+        border-radius: 6px;
+        height: 40px;
+        width: 11.111%;
+        line-height: 40px;
+        text-align: center;
+        overflow: hidden;
+        cursor: pointer;
+        margin-bottom: 2px;
+        padding: 0 2px;
+
+        &:hover {
+          background-color: #dc3545;
+        }
+
+        .selected {
+          background-color: #dc3545;
+        }
+
+        span {
+          display: inline-block;
+          width: 100%;
+          color: white;
+        }
+      }
+    }
+  }
 }
-</script>
+</style>
+
 <template>
-  <div id="container">
-    <div class="baseblock">
-      <div class="blocktitle">
-        <h4 id="detailname">
-          <router-link :to="`/anime/${anime.id}`">{{ anime.name }}</router-link>
-        </h4>
+  <div class="x-container container">
+    <div class="age-frame-div">
+      <my-player :likes="1" :url="data.videoUrl"></my-player>
+    </div>
+    <div class="operation">
+      <div class="operation-content">
+        <div class="summary-item">
+          <lay-icon type="layui-icon-fire" class="fire"></lay-icon>
+          20W
+        </div>
+        <div class="summary-item">
+          <lay-icon type="layui-icon-dialogue" class="fire"></lay-icon>
+          494
+        </div>
+        <div class="summary-item">
+          <lay-icon type="layui-icon-heart" class="fire"></lay-icon>
+          2,363
+        </div>
       </div>
-      <div class="line"></div>
-      <div class="blockcontent">
-        <table>
-          <tbody>
-          <tr>
-            <td>
-              <router-link :to="`'/anime/${anime.id}`">
-                <img id="play_poster_img" alt="番剧剧照" height="260" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语.jpg" width="187"/>
+      <div class="mobile-player">手机播放</div>
+    </div>
+    <div class="anime-info-item">
+      <div class="anime-content-cover">
+        <img width="172px" :alt="anime.name" :src="anime.cover" :title="anime.name" class="video_thumbs" referrerpolicy="no-referrer"/>
+      </div>
+      <div class="anime-content-detail">
+        <h5 class="anime-content-detail-title">
+          <a :href="`/anime/${anime.id}`">{{ anime.name }}</a>
+        </h5>
+        <div class="anime-content-detail-info">
+          <span>其他名称：</span>
+          {{ anime.name }}
+        </div>
+        <div class="anime-content-detail-info">
+          <span>其他名称：</span>
+          {{ anime.name }}
+        </div>
+        <div class="anime-content-detail-info">
+          <span>其他名称：</span>
+          {{ anime.name }}
+        </div>
+        <div class="anime-content-detail-info">
+          <span>首播时间：</span>
+          {{ anime.premiereDate }}
+        </div>
+        <div class="anime-content-detail-info">
+          <span>播放状态：</span>
+          {{ anime.playStatus }}
+        </div>
+        <div class="anime-content-detail-info">
+          <span>原作：</span>
+          {{ anime.author }}
+        </div>
+        <div class="anime-content-detail-info">
+          <span>剧情类型：</span>
+          {{ anime.plotType }}
+        </div>
+        <div class="anime-content-detail-info">
+          <span>制作公司：</span>
+          {{ anime.companyName }}
+        </div>
+        <div class="anime-content-detail-info anime-content-detail-info-description">
+          <span>简介：</span>
+          {{ anime.instruction }}
+        </div>
+      </div>
+    </div>
+
+    <div class="playlist-wrapper">
+      <div class="playlist-header">
+        <div>
+          <span>
+            <lay-icon type="layui-icon-play" class="playlist-title-icon"></lay-icon>
+            <span class="playlist-title">在线播放</span>
+          </span>
+        </div>
+        <small class="playlist-notice">视频如果未正常播放或者卡顿，请切换播放源，优先选择 VIP 播放源!</small>
+      </div>
+      <hr/>
+      <div class="playlist-content">
+        <div class="playlist-content-tab">
+          <div class="playlist-content-tab-item" :class="{ selected: currentListId == list.id }" :title="list.name" id="1" v-for="(list, index) of anime.playLists" :key="index" @click="choseTab(list.id)">
+            <lay-icon type="layui-icon-gitee" class="playlist-title-icon"></lay-icon>
+            {{ list.name }}
+          </div>
+        </div>
+
+        <div class="playlist-content-content" v-for="(list, index) in anime.playLists" :key="index" v-show="currentListId === list.id">
+          <ul>
+            <li class="playlist-content-playlist-episode-item" v-for="(episode, episodeIndex) in list.episodeList" :key="episodeIndex">
+              <router-link :to="`/play/${anime.id}/${list.id}/${episode.id}`">
+                <span :class="{ selected: currentListId === list.id && currentEpisodeId === episode.id }">{{ episode.name }}</span>
               </router-link>
-            </td>
-            <td>
-              <ul id="play_imform">
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">地区：</span>
-                  <span class="play_imform_val">{{ anime.districtName }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">动画种类：</span>
-                  <span class="play_imform_val">{{ anime.typeName }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">原作：</span>
-                  <span class="play_imform_val">{{ anime.author }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">原版名称：</span>
-                  <span class="play_imform_val">{{ anime.originalName }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">其它名称：</span>
-                  <span class="play_imform_val">{{ anime.otherName }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">制作公司：</span>
-                  <span class="play_imform_val">{{ anime.companyName }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">首播时间：</span>
-                  <span class="play_imform_val">{{ anime.premiereDate }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">播放状态：</span>
-                  <span class="play_imform_val">{{ anime.playStatus }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">剧情类型：</span>
-                  <span class="play_imform_val">{{ anime.tagIds }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">更新时间：</span>
-                  <span class="play_imform_val">{{ anime.premiereDate }}</span>
-                </li>
-                <li class="play_imform_kv">
-                  <span class="play_imform_tag">官方网站：</span>
-                  <span class="play_imform_val">{{ anime.officialWebsite }}</span>
-                </li>
-              </ul>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="spaceblock1"></div>
-    <div class="baseblock">
-      <div class="blocktitle">简介：</div>
-      <div class="line"></div>
-      <div class="blockcontent">
-        <div class="play_desc">
-          <p>{{ anime.instruction }}</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="baseblock">
-      <div class="blockcontent">
-        <div id="pp" class="baseblock2">
-          <div id="playlist-div" class="baseblock">
-            <div class="blocktitle">在线播放：</div>
-            <ul id="menu0" class="menu0">
-              <li v-for="(listInfo, index) in playList" :key="index" :class="{ on: (currentListId = listInfo.id) }" data-index="${iterStat.index}" style="display: block" @onclick="changeList(listInfo.id)">
-                {{ listInfo.name }}
-              </li>
-            </ul>
-            <div id="main0" class="main0">
-              <div v-for="(listinfo, index) in playList" v-show="currentListId === index" :key="index" class="movurl" style="display: block">
-                <ul>
-                  <li v-for="(episode, episodeIndex) in listinfo.episodeList" :key="episodeIndex">
-                    <router-link :title="episode.name" :to="`/play/${episode.id}`" class="on" target="_self">
-                      {{ episode.name }}
-                    </router-link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div id="ageframeblock" class="content">
-            <div id="ageframediv" style="width: 980px; height: 551px">
-              <my-d-player :likes="1" url="https://anime-1255705827.cos.ap-guangzhou.myqcloud.com/test.mp4"></my-d-player>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="spaceblock1"></div>
-      <div class="baseblock">
-        <div class="blocktitle">看过《{{ anime.name }}》的人还看过：</div>
-        <div class="line"></div>
-        <div class="blockcontent">
-          <ul class="ul_li_a8">
-            <li v-for="(item, index) in array" :key="index" class="anime_icon1">
-              <a href="/anime/20170042"> <img class="anime_icon1_img" height="205" referrerpolicy="no-referrer" src="../assets/img/anime/伤物语_small.jpg" width="148"/></a>
-              <a href="/anime/20170042">
-                <div class="anime_icon1_name">徒然喜欢你</div>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="spaceblock1"></div>
-      <div class="baseblock">
-        <div class="blocktitle">留言板：</div>
-        <div class="line"></div>
-
-        <div class="blockcontent">
-          <form id="comment_form" action="javascript:void(0)" method="GET">
-            <div>
-              <input id="comment_id" name="cid" type="hidden" value="20190209"/>
-              <textarea id="comment_content" autocapitalize="off" autocomplete="off" autocorrect="off" csrf_token="kqYFPKw9DOko88jkfLKSATbDkz6ipQBD9pYXLohUtVGXpMhQPdkP7lyYGDwiNifm" name="comment_content" placeholder="说点什么吧" spellcheck="false" tid="20180132" wrap="SOFT"></textarea>
-              <label class="comment_imform_tag">昵称：</label>
-              <input id="comment_user" autocapitalize="off" autocomplete="off" autocorrect="off" class="" name="comment_user" placeholder="名字" readonly="true" spellcheck="false" value="游客" wrap="SOFT"/>
-              <input class="nbutton" name="" type="submit"/>
-            </div>
-          </form>
-          <!-- 评论列表 -->
-          <ul id="comment_list" style="margin-top: 16px">
-            <li v-for="(item, index) in array" :key="index" class="comment">
-              <hr class="hrspace2"/>
-              <div class="comment_cell_user">游客{{ index }}-120023001980153</div>
-              <div class="comment_cell_content">
-                <div>测试评论信息{{ index }}</div>
-                <div class="comment_cell_time asciifont">2020-09-12 17:56:57</div>
-              </div>
-            </li>
-            <hr class="hrspace2"/>
-            <div id="current_comment_page" page=""></div>
-          </ul>
-          <!-- 评论翻页 -->
-          <div class="spaceblock1"></div>
-          <ul class="comment_page">
-            <li>
-              <a class="pbutton pbutton_current asciifont" href="javascript:void(0)">首页</a>
+              <div class="playing">播放中</div>
             </li>
           </ul>
         </div>
@@ -213,4 +309,59 @@ function changeList(listId: any) {
   </div>
 </template>
 
-<style scoped src="../assets/css/play.css"></style>
+<script lang="ts" setup>
+import {onMounted, reactive, ref, watch} from "vue";
+import MyPlayer from "@/components/MyPlayer.vue";
+import type {AnimeDetail} from "@/apis/anime/types";
+import {findDetailById} from "@/apis/anime";
+import {useRoute} from "vue-router";
+
+const anime = ref<AnimeDetail>({} as AnimeDetail);
+
+const router = useRoute();
+
+const data = reactive({
+  activeIndex: "1",
+  activeIndex2: "1",
+  currentDate: new Date(),
+  time: "2020年01月15日 21时50分19秒",
+  loading: true,
+  videoUrl: "http://192.168.3.52:9000/qing/sunset.mp4",
+});
+
+const currentAnimeId = ref(0);
+const currentListId = ref(0);
+const currentEpisodeId = ref(0);
+
+onMounted(() => {
+  console.log("首次加载路由", router.fullPath);
+  const animeId = Number(router.params.animeId);
+  const listId = Number(router.params.listId);
+  const episodeId = Number(router.params.episodeId);
+
+  currentAnimeId.value = animeId;
+  currentListId.value = listId;
+  currentEpisodeId.value = episodeId;
+
+  findDetailById(animeId).then((res) => {
+    anime.value = res.result;
+  });
+});
+
+watch(
+        () => router.fullPath,
+        (prev, current) => {
+          console.log("路由发生了变化", prev, current);
+          const listId = Number(router.params.listId);
+          const episodeId = Number(router.params.episodeId);
+
+          console.log("参数信息", currentAnimeId.value, listId, episodeId);
+          currentListId.value = listId;
+          currentEpisodeId.value = episodeId;
+        },
+);
+
+function choseTab(playListId: number) {
+  currentListId.value = playListId;
+}
+</script>

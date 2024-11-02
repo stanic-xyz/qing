@@ -133,6 +133,11 @@ const routerList = [
                 component: PlayPage,
             },
             {
+                path: "/play/:animeId/:listId/:episodeId",
+                name: "play",
+                component: PlayPage,
+            },
+            {
                 path: "/profile",
                 name: "profile",
                 component: About,

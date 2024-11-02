@@ -113,7 +113,8 @@
 </style>
 
 <template>
-  <div class="x-container content-wrapper">
+  <div id="scrollContent" class="x-container content-wrapper">
+    <lay-backtop bgcolor="#ff0000" color="#ffffff"></lay-backtop>
     <div class="anime-info-item" v-for="(anime, index) in animeInfoList" :key="index">
       <div class="anime-content-cover">
         <router-link :to="`/anime/${anime.id}`">

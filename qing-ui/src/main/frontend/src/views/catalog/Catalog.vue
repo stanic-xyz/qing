@@ -6,6 +6,14 @@
   display: flex;
   flex-direction: column;
 
+  .layui-page {
+    color: white;
+
+    .layui-page-limits {
+      color: white;
+    }
+  }
+
   .anime-info-item {
     width: 100%;
     border-radius: 10px;
@@ -167,7 +175,7 @@
         </div>
       </div>
     </div>
-    <lay-page v-model="currentPage" :limit="currentLimit" :limits="limits" :total="total" @change="change"></lay-page>
+    <lay-page v-model="currentPage" :limit="currentLimit" :limits="limits" :total="total" @change="change" theme="black"></lay-page>
   </div>
 </template>
 

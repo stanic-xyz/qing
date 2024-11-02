@@ -40,7 +40,6 @@ const router: Router = createRouter({
  * @param from 来至
  */
 router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): void => {
-    console.log(to);
     // 在白名单内的路由，直接放行
     for (let i = 0; i < whiteList.length; i++) {
         if (to.path == whiteList[i]) {
