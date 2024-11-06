@@ -4,6 +4,7 @@
   "private" : true,
   "scripts" : {
     "dev" : "vite",
+    "prod" : "vite --mode production",
     "build" : "run-p type-check build-only",
     "preview" : "vite preview",
     "test:unit" : "vitest --environment jsdom --root src/",
@@ -61,8 +62,8 @@
     "lint-staged" : "^15.0.2",
     "npm-run-all" : "^4.1.5",
     "prettier" : "^3.0.3",
-    "sass" : "^1.63.6",
-    "sass-loader" : "^13.3.2",
+    "sass" : "^1.80.6",
+    "sass-loader" : "^13.3.3",
     "start-server-and-test" : "^1.15.2",
     "typescript" : "^5.6.2",
     "unplugin-auto-import" : "^0.16.6",
@@ -70,7 +71,7 @@
     "vite" : "^5.4.7",
     "vitest" : "^0.25.6",
     "vue-eslint-parser" : "^9.3.2",
-    "vue-template-compiler" : "^2.7.15",
+    "vue-template-compiler" : "^2.7.16",
     "vue-tsc" : "^2.1.6"
   },
   "eslintConfig" : {

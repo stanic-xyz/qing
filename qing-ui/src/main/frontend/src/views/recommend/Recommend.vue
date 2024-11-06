@@ -171,9 +171,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import type { Anime } from "@/apis/anime/types";
-import { page } from "@/apis/anime";
+import {onMounted, ref} from "vue";
+import type {Anime} from "@/apis/anime/types";
+import {page} from "@/apis/anime";
 
 const animeInfoList = ref<Anime[]>([]);
 

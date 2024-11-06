@@ -1,115 +1,5 @@
 <style scoped lang="scss">
-@import url("@/assets/css/common/base-css.css");
-
-.content-wrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-
-  .anime-info-item {
-    width: 100%;
-    border-radius: 10px;
-    padding: 10px 10px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: row;
-    border: 1px solid rgb(1, 1, 33);
-
-    .anime-content-cover {
-      width: 172px;
-
-      a {
-        text-decoration: none;
-        display: block !important;
-        width: 100%;
-        overflow: hidden;
-        border-radius: 5px;
-
-        img {
-          width: 172px;
-          display: inline;
-          vertical-align: middle;
-
-          &:hover {
-            opacity: 0.7;
-            transform: scale(1.1);
-          }
-        }
-
-        .video_thumbs {
-          transition: all linear 0.3s;
-        }
-      }
-    }
-
-    .anime-content-detail {
-      width: 100%;
-      padding: 0 0 0 1rem;
-
-      .anime-content-detail-title {
-        a {
-          font-size: 18px;
-          color: #d0e0f0;
-        }
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-
-      .anime-content-detail-info {
-        min-width: 50%;
-        display: inline-block;
-        line-height: 2rem;
-
-        span {
-          color: #808081;
-        }
-      }
-
-      .anime-content-detail-info-description {
-        margin-bottom: 0.5rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        line-clamp: 2;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-      }
-
-      .anime-content-detail-buttongroup {
-        width: 100%;
-        text-align: left;
-
-        .anime-content-detail-button {
-          padding: 5px;
-          margin-right: 10px;
-          border-radius: 4px;
-          cursor: pointer;
-          background-color: #292121;
-          border: 1px solid black;
-          color: white;
-
-          &:hover {
-            background-color: red;
-            border: 1px solid red;
-          }
-        }
-
-        .play {
-          background-color: red;
-          color: white;
-          border: 1px solid red;
-
-          &:hover {
-            background-color: darkred;
-            border: 1px solid darkred;
-          }
-        }
-      }
-    }
-  }
-}
+@import url("@/style/update.scss");
 </style>
 
 <template>
@@ -161,8 +51,12 @@
           {{ anime.instruction }}
         </div>
         <div class="anime-content-detail-buttongroup">
-          <button class="anime-content-detail-button">测试内容</button>
-          <button class="anime-content-detail-button play">在线播放</button>
+          <router-link :to="`/anime/${anime.id}`">
+            <button class="anime-content-detail-button">测试内容</button>
+          </router-link>
+          <router-link :to="`/play/${anime.id}`">
+            <button class="anime-content-detail-button play">在线播放</button>
+          </router-link>
         </div>
       </div>
     </div>
@@ -173,8 +67,11 @@
 import {onMounted, ref} from "vue";
 import type {Anime} from "@/apis/anime/types";
 import {page} from "@/apis/anime";
+import {useRouter} from "vue-router";
 
 const animeInfoList = ref<Anime[]>([]);
+
+const router = useRouter();
 
 onMounted(() => {
   page({
@@ -189,4 +86,13 @@ onMounted(() => {
             console.log("异常了", error);
           });
 });
+
+function play(id: number) {
+  router.push({
+    name: "play",
+    params: {
+      animeId: id,
+    },
+  });
+}
 </script>

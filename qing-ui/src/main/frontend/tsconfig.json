@@ -15,6 +15,9 @@
     "importsNotUsedAsValues" : "remove",
     "verbatimModuleSyntax" : true,
     "ignoreDeprecations" : "5.0",
-    "skipLibCheck" : true
+    "skipLibCheck" : true,
+    "types" : [
+      "vite/client"
+    ]
   }
 }

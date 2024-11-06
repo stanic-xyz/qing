@@ -4,7 +4,6 @@ export const userStore = defineStore({
     id: "user",
     state: () => {
         const token = localStorage.getItem("qing_token");
-        console.log("用户读取到配置信息", token);
         return {
             token: token || "",
             userInfo: {},
