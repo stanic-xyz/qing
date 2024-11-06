@@ -50,7 +50,7 @@ public final class AuthingLoginConfigurer extends AbstractHttpConfigurer<Authing
     @Override
     public void init(HttpSecurity builder) throws Exception {
         builder.csrf(AbstractHttpConfigurer::disable);
-        builder.cors(AbstractHttpConfigurer::disable);
+        //        builder.cors(AbstractHttpConfigurer::disable);
         super.init(builder);
     }
 

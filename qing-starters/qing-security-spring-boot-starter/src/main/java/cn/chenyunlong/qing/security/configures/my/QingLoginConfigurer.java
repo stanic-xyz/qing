@@ -48,7 +48,7 @@ public final class QingLoginConfigurer extends AbstractHttpConfigurer<QingLoginC
     @Override
     public void init(HttpSecurity builder) throws Exception {
         builder.csrf(AbstractHttpConfigurer::disable);
-        builder.cors(AbstractHttpConfigurer::disable);
+        //        builder.cors(AbstractHttpConfigurer::disable);
         super.init(builder);
     }
 
