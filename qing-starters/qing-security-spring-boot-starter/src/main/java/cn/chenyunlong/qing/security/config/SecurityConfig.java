@@ -39,6 +39,9 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.PathMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
@@ -73,10 +76,13 @@ public class SecurityConfig {
     public SecurityFilterChain userLoginFilterChain(HttpSecurity http, PathMatcher mvcPathMatcher) throws Exception {
         http.formLogin(AbstractHttpConfigurer::disable);
         http.with(authingLoginConfigurer, authingLogin -> {
-
         });
         http.with(qingLoginConfigurer, qingLogin -> {
         });
+        http.cors((cors) -> cors
+            .configurationSource(myWebsiteConfigurationSource())
+        );
+        // http.cors(Customizer.withDefaults());
         http.securityMatcher("/**")
             .authorizeHttpRequests(authorize -> {
                 // 框架内部的白名单
@@ -107,5 +113,20 @@ public class SecurityConfig {
         http.addFilterBefore(new MyJwtTokenFilter(tokenProvider, securityProperties), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+    private CorsConfigurationSource myWebsiteConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*");
+        //        configuration.setAllowCredentials(true);
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedOriginPattern("**");
+        configuration.setMaxAge(3600L);
+        //        configuration.setAllowPrivateNetwork(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 
 }

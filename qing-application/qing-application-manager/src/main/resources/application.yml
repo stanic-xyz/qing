@@ -9,6 +9,9 @@ spring:
 qing:
   api:
     description: QING-WEB-APPLICATION
+  security:
+    authing:
+      auth-login-url-prefix: /api/auth2/authorization
 logging:
   level:
     root: info
