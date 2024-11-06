@@ -1,209 +1,5 @@
 <style scoped lang="scss">
-@import url("@/assets/css/common/base-css.css");
-
-.container {
-  display: flex;
-  flex-direction: column;
-  margin: 1rem 0;
-
-  .age-frame-div {
-    width: 100%;
-    height: auto;
-  }
-
-  .operation {
-    background-color: rgb(1, 1, 33);
-    color: white;
-    height: 2rem;
-    line-height: 2rem;
-    padding: 0 10px;
-    display: flex;
-    justify-content: space-between;
-    margin: 5px 0;
-    border-radius: 5px;
-
-    .operation-content {
-      display: inline-flex;
-      width: 20%;
-      justify-content: space-between;
-    }
-  }
-
-  .anime-info-item {
-    width: 100%;
-    padding: 10px 10px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: row;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border: 1px solid rgb(1, 1, 33);
-    background-color: rgb(1, 1, 33);
-
-    .anime-content-cover {
-      width: 172px;
-      height: auto;
-      overflow: hidden;
-
-      a {
-        text-decoration: none;
-        display: block !important;
-        width: 100%;
-        overflow: hidden;
-        border-radius: 5px;
-
-        img {
-          width: 172px;
-          display: inline;
-          vertical-align: middle;
-
-          &:hover {
-            opacity: 0.7;
-            transform: scale(1.1);
-          }
-        }
-
-        .video_thumbs {
-          transition: all linear 0.3s;
-        }
-      }
-    }
-
-    .anime-content-detail {
-      width: 100%;
-      padding: 0 0 0 1rem;
-
-      .anime-content-detail-title {
-        a {
-          font-size: 18px;
-          color: #d0e0f0;
-        }
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-
-      .anime-content-detail-info {
-        min-width: 50%;
-        display: inline-block;
-        line-height: 2rem;
-        color: #d0e0f0;
-
-        span {
-          color: #808081;
-        }
-      }
-
-      .anime-content-detail-info-description {
-        margin-bottom: 0.5rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-      }
-    }
-  }
-
-  .playlist-wrapper {
-    width: 100%;
-    color: white;
-
-    .playlist-header {
-      width: 100%;
-      padding-top: 1rem;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      align-content: center;
-      font-size: 1rem;
-      color: white;
-
-      .playlist-title-icon {
-        color: #dc3545;
-      }
-
-      .playlist-title {
-        margin-left: 0.5rem;
-        color: #dc3545;
-      }
-
-      .playlist-notice {
-        color: darkgray;
-      }
-    }
-  }
-
-  .playlist-content {
-    width: 100%;
-    color: white;
-
-    .playlist-content-tab {
-      width: 100%;
-      display: flex;
-
-      .playlist-content-tab-item {
-        background-color: rgb(33, 37, 41);
-        line-height: 1rem !important;
-        text-align: center;
-        padding: 0.5rem;
-        color: rgba(255, 255, 255, 0.55);
-        border-radius: 10px 10px 0 0;
-        width: 100px;
-        cursor: pointer;
-
-        &:hover {
-          color: white;
-        }
-
-        .playlist-title-icon {
-          color: darkred;
-        }
-      }
-
-      .selected {
-        background-color: red;
-        color: white;
-      }
-    }
-
-    .playlist-content-content {
-      width: 100%;
-      min-height: 240px;
-      max-height: 500px;
-      background-color: rgb(55, 55, 56);
-      padding: 1rem;
-
-      .playlist-content-playlist-episode-item {
-        display: inline-block;
-        border: 1px solid gray;
-        border-radius: 6px;
-        height: 40px;
-        width: 11.111%;
-        line-height: 40px;
-        text-align: center;
-        overflow: hidden;
-        cursor: pointer;
-        margin-bottom: 2px;
-        padding: 0 2px;
-
-        &:hover {
-          background-color: #dc3545;
-        }
-
-        .selected {
-          background-color: #dc3545;
-        }
-
-        span {
-          display: inline-block;
-          width: 100%;
-          color: white;
-        }
-      }
-    }
-  }
-}
+@import url("@/style/play.scss");
 </style>
 
 <template>
@@ -314,11 +110,12 @@ import {onMounted, reactive, ref, watch} from "vue";
 import MyPlayer from "@/components/MyPlayer.vue";
 import type {AnimeDetail} from "@/apis/anime/types";
 import {findDetailById} from "@/apis/anime";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 
 const anime = ref<AnimeDetail>({} as AnimeDetail);
 
-const router = useRoute();
+const route = useRoute();
+const router = useRouter();
 
 const data = reactive({
   activeIndex: "1",
@@ -334,26 +131,32 @@ const currentListId = ref(0);
 const currentEpisodeId = ref(0);
 
 onMounted(() => {
-  console.log("首次加载路由", router.fullPath);
-  const animeId = Number(router.params.animeId);
-  const listId = Number(router.params.listId);
-  const episodeId = Number(router.params.episodeId);
+  console.log("首次加载路由", route.fullPath);
+  const animeId = Number(route.params.animeId);
+  const listId = Number(route.params.listId);
+  const episodeId = Number(route.params.episodeId);
 
   currentAnimeId.value = animeId;
   currentListId.value = listId;
   currentEpisodeId.value = episodeId;
 
-  findDetailById(animeId).then((res) => {
-    anime.value = res.result;
+  findDetailById(animeId).then((response) => {
+    anime.value = response.result;
+    if (!currentListId.value) {
+      console.log("跳转到新的路由", animeId);
+      currentListId.value = anime.value.playLists[0].id || null;
+      currentEpisodeId.value = anime.value.playLists[0].episodeList[0].id || null;
+      router.push(`/play/${animeId}/${currentListId.value}/${currentEpisodeId.value}`);
+    }
   });
 });
 
 watch(
-        () => router.fullPath,
+        () => route.fullPath,
         (prev, current) => {
           console.log("路由发生了变化", prev, current);
-          const listId = Number(router.params.listId);
-          const episodeId = Number(router.params.episodeId);
+          const listId = Number(route.params.listId);
+          const episodeId = Number(route.params.episodeId);
 
           console.log("参数信息", currentAnimeId.value, listId, episodeId);
           currentListId.value = listId;

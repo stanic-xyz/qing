@@ -7,12 +7,10 @@ const serviceUrl = "api/sys/file/";
 
 /** 卡片列表 */
 export const getAnimeList = (data?: object) => {
-    console.log("请求参数", data);
     return http.request<QingResponse<QingPageResponse<Anime>>>("post", serviceUrl + "page", data);
 };
 
 /** 卡片列表 */
 export const createTempSecret = () => {
-    console.log("创建临时密钥");
     return http.request<QingResponse<TempSecret>>("get", serviceUrl + "createTempSecret");
 };
