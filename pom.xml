@@ -84,6 +84,7 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.plugin.validation>NONE</maven.plugin.validation>
 
         <sentinel.version>1.7.2</sentinel.version>
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
@@ -97,14 +98,15 @@
         <fastjson.version>2.0.21</fastjson.version>
         <auto.version>1.1.1</auto.version>
         <liteflow.version>2.12.2.3</liteflow.version>
-        <spring-boot.version>3.2.5</spring-boot.version>
+        <spring-boot.version>3.4.2</spring-boot.version>
+        <spring-cloud.version>2024.0.0</spring-cloud.version>
         <spring-boot-admin.version>3.2.2</spring-boot-admin.version>
         <spring-statemachine.version>3.2.0</spring-statemachine.version>
         <lego.version>0.1.23</lego.version>
         <knife4j.version>4.1.0</knife4j.version>
         <querydsl.version>5.0.0</querydsl.version>
-        <maven.plugin.validation>NONE</maven.plugin.validation>
         <jimmer.version>0.8.157</jimmer.version>
+        <google-testing.version>0.21.0</google-testing.version>
     </properties>
 
     <issueManagement>
@@ -189,14 +191,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2023.0.1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>2023.0.1.2</version>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -232,7 +227,7 @@
             <dependency>
                 <groupId>com.google.testing.compile</groupId>
                 <artifactId>compile-testing</artifactId>
-                <version>0.19</version>
+                <version>${google-testing.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.querydsl</groupId>

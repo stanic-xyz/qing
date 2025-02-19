@@ -32,8 +32,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.encrypt.KeyStoreKeyFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;

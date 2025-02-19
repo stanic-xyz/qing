@@ -39,7 +39,6 @@ import java.util.Collection;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Embeddable
 @MappedSuperclass
 public abstract class BaseJpaAggregate extends AbstractAggregateRoot<BaseJpaAggregate> implements Serializable {
 
