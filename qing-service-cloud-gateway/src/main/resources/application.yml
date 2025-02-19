@@ -2,7 +2,7 @@ server:
   port: 9527
 spring:
   application:
-    name: qing-service-gateway
+    name: qing-gateway
   profiles:
     active: prod
   cloud:

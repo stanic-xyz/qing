@@ -26,10 +26,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableDiscoveryClient
 @SpringBootApplication
-public class QingAdminServerApplication {
+public class QingServerMonitorApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(QingAdminServerApplication.class, args);
+        SpringApplication.run(QingServerMonitorApplication.class, args);
     }
 
 }

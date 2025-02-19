@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   application:
-    name: qing-web-service
+    name: qing-service-web
   graphql:
     graphiql:
       enabled: true
