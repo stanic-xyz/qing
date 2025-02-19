@@ -1,10 +1,10 @@
 package cn.chenyunlong.dingtalk.controller.interceptor;
 
 import cn.chenyunlong.dingtalk.service.AccessTokenService;
+import com.sun.istack.NotNull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;

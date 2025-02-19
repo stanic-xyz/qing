@@ -14,7 +14,6 @@
 package cn.chenyunlong.jpa.support.domain;
 
 import cn.chenyunlong.jpa.support.BaseJpaAggregate;
-import jakarta.persistence.Embeddable;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +31,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Embeddable
 @MappedSuperclass
 public class BaseEntity extends BaseJpaAggregate {
 
