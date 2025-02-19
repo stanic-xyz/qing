@@ -1,6 +1,6 @@
 spring:
   application:
-    name: qing-service-gateway
+    name: qing-gateway
   cloud:
     config:
       label: master

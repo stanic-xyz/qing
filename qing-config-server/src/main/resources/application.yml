@@ -2,7 +2,7 @@ server:
   port: 8888
 spring:
   application:
-    name: qing-config-git
+    name: qing-config
   cloud:
     config:
       server:

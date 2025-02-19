@@ -100,7 +100,7 @@
         <liteflow.version>2.12.2.3</liteflow.version>
         <spring-boot.version>3.4.2</spring-boot.version>
         <spring-cloud.version>2024.0.0</spring-cloud.version>
-        <spring-boot-admin.version>3.2.2</spring-boot-admin.version>
+        <spring-boot-admin.version>3.4.1</spring-boot-admin.version>
         <spring-statemachine.version>3.2.0</spring-statemachine.version>
         <lego.version>0.1.23</lego.version>
         <knife4j.version>4.1.0</knife4j.version>
@@ -116,6 +116,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-registry-spring-boot-starter</artifactId>
+                <version>0.0.2-SNAPSHOT</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>

@@ -9,6 +9,11 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
+    <packaging>pom</packaging>
     <artifactId>qing-services</artifactId>
+
+    <modules>
+        <module>qing-service-sa-token</module>
+    </modules>
 
 </project>

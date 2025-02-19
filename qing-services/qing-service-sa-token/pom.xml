@@ -5,11 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.chenyunlong</groupId>
-        <artifactId>qing-application</artifactId>
+        <artifactId>qing-services</artifactId>
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>qing-application-demo</artifactId>
+    <packaging>jar</packaging>
+    <artifactId>qing-service-sa-token</artifactId>
+
 
     <dependencies>
         <dependency>
@@ -33,7 +35,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.chenyunlong.qing.application.demo.DemoApplication</mainClass>
+                    <mainClass>cn.chenyunlong.qing.service.sa.SaTokenApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -46,4 +48,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
