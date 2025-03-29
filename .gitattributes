@@ -1,2 +1,5 @@
 docs/* linguist-generated=true
 scripts/* linguist-generated=true
+
+*.png binary
+*.txt charset=utf-8

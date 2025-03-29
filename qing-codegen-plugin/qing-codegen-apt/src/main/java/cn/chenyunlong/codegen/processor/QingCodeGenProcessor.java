@@ -17,6 +17,7 @@ import cn.chenyunlong.codegen.context.CodeGenContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -134,10 +135,15 @@ public class QingCodeGenProcessor extends AbstractProcessor {
     private void doGenerate(TypeElement className, Set<CodeGenProcessor> codeGenProcessorList,
                             RoundEnvironment roundEnvironment) {
         codeGenProcessorList.stream()
-            // 根据执行顺序来
             .sorted(Comparator.comparing(CodeGenProcessor::getOrder))
-            .forEach(codeGenProcessor -> codeGenProcessor.generateClass(className, roundEnvironment,
-                true));
+            .forEach(codeGenProcessor -> {
+                try {
+                    codeGenProcessor.generateClass(className, roundEnvironment, true);
+                    log(StrUtil.format("成功生成类：{}，处理器：{}", className, codeGenProcessor.getClass().getSimpleName()));
+                } catch (Exception e) {
+                    log(StrUtil.format("生成类 {} 时发生异常，处理器：{}", className, codeGenProcessor.getClass().getSimpleName(), e));
+                }
+            });
     }
 
     /**

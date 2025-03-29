@@ -33,14 +33,13 @@
         <module>qing-config-server</module>
         <module>qing-eureka-server</module>
         <module>qing-service-cloud-gateway</module>
-        <module>qing-domain</module>
         <module>qing-bus-server</module>
         <module>qing-codegen-plugin</module>
         <module>qing-starters</module>
         <module>qing-infrastructure</module>
-        <module>qing-domain-gen</module>
-        <module>qing-infrastructure-anime</module>
         <module>qing-services</module>
+        <module>qing-domain-common</module>
+        <module>qing-infrastructure-data-jpa</module>
     </modules>
 
     <url>https://www.chenyunlong.cn</url>
@@ -139,11 +138,6 @@
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -164,12 +158,12 @@
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-infrastructure-anime</artifactId>
+                <artifactId>qing-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-commons</artifactId>
+                <artifactId>qing-domain-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -1,0 +1,83 @@
+version: "3"
+
+#自定义网络
+networks:
+  backend-network:
+services:
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    #    command: redis-server /etc/redis/redis.conf --requirepass 123456 --appendonly no # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
+    #    command: redis-server --requirepass 123456 --appendonly yes # 启动redis服务并添加密码为：123456,并开启redis持久化配置
+    environment:
+      TZ: Asia/Shanghai
+      LANG: zh_CN.UTF-8
+    volumes: # 数据卷挂载路径设置,将本机目录映射到容器目录
+      - "./redis/data:/data"
+      - "./redis/config/redis.conf:/etc/redis/redis.conf"  # `redis.conf`文件内容`http://download.redis.io/redis-stable/redis.conf`
+    ports: # 映射端口
+      - "6379:6379"
+    expose:
+      - 6379
+    networks:
+      - backend-network
+
+  qing-app:
+    container_name: qing-web-end
+    image: stanic-docker.pkg.coding.net/qing/qing/qing-domain-service:0.0.2.64
+    restart: always
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - consul
+      - qing-config
+    links:
+      - redis
+      - consul
+    environment:
+      TZ: Asia/Shanghai
+      LANG: zh_CN.UTF-8
+      CONSUL_HOST: consul
+    networks:
+      - backend-network
+  qing-config:
+    container_name: qing-config-git
+    image: stanic-docker.pkg.coding.net/qing/qing/qing-config-git:0.0.2.64
+    ports:
+      - "8888:8888"
+    depends_on:
+      - consul
+    links:
+      - consul
+    environment:
+      TZ: Asia/Shanghai
+      LANG: zh_CN.UTF-8
+      CONSUL_HOST: consul
+      GIT_USER: ${GIT_USER}
+      GIT_PASS: ${GIT_PASS}
+    networks:
+      - backend-network
+  qing-admin-monitor:
+    container_name: qing-admin-monitor
+    image: stanic-docker.pkg.coding.net/qing/qing/qing-bootstrap-admin:0.0.2.64
+    expose:
+      - 10086
+    ports:
+      - "10086:10086"
+    restart: always
+    depends_on:
+      - consul
+    links:
+      - consul
+      - qing-app
+    environment:
+      TZ: Asia/Shanghai
+      LANG: zh_CN.UTF-8
+      QING_CONSUL_HOST: consul
+      QING_CONSUL_PORT: 8500
+    networks:
+      - backend-network
