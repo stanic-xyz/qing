@@ -1,4 +1,4 @@
-package cn.chenyunlong.jpa.support.exception;
+package cn.chenyunlong.qing.domain.base.exception;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;

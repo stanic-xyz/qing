@@ -101,40 +101,22 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
      */
     private Optional<MethodSpec> createMethod(String serviceFieldName, TypeElement typeElement,
                                               NameContext nameContext) {
-        String creatorPackageName = nameContext.getCreatorPackageName();
+        String createClassName = nameContext.getCreateClassName();
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
-        String mapperPackageName = nameContext.getMapperPackageName();
-
-        boolean containsNull = StringUtils.containsNull(queryRequestPackageName, creatorPackageName,
-            mapperPackageName);
-        if (!containsNull) {
-
-            String creatorClassName = nameContext.getCreatorClassName();
-            String mapperClassName = nameContext.getMapperClassName();
-            String createClassName = nameContext.getCreateClassName();
-
-            MethodSpec.Builder createMethodBuilder =
-                MethodSpec.methodBuilder("create" + typeElement.getSimpleName());
-            createMethodBuilder
-                .addParameter(ParameterSpec
-                    .builder(ClassName.get(queryRequestPackageName, createClassName), "request")
-                    .addAnnotation(RequestBody.class)
-                    .build())
-                .addAnnotation(AnnotationSpec.builder(PostMapping.class).build())
-                .addModifiers(Modifier.PUBLIC)
-                .addCode(CodeBlock.of("$T creator = $T.INSTANCE.request2Dto(request);",
-                    ClassName.get(creatorPackageName, creatorClassName),
-                    ClassName.get(mapperPackageName, mapperClassName)))
-                .addCode(CodeBlock.of("return $T.success($L.create$L(creator));", JsonResult.class,
-                    serviceFieldName, typeElement
-                        .getSimpleName()
-                        .toString()))
-                .addJavadoc("createRequest")
-                .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
-                    ClassName.get(Long.class)));
-            return Optional.of(createMethodBuilder.build());
+        if (StringUtils.containsNull(queryRequestPackageName, createClassName)) {
+            return Optional.empty();
         }
-        return Optional.empty();
+
+        MethodSpec.Builder builder = createBaseMethod("create" + typeElement.getSimpleName(),
+            "create", ClassName.get(queryRequestPackageName, createClassName));
+        builder.addCode(CodeBlock.of("$T creator = $T.INSTANCE.request2Dto(request);",
+                ClassName.get(nameContext.getCreatorPackageName(), nameContext.getCreatorClassName()),
+                ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName())))
+            .addCode(CodeBlock.of("return $T.success($L.create$L(creator));", JsonResult.class,
+                serviceFieldName, typeElement.getSimpleName().toString()))
+            .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),
+                ClassName.get(Long.class)));
+        return Optional.of(builder.build());
     }
 
     /**
@@ -338,6 +320,18 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
                 .build());
         }
         return Optional.empty();
+    }
+
+    private MethodSpec.Builder createBaseMethod(String methodName, String path, ClassName requestClass) {
+        return MethodSpec.methodBuilder(methodName)
+            .addParameter(ParameterSpec.builder(requestClass, "request")
+                .addAnnotation(RequestBody.class)
+                .build())
+            .addAnnotation(AnnotationSpec.builder(PostMapping.class)
+                .addMember("value", "$S", path)
+                .build())
+            .addModifiers(Modifier.PUBLIC)
+            .addJavadoc(methodName + " request");
     }
 
     /**

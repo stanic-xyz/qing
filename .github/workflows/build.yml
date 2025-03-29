@@ -12,11 +12,10 @@ on:
       - "pom.xml"
       - "qing-bom/**"
       - "qing-commons"
-      - "qing-domain/**"
+      - "qing-domain-common/*"
       - "qing-starters/**"
       - "qing-infrastructure/**"
-      - "qing-infrastructure-anime/**"
-      - "qing-application/qing-application-manager/**"
+      - "qing-services/qing-service-anime/**"
   pull_request:
     branches: [ main ]
 
@@ -36,4 +35,4 @@ jobs:
           distribution: 'adopt-hotspot'
           cache: maven
       - name: Build Web Service
-        run: mvn --no-transfer-progress clean package -pl qing-application/qing-application-manager -am -f pom.xml
+        run: mvn --no-transfer-progress clean package -pl qing-services/qing-service-anime/qing-anime-application -am -f pom.xml

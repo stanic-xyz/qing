@@ -83,12 +83,12 @@
         <p>为了加速镜像拉取，你可以使用以下命令设置 registry mirror:</p>
         <pre><code>sudo tee /etc/docker/daemon.json &lt;&lt;EOF
 {
-    "registry-mirrors": ["https://{{host}}"]
+    "registry-mirrors": ["https://{{ host }}"]
 }
 EOF</code></pre>
         <p>为了避免 Worker 用量耗尽，你可以手动 pull 镜像然后 re-tag 之后 push 至本地镜像仓库:</p>
-        <pre><code>docker pull {{host}}/library/alpine:latest # 拉取 library 镜像
-docker pull {{host}}/coredns/coredns:latest # 拉取 coredns 镜像</code></pre>
+        <pre><code>docker pull {{ host }}/library/alpine:latest # 拉取 library 镜像
+docker pull {{ host }}/coredns/coredns:latest # 拉取 coredns 镜像</code></pre>
     </div>
 </div>
 <div class="footer">

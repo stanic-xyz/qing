@@ -16,8 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>qing-application-manager</module>
-        <module>qing-application-monitor</module>
         <module>qing-application-demo</module>
+        <module>qing-application-monitor</module>
     </modules>
 </project>

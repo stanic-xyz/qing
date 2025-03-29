@@ -24,8 +24,8 @@ import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.jpa.support.BaseJpaAggregate;
-import cn.chenyunlong.jpa.support.EntityOperations;
+import cn.chenyunlong.jpa.support.BaseJpaEntity;
+import cn.chenyunlong.qing.domain.base.EntityOperations;
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import lombok.RequiredArgsConstructor;
@@ -108,6 +108,9 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
      */
     private Optional<MethodSpec> createMethod(TypeElement typeElement, NameContext nameContext,
                                               String repositoryFieldName, String classFieldName) {
+
+
+
         String creatorPackageName = nameContext.getCreatorPackageName();
         String creatorClassName = nameContext.getCreatorClassName();
         boolean containsNull =
@@ -167,7 +170,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                 $T.doUpdate($L)
                 .loadById(id)
                 .update($T::valid)
-                .execute();""", EntityOperations.class, repositoryFieldName, BaseJpaAggregate.class))
+                .execute();""", EntityOperations.class, repositoryFieldName, BaseJpaEntity.class))
             .addJavadoc("valid")
             .addAnnotation(Override.class)
             .build());
@@ -183,7 +186,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                 $T.doUpdate($L)
                 .loadById(id)
                 .update($T::invalid)
-                .execute();""", EntityOperations.class, repositoryFieldName, BaseJpaAggregate.class))
+                .execute();""", EntityOperations.class, repositoryFieldName, BaseJpaEntity.class))
             .addJavadoc("invalid")
             .addAnnotation(Override.class)
             .build());

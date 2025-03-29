@@ -1,0 +1,16 @@
+{
+    "id": "0bf2984ecb",
+    "objtype": "world",
+    "roots": [
+        {
+            "identity": "0bf2984ecb:0:b489ed6edf8afdc83eadf3f810bc94b790d4ffa73037be1082fa951b5dd574531ec291c603ee45a76687d9c317b8034fb24d9f54f13a7ba9dbaedb1461628115",
+            "stableEndpoints": [
+                "111.229.164.235/9993"
+            ]
+        }
+    ],
+    "signingKey": "5fd6b4d13d723ed6ca36192f3d01f668bea17d3e38a9016fc62fcf554965894dbb557a28c1057bc0a51a5942eb80bf4342da6e64d5dc0b82f7cee7ddf92064db",
+    "signingKey_SECRET": "12e199786cce26fdf34ecd6450f4f2be5e01a063dee0bdc60a247db18effcd6352fd0189421064b349383a7258c3d6832aa085a5bee426a64f270d0b02f2fc1f",
+    "updatesMustBeSignedBy": "5fd6b4d13d723ed6ca36192f3d01f668bea17d3e38a9016fc62fcf554965894dbb557a28c1057bc0a51a5942eb80bf4342da6e64d5dc0b82f7cee7ddf92064db",
+    "worldType": "moon"
+}

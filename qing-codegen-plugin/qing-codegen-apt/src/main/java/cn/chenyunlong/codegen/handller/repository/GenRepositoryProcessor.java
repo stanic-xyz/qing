@@ -18,7 +18,7 @@ import cn.chenyunlong.codegen.annotation.GenRepository;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import cn.chenyunlong.jpa.support.BaseRepository;
+import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 import com.google.auto.service.AutoService;
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.ParameterizedTypeName;

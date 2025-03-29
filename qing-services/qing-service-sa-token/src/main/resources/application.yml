@@ -1,5 +1,5 @@
 server:
-  port: 8896
+  port: 8889
 spring:
   application:
     name: qing-service-sa-token
