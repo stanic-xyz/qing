@@ -1,0 +1,78 @@
+package cn.chenyunlong.qing.anime.interfaces.rest.v1.controller;
+
+import cn.chenyunlong.common.constants.CodeEnum;
+import cn.chenyunlong.common.model.JsonResult;
+import cn.chenyunlong.qing.anime.application.service.IDistrictService;
+import cn.chenyunlong.qing.anime.domain.district.dto.creator.DistrictCreator;
+import cn.chenyunlong.qing.anime.domain.district.dto.request.DistrictCreateRequest;
+import cn.chenyunlong.qing.anime.domain.district.dto.request.DistrictUpdateRequest;
+import cn.chenyunlong.qing.anime.domain.district.dto.response.DistrictResponse;
+import cn.chenyunlong.qing.anime.domain.district.dto.updater.DistrictUpdater;
+import cn.chenyunlong.qing.anime.domain.district.dto.vo.DistrictVO;
+import cn.chenyunlong.qing.anime.infrastructure.converter.DistrictConverter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+@Tag(name = "地区管理")
+@RestController
+@Slf4j
+@RequestMapping("api/v1/district")
+@RequiredArgsConstructor
+public class DistrictController {
+
+    private final IDistrictService districtService;
+
+    @PostMapping
+    public JsonResult<Long> createDistrict(
+        @RequestBody
+        DistrictCreateRequest request) {
+        DistrictCreator creator = DistrictConverter.INSTANCE.request2Dto(request);
+        return JsonResult.success(districtService.createDistrict(creator));
+    }
+
+    @PutMapping("{id}")
+    public JsonResult<String> updateDistrict(
+        @PathVariable("id")
+        Long id,
+        @RequestBody
+        DistrictUpdateRequest request) {
+        DistrictUpdater updater = DistrictConverter.INSTANCE.request2Updater(request);
+        districtService.updateDistrict(id, updater);
+        return JsonResult.success(CodeEnum.Success.getName());
+    }
+
+    @PostMapping("valid/{id}")
+    public JsonResult<String> validDistrict(
+        @PathVariable("id")
+        Long id) {
+        districtService.validDistrict(id);
+        return JsonResult.success(CodeEnum.Success.getName());
+    }
+
+    @PostMapping("invalid/{id}")
+    public JsonResult<String> invalidDistrict(
+        @PathVariable("id")
+        Long id) {
+        districtService.invalidDistrict(id);
+        return JsonResult.success(CodeEnum.Success.getName());
+    }
+
+    @GetMapping("findById/{id}")
+    public JsonResult<DistrictResponse> findById(
+        @PathVariable("id")
+        Long id) {
+        DistrictVO vo = districtService.findById(id);
+        DistrictResponse response = DistrictConverter.INSTANCE.vo2CustomResponse(vo);
+        return JsonResult.success(response);
+    }
+
+    @DeleteMapping("{id}")
+    public JsonResult<Void> deleteById(
+        @PathVariable("id")
+        Long id) {
+        districtService.deleteById(id);
+        return JsonResult.success();
+    }
+}

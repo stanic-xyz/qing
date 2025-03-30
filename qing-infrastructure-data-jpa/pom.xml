@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-parent</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>qing-infrastructure-data-jpa</artifactId>

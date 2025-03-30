@@ -18,11 +18,11 @@
     <parent>
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-starters</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
 
     <artifactId>qing-dingtalk-spring-boot-starter</artifactId>
     <name>qing-dingtalk-spring-boot-starter</name>

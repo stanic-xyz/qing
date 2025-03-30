@@ -15,11 +15,9 @@ package cn.chenyunlong.qing.domain.common.repository;
 
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
-import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.Optional;
 
-@NoRepositoryBean
 public interface BaseRepository<T extends BaseAggregate, ID extends AggregateId> {
 
     T save(T entity);

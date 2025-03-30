@@ -23,8 +23,8 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 
 
-@Getter
 @Setter
+@Getter
 public abstract class BaseAggregate extends AbstractAggregateRoot<BaseAggregate> {
 
     private AggregateId aggregateId;
@@ -54,4 +54,5 @@ public abstract class BaseAggregate extends AbstractAggregateRoot<BaseAggregate>
     public Collection<Object> domainEvents() {
         return super.domainEvents();
     }
+
 }

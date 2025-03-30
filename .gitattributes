@@ -2,4 +2,4 @@ docs/* linguist-generated=true
 scripts/* linguist-generated=true
 
 *.png binary
-*.txt charset=utf-8
+*.txt text charset=utf-8
