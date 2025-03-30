@@ -6,28 +6,35 @@
     <parent>
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-services</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>qing-service-anime</artifactId>
-
     <packaging>pom</packaging>
+
     <modules>
-        <module>qing-anime-domain</module>
-        <module>qing-anime-application</module>
-        <module>qing-anime-infrastructure</module>
+        <module>anime-domain</module>
+        <module>anime-application</module>
+        <module>anime-infrastructure</module>
+        <module>anime-interfaces</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-anime-domain</artifactId>
+                <artifactId>anime-application</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-anime-infrastructure</artifactId>
+                <artifactId>anime-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>anime-infrastructure</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

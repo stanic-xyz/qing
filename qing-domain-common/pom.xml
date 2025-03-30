@@ -6,27 +6,23 @@
     <parent>
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-parent</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>qing-domain-common</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-commons</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-core</artifactId>
+            <groupId>cn.chenyunlong</groupId>
+            <artifactId>qing-commons</artifactId>
         </dependency>
     </dependencies>
 

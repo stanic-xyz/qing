@@ -18,7 +18,7 @@
 
     <groupId>cn.chenyunlong</groupId>
     <artifactId>qing-parent</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <description>个人网站信息</description>
 
     <modelVersion>4.0.0</modelVersion>
@@ -89,7 +89,7 @@
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
         <guava.version>33.0.0-jre</guava.version>
         <lombok.version>1.18.34</lombok.version>
-        <hutool.version>5.8.25</hutool.version>
+        <hutool.version>5.8.36</hutool.version>
         <authing.version>3.0.14</authing.version>
         <swagger.version>2.2.8</swagger.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
@@ -104,7 +104,7 @@
         <lego.version>0.1.23</lego.version>
         <knife4j.version>4.1.0</knife4j.version>
         <querydsl.version>5.0.0</querydsl.version>
-        <jimmer.version>0.8.157</jimmer.version>
+        <jimmer.version>0.9.69</jimmer.version>
         <google-testing.version>0.21.0</google-testing.version>
     </properties>
 
@@ -118,9 +118,13 @@
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-registry-spring-boot-starter</artifactId>
-                <version>0.0.2-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-jimmer-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -158,6 +162,11 @@
             </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
+                <artifactId>anime-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -172,6 +181,16 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-infrastructure-email</artifactId>
+                <version>0.0.3-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-infrastructure-common</artifactId>
+                <version>0.0.3-SNAPSHOT</version>
+            </dependency>
+            <dependency>
                 <groupId>com.yomahub</groupId>
                 <artifactId>tlog-all-spring-boot-starter</artifactId>
                 <version>1.5.2</version>
@@ -179,7 +198,7 @@
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-camunda-spring-boot-starter</artifactId>
-                <version>0.0.2-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>

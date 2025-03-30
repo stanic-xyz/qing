@@ -18,7 +18,7 @@
     <parent>
         <groupId>cn.chenyunlong</groupId>
         <artifactId>qing-parent</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>qing-service-cloud-gateway</artifactId>
