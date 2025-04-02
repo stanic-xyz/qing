@@ -38,7 +38,7 @@ public class SysMenuService {
                 Optional.ofNullable(creator.getParentId()).ifPresentOrElse(parentId -> {
                     SysMenu parentMenu = sysMenuRepository.findById(new AggregateId(creator.getParentId()))
                         .orElseThrow(() -> new NotFoundException("parent menu not found"));
-                    menuEntity.setParentId(parentMenu.getAggregateId().getId());
+                    menuEntity.setParentId(parentMenu.getId().getId());
                     menuEntity.setParentName(parentMenu.getMenuName());
                 }, () -> {
                     menuEntity.setParentId(null);
@@ -48,7 +48,7 @@ public class SysMenuService {
             })
             .update(SysMenu::init)
             .execute();
-        return sysMenu.isPresent() ? sysMenu.get().getAggregateId().getId() : 0;
+        return sysMenu.isPresent() ? sysMenu.get().getId().getId() : 0;
     }
 
     /**

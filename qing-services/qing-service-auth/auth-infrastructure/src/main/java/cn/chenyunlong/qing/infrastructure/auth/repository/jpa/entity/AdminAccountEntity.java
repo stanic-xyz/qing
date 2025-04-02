@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.infrastructure.auth.repository.jpa.entity;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaEntity;
 import cn.hutool.core.util.IdUtil;
 import jakarta.persistence.Column;
@@ -48,7 +47,6 @@ public class AdminAccountEntity extends BaseJpaEntity {
      * 初始化方法，在创建聚合根时调用
      */
     public void init() {
-        setValidStatus(ValidStatus.VALID);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         setPassword(encoder.encode(getPassword()));
         setUid(IdUtil.randomUUID().replaceAll("-", ""));

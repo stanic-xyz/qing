@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.anime.domain.anime.events;
 
 
+import cn.chenyunlong.qing.anime.domain.anime.models.AnimeData;
 import cn.chenyunlong.qing.anime.domain.anime.models.AnimeId;
 
 public class AnimeEvents {
@@ -15,4 +16,6 @@ public class AnimeEvents {
     public record AnimeDeleted(AnimeId animeId) {}
 
     public record AnimeUpdated(AnimeId animeId) {}
+
+    public record AnimeInfoUpdated(AnimeId animeId, AnimeData animeData) {}
 }

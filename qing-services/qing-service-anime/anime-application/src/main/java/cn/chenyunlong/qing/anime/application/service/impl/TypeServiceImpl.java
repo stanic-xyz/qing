@@ -28,7 +28,7 @@ public class TypeServiceImpl implements ITypeService {
             .create(() -> dtoToEntity(creator))
             .update(Type::init)
             .execute();
-        return type.isPresent() ? type.get().getAggregateId().getId() : 0;
+        return type.isPresent() ? type.get().getId().getId() : 0;
     }
 
     private Type dtoToEntity(TypeCreator creator) {

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
-import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,49 +39,6 @@ public class OpenApiConfig {
                 openApi.getPaths().addExtension("x-abb", RandomUtil.randomInt(1, 100));
             }
         };
-    }
-
-    /**
-     * 公共的理解api
-     *
-     * @return 待分组的 api
-     */
-    @Bean
-    public GroupedOpenApi customOpenAPI() {
-        GroupedOpenApi.Builder builder;
-        builder = GroupedOpenApi
-            .builder()
-            .group("公共 api")
-            .pathsToExclude("/actuator/**");
-        return builder.build();
-    }
-
-    /**
-     * 动漫分组
-     */
-    @Bean
-    public GroupedOpenApi animeOpenAPI() {
-        GroupedOpenApi.Builder builder;
-        builder = GroupedOpenApi
-            .builder()
-            .group("动漫")
-            .packagesToScan("cn.chenyunlong.qing.domain.anime");
-        return builder.build();
-    }
-
-    /**
-     * 公共的理解api
-     *
-     * @return 待分组的 api
-     */
-    @Bean
-    public GroupedOpenApi actuatorOpenAPI() {
-        GroupedOpenApi.Builder builder;
-        builder = GroupedOpenApi
-            .builder()
-            .group("actuator")
-            .pathsToMatch("/actuator/**");
-        return builder.build();
     }
 
     /**

@@ -18,6 +18,8 @@
         <module>qing-service-anime</module>
         <module>qing-service-auth</module>
         <module>qing-service-aggregate-interface</module>
+        <module>qing-service-registry</module>
+        <module>qing-service-config</module>
     </modules>
 
 </project>

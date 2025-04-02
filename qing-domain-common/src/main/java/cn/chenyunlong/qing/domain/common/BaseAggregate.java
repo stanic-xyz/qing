@@ -20,6 +20,7 @@ import lombok.Setter;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.annotation.Nonnull;
+import java.time.Instant;
 import java.util.Collection;
 
 
@@ -27,16 +28,26 @@ import java.util.Collection;
 @Getter
 public abstract class BaseAggregate extends AbstractAggregateRoot<BaseAggregate> {
 
-    private AggregateId aggregateId;
+    private AggregateId id;
 
     /**
      * 数据状态。
      */
     private ValidStatus validStatus;
 
+    /**
+     * 乐观锁字段。
+     */
+    private Integer version = 0;
+
+    private Instant createdAt;
 
     public void init() {
         setValidStatus(ValidStatus.VALID);
+        this.setCreatedAt(Instant.now());
+        if (validStatus == null) {
+            this.validStatus = ValidStatus.VALID;
+        }
     }
 
     public void valid() {
@@ -48,6 +59,7 @@ public abstract class BaseAggregate extends AbstractAggregateRoot<BaseAggregate>
         Assert.notEquals(validStatus, ValidStatus.INVALID, "状态错误");
         setValidStatus(ValidStatus.INVALID);
     }
+
 
     @Nonnull
     @Override

@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.anime.interfaces.rest.v1.controller;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
+import cn.chenyunlong.qing.anime.application.service.IEpisodeService;
 import cn.chenyunlong.qing.anime.domain.episode.dto.creator.EpisodeCreator;
 import cn.chenyunlong.qing.anime.domain.episode.dto.request.EpisodeCreateRequest;
 import cn.chenyunlong.qing.anime.domain.episode.dto.request.EpisodeUpdateRequest;
@@ -9,7 +10,6 @@ import cn.chenyunlong.qing.anime.domain.episode.dto.response.EpisodeResponse;
 import cn.chenyunlong.qing.anime.domain.episode.dto.updater.EpisodeUpdater;
 import cn.chenyunlong.qing.anime.domain.episode.dto.vo.EpisodeVO;
 import cn.chenyunlong.qing.anime.infrastructure.converter.EpisodeMapper;
-import cn.chenyunlong.qing.anime.application.service.IEpisodeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -3,9 +3,10 @@ package cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaEntity;
 import cn.chenyunlong.qing.anime.domain.anime.PlayStatus;
-import cn.chenyunlong.qing.anime.domain.anime.models.Anime;
-import cn.hutool.core.bean.BeanUtil;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -89,11 +90,7 @@ public class AnimeEntity extends BaseJpaEntity {
     @FieldDesc(description = "排序号")
     private Integer orderNo;
 
-    @Embedded
-    private MoneyEmbeddable totalAmount; // 值对象扁平化存储
+    private Boolean isOnShelf; // 是否上架
 
-
-    public static AnimeEntity createFromAnime(Anime anime) {
-        return BeanUtil.copyProperties(anime, AnimeEntity.class);
-    }
+    private Boolean isDeleted; // 是否删除
 }

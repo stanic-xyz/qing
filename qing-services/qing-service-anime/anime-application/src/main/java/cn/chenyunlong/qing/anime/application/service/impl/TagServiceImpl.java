@@ -2,7 +2,7 @@ package cn.chenyunlong.qing.anime.application.service.impl;
 
 import cn.chenyunlong.qing.anime.application.service.ITagService;
 import cn.chenyunlong.qing.anime.domain.anime.Tag;
-import cn.chenyunlong.qing.anime.domain.anime.dto.creator.TagCreator;
+import cn.chenyunlong.qing.anime.domain.anime.dto.command.TagCreator;
 import cn.chenyunlong.qing.anime.domain.anime.repository.TagRepository;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
 import cn.chenyunlong.qing.domain.common.AggregateId;
@@ -36,7 +36,7 @@ public class TagServiceImpl implements ITagService {
             .create(Tag::new)
             .update(Tag::init)
             .execute();
-        return tag.isPresent() ? tag.get().getAggregateId().getId() : 0;
+        return tag.isPresent() ? tag.get().getId().getId() : 0;
     }
 
     @Override

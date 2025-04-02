@@ -12,9 +12,6 @@ import java.time.LocalDate;
 @Data
 public class AnimeUpdateRequest implements Request {
 
-    @NotNull
-    private Long id;
-
     @Schema(
         title = "name"
     )

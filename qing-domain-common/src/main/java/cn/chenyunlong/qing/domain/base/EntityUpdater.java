@@ -15,7 +15,7 @@ package cn.chenyunlong.qing.domain.base;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
-import cn.chenyunlong.common.validator.UpdateGroup;
+import cn.chenyunlong.common.validator.CreateGroup;
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
@@ -34,12 +34,14 @@ import java.util.function.Supplier;
  */
 @Slf4j
 public class EntityUpdater<T extends BaseAggregate, ID extends AggregateId> extends BaseEntityOperation
-    implements Loader<T, ID>, UpdateHandler<T>, Executor<T> {
+    implements Loader<T, ID>, UpdateHandler<T>, Executor<T>, Validate<T> {
 
     private final BaseRepository<T, ID> repository;
-    private T entity;
+    private T domain;
     private Consumer<T> successHook = t -> log.info("update success");
     private Consumer<? super Throwable> errorHook = Throwable::printStackTrace;
+    private CustomValidator<T> validator = DefaultCustomValidator.defaultValidator();
+
 
     public EntityUpdater(BaseRepository<T, ID> repository) {
         this.repository = repository;
@@ -52,15 +54,17 @@ public class EntityUpdater<T extends BaseAggregate, ID extends AggregateId> exte
      * @return 创造者
      */
     public EntityUpdater<T, ID> create(Supplier<T> supplier) {
-        this.entity = supplier.get();
+        this.domain = supplier.get();
         return this;
     }
 
     @Override
     public Optional<T> execute() {
-        doValidate(this.entity, UpdateGroup.class);
+        if (validator != null) {
+            validator.doValidate(this.domain, CreateGroup.class);
+        }
         try {
-            T save = repository.save(entity);
+            T save = repository.save(domain);
             successHook.accept(save);
             return Optional.of(save);
         } catch (Exception exception) {
@@ -79,20 +83,20 @@ public class EntityUpdater<T extends BaseAggregate, ID extends AggregateId> exte
     public UpdateHandler<T> loadById(ID id) {
         Preconditions.checkArgument(Objects.nonNull(id), "id is null");
         Optional<T> loadEntity = repository.findById(id);
-        this.entity = loadEntity.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
+        this.domain = loadEntity.orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
         return this;
     }
 
     @Override
     public UpdateHandler<T> load(Supplier<T> t) {
-        this.entity = t.get();
+        this.domain = t.get();
         return this;
     }
 
     @Override
     public Executor<T> update(Consumer<T> consumer) {
-        Preconditions.checkArgument(Objects.nonNull(entity), "entity is null");
-        consumer.accept(this.entity);
+        Preconditions.checkArgument(Objects.nonNull(domain), "entity is null");
+        consumer.accept(this.domain);
         return this;
     }
 
@@ -108,4 +112,9 @@ public class EntityUpdater<T extends BaseAggregate, ID extends AggregateId> exte
         return this;
     }
 
+    @Override
+    public Executor<T> validate(CustomValidator<T> validator) {
+        this.validator = validator;
+        return this;
+    }
 }

@@ -34,7 +34,7 @@ public class QingUserServiceImpl {
             .create(() -> this.dtoToEntity(creator))
             .update(QingUser::init)
             .execute();
-        return qingUser.isPresent() ? qingUser.get().getAggregateId().getId() : 0;
+        return qingUser.isPresent() ? qingUser.get().getId().getId() : 0;
     }
 
     private QingUser dtoToEntity(QingUserCreator creator) {

@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.anime.domain.anime.factory;
 
 import cn.chenyunlong.qing.anime.domain.anime.PlayStatus;
+import cn.chenyunlong.qing.anime.domain.anime.enums.District;
 import cn.chenyunlong.qing.anime.domain.anime.models.*;
 
 public class AnimeFactory {
@@ -8,7 +9,7 @@ public class AnimeFactory {
     public static Anime createAnime(long id,
                                     String name,
                                     String instruction,
-                                    AnimeDistrict district,
+                                    District district,
                                     AnimeType type,
                                     Company company,
                                     PremiereDate premiereDate,
