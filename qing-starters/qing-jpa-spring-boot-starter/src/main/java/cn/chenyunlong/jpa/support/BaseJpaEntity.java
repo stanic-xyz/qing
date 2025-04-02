@@ -13,9 +13,7 @@
 
 package cn.chenyunlong.jpa.support;
 
-import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
-import cn.chenyunlong.jpa.support.converter.ValidStatusConverter;
 import cn.chenyunlong.qing.infrastructure.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -48,17 +46,11 @@ public abstract class BaseJpaEntity extends BaseEntity {
     private Instant updatedAt;
 
     /**
-     * 数据状态。
-     */
-    @Convert(converter = ValidStatusConverter.class)
-    private ValidStatus validStatus;
-
-    /**
      * 乐观锁字段。
      */
     @Version
     @Column(name = "version")
-    private Integer version;
+    private Integer version = 0;
 
     /**
      * 创建人。
@@ -67,30 +59,13 @@ public abstract class BaseJpaEntity extends BaseEntity {
     private String createBy;
 
     /**
-     * 更新人。
-     */
-    @Column(name = "updateBy")
-    private String updateBy;
-
-    /**
-     * 备注。
-     */
-    @Column(name = "remark")
-    private String remark;
-
-
-    /**
      * 持久化之前。
      */
     @PrePersist
     public void prePersist() {
-        this.setCreatedAt(Instant.now());
         this.setUpdatedAt(Instant.now());
-        if (validStatus == null) {
-            this.validStatus = ValidStatus.VALID;
-        }
-        if (version == null) {
-            this.version = 1;
+        if (this.createdAt == null) {
+            this.setCreatedAt(Instant.now());
         }
     }
 

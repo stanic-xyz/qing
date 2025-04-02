@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class AnimeId extends AggregateId {
 
-    private Long id;
+    private final Long id;
 
     public AnimeId(Long id) {
         this.id = id;

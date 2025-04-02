@@ -47,7 +47,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
             .create(Episode::new)
             .update(Episode::init)
             .execute();
-        return episode.isPresent() ? episode.get().getAggregateId().getId() : 0;
+        return episode.isPresent() ? episode.get().getId().getId() : 0;
     }
 
     /**

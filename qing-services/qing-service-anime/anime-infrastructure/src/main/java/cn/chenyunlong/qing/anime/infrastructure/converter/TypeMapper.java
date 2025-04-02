@@ -11,11 +11,13 @@ import cn.chenyunlong.qing.anime.domain.type.dto.request.TypeUpdateRequest;
 import cn.chenyunlong.qing.anime.domain.type.dto.response.TypeResponse;
 import cn.chenyunlong.qing.anime.domain.type.dto.updater.TypeUpdater;
 import cn.chenyunlong.qing.anime.domain.type.dto.vo.TypeVO;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.TypeEntity;
+import cn.chenyunlong.qing.domain.common.converter.AggregateMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {CustomMapper.class, DateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(uses = {CustomMapper.class, DateMapper.class, AggregateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TypeMapper {
 
     TypeMapper INSTANCE = Mappers.getMapper(TypeMapper.class);
@@ -33,4 +35,6 @@ public interface TypeMapper {
     TypeResponse vo2Response(TypeVO vo);
 
     TypeVO entityToVo(Type type);
+
+    Type entityToDomain(TypeEntity typeEntity);
 }

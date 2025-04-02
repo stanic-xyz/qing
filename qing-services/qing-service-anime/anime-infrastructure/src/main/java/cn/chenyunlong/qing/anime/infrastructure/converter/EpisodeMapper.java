@@ -11,11 +11,12 @@ import cn.chenyunlong.qing.anime.domain.episode.dto.request.EpisodeUpdateRequest
 import cn.chenyunlong.qing.anime.domain.episode.dto.response.EpisodeResponse;
 import cn.chenyunlong.qing.anime.domain.episode.dto.updater.EpisodeUpdater;
 import cn.chenyunlong.qing.anime.domain.episode.dto.vo.EpisodeVO;
+import cn.chenyunlong.qing.domain.common.converter.AggregateMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {CustomMapper.class, DateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(uses = {CustomMapper.class, DateMapper.class, AggregateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface EpisodeMapper {
 
     EpisodeMapper INSTANCE = Mappers.getMapper(EpisodeMapper.class);

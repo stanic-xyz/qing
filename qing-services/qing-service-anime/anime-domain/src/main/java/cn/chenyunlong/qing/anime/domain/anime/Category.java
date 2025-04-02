@@ -27,6 +27,8 @@ import lombok.Setter;
 @Setter
 public class Category extends BaseAggregate {
 
+    public static final long ROOT_PID = -1L;
+
     @FieldDesc(description = "名称")
     private String name;
 
@@ -35,4 +37,12 @@ public class Category extends BaseAggregate {
 
     @FieldDesc(description = "排序号")
     private Integer orderNo;
+
+    public static Category create(String name, Integer orderNo, Category parent) {
+        Category category = new Category();
+        category.setPid(parent != null ? parent.getId().getId() : Long.valueOf(ROOT_PID));
+        category.setName(name);
+        category.setOrderNo(orderNo);
+        return category;
+    }
 }

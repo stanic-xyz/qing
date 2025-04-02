@@ -3,7 +3,7 @@ package cn.chenyunlong.qing.anime.interfaces.rest.v1.controller;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.anime.application.service.ITagService;
-import cn.chenyunlong.qing.anime.domain.anime.dto.creator.TagCreator;
+import cn.chenyunlong.qing.anime.domain.anime.dto.command.TagCreator;
 import cn.chenyunlong.qing.anime.domain.anime.dto.request.TagCreateRequest;
 import cn.chenyunlong.qing.anime.infrastructure.converter.TagMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;

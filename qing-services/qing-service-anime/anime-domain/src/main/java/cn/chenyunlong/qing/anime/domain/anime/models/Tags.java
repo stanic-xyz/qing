@@ -12,4 +12,9 @@ public record Tags(List<String> tags) {
     public static Tags create(List<String> tagNameList) {
         return new Tags(tagNameList);
     }
+
+    @Override
+    public String toString() {
+        return String.join(",", tags);
+    }
 }

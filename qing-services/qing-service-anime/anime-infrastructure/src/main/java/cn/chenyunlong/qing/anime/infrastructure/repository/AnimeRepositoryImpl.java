@@ -4,8 +4,10 @@ import cn.chenyunlong.qing.anime.domain.anime.models.Anime;
 import cn.chenyunlong.qing.anime.domain.anime.models.AnimeId;
 import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeRepository;
 import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeConverter;
+import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeMapper;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.AnimeEntity;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.AnimeJpaRepository;
+import cn.chenyunlong.qing.domain.common.AggregateId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +20,11 @@ public class AnimeRepositoryImpl implements AnimeRepository {
 
     private final AnimeJpaRepository animeJpaRepository;
 
-    private final AnimeConverter converter;
 
     @Override
     public Optional<Anime> findById(AnimeId aggregateId) {
         return animeJpaRepository.findById(aggregateId.getId())
-            .map(converter::toDomain);
+            .map(AnimeMapper.INSTANCE::entityToDomain);
     }
 
     /**
@@ -43,8 +44,11 @@ public class AnimeRepositoryImpl implements AnimeRepository {
      */
     @Override
     public Anime save(Anime anime) {
-        AnimeEntity fromAnime = AnimeEntity.createFromAnime(anime);
-        animeJpaRepository.save(fromAnime);
+        AnimeEntity animeEntity = AnimeMapper.INSTANCE.domainToEntity(anime);
+        AnimeEntity saved = animeJpaRepository.save(animeEntity);
+        if (anime.getId() == null) {
+            anime.setId(new AggregateId(saved.getId()));
+        }
         return anime;
     }
 

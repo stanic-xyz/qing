@@ -7,4 +7,5 @@ import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 
 public interface AnimeCategoryRepository extends BaseRepository<Category, AggregateId> {
 
+    boolean existsByPidAndName(Long pid, String name);
 }

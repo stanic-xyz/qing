@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.anime.application.service;
 
-import cn.chenyunlong.qing.anime.domain.anime.dto.creator.TagCreator;
+import cn.chenyunlong.qing.anime.domain.anime.dto.command.TagCreator;
 
 public interface ITagService {
 

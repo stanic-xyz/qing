@@ -11,11 +11,12 @@ import cn.chenyunlong.qing.anime.domain.attachement.dto.request.AttachmentUpdate
 import cn.chenyunlong.qing.anime.domain.attachement.dto.response.AttachmentResponse;
 import cn.chenyunlong.qing.anime.domain.attachement.dto.updater.AttachmentUpdater;
 import cn.chenyunlong.qing.anime.domain.attachement.dto.vo.AttachmentVO;
+import cn.chenyunlong.qing.domain.common.converter.AggregateMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {CustomMapper.class, DateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(uses = {CustomMapper.class, DateMapper.class, AggregateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AttachmentMapper {
 
     AttachmentMapper INSTANCE = Mappers.getMapper(AttachmentMapper.class);

@@ -33,7 +33,7 @@ public class AdminAccountService {
             .create(() -> AdminAccount.create(creator))
             .update(AdminAccount::init)
             .execute();
-        return adminAccount.isPresent() ? adminAccount.get().getAggregateId().getId() : 0;
+        return adminAccount.isPresent() ? adminAccount.get().getId().getId() : 0;
     }
 
     public void updateAdminAccount(AdminAccountUpdater updater) {

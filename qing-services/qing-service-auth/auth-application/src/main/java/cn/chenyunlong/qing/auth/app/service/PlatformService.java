@@ -28,7 +28,7 @@ public class PlatformService {
             .create(() -> Platform.create(creator))
             .update(Platform::init)
             .execute();
-        return platform.isPresent() ? platform.get().getAggregateId().getId() : 0;
+        return platform.isPresent() ? platform.get().getId().getId() : 0;
     }
 
     public void updatePlatform(PlatformUpdater updater) {

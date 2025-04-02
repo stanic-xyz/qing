@@ -81,7 +81,7 @@ public class QingUser extends BaseAggregate {
             throw new UserAlreadyExistsException("用户名已存在: " + username);
         }
         QingUser user = new QingUser();
-        user.setAggregateId(aggregateId);
+        user.setId(aggregateId);
         user.setUsername(username);
         user.setEncodedPassword(encodePassword(password)); // 密码加密
         user.setActive(false);
@@ -101,7 +101,7 @@ public class QingUser extends BaseAggregate {
             throw new IllegalStateException("用户未被锁定，无法恢复");
         }
         this.locked = false;
-        this.registerEvent(new UserUnlocked(getAggregateId()));
+        this.registerEvent(new UserUnlocked(getId()));
     }
 
     /**
@@ -117,6 +117,6 @@ public class QingUser extends BaseAggregate {
             return;
         }
         connectionList.add(qingAuthUser);
-        registerEvent(new UserConnectionAdded(getAggregateId(), qingAuthUser));
+        registerEvent(new UserConnectionAdded(getId(), qingAuthUser));
     }
 }

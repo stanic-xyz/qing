@@ -33,11 +33,12 @@ import java.util.function.Supplier;
  */
 @Slf4j
 public class EntityCreator<T extends BaseAggregate, ID extends AggregateId> extends BaseEntityOperation
-    implements Create<T>, UpdateHandler<T>, Executor<T> {
+    implements Create<T>, UpdateHandler<T>, Executor<T>, Validate<T> {
 
     private final BaseRepository<T, ID> repository;
     private T data;
     private Consumer<T> successHook = t -> log.info("save success");
+    private CustomValidator<T> validator = DefaultCustomValidator.defaultValidator();
     private Consumer<? super Throwable> errorHook =
         throwable -> log.error("插入数据发生了异常", throwable);
 
@@ -73,8 +74,10 @@ public class EntityCreator<T extends BaseAggregate, ID extends AggregateId> exte
 
     @Override
     public Optional<T> execute() {
-        doValidate(this.data, CreateGroup.class);
         try {
+            if (validator != null) {
+                validator.doValidate(this.data, CreateGroup.class);
+            }
             T save = repository.save(data);
             successHook.accept(save);
             Collection<Object> objects = data.domainEvents();
@@ -92,5 +95,10 @@ public class EntityCreator<T extends BaseAggregate, ID extends AggregateId> exte
         return this;
     }
 
+    @Override
+    public Executor<T> validate(CustomValidator<T> validator) {
+        this.validator = validator;
+        return this;
+    }
 }
 
