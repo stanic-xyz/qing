@@ -56,6 +56,15 @@ release.*.*.*:
 # 对所有 tag 生效
 $:
   tag_push:
+    - docker:
+        image: alpine/helm
     - stages:
         - name: echo final tag name
           script: echo $CNB_BRANCH
+
+        - name: helm login
+          script: helm registry login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_HELM_REGISTRY}
+        - name: helm package
+          script: helm package ${CNB_REPO_NAME}
+        - name: helm push
+          script: helm push qing-0.1.0.tgz oci://${CNB_HELM_REGISTRY}/${CNB_GROUP_SLUG_LOWERCASE}
