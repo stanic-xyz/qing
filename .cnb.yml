@@ -58,6 +58,9 @@ $:
   tag_push:
     - docker:
         image: alpine/helm
+      services:
+        # 流水线中启用 docker 服务
+        - docker
     - stages:
         - name: echo final tag name
           script: echo $CNB_BRANCH
