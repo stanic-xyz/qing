@@ -67,6 +67,6 @@ $:
         - name: helm login
           script: helm registry login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_HELM_REGISTRY}
         - name: helm package
-          script: helm package ${CNB_REPO_NAME}
+          script: helm package charts/qing
         - name: helm push
           script: helm push qing-${$CNB_BRANCH}.tgz oci://${CNB_HELM_REGISTRY}/${CNB_GROUP_SLUG_LOWERCASE}
