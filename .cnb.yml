@@ -47,7 +47,7 @@ main-cnb:
 
 
 # 对指定 tag 生效
-Release.*.*.*:
+release.*.*.*:
   tag_push:
     - stages:
         - name: echo tag name
