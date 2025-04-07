@@ -57,5 +57,5 @@ release.*.*.*:
 $:
   tag_push:
     - stages:
-        - name: echo tag name
-          script: echo  $CNB_BRANCH
+        - name: echo final tag name
+          script: echo $CNB_BRANCH
