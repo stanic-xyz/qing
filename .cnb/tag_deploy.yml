@@ -1,0 +1,122 @@
+# .cnb/tag_deploy.yml
+environments:
+  # name: 环境名，点击该环境对应的部署按钮将触发 .cnb.yml 中的 tag_deploy.development 事件流水线
+  - name: development
+    description: Development environment
+    # 环境变量（触发流水线时，会将环境变量传入流水线，包括部署流水线、web_trigger 流水线）
+    env:
+      name: development
+      # CNB_BRANCH: 环境变量，部署事件中，为 tag 名
+      tag_name: $CNB_BRANCH
+
+  - name: staging
+    description: Staging environment
+    env:
+      name: staging
+      # CNB_BRANCH: 环境变量，部署事件中，为 tag 名
+      tag_name: $CNB_BRANCH
+
+  - name: production
+    description: Production environment
+    # 环境变量（触发流水线时，会将环境变量传入流水线，包括部署流水线、web_trigger 流水线）
+    env:
+      name: production
+      # CNB_BRANCH: 环境变量，部署事件中，为 tag 名
+      tag_name: $CNB_BRANCH
+    button:
+      - name: 创建审批单
+        # 如存在，则将作为流水线 title，否则流水线使用默认 title
+        description: 自动创建审批单流程
+        # 需要在 .cnb.yml 中自定义 web_trigger_approval 事件流水线
+        event: web_trigger_approval
+        # 传给 web_trigger_approval 事件流水线的环境变量
+        # 可继承上一级别环境变量，优先级高于上一级别环境变量
+        env:
+          name1: value1
+          name2: value2
+
+    # 部署前置条件检查（支持对环境、元数据、审批流程的检查），满足所有前置条件才可进行部署操作
+    require:
+      # 1 对部署环境是否满足要求的检查
+
+      # 1.1 要求 development 环境部署成功
+      - environmentName: development
+
+      # 1.2 要求 staging 环境部署成功 30 分钟后
+      - environmentName: staging
+        after: 1800
+
+      # 2 对元数据是否满足要求的检查
+
+      # 2.1 键值 key1 对应的 value 不为空，即有值
+      - annotation: key1
+
+      # 2.2 键值 key1 对应的 value 值需等于 value1
+      - annotation: key1
+        expect:
+          eq: value1
+
+      # 2.3 键值 key2 对应的 value 值需大于 1 且小于 10
+      - annotation: key2
+        expect:
+          and:
+            gt: 1
+            lt: 10
+        # 自定义按钮，点击可触发执行 web_trigger_annotation 事件。
+        # 可定义与 require 信息有关的按钮事件，当 require 满足条件后隐藏按钮
+        button:
+          - name: 生成元数据
+            event: web_trigger_annotation
+            # 如存在，则将作为流水线 title，否则流水线使用默认 title
+            description: 生成元数据流程
+            # 传给 web_trigger_annotation 事件流水线的环境变量
+            # 可继承上一级别环境变量，优先级高于上一级别环境变量
+            env:
+              name1: value1
+              name2: value2
+
+      # 3 对审批流程是否满足要求的检查（可按以下方式自定义审批流程）
+      # - 审批顺序：如下 1、2、3 审批流程需按顺序进行，即 1 审批通过，2 才能进行审批。1、2、3 审批流程全部通过才算通过审批
+      # - 审批操作：包括 同意、拒绝。一人同意即算通过。如果拒绝，其他审批人无法再操作，直到拒绝的审批人再修改审批结果为同意
+
+      # 3.1 按用户名审批，其中一人审批通过即可
+      - approver:
+          users:
+            - user1
+            - user2
+            - user3
+        title: 测试审批
+
+      # 3.2 按角色审批，其中一人审批通过即可
+      - approver:
+          roles:
+            - developer
+            - master
+        title: 开发审批
+
+      # 3.3 按用户名或角色审批（审批人满足 users 或 roles 其一即可），其中一人审批通过才行
+      - approver:
+          users:
+            - user4
+            - user5
+          roles:
+            - master
+            - owner
+        title: 运维审批
+
+    # 自定义部署按钮（缺省值：默认展示一个部署按钮）
+    # 使用场景：有多个不同模块（例如仓库、CI、制品库等），需要分开独立部署时，可以配置多个不同的按钮
+    # 注意：部署流水线中要区分是哪个模块，可以通过传入流水线的环境变量来区分
+    deploy:
+      - name: 部署按钮名1
+        description: 部署按钮描述
+        # 环境变量（触发部署流水线时，会将环境变量传入流水线），优先级高于上一级 env
+        env:
+          name1: value1
+          name2: value2
+      - name: 部署按钮名2
+        description: 部署按钮描述
+        # 环境变量（触发部署流水线时，会将环境变量传入流水线），优先级高于上一级 env
+        env:
+          name1: value1
+          name2: value2
