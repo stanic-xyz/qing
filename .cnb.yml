@@ -58,13 +58,15 @@ $:
   tag_push:
     - docker:
         image: alpine/helm
-    - stages:
+      services:
+        # 流水线中启用 docker 服务
+        - docker
+      stages:
         - name: echo final tag name
           script: echo $CNB_BRANCH
-
         - name: helm login
           script: helm registry login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_HELM_REGISTRY}
         - name: helm package
           script: helm package ${CNB_REPO_NAME}
         - name: helm push
-          script: helm push qing-0.1.0.tgz oci://${CNB_HELM_REGISTRY}/${CNB_GROUP_SLUG_LOWERCASE}
+          script: helm push qing-${$CNB_BRANCH}.tgz oci://${CNB_HELM_REGISTRY}/${CNB_GROUP_SLUG_LOWERCASE}
