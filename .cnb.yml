@@ -1,5 +1,5 @@
-main-cnb:
-  auto_tag: # 事件名
+main:
+  auto_tag:
     - stages:
         - name: auto tag
           image: "cnbcool/git-auto-tag:latest"
