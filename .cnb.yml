@@ -31,7 +31,25 @@ main:
         # 云原生构建自动构建Docker镜像并将它发布到制品库，【上传Docker制品】https://docs.cnb.cool/zh/artifact/docker.html
         - name: echo tag name
           script:
-            - echo  current branch $CNB_BRANCH
+            - echo current branch $CNB_BRANCH
+        - name: 提交注释的可读性检测
+          image: cnbcool/ai-review:latest
+          settings:
+            type: commit-message-readability-check
+          exports:
+            status: STATUS
+        - name: 提交注释的可读性检测结果
+          script: echo $STATUS
+  pull_request:
+    - stages:
+        - name: 变更总结
+          image: cnbcool/ai-review:latest
+          settings:
+            type: diff-summary
+          exports:
+            summary: SUMMARY
+        - name: 变更总结
+          script: echo $SUMMARY
 
 # 对所有 tag 生效
 v*.*.*:
