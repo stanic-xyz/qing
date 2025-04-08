@@ -1,0 +1,86 @@
+main:
+  auto_tag:
+    - stages:
+        - name: auto tag
+          image: "cnbcool/git-auto-tag:latest"
+          settings:
+            tagFormat: 'v\${version}'
+            branch: $CNB_BRANCH
+            repoUrlHttps: $CNB_REPO_URL_HTTPS
+          exports:
+            tag: NEW_TAG
+        - name: show tag
+          script: echo $NEW_TAG
+  push:
+    - name: 编译构建
+      docker:
+        # 声明式的构建环境 https://docs.cnb.cool/
+        # 可以去dockerhub上 https://hub.docker.com/_/maven 找到您需要maven和jdk版本
+        image: maven:3.9.9-amazoncorretto-21
+        volumes:
+          # 声明式的构建缓存 https://docs.cnb.cool/zh/grammar/pipeline.html#volumes
+          - /root/.m2:copy-on-write
+      services:
+        # 流水线中启用 docker in docker
+        - docker
+      stages:
+        - name: Anime服务打包
+          script:
+            # 合并./settings.xml和/root/.m2/settings.xml
+            - mvn clean package -pl qing-services/qing-service-auth/auth-interfaces -am -f pom.xml
+        # 云原生构建自动构建Docker镜像并将它发布到制品库，【上传Docker制品】https://docs.cnb.cool/zh/artifact/docker.html
+        - name: echo tag name
+          script:
+            - echo  current branch $CNB_BRANCH
+
+# 对所有 tag 生效
+v*.*.*:
+  tag_push:
+    - name: 构建镜像
+      docker:
+        # 声明式的构建环境 https://docs.cnb.cool/
+        # 可以去dockerhub上 https://hub.docker.com/_/maven 找到需要maven和jdk版本
+        image: maven:3.9.9-amazoncorretto-21
+        volumes:
+          - /root/.m2:copy-on-write
+      services:
+        - docker
+      stages:
+        - name: Anime服务打包
+          script:
+            # 合并./settings.xml和/root/.m2/settings.xml
+            - mvn clean package -pl qing-services/qing-service-auth/auth-interfaces -am -f pom.xml
+        - name: echo tag name
+          script:
+            - echo  当前发布tag版本：$CNB_BRANCH
+        - name: docker login
+          script:
+            - docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
+        - name: docker build
+          script:
+            - docker build -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT} ${CNB_BUILD_WORKSPACE}/qing-services/qing-service-auth/auth-interfaces/
+        - name: docker push
+          script:
+            - docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT}
+    - name: 发布chart
+      docker:
+        image: alpine/helm
+      services:
+        - docker
+      stages:
+        - name: echo final tag name
+          script: echo $CNB_BRANCH
+        - name: helm login
+          script: helm registry login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_HELM_REGISTRY}
+        - name: helm package
+          script: helm package charts/qing
+        - name: helm push
+          script: helm push qing-0.1.0.tgz oci://${CNB_HELM_REGISTRY}/${CNB_GROUP_SLUG_LOWERCASE}
+
+$:
+  push:
+    - name: tag 推送
+      stages:
+        - name: echo tag name
+          script:
+            - echo  current branch $CNB_BRANCH
