@@ -26,6 +26,19 @@
 
     <artifactId>qing-flowable-spring-boot-starter</artifactId>
     <name>qing-flowable-spring-boot-starter</name>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>

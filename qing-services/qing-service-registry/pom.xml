@@ -35,10 +35,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.chenyunlong.qing.registry.QingEurekaServer</mainClass>
+                    <mainClass>cn.chenyunlong.qing.registry.QingEurekaRegistryServer</mainClass>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>repackage</id>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
