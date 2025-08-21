@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrastructure.auth.handler;
+package cn.chenyunlong.qing.auth.infrastructure.handler;
 
 import cn.chenyunlong.qing.auth.domain.user.event.UserDeleted;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;

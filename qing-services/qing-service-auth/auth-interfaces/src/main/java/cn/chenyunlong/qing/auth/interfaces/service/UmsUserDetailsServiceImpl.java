@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.auth.interfaces.service;
 
 import cn.chenyunlong.common.enums.MFAType;
-import cn.chenyunlong.qing.auth.app.service.UserService;
+import cn.chenyunlong.qing.auth.application.service.UserService;
 import cn.chenyunlong.qing.auth.domain.role.Role;
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
 import cn.chenyunlong.qing.auth.domain.user.dto.creator.UserCreator;
@@ -28,6 +28,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * 用户详情服务实现类
+ * 用于Spring Security认证
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

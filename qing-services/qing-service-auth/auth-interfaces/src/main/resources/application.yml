@@ -1,17 +1,26 @@
 server:
-  port: 8080
+  port: 8088
 spring:
   application:
-    name: qing-service-web
+    name: qing-service-auth
   graphql:
     graphiql:
       enabled: true
+  datasource:
+    url: jdbc:postgresql://192.168.3.10:5433/qing
+    username: postgres
+    password: admin@123456
+    driver-class-name: org.postgresql.Driver
 qing:
   api:
-    description: QING-WEB-APPLICATION
+    description: QING-AUTH-SERVICE
   security:
     authing:
       auth-login-url-prefix: /api/auth2/authorization
+
+jwt:
+  secret: qingSecretKey
+  expiration: 18000 # 5小时
 logging:
   level:
     root: info

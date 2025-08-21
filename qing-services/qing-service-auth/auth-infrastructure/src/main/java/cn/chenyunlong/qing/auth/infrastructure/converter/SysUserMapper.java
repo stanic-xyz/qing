@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrastructure.auth.converter;
+package cn.chenyunlong.qing.auth.infrastructure.converter;
 
 
 import cn.chenyunlong.common.infrustructure.CustomMapper;

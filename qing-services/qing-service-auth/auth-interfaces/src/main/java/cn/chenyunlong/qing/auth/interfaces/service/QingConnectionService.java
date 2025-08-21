@@ -1,9 +1,9 @@
 package cn.chenyunlong.qing.auth.interfaces.service;
 
-import cn.chenyunlong.qing.auth.app.service.UserService;
+import cn.chenyunlong.qing.auth.application.service.UserService;
 import cn.chenyunlong.qing.auth.domain.user.QingConnectionData;
 import cn.chenyunlong.qing.auth.domain.user.dto.entity.QingAuthUser;
-import cn.chenyunlong.qing.infrastructure.auth.converter.UserConnectionMapper;
+import cn.chenyunlong.qing.auth.infrastructure.converter.UserConnectionMapper;
 import cn.chenyunlong.qing.security.configures.authing.properties.AuthingProperties;
 import cn.chenyunlong.qing.security.entity.AuthUser;
 import cn.chenyunlong.qing.security.entity.ConnectionData;

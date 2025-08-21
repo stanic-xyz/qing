@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.auth.app.application.service;
+package cn.chenyunlong.qing.auth.application.service;
 
 import cn.chenyunlong.qing.auth.domain.admin.AdminAccount;
 import cn.chenyunlong.qing.auth.domain.admin.dto.creator.AdminAccountCreator;

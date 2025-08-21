@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrastructure.auth.repository;
+package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.admin.AdminAccountRoleRel;
 import cn.chenyunlong.qing.auth.domain.admin.repository.AdminAccountRoleRelRepository;

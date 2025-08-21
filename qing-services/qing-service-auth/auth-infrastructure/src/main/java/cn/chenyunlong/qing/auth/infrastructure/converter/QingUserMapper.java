@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrastructure.auth.converter;
+package cn.chenyunlong.qing.auth.infrastructure.converter;
 
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
 import cn.chenyunlong.qing.auth.domain.user.dto.creator.QingUserCreator;

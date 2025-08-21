@@ -1,9 +1,9 @@
-package cn.chenyunlong.qing.infrastructure.auth.repository;
+package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.admin.AdminAccount;
 import cn.chenyunlong.qing.auth.domain.admin.repository.AdminAccountRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;
-import cn.chenyunlong.qing.infrastructure.auth.repository.jpa.repository.AdminAccountJpaRepository;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.AdminAccountJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

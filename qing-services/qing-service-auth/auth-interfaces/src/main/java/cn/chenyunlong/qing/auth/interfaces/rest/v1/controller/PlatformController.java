@@ -2,12 +2,12 @@ package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
-import cn.chenyunlong.qing.auth.app.service.PlatformService;
+import cn.chenyunlong.qing.auth.application.service.PlatformService;
 import cn.chenyunlong.qing.auth.domain.platform.dto.creator.PlatformCreator;
 import cn.chenyunlong.qing.auth.domain.platform.dto.request.PlatformCreateRequest;
 import cn.chenyunlong.qing.auth.domain.platform.dto.request.PlatformUpdateRequest;
 import cn.chenyunlong.qing.auth.domain.platform.dto.updater.PlatformUpdater;
-import cn.chenyunlong.qing.infrastructure.auth.converter.PlatformMapper;
+import cn.chenyunlong.qing.auth.infrastructure.converter.PlatformMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
