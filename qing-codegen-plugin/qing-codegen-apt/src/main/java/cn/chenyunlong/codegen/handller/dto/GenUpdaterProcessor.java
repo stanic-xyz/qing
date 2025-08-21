@@ -16,12 +16,14 @@ package cn.chenyunlong.codegen.handller.dto;
 import cn.chenyunlong.codegen.annotation.GenUpdater;
 import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import com.google.auto.service.AutoService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.javapoet.AnnotationSpec;
 import org.springframework.javapoet.CodeBlock;
 import org.springframework.javapoet.MethodSpec;
 import org.springframework.javapoet.TypeName;
@@ -42,7 +44,7 @@ import java.util.Set;
  * @since 2019/11/28 19:33
  */
 @AutoService(CodeGenProcessor.class)
-@SupportedGenTypes(types = GenUpdater.class)
+@SupportedGenTypes(types = GenUpdater.class, cacheStrategy = CacheStrategy.SMART)
 public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
 
     public static final String SUFFIX = "Updater";
@@ -62,9 +64,20 @@ public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
             findFields(typeElement,
                 element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
+        
+        // 构建Schema注解
+        AnnotationSpec schemaAnnotation = AnnotationSpec.builder(Schema.class)
+            .addMember("name", "$S", sourceClassName)
+            .addMember("description", "$S", typeElement.getSimpleName() + "更新数据传输对象")
+            .build();
+        
         TypeSpec.Builder builder =
-            TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class);
+            TypeSpec.classBuilder(sourceClassName)
+                .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(schemaAnnotation)
+                .addJavadoc("$L更新数据传输对象\n\n@author 代码生成器\n@since $L\n", 
+                    typeElement.getSimpleName(), 
+                    java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         if (useLombok) {
             builder.addAnnotation(Data.class);

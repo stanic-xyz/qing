@@ -16,6 +16,7 @@ package cn.chenyunlong.codegen.handller.api;
 import cn.chenyunlong.codegen.annotation.GenQueryRequest;
 import cn.chenyunlong.codegen.annotation.QueryItem;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
@@ -39,7 +40,7 @@ import java.util.Set;
  * @since 2022/11/28
  */
 @AutoService(CodeGenProcessor.class)
-@SupportedGenTypes(types = GenQueryRequest.class)
+@SupportedGenTypes(types = GenQueryRequest.class, cacheStrategy = CacheStrategy.SMART)
 public class GenQueryRequestProcessor extends AbstractCodeGenProcessor {
 
     public static String QUERY_REQUEST_SUFFIX = "QueryRequest";

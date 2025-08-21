@@ -72,6 +72,9 @@ public class NameContext {
     }
 
     private String getFinalPackage(String relativePackage) {
+        if (Strings.isNullOrEmpty(relativePackage)) {
+            return null;
+        }
         return !Strings.isNullOrEmpty(basePackage) ? basePackage + "." + relativePackage :
             relativePackage;
     }

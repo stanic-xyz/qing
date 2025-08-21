@@ -16,11 +16,13 @@ package cn.chenyunlong.codegen.handller.dto;
 import cn.chenyunlong.codegen.annotation.GenCreator;
 import cn.chenyunlong.codegen.annotation.IgnoreCreator;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import com.google.auto.service.AutoService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.javapoet.AnnotationSpec;
 import org.springframework.javapoet.TypeName;
 import org.springframework.javapoet.TypeSpec;
 
@@ -40,7 +42,7 @@ import java.util.Objects;
  * @author cyl
  */
 @AutoService(CodeGenProcessor.class)
-@SupportedGenTypes(types = GenCreator.class)
+@SupportedGenTypes(types = GenCreator.class, cacheStrategy = CacheStrategy.SMART)
 public class GenCreatorProcessor extends AbstractCodeGenProcessor {
 
     public static final String SUFFIX = "Creator";
@@ -64,11 +66,21 @@ public class GenCreatorProcessor extends AbstractCodeGenProcessor {
     @Override
     public void generateClass(TypeElement typeElement, RoundEnvironment roundEnv,
                               boolean useLombok) {
-        // lombok - mapstruct 集成
+        // 生成Creator类
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
-        TypeSpec.Builder builder =
-            TypeSpec.classBuilder(sourceClassName).addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Schema.class);
+        String entityName = typeElement.getSimpleName().toString();
+        
+        // 构建Schema注解，提供更好的API文档
+        AnnotationSpec schemaAnnotation = AnnotationSpec.builder(Schema.class)
+            .addMember("name", "$S", sourceClassName)
+            .addMember("description", "$S", entityName + "创建请求对象")
+            .build();
+            
+        TypeSpec.Builder builder = TypeSpec.classBuilder(sourceClassName)
+            .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(schemaAnnotation)
+            .addJavadoc("$L创建请求对象\n\n@author Qing Code Generator\n", entityName);
+            
         if (useLombok) {
             builder.addAnnotation(Data.class);
         }

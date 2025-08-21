@@ -13,6 +13,7 @@
 
 package cn.chenyunlong.codegen.annotation;
 
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -45,4 +46,12 @@ public @interface SupportedGenTypes {
      * @return 是否默认覆盖
      */
     boolean override() default false;
+    
+    /**
+     * 缓存策略
+     * 定义文件生成的缓存行为，优化编译性能
+     *
+     * @return 缓存策略
+     */
+    CacheStrategy cacheStrategy() default CacheStrategy.NONE;
 }

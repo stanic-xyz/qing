@@ -16,6 +16,8 @@ package cn.chenyunlong.codegen.processor;
 import cn.chenyunlong.codegen.context.CodeGenContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.codegen.cache.CacheManager;
+import cn.chenyunlong.codegen.metrics.PerformanceMetrics;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 
@@ -50,6 +52,12 @@ public class QingCodeGenProcessor extends AbstractProcessor {
     // 每一个类需要生成的类型
     private final Map<TypeElement, Set<CodeGenProcessor>> providers =
         MapUtil.newConcurrentHashMap();
+    
+    // 缓存已处理的类型，避免重复处理
+    private final Set<String> processedTypes = Collections.synchronizedSet(new HashSet<>());
+    
+    // 缓存生成的文件，避免重复生成
+    private final Set<String> generatedFiles = Collections.synchronizedSet(new HashSet<>());
 
 
     /**
@@ -75,8 +83,27 @@ public class QingCodeGenProcessor extends AbstractProcessor {
 
     private boolean processImpl(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         if (!annotations.isEmpty()) {
+            // 每轮处理开始时清空缓存，确保能正确处理所有注解
+            if (!roundEnv.processingOver()) {
+                // 非最后一轮，清空当前轮次的处理缓存
+                providers.clear();
+                log("清空providers缓存，开始新一轮处理");
+                
+                // 开始新的编译轮次
+                PerformanceMetrics.startCompilationRound();
+            }
+            
             processAnnotations(annotations, roundEnv);
             generateSourceFiles(roundEnv);
+        } else if (roundEnv.processingOver()) {
+            // 最后一轮处理且没有注解，清理所有缓存
+            processedTypes.clear();
+            providers.clear();
+            generatedFiles.clear();
+            log("处理结束，清理所有缓存");
+            
+            // 打印性能报告
+            PerformanceMetrics.printPerformanceReport();
         }
         return false;
     }
@@ -100,28 +127,55 @@ public class QingCodeGenProcessor extends AbstractProcessor {
 
         log(annotations.toString());
 
+        // 收集所有带注解的类型元素
+        Set<TypeElement> allAnnotatedTypes = new HashSet<>();
         annotations.forEach(annotation -> {
             Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(annotation);
-            ElementFilter.typesIn(elements)
-                .forEach(typeElement -> {
-                    Elements elementUtils = processingEnv.getElementUtils();
-                    HashSet<CodeGenProcessor> processorHashSet =
-                        new HashSet<>(CodeGenContext.find(
-                            Collections.singleton(annotation.getQualifiedName().toString())));
+            allAnnotatedTypes.addAll(ElementFilter.typesIn(elements));
+        });
+        
+        // 为每个类型元素收集所有相关的处理器
+        allAnnotatedTypes.forEach(typeElement -> {
+            String typeKey = typeElement.getQualifiedName().toString();
+            // 注释掉processedTypes检查，允许每轮都重新处理
+            // if (processedTypes.contains(typeKey)) {
+            //     log(StrUtil.format("跳过已处理的类型：{}", typeKey));
+            //     return;
+            // }
+            log(StrUtil.format("开始处理类型：{}", typeKey));
+            
+            Elements elementUtils = processingEnv.getElementUtils();
+            List<? extends AnnotationMirror> mirrors =
+                elementUtils.getAllAnnotationMirrors(typeElement);
+            Set<String> annotationNames = mirrors.stream()
+                .map(annotationMirror -> annotationMirror.getAnnotationType().toString())
+                .collect(Collectors.toSet());
+            
+            log(StrUtil.format("类型 {} 的所有注解: {}", typeKey, annotationNames));
 
-                    if (providers.containsKey(typeElement)) {
-                        Set<CodeGenProcessor> codeGenProcessorList = providers.get(typeElement);
-                        codeGenProcessorList.addAll(processorHashSet);
-                    } else {
-                        providers.put(typeElement, processorHashSet);
-                    }
-                    List<? extends AnnotationMirror> mirrors =
-                        elementUtils.getAllAnnotationMirrors(typeElement);
-                    Set<String> annotationNames = mirrors.stream()
-                        .map(annotationMirror -> annotationMirror.getAnnotationType().toString())
-                        .collect(Collectors.toSet());
-
-                });
+            // 为该类型收集所有相关的处理器
+            Set<CodeGenProcessor> allProcessors = new HashSet<>();
+            for (String annotationName : annotationNames) {
+                Set<CodeGenProcessor> processors = CodeGenContext.find(Collections.singleton(annotationName));
+                allProcessors.addAll(processors);
+                log(StrUtil.format("为完整注解名 {} 找到 {} 个处理器", annotationName, processors.size()));
+                
+                // 如果没有找到处理器，尝试使用简单类名
+                if (processors.isEmpty() && annotationName.contains(".")) {
+                    String simpleAnnotationName = annotationName.substring(annotationName.lastIndexOf('.') + 1);
+                    Set<CodeGenProcessor> simpleProcessors = CodeGenContext.find(Collections.singleton(simpleAnnotationName));
+                    allProcessors.addAll(simpleProcessors);
+                    log(StrUtil.format("使用简单类名 {} 找到 {} 个处理器", simpleAnnotationName, simpleProcessors.size()));
+                }
+            }
+            
+            log(StrUtil.format("类型 {} 总共收集到 {} 个处理器", typeKey, allProcessors.size()));
+            
+            if (!allProcessors.isEmpty()) {
+                providers.put(typeElement, allProcessors);
+                processedTypes.add(typeKey);
+                log(StrUtil.format("为类型 {} 收集了 {} 个处理器", typeKey, allProcessors.size()));
+            }
         });
     }
 
@@ -134,14 +188,39 @@ public class QingCodeGenProcessor extends AbstractProcessor {
      */
     private void doGenerate(TypeElement className, Set<CodeGenProcessor> codeGenProcessorList,
                             RoundEnvironment roundEnvironment) {
+        String classKey = className.getQualifiedName().toString();
+        
         codeGenProcessorList.stream()
             .sorted(Comparator.comparing(CodeGenProcessor::getOrder))
             .forEach(codeGenProcessor -> {
+                String processorName = codeGenProcessor.getClass().getSimpleName();
+                String fileKey = classKey + "_" + processorName;
+                
+                // 检查是否已经生成过该文件
+                if (generatedFiles.contains(fileKey)) {
+                    log(StrUtil.format("跳过已生成的文件：{}，处理器：{}", className, processorName));
+                    return;
+                }
+                
+                long startTime = System.currentTimeMillis();
                 try {
+                    // 检查处理器是否支持该类型
+                    if (!codeGenProcessor.support(className, roundEnvironment)) {
+                        log(StrUtil.format("处理器 {} 不支持类型：{}", processorName, className));
+                        return;
+                    }
+                    
                     codeGenProcessor.generateClass(className, roundEnvironment, true);
-                    log(StrUtil.format("成功生成类：{}，处理器：{}", className, codeGenProcessor.getClass().getSimpleName()));
+                    generatedFiles.add(fileKey);
+                    
+                    long duration = System.currentTimeMillis() - startTime;
+                    log(StrUtil.format("成功生成类：{}，处理器：{}，耗时：{}ms", className, processorName, duration));
                 } catch (Exception e) {
-                    log(StrUtil.format("生成类 {} 时发生异常，处理器：{}", className, codeGenProcessor.getClass().getSimpleName(), e));
+                    long duration = System.currentTimeMillis() - startTime;
+                    String errorMsg = StrUtil.format("生成类 {} 时发生异常，处理器：{}，耗时：{}ms，错误：{}", 
+                        className, processorName, duration, e.getMessage());
+                    log(errorMsg);
+                    exceptionStacks.add(errorMsg + "\n" + getStackTraceAsString(e));
                 }
             });
     }
@@ -157,6 +236,16 @@ public class QingCodeGenProcessor extends AbstractProcessor {
         log("》》》》》初始化代码生成器》》》》》");
         super.init(processingEnvironment);
         CodeGenContext.init(processingEnvironment);
+        
+        // 初始化缓存管理器
+        String baseDir = processingEnvironment.getOptions().get("baseDir");
+        if (baseDir != null) {
+            CacheManager.initialize(baseDir);
+            log("》》》》》缓存管理器初始化完毕》》》》》");
+        } else {
+            log("》》》》》未配置baseDir，跳过缓存管理器初始化》》》》》");
+        }
+        
         log("》》》》》初始化代码生成器完毕》》》》》");
     }
 
