@@ -91,18 +91,17 @@
         <lombok.version>1.18.34</lombok.version>
         <hutool.version>5.8.36</hutool.version>
         <authing.version>3.0.14</authing.version>
-        <swagger.version>2.2.8</swagger.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <vavr.version>0.10.4</vavr.version>
         <fastjson.version>2.0.21</fastjson.version>
         <auto.version>1.1.1</auto.version>
         <liteflow.version>2.12.2.3</liteflow.version>
-        <spring-boot.version>3.4.2</spring-boot.version>
-        <spring-cloud.version>2024.0.0</spring-cloud.version>
-        <spring-boot-admin.version>3.4.1</spring-boot-admin.version>
+        <spring-boot.version>3.3.5</spring-boot.version>
+        <spring-boot-admin.version>3.3.4</spring-boot-admin.version>
+        <spring-cloud.version>2023.0.3</spring-cloud.version>
         <spring-statemachine.version>3.2.0</spring-statemachine.version>
         <lego.version>0.1.23</lego.version>
-        <knife4j.version>4.1.0</knife4j.version>
+        <knife4j.version>4.4.0</knife4j.version>
         <querydsl.version>5.0.0</querydsl.version>
         <jimmer.version>0.9.69</jimmer.version>
         <google-testing.version>0.21.0</google-testing.version>
@@ -115,21 +114,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-registry-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-jimmer-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-            </dependency>
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-codegen-api</artifactId>
@@ -148,36 +132,6 @@
             <dependency>
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-codegen-apt</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-jpa-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-infrastructure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>anime-domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-commons</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-domain-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-security-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -268,36 +222,7 @@
                 <artifactId>vavr</artifactId>
                 <version>${vavr.version}</version>
             </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct</artifactId>
-                <version>${org.mapstruct.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct-processor</artifactId>
-                <version>${org.mapstruct.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-annotations-jakarta</artifactId>
-                <version>2.2.7</version>
-            </dependency>
+            <!-- Dependencies managed by qing-bom are removed from here -->
             <!-- 第三方库依赖 -->
             <dependency>
                 <groupId>com.qcloud</groupId>

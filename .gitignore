@@ -41,3 +41,33 @@ doc/db/.back_Qing
 qing-third/
 application-local.yml
 pom.xml.versionsBackup
+
+# 代码生成器生成的文件 (仅example目录)
+qing-codegen-plugin/example/src/main/java/**/dto/creator/
+qing-codegen-plugin/example/src/main/java/**/dto/query/
+qing-codegen-plugin/example/src/main/java/**/dto/request/
+qing-codegen-plugin/example/src/main/java/**/dto/response/
+qing-codegen-plugin/example/src/main/java/**/dto/updater/
+qing-codegen-plugin/example/src/main/java/**/dto/vo/
+qing-codegen-plugin/example/src/main/java/**/controller/*Controller.java
+qing-codegen-plugin/example/src/main/java/**/service/*Service.java
+qing-codegen-plugin/example/src/main/java/**/service/impl/*ServiceImpl.java
+qing-codegen-plugin/example/src/main/java/**/repository/*Repository.java
+qing-codegen-plugin/example/src/main/java/**/mapper/*Mapper.java
+
+# 部署和配置文件
+deploy.bat
+deploy.sh
+docker-compose.yml
+DOCKER_DEPLOYMENT.md
+config/redis.conf
+
+# 依赖分析文件
+dependency-analysis*.txt
+dependency-analysis*.md
+
+# Vercel配置
+.vercel/
+
+# 环境配置示例
+.env.example
