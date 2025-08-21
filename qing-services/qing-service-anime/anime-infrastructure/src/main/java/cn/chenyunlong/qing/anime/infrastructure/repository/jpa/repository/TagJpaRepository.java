@@ -1,12 +1,12 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository;
 
-import cn.chenyunlong.jpa.support.BaseJpaRepository;
+import cn.chenyunlong.jpa.support.BaseJpaQueryRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.TagEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TagJpaRepository extends BaseJpaRepository<TagEntity, Long> {
+public interface TagJpaRepository extends BaseJpaQueryRepository<TagEntity, Long> {
 
     /**
      * 判断标签名是否存在

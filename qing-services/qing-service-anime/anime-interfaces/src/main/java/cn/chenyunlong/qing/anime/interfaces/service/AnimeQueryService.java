@@ -10,11 +10,16 @@ import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.CategoryEn
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.AnimeCategoryJpaRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.AnimeJpaRepository;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,5 +57,46 @@ public class AnimeQueryService {
     public List<AnimeVO> listAll() {
         List<AnimeEntity> animeEntityList = animeJpaRepository.findAll();
         return animeEntityList.stream().map(AnimeMapper.INSTANCE::entityToDomain).map(AnimeMapper.INSTANCE::entityToVo).toList();
+    }
+
+    public AnimeVO getById(Long id) {
+        Optional<AnimeEntity> animeEntity = animeJpaRepository.findById(id);
+        if (animeEntity.isEmpty()) {
+            throw new RuntimeException("动漫信息不存在");
+        }
+        return AnimeMapper.INSTANCE.entityToVo(AnimeMapper.INSTANCE.entityToDomain(animeEntity.get()));
+    }
+
+    public List<AnimeVO> page(Integer page, Integer size, String keyword) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<AnimeEntity> animeEntityPage = animeJpaRepository.findAll(pageable);
+        List<AnimeEntity> animeEntityList = animeEntityPage.getContent();
+
+        // 如果有关键词，在内存中过滤（临时解决方案）
+        if (StrUtil.isNotBlank(keyword)) {
+            animeEntityList = animeEntityList.stream()
+                .filter(entity -> entity.getName() != null
+                    && entity.getName().toLowerCase().contains(keyword.toLowerCase()))
+                .toList();
+        }
+
+        return animeEntityList.stream()
+            .map(AnimeMapper.INSTANCE::entityToDomain)
+            .map(AnimeMapper.INSTANCE::entityToVo)
+            .toList();
+    }
+
+    public List<AnimeVO> listByCategory(Long categoryId) {
+        // 使用 findAll 然后在内存中过滤（临时解决方案）
+        List<AnimeEntity> allEntities = animeJpaRepository.findAll();
+        List<AnimeEntity> animeEntityList = allEntities.stream()
+            .filter(entity -> entity.getTypeId() != null
+                && entity.getTypeId().equals(categoryId))
+            .toList();
+
+        return animeEntityList.stream()
+            .map(AnimeMapper.INSTANCE::entityToDomain)
+            .map(AnimeMapper.INSTANCE::entityToVo)
+            .toList();
     }
 }

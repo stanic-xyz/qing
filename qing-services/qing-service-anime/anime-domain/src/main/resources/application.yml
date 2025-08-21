@@ -85,15 +85,12 @@ management:
   endpoint:
     health:
       show-details: always
-springdoc:
-  api-docs:
-    enabled: true
-    resolve-schema-properties: true
-  swagger-ui:
-    default-model-expand-depth: 20
-    path: /swagger-ui.html
-    enabled: true
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
     default-models-expand-depth: -1
+  production: false
   show-actuator: true
   use-management-port: false
 liteflow:

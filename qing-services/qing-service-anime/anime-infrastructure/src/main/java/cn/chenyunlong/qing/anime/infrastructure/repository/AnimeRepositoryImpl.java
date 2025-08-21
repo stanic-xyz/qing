@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.anime.infrastructure.repository;
 import cn.chenyunlong.qing.anime.domain.anime.models.Anime;
 import cn.chenyunlong.qing.anime.domain.anime.models.AnimeId;
 import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeRepository;
-import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeConverter;
 import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeMapper;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.AnimeEntity;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.AnimeJpaRepository;
