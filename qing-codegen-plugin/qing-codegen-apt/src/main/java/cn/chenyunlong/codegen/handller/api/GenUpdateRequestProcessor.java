@@ -16,6 +16,7 @@ package cn.chenyunlong.codegen.handller.api;
 import cn.chenyunlong.codegen.annotation.GenUpdateRequest;
 import cn.chenyunlong.codegen.annotation.IgnoreUpdater;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
@@ -39,7 +40,7 @@ import java.util.Set;
  * @since 2022/11/29
  */
 @AutoService(value = CodeGenProcessor.class)
-@SupportedGenTypes(types = GenUpdateRequest.class)
+@SupportedGenTypes(types = GenUpdateRequest.class, cacheStrategy = CacheStrategy.SMART)
 public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
 
     public static String UPDATE_REQUEST_SUFFIX = "UpdateRequest";
@@ -50,7 +51,8 @@ public class GenUpdateRequestProcessor extends AbstractCodeGenProcessor {
         NameContext nameContext = getNameContext(typeElement);
         Set<VariableElement> fields =
             findFields(typeElement,
-                element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class)));
+                element -> Objects.isNull(element.getAnnotation(IgnoreUpdater.class))
+                    && !"id".equals(element.getSimpleName().toString()));
         TypeSpec.Builder builder = TypeSpec
             .classBuilder(nameContext.getUpdateClassName())
             .addModifiers(Modifier.PUBLIC)

@@ -16,6 +16,7 @@ package cn.chenyunlong.codegen.handller.controller;
 
 import cn.chenyunlong.codegen.annotation.GenController;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
@@ -24,6 +25,7 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
+import cn.chenyunlong.qing.domain.common.AggregateId;
 import com.google.auto.service.AutoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +46,7 @@ import java.util.stream.Collectors;
  * @author gim
  */
 @AutoService(CodeGenProcessor.class)
-@SupportedGenTypes(types = GenController.class)
+@SupportedGenTypes(types = GenController.class, cacheStrategy = CacheStrategy.SKIP_IF_EXISTS)
 public class GenControllerProcessor extends AbstractCodeGenProcessor {
 
     public static final String CONTROLLER_SUFFIX = "Controller";
@@ -103,15 +105,17 @@ public class GenControllerProcessor extends AbstractCodeGenProcessor {
                                               NameContext nameContext) {
         String createClassName = nameContext.getCreateClassName();
         String queryRequestPackageName = nameContext.getQueryRequestPackageName();
-        if (StringUtils.containsNull(queryRequestPackageName, createClassName)) {
+        String creatorPackageName = nameContext.getCreatorPackageName();
+        String mapperPackageName = nameContext.getMapperPackageName();
+        if (StringUtils.containsNull(queryRequestPackageName, createClassName, creatorPackageName, mapperPackageName)) {
             return Optional.empty();
         }
 
         MethodSpec.Builder builder = createBaseMethod("create" + typeElement.getSimpleName(),
             "create", ClassName.get(queryRequestPackageName, createClassName));
         builder.addCode(CodeBlock.of("$T creator = $T.INSTANCE.request2Dto(request);",
-                ClassName.get(nameContext.getCreatorPackageName(), nameContext.getCreatorClassName()),
-                ClassName.get(nameContext.getMapperPackageName(), nameContext.getMapperClassName())))
+                ClassName.get(creatorPackageName, nameContext.getCreatorClassName()),
+                ClassName.get(mapperPackageName, nameContext.getMapperClassName())))
             .addCode(CodeBlock.of("return $T.success($L.create$L(creator));", JsonResult.class,
                 serviceFieldName, typeElement.getSimpleName().toString()))
             .returns(ParameterizedTypeName.get(ClassName.get(JsonResult.class),

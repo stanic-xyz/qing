@@ -16,11 +16,13 @@ package cn.chenyunlong.codegen.handller.service;
 
 import cn.chenyunlong.codegen.annotation.GenService;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.PageRequestWrapper;
+import cn.chenyunlong.qing.domain.common.AggregateId;
 import com.google.auto.service.AutoService;
 import org.springframework.data.domain.Page;
 import org.springframework.javapoet.ClassName;
@@ -39,7 +41,7 @@ import java.util.Optional;
  * @author gim
  */
 @AutoService(CodeGenProcessor.class)
-@SupportedGenTypes(types = GenService.class)
+@SupportedGenTypes(types = GenService.class, cacheStrategy = CacheStrategy.SKIP_IF_EXISTS)
 public class GenServiceProcessor extends AbstractCodeGenProcessor {
 
     public static final String SERVICE_SUFFIX = "Service";

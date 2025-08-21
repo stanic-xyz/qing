@@ -16,10 +16,13 @@ package cn.chenyunlong.codegen.handller.repository;
 
 import cn.chenyunlong.codegen.annotation.GenRepository;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
+import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 import com.google.auto.service.AutoService;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.javapoet.ClassName;
 import org.springframework.javapoet.ParameterizedTypeName;
 import org.springframework.javapoet.TypeSpec;
@@ -35,7 +38,7 @@ import javax.lang.model.element.TypeElement;
  * @since 2022/12/22
  */
 @AutoService(CodeGenProcessor.class)
-@SupportedGenTypes(types = GenRepository.class)
+@SupportedGenTypes(types = GenRepository.class, cacheStrategy = CacheStrategy.SKIP_IF_EXISTS)
 public class GenRepositoryProcessor extends AbstractCodeGenProcessor {
 
     public static final String REPOSITORY_SUFFIX = "Repository";
@@ -47,6 +50,8 @@ public class GenRepositoryProcessor extends AbstractCodeGenProcessor {
         TypeSpec.Builder builder = TypeSpec
             .interfaceBuilder(className)
             .addSuperinterface(ParameterizedTypeName.get(ClassName.get(BaseRepository.class),
+                ClassName.get(typeElement), ClassName.get(Long.class)))
+            .addSuperinterface(ParameterizedTypeName.get(ClassName.get(JpaRepository.class),
                 ClassName.get(typeElement), ClassName.get(Long.class)))
             .addModifiers(Modifier.PUBLIC);
         genJavaSourceFile(typeElement, builder);
