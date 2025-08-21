@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.auth.app.service;
+package cn.chenyunlong.qing.auth.app.application.service;
 
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
 import cn.chenyunlong.qing.auth.domain.user.UserConnection;

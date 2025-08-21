@@ -14,10 +14,14 @@
 package cn.chenyunlong.codegen.handller;
 
 import cn.chenyunlong.codegen.annotation.*;
+import cn.chenyunlong.codegen.cache.CacheManager;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.context.CodeGenContext;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder;
+import cn.chenyunlong.codegen.metrics.PerformanceMetrics;
 import cn.chenyunlong.codegen.handller.api.*;
+import cn.hutool.core.util.StrUtil;
 import cn.chenyunlong.codegen.handller.controller.GenControllerProcessor;
 import cn.chenyunlong.codegen.handller.dto.GenCreatorProcessor;
 import cn.chenyunlong.codegen.handller.dto.GenQueryProcessor;
@@ -171,6 +175,81 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         }
         return override;
     }
+    
+    /**
+      * 获取缓存策略。
+      *
+      * @return 缓存策略
+      */
+     protected CacheStrategy getCacheStrategy() {
+         if (AnnotationUtil.hasAnnotation(this.getClass(), SupportedGenTypes.class)) {
+             SupportedGenTypes supportedGenTypes =
+                 this.getClass().getAnnotation(SupportedGenTypes.class);
+             return supportedGenTypes.cacheStrategy();
+         }
+         return CacheStrategy.NONE;
+     }
+     
+     /**
+      * 判断是否应该生成文件。
+      * 根据缓存策略决定是否需要生成文件。
+      *
+      * @param typeElement 类型元素
+      * @param targetFile 目标文件
+      * @param strategy 缓存策略
+      * @return 是否应该生成文件
+      */
+     protected boolean shouldGenerateFile(TypeElement typeElement, File targetFile, CacheStrategy strategy) {
+         String processorName = this.getClass().getSimpleName();
+         
+         switch (strategy) {
+             case NONE:
+                 // 无缓存策略，总是生成
+                 ProcessingEnvironmentHolder.log(StrUtil.format(
+                     "[{}] 无缓存策略，生成文件: {}", processorName, targetFile.getName()));
+                 return true;
+                 
+             case SMART:
+                 // 智能缓存策略，基于类结构哈希
+                 if (!targetFile.exists()) {
+                     ProcessingEnvironmentHolder.log(StrUtil.format(
+                         "[{}] 文件不存在，需要生成: {}", processorName, targetFile.getName()));
+                     return true;
+                 }
+                 
+                 boolean structureChanged = CacheManager.isStructureChanged(typeElement);
+                 if (structureChanged) {
+                     ProcessingEnvironmentHolder.log(StrUtil.format(
+                         "[{}] 类结构发生变化，重新生成: {}", processorName, targetFile.getName()));
+                     return true;
+                 } else {
+                     ProcessingEnvironmentHolder.log(StrUtil.format(
+                         "[{}] 类结构未变化，跳过生成: {}", processorName, targetFile.getName()));
+                     return false;
+                 }
+                 
+             case SKIP_IF_EXISTS:
+                 // 跳过策略，文件存在时不生成
+                 if (targetFile.exists()) {
+                     ProcessingEnvironmentHolder.log(StrUtil.format(
+                         "[{}] 文件已存在，跳过生成: {}", processorName, targetFile.getName()));
+                     return false;
+                 } else {
+                     ProcessingEnvironmentHolder.log(StrUtil.format(
+                         "[{}] 文件不存在，需要生成: {}", processorName, targetFile.getName()));
+                     return true;
+                 }
+                 
+             default:
+                 // 默认行为，检查覆盖设置
+                 if (targetFile.exists() && !overwrite()) {
+                     ProcessingEnvironmentHolder.log(StrUtil.format(
+                         "[{}] 文件已存在且不允许覆盖，跳过生成: {}", processorName, targetFile.getName()));
+                     return false;
+                 }
+                 return true;
+         }
+     }
 
     /**
      * 获取字段信息。
@@ -338,15 +417,23 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
     private void getDescriptionInfoBuilder(TypeSpec.Builder builder, VariableElement element,
                                            TypeName typeName) {
         String fieldDescription = getFieldDesc(element);
-        AnnotationSpec.Builder schemaAnnotationBuilder =
-            AnnotationSpec.builder(Schema.class)
-                .addMember("title", "$S", element.getSimpleName().toString());
+        String fieldName = element.getSimpleName().toString();
+        
+        // 构建Schema注解
+        AnnotationSpec.Builder schemaAnnotationBuilder = AnnotationSpec.builder(Schema.class);
+        
+        // 如果有描述信息，使用描述信息作为title，否则使用字段名
         if (StringUtils.isNotBlank(fieldDescription)) {
             schemaAnnotationBuilder.addMember("description", "$S", fieldDescription);
+        } else {
+            schemaAnnotationBuilder.addMember("description", "$S", fieldName);
         }
+        
+        // 构建字段规范
         FieldSpec.Builder fieldSpec = FieldSpec
-            .builder(typeName, element.getSimpleName().toString(), Modifier.PRIVATE)
+            .builder(typeName, fieldName, Modifier.PRIVATE)
             .addAnnotation(schemaAnnotationBuilder.build());
+            
         builder.addField(fieldSpec.build());
     }
 
@@ -414,19 +501,19 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      */
     protected void addIdField(TypeSpec.Builder builder) {
         builder.addField(
-            FieldSpec.builder(ClassName.get(Long.class), "id", Modifier.PRIVATE).build());
+            FieldSpec.builder(Long.class, "id", Modifier.PRIVATE).build());
 
         // 如果没有使用lombok，需要添加getter setter方法
         MethodSpec.Builder getMethod = MethodSpec
             .methodBuilder("getId")
-            .returns(ClassName.get(Long.class))
+            .returns(Long.class)
             .addModifiers(Modifier.PUBLIC)
             .addStatement("return $L", "id");
         MethodSpec.Builder setMethod = MethodSpec
             .methodBuilder("setId")
             .returns(void.class)
             .addModifiers(Modifier.PUBLIC)
-            .addParameter(TypeName.LONG, "id")
+            .addParameter(Long.class, "id")
             .addStatement("this.$L = $L", "id", "id");
         builder.addMethod(getMethod.build());
         builder.addMethod(setMethod.build());
@@ -450,8 +537,11 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         TypeSpec typeSpec = builder.build();
         JavaFile javaFile = JavaFile
             .builder(stringBuilder.toString(), typeSpec)
-            .indent("    ")
-            .addFileComment("---Auto Generated by Qing-Generator --\n")
+            .indent("    ")  // 使用4个空格缩进
+            .skipJavaLangImports(true)  // 跳过java.lang包的导入
+            .addFileComment("Auto Generated by Qing Code Generator\n" +
+                           "Do not modify this file manually\n" +
+                           "Generated at: " + java.time.LocalDateTime.now())
             .build();
         try {
             javaFile.writeTo(filer);
@@ -467,6 +557,8 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
      * @param builder     类型规范创建器
      */
     public void genJavaSourceFile(TypeElement typeElement, TypeSpec.Builder builder) {
+        long startTime = System.currentTimeMillis();
+        String processorName = this.getClass().getSimpleName();
 
         StringBuilder packageNameBuilder = new StringBuilder(getBasePackageName(typeElement));
 
@@ -480,9 +572,12 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         String packageName = packageNameBuilder.toString();
         JavaFile javaFile = JavaFile
             .builder(packageName, typeSpec)
-            .indent("    ")
+            .indent("    ")  // 使用4个空格缩进
+            .skipJavaLangImports(true)  // 跳过java.lang包的导入
+            .addFileComment("Auto Generated by Qing Code Generator\n" +
+                           "Do not modify this file manually\n" +
+                           "Generated at: " + java.time.LocalDateTime.now())
             .build();
-        packageNameBuilder.append(".");
 
         File baseDir = CodeGenContext.getBaseDir();
         String sourcePath =
@@ -491,15 +586,53 @@ public abstract class AbstractCodeGenProcessor implements CodeGenProcessor {
         // 生成Java文件
         try {
             File pathFile = Paths.get(sourcePath).toFile();
-            File file = new File(pathFile, packageName.replace(".", File.separator)
-                + File.separator + typeSpec.name + ".java");
-            if (!file.exists() || overwrite()) {
-                javaFile.writeToFile(pathFile);
+            
+            // 确保目录存在
+            File packageDir = new File(pathFile, packageName.replace(".", File.separator));
+            if (!packageDir.exists() && !packageDir.mkdirs()) {
+                fatalError("无法创建目录: " + packageDir.getAbsolutePath());
+                return;
             }
-        } catch (FileNotFoundException ignored) {
-            System.out.println("文件不存在，需要重新生成");
+            
+            File file = new File(packageDir, typeSpec.name + ".java");
+            String fileName = file.getName();
+            
+            // 智能缓存策略检查
+            long cacheCheckStart = System.currentTimeMillis();
+            CacheStrategy strategy = getCacheStrategy();
+            boolean shouldGenerate = shouldGenerateFile(typeElement, file, strategy);
+            long cacheCheckTime = System.currentTimeMillis() - cacheCheckStart;
+            
+            // 记录缓存检查性能
+            PerformanceMetrics.recordCacheCheck(processorName, cacheCheckTime, !shouldGenerate);
+            
+            if (!shouldGenerate) {
+                PerformanceMetrics.recordFileSkipped(processorName, fileName, "缓存命中或文件已存在");
+                return;
+            }
+            
+            // 记录文件生成信息
+            ProcessingEnvironmentHolder.log("正在生成文件: " + file.getAbsolutePath());
+            
+            javaFile.writeToFile(pathFile);
+            
+            // 标记文件已生成
+            CacheManager.markFileGenerated(file.getAbsolutePath());
+            
+            long generationTime = System.currentTimeMillis() - startTime;
+            PerformanceMetrics.recordFileGenerated(processorName, fileName, generationTime);
+            
+            ProcessingEnvironmentHolder.log("成功生成文件: " + file.getAbsolutePath());
+            
+        } catch (FileNotFoundException e) {
+            ProcessingEnvironmentHolder.log("文件路径不存在: " + sourcePath + ", 错误: " + e.getMessage());
+            fatalError("文件路径不存在: " + sourcePath);
         } catch (IOException exception) {
-            fatalError(exception.getMessage());
+            ProcessingEnvironmentHolder.log("生成文件时发生IO异常: " + exception.getMessage());
+            fatalError("生成文件失败: " + exception.getMessage());
+        } catch (Exception e) {
+            ProcessingEnvironmentHolder.log("生成文件时发生未知异常: " + e.getMessage());
+            fatalError("生成文件时发生未知异常: " + e.getMessage());
         }
     }
 }

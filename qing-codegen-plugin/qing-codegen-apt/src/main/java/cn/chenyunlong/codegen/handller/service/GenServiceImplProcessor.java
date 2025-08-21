@@ -16,6 +16,7 @@ package cn.chenyunlong.codegen.handller.service;
 
 import cn.chenyunlong.codegen.annotation.GenServiceImpl;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.context.NameContext;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.handller.mapper.GenMapperProcessor;
@@ -26,6 +27,7 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.jpa.support.BaseJpaEntity;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
+import cn.chenyunlong.qing.domain.common.AggregateId;
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +50,7 @@ import java.util.Optional;
  * @author gim
  */
 @AutoService(CodeGenProcessor.class)
-@SupportedGenTypes(types = GenServiceImpl.class)
+@SupportedGenTypes(types = GenServiceImpl.class, cacheStrategy = CacheStrategy.SKIP_IF_EXISTS)
 public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
 
     public static final String IMPL_SUFFIX = "ServiceImpl";
@@ -58,6 +60,13 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                               boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
+        
+        // 检查必要的包名是否为null
+        if (StringUtils.containsNull(nameContext.getServicePackageName(), 
+                                   nameContext.getRepositoryPackageName())) {
+            return;
+        }
+        
         final TypeSpec.Builder builder = TypeSpec
             .classBuilder(className)
             .addSuperinterface(
@@ -68,9 +77,6 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
             .addAnnotation(Slf4j.class)
             .addAnnotation(RequiredArgsConstructor.class)
             .addModifiers(Modifier.PUBLIC);
-        if (StringUtils.containsNull(nameContext.getRepositoryPackageName())) {
-            return;
-        }
         String repositoryFieldName;
         repositoryFieldName =
             CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, nameContext.getRepositoryClassName());
@@ -170,7 +176,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                 $T.doUpdate($L)
                 .loadById(id)
                 .update($T::valid)
-                .execute();""", EntityOperations.class, repositoryFieldName, BaseJpaEntity.class))
+                .execute();""", EntityOperations.class, repositoryFieldName, ClassName.get(typeElement)))
             .addJavadoc("valid")
             .addAnnotation(Override.class)
             .build());
@@ -186,7 +192,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                 $T.doUpdate($L)
                 .loadById(id)
                 .update($T::invalid)
-                .execute();""", EntityOperations.class, repositoryFieldName, BaseJpaEntity.class))
+                .execute();""", EntityOperations.class, repositoryFieldName, ClassName.get(typeElement)))
             .addJavadoc("invalid")
             .addAnnotation(Override.class)
             .build());
@@ -204,7 +210,7 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                     ParameterizedTypeName.get(ClassName.get(Optional.class),
                         ClassName.get(typeElement)), classFieldName, repositoryFieldName))
                 .addCode(
-                    CodeBlock.of("return new $T($L.orElseThrow(() -> new $T($T.NotFindError)));",
+                    CodeBlock.of("return new $T($L.orElseThrow(() -> new $T($T.NotFoundError)));",
                         ClassName.get(nameContext.getVoPackageName(), nameContext.getVoClassName()),
                         classFieldName, BusinessException.class, CodeEnum.class))
                 .addJavadoc("findById")

@@ -22,6 +22,7 @@ import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.common.model.PageRequestWrapper;
 import cn.chenyunlong.common.model.PageResult;
+import cn.chenyunlong.qing.domain.common.AggregateId;
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import org.springframework.javapoet.*;

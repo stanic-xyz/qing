@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.auth.app.service;
+package cn.chenyunlong.qing.auth.app.application.service;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
