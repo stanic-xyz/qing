@@ -30,10 +30,6 @@
         </dependency>
         <dependency>
             <groupId>cn.chenyunlong</groupId>
-            <artifactId>qing-jimmer-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.chenyunlong</groupId>
             <artifactId>qing-jpa-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
@@ -50,6 +46,18 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-bom</artifactId>
+                <version>0.0.3-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

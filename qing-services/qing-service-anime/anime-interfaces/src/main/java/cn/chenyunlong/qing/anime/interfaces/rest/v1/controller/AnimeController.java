@@ -94,4 +94,42 @@ public class AnimeController {
         List<AnimeVO> animeVOList = animeQueryService.listAll();
         return JsonResult.success(animeVOList);
     }
+
+    @Operation(summary = "根据ID查询动漫信息")
+    @GetMapping("/{id}")
+    public JsonResult<AnimeVO> getById(@PathVariable("id") Long id) {
+        AnimeVO animeVO = animeQueryService.getById(id);
+        return JsonResult.success(animeVO);
+    }
+
+    @Operation(summary = "分页查询动漫列表")
+    @GetMapping("/page")
+    public JsonResult<List<AnimeVO>> page(
+        @RequestParam(value = "page", defaultValue = "1") Integer page,
+        @RequestParam(value = "size", defaultValue = "10") Integer size,
+        @RequestParam(value = "keyword", required = false) String keyword) {
+        List<AnimeVO> animeVOList = animeQueryService.page(page, size, keyword);
+        return JsonResult.success(animeVOList);
+    }
+
+    @Operation(summary = "根据分类查询动漫列表")
+    @GetMapping("/category/{categoryId}")
+    public JsonResult<List<AnimeVO>> listByCategory(@PathVariable("categoryId") Long categoryId) {
+        List<AnimeVO> animeVOList = animeQueryService.listByCategory(categoryId);
+        return JsonResult.success(animeVOList);
+    }
+
+    @Operation(summary = "启用动漫")
+    @PostMapping("/{id}/enable")
+    public JsonResult<Void> enable(@PathVariable("id") Long id) {
+        animeService.validAnime(id);
+        return JsonResult.success();
+    }
+
+    @Operation(summary = "禁用动漫")
+    @PostMapping("/{id}/disable")
+    public JsonResult<Void> disable(@PathVariable("id") Long id) {
+        animeService.invalidAnime(id);
+        return JsonResult.success();
+    }
 }

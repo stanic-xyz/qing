@@ -8,14 +8,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {
-    "cn.chenyunlong.qing.anime.interfaces.*",
-    "cn.chenyunlong.qing.anime.infrastructure",
-    "cn.chenyunlong.qing.anime.application"
-})
-@EntityScan(basePackages = {
-    "cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity"
+    "cn.chenyunlong.qing.anime.*"
 })
 @EnableJpaRepositories(basePackages = "cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository")
+@EntityScan(basePackages = "cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity")
 public class QingAnimeWebApplication {
 
     /**

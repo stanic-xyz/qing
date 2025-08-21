@@ -4,22 +4,17 @@ import cn.chenyunlong.qing.anime.domain.anime.Tag;
 import cn.chenyunlong.qing.anime.domain.anime.repository.TagRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.TagJpaRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TagRepositoryImpl implements TagRepository {
 
     private final TagJpaRepository tagJpaRepository;
-
-    public TagRepositoryImpl(
-        @Autowired
-        TagJpaRepository tagJpaRepository) {
-        this.tagJpaRepository = tagJpaRepository;
-    }
 
     @Override
     public boolean existsByName(String name) {

@@ -23,7 +23,7 @@ public abstract class JpaServiceImpl<R extends BaseJpaQueryRepository<T, ID>, T 
 
     @Override
     public void afterPropertiesSet() {
-        //        log.debug("初始化Jpa仓储类型：{}", baseJpaRepository.getClass().getName());
+        log.debug("初始化Jpa仓储类型：{}", baseJpaRepository.getClass().getName());
     }
 
     @Override

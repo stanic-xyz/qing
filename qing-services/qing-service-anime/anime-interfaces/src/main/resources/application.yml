@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  profiles:
+    active: dev
   application:
     name: qing-service-web
   graphql:
@@ -15,19 +17,13 @@ qing:
 logging:
   level:
     root: info
-jimmer:
-  dialect: org.babyfish.jimmer.sql.dialect.PostgresDialect
-  show-sql: true
-  pretty-sql: true
-  database-validation-mode: warning
-  client:
-    ts:
-      path: /ts.zip
-    openapi:
-      path: /openapi.yml
-      ui-path: /openapi.html
-      properties:
-        info:
-          title: Qing Web Service
-          description: Restore the DTO explosion that was eliminated by server-side developers
-          version: 1.0
+# Knife4j 配置
+knife4j:
+  enable: true
+  openapi:
+    title: QING动漫管理系统API
+    description: QING动漫管理系统的RESTful API文档
+    version: @project.version@
+    concat: 陈云龙
+  setting:
+    language: zh_cn
