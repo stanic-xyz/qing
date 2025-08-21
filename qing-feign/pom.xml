@@ -31,6 +31,8 @@
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-bom</artifactId>
                 <version>0.0.3-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
