@@ -20,10 +20,7 @@ import cn.chenyunlong.codegen.util.StringUtils;
 import javax.annotation.processing.ProcessingEnvironment;
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.log;
@@ -37,8 +34,10 @@ import static cn.chenyunlong.codegen.context.ProcessingEnvironmentHolder.log;
 public final class CodeGenContext {
 
     private static final Map<String, CodeGenProcessor> PROCESSOR_MAP = new LinkedHashMap<>();
+    private static final Map<Set<String>, Set<CodeGenProcessor>> PROCESSOR_CACHE = new LinkedHashMap<>();
     private static NameContext nameContext;
     private static File baseDirFile = null;
+    private static volatile boolean initialized = false;
 
     private CodeGenContext() {
         throw new UnsupportedOperationException();
@@ -51,41 +50,84 @@ public final class CodeGenContext {
      * @return {@link CodeGenProcessor}
      */
     public static Set<CodeGenProcessor> find(Set<String> annotationClassName) {
-        return PROCESSOR_MAP
+        // 使用缓存提高性能
+        if (PROCESSOR_CACHE.containsKey(annotationClassName)) {
+            return PROCESSOR_CACHE.get(annotationClassName);
+        }
+        
+        Set<CodeGenProcessor> result = PROCESSOR_MAP
             .entrySet()
             .stream()
             .filter(stringCodeGenProcessorEntry -> annotationClassName.contains(
                 stringCodeGenProcessorEntry.getKey()))
             .map(Map.Entry::getValue)
             .collect(Collectors.toSet());
+            
+        // 缓存结果
+        PROCESSOR_CACHE.put(new HashSet<>(annotationClassName), result);
+        
+        return result;
     }
 
     /**
      * 初始化处理器。
      * spi 加载所有的processor
      */
-    public static void init(ProcessingEnvironment processingEnvironment) {
-        nameContext = new NameContext();
-        nameContext.init();
-        ServiceLoader<CodeGenProcessor> codeGenProcessors =
-            ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader());
-        for (CodeGenProcessor codeGenProcessor : codeGenProcessors) {
-            ProcessingEnvironmentHolder.printMessage(
-                "[codegen-plugin]：加载处理器：%s".formatted(codeGenProcessor
-                    .getClass()
-                    .getName()));
-            codeGenProcessor.init(processingEnvironment);
-            PROCESSOR_MAP.put(codeGenProcessor.getSupportedAnnotation().getName(),
-                codeGenProcessor);
+    public static synchronized void init(ProcessingEnvironment processingEnvironment) {
+        // 避免重复初始化
+        if (initialized) {
+            log("代码生成器已经初始化，跳过重复初始化");
+            return;
         }
-        String baseDir =
-            processingEnvironment.getOptions().get(CondeGenConstant.SOURCE_PATH_ARG_NAME);
-        if (StringUtils.isNotBlank(baseDir)) {
-            log(String.format("编译选项：baseDir：%s", baseDir));
-            File file = Paths.get(baseDir).toFile();
-            if (file.exists()) {
-                baseDirFile = file;
+        
+        try {
+            nameContext = new NameContext();
+            nameContext.init();
+            
+            ServiceLoader<CodeGenProcessor> codeGenProcessors =
+                ServiceLoader.load(CodeGenProcessor.class, CodeGenProcessor.class.getClassLoader());
+                
+            int processorCount = 0;
+            for (CodeGenProcessor codeGenProcessor : codeGenProcessors) {
+                try {
+                    ProcessingEnvironmentHolder.printMessage(
+                        "[codegen-plugin]：加载处理器：%s".formatted(codeGenProcessor
+                            .getClass()
+                            .getName()));
+                    codeGenProcessor.init(processingEnvironment);
+                    PROCESSOR_MAP.put(codeGenProcessor.getSupportedAnnotation().getName(),
+                        codeGenProcessor);
+                    processorCount++;
+                } catch (Exception e) {
+                    ProcessingEnvironmentHolder.printMessage(
+                        "[codegen-plugin]：加载处理器失败：%s，错误：%s".formatted(
+                            codeGenProcessor.getClass().getName(), e.getMessage()));
+                }
             }
+            
+            log(String.format("成功加载 %d 个代码生成处理器", processorCount));
+            
+            String baseDir =
+                processingEnvironment.getOptions().get(CondeGenConstant.SOURCE_PATH_ARG_NAME);
+            if (StringUtils.isNotBlank(baseDir)) {
+                log(String.format("编译选项：baseDir：%s", baseDir));
+                File file = Paths.get(baseDir).toFile();
+                if (file.exists()) {
+                    baseDirFile = file;
+                    log(String.format("设置代码生成基础目录：%s", file.getAbsolutePath()));
+                } else {
+                    log(String.format("警告：指定的baseDir不存在：%s", baseDir));
+                }
+            } else {
+                log("警告：未指定baseDir参数，将使用默认路径");
+            }
+            
+            initialized = true;
+            log("代码生成器初始化完成");
+            
+        } catch (Exception e) {
+            log("代码生成器初始化失败：" + e.getMessage());
+            throw new RuntimeException("代码生成器初始化失败", e);
         }
     }
 

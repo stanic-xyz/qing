@@ -16,6 +16,7 @@ package cn.chenyunlong.codegen.handller.dto;
 import cn.chenyunlong.codegen.annotation.GenVo;
 import cn.chenyunlong.codegen.annotation.IgnoreVo;
 import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
+import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
 import cn.chenyunlong.common.model.AbstractBaseJpaVo;
@@ -44,7 +45,7 @@ import java.util.Set;
  * @author gim
  */
 @AutoService(CodeGenProcessor.class)
-@SupportedGenTypes(types = GenVo.class)
+@SupportedGenTypes(types = GenVo.class, cacheStrategy = CacheStrategy.SMART)
 public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
 
     public static final String SUFFIX = "VO";
@@ -57,11 +58,20 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
             findFields(typeElement,
                 variableElement -> Objects.isNull(variableElement.getAnnotation(IgnoreVo.class)));
         String sourceClassName = typeElement.getSimpleName() + SUFFIX;
+        // 构建Schema注解
+        AnnotationSpec schemaAnnotation = AnnotationSpec.builder(Schema.class)
+            .addMember("name", "$S", sourceClassName)
+            .addMember("description", "$S", typeElement.getSimpleName() + "视图对象")
+            .build();
+        
         Builder builder = TypeSpec
             .classBuilder(sourceClassName)
             .superclass(AbstractBaseJpaVo.class)
             .addModifiers(Modifier.PUBLIC)
-            .addAnnotation(Schema.class);
+            .addAnnotation(schemaAnnotation)
+            .addJavadoc("$L视图对象\n\n@author 代码生成器\n@since $L\n", 
+                typeElement.getSimpleName(), 
+                java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         if (useLombok) {
             builder.addAnnotation(Data.class);
             builder.addAnnotation(///////////
@@ -78,7 +88,7 @@ public class GenVoCodeProcessor extends AbstractCodeGenProcessor {
             .addParameter(TypeName.get(typeElement.asType()), "source")
             .addModifiers(Modifier.PUBLIC);
         constructorSpecBuilder.addStatement("super()")
-            .addStatement("this.setId(source.getId());")
+            .addStatement("this.setId(source.getId().getId());")
             .addStatement("this.setCreatedAt(source.getCreatedAt());")
             .addStatement("this.setUpdatedAt(source.getCreatedAt());")
             .addStatement("this.setVersion(source.getVersion());");
