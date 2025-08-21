@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # MQTT 代理
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-broker
+    restart: always
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto:/mosquitto
+    environment:
+      - TZ=Asia/Shanghai
+
+  # IPMI 监控与风扇控制容器
+  ipmi-monitor:
+    image: custom-ipmi-monitor:latest
+    container_name: ipmi-monitor
+    privileged: true  # 需要特权模式访问硬件
+    restart: unless-stopped
+    volumes:
+      - /dev:/dev
+      - /run/udev:/run/udev
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+      - MQTT_USERNAME=admin
+      - MQTT_PASSWORD=4745701816@Long
+      - MONITOR_INTERVAL=30  # 监控间隔(秒)
+      - TEMP_SENSORS=CPU_Temp,System_Temp  # 要监控的温度传感器
+      - FAN_CONTROL_ENABLED=true
+      - MIN_TEMP=35
+      - MAX_TEMP=70
+      - MIN_FAN_SPEED=20
+      - MAX_FAN_SPEED=100
+    depends_on:
+      - mosquitto
+
+  # Home Assistant
+  homeassistant:
+    image: homeassistant/home-assistant:stable
+    container_name: homeassistant
+    restart: unless-stopped
+    volumes:
+      - ./homeassistant:/config
+    ports:
+      - "8123:8123"
+    depends_on:
+      - mosquitto

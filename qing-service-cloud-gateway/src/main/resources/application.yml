@@ -7,26 +7,28 @@ spring:
     active: prod
   cloud:
     gateway:
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Origin
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "*"  # 允许所有源（生产环境建议指定具体域名）
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS  # 必须包含 OPTIONS 方法处理预检请求
-            allowedHeaders:
-              - Content-Type
-              - Authorization  # 允许自定义请求头
-            maxAge: 3600  # 预检请求缓存时间（秒）
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+      server:
+        webflux:
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: "*"  # 允许所有源（生产环境建议指定具体域名）
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS  # 必须包含 OPTIONS 方法处理预检请求
+                allowedHeaders:
+                  - Content-Type
+                  - Authorization  # 允许自定义请求头
+                maxAge: 3600  # 预检请求缓存时间（秒）
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
   security:
     oauth2:
       resourceserver:

@@ -13,6 +13,8 @@
 
 package cn.chenyunlong.qing.infrastructure.entity;
 
+import cn.chenyunlong.common.constants.ValidStatus;
+import cn.hutool.core.lang.Assert;
 import lombok.experimental.Accessors;
 
 
@@ -25,4 +27,25 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class BaseEntity {
 
+    /**
+     * 数据状态。
+     */
+    private ValidStatus validStatus;
+
+    public void valid() {
+        setValidStatus(ValidStatus.VALID);
+    }
+
+    public void invalid() {
+        Assert.equals(validStatus, ValidStatus.VALID, "数据已失效");
+        setValidStatus(ValidStatus.INVALID);
+    }
+
+    public ValidStatus getValidStatus() {
+        return validStatus;
+    }
+
+    public void setValidStatus(ValidStatus validStatus) {
+        this.validStatus = validStatus;
+    }
 }
