@@ -2,14 +2,14 @@ package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
-import cn.chenyunlong.qing.auth.app.service.AdminAccountService;
+import cn.chenyunlong.qing.auth.application.service.AdminAccountService;
 import cn.chenyunlong.qing.auth.domain.admin.dto.creator.AdminAccountCreator;
 import cn.chenyunlong.qing.auth.domain.admin.dto.request.AdminAccountCreateRequest;
 import cn.chenyunlong.qing.auth.domain.admin.dto.request.AdminAccountUpdateRequest;
 import cn.chenyunlong.qing.auth.domain.admin.dto.request.UserAuthPlatformsRequest;
 import cn.chenyunlong.qing.auth.domain.admin.dto.request.UserRolesRequest;
 import cn.chenyunlong.qing.auth.domain.admin.dto.updater.AdminAccountUpdater;
-import cn.chenyunlong.qing.infrastructure.auth.converter.AdminAccountMapper;
+import cn.chenyunlong.qing.auth.infrastructure.converter.AdminAccountMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

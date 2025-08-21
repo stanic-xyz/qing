@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrastructure.auth.repository.base;
+package cn.chenyunlong.qing.auth.infrastructure.repository.base;
 
 import cn.chenyunlong.jpa.support.BaseJpaQueryRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;

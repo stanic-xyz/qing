@@ -1,7 +1,7 @@
-package cn.chenyunlong.qing.infrastructure.auth.repository.jpa.repository;
+package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository;
 
 import cn.chenyunlong.jpa.support.BaseJpaQueryRepository;
-import cn.chenyunlong.qing.infrastructure.auth.repository.jpa.entity.AdminAccountEntity;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.AdminAccountEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository

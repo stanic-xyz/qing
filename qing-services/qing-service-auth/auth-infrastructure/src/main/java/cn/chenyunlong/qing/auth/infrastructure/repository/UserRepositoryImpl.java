@@ -1,12 +1,12 @@
-package cn.chenyunlong.qing.infrastructure.auth.repository;
+package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;
-import cn.chenyunlong.qing.infrastructure.auth.converter.UserMapper;
-import cn.chenyunlong.qing.infrastructure.auth.repository.jpa.entity.QingUserEntity;
-import cn.chenyunlong.qing.infrastructure.auth.repository.jpa.repository.UserConnectionJpaRepository;
-import cn.chenyunlong.qing.infrastructure.auth.repository.jpa.repository.UserJpaRepository;
+import cn.chenyunlong.qing.auth.infrastructure.converter.UserMapper;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.QingUserEntity;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.UserConnectionJpaRepository;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.UserJpaRepository;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;

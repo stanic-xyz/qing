@@ -2,14 +2,14 @@ package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
-import cn.chenyunlong.qing.auth.app.service.SysMenuService;
+import cn.chenyunlong.qing.auth.application.service.SysMenuService;
 import cn.chenyunlong.qing.auth.domain.menu.dto.creator.SysMenuCreator;
 import cn.chenyunlong.qing.auth.domain.menu.dto.request.SysMenuCreateRequest;
 import cn.chenyunlong.qing.auth.domain.menu.dto.request.SysMenuUpdateRequest;
 import cn.chenyunlong.qing.auth.domain.menu.dto.response.SysMenuResponse;
 import cn.chenyunlong.qing.auth.domain.menu.dto.updater.SysMenuUpdater;
 import cn.chenyunlong.qing.auth.domain.menu.dto.vo.SysMenuVO;
-import cn.chenyunlong.qing.infrastructure.auth.converter.SysMenuMapper;
+import cn.chenyunlong.qing.auth.infrastructure.converter.SysMenuMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

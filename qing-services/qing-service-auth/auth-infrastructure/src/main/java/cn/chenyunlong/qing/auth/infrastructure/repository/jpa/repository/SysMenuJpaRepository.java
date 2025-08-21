@@ -1,7 +1,7 @@
-package cn.chenyunlong.qing.infrastructure.auth.repository.jpa.repository;
+package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository;
 
 import cn.chenyunlong.jpa.support.BaseJpaRepository;
-import cn.chenyunlong.qing.infrastructure.auth.repository.jpa.entity.MenuEntity;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.MenuEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 

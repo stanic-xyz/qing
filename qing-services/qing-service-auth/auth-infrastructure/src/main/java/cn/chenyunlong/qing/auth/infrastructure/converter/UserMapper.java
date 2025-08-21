@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrastructure.auth.converter;
+package cn.chenyunlong.qing.auth.infrastructure.converter;
 
 import cn.chenyunlong.common.infrustructure.CustomMapper;
 import cn.chenyunlong.common.mapper.DateMapper;
@@ -12,7 +12,7 @@ import cn.chenyunlong.qing.auth.domain.user.dto.request.UserUpdateRequest;
 import cn.chenyunlong.qing.auth.domain.user.dto.response.UserResponse;
 import cn.chenyunlong.qing.auth.domain.user.dto.updater.UserUpdater;
 import cn.chenyunlong.qing.auth.domain.user.dto.vo.UserVO;
-import cn.chenyunlong.qing.infrastructure.auth.repository.jpa.entity.QingUserEntity;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.QingUserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
