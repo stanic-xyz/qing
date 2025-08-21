@@ -1,0 +1,80 @@
+package cn.chenyunlong.codegen.example.domain.dto.updater;
+
+import cn.chenyunlong.codegen.example.domain.User;
+import cn.chenyunlong.qing.domain.common.AggregateId;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.lang.Integer;
+import java.lang.String;
+import java.util.Optional;
+import lombok.Data;
+
+@Schema
+@Data
+public class UserUpdater {
+    @Schema(
+            title = "username"
+    )
+    private String username;
+
+    @Schema(
+            title = "email"
+    )
+    private String email;
+
+    @Schema(
+            title = "password"
+    )
+    private String password;
+
+    @Schema(
+            title = "realName"
+    )
+    private String realName;
+
+    @Schema(
+            title = "phoneNumber"
+    )
+    private String phoneNumber;
+
+    @Schema(
+            title = "status"
+    )
+    private Integer status;
+
+    @Schema(
+            title = "role"
+    )
+    private User.UserRole role;
+
+    @Schema(
+            title = "avatarUrl"
+    )
+    private String avatarUrl;
+
+    @Schema(
+            title = "bio"
+    )
+    private String bio;
+
+    private AggregateId id;
+
+    public void updateUser(User param) {
+        Optional.ofNullable(getUsername()).ifPresent(param::setUsername);
+        Optional.ofNullable(getEmail()).ifPresent(param::setEmail);
+        Optional.ofNullable(getPassword()).ifPresent(param::setPassword);
+        Optional.ofNullable(getRealName()).ifPresent(param::setRealName);
+        Optional.ofNullable(getPhoneNumber()).ifPresent(param::setPhoneNumber);
+        Optional.ofNullable(getStatus()).ifPresent(param::setStatus);
+        Optional.ofNullable(getRole()).ifPresent(param::setRole);
+        Optional.ofNullable(getAvatarUrl()).ifPresent(param::setAvatarUrl);
+        Optional.ofNullable(getBio()).ifPresent(param::setBio);
+    }
+
+    public AggregateId getId() {
+        return id;
+    }
+
+    public void setId(AggregateId id) {
+        this.id = id;
+    }
+}
