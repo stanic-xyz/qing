@@ -1,0 +1,68 @@
+package cn.chenyunlong.codegen.example.domain.dto.request;
+
+import cn.chenyunlong.codegen.example.domain.User;
+import cn.chenyunlong.common.model.Request;
+import cn.chenyunlong.qing.domain.common.AggregateId;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.lang.Integer;
+import java.lang.String;
+import lombok.Data;
+
+@Schema
+@Data
+public class UserUpdateRequest implements Request {
+    @Schema(
+            title = "username"
+    )
+    private String username;
+
+    @Schema(
+            title = "email"
+    )
+    private String email;
+
+    @Schema(
+            title = "password"
+    )
+    private String password;
+
+    @Schema(
+            title = "realName"
+    )
+    private String realName;
+
+    @Schema(
+            title = "phoneNumber"
+    )
+    private String phoneNumber;
+
+    @Schema(
+            title = "status"
+    )
+    private Integer status;
+
+    @Schema(
+            title = "role"
+    )
+    private User.UserRole role;
+
+    @Schema(
+            title = "avatarUrl"
+    )
+    private String avatarUrl;
+
+    @Schema(
+            title = "bio"
+    )
+    private String bio;
+
+    private AggregateId id;
+
+    public AggregateId getId() {
+        return id;
+    }
+
+    public void setId(AggregateId id) {
+        this.id = id;
+    }
+}

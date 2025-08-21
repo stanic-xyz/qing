@@ -1,0 +1,52 @@
+package cn.chenyunlong.codegen.example.domain.dto.request;
+
+import cn.chenyunlong.codegen.example.domain.User;
+import cn.chenyunlong.common.model.Request;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.lang.Integer;
+import java.lang.String;
+import lombok.Data;
+
+@Schema
+@Data
+public class UserCreateRequest implements Request {
+    @Schema(
+            title = "username"
+    )
+    private String username;
+
+    @Schema(
+            title = "email"
+    )
+    private String email;
+
+    @Schema(
+            title = "realName"
+    )
+    private String realName;
+
+    @Schema(
+            title = "phoneNumber"
+    )
+    private String phoneNumber;
+
+    @Schema(
+            title = "status"
+    )
+    private Integer status;
+
+    @Schema(
+            title = "role"
+    )
+    private User.UserRole role;
+
+    @Schema(
+            title = "avatarUrl"
+    )
+    private String avatarUrl;
+
+    @Schema(
+            title = "bio"
+    )
+    private String bio;
+}
