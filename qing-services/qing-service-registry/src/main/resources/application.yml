@@ -5,6 +5,10 @@ spring:
     name: qing-eureka-server
   main:
     allow-bean-definition-overriding: true
+
+  cloud:
+    compatibility-verifier:
+      enabled: false
 eureka:
   instance:
     hostname: eureka
