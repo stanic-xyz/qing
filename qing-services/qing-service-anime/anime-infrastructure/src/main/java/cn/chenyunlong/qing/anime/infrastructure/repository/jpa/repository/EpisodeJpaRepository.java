@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository;
 
 import cn.chenyunlong.jpa.support.BaseJpaRepository;
-import cn.chenyunlong.qing.anime.domain.episode.Episode;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.EpisodeEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,5 +14,5 @@ public interface EpisodeJpaRepository extends BaseJpaRepository<EpisodeEntity, L
     Integer findMaxEpisodeNumberByPlayListId(Long playListId);
 
     @Query("select e from EpisodeEntity e where e.animeId = ?1 ")
-    List<Episode> listByAnimeId(Long animeId);
+    List<EpisodeEntity> listByAnimeId(Long animeId);
 }
