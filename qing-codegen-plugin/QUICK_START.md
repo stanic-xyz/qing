@@ -12,7 +12,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/chenyunlong/qing.git
+git clone https://github.com/stanic-xyz/qing.git
 cd qing
 
 # 编译安装插件
@@ -263,5 +263,5 @@ A: 查看完整的[README.md](README.md)了解高级配置选项。
 ## 获取帮助
 
 - 📖 [完整文档](README.md)
-- 🐛 [报告问题](https://github.com/chenyunlong/qing/issues)
-- 💬 [讨论区](https://github.com/chenyunlong/qing/discussions)
+- 🐛 [报告问题](https://github.com/stanic-xyz/qing/issues)
+- 💬 [讨论区](https://github.com/stanic-xyz/qing/discussions)

@@ -69,9 +69,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git@gitee.com:stanChen/qing.git</connection>
-        <developerConnection>scm:git@gitee.com:stanChen/qing.git</developerConnection>
-        <url>git@gitee.com:stanChen/qing.git</url>
+        <connection>scm:git@github.com:stanic-xyz/qing.git</connection>
+        <developerConnection>scm:git@github.com:stanic-xyz/qing.git</developerConnection>
+        <url>https://github.com/stanic-xyz/qing</url>
     </scm>
 
     <properties>
@@ -109,7 +109,7 @@
 
     <issueManagement>
         <system>Gitee Issues</system>
-        <url>https://gitee.com/stanChen/qing/issues</url>
+        <url>https://github.com/stanic-xyz/qing/issues</url>
     </issueManagement>
 
     <dependencyManagement>

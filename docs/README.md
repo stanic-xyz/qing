@@ -1,14 +1,14 @@
 # Project-青
 
 [![License](https://img.shields.io/badge/Licence-MulanPSL2-blue)](http://license.coscl.org.cn/MulanPSL2)
-[![star](https://gitee.com/stanChen/qing/badge/star.svg?theme=dark)](https://gitee.com/stanChen/qing)
+[![star](https://gitee.com/stanic-xyz/qing/badge/star.svg?theme=dark)](https://gitee.com/stanic-xyz/qing)
 [![Build](https://github.com/stanic-xyz/qing/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/stanic-xyz/qing/actions/workflows/build.yml)
 
 ### 🌐 代码仓库
 
-| 后端源码                                                                                     | 前端源码                                                                                                       |
-|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| [Gitee](https://gitee.com/stanChen/qing) \| [GitHub](https://github.com/stanic-xyz/qing) | [Gitee](https://gitee.com/stanChen/qing-frontend) \| [GitHub](https://github.com/stanic-xyz/qing-frontend) |
+| 后端源码                                                                                       | 前端源码                                                                                                         |
+|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| [Gitee](https://gitee.com/stanic-xyz/qing) \| [GitHub](https://github.com/stanic-xyz/qing) | [Gitee](https://gitee.com/stanic-xyz/qing-frontend) \| [GitHub](https://github.com/stanic-xyz/qing-frontend) |
 
 ---
 
@@ -45,7 +45,7 @@
 - GitHub Actions
     - 设置注册中心地址：http://nacos.chenyunlong.cn/nacos/
 - Gitee GO
-    - 流水线地址：[链接](https://gitee.com/stanChen/qing/gitee_go/pipelines)
+  - 流水线地址：[链接](https://gitee.com/stanic-xyz/qing/gitee_go/pipelines)
 
 ---
 

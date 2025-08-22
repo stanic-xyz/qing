@@ -371,14 +371,14 @@ gantt
 
 ### 项目信息
 
-- 🌐 **项目主页**: https://gitee.com/stanChen/qing
+- 🌐 **项目主页**: https://github.com/stanic-xyz/qing
 - 📖 **文档中心**: https://qing.example.com/docs
 - 💬 **社区论坛**: https://community.qing.example.com
 - 📧 **邮件联系**: project-qing@example.com
 
 ### 社交媒体
 
-- 🐙 **GitHub**: https://github.com/project-qing
+- 🐙 **GitHub**: https://github.com/stanic-xyz/qing
 - 📱 **微信群**: 扫码加入技术交流群
 - 🎯 **QQ群**: 123456789
 - 📺 **B站**: @Project青团队
@@ -393,7 +393,7 @@ gantt
 
 ## 📄 版权声明
 
-本项目采用 [Apache License 2.0](LICENSE) 开源协议。
+本项目采用 [木兰宽松许可证第2版](LICENSE.TXT) 开源协议。
 
 我们欢迎任何形式的贡献，包括但不限于：
 - 🐛 Bug报告和修复

@@ -43,7 +43,7 @@
 
 ## 联系我们
 
-- 项目地址: [GitHub](https://github.com/chenyunlong/qing)
+- 项目地址: [GitHub](https://github.com/stanic-xyz/qing)
 - 许可证: Mulan PSL v2
 
 ---

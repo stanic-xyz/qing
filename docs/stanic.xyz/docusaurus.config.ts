@@ -3,8 +3,8 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-    title: '青',
-    tagline: '💯虽然道路曲折，但你仍在最优道路上！',
+    title: '青（Qing）',
+    tagline: '现代化微服务架构的动漫管理平台 🎌',
     favicon: 'img/favicon.ico',
 
     // Set the production url of your site here
@@ -15,8 +15,8 @@ const config: Config = {
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
-    organizationName: 'facebook', // Usually your GitHub org/user name.
-    projectName: 'docusaurus', // Usually your repo name.
+    organizationName: 'stanic-xyz', // Usually your GitHub org/user name.
+    projectName: 'qing', // Usually your repo name.
 
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
@@ -25,8 +25,8 @@ const config: Config = {
     // useful metadata like html lang. For example, if your site is Chinese, you
     // may want to replace "en" with "zh-Hans".
     i18n: {
-        defaultLocale: 'zh_CN',
-        locales: ['zh_CN'],
+        defaultLocale: 'zh-Hans',
+        locales: ['zh-Hans'],
     },
 
     presets: [
@@ -38,14 +38,14 @@ const config: Config = {
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
                     editUrl:
-                            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+                        'https://github.com/stanic-xyz/qing/tree/main/docs/stanic.xyz/',
                 },
                 blog: {
                     showReadingTime: true,
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
                     editUrl:
-                            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+                        'https://github.com/stanic-xyz/qing/tree/main/docs/stanic.xyz/',
                 },
                 theme: {
                     customCss: './src/css/custom.css',
@@ -58,9 +58,9 @@ const config: Config = {
         // Replace with your project's social card
         image: 'img/docusaurus-social-card.jpg',
         navbar: {
-            title: 'My Site',
+            title: '青（Qing）',
             logo: {
-                alt: 'My Site Logo',
+                alt: 'Qing Logo',
                 src: 'img/logo.svg',
             },
             items: [
@@ -68,11 +68,11 @@ const config: Config = {
                     type: 'docSidebar',
                     sidebarId: 'tutorialSidebar',
                     position: 'left',
-                    label: 'Tutorial',
+                    label: '文档',
                 },
-                {to: '/blog', label: 'Blog', position: 'left'},
+                {to: '/blog', label: '博客', position: 'left'},
                 {
-                    href: 'https://github.com/facebook/docusaurus',
+                    href: 'https://github.com/stanic-xyz/qing',
                     label: 'GitHub',
                     position: 'right',
                 },
@@ -82,46 +82,58 @@ const config: Config = {
             style: 'dark',
             links: [
                 {
-                    title: 'Docs',
+                    title: '文档',
                     items: [
                         {
-                            label: 'Tutorial',
-                            to: '/docs/intro',
+                            label: '快速开始',
+                            to: '/docs/tutorial-basics/getting-started',
+                        },
+                        {
+                            label: '用户指南',
+                            to: '/docs/tutorial-basics/user-guide',
+                        },
+                        {
+                            label: 'API 文档',
+                            to: '/docs/tutorial-extras/api-docs',
                         },
                     ],
                 },
                 {
-                    title: 'Community',
+                    title: '社区',
                     items: [
                         {
-                            label: 'Stack Overflow',
-                            href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                            label: 'GitHub Issues',
+                            href: 'https://github.com/stanic-xyz/qing/issues',
                         },
                         {
-                            label: 'Discord',
-                            href: 'https://discordapp.com/invite/docusaurus',
+                            label: 'GitHub Discussions',
+                            href: 'https://github.com/stanic-xyz/qing/discussions',
                         },
                         {
-                            label: 'Twitter',
-                            href: 'https://twitter.com/docusaurus',
+                            label: 'Gitee（镜像）',
+                            href: 'https://gitee.com/stanic/qing',
                         },
                     ],
                 },
                 {
-                    title: 'More',
+                    title: '更多',
                     items: [
                         {
-                            label: 'Blog',
+                            label: '博客',
                             to: '/blog',
                         },
                         {
                             label: 'GitHub',
-                            href: 'https://github.com/facebook/docusaurus',
+                            href: 'https://github.com/stanic-xyz/qing',
+                        },
+                        {
+                            label: '开源协议',
+                            href: 'https://github.com/stanic-xyz/qing/blob/main/LICENSE.TXT',
                         },
                     ],
                 },
             ],
-            copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+            copyright: `Copyright © ${new Date().getFullYear()} 青（Qing）项目. 基于木兰宽松许可证第2版开源.`,
         },
         prism: {
             theme: prismThemes.github,
