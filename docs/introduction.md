@@ -19,8 +19,8 @@ docker run -d --name halo -p 8090:8090 -v ~/.halo2:/root/.halo2 halohub/halo:2.1
 
 # 在线体验
 
-- 环境地址：https://demo.stanic.xyz
-- 后台地址：https://demo.stanic.xyz/dashboard
+- 环境地址：https://demo.qing.dev
+- 后台地址：https://demo.qing.dev/dashboard
 - 用户名：demo
 - 密码：Admin@123
 

@@ -349,9 +349,9 @@ A: 建议不要手动修改生成的代码，因为重新编译时会被覆盖�
 
 ## 更多信息
 
-- [项目主页](https://github.com/chenyunlong/qing)
+- [项目主页](https://github.com/stanic-xyz/qing)
 - [文档站点](https://qing.chenyunlong.cn)
-- [问题反馈](https://github.com/chenyunlong/qing/issues)
+- [问题反馈](https://github.com/stanic-xyz/qing/issues)
 
 ## 许可证
 

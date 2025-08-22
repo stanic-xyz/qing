@@ -4,8 +4,8 @@ layout: home
 
 hero:
   name: "Qing"
-  text: "由 Spring 和 Vue 驱动的业务站点生成器"
-  tagline: "从零开始，创建并启动一个DDD项目，只需几分钟！"
+  text: "现代化微服务开发平台"
+  tagline: "基于领域驱动设计，让复杂业务变得简单优雅 ✨"
   actions:
     - theme: brand
       text: 快速开始
@@ -13,23 +13,26 @@ hero:
     - theme: alt
       text: 接口说明
       link: /api-examples
+    - theme: alt
+      text: 开发指南
+      link: /category/开发者指南/
   image:
     src: /logo-large.webp
     alt: Qing
 
 features:
-  - icon: 📦
+  - icon: 🏗️
     title: 领域驱动设计
-    details: 为了领域驱动设计而生，作为脚手架，合适的很！
-  - icon: 🤝
-    title: ️代码生成器
-    details: 自动生成代码，解决重复劳动，解放双手，让思想更自由奔放！
+    details: 遵循DDD最佳实践，让业务逻辑清晰可维护，代码结构优雅有序
+  - icon: ⚡
+    title: 智能代码生成
+    details: 告别重复劳动！一键生成标准化代码，让开发者专注于业务创新
   - icon: 🚀
-    title: 天生强大
-    details: 引入Jimmer，让项目具有更强大的ORM能力！
-  - icon: 🧩
-    title: 快速扩展
-    details: 引入Jimmer，让项目具有更强大的ORM能力！
+    title: 现代技术栈
+    details: Spring Boot + Jimmer + Vue3，为您提供企业级开发体验
+  - icon: 🔧
+    title: 开箱即用
+    details: 完整的微服务解决方案，从项目初始化到生产部署，一站式搞定
 ---
 
 <style>
@@ -61,6 +64,13 @@ features:
 }
 </style>
 
-## 疯言疯语
+## 项目理念
 
-哈哈哈哈，等这个项目好了以后，再去掉该模块！！！早点完成吧！
+**Qing** 诞生于对优雅代码的追求和对开发效率的思考。我们深知企业级应用开发的复杂性，也理解开发者对于工具选择的谨慎。
+
+这是一个专注于**领域驱动设计**的现代化开发框架，融合了**Spring Cloud**生态的成熟稳定与**代码生成**
+技术的高效便捷。我们不追求大而全，而是致力于在关键环节提供精准的解决方案。
+
+每一行代码都经过深思熟虑，每一个设计决策都源于实际项目的历练。我们相信，真正优秀的框架应该让开发者专注于业务创新，而非重复的基础工作。
+
+**Qing** 期待与志同道合的开发者一起，构建更加优雅、高效的企业级应用。

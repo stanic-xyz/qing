@@ -90,11 +90,11 @@
 
 1. **克隆项目**
    ```bash
-   # 从 Gitee 克隆（推荐，国内访问更快）
-   git clone https://gitee.com/stanChen/qing.git
+   # 从 GitHub 克隆（推荐）
+   git clone https://github.com/stanic-xyz/qing.git
    
-   # 或从 GitHub 克隆
-   git clone https://github.com/project-qing/qing.git
+   # 或从 Gitee 克隆（国内访问更快）
+   git clone https://gitee.com/stanChen/qing.git
    
    cd qing
    ```
@@ -165,7 +165,7 @@
 
 ### 1. Fork 项目
 
-1. 访问项目主页：https://gitee.com/stanChen/qing
+1. 访问项目主页：https://github.com/stanic-xyz/qing
 2. 点击右上角的 "Fork" 按钮
 3. 将项目 Fork 到您的账户下
 
@@ -173,11 +173,11 @@
 
 ```bash
 # 克隆您 Fork 的仓库
-git clone https://gitee.com/your-username/qing.git
+git clone https://github.com/your-username/qing.git
 cd qing
 
 # 添加上游仓库
-git remote add upstream https://gitee.com/stanChen/qing.git
+git remote add upstream https://github.com/stanic-xyz/qing.git
 
 # 创建功能分支
 git checkout -b feature/your-feature-name
@@ -1027,13 +1027,13 @@ public class UserController {
    - 🏗️ [架构设计](docs/架构设计.md)
 
 2. **社区讨论**
-   - 💬 [GitHub Discussions](https://github.com/project-qing/qing/discussions)
+   - 💬 [GitHub Discussions](https://github.com/stanic-xyz/qing/discussions)
    - 🎯 QQ群: 123456789
    - 📱 微信群: 扫码加入
 
 3. **问题反馈**
-   - 🐛 [Bug报告](https://gitee.com/stanChen/qing/issues/new?template=bug_report.md)
-   - 💡 [功能请求](https://gitee.com/stanChen/qing/issues/new?template=feature_request.md)
+   - 🐛 [Bug报告](https://github.com/stanic-xyz/qing/issues/new?template=bug_report.md)
+   - 💡 [功能请求](https://github.com/stanic-xyz/qing/issues/new?template=feature_request.md)
 
 ### 社区活动
 
@@ -1050,7 +1050,7 @@ public class UserController {
 ### 联系方式
 
 - 📧 **项目邮箱**: project-qing@example.com
-- 🐙 **GitHub**: https://github.com/project-qing
+- 🐙 **GitHub**: https://github.com/stanic-xyz/qing
 - 🦄 **Gitee**: https://gitee.com/stanChen/qing
 - 🌐 **官方网站**: https://qing.example.com
 - 📱 **微博**: @Project青团队
@@ -1074,11 +1074,13 @@ public class UserController {
 
 ### 特别感谢
 
-- 🎯 **架构设计**: [@architect](https://github.com/architect)
-- 🔧 **核心开发**: [@developer](https://github.com/developer)
-- 📚 **文档维护**: [@writer](https://github.com/writer)
-- 🧪 **测试保障**: [@tester](https://github.com/tester)
-- 🎨 **UI设计**: [@designer](https://github.com/designer)
+<!-- 特别感谢部分暂时保留，待有贡献者后再更新 -->
+
+- 🎯 **架构设计**: 待补充
+- 🔧 **核心开发**: 待补充
+- 📚 **文档维护**: 待补充
+- 🧪 **测试保障**: 待补充
+- 🎨 **UI设计**: 待补充
 
 ## 📄 许可证
 

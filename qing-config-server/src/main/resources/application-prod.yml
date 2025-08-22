@@ -3,6 +3,6 @@ spring:
     config:
       server:
         git:
-          uri: https://gitee.com/stanChen/qing-config.git
+          uri: https://github.com/stanic-xyz/qing-config.git
           username: ${GIT_USER}
           password: ${GIT_PASS}
