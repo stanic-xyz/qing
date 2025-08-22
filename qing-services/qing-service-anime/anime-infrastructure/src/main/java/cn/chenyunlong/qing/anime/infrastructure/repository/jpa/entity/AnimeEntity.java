@@ -3,6 +3,8 @@ package cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaEntity;
 import cn.chenyunlong.qing.anime.domain.anime.PlayStatus;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.converter.PlayStatusConverter;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -70,6 +72,7 @@ public class AnimeEntity extends BaseJpaEntity {
     private LocalDate premiereDate;
 
     @FieldDesc(description = "播放状态")
+    @Convert(converter = PlayStatusConverter.class)
     private PlayStatus playStatus;
 
     @FieldDesc(description = "动漫类型")

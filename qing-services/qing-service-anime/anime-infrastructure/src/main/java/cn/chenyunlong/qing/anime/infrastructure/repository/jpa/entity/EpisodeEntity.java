@@ -14,9 +14,9 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
+import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.jpa.support.BaseJpaEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -52,4 +52,8 @@ public class EpisodeEntity extends BaseJpaEntity {
 
     @FieldDesc(name = "集数", description = "集数")
     private Integer episodeNumber;
+
+    @Column(name = "valid_status")
+    @Enumerated(EnumType.STRING)
+    private ValidStatus validStatus;
 }

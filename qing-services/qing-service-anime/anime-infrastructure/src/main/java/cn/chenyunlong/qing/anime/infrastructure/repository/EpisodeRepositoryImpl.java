@@ -2,6 +2,8 @@ package cn.chenyunlong.qing.anime.infrastructure.repository;
 
 import cn.chenyunlong.qing.anime.domain.episode.Episode;
 import cn.chenyunlong.qing.anime.domain.episode.repository.EpisodeRepository;
+import cn.chenyunlong.qing.anime.infrastructure.converter.EpisodeConverter;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.EpisodeEntity;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.EpisodeJpaRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class EpisodeRepositoryImpl implements EpisodeRepository {
 
     private final EpisodeJpaRepository episodeJpaRepository;
+    private final EpisodeConverter episodeConverter;
 
     @Override
     public Integer findMaxEpisodeNumberByPlayListId(Long playListId) {
@@ -23,16 +26,26 @@ public class EpisodeRepositoryImpl implements EpisodeRepository {
 
     @Override
     public List<Episode> listByAnimeId(Long animeId) {
-        return episodeJpaRepository.listByAnimeId(animeId);
+        return episodeJpaRepository.listByAnimeId(animeId)
+                .stream()
+                .map(episodeConverter::toDomain)
+                .toList();
     }
 
     @Override
     public Episode save(Episode entity) {
-        return null;
+        EpisodeEntity episodeEntity = episodeConverter.toEntity(entity);
+        EpisodeEntity savedEntity = episodeJpaRepository.saveAndFlush(episodeEntity);
+        return episodeConverter.toDomain(savedEntity);
     }
 
     @Override
     public Optional<Episode> findById(AggregateId id) {
-        return Optional.empty();
+        if (id == null || id.getId() == null) {
+            return Optional.empty();
+        }
+        return episodeJpaRepository.findById(id.getId())
+                .map(episodeConverter::toDomain);
     }
+
 }
