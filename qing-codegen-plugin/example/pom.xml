@@ -25,7 +25,7 @@
         <spring-boot.version>3.2.0</spring-boot.version>
         <lombok.version>1.18.30</lombok.version>
         <swagger.version>2.2.8</swagger.version>
-        <hutool.version>5.8.22</hutool.version>
+        <hutool.version>5.8.25</hutool.version>
     </properties>
 
     <dependencies>
