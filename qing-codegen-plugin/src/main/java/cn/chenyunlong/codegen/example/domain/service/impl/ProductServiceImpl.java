@@ -37,9 +37,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Long createProduct(ProductCreator creator) {
         Optional<Product> product = EntityOperations.doCreate(productRepository)
-        .create(() -> ProductMapper.INSTANCE.dtoToEntity(creator))
-        .update(Product::init)
-        .execute();
+            .create(() -> ProductMapper.INSTANCE.dtoToEntity(creator))
+            .update(Product::init)
+            .execute();
         return product.isPresent() ? product.get().getId() : 0;
     }
 
@@ -49,9 +49,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void updateProduct(ProductUpdater updater) {
         EntityOperations.doUpdate(productRepository)
-        .loadById(updater.getId())
-        .update(updater::updateProduct)
-        .execute();
+            .loadById(updater.getId())
+            .update(updater::updateProduct)
+            .execute();
     }
 
     /**
@@ -60,9 +60,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void validProduct(AggregateId id) {
         EntityOperations.doUpdate(productRepository)
-        .loadById(id)
-        .update(Product::valid)
-        .execute();
+            .loadById(id)
+            .update(Product::valid)
+            .execute();
     }
 
     /**
@@ -71,9 +71,9 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void invalidProduct(AggregateId id) {
         EntityOperations.doUpdate(productRepository)
-        .loadById(id)
-        .update(Product::invalid)
-        .execute();
+            .loadById(id)
+            .update(Product::invalid)
+            .execute();
     }
 
     /**

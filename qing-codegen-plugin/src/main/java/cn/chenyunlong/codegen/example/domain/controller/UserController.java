@@ -40,7 +40,8 @@ public class UserController {
      */
     @PostMapping("create")
     public JsonResult<Long> createUser(@RequestBody UserCreateRequest request) {
-        UserCreator creator = UserMapper.INSTANCE.request2Dto(request);return JsonResult.success(userService.createUser(creator));
+        UserCreator creator = UserMapper.INSTANCE.request2Dto(request);
+        return JsonResult.success(userService.createUser(creator));
     }
 
     /**
@@ -48,7 +49,8 @@ public class UserController {
      */
     @PostMapping("updateUser")
     public JsonResult<String> updateUser(@RequestBody UserUpdateRequest request) {
-        UserUpdater updater = UserMapper.INSTANCE.request2Updater(request);userService.updateUser(updater);
+        UserUpdater updater = UserMapper.INSTANCE.request2Updater(request);
+        userService.updateUser(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
@@ -57,7 +59,8 @@ public class UserController {
      */
     @PostMapping("valid/{id}")
     public JsonResult<String> validUser(@PathVariable AggregateId id) {
-        userService.validUser(id);return JsonResult.success(CodeEnum.Success.getName());
+        userService.validUser(id);
+        return JsonResult.success(CodeEnum.Success.getName());
     }
 
     /**
@@ -65,7 +68,8 @@ public class UserController {
      */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidUser(@PathVariable AggregateId id) {
-        userService.invalidUser(id);return JsonResult.success(CodeEnum.Success.getName());
+        userService.invalidUser(id);
+        return JsonResult.success(CodeEnum.Success.getName());
     }
 
     /**
@@ -73,7 +77,9 @@ public class UserController {
      */
     @GetMapping("findById/{id}")
     public JsonResult<UserResponse> findById(@PathVariable AggregateId id) {
-        UserVO vo = userService.findById(id);UserResponse response = UserMapper.INSTANCE.vo2CustomResponse(vo);return JsonResult.success(response);
+        UserVO vo = userService.findById(id);
+        UserResponse response = UserMapper.INSTANCE.vo2CustomResponse(vo);
+        return JsonResult.success(response);
     }
 
     /**
@@ -85,8 +91,8 @@ public class UserController {
         PageRequestWrapper<UserQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(UserMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
-            wrapper.setPageSize(request.getPageSize());
-            wrapper.setPage(request.getPage());
+        wrapper.setPageSize(request.getPageSize());
+        wrapper.setPage(request.getPage());
         Page<UserVO> page = userService.findByPage(wrapper);
         return JsonResult.success(
                 PageResult.of(

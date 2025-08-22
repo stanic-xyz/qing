@@ -4,7 +4,9 @@
 package cn.chenyunlong.qing.anime.domain.product.dto.creator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
+
 import lombok.Data;
 
 /**
@@ -13,28 +15,28 @@ import lombok.Data;
  * @author Qing Code Generator
  */
 @Schema(
-        name = "ProductCreator",
-        description = "Product创建请求对象"
+    name = "ProductCreator",
+    description = "Product创建请求对象"
 )
 @Data
 public class ProductCreator {
     @Schema(
-            description = "name"
+        description = "name"
     )
     private String name;
 
     @Schema(
-            description = "description"
+        description = "description"
     )
     private String description;
 
     @Schema(
-            description = "price"
+        description = "price"
     )
     private BigDecimal price;
 
     @Schema(
-            description = "stock"
+        description = "stock"
     )
     private Integer stock;
 }

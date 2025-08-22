@@ -49,13 +49,11 @@ public class AnimeDomainService {
     private final FileStorageService fileStorageService;
 
     public Anime createAnime(CreatorAnimeCommand creator) {
-        return doCreate(animeRepository).create(() ->
-            {
+        return doCreate(animeRepository).create(() -> {
                 // 检查名称是否存在
                 if (animeRepository.existsByName(creator.getName())) {
                     throw new NotFoundException("动漫名称已存在");
                 }
-
                 List<Tag> tagList = tagRepository.findByIds(creator.getTagIds());
                 Tags tags = Tags.create(tagList.stream().map(Tag::getName).collect(Collectors.toList()));
 

@@ -37,9 +37,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Long createUser(UserCreator creator) {
         Optional<User> user = EntityOperations.doCreate(userRepository)
-        .create(() -> UserMapper.INSTANCE.dtoToEntity(creator))
-        .update(User::init)
-        .execute();
+            .create(() -> UserMapper.INSTANCE.dtoToEntity(creator))
+            .update(User::init)
+            .execute();
         return user.isPresent() ? user.get().getId() : 0;
     }
 
@@ -49,9 +49,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void updateUser(UserUpdater updater) {
         EntityOperations.doUpdate(userRepository)
-        .loadById(updater.getId())
-        .update(updater::updateUser)
-        .execute();
+            .loadById(updater.getId())
+            .update(updater::updateUser)
+            .execute();
     }
 
     /**
@@ -60,9 +60,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void validUser(AggregateId id) {
         EntityOperations.doUpdate(userRepository)
-        .loadById(id)
-        .update(User::valid)
-        .execute();
+            .loadById(id)
+            .update(User::valid)
+            .execute();
     }
 
     /**
@@ -71,9 +71,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void invalidUser(AggregateId id) {
         EntityOperations.doUpdate(userRepository)
-        .loadById(id)
-        .update(User::invalid)
-        .execute();
+            .loadById(id)
+            .update(User::invalid)
+            .execute();
     }
 
     /**

@@ -369,6 +369,272 @@ CREATE TABLE User (
 - 时间字段使用 `_time` 后缀
 - 外键使用 `表名_id` 格式
 
+### 代码风格配置
+
+本项目采用 **EditorConfig + Checkstyle** 的双重配置方案来确保代码质量和风格一致性：
+
+#### 🎯 配置分工
+
+| 工具               | 职责    | 检查内容                            |
+|------------------|-------|---------------------------------|
+| **EditorConfig** | 代码格式化 | 缩进、空格、换行、编码、行尾等格式化规则            |
+| **Checkstyle**   | 代码质量  | 命名约定、代码结构、Javadoc、最佳实践等Java特有规则 |
+
+> 💡 **设计理念**: EditorConfig 负责"如何格式化"，Checkstyle 负责"如何编写"，两者互补不重叠。
+
+#### 📁 配置文件
+
+- **EditorConfig**: 项目根目录的 `.editorconfig` 文件
+- **Checkstyle**: `checkstyle/checkstyle.xml` 文件
+
+#### 🔧 IDE 配置指南
+
+##### IntelliJ IDEA 配置
+
+**1. 安装和启用 EditorConfig 支持**
+
+IDEA 默认支持 EditorConfig，确保已启用：
+
+```
+File → Settings → Editor → Code Style
+✅ Enable EditorConfig support
+```
+
+**2. 配置 Checkstyle 插件**
+
+安装 Checkstyle-IDEA 插件：
+
+```
+File → Settings → Plugins
+搜索并安装: CheckStyle-IDEA
+```
+
+配置 Checkstyle：
+
+```
+File → Settings → Tools → Checkstyle
+
+配置项:
+✅ Checkstyle version: 10.12.4 (或更高版本)
+✅ Scan Scope: Only Java sources (including tests)
+
+添加配置文件:
+1. 点击 "+" 按钮
+2. Description: Qing Project Checkstyle
+3. File: 选择项目中的 checkstyle/checkstyle.xml
+4. ✅ Store relative to project file
+5. 点击 "Next" → "Finish"
+6. ✅ 勾选新添加的配置使其生效
+```
+
+**3. 配置代码格式化**
+
+```
+File → Settings → Editor → Code Style → Java
+
+重要设置:
+✅ Use tab character: 取消勾选 (使用空格)
+✅ Tab size: 4
+✅ Indent: 4
+✅ Continuation indent: 8
+
+Imports 设置:
+✅ Class count to use import with '*': 999
+✅ Names count to use static import with '*': 999
+```
+
+**4. 启用实时检查**
+
+```
+File → Settings → Editor → Inspections
+✅ Checkstyle real-time scan
+
+在编辑器中:
+View → Tool Windows → Checkstyle
+点击 "Play" 按钮启用实时扫描
+```
+
+**5. 配置快捷键**
+
+```
+File → Settings → Keymap
+
+推荐快捷键:
+- Reformat Code: Ctrl+Alt+L
+- Optimize Imports: Ctrl+Alt+O
+- Checkstyle Scan: 自定义 (如 Ctrl+Alt+C)
+```
+
+##### Visual Studio Code 配置
+
+**1. 安装必要插件**
+
+```json
+// 推荐插件列表
+{
+  "recommendations": [
+    "EditorConfig.EditorConfig",
+    "shengchen.vscode-checkstyle",
+    "vscjava.vscode-java-pack",
+    "redhat.java",
+    "vscjava.vscode-maven"
+  ]
+}
+```
+
+**2. 配置 settings.json**
+
+在项目根目录创建 `.vscode/settings.json`：
+
+```json
+{
+  // EditorConfig 支持
+  "editorconfig.generateAuto": false,
+  
+  // Java 格式化设置
+  "java.format.settings.url": "./checkstyle/checkstyle.xml",
+  "java.format.settings.profile": "GoogleStyle",
+  
+  // Checkstyle 配置
+  "java.checkstyle.configuration": "./checkstyle/checkstyle.xml",
+  "java.checkstyle.version": "10.12.4",
+  
+  // 保存时自动格式化
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  
+  // 文件编码
+  "files.encoding": "utf8",
+  "files.eol": "\r\n",
+  
+  // 缩进设置
+  "editor.insertSpaces": true,
+  "editor.tabSize": 4,
+  "editor.detectIndentation": false,
+  
+  // Java 特定设置
+  "[java]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true
+  },
+  
+  // XML 文件设置
+  "[xml]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+  
+  // YAML 文件设置
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  }
+}
+```
+
+**3. 配置任务 (tasks.json)**
+
+创建 `.vscode/tasks.json` 用于快速运行 Checkstyle：
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "checkstyle:check",
+      "type": "shell",
+      "command": "mvn",
+      "args": ["checkstyle:check"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "format-code",
+      "type": "shell",
+      "command": "mvn",
+      "args": ["spotless:apply"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    }
+  ]
+}
+```
+
+#### 🚀 使用流程
+
+**开发时**:
+
+1. 编写代码时，EditorConfig 自动处理格式化
+2. IDE 实时显示 Checkstyle 检查结果
+3. 保存文件时自动格式化和优化导入
+
+**提交前**:
+
+```bash
+# 运行 Checkstyle 检查
+mvn checkstyle:check
+
+# 如果有违规，修复后重新检查
+# 直到所有检查通过
+```
+
+**CI/CD 流程**:
+
+- 自动运行 `mvn checkstyle:check`
+- 检查失败时阻止合并
+- 确保代码质量一致性
+
+#### 📋 常见问题
+
+**Q: EditorConfig 和 IDE 格式化冲突怎么办？**
+
+A: EditorConfig 优先级更高，建议：
+
+- 禁用 IDE 的自动格式化冲突设置
+- 使用 EditorConfig 的配置为准
+- 必要时可以在 IDE 中手动触发格式化
+
+**Q: Checkstyle 检查失败但代码看起来正确？**
+
+A: 检查以下几点：
+
+- 确认使用的是项目指定的 checkstyle.xml
+- 查看具体的错误信息和行号
+- 参考项目中其他类似代码的写法
+- 如有疑问可以在 PR 中讨论
+
+**Q: 如何临时禁用某个 Checkstyle 规则？**
+
+A: 使用注释方式：
+
+```java
+// CHECKSTYLE:OFF
+代码块
+// CHECKSTYLE:ON
+
+// 或者禁用特定规则
+@SuppressWarnings("checkstyle:MethodName")
+public void method_with_underscores() {
+    // 代码
+}
+```
+
+> ⚠️ **注意**: 临时禁用应该谨慎使用，并在代码审查时说明原因。
+
 ## 📋 提交规范
 
 我们使用 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
