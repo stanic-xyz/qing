@@ -37,4 +37,6 @@ public interface TypeMapper {
     TypeVO entityToVo(Type type);
 
     Type entityToDomain(TypeEntity typeEntity);
+
+    TypeEntity toEntity(Type entity);
 }

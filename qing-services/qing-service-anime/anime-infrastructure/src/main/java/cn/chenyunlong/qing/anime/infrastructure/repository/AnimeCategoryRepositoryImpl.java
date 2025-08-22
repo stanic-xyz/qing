@@ -7,16 +7,18 @@ import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeCategoryMapper;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.CategoryEntity;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.AnimeCategoryJpaRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class AnimeCategoryRepositoryImpl implements AnimeCategoryRepository {
 
     private final AnimeCategoryJpaRepository animeCategoryJpaRepository;
+
+    public AnimeCategoryRepositoryImpl(AnimeCategoryJpaRepository animeCategoryJpaRepository) {
+        this.animeCategoryJpaRepository = animeCategoryJpaRepository;
+    }
 
     @Override
     public Category save(Category domain) {

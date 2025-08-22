@@ -19,6 +19,8 @@ import cn.chenyunlong.qing.domain.common.converter.AggregateMapper;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
@@ -54,6 +56,9 @@ public interface AnimeMapper {
         return StrUtil.split(value, ",").stream().map(Long::parseLong).collect(Collectors.toList());
     }
 
+    @Mappings({
+            @Mapping(source = "type.aggregateId", target = "typeId")
+    })
     AnimeEntity domainToEntity(Anime anime);
 
     default LocalDate primerDateMap(PremiereDate value) {
