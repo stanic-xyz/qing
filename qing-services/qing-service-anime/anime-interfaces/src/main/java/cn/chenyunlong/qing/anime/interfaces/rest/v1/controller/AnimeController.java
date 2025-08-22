@@ -19,7 +19,11 @@ import cn.chenyunlong.qing.anime.interfaces.rest.v1.controller.dto.ShelveRequest
 import cn.chenyunlong.qing.anime.interfaces.service.AnimeQueryService;
 import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -41,9 +45,7 @@ public class AnimeController {
     @Operation(summary = "创建动漫信息")
     @PostMapping
     public JsonResult<Long> createAnime(
-        @Validated
-        @RequestBody
-        AnimeCreateRequest request) {
+        @Valid @RequestBody AnimeCreateRequest request) {
         CreatorAnimeCommand creator = AnimeMapper.INSTANCE.requestToCreator(request);
         Anime anime = animeService.createAnime(creator);
         return JsonResult.success(anime.getId().getId());
@@ -52,18 +54,19 @@ public class AnimeController {
     @Operation(summary = "更新动漫信息")
     @PutMapping("{id}")
     public JsonResult<String> updateAnime(
-        @PathVariable("id") Long id,
-        @RequestBody AnimeUpdateRequest request) {
+        @Parameter(description = "动漫ID") @PathVariable("id") @NotNull @Positive Long id,
+        @Valid @RequestBody AnimeUpdateRequest request) {
         AnimeUpdateCommand updateCommand = AnimeMapper.INSTANCE.request2Updater(request);
         updateCommand.setId(new AnimeId(id));
         animeService.updateAnime(updateCommand);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
+    @Operation(summary = "上架动漫")
     @PostMapping("/{id}/shelve")
     public JsonResult<Void> shelveBook(
-        @PathVariable("id") Long id,
-        @RequestBody ShelveRequest shelveRequest
+        @Parameter(description = "动漫ID") @PathVariable("id") @NotNull @Positive Long id,
+        @Valid @RequestBody ShelveRequest shelveRequest
     ) {
         log.info("动漫上架：{}", JSONUtil.toJsonStr(shelveRequest));
         AnimeShelvingCommand command = new AnimeShelvingCommand(new AnimeId(id));
@@ -71,10 +74,11 @@ public class AnimeController {
         return JsonResult.success();
     }
 
+    @Operation(summary = "下架动漫")
     @PostMapping("/{id}/shelveOff")
     public JsonResult<Void> shelveOff(
-        @PathVariable("id") Long id,
-        @RequestBody ShelveRequest shelveRequest
+        @Parameter(description = "动漫ID") @PathVariable("id") @NotNull @Positive Long id,
+        @Valid @RequestBody ShelveRequest shelveRequest
     ) {
         log.info("动漫下架：{}", JSONUtil.toJsonStr(shelveRequest));
         AnimeShelveOffCommand command = new AnimeShelveOffCommand(new AnimeId(id));
@@ -82,8 +86,10 @@ public class AnimeController {
         return JsonResult.success();
     }
 
+    @Operation(summary = "删除动漫")
     @DeleteMapping("/{id}")
-    public JsonResult<Void> remove(@PathVariable("id") Long id) {
+    public JsonResult<Void> remove(
+        @Parameter(description = "动漫ID") @PathVariable("id") @NotNull @Positive Long id) {
         AnimeRemoveCommand command = new AnimeRemoveCommand(new AnimeId(id));
         animeService.deleteAnime(command);
         return JsonResult.success();
@@ -97,7 +103,8 @@ public class AnimeController {
 
     @Operation(summary = "根据ID查询动漫信息")
     @GetMapping("/{id}")
-    public JsonResult<AnimeVO> getById(@PathVariable("id") Long id) {
+    public JsonResult<AnimeVO> getById(
+        @Parameter(description = "动漫ID") @PathVariable("id") @NotNull @Positive Long id) {
         AnimeVO animeVO = animeQueryService.getById(id);
         return JsonResult.success(animeVO);
     }
@@ -105,30 +112,33 @@ public class AnimeController {
     @Operation(summary = "分页查询动漫列表")
     @GetMapping("/page")
     public JsonResult<List<AnimeVO>> page(
-        @RequestParam(value = "page", defaultValue = "1") Integer page,
-        @RequestParam(value = "size", defaultValue = "10") Integer size,
-        @RequestParam(value = "keyword", required = false) String keyword) {
+        @Parameter(description = "页码") @RequestParam(value = "page", defaultValue = "1") @Positive Integer page,
+        @Parameter(description = "每页大小") @RequestParam(value = "size", defaultValue = "10") @Positive Integer size,
+        @Parameter(description = "搜索关键词") @RequestParam(value = "keyword", required = false) String keyword) {
         List<AnimeVO> animeVOList = animeQueryService.page(page, size, keyword);
         return JsonResult.success(animeVOList);
     }
 
     @Operation(summary = "根据分类查询动漫列表")
     @GetMapping("/category/{categoryId}")
-    public JsonResult<List<AnimeVO>> listByCategory(@PathVariable("categoryId") Long categoryId) {
+    public JsonResult<List<AnimeVO>> listByCategory(
+        @Parameter(description = "分类ID") @PathVariable("categoryId") @NotNull @Positive Long categoryId) {
         List<AnimeVO> animeVOList = animeQueryService.listByCategory(categoryId);
         return JsonResult.success(animeVOList);
     }
 
     @Operation(summary = "启用动漫")
     @PostMapping("/{id}/enable")
-    public JsonResult<Void> enable(@PathVariable("id") Long id) {
+    public JsonResult<Void> enable(
+        @Parameter(description = "动漫ID") @PathVariable("id") @NotNull @Positive Long id) {
         animeService.validAnime(id);
         return JsonResult.success();
     }
 
     @Operation(summary = "禁用动漫")
     @PostMapping("/{id}/disable")
-    public JsonResult<Void> disable(@PathVariable("id") Long id) {
+    public JsonResult<Void> disable(
+        @Parameter(description = "动漫ID") @PathVariable("id") @NotNull @Positive Long id) {
         animeService.invalidAnime(id);
         return JsonResult.success();
     }

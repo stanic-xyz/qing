@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.anime.domain.episode.dto.creator.EpisodeCreator;
 import cn.chenyunlong.qing.anime.domain.episode.dto.updater.EpisodeUpdater;
 import cn.chenyunlong.qing.anime.domain.episode.dto.vo.EpisodeVO;
 import cn.chenyunlong.qing.anime.domain.episode.repository.EpisodeRepository;
+import cn.chenyunlong.qing.anime.infrastructure.converter.EpisodeMapper;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
@@ -42,12 +43,9 @@ public class EpisodeServiceImpl implements IEpisodeService {
             creator.setEpisodeNumber(maxEpisodeNumber + 1);
         }
         // TODO 判断当前集数是否重复
-        Optional<Episode> episode = EntityOperations.doCreate(episodeRepository)
-            // TODO
-            .create(Episode::new)
-            .update(Episode::init)
-            .execute();
-        return episode.isPresent() ? episode.get().getId().getId() : 0;
+        Episode episode = EpisodeMapper.INSTANCE.dtoToEntity(creator);
+        Episode savedEpisode = episodeRepository.save(episode);
+        return savedEpisode.getId().getId();
     }
 
     /**
@@ -87,6 +85,6 @@ public class EpisodeServiceImpl implements IEpisodeService {
     }
 
     private EpisodeVO entityToVo(Episode episode) {
-        return null;
+        return EpisodeMapper.INSTANCE.entityToVo(episode);
     }
 }

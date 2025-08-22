@@ -26,11 +26,6 @@ import lombok.Setter;
 public class Order extends BaseAggregate {
 
     /**
-     * ID
-     */
-    private Long id;
-
-    /**
      * 订单号
      */
     private String orderNumber;

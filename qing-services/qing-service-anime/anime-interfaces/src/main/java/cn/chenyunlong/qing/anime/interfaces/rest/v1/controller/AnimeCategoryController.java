@@ -13,9 +13,15 @@ import cn.chenyunlong.qing.anime.domain.anime.dto.vo.AnimeCategoryTreeVO;
 import cn.chenyunlong.qing.anime.domain.anime.dto.vo.AnimeCategoryVO;
 import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeCategoryMapper;
 import cn.chenyunlong.qing.anime.interfaces.service.AnimeQueryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,14 +31,16 @@ import java.util.List;
 @Slf4j
 @RequestMapping("api/v1/categories")
 @RequiredArgsConstructor
+@Validated
 public class AnimeCategoryController {
 
     private final AnimeCategoryService animeCategoryService;
     private final AnimeQueryService animeQueryService;
 
     @PostMapping
+    @Operation(summary = "创建动漫分类", description = "创建新的动漫分类")
     public JsonResult<Long> createAnimeCategory(
-        @RequestBody
+        @Valid @RequestBody
         AnimeCategoryCreateRequest request) {
         AnimeCategoryCreator creator = AnimeCategoryMapper.INSTANCE.request2Dto(request);
         Category animeCategory = animeCategoryService.createAnimeCategory(creator);
@@ -40,8 +48,9 @@ public class AnimeCategoryController {
     }
 
     @PutMapping("{catId}")
+    @Operation(summary = "更新动漫分类", description = "更新指定的动漫分类信息")
     public JsonResult<String> updateAnimeCategory(
-        @RequestBody
+        @Valid @RequestBody
         AnimeCategoryUpdateRequest request) {
         AnimeCategoryUpdater updater = AnimeCategoryMapper.INSTANCE.request2Updater(request);
         animeCategoryService.updateAnimeCategory(updater);
@@ -49,16 +58,18 @@ public class AnimeCategoryController {
     }
 
     @PostMapping("{id}/valid")
+    @Operation(summary = "启用动漫分类", description = "启用指定的动漫分类")
     public JsonResult<String> validAnimeCategory(
-        @PathVariable("id")
+        @Parameter(description = "分类ID") @PathVariable("id") @NotNull @Positive
         Long id) {
         animeCategoryService.validAnimeCategory(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
     @PostMapping("{id}/invalid")
+    @Operation(summary = "禁用动漫分类", description = "禁用指定的动漫分类")
     public JsonResult<String> invalidAnimeCategory(
-        @PathVariable("id")
+        @Parameter(description = "分类ID") @PathVariable("id") @NotNull @Positive
         Long id) {
         animeCategoryService.invalidAnimeCategory(id);
         return JsonResult.success(CodeEnum.Success.getName());
@@ -66,8 +77,9 @@ public class AnimeCategoryController {
 
 
     @GetMapping("{id}")
+    @Operation(summary = "根据ID查询分类", description = "根据分类ID查询分类详情")
     public JsonResult<AnimeCategoryResponse> findById(
-        @PathVariable("id")
+        @Parameter(description = "分类ID") @PathVariable("id") @NotNull @Positive
         Long id) {
         AnimeCategoryVO vo = animeCategoryService.findById(id);
         AnimeCategoryResponse response = AnimeCategoryMapper.INSTANCE.vo2CustomResponse(vo);
@@ -75,6 +87,7 @@ public class AnimeCategoryController {
     }
 
     @GetMapping("tree")
+    @Operation(summary = "获取分类树", description = "获取动漫分类的树形结构")
     public JsonResult<List<AnimeCategoryTreeVO>> tree() {
         List<AnimeCategoryTreeVO> vo = animeQueryService.tree();
         return JsonResult.success(vo);
