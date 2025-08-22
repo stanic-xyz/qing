@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * 代码生成器示例应用启动类
- * 
+ *
  * @author chenyunlong
  * @since 1.0.0
  */

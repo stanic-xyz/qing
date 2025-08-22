@@ -40,7 +40,8 @@ public class ProductController {
      */
     @PostMapping("create")
     public JsonResult<Long> createProduct(@RequestBody ProductCreateRequest request) {
-        ProductCreator creator = ProductMapper.INSTANCE.request2Dto(request);return JsonResult.success(productService.createProduct(creator));
+        ProductCreator creator = ProductMapper.INSTANCE.request2Dto(request);
+        return JsonResult.success(productService.createProduct(creator));
     }
 
     /**
@@ -48,7 +49,8 @@ public class ProductController {
      */
     @PostMapping("updateProduct")
     public JsonResult<String> updateProduct(@RequestBody ProductUpdateRequest request) {
-        ProductUpdater updater = ProductMapper.INSTANCE.request2Updater(request);productService.updateProduct(updater);
+        ProductUpdater updater = ProductMapper.INSTANCE.request2Updater(request);
+        productService.updateProduct(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
@@ -57,7 +59,8 @@ public class ProductController {
      */
     @PostMapping("valid/{id}")
     public JsonResult<String> validProduct(@PathVariable AggregateId id) {
-        productService.validProduct(id);return JsonResult.success(CodeEnum.Success.getName());
+        productService.validProduct(id);
+        return JsonResult.success(CodeEnum.Success.getName());
     }
 
     /**
@@ -65,7 +68,8 @@ public class ProductController {
      */
     @PostMapping("invalid/{id}")
     public JsonResult<String> invalidProduct(@PathVariable AggregateId id) {
-        productService.invalidProduct(id);return JsonResult.success(CodeEnum.Success.getName());
+        productService.invalidProduct(id);
+        return JsonResult.success(CodeEnum.Success.getName());
     }
 
     /**
@@ -73,7 +77,9 @@ public class ProductController {
      */
     @GetMapping("findById/{id}")
     public JsonResult<ProductResponse> findById(@PathVariable AggregateId id) {
-        ProductVO vo = productService.findById(id);ProductResponse response = ProductMapper.INSTANCE.vo2CustomResponse(vo);return JsonResult.success(response);
+        ProductVO vo = productService.findById(id);
+        ProductResponse response = ProductMapper.INSTANCE.vo2CustomResponse(vo);
+        return JsonResult.success(response);
     }
 
     /**
@@ -85,8 +91,8 @@ public class ProductController {
         PageRequestWrapper<ProductQuery> wrapper = new PageRequestWrapper<>();
         wrapper.setBean(ProductMapper.INSTANCE.request2Query(request.getBean()));
         wrapper.setSorts(request.getSorts());
-            wrapper.setPageSize(request.getPageSize());
-            wrapper.setPage(request.getPage());
+        wrapper.setPageSize(request.getPageSize());
+        wrapper.setPage(request.getPage());
         Page<ProductVO> page = productService.findByPage(wrapper);
         return JsonResult.success(
                 PageResult.of(

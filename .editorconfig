@@ -1,17 +1,63 @@
 # http://EditorConfig.org
+# EditorConfig配置文件，负责所有代码格式化工作
+# Checkstyle只负责Java语言特有的检查（命名约定、代码质量等）
 
 root = true
 
+# 所有文件的通用配置
 [*]
 charset = utf-8
 end_of_line = crlf
-tab_width = 4
-indent_size = 4
-indent_style = space
 insert_final_newline = true
-max_line_length = off
+trim_trailing_whitespace = true
 
+# Java文件配置
+[*.java]
+indent_style = space
+indent_size = 4
+tab_width = 4
+max_line_length = 180
+continuation_indent_size = 8
 
+# XML文件配置（包括pom.xml, checkstyle.xml等）
+[*.xml]
+indent_style = space
+indent_size = 4
+tab_width = 4
+max_line_length = 180
+
+# Properties文件配置
+[*.properties]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# YAML文件配置
 [{*.yaml,*.yml}]
+indent_style = space
 indent_size = 2
 tab_width = 2
+
+# JSON文件配置
+[*.json]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+# Markdown文件配置
+[*.md]
+indent_style = space
+indent_size = 2
+tab_width = 2
+trim_trailing_whitespace = false
+
+# Shell脚本配置
+[*.sh]
+indent_style = space
+indent_size = 2
+tab_width = 2
+end_of_line = lf
+
+# Batch文件配置
+[*.{bat,cmd}]
+end_of_line = crlf

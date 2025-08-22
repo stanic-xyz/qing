@@ -13,8 +13,8 @@ import lombok.Data;
  * @since 2025-08-22 16:21:04
  */
 @Schema(
-        name = "ProductQuery",
-        description = "Product查询条件对象"
+    name = "ProductQuery",
+    description = "Product查询条件对象"
 )
 @Data
 public class ProductQuery {
