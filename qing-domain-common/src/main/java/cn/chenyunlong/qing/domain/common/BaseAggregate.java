@@ -42,6 +42,8 @@ public abstract class BaseAggregate extends AbstractAggregateRoot<BaseAggregate>
 
     private Instant createdAt;
 
+    private Instant updatedAt;
+
     public void init() {
         setValidStatus(ValidStatus.VALID);
         this.setCreatedAt(Instant.now());

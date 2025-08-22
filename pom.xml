@@ -101,7 +101,7 @@
         <spring-cloud.version>2023.0.3</spring-cloud.version>
         <spring-statemachine.version>3.2.0</spring-statemachine.version>
         <lego.version>0.1.23</lego.version>
-        <knife4j.version>4.4.0</knife4j.version>
+        <knife4j.version>4.5.0</knife4j.version>
         <querydsl.version>5.0.0</querydsl.version>
         <jimmer.version>0.9.69</jimmer.version>
         <google-testing.version>0.21.0</google-testing.version>

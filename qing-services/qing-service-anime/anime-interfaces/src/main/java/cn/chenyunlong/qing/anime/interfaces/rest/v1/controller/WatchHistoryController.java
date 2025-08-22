@@ -14,14 +14,20 @@
 package cn.chenyunlong.qing.anime.interfaces.rest.v1.controller;
 
 import cn.chenyunlong.qing.anime.application.service.WatchHistoryService;
+import cn.chenyunlong.qing.anime.domain.anime.dto.request.WatchHistoryRecordRequest;
+import cn.chenyunlong.qing.anime.domain.anime.dto.request.WatchHistoryUpdateDurationRequest;
+import jakarta.validation.Valid;
 import cn.chenyunlong.qing.anime.domain.watchhistory.WatchHistory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +44,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "观看历史管理", description = "观看历史相关接口")
+@Validated
 public class WatchHistoryController {
 
     private final WatchHistoryService watchHistoryService;
@@ -45,35 +52,32 @@ public class WatchHistoryController {
     @PostMapping("/record")
     @Operation(summary = "记录观看历史", description = "记录用户的观看历史")
     public ResponseEntity<WatchHistory> recordWatchHistory(
-            @Parameter(description = "用户ID") @RequestParam Long userId,
-            @Parameter(description = "动漫ID") @RequestParam Long animeId,
-            @Parameter(description = "剧集ID") @RequestParam Long episodeId,
-            @Parameter(description = "设备类型") @RequestParam(required = false) String deviceType,
-            HttpServletRequest request) {
-        
-        String ipAddress = getClientIpAddress(request);
-        String userAgent = request.getHeader("User-Agent");
-        
+            @Valid @RequestBody WatchHistoryRecordRequest request,
+            HttpServletRequest httpRequest) {
+
+        String ipAddress = getClientIpAddress(httpRequest);
+        String userAgent = httpRequest.getHeader("User-Agent");
+
         WatchHistory history = watchHistoryService.recordWatchHistory(
-                userId, animeId, episodeId, deviceType, ipAddress, userAgent);
+                request.getUserId(), request.getAnimeId(), request.getEpisodeId(), 
+                request.getDeviceType(), ipAddress, userAgent);
         return ResponseEntity.ok(history);
     }
 
     @PostMapping("/update-duration")
     @Operation(summary = "更新观看时长", description = "更新观看历史的观看时长")
     public ResponseEntity<Void> updateWatchDuration(
-            @Parameter(description = "历史记录ID") @RequestParam Long historyId,
-            @Parameter(description = "观看时长(秒)") @RequestParam Long watchDuration) {
-        
-        watchHistoryService.updateWatchDuration(historyId, watchDuration);
+            @Valid @RequestBody WatchHistoryUpdateDurationRequest request) {
+
+        watchHistoryService.updateWatchDuration(request.getHistoryId(), request.getWatchDuration());
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/user/{userId}")
     @Operation(summary = "获取用户观看历史", description = "获取用户的所有观看历史")
     public ResponseEntity<List<WatchHistory>> getUserWatchHistory(
-            @Parameter(description = "用户ID") @PathVariable Long userId) {
-        
+            @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId) {
+
         List<WatchHistory> historyList = watchHistoryService.getUserWatchHistory(userId);
         return ResponseEntity.ok(historyList);
     }
@@ -81,9 +85,9 @@ public class WatchHistoryController {
     @GetMapping("/user/{userId}/recent")
     @Operation(summary = "获取最近观看历史", description = "获取用户最近的观看历史")
     public ResponseEntity<List<WatchHistory>> getRecentWatchHistory(
-            @Parameter(description = "用户ID") @PathVariable Long userId,
-            @Parameter(description = "限制数量") @RequestParam(defaultValue = "20") int limit) {
-        
+            @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId,
+            @Parameter(description = "限制数量") @RequestParam(defaultValue = "20") @Positive int limit) {
+
         List<WatchHistory> recentList = watchHistoryService.getRecentWatchHistory(userId, limit);
         return ResponseEntity.ok(recentList);
     }
@@ -91,9 +95,9 @@ public class WatchHistoryController {
     @GetMapping("/user/{userId}/anime/{animeId}")
     @Operation(summary = "获取动漫观看历史", description = "获取用户在某个动漫的观看历史")
     public ResponseEntity<List<WatchHistory>> getAnimeWatchHistory(
-            @Parameter(description = "用户ID") @PathVariable Long userId,
-            @Parameter(description = "动漫ID") @PathVariable Long animeId) {
-        
+            @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId,
+            @Parameter(description = "动漫ID") @PathVariable @NotNull @Positive Long animeId) {
+
         List<WatchHistory> historyList = watchHistoryService.getAnimeWatchHistory(userId, animeId);
         return ResponseEntity.ok(historyList);
     }
@@ -101,10 +105,10 @@ public class WatchHistoryController {
     @GetMapping("/user/{userId}/time-range")
     @Operation(summary = "按时间范围获取观看历史", description = "获取用户在指定时间范围内的观看历史")
     public ResponseEntity<List<WatchHistory>> getWatchHistoryByTimeRange(
-            @Parameter(description = "用户ID") @PathVariable Long userId,
-            @Parameter(description = "开始时间") @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
-            @Parameter(description = "结束时间") @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
-        
+            @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId,
+            @Parameter(description = "开始时间") @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+            @Parameter(description = "结束时间") @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
+
         List<WatchHistory> historyList = watchHistoryService.getWatchHistoryByTimeRange(userId, startTime, endTime);
         return ResponseEntity.ok(historyList);
     }
@@ -112,8 +116,8 @@ public class WatchHistoryController {
     @GetMapping("/anime/{animeId}/watch-count")
     @Operation(summary = "获取动漫观看次数", description = "统计动漫的总观看次数")
     public ResponseEntity<Long> getAnimeWatchCount(
-            @Parameter(description = "动漫ID") @PathVariable Long animeId) {
-        
+            @Parameter(description = "动漫ID") @PathVariable @NotNull @Positive Long animeId) {
+
         Long watchCount = watchHistoryService.getAnimeWatchCount(animeId);
         return ResponseEntity.ok(watchCount);
     }
@@ -121,8 +125,8 @@ public class WatchHistoryController {
     @GetMapping("/user/{userId}/total-duration")
     @Operation(summary = "获取用户总观看时长", description = "统计用户的总观看时长")
     public ResponseEntity<Long> getUserTotalWatchDuration(
-            @Parameter(description = "用户ID") @PathVariable Long userId) {
-        
+            @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId) {
+
         Long totalDuration = watchHistoryService.getUserTotalWatchDuration(userId);
         return ResponseEntity.ok(totalDuration);
     }
@@ -130,8 +134,8 @@ public class WatchHistoryController {
     @DeleteMapping("/{historyId}")
     @Operation(summary = "删除观看历史", description = "删除指定的观看历史记录")
     public ResponseEntity<Void> deleteWatchHistory(
-            @Parameter(description = "历史记录ID") @PathVariable Long historyId) {
-        
+            @Parameter(description = "历史记录ID") @PathVariable @NotNull @Positive Long historyId) {
+
         watchHistoryService.deleteWatchHistory(historyId);
         return ResponseEntity.ok().build();
     }
@@ -139,8 +143,8 @@ public class WatchHistoryController {
     @DeleteMapping("/user/{userId}/clear")
     @Operation(summary = "清空用户观看历史", description = "清空用户的所有观看历史")
     public ResponseEntity<Void> clearUserWatchHistory(
-            @Parameter(description = "用户ID") @PathVariable Long userId) {
-        
+            @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId) {
+
         watchHistoryService.clearUserWatchHistory(userId);
         return ResponseEntity.ok().build();
     }
@@ -153,12 +157,12 @@ public class WatchHistoryController {
         if (xForwardedFor != null && !xForwardedFor.isEmpty() && !"unknown".equalsIgnoreCase(xForwardedFor)) {
             return xForwardedFor.split(",")[0].trim();
         }
-        
+
         String xRealIp = request.getHeader("X-Real-IP");
         if (xRealIp != null && !xRealIp.isEmpty() && !"unknown".equalsIgnoreCase(xRealIp)) {
             return xRealIp;
         }
-        
+
         return request.getRemoteAddr();
     }
 }
