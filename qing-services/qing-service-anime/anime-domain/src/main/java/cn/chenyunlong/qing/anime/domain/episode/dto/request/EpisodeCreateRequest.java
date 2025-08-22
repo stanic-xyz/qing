@@ -22,8 +22,8 @@ public class EpisodeCreateRequest implements Request {
     private Long animeId;
 
     @NotNull
-    @Schema(title = "collectionName", description = "播放源名称")
-    private String playListId;
+    @Schema(title = "playListId", description = "播放列表ID")
+    private Long playListId;
 
     @NotBlank
     @Schema(title = "playUrl", description = "播放地址")
