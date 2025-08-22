@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.anime.infrastructure.repository;
 import cn.chenyunlong.qing.anime.domain.type.Type;
 import cn.chenyunlong.qing.anime.domain.type.repository.TypeRepository;
 import cn.chenyunlong.qing.anime.infrastructure.converter.TypeMapper;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.TypeEntity;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.TypeJpaRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,9 @@ public class TypeRepositoryImpl implements TypeRepository {
 
     @Override
     public Type save(Type entity) {
-        return null;
+        TypeEntity typeEntity = TypeMapper.INSTANCE.toEntity(entity);
+        TypeEntity saved = typeJpaRepository.save(typeEntity);
+        return TypeMapper.INSTANCE.entityToDomain(saved);
     }
 
     @Override

@@ -88,13 +88,8 @@ public class AnimeQueryService {
 
     public List<AnimeVO> listByCategory(Long categoryId) {
         // 使用 findAll 然后在内存中过滤（临时解决方案）
-        List<AnimeEntity> allEntities = animeJpaRepository.findAll();
-        List<AnimeEntity> animeEntityList = allEntities.stream()
-            .filter(entity -> entity.getTypeId() != null
-                && entity.getTypeId().equals(categoryId))
-            .toList();
-
-        return animeEntityList.stream()
+        List<AnimeEntity> allEntities = animeJpaRepository.findByCategoryId(categoryId);
+        return allEntities.stream()
             .map(AnimeMapper.INSTANCE::entityToDomain)
             .map(AnimeMapper.INSTANCE::entityToVo)
             .toList();

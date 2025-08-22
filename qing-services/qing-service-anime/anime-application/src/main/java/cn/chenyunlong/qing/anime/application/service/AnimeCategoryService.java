@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.anime.domain.anime.dto.command.AnimeCategoryCreator;
 import cn.chenyunlong.qing.anime.domain.anime.dto.updater.AnimeCategoryUpdater;
 import cn.chenyunlong.qing.anime.domain.anime.dto.vo.AnimeCategoryVO;
 import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeCategoryRepository;
+import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeCategoryMapper;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
@@ -77,10 +78,6 @@ public class AnimeCategoryService {
 
     public AnimeCategoryVO findById(Long id) {
         Optional<Category> animeCategoryOptional = animeCategoryRepository.findById(new AggregateId(id));
-        return animeCategoryOptional.map(this::newAnime).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
-    }
-
-    private AnimeCategoryVO newAnime(Category category) {
-        return null;
+        return animeCategoryOptional.map(AnimeCategoryMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 }

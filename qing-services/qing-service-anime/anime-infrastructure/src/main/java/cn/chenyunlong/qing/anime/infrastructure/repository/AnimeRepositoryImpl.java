@@ -23,7 +23,7 @@ public class AnimeRepositoryImpl implements AnimeRepository {
     @Override
     public Optional<Anime> findById(AnimeId aggregateId) {
         return animeJpaRepository.findById(aggregateId.getId())
-            .map(AnimeMapper.INSTANCE::entityToDomain);
+                .map(AnimeMapper.INSTANCE::entityToDomain);
     }
 
     /**
@@ -51,9 +51,9 @@ public class AnimeRepositoryImpl implements AnimeRepository {
         return anime;
     }
 
-
     @Override
     public List<Anime> findByIds(List<Long> animeIds) {
-        return List.of();
+        List<AnimeEntity> animeEntityList = animeJpaRepository.findAllById(animeIds);
+        return animeEntityList.stream().map(AnimeMapper.INSTANCE::entityToDomain).toList();
     }
 }
