@@ -9,6 +9,8 @@ on:
     branches: [ main ]
     paths:
       - "docs/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
       - ".github/workflows/deploy-vitepress.yml"
 
   # 允许你从 Actions 选项卡手动运行此工作流程
@@ -26,10 +28,40 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  # 启用 pnpm 缓存
+  PNPM_CACHE_FOLDER: .pnpm
+  # 设置 Node.js 内存限制
+  NODE_OPTIONS: --max-old-space-size=4096
+
 jobs:
+  # 检测文档变更
+  detect-changes:
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    outputs:
+      docs-changed: ${{ steps.changes.outputs.docs }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            docs:
+              - 'docs/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - '.github/workflows/deploy-vitepress.yml'
+
   # 构建工作
   build:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.docs-changed == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: blacksmith-4vcpu-ubuntu-2404
+    timeout-minutes: 10
     defaults:
       run:
         working-directory: ./docs
@@ -37,21 +69,44 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 如果未启用 lastUpdated，则不需要
-      # - uses: oven-sh/setup-bun@v1 # 如果使用 Bun，请取消注释
+          fetch-depth: 1 # 浅克隆节省时间，除非需要 lastUpdated
+      
       - name: Setup Node
         uses: useblacksmith/setup-node@v5
         with:
           node-version: 20
-      - uses: pnpm/action-setup@v4.0.0 # 如果使用 pnpm，请取消注释
-        with: 
+          cache: 'pnpm'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4.0.0
+        with:
           version: 9.6.0
+          run_install: false
+      
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
       - name: Setup Pages
         uses: actions/configure-pages@v4
+      
       - name: Install dependencies
-        run: pnpm install # 或 pnpm install / yarn install / bun install
+        run: pnpm install --frozen-lockfile --prefer-offline
+      
       - name: Build with VitePress
-        run: pnpm docs:build # 或 pnpm docs:build / yarn docs:build / bun run docs:build
+        run: pnpm docs:build
+        env:
+          NODE_ENV: production
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

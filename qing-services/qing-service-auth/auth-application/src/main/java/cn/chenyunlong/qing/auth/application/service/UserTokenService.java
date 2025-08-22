@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.auth.application.service;
 
+import cn.chenyunlong.common.constants.CodeEnum;
+import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.auth.domain.user.UserToken;
 import cn.chenyunlong.qing.auth.domain.user.dto.creator.UserTokenCreator;
 import cn.chenyunlong.qing.auth.domain.user.dto.updater.UserTokenUpdater;
@@ -30,7 +32,9 @@ public class UserTokenService {
             .create(() -> UserToken.create(creator))
             .update(UserToken::init)
             .execute();
-        return userToken.isPresent() ? userToken.orElseThrow().getUid() : 0;
+        return userToken
+            .map(UserToken::getUid)
+            .orElseThrow(() -> new BusinessException(CodeEnum.CreateError, "创建用户令牌失败"));
     }
 
     /**

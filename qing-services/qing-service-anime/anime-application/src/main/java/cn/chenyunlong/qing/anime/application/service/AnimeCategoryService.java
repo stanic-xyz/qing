@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.anime.application.service;
 
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.anime.domain.anime.Category;
 import cn.chenyunlong.qing.anime.domain.anime.dto.command.AnimeCategoryCreator;
 import cn.chenyunlong.qing.anime.domain.anime.dto.updater.AnimeCategoryUpdater;
@@ -33,12 +34,14 @@ public class AnimeCategoryService {
         if (creator.getPid() == null) {
             parent = null;
         } else {
-            parent = animeCategoryRepository.findById(new AggregateId(creator.getPid())).orElseThrow();
+            parent = animeCategoryRepository.findById(new AggregateId(creator.getPid()))
+                .orElseThrow(() -> new NotFoundException("父级目录不存在: " + creator.getPid()));
         }
         return EntityOperations.doCreate(animeCategoryRepository)
             .create(() -> Category.create(creator.getName(), creator.getOrderNo(), parent))
             .update(Category::init)
-            .execute().orElseThrow();
+            .execute()
+            .orElseThrow(() -> new BusinessException(CodeEnum.CreateError, "创建动漫目录失败"));
     }
 
     /**
