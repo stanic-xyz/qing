@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.anime.application.service;
 
+import cn.chenyunlong.common.constants.CodeEnum;
+import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.anime.domain.anime.Category;
 import cn.chenyunlong.qing.anime.domain.anime.Tag;
@@ -80,7 +82,8 @@ public class AnimeDomainService {
             })
             .update(Anime::create)
             .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId().getId()))
-            .execute().orElseThrow();
+            .execute()
+            .orElseThrow(() -> new BusinessException(CodeEnum.CreateError, "创建动漫失败"));
     }
 
     /**

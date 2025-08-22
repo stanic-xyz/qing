@@ -26,7 +26,7 @@ public enum CodeEnum implements BaseEnum<Integer> {
     Success(1, "操作成功"),
     Fail(0, "操作失败"),
 
-
+    CreateError(10010, "创建失败"),
     NotFoundError(10001, "未查询到信息"),
     SaveError(10002, "保存信息失败"),
     UpdateError(10003, "更新信息失败"),
@@ -38,6 +38,7 @@ public enum CodeEnum implements BaseEnum<Integer> {
     ParamSetIllegal(10009, "参数设置非法"),
     TransferStatusError(10010, "当前状态不正确，请勿重复提交"),
     NotGrant(10011, "没有操作该功能的权限，请联系管理员"),
+
 
     USERNAME_EXIST(10012, "用户名已存在"),
     ROLE_NAME_EXIST(10013, "角色名已存在");

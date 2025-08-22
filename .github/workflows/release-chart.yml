@@ -5,27 +5,79 @@ on:
     branches:
       - main
     paths:
-      - ".github/workflows/release-chart.yml"
-      - "charts/qing"
+      - 'charts/**'
+      - '.github/workflows/release-chart.yml'
   workflow_dispatch:
 
+# 避免并发发布
+concurrency:
+  group: chart-release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
 jobs:
-  release:
-    permissions:
-      contents: write
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+  # 检测Chart变更
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      charts-changed: ${{ steps.changes.outputs.charts }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            charts:
+              - 'charts/**'
+              - '.github/workflows/release-chart.yml'
+
+  release:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.charts-changed == 'true' || github.event_name == 'workflow_dispatch'
+    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
+    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.15.4  # 使用更新的版本
+
+      - name: Cache Helm dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/helm
+            ~/.local/share/helm
+          key: ${{ runner.os }}-helm-${{ hashFiles('charts/**/Chart.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-helm-
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
+        with:
+          charts_dir: charts
+          config: .github/cr.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_SKIP_EXISTING: true
 

@@ -1,0 +1,37 @@
+# Chart Releaser配置文件
+# 用于优化Helm Chart发布流程
+
+# 发布配置
+release-name-template: "{{ .Name }}-{{ .Version }}"
+
+# 包配置
+package-path: ".cr-release-packages"
+charts-repo: "https://chenyunlong.github.io/qing"
+
+# 索引配置
+index-path: ".cr-index"
+pages-branch: "gh-pages"
+pages-index-path: "index.yaml"
+
+# 跳过已存在的发布
+skip-existing: true
+
+# 生成发布说明
+generate-release-notes: true
+
+# 发布说明模板
+release-notes-header: |
+  ## 🚀 Helm Chart Release
+  
+  This release contains the following changes:
+
+# 提交配置
+commit-username: "github-actions[bot]"
+commit-email: "github-actions[bot]@users.noreply.github.com"
+
+# 标签配置
+make-release-latest: true
+
+# 推送配置
+push: true
+remote: "origin"
