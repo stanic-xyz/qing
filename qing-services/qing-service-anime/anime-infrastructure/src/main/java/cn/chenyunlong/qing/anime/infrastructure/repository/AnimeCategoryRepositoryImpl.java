@@ -1,20 +1,25 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository;
 
+import java.util.Optional;
 
-import cn.chenyunlong.qing.anime.domain.anime.Category;
-import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeCategoryRepository;
-import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeCategoryMapper;
-import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.CategoryEntity;
-import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.AnimeCategoryJpaRepository;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import cn.chenyunlong.qing.anime.domain.anime.Category;
+import cn.chenyunlong.qing.anime.domain.anime.models.CategoryId;
+import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeCategoryRepository;
+import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeCategoryInfrastructureMapper;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.CategoryEntity;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.AnimeCategoryJpaRepository;
+import jakarta.annotation.Resource;
+import lombok.NonNull;
 
 @Service
 public class AnimeCategoryRepositoryImpl implements AnimeCategoryRepository {
 
-    private final AnimeCategoryJpaRepository animeCategoryJpaRepository;
+    @Resource
+    private AnimeCategoryJpaRepository animeCategoryJpaRepository;
+    @Resource
+    private AnimeCategoryInfrastructureMapper animeCategoryInfrastructureMapper;
 
     public AnimeCategoryRepositoryImpl(AnimeCategoryJpaRepository animeCategoryJpaRepository) {
         this.animeCategoryJpaRepository = animeCategoryJpaRepository;
@@ -22,22 +27,28 @@ public class AnimeCategoryRepositoryImpl implements AnimeCategoryRepository {
 
     @Override
     public Category save(Category domain) {
-        CategoryEntity entity = AnimeCategoryMapper.INSTANCE.domainToEntity(domain);
+        CategoryEntity entity = animeCategoryInfrastructureMapper.domainToEntity(domain);
         CategoryEntity category = animeCategoryJpaRepository.saveAndFlush(entity);
-        domain.setId(new AggregateId(category.getId()));
+        domain.setId(CategoryId.of(category.getId()));
         return domain;
     }
 
     @Override
-    public Optional<Category> findById(AggregateId id) {
+    public Optional<Category> findById(CategoryId id) {
         if (id == null) {
             return Optional.empty();
         }
-        return animeCategoryJpaRepository.findById(id.getId()).map(AnimeCategoryMapper.INSTANCE::entityToEntity);
+        return animeCategoryJpaRepository.findById(id.getValue())
+                .map(animeCategoryInfrastructureMapper::entityToEntity);
     }
 
     @Override
     public boolean existsByPidAndName(Long pid, String name) {
         return animeCategoryJpaRepository.existsByPidAndName(pid == null ? Category.ROOT_PID : pid, name);
+    }
+
+    @Override
+    public boolean existsById(@NonNull Long categoryId) {
+        return animeCategoryJpaRepository.existsById(categoryId);
     }
 }

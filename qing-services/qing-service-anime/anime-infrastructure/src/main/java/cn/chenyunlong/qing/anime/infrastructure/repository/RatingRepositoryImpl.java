@@ -17,7 +17,7 @@ import cn.chenyunlong.qing.anime.domain.rating.Rating;
 import cn.chenyunlong.qing.anime.domain.rating.repository.RatingRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.RatingJpaRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.RatingEntity;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.anime.domain.rating.RatingId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -128,7 +128,7 @@ public class RatingRepositoryImpl implements RatingRepository {
     private RatingEntity toEntity(Rating rating) {
         RatingEntity entity = new RatingEntity();
         if (rating.getId() != null) {
-            entity.setId(rating.getId().getId());
+            entity.setId(rating.getId().getValue());
         }
         entity.setUserId(rating.getUserId());
         entity.setAnimeId(rating.getAnimeId());
@@ -151,7 +151,7 @@ public class RatingRepositoryImpl implements RatingRepository {
             entity.getIsAnonymous(),
             entity.getIsPublic()
         );
-        rating.setId(new AggregateId(entity.getId()));
+        rating.setId(RatingId.of(entity.getId()));
         rating.setRatingTime(entity.getRatingTime());
         rating.setLastUpdateTime(entity.getLastUpdateTime());
         rating.setLikeCount(entity.getLikeCount());

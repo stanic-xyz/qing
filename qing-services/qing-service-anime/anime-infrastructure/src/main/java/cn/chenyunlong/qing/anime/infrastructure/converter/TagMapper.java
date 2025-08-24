@@ -11,6 +11,7 @@ import cn.chenyunlong.qing.anime.domain.anime.dto.request.TagUpdateRequest;
 import cn.chenyunlong.qing.anime.domain.anime.dto.response.TagResponse;
 import cn.chenyunlong.qing.anime.domain.anime.dto.updater.TagUpdater;
 import cn.chenyunlong.qing.anime.domain.anime.dto.vo.TagVO;
+import cn.chenyunlong.qing.anime.domain.anime.models.TagId;
 import cn.chenyunlong.qing.domain.common.converter.AggregateMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -34,4 +35,12 @@ public interface TagMapper {
     TagResponse vo2Response(TagVO vo);
 
     TagVO entityToVo(Tag tag);
+
+    default Long map(TagId tagId) {
+        return tagId != null ? tagId.getValue() : null;
+    }
+
+    default TagId longToTypeId(Long id) {
+        return id != null ? TagId.of(id) : null;
+    }
 }

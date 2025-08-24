@@ -17,7 +17,7 @@ import cn.chenyunlong.qing.anime.domain.playback.PlaybackProgress;
 import cn.chenyunlong.qing.anime.domain.playback.repository.PlaybackProgressRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.PlaybackProgressJpaRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.PlaybackProgressEntity;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.anime.domain.playback.PlaybackProgressId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -97,7 +97,7 @@ public class PlaybackProgressRepositoryImpl implements PlaybackProgressRepositor
     private PlaybackProgressEntity toEntity(PlaybackProgress progress) {
         PlaybackProgressEntity entity = new PlaybackProgressEntity();
         if (progress.getId() != null) {
-            entity.setId(progress.getId().getId());
+            entity.setId(progress.getId().getValue());
         }
         entity.setUserId(progress.getUserId());
         entity.setAnimeId(progress.getAnimeId());
@@ -119,7 +119,7 @@ public class PlaybackProgressRepositoryImpl implements PlaybackProgressRepositor
             entity.getEpisodeId(), 
             entity.getTotalDuration().intValue()
         );
-        progress.setId(new AggregateId(entity.getId()));
+        progress.setId(PlaybackProgressId.of(entity.getId()));
         progress.updateProgress(entity.getCurrentPosition().intValue());
         progress.setIsCompleted(entity.getIsCompleted());
         progress.setLastPlayTime(entity.getLastWatchTime());

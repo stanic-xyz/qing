@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.anime.infrastructure.converter;
 import cn.chenyunlong.common.infrustructure.CustomMapper;
 import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.qing.anime.domain.type.Type;
+import cn.chenyunlong.qing.anime.domain.type.TypeId;
 import cn.chenyunlong.qing.anime.domain.type.dto.creator.TypeCreator;
 import cn.chenyunlong.qing.anime.domain.type.dto.query.TypeQuery;
 import cn.chenyunlong.qing.anime.domain.type.dto.request.TypeCreateRequest;
@@ -14,13 +15,12 @@ import cn.chenyunlong.qing.anime.domain.type.dto.vo.TypeVO;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.TypeEntity;
 import cn.chenyunlong.qing.domain.common.converter.AggregateMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
-import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {CustomMapper.class, DateMapper.class, AggregateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {CustomMapper.class, DateMapper.class,
+        AggregateMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TypeMapper {
-
-    TypeMapper INSTANCE = Mappers.getMapper(TypeMapper.class);
 
     Type dtoToEntity(TypeCreator dto);
 
@@ -39,4 +39,18 @@ public interface TypeMapper {
     Type entityToDomain(TypeEntity typeEntity);
 
     TypeEntity toEntity(Type entity);
+
+    /**
+     * TypeId转Long
+     */
+    default Long typeIdToLong(TypeId typeId) {
+        return typeId != null ? typeId.getValue() : null;
+    }
+
+    /**
+     * Long转TypeId
+     */
+    default TypeId longToTypeId(Long id) {
+        return id != null ? TypeId.of(id) : null;
+    }
 }
