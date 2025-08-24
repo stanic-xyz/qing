@@ -5,7 +5,7 @@ import cn.chenyunlong.qing.anime.domain.anime.Tag;
 import cn.chenyunlong.qing.anime.domain.anime.dto.command.TagCreator;
 import cn.chenyunlong.qing.anime.domain.anime.repository.TagRepository;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.anime.domain.anime.models.TagId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import cn.hutool.core.lang.Assert;
 import jakarta.annotation.Resource;
@@ -36,13 +36,13 @@ public class TagServiceImpl implements ITagService {
             .create(Tag::new)
             .update(Tag::init)
             .execute();
-        return tag.isPresent() ? tag.get().getId().getId() : 0;
+        return tag.isPresent() ? tag.get().getId().getValue() : 0;
     }
 
     @Override
     public void validTag(Long id) {
         EntityOperations.doUpdate(tagRepository)
-            .loadById(new AggregateId(id))
+            .loadById(TagId.of(id))
             .update(BaseAggregate::valid)
             .execute();
     }
@@ -50,7 +50,7 @@ public class TagServiceImpl implements ITagService {
     @Override
     public void invalidTag(Long id) {
         EntityOperations.doUpdate(tagRepository)
-            .loadById(new AggregateId(id))
+            .loadById(TagId.of(id))
             .update(BaseAggregate::invalid)
             .execute();
     }

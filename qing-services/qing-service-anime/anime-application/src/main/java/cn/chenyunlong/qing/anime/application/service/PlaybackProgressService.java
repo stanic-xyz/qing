@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 播放进度应用服务
@@ -40,11 +39,11 @@ public class PlaybackProgressService {
     /**
      * 更新播放进度
      */
-    public PlaybackProgress updateProgress(Long userId, Long animeId, Long episodeId, 
+    public PlaybackProgress updateProgress(Long userId, Long animeId, Long episodeId,
                                          Long currentPosition, Long totalDuration) {
-        Optional<PlaybackProgress> existingProgress = 
+        Optional<PlaybackProgress> existingProgress =
             playbackProgressRepository.findByUserIdAndEpisodeId(userId, episodeId);
-        
+
         PlaybackProgress progress;
         if (existingProgress.isPresent()) {
             progress = existingProgress.get();
@@ -53,7 +52,7 @@ public class PlaybackProgressService {
             progress = PlaybackProgress.create(userId, animeId, episodeId, totalDuration.intValue());
             progress.updateProgress(currentPosition.intValue());
         }
-        
+
         return playbackProgressRepository.save(progress);
     }
 
@@ -61,9 +60,9 @@ public class PlaybackProgressService {
      * 标记剧集为已完成
      */
     public void markAsCompleted(Long userId, Long animeId, Long episodeId, Long totalDuration) {
-        Optional<PlaybackProgress> existingProgress = 
+        Optional<PlaybackProgress> existingProgress =
             playbackProgressRepository.findByUserIdAndEpisodeId(userId, episodeId);
-        
+
         PlaybackProgress progress;
         if (existingProgress.isPresent()) {
             progress = existingProgress.get();
@@ -72,7 +71,7 @@ public class PlaybackProgressService {
             progress = PlaybackProgress.create(userId, animeId, episodeId, totalDuration.intValue());
             progress.markAsCompleted();
         }
-        
+
         playbackProgressRepository.save(progress);
         log.info("用户 {} 完成观看剧集 {}", userId, episodeId);
     }
@@ -81,9 +80,9 @@ public class PlaybackProgressService {
      * 增加播放次数
      */
     public void incrementPlayCount(Long userId, Long episodeId) {
-        Optional<PlaybackProgress> progress = 
+        Optional<PlaybackProgress> progress =
             playbackProgressRepository.findByUserIdAndEpisodeId(userId, episodeId);
-        
+
         if (progress.isPresent()) {
             progress.get().incrementPlayCount();
             playbackProgressRepository.save(progress.get());
@@ -122,9 +121,9 @@ public class PlaybackProgressService {
      * 重置播放进度
      */
     public void resetProgress(Long userId, Long episodeId) {
-        Optional<PlaybackProgress> progress = 
+        Optional<PlaybackProgress> progress =
             playbackProgressRepository.findByUserIdAndEpisodeId(userId, episodeId);
-        
+
         if (progress.isPresent()) {
             progress.get().reset();
             playbackProgressRepository.save(progress.get());
@@ -139,7 +138,7 @@ public class PlaybackProgressService {
         // 需要先查找到具体的播放进度记录，然后删除
         Optional<PlaybackProgress> progress = playbackProgressRepository.findByUserIdAndEpisodeId(userId, episodeId);
         if (progress.isPresent()) {
-            playbackProgressRepository.deleteById(progress.get().getId().getId());
+            playbackProgressRepository.deleteById(progress.get().getId().getValue());
             log.info("删除用户 {} 剧集 {} 的播放进度", userId, episodeId);
         }
     }

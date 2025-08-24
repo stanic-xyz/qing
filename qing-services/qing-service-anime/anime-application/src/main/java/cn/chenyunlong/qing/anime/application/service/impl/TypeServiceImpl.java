@@ -1,19 +1,19 @@
 package cn.chenyunlong.qing.anime.application.service.impl;
 
-import cn.chenyunlong.qing.anime.application.service.ITypeService;
-import cn.chenyunlong.qing.anime.domain.type.Type;
-import cn.chenyunlong.qing.anime.domain.type.dto.creator.TypeCreator;
-import cn.chenyunlong.qing.anime.domain.type.repository.TypeRepository;
-import cn.chenyunlong.qing.anime.infrastructure.converter.TypeMapper;
-import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.AggregateId;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import cn.chenyunlong.qing.anime.application.service.ITypeService;
+import cn.chenyunlong.qing.anime.domain.type.Type;
+import cn.chenyunlong.qing.anime.domain.type.TypeId;
+import cn.chenyunlong.qing.anime.domain.type.dto.creator.TypeCreator;
+import cn.chenyunlong.qing.anime.domain.type.repository.TypeRepository;
+import cn.chenyunlong.qing.domain.base.EntityOperations;
+import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Transactional
 @Service
@@ -29,17 +29,20 @@ public class TypeServiceImpl implements ITypeService {
                 .create(() -> dtoToEntity(creator))
                 .update(Type::init)
                 .execute();
-        return type.isPresent() ? type.get().getId().getId() : 0;
+        return type.isPresent() ? type.get().getId().getValue() : 0;
     }
 
     private Type dtoToEntity(TypeCreator creator) {
-        return TypeMapper.INSTANCE.dtoToEntity(creator);
+        Type type = new Type();
+        type.setName(creator.getName());
+        type.setInstruction(creator.getInstruction());
+        return type;
     }
 
     @Override
     public void validType(Long id) {
         EntityOperations.doUpdate(typeRepository)
-                .loadById(new AggregateId(id))
+                .loadById(TypeId.of(id))
                 .update(BaseAggregate::valid)
                 .execute();
     }
@@ -47,7 +50,7 @@ public class TypeServiceImpl implements ITypeService {
     @Override
     public void invalidType(Long id) {
         EntityOperations.doUpdate(typeRepository)
-                .loadById(new AggregateId(id))
+                .loadById(TypeId.of(id))
                 .update(BaseAggregate::invalid)
                 .execute();
     }

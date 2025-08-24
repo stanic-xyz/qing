@@ -8,9 +8,9 @@ import cn.chenyunlong.qing.anime.domain.episode.dto.creator.EpisodeCreator;
 import cn.chenyunlong.qing.anime.domain.episode.dto.updater.EpisodeUpdater;
 import cn.chenyunlong.qing.anime.domain.episode.dto.vo.EpisodeVO;
 import cn.chenyunlong.qing.anime.domain.episode.repository.EpisodeRepository;
-import cn.chenyunlong.qing.anime.infrastructure.converter.EpisodeMapper;
+
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.anime.domain.episode.EpisodeId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,9 +43,15 @@ public class EpisodeServiceImpl implements IEpisodeService {
             creator.setEpisodeNumber(maxEpisodeNumber + 1);
         }
         // TODO 判断当前集数是否重复
-        Episode episode = EpisodeMapper.INSTANCE.dtoToEntity(creator);
+        Episode episode = new Episode();
+        episode.setAnimeId(creator.getAnimeId());
+        episode.setEpisodeNumber(creator.getEpisodeNumber());
+        episode.setName(creator.getName());
+        episode.setDescription(creator.getDescription());
+        episode.setPlayListId(creator.getPlayListId());
+        episode.setPlayUrl(creator.getPlayUrl());
         Episode savedEpisode = episodeRepository.save(episode);
-        return savedEpisode.getId().getId();
+        return savedEpisode.getId().getValue();
     }
 
     /**
@@ -54,7 +60,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
     @Override
     public void updateEpisode(EpisodeUpdater updater) {
         EntityOperations.doUpdate(episodeRepository)
-            .loadById(new AggregateId(updater.getId()))
+            .loadById(EpisodeId.of(updater.getId()))
             .update(updater::updateEpisode)
             .execute();
     }
@@ -62,7 +68,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
     @Override
     public void validEpisode(Long id) {
         EntityOperations.doUpdate(episodeRepository)
-            .loadById(new AggregateId(id))
+            .loadById(EpisodeId.of(id))
             .update(BaseAggregate::valid)
             .execute();
     }
@@ -70,7 +76,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
     @Override
     public void invalidEpisode(Long id) {
         EntityOperations.doUpdate(episodeRepository)
-            .loadById(new AggregateId(id))
+            .loadById(EpisodeId.of(id))
             .update(BaseAggregate::invalid)
             .execute();
     }
@@ -80,11 +86,20 @@ public class EpisodeServiceImpl implements IEpisodeService {
      */
     @Override
     public EpisodeVO findById(Long id) {
-        Optional<Episode> episode = episodeRepository.findById(new AggregateId(id));
+        Optional<Episode> episode = episodeRepository.findById(EpisodeId.of(id));
         return episode.map(this::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 
     private EpisodeVO entityToVo(Episode episode) {
-        return EpisodeMapper.INSTANCE.entityToVo(episode);
+        EpisodeVO vo = new EpisodeVO();
+        vo.setId(episode.getId().getValue());
+        vo.setAnimeId(episode.getAnimeId());
+        vo.setName(episode.getName());
+        vo.setDescription(episode.getDescription());
+        vo.setPlayListId(episode.getPlayListId());
+        vo.setPlayUrl(episode.getPlayUrl());
+        vo.setCreatedAt(episode.getCreatedAt());
+        vo.setUpdatedAt(episode.getUpdatedAt());
+        return vo;
     }
 }
