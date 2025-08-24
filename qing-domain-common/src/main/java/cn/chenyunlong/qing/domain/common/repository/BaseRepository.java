@@ -13,12 +13,12 @@
 
 package cn.chenyunlong.qing.domain.common.repository;
 
-import cn.chenyunlong.qing.domain.common.AggregateId;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
-
 import java.util.Optional;
 
-public interface BaseRepository<T extends BaseAggregate, ID extends AggregateId> {
+import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.EntityId;
+
+public interface BaseRepository<T extends BaseAggregate<ID>, ID extends EntityId<?>> {
 
     T save(T entity);
 
