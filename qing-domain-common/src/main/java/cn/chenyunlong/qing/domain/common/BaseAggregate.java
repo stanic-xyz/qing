@@ -13,22 +13,23 @@
 
 package cn.chenyunlong.qing.domain.common;
 
+import java.time.Instant;
+import java.util.Collection;
+
+import javax.annotation.Nonnull;
+
+import org.springframework.data.domain.AbstractAggregateRoot;
+
 import cn.chenyunlong.common.constants.ValidStatus;
 import cn.hutool.core.lang.Assert;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.domain.AbstractAggregateRoot;
-
-import javax.annotation.Nonnull;
-import java.time.Instant;
-import java.util.Collection;
-
 
 @Setter
 @Getter
-public abstract class BaseAggregate extends AbstractAggregateRoot<BaseAggregate> {
+public abstract class BaseAggregate<T extends EntityId<?>> extends AbstractAggregateRoot<BaseAggregate<T>> {
 
-    private AggregateId id;
+    private T id;
 
     /**
      * 数据状态。
@@ -61,7 +62,6 @@ public abstract class BaseAggregate extends AbstractAggregateRoot<BaseAggregate>
         Assert.notEquals(validStatus, ValidStatus.INVALID, "状态错误");
         setValidStatus(ValidStatus.INVALID);
     }
-
 
     @Nonnull
     @Override
