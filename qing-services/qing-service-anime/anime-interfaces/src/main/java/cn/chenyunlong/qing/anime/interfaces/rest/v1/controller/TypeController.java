@@ -26,12 +26,13 @@ import org.springframework.web.bind.annotation.*;
 public class TypeController {
 
     private final ITypeService typeService;
+    private final TypeMapper typeMapper;
 
     @PostMapping
     @Operation(summary = "创建类型", description = "创建新的动漫类型")
     public JsonResult<Long> createType(
         @Valid @RequestBody TypeCreateRequest request) {
-        TypeCreator creator = TypeMapper.INSTANCE.request2Dto(request);
+        TypeCreator creator = typeMapper.request2Dto(request);
         return JsonResult.success(typeService.createType(creator));
     }
 

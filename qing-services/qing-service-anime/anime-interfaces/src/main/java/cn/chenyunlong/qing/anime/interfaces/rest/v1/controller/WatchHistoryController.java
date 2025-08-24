@@ -31,6 +31,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class WatchHistoryController {
         String userAgent = httpRequest.getHeader("User-Agent");
 
         WatchHistory history = watchHistoryService.recordWatchHistory(
-                request.getUserId(), request.getAnimeId(), request.getEpisodeId(), 
+                request.getUserId(), request.getAnimeId(), request.getEpisodeId(),
                 request.getDeviceType(), ipAddress, userAgent);
         return ResponseEntity.ok(history);
     }
