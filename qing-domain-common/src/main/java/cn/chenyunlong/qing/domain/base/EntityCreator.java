@@ -13,18 +13,19 @@
 
 package cn.chenyunlong.qing.domain.base;
 
-import cn.chenyunlong.common.validator.CreateGroup;
-import cn.chenyunlong.qing.domain.common.AggregateId;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
-import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
-import com.google.common.base.Preconditions;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import com.google.common.base.Preconditions;
+
+import cn.chenyunlong.common.validator.CreateGroup;
+import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.EntityId;
+import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 实体类控制器。
@@ -32,20 +33,18 @@ import java.util.function.Supplier;
  * @author gim 2022/3/5 9:54 下午
  */
 @Slf4j
-public class EntityCreator<T extends BaseAggregate, ID extends AggregateId> extends BaseEntityOperation
-    implements Create<T>, UpdateHandler<T>, Executor<T>, Validate<T> {
+public class EntityCreator<T extends BaseAggregate<ID>, ID extends EntityId<?>> extends BaseEntityOperation
+        implements Create<T>, UpdateHandler<T>, Executor<T>, Validate<T> {
 
     private final BaseRepository<T, ID> repository;
     private T data;
     private Consumer<T> successHook = t -> log.info("save success");
     private CustomValidator<T> validator = DefaultCustomValidator.defaultValidator();
-    private Consumer<? super Throwable> errorHook =
-        throwable -> log.error("插入数据发生了异常", throwable);
+    private Consumer<? super Throwable> errorHook = throwable -> log.error("插入数据发生了异常", throwable);
 
     public EntityCreator(BaseRepository<T, ID> repository) {
         this.repository = repository;
     }
-
 
     @Override
     public Executor<T> errorHook(Consumer<? super Throwable> consumer) {
@@ -101,4 +100,3 @@ public class EntityCreator<T extends BaseAggregate, ID extends AggregateId> exte
         return this;
     }
 }
-
