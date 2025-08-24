@@ -8,9 +8,9 @@ import cn.chenyunlong.qing.anime.domain.anime.dto.command.AnimeCategoryCreator;
 import cn.chenyunlong.qing.anime.domain.anime.dto.updater.AnimeCategoryUpdater;
 import cn.chenyunlong.qing.anime.domain.anime.dto.vo.AnimeCategoryVO;
 import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeCategoryRepository;
-import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeCategoryMapper;
+
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.anime.domain.anime.models.CategoryId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class AnimeCategoryService {
         if (creator.getPid() == null) {
             parent = null;
         } else {
-            parent = animeCategoryRepository.findById(new AggregateId(creator.getPid()))
+            parent = animeCategoryRepository.findById(CategoryId.of(creator.getPid()))
                 .orElseThrow(() -> new NotFoundException("父级目录不存在: " + creator.getPid()));
         }
         return EntityOperations.doCreate(animeCategoryRepository)
@@ -51,7 +51,7 @@ public class AnimeCategoryService {
 
     public void updateAnimeCategory(AnimeCategoryUpdater updater) {
         EntityOperations.doUpdate(animeCategoryRepository)
-            .loadById(new AggregateId(updater.getId()))
+            .loadById(CategoryId.of(updater.getId()))
             .update(updater::updateAnimeCategory)
             .execute();
     }
@@ -59,7 +59,7 @@ public class AnimeCategoryService {
 
     public void validAnimeCategory(Long id) {
         EntityOperations.doUpdate(animeCategoryRepository)
-            .loadById(new AggregateId(id))
+            .loadById(CategoryId.of(id))
             .update(BaseAggregate::valid)
             .execute();
     }
@@ -67,7 +67,7 @@ public class AnimeCategoryService {
 
     public void invalidAnimeCategory(Long id) {
         EntityOperations.doUpdate(animeCategoryRepository)
-            .loadById(new AggregateId(id))
+            .loadById(CategoryId.of(id))
             .update(BaseAggregate::invalid)
             .execute();
     }
@@ -77,7 +77,16 @@ public class AnimeCategoryService {
      */
 
     public AnimeCategoryVO findById(Long id) {
-        Optional<Category> animeCategoryOptional = animeCategoryRepository.findById(new AggregateId(id));
-        return animeCategoryOptional.map(AnimeCategoryMapper.INSTANCE::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
+        Optional<Category> animeCategoryOptional = animeCategoryRepository.findById(CategoryId.of(id));
+        return animeCategoryOptional.map(category -> {
+            AnimeCategoryVO vo = new AnimeCategoryVO();
+            vo.setId(category.getId().getValue());
+            vo.setName(category.getName());
+            vo.setOrderNo(category.getOrderNo());
+            vo.setPid(category.getPid() != null && !category.getPid().equals(Category.ROOT_PID) ? category.getPid() : null);
+            vo.setCreatedAt(category.getCreatedAt());
+            vo.setUpdatedAt(category.getUpdatedAt());
+            return vo;
+        }).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 }

@@ -9,7 +9,6 @@ import cn.chenyunlong.qing.anime.domain.anime.dto.command.AnimeRemoveCommand;
 import cn.chenyunlong.qing.anime.domain.anime.dto.command.AnimeShelveOffCommand;
 import cn.chenyunlong.qing.anime.domain.anime.dto.command.AnimeShelvingCommand;
 import cn.chenyunlong.qing.anime.domain.anime.dto.command.CreatorAnimeCommand;
-import cn.chenyunlong.qing.anime.domain.anime.dto.updater.AnimeUpdateCommand;
 import cn.chenyunlong.qing.anime.domain.anime.exception.AnimeNotApprovedException;
 import cn.chenyunlong.qing.anime.domain.anime.exception.CopyrightViolationException;
 import cn.chenyunlong.qing.anime.domain.anime.factory.AnimeFactory;
@@ -22,7 +21,6 @@ import cn.chenyunlong.qing.anime.domain.type.Type;
 import cn.chenyunlong.qing.anime.domain.type.repository.TypeRepository;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static cn.chenyunlong.qing.domain.base.EntityOperations.doCreate;
@@ -50,24 +47,25 @@ public class AnimeDomainService {
 
     public Anime createAnime(CreatorAnimeCommand creator) {
         return doCreate(animeRepository).create(() -> {
-                // 检查名称是否存在
-                if (animeRepository.existsByName(creator.getName())) {
-                    throw new NotFoundException("动漫名称已存在");
-                }
-                List<Tag> tagList = tagRepository.findByIds(creator.getTagIds());
-                Tags tags = Tags.create(tagList.stream().map(Tag::getName).collect(Collectors.toList()));
+            // 检查名称是否存在
+            if (animeRepository.existsByName(creator.getName())) {
+                throw new NotFoundException("动漫名称已存在");
+            }
+            List<Tag> tagList = tagRepository.findByIds(creator.getTagIds());
+            Tags tags = Tags.create(tagList.stream().map(Tag::getName).collect(Collectors.toList()));
 
-                Type type = typeRepository.findById(creator.getTypeId()).orElseThrow(() -> new NotFoundException("类型不存在"));
+            Type type = typeRepository.findById(creator.getTypeId()).orElseThrow(() -> new NotFoundException("类型不存在"));
 
-                AnimeType animeType = new AnimeType(type.getId(), type.getName());
+            AnimeType animeType = new AnimeType(type.getId(), type.getName());
 
-                Category category = categoryRepository.findById(creator.getTypeId()).orElseThrow(() -> new NotFoundException("类型不存在"));
-                AnimeCategory animeCategory = new AnimeCategory(category.getId(), category.getName());
+            Category category = categoryRepository.findById(creator.getCategoryId())
+                    .orElseThrow(() -> new NotFoundException("类型不存在"));
+            AnimeCategory animeCategory = new AnimeCategory(category.getId(), category.getName());
 
-                Company company = Company.create(creator.getCompanyId(), "creator.getCompanyName()");
+            Company company = Company.create(creator.getCompanyId(), "creator.getCompanyName()");
 
-                long id = IdUtil.getSnowflakeNextId();
-                return AnimeFactory.createAnime(
+            long id = IdUtil.getSnowflakeNextId();
+            return AnimeFactory.createAnime(
                     id,
                     creator.getName(),
                     creator.getInstruction(),
@@ -77,11 +75,11 @@ public class AnimeDomainService {
                     new PremiereDate(LocalDate.now()),
                     tags,
                     animeCategory);
-            })
-            .update(Anime::create)
-            .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId().getId()))
-            .execute()
-            .orElseThrow(() -> new BusinessException(CodeEnum.CreateError, "创建动漫失败"));
+        })
+                .update(Anime::initialize)
+                .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId().getValue()))
+                .execute()
+                .orElseThrow(() -> new BusinessException(CodeEnum.CreateError, "创建动漫失败"));
     }
 
     /**
@@ -94,59 +92,36 @@ public class AnimeDomainService {
 
     public void shelveAnime(AnimeShelvingCommand command) {
         doUpdate(animeRepository)
-            .loadById(command.animeId())
-            .update(Anime::putOnShelf)
-            .execute();
+                .loadById(command.animeId())
+                .update(Anime::putOnShelf)
+                .execute();
     }
 
     public void takeOffShelf(AnimeShelveOffCommand shelveOffCommand) {
         doUpdate(animeRepository)
-            .loadById(shelveOffCommand.animeId())
-            .update(Anime::takeOffShelf)
-            .execute();
+                .loadById(shelveOffCommand.animeId())
+                .update(Anime::takeOffShelf)
+                .execute();
     }
 
     public void deleteAnime(AnimeRemoveCommand command) {
         doUpdate(animeRepository)
-            .loadById(command.animeId())
-            .update(Anime::delete)
-            .execute();
-    }
-
-    public void updateAnime(AnimeUpdateCommand updateCommand) {
-        Optional<Anime> animeOptional = animeRepository.findById(updateCommand.getId());
-        doUpdate(animeRepository)
-            .load(animeOptional::get)
-            .update(anime -> {
-                if (!StrUtil.equals(anime.getName(), updateCommand.getName())) {
-                    // 检查名称是否存在
-                    if (animeRepository.existsByName(updateCommand.getName())) {
-                        throw new NotFoundException("动漫名称已存在");
-                    }
-                }
-                anime.updateInfo(updateCommand.getName(),
-                    updateCommand.getInstruction(),
-                    updateCommand.getCover(),
-                    updateCommand.getOriginalName(),
-                    updateCommand.getOtherName(),
-                    updateCommand.getAuthor(),
-                    updateCommand.getOfficialWebsite());
-            })
-            .execute();
+                .loadById(command.animeId())
+                .update(Anime::delete)
+                .execute();
     }
 
     public void validAnime(Long id) {
         doUpdate(animeRepository)
-            .loadById(new AnimeId(id))
-            .update(BaseAggregate::valid)
-            .execute();
+                .loadById(AnimeId.of(id))
+                .update(BaseAggregate::valid)
+                .execute();
     }
-
 
     public void invalidAnime(Long id) {
         doUpdate(animeRepository)
-            .loadById(new AnimeId(id))
-            .update(BaseAggregate::invalid)
-            .execute();
+                .loadById(AnimeId.of(id))
+                .update(BaseAggregate::invalid)
+                .execute();
     }
 }
