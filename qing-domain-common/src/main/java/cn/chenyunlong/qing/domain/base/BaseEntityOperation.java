@@ -21,5 +21,4 @@ package cn.chenyunlong.qing.domain.base;
  */
 public abstract class BaseEntityOperation implements EntityOperation {
 
-
 }

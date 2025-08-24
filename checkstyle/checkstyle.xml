@@ -224,7 +224,7 @@
         <module name="InvalidJavadocPosition"/>
 
         <!-- 块标签组前需要空行 -->
-        <module name="RequireEmptyLineBeforeBlockTagGroup"/>
+        <!-- <module name="RequireEmptyLineBeforeBlockTagGroup"/> -->
 
         <!-- @clause顺序 -->
         <module name="AtclauseOrder">

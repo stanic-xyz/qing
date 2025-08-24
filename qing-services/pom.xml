@@ -22,4 +22,14 @@
         <module>qing-service-config</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-bom</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>
