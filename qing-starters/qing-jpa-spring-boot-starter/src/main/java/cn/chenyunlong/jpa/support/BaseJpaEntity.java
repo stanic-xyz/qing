@@ -13,16 +13,24 @@
 
 package cn.chenyunlong.jpa.support;
 
-import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
-import cn.chenyunlong.qing.infrastructure.entity.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import cn.chenyunlong.common.constants.ValidStatus;
+import cn.chenyunlong.jpa.support.converter.InstantLongConverter;
+import cn.chenyunlong.qing.infrastructure.entity.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Version;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -34,15 +42,15 @@ public abstract class BaseJpaEntity extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
+    private ValidStatus validStatus;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     @Convert(converter = InstantLongConverter.class)
-    @Setter(AccessLevel.PROTECTED)
     private Instant createdAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "updated_at", nullable = false)
     @Convert(converter = InstantLongConverter.class)
-    @Setter(AccessLevel.PROTECTED)
     private Instant updatedAt;
 
     /**

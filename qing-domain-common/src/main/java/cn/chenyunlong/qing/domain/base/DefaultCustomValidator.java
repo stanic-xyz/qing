@@ -14,15 +14,14 @@ public class DefaultCustomValidator<T> implements CustomValidator<T> {
 
     private Validator validator;
 
-
     public static <T> CustomValidator<T> defaultValidator() {
 
         DefaultCustomValidator<T> customValidator = new DefaultCustomValidator<>();
 
         try {
             Validator validator1 = Validation
-                .buildDefaultValidatorFactory()
-                .getValidator();
+                    .buildDefaultValidatorFactory()
+                    .getValidator();
             if (validator1 != null) {
                 customValidator.setValidator(validator1);
                 return customValidator;
