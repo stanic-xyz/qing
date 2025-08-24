@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class WatchHistory extends BaseAggregate {
+public class WatchHistory extends BaseAggregate<WatchHistoryId> {
 
     @FieldDesc(description = "用户ID")
     private Long userId;

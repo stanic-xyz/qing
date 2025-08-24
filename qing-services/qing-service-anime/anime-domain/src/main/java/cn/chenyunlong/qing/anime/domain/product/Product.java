@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.anime.domain.product;
 
+import java.math.BigDecimal;
+
 import cn.chenyunlong.codegen.annotation.GenController;
 import cn.chenyunlong.codegen.annotation.GenCreator;
 import cn.chenyunlong.codegen.annotation.GenQuery;
@@ -13,8 +15,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.math.BigDecimal;
 
 /**
  * 产品实体
@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 @GenUpdater
 @GenQuery
 @GenVo
-public class Product extends BaseAggregate {
+public class Product extends BaseAggregate<ProductId> {
 
     /**
      * 产品名称

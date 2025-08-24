@@ -18,6 +18,14 @@ public class TypeUpdater {
     @Schema(title = "instruction")
     private String instruction;
 
+    public String getName() {
+        return name;
+    }
+
+    public String getInstruction() {
+        return instruction;
+    }
+
     public void updateType(Type param) {
         Optional.ofNullable(getName()).ifPresent(param::setName);
         Optional.ofNullable(getInstruction()).ifPresent(param::setInstruction);

@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class Favorite extends BaseAggregate {
+public class Favorite extends BaseAggregate<FavoriteId> {
 
     @FieldDesc(description = "用户ID")
     private Long userId;

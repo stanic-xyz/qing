@@ -2,7 +2,6 @@ package cn.chenyunlong.qing.anime.domain.anime.models;
 
 public record Company(Long companyId, String companyName) {
 
-
     public static Company create(Long companyId, String companyName) {
         Company company = new Company(companyId, companyName);
         company.validate();

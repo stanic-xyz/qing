@@ -13,20 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AnimeCategoryCreator {
 
-    @Schema(
-        title = "name"
-    )
+    @Schema(title = "name")
     private String name;
 
-    @Schema(
-        title = "orderNo"
-    )
+    @Schema(title = "orderNo")
     private Integer orderNo;
 
-    @Schema(
-        title = "pid"
-    )
+    @Schema(title = "pid")
     private Long pid;
-
 
 }

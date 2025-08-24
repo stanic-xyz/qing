@@ -31,7 +31,7 @@ public class AnimeVO extends AbstractBaseJpaVo {
     private String cover;
 
     @Schema(
-        title = "aggregateId"
+        title = "typeId"
     )
     private Long typeId;
 

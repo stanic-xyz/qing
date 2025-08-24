@@ -27,7 +27,7 @@ import java.time.Instant;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Attachment extends BaseAggregate {
+public class Attachment extends BaseAggregate<AttachmentId> {
 
     @FieldDesc(name = "文件类型", description = "文件描述信息")
     private String mimeType;

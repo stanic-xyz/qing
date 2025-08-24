@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class PlaybackProgress extends BaseAggregate {
+public class PlaybackProgress extends BaseAggregate<PlaybackProgressId> {
 
     @FieldDesc(description = "用户ID")
     private Long userId;

@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.anime.domain.anime.models;
 
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.anime.domain.type.TypeId;
 
-public record AnimeType(AggregateId aggregateId, String typeName) {
+public record AnimeType(TypeId typeId, String typeName) {
 }

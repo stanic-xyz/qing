@@ -1,93 +1,68 @@
 package cn.chenyunlong.qing.anime.domain.anime.dto.command;
 
-import cn.chenyunlong.qing.anime.domain.anime.PlayStatus;
-import cn.chenyunlong.qing.anime.domain.anime.enums.District;
-import cn.chenyunlong.qing.domain.common.AggregateId;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import cn.chenyunlong.qing.anime.domain.anime.PlayStatus;
+import cn.chenyunlong.qing.anime.domain.anime.enums.District;
+import cn.chenyunlong.qing.anime.domain.anime.models.CategoryId;
+import cn.chenyunlong.qing.anime.domain.type.TypeId;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 @Schema
 @Data
 public class CreatorAnimeCommand {
 
     private static final Logger log = LoggerFactory.getLogger(CreatorAnimeCommand.class);
-    @Schema(
-        title = "name"
-    )
+    @Schema(title = "name")
     private String name;
 
-    @Schema(
-        title = "instruction"
-    )
+    @Schema(title = "instruction")
     private String instruction;
 
-    @Schema(
-        title = "districtId"
-    )
+    @Schema(title = "districtId")
     private District district;
 
-    @Schema(
-        title = "封面"
-    )
+    @Schema(title = "封面")
     private String cover;
 
-    @Schema(
-        title = "aggregateId"
-    )
-    private AggregateId typeId;
+    @Schema(title = "typeId")
+    private TypeId typeId;
 
-    @Schema(
-        title = "originalName"
-    )
+    @Schema(title = "类别标识")
+    private CategoryId categoryId;
+
+    @Schema(title = "originalName")
     private String originalName;
 
-    @Schema(
-        title = "otherName"
-    )
+    @Schema(title = "otherName")
     private String otherName;
 
-    @Schema(
-        title = "author"
-    )
+    @Schema(title = "author")
     private String author;
 
-    @Schema(
-        title = "companyId"
-    )
+    @Schema(title = "companyId")
     private Long companyId;
 
-    @Schema(
-        title = "playStatus"
-    )
+    @Schema(title = "playStatus")
     private PlayStatus playStatus;
 
-    @Schema(
-        title = "plotType"
-    )
+    @Schema(title = "plotType")
     private String plotType;
 
-    @Schema(
-        title = "plotTypes"
-    )
+    @Schema(title = "plotTypes")
     private List<Long> tagIds;
 
-    @Schema(
-        title = "officialWebsite"
-    )
+    @Schema(title = "officialWebsite")
     private String officialWebsite;
 
-    @Schema(
-        title = "playHeat"
-    )
+    @Schema(title = "playHeat")
     private String playHeat;
 
-    @Schema(
-        title = "orderNo"
-    )
+    @Schema(title = "orderNo")
     private Integer orderNo;
 
     @Schema(hidden = true)
