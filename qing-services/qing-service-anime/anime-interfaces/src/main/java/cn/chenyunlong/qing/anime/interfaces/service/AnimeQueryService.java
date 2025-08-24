@@ -3,7 +3,7 @@ package cn.chenyunlong.qing.anime.interfaces.service;
 import cn.chenyunlong.qing.anime.domain.anime.Category;
 import cn.chenyunlong.qing.anime.domain.anime.dto.vo.AnimeCategoryTreeVO;
 import cn.chenyunlong.qing.anime.domain.anime.dto.vo.AnimeVO;
-import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeCategoryMapper;
+import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeCategoryInfrastructureMapper;
 import cn.chenyunlong.qing.anime.infrastructure.converter.AnimeMapper;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.AnimeEntity;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.CategoryEntity;
@@ -28,12 +28,14 @@ public class AnimeQueryService {
 
     private final AnimeCategoryJpaRepository animeCategoryJpaRepository;
     private final AnimeJpaRepository animeJpaRepository;
+    private final AnimeMapper animeMapper;
+    private final AnimeCategoryInfrastructureMapper animeInfrastructureMapper;
 
     public List<AnimeCategoryTreeVO> tree() {
         List<CategoryEntity> categoryEntityList = animeCategoryJpaRepository.findAll();
 
         List<CategoryEntity> entityList = categoryEntityList.stream().filter(categoryEntity -> categoryEntity.getPid() == Category.ROOT_PID)
-            .toList();
+                .toList();
         return buildCategoryTree(entityList, categoryEntityList);
     }
 
@@ -44,11 +46,11 @@ public class AnimeQueryService {
         List<Long> parentIds = parentList.stream().map(CategoryEntity::getId).toList();
 
         Map<Long, List<CategoryEntity>> parentGroup = categoryEntityList.stream().filter(categoryEntity -> CollUtil.contains(parentIds, categoryEntity.getPid()))
-            .collect(Collectors.groupingBy(CategoryEntity::getPid));
+                .collect(Collectors.groupingBy(CategoryEntity::getPid));
 
         return parentList.stream().map(categoryEntity -> {
             List<CategoryEntity> childCategories = parentGroup.getOrDefault(categoryEntity.getId(), CollUtil.toList());
-            AnimeCategoryTreeVO animeCategoryTreeVO = AnimeCategoryMapper.INSTANCE.entityToTreeVo(categoryEntity);
+            AnimeCategoryTreeVO animeCategoryTreeVO = animeInfrastructureMapper.entityToTreeVo(categoryEntity);
             animeCategoryTreeVO.setChild(buildCategoryTree(childCategories, categoryEntityList));
             return animeCategoryTreeVO;
         }).toList();
@@ -56,7 +58,7 @@ public class AnimeQueryService {
 
     public List<AnimeVO> listAll() {
         List<AnimeEntity> animeEntityList = animeJpaRepository.findAll();
-        return animeEntityList.stream().map(AnimeMapper.INSTANCE::entityToDomain).map(AnimeMapper.INSTANCE::entityToVo).toList();
+        return animeEntityList.stream().map(animeMapper::entityToDomain).map(animeMapper::entityToVo).toList();
     }
 
     public AnimeVO getById(Long id) {
@@ -64,7 +66,7 @@ public class AnimeQueryService {
         if (animeEntity.isEmpty()) {
             throw new RuntimeException("动漫信息不存在");
         }
-        return AnimeMapper.INSTANCE.entityToVo(AnimeMapper.INSTANCE.entityToDomain(animeEntity.get()));
+        return animeMapper.entityToVo(animeMapper.entityToDomain(animeEntity.get()));
     }
 
     public List<AnimeVO> page(Integer page, Integer size, String keyword) {
@@ -75,23 +77,23 @@ public class AnimeQueryService {
         // 如果有关键词，在内存中过滤（临时解决方案）
         if (StrUtil.isNotBlank(keyword)) {
             animeEntityList = animeEntityList.stream()
-                .filter(entity -> entity.getName() != null
-                    && entity.getName().toLowerCase().contains(keyword.toLowerCase()))
-                .toList();
+                    .filter(entity -> entity.getName() != null
+                            && entity.getName().toLowerCase().contains(keyword.toLowerCase()))
+                    .toList();
         }
 
         return animeEntityList.stream()
-            .map(AnimeMapper.INSTANCE::entityToDomain)
-            .map(AnimeMapper.INSTANCE::entityToVo)
-            .toList();
+                .map(animeMapper::entityToDomain)
+                .map(animeMapper::entityToVo)
+                .toList();
     }
 
     public List<AnimeVO> listByCategory(Long categoryId) {
         // 使用 findAll 然后在内存中过滤（临时解决方案）
         List<AnimeEntity> allEntities = animeJpaRepository.findByCategoryId(categoryId);
         return allEntities.stream()
-            .map(AnimeMapper.INSTANCE::entityToDomain)
-            .map(AnimeMapper.INSTANCE::entityToVo)
-            .toList();
+                .map(animeMapper::entityToDomain)
+                .map(animeMapper::entityToVo)
+                .toList();
     }
 }

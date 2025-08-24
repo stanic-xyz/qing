@@ -2,16 +2,12 @@ package cn.chenyunlong.qing.anime.interfaces;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {
-    "cn.chenyunlong.qing.anime.*"
+        "cn.chenyunlong.qing.anime.*"
 })
-@EnableJpaRepositories(basePackages = "cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository")
-@EntityScan(basePackages = "cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity")
 public class QingAnimeWebApplication {
 
     /**
