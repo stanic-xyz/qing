@@ -1,8 +1,8 @@
 package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.auth.domain.user.repository.QingUserRepository;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,7 +16,7 @@ public class QingUserRepositoryImpl implements QingUserRepository {
     }
 
     @Override
-    public Optional<QingUser> findById(AggregateId id) {
+    public Optional<QingUser> findById(QingUserId id) {
         return Optional.empty();
     }
 }

@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.auth.domain.authentication.repository;
 
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
+import cn.chenyunlong.qing.auth.domain.authentication.TokenId;
 import cn.chenyunlong.qing.auth.domain.authentication.TokenType;
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
@@ -26,7 +27,7 @@ import java.util.Optional;
  *
  * @author 陈云龙
  */
-public interface TokenRepository extends BaseRepository<AuthenticationToken,AggregateId> {
+public interface TokenRepository extends BaseRepository<AuthenticationToken, TokenId> {
 
     /**
      * 根据令牌值查找令牌

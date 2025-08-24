@@ -8,7 +8,7 @@ import org.checkerframework.common.aliasing.qual.Unique;
 
 @Getter
 @Setter
-public class Role extends BaseAggregate {
+public class Role extends BaseAggregate<RoleId> {
 
     @Unique
     @FieldDesc(name = "角色编码")

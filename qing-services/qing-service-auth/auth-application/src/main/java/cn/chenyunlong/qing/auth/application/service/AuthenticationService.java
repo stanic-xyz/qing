@@ -16,15 +16,15 @@ package cn.chenyunlong.qing.auth.application.service;
 import cn.chenyunlong.qing.auth.application.dto.AuthenticationResult;
 import cn.chenyunlong.qing.auth.application.dto.LoginRequest;
 import cn.chenyunlong.qing.auth.application.dto.TokenInfo;
+import cn.chenyunlong.qing.auth.application.utils.AuthJwtTokenUtil;
 import cn.chenyunlong.qing.auth.domain.authentication.Authentication;
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
 import cn.chenyunlong.qing.auth.domain.authentication.exception.AuthenticationException;
 import cn.chenyunlong.qing.auth.domain.authentication.service.AuthenticationDomainService;
 import cn.chenyunlong.qing.auth.domain.authentication.service.TokenDomainService;
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
-import cn.chenyunlong.qing.auth.application.utils.AuthJwtTokenUtil;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -72,12 +72,12 @@ public class AuthenticationService {
         }
 
         // 获取用户信息
-        AggregateId userId = authentication.getUserId();
+        QingUserId userId = authentication.getUserId();
         QingUser user = userRepository.findById(userId)
             .orElseThrow(() -> new AuthenticationException("用户不存在"));
 
         // 生成JWT令牌
-        String jwtToken = authJwtTokenUtil.generateToken(user.getId().getId());
+        String jwtToken = authJwtTokenUtil.generateToken(user);
         LocalDateTime expiresAt = LocalDateTime.now().plusSeconds(authJwtTokenUtil.getExpiration() / 1000);
 
         // 保存令牌
@@ -129,7 +129,7 @@ public class AuthenticationService {
             }
 
             // 获取用户信息
-            QingUser user = userRepository.findById(new AggregateId(userId))
+            QingUser user = userRepository.findById(QingUserId.of(userId))
                 .orElseThrow(() -> new AuthenticationException("用户不存在"));
 
             // 构建认证结果

@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.auth.domain.authentication.event;
 
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationId;
 import lombok.Getter;
 
 /**
@@ -24,11 +24,11 @@ import lombok.Getter;
 @Getter
 public class AuthenticationFailed {
 
-    private final AggregateId authenticationId;
+    private final AuthenticationId authenticationId;
     private final String reason;
     private final long timestamp;
 
-    public AuthenticationFailed(AggregateId authenticationId, String reason) {
+    public AuthenticationFailed(AuthenticationId authenticationId, String reason) {
         this.authenticationId = authenticationId;
         this.reason = reason;
         this.timestamp = System.currentTimeMillis();

@@ -63,17 +63,17 @@ public class LoginResponse {
     public static LoginResponse fromAuthenticationResult(AuthenticationResult result) {
         LoginResponse response = new LoginResponse();
         response.setSuccess(result.isSuccess());
-        
+
         if (result.isSuccess()) {
             QingUser user = result.getUser();
-            response.setUserId(user.getId().getId());
+            response.setUserId(user.getId().getValue());
             response.setUsername(user.getUsername());
             response.setNickname(user.getNickname());
             response.setTokenInfo(result.getTokenInfo());
         } else {
             response.setErrorMessage(result.getFailureReason());
         }
-        
+
         return response;
     }
 }

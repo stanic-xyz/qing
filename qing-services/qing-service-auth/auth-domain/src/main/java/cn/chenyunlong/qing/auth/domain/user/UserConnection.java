@@ -13,7 +13,7 @@ import java.time.Instant;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 /**
- * User connection extension.
+ * User userConnection extension.
  *
  * @author guqing
  * @since 2.4.0
@@ -36,14 +36,14 @@ public class UserConnection {
     private String username;
 
     /**
-     * The unique identifier for the user's connection to the OAuth provider.
+     * The unique identifier for the user's userConnection to the OAuth provider.
      * for example, the user's GitHub id.
      */
     @Schema(requiredMode = REQUIRED)
     private String providerUserId;
 
     /**
-     * The display name for the user's connection to the OAuth provider.
+     * The display name for the user's userConnection to the OAuth provider.
      */
     @Schema(requiredMode = REQUIRED)
     private String displayName;

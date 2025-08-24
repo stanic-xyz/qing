@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * The unique business key for a {@link ConnectionData} instance.
  * A composite key that consists of the providerId (e.g. "facebook") plus providerUserId (e.g. "125660").
- * Provides the basis for connection equals() and hashCode().
+ * Provides the basis for userConnection equals() and hashCode().
  *
  * @param providerId     第三方服务商
  * @param providerUserId 第三方用户id
@@ -51,13 +51,13 @@ public record ConnectionKey(String providerId, String providerUserId) implements
     }
 
     /**
-     * The id of the external provider user representing the remote end of the connection.
+     * The id of the external provider user representing the remote end of the userConnection.
      * May be null if this information is not exposed by the provider.
      * This value should never change.
      * Must be present to support sign-in by the provider user.
      * Must be present to establish multiple connections with the provider.
      *
-     * @return The id of the external provider user representing the remote end of the connection.
+     * @return The id of the external provider user representing the remote end of the userConnection.
      */
     @Override
     public String providerUserId() {

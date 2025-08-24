@@ -87,7 +87,7 @@ public class AuthController {
             // 转换为接口层DTO
             LoginResponse interfaceResponse = new LoginResponse();
             interfaceResponse.setTokenInfo(result.getTokenInfo());
-            interfaceResponse.setUserId(result.getUser().getId().getId());
+            interfaceResponse.setUserId(result.getUser().getId().getValue());
             interfaceResponse.setUsername(result.getUser().getUsername());
             return JsonResult.success(interfaceResponse);
         } else {

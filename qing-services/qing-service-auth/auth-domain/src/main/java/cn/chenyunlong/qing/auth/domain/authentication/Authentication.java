@@ -17,7 +17,7 @@ import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.qing.auth.domain.authentication.event.AuthenticationFailed;
 import cn.chenyunlong.qing.auth.domain.authentication.event.AuthenticationSucceeded;
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class Authentication extends BaseAggregate {
+public class Authentication extends BaseAggregate<AuthenticationId> {
 
     @FieldDesc(name = "认证类型")
     private AuthenticationType type;
@@ -56,7 +56,7 @@ public class Authentication extends BaseAggregate {
     private String userAgent;
 
     @FieldDesc(name = "关联用户ID")
-    private AggregateId userId;
+    private QingUserId userId;
 
     @FieldDesc(description = "认证是否成功")
     private boolean successful;
@@ -67,22 +67,22 @@ public class Authentication extends BaseAggregate {
     /**
      * 创建认证实例
      *
-     * @param aggregateId 聚合根ID
-     * @param type        认证类型
-     * @param principal   认证主体
-     * @param credentials 认证凭证
-     * @param ipAddress   IP地址
-     * @param userAgent   用户代理
+     * @param authenticationId 聚合根ID
+     * @param type             认证类型
+     * @param principal        认证主体
+     * @param credentials      认证凭证
+     * @param ipAddress        IP地址
+     * @param userAgent        用户代理
      * @return 认证实例
      */
-    public static Authentication create(AggregateId aggregateId,
+    public static Authentication create(AuthenticationId authenticationId,
                                         AuthenticationType type,
                                         String principal,
                                         String credentials,
                                         String ipAddress,
                                         String userAgent) {
         Authentication authentication = new Authentication();
-        authentication.setId(aggregateId);
+        authentication.setId(authenticationId);
         authentication.setType(type);
         authentication.setPrincipal(principal);
         authentication.setCredentials(credentials);

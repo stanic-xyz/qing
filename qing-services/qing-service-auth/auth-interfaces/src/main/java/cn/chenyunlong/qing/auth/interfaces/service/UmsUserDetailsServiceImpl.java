@@ -51,13 +51,13 @@ public class UmsUserDetailsServiceImpl implements UmsUserDetailsService {
     private UserDetails buildUserDetails(QingUser qingUser) {
         List<Role> roleList = CollUtil.toList();
         return User.builder()
-            .username(qingUser.getUsername())
-            .password(qingUser.getEncodedPassword())
-            .credentialsExpired(false)
-            .accountExpired(false)
-            .authorities(AuthorityUtils.createAuthorityList(roleList.stream().map(Role::getRole).toList()))
-            .disabled(qingUser.getValidStatus().boolValue())
-            .build();
+                .username(qingUser.getUsername())
+                .password(qingUser.getEncodedPassword())
+                .credentialsExpired(false)
+                .accountExpired(false)
+                .authorities(AuthorityUtils.createAuthorityList(roleList.stream().map(Role::getRole).toList()))
+                .disabled(qingUser.getValidStatus().boolValue())
+                .build();
     }
 
     @Override

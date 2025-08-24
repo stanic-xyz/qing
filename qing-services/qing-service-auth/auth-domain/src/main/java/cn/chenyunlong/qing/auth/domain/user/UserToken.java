@@ -16,6 +16,7 @@ package cn.chenyunlong.qing.auth.domain.user;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.qing.auth.domain.user.dto.creator.UserTokenCreator;
+import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +30,7 @@ import java.time.Instant;
  */
 @Getter
 @Setter
-public class UserToken extends BaseAggregate {
+public class UserToken extends BaseAggregate<AggregateId> {
 
     @FieldDesc(name = "用户唯一ID")
     private Long uid;

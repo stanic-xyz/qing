@@ -14,12 +14,13 @@
 package cn.chenyunlong.qing.auth.domain.authentication.service;
 
 import cn.chenyunlong.qing.auth.domain.authentication.Authentication;
+import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationId;
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationType;
 import cn.chenyunlong.qing.auth.domain.authentication.exception.AuthenticationException;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.AuthenticationRepository;
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import lombok.RequiredArgsConstructor;
@@ -50,12 +51,12 @@ public class AuthenticationDomainService {
     public Authentication authenticateByUsernamePassword(String username, String password, String ipAddress, String userAgent) {
         // 创建认证记录
         Authentication authentication = Authentication.create(
-            new AggregateId(IdUtil.getSnowflakeNextId()),
-            AuthenticationType.USERNAME_PASSWORD,
-            username,
-            "[PROTECTED]", // 不保存明文密码
-            ipAddress,
-            userAgent
+                AuthenticationId.of(IdUtil.getSnowflakeNextId()),
+                AuthenticationType.USERNAME_PASSWORD,
+                username,
+                "[PROTECTED]", // 不保存明文密码
+                ipAddress,
+                userAgent
         );
 
         try {
@@ -104,19 +105,18 @@ public class AuthenticationDomainService {
     public Authentication authenticateByJwtToken(Long userId, String ipAddress, String userAgent) {
         // 创建认证记录
         Authentication authentication = Authentication.create(
-            new AggregateId(IdUtil.getSnowflakeNextId()),
-            AuthenticationType.JWT_TOKEN,
-            userId.toString(),
-            "[JWT_TOKEN]", // 不保存令牌
-            ipAddress,
-            userAgent
+                AuthenticationId.of(IdUtil.getSnowflakeNextId()),
+                AuthenticationType.JWT_TOKEN,
+                userId.toString(),
+                "[JWT_TOKEN]", // 不保存令牌
+                ipAddress,
+                userAgent
         );
 
         try {
             // 查找用户
-            AggregateId aggregateId = new AggregateId(userId);
-            QingUser user = userRepository.findById(aggregateId)
-                .orElseThrow(() -> new AuthenticationException("用户不存在"));
+            QingUser user = userRepository.findById(QingUserId.of(userId))
+                    .orElseThrow(() -> new AuthenticationException("用户不存在"));
 
             // 检查用户状态
             if (!user.isActive()) {
