@@ -17,7 +17,7 @@ import cn.chenyunlong.qing.anime.domain.favorite.Favorite;
 import cn.chenyunlong.qing.anime.domain.favorite.repository.FavoriteRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.FavoriteJpaRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.FavoriteEntity;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.anime.domain.favorite.FavoriteId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -94,7 +94,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
     private FavoriteEntity toEntity(Favorite favorite) {
         FavoriteEntity entity = new FavoriteEntity();
         if (favorite.getId() != null) {
-            entity.setId(favorite.getId().getId());
+            entity.setId(favorite.getId().getValue());
         }
         entity.setUserId(favorite.getUserId());
         entity.setAnimeId(favorite.getAnimeId());
@@ -113,7 +113,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
             entity.getRemark(),
             entity.getIsPublic()
         );
-        favorite.setId(new AggregateId(entity.getId()));
+        favorite.setId(FavoriteId.of(entity.getId()));
         favorite.setFavoriteTime(entity.getFavoriteTime());
         return favorite;
     }

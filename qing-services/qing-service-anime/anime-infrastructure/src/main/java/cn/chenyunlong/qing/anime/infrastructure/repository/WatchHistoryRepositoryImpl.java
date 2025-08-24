@@ -17,7 +17,7 @@ import cn.chenyunlong.qing.anime.domain.watchhistory.WatchHistory;
 import cn.chenyunlong.qing.anime.domain.watchhistory.repository.WatchHistoryRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.WatchHistoryJpaRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.WatchHistoryEntity;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.anime.domain.watchhistory.WatchHistoryId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -101,7 +101,7 @@ public class WatchHistoryRepositoryImpl implements WatchHistoryRepository {
     private WatchHistoryEntity toEntity(WatchHistory watchHistory) {
         WatchHistoryEntity entity = new WatchHistoryEntity();
         if (watchHistory.getId() != null) {
-            entity.setId(watchHistory.getId().getId());
+            entity.setId(watchHistory.getId().getValue());
         }
         entity.setUserId(watchHistory.getUserId());
         entity.setAnimeId(watchHistory.getAnimeId());
@@ -124,7 +124,7 @@ public class WatchHistoryRepositoryImpl implements WatchHistoryRepository {
             entity.getIpAddress(),
             entity.getUserAgent()
         );
-        watchHistory.setId(new AggregateId(entity.getId()));
+        watchHistory.setId(WatchHistoryId.of(entity.getId()));
         watchHistory.setWatchTime(entity.getWatchTime());
         return watchHistory;
     }

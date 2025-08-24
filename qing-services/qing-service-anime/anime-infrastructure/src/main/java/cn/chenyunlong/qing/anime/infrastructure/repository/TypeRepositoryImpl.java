@@ -1,11 +1,11 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository;
 
 import cn.chenyunlong.qing.anime.domain.type.Type;
+import cn.chenyunlong.qing.anime.domain.type.TypeId;
 import cn.chenyunlong.qing.anime.domain.type.repository.TypeRepository;
 import cn.chenyunlong.qing.anime.infrastructure.converter.TypeMapper;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.TypeEntity;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.TypeJpaRepository;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,20 +15,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TypeRepositoryImpl implements TypeRepository {
 
+    private final TypeMapper typeMapper;
     private final TypeJpaRepository typeJpaRepository;
 
     @Override
     public Type save(Type entity) {
-        TypeEntity typeEntity = TypeMapper.INSTANCE.toEntity(entity);
+        TypeEntity typeEntity = typeMapper.toEntity(entity);
         TypeEntity saved = typeJpaRepository.save(typeEntity);
-        return TypeMapper.INSTANCE.entityToDomain(saved);
+        return typeMapper.entityToDomain(saved);
     }
 
     @Override
-    public Optional<Type> findById(AggregateId id) {
+    public Optional<Type> findById(TypeId id) {
         if (id == null) {
             return Optional.empty();
         }
-        return typeJpaRepository.findById(id.getId()).map(TypeMapper.INSTANCE::entityToDomain);
+        return typeJpaRepository.findById(id.getValue()).map(typeMapper::entityToDomain);
     }
 }
