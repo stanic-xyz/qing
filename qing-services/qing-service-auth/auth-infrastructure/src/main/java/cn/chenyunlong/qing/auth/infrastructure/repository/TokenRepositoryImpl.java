@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
+import cn.chenyunlong.qing.auth.domain.authentication.TokenId;
 import cn.chenyunlong.qing.auth.domain.authentication.TokenType;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.TokenRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;
@@ -37,7 +38,7 @@ public class TokenRepositoryImpl implements TokenRepository {
     }
 
     @Override
-    public Optional<AuthenticationToken> findById(AggregateId id) {
+    public Optional<AuthenticationToken> findById(TokenId id) {
         return Optional.empty();
     }
 }

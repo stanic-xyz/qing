@@ -3,12 +3,12 @@ package cn.chenyunlong.qing.auth.application.service;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.auth.domain.user.dto.creator.QingUserCreator;
 import cn.chenyunlong.qing.auth.domain.user.dto.updater.QingUserUpdater;
 import cn.chenyunlong.qing.auth.domain.user.dto.vo.QingUserVO;
 import cn.chenyunlong.qing.auth.domain.user.repository.QingUserRepository;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class QingUserServiceImpl {
             .create(() -> this.dtoToEntity(creator))
             .update(QingUser::init)
             .execute();
-        return qingUser.isPresent() ? qingUser.get().getId().getId() : 0;
+        return qingUser.isPresent() ? qingUser.get().getId().getValue() : 0;
     }
 
     private QingUser dtoToEntity(QingUserCreator creator) {
@@ -47,7 +47,7 @@ public class QingUserServiceImpl {
 
     public void updateQingUser(QingUserUpdater updater) {
         EntityOperations.doUpdate(qingUserRepository)
-            .loadById(new AggregateId(updater.getId()))
+            .loadById(QingUserId.of(updater.getId()))
             .update(updater::updateQingUser)
             .execute();
     }
@@ -55,7 +55,7 @@ public class QingUserServiceImpl {
 
     public void validQingUser(Long id) {
         EntityOperations.doUpdate(qingUserRepository)
-            .loadById(new AggregateId(id))
+            .loadById(QingUserId.of(id))
             .update(BaseAggregate::valid)
             .execute();
     }
@@ -63,7 +63,7 @@ public class QingUserServiceImpl {
 
     public void invalidQingUser(Long id) {
         EntityOperations.doUpdate(qingUserRepository)
-            .loadById(new AggregateId(id))
+            .loadById(QingUserId.of(id))
             .update(BaseAggregate::invalid)
             .execute();
     }
@@ -73,7 +73,7 @@ public class QingUserServiceImpl {
      */
 
     public QingUserVO findById(Long id) {
-        Optional<QingUser> qingUser = qingUserRepository.findById(new AggregateId(id));
+        Optional<QingUser> qingUser = qingUserRepository.findById(QingUserId.of(id));
         return qingUser.map(this::entityToVo).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 

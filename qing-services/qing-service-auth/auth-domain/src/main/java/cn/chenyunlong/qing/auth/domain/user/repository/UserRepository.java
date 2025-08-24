@@ -1,13 +1,13 @@
 package cn.chenyunlong.qing.auth.domain.user.repository;
 
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 
 import java.util.List;
 import java.util.Set;
 
-public interface UserRepository extends BaseRepository<QingUser, AggregateId> {
+public interface UserRepository extends BaseRepository<QingUser, QingUserId> {
 
     QingUser findByUsername(String username);
 

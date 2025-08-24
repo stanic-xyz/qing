@@ -16,7 +16,7 @@ package cn.chenyunlong.qing.auth.domain.authentication;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.qing.auth.domain.authentication.event.TokenCreated;
 import cn.chenyunlong.qing.auth.domain.authentication.event.TokenRevoked;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class AuthenticationToken extends BaseAggregate {
+public class AuthenticationToken extends BaseAggregate<TokenId> {
 
     @FieldDesc(name = "令牌值")
     private String tokenValue;
@@ -40,7 +40,7 @@ public class AuthenticationToken extends BaseAggregate {
     private TokenType tokenType;
 
     @FieldDesc(name = "关联用户ID")
-    private AggregateId userId;
+    private QingUserId userId;
 
     @FieldDesc(name = "过期时间")
     private LocalDateTime expiresAt;
@@ -57,29 +57,29 @@ public class AuthenticationToken extends BaseAggregate {
     /**
      * 创建认证令牌
      *
-     * @param aggregateId 聚合根ID
-     * @param tokenValue  令牌值
-     * @param tokenType   令牌类型
-     * @param userId      用户ID
-     * @param expiresAt   过期时间
+     * @param tokenId    聚合根ID
+     * @param tokenValue 令牌值
+     * @param tokenType  令牌类型
+     * @param userId     用户ID
+     * @param expiresAt  过期时间
      * @return 认证令牌实例
      */
-    public static AuthenticationToken create(AggregateId aggregateId,
-                                           String tokenValue,
-                                           TokenType tokenType,
-                                           AggregateId userId,
-                                           LocalDateTime expiresAt) {
+    public static AuthenticationToken create(TokenId tokenId,
+                                             String tokenValue,
+                                             TokenType tokenType,
+                                             QingUserId userId,
+                                             LocalDateTime expiresAt) {
         AuthenticationToken token = new AuthenticationToken();
-        token.setId(aggregateId);
+        token.setId(tokenId);
         token.setTokenValue(tokenValue);
         token.setTokenType(tokenType);
         token.setUserId(userId);
         token.setExpiresAt(expiresAt);
         token.setRevoked(false);
-        
+
         // 发布令牌创建事件
-        token.registerEvent(new TokenCreated(aggregateId, userId));
-        
+        token.registerEvent(new TokenCreated(tokenId, userId));
+
         return token;
     }
 
@@ -92,11 +92,11 @@ public class AuthenticationToken extends BaseAggregate {
         if (this.revoked) {
             throw new IllegalStateException("令牌已被撤销");
         }
-        
+
         this.revoked = true;
         this.revokedAt = LocalDateTime.now();
         this.revocationReason = reason;
-        
+
         // 发布令牌撤销事件
         registerEvent(new TokenRevoked(this.getId(), this.getUserId(), reason));
     }

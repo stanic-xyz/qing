@@ -13,7 +13,8 @@
 
 package cn.chenyunlong.qing.auth.domain.authentication.event;
 
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationId;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import lombok.Getter;
 
 /**
@@ -24,11 +25,11 @@ import lombok.Getter;
 @Getter
 public class AuthenticationSucceeded {
 
-    private final AggregateId authenticationId;
-    private final AggregateId userId;
+    private final AuthenticationId authenticationId;
+    private final QingUserId userId;
     private final long timestamp;
 
-    public AuthenticationSucceeded(AggregateId authenticationId, AggregateId userId) {
+    public AuthenticationSucceeded(AuthenticationId authenticationId, QingUserId userId) {
         this.authenticationId = authenticationId;
         this.userId = userId;
         this.timestamp = System.currentTimeMillis();

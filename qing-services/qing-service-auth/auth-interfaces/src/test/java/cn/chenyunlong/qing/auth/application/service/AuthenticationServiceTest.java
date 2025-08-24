@@ -8,8 +8,8 @@ import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
 import cn.chenyunlong.qing.auth.domain.authentication.service.AuthenticationDomainService;
 import cn.chenyunlong.qing.auth.domain.authentication.service.TokenDomainService;
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,12 +64,12 @@ class AuthenticationServiceTest {
 
         // 准备模拟用户
         mockUser = mock(QingUser.class);
-        AggregateId userId = new AggregateId(1L);
+        QingUserId userId = QingUserId.of(1L);
         lenient().when(mockUser.getId()).thenReturn(userId);
 
         // 准备模拟认证
         mockAuthentication = mock(Authentication.class);
-        
+
         // 准备模拟令牌
         mockToken = mock(AuthenticationToken.class);
         lenient().when(mockToken.getTokenValue()).thenReturn("test-token");
@@ -80,23 +80,23 @@ class AuthenticationServiceTest {
     void loginSuccess() {
         // 模拟认证成功
         lenient().when(mockAuthentication.isSuccessful()).thenReturn(true);
-        AggregateId authUserId = new AggregateId(1L);
+        QingUserId authUserId = QingUserId.of(1L);
         lenient().when(mockAuthentication.getUserId()).thenReturn(authUserId);
-        
+
         // 模拟领域服务认证成功
         lenient().when(authenticationDomainService.authenticateByUsernamePassword(
-                "testuser", "password", testIp, testUserAgent))
+                        "testuser", "password", testIp, testUserAgent))
                 .thenReturn(mockAuthentication);
 
         // 模拟用户存在
-        lenient().when(userRepository.findById(any(AggregateId.class))).thenReturn(Optional.of(mockUser));
+        lenient().when(userRepository.findById(any(QingUserId.class))).thenReturn(Optional.of(mockUser));
 
         // 模拟JWT生成
-        lenient().when(authJwtTokenUtil.generateToken(anyLong())).thenReturn("test-token");
+        lenient().when(authJwtTokenUtil.generateToken(any())).thenReturn("test-token");
         lenient().when(authJwtTokenUtil.getExpiration()).thenReturn(3600000L);
 
         // 模拟令牌创建
-        lenient().when(tokenDomainService.createJwtToken(any(AggregateId.class), anyString(), any(LocalDateTime.class)))
+        lenient().when(tokenDomainService.createJwtToken(any(QingUserId.class), anyString(), any(LocalDateTime.class)))
                 .thenReturn(mockToken);
 
         // 执行登录
@@ -112,9 +112,9 @@ class AuthenticationServiceTest {
         // 验证调用了正确的方法
         verify(authenticationDomainService).authenticateByUsernamePassword(
                 "testuser", "password", testIp, testUserAgent);
-        verify(userRepository).findById(any(AggregateId.class));
-        verify(authJwtTokenUtil).generateToken(1L);
-        verify(tokenDomainService).createJwtToken(any(AggregateId.class), eq("test-token"), any(LocalDateTime.class));
+        verify(userRepository).findById(any(QingUserId.class));
+        verify(authJwtTokenUtil).generateToken(new QingUser());
+        verify(tokenDomainService).createJwtToken(any(QingUserId.class), eq("test-token"), any(LocalDateTime.class));
     }
 
     @Test
@@ -124,7 +124,7 @@ class AuthenticationServiceTest {
         lenient().when(mockAuthentication.isSuccessful()).thenReturn(false);
         lenient().when(mockAuthentication.getFailureReason()).thenReturn("用户名或密码错误");
         lenient().when(authenticationDomainService.authenticateByUsernamePassword(
-                "testuser", "password", testIp, testUserAgent))
+                        "testuser", "password", testIp, testUserAgent))
                 .thenReturn(mockAuthentication);
 
         // 执行登录
@@ -137,9 +137,9 @@ class AuthenticationServiceTest {
         assertThat(result.getTokenInfo()).isNull();
 
         // 验证没有调用后续方法
-        verify(userRepository, never()).findById(any(AggregateId.class));
-        verify(authJwtTokenUtil, never()).generateToken(anyLong());
-        verify(tokenDomainService, never()).createJwtToken(any(AggregateId.class), anyString(), any(LocalDateTime.class));
+        verify(userRepository, never()).findById(any(QingUserId.class));
+        verify(authJwtTokenUtil, never()).generateToken(any(QingUser.class));
+        verify(tokenDomainService, never()).createJwtToken(any(QingUserId.class), anyString(), any(LocalDateTime.class));
     }
 
     @Test
@@ -152,13 +152,13 @@ class AuthenticationServiceTest {
 
         // 模拟领域服务认证成功
         lenient().when(mockAuthentication.isSuccessful()).thenReturn(true);
-        AggregateId authUserId = new AggregateId(1L);
+        QingUserId authUserId = QingUserId.of(1L);
         lenient().when(mockAuthentication.getUserId()).thenReturn(authUserId);
         lenient().when(authenticationDomainService.authenticateByJwtToken(1L, testIp, testUserAgent))
                 .thenReturn(mockAuthentication);
 
         // 模拟用户存在
-        when(userRepository.findById(any(AggregateId.class))).thenReturn(Optional.of(mockUser));
+        when(userRepository.findById(any(QingUserId.class))).thenReturn(Optional.of(mockUser));
 
         // 执行验证
         AuthenticationResult result = authenticationService.validateToken("test-token", testIp, testUserAgent);
@@ -174,7 +174,7 @@ class AuthenticationServiceTest {
         verify(authJwtTokenUtil).validateToken("test-token");
         verify(authJwtTokenUtil).getUserIdFromToken("test-token");
         verify(authenticationDomainService).authenticateByJwtToken(1L, testIp, testUserAgent);
-        verify(userRepository).findById(any(AggregateId.class));
+        verify(userRepository).findById(any(QingUserId.class));
     }
 
     @Test
@@ -195,7 +195,7 @@ class AuthenticationServiceTest {
         // 验证没有调用后续方法
         verify(authJwtTokenUtil, never()).getUserIdFromToken(anyString());
         verify(authenticationDomainService, never()).authenticateByJwtToken(anyLong(), anyString(), anyString());
-        verify(userRepository, never()).findById(any(AggregateId.class));
+        verify(userRepository, never()).findById(any(QingUserId.class));
     }
 
     @Test

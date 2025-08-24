@@ -21,7 +21,6 @@ import cn.chenyunlong.qing.auth.domain.user.event.UserRegistered;
 import cn.chenyunlong.qing.auth.domain.user.event.UserUnlocked;
 import cn.chenyunlong.qing.auth.domain.user.exception.UserAlreadyExistsException;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import cn.hutool.crypto.digest.BCrypt;
 import lombok.Getter;
@@ -37,7 +36,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class QingUser extends BaseAggregate {
+public class QingUser extends BaseAggregate<QingUserId> {
 
     @FieldDesc(name = "用户唯一ID")
     private Long uid;
@@ -76,17 +75,17 @@ public class QingUser extends BaseAggregate {
     private List<UserToken> userTokens;
 
     // 注册时校验用户名唯一性（依赖领域服务）
-    public static QingUser register(AggregateId aggregateId, String username, String password, UserRepository userRepository) {
+    public static QingUser register(QingUserId qingUserId, String username, String password, UserRepository userRepository) {
         if (userRepository.existsByUsername(username)) {
             throw new UserAlreadyExistsException("用户名已存在: " + username);
         }
         QingUser user = new QingUser();
-        user.setId(aggregateId);
+        user.setId(qingUserId);
         user.setUsername(username);
         user.setEncodedPassword(encodePassword(password)); // 密码加密
         user.setActive(false);
         user.setLocked(false);
-        user.registerEvent(new UserRegistered(aggregateId));
+        user.registerEvent(new UserRegistered(qingUserId));
         return user;
     }
 
@@ -107,16 +106,16 @@ public class QingUser extends BaseAggregate {
     /**
      * 绑定第三方用户信息
      *
-     * @param qingAuthUser 第三方用户0
+     * @param connection 第三方用户0
      */
-    public void addConnection(UserConnection qingAuthUser) {
+    public void addConnection(UserConnection connection) {
         List<UserConnection> connectionList = getUserConnections();
         boolean hasBound = connectionList.stream().noneMatch(userConnection ->
-            userConnection.equals(qingAuthUser));
+                userConnection.equals(connection));
         if (hasBound) {
             return;
         }
-        connectionList.add(qingAuthUser);
-        registerEvent(new UserConnectionAdded(getId(), qingAuthUser));
+        connectionList.add(connection);
+        registerEvent(new UserConnectionAdded(getId(), connection));
     }
 }

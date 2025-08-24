@@ -1,12 +1,12 @@
 package cn.chenyunlong.qing.auth.application.service;
 
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.auth.domain.user.UserConnection;
 import cn.chenyunlong.qing.auth.domain.user.dto.creator.UserCreator;
 import cn.chenyunlong.qing.auth.domain.user.dto.entity.QingAuthUser;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
@@ -38,29 +38,29 @@ public class UserService {
         QingUser byEmail = userRepository.findByEmail(creator.getEmail());
         Assert.isNull(byEmail, "邮箱已存在");
         return EntityOperations.doCreate(userRepository)
-            .create(() -> QingUser.register(new AggregateId(IdUtil.getSnowflakeNextId()),
-                creator.getUsername(),
-                creator.getPassword(),
-                userRepository))
-            .update(QingUser::init)
-            .errorHook(Throwable::printStackTrace)
-            .execute();
+                .create(() -> QingUser.register(QingUserId.of(IdUtil.getSnowflakeNextId()),
+                        creator.getUsername(),
+                        creator.getPassword(),
+                        userRepository))
+                .update(QingUser::init)
+                .errorHook(Throwable::printStackTrace)
+                .execute();
     }
 
 
     public void validUser(Long id) {
         EntityOperations.doUpdate(userRepository)
-            .loadById(new AggregateId(id))
-            .update(BaseAggregate::valid)
-            .execute();
+                .loadById(QingUserId.of(id))
+                .update(BaseAggregate::valid)
+                .execute();
     }
 
 
     public void invalidUser(Long id) {
         EntityOperations.doUpdate(userRepository)
-            .loadById(new AggregateId(id))
-            .update(BaseAggregate::invalid)
-            .execute();
+                .loadById(QingUserId.of(id))
+                .update(BaseAggregate::invalid)
+                .execute();
     }
 
 
@@ -78,7 +78,7 @@ public class UserService {
 
 
     public Optional<QingUser> loadUserById(Long userId) {
-        return userRepository.findById(new AggregateId(userId));
+        return userRepository.findById(QingUserId.of(userId));
     }
 
 
@@ -99,13 +99,13 @@ public class UserService {
         Assert.notNull(qingUse, "用户不存在，不能绑定！");
 
         UserConnection userConnection = UserConnection.builder()
-            .accessToken(qingAuthUser.getToken().getAccessToken())
-            .authProvider(qingAuthUser.getSource())
-            .displayName(qingAuthUser.getUsername())
-            .avatarUrl(qingAuthUser.getAvatar())
-            .refreshToken(qingAuthUser.getToken().getRefreshToken())
-            .providerUserId(qingAuthUser.getUuid())
-            .build();
+                .accessToken(qingAuthUser.getToken().getAccessToken())
+                .authProvider(qingAuthUser.getSource())
+                .displayName(qingAuthUser.getUsername())
+                .avatarUrl(qingAuthUser.getAvatar())
+                .refreshToken(qingAuthUser.getToken().getRefreshToken())
+                .providerUserId(qingAuthUser.getUuid())
+                .build();
 
         qingUse.addConnection(userConnection);
         userRepository.save(qingUse);

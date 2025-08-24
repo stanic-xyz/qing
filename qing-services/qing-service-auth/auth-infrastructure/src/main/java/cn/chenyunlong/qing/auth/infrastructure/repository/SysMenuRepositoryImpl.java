@@ -1,8 +1,8 @@
 package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.menu.SysMenu;
+import cn.chenyunlong.qing.auth.domain.menu.SysMenuId;
 import cn.chenyunlong.qing.auth.domain.menu.repository.SysMenuRepository;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,7 +16,8 @@ public class SysMenuRepositoryImpl implements SysMenuRepository {
     }
 
     @Override
-    public Optional<SysMenu> findById(AggregateId id) {
+    public Optional<SysMenu> findById(SysMenuId id) {
         return Optional.empty();
     }
+
 }

@@ -4,12 +4,12 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.auth.domain.menu.SysMenu;
+import cn.chenyunlong.qing.auth.domain.menu.SysMenuId;
 import cn.chenyunlong.qing.auth.domain.menu.dto.creator.SysMenuCreator;
 import cn.chenyunlong.qing.auth.domain.menu.dto.updater.SysMenuUpdater;
 import cn.chenyunlong.qing.auth.domain.menu.dto.vo.SysMenuVO;
 import cn.chenyunlong.qing.auth.domain.menu.repository.SysMenuRepository;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,22 +33,22 @@ public class SysMenuService {
 
     public Long createSysMenu(SysMenuCreator creator) {
         Optional<SysMenu> sysMenu = EntityOperations.doCreate(sysMenuRepository)
-            .create(() -> {
-                SysMenu menuEntity = new SysMenu();
-                Optional.ofNullable(creator.getParentId()).ifPresentOrElse(parentId -> {
-                    SysMenu parentMenu = sysMenuRepository.findById(new AggregateId(creator.getParentId()))
-                        .orElseThrow(() -> new NotFoundException("parent menu not found"));
-                    menuEntity.setParentId(parentMenu.getId().getId());
-                    menuEntity.setParentName(parentMenu.getMenuName());
-                }, () -> {
-                    menuEntity.setParentId(null);
-                    menuEntity.setParentName(null);
-                });
-                return menuEntity;
-            })
-            .update(SysMenu::init)
-            .execute();
-        return sysMenu.isPresent() ? sysMenu.get().getId().getId() : 0;
+                .create(() -> {
+                    SysMenu menuEntity = new SysMenu();
+                    Optional.ofNullable(creator.getParentId()).ifPresentOrElse(parentId -> {
+                        SysMenu parentMenu = sysMenuRepository.findById(SysMenuId.of(creator.getParentId()))
+                                .orElseThrow(() -> new NotFoundException("parent menu not found"));
+                        menuEntity.setParentId(parentMenu.getId().getValue());
+                        menuEntity.setParentName(parentMenu.getMenuName());
+                    }, () -> {
+                        menuEntity.setParentId(null);
+                        menuEntity.setParentName(null);
+                    });
+                    return menuEntity;
+                })
+                .update(SysMenu::init)
+                .execute();
+        return sysMenu.isPresent() ? sysMenu.get().getId().getValue() : 0;
     }
 
     /**
@@ -57,32 +57,32 @@ public class SysMenuService {
 
     public void updateSysMenu(SysMenuUpdater updater) {
         EntityOperations.doUpdate(sysMenuRepository)
-            .loadById(new AggregateId(updater.getId()))
-            .update(updater::updateSysMenu)
-            .execute();
+                .loadById(SysMenuId.of(updater.getId()))
+                .update(updater::updateSysMenu)
+                .execute();
     }
 
 
     public void validSysMenu(Long id) {
         EntityOperations.doUpdate(sysMenuRepository)
-            .loadById(new AggregateId(id))
-            .update(BaseAggregate::valid)
-            .execute();
+                .loadById(SysMenuId.of(id))
+                .update(BaseAggregate::valid)
+                .execute();
     }
 
 
     public void invalidSysMenu(Long id) {
         EntityOperations.doUpdate(sysMenuRepository)
-            .loadById(new AggregateId(id))
-            .update(BaseAggregate::invalid)
-            .execute();
+                .loadById(SysMenuId.of(id))
+                .update(BaseAggregate::invalid)
+                .execute();
     }
 
     /**
      * findById
      */
     public SysMenuVO findById(Long id) {
-        Optional<SysMenu> sysMenu = sysMenuRepository.findById(new AggregateId(id));
+        Optional<SysMenu> sysMenu = sysMenuRepository.findById(SysMenuId.of(id));
         return sysMenu.map(this::entityToVO).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }
 

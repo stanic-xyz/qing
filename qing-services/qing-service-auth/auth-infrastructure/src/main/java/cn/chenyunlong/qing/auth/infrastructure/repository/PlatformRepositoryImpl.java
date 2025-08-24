@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.platform.Platform;
+import cn.chenyunlong.qing.auth.domain.platform.PlatformId;
 import cn.chenyunlong.qing.auth.domain.platform.repository.PlatformRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,11 @@ public class PlatformRepositoryImpl implements PlatformRepository {
     @Override
     public Platform save(Platform entity) {
         return null;
+    }
+
+    @Override
+    public Optional<Platform> findById(PlatformId id) {
+        return Optional.empty();
     }
 
     public Optional<Platform> findById(AggregateId id) {

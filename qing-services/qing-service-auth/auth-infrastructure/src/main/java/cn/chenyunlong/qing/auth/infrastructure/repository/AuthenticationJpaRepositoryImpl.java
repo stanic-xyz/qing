@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.authentication.Authentication;
+import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationId;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.AuthenticationRepository;
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import org.springframework.stereotype.Repository;
@@ -46,7 +47,7 @@ public class AuthenticationJpaRepositoryImpl implements AuthenticationRepository
     }
 
     @Override
-    public Optional<Authentication> findById(AggregateId id) {
+    public Optional<Authentication> findById(AuthenticationId id) {
         return Optional.empty();
     }
 }

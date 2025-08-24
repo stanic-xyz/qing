@@ -1,8 +1,8 @@
 package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.user.QingUser;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.auth.infrastructure.converter.UserMapper;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.QingUserEntity;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.UserConnectionJpaRepository;
@@ -72,7 +72,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<QingUser> findById(AggregateId id) {
+    public Optional<QingUser> findById(QingUserId id) {
         return Optional.empty();
     }
 }

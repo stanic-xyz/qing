@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class Platform extends BaseAggregate {
+public class Platform extends BaseAggregate<PlatformId> {
 
     @FieldDesc(name = "编码")
     private String code;

@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,9 +92,9 @@ public class AuthJwtTokenUtil {
      */
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-            .setSigningKey(getSigningKey())
-            .parseClaimsJws(token)
-            .getBody();
+                .setSigningKey(getSigningKey())
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     /**
@@ -117,12 +116,12 @@ public class AuthJwtTokenUtil {
     /**
      * 生成令牌
      *
-     * @param userId 用户ID
+     * @param user 用户ID
      * @return 令牌
      */
-    public String generateToken(Long userId) {
+    public String generateToken(QingUser user) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userId.toString(), expiration * 1000);
+        return doGenerateToken(claims, user.toString(), expiration * 1000);
     }
 
     /**
@@ -150,12 +149,12 @@ public class AuthJwtTokenUtil {
         final Date expirationDate = new Date(createdDate.getTime() + expirationMillis);
 
         return Jwts.builder()
-            .setClaims(claims)
-            .setSubject(subject)
-            .setIssuedAt(createdDate)
-            .setExpiration(expirationDate)
-            .signWith(SignatureAlgorithm.HS512, getSigningKey())
-            .compact();
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(createdDate)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS512, getSigningKey())
+                .compact();
     }
 
     /**

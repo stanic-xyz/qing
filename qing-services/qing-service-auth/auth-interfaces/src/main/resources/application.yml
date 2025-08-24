@@ -24,19 +24,3 @@ jwt:
 logging:
   level:
     root: info
-jimmer:
-  dialect: org.babyfish.jimmer.sql.dialect.PostgresDialect
-  show-sql: true
-  pretty-sql: true
-  database-validation-mode: warning
-  client:
-    ts:
-      path: /ts.zip
-    openapi:
-      path: /openapi.yml
-      ui-path: /openapi.html
-      properties:
-        info:
-          title: Qing Web Service
-          description: Restore the DTO explosion that was eliminated by server-side developers
-          version: 1.0

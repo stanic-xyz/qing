@@ -14,9 +14,11 @@
 package cn.chenyunlong.qing.auth.domain.authentication.service;
 
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
+import cn.chenyunlong.qing.auth.domain.authentication.TokenId;
 import cn.chenyunlong.qing.auth.domain.authentication.TokenType;
 import cn.chenyunlong.qing.auth.domain.authentication.exception.AuthenticationException;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.TokenRepository;
+import cn.chenyunlong.qing.auth.domain.user.QingUserId;
 import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.hutool.core.util.IdUtil;
 import lombok.RequiredArgsConstructor;
@@ -41,21 +43,21 @@ public class TokenDomainService {
     /**
      * 创建JWT令牌
      *
-     * @param userId    用户ID
+     * @param userId     用户ID
      * @param tokenValue JWT令牌值
-     * @param expiresAt 过期时间
+     * @param expiresAt  过期时间
      * @return 创建的令牌
      */
-    public AuthenticationToken createJwtToken(AggregateId userId, String tokenValue, LocalDateTime expiresAt) {
+    public AuthenticationToken createJwtToken(QingUserId userId, String tokenValue, LocalDateTime expiresAt) {
         // 创建令牌实体
         AuthenticationToken token = AuthenticationToken.create(
-            new AggregateId(IdUtil.getSnowflakeNextId()),
-            tokenValue,
-            TokenType.JWT,
-            userId,
-            expiresAt
+                TokenId.of(IdUtil.getSnowflakeNextId()),
+                tokenValue,
+                TokenType.JWT,
+                userId,
+                expiresAt
         );
-        
+
         // 保存令牌
         return tokenRepository.save(token);
     }
@@ -73,9 +75,9 @@ public class TokenDomainService {
         if (tokenOpt.isEmpty()) {
             throw new AuthenticationException("令牌不存在");
         }
-        
+
         AuthenticationToken token = tokenOpt.get();
-        
+
         // 检查令牌是否有效
         if (!token.isValid()) {
             if (token.isRevoked()) {
@@ -84,7 +86,7 @@ public class TokenDomainService {
                 throw new AuthenticationException("令牌已过期");
             }
         }
-        
+
         return token;
     }
 
@@ -101,9 +103,9 @@ public class TokenDomainService {
         if (tokenOpt.isEmpty()) {
             throw new AuthenticationException("令牌不存在");
         }
-        
+
         AuthenticationToken token = tokenOpt.get();
-        
+
         // 撤销令牌
         token.revoke(reason);
         tokenRepository.save(token);

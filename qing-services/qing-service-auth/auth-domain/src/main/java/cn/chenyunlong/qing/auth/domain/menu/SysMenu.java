@@ -14,7 +14,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class SysMenu extends BaseAggregate {
+public class SysMenu extends BaseAggregate<SysMenuId> {
 
     /**
      * 菜单ID
