@@ -10,7 +10,7 @@ import lombok.*;
     callSuper = true
 )
 @NoArgsConstructor(
-    access = AccessLevel.PROTECTED
+    access = AccessLevel.PUBLIC
 )
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class AnimeCategoryVO extends AbstractBaseJpaVo {

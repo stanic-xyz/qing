@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.anime.domain.anime;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
+import cn.chenyunlong.qing.anime.domain.anime.models.TagId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -27,7 +28,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Tag extends BaseAggregate {
+public class Tag extends BaseAggregate<TagId> {
 
     @NotBlank(message = "名称不能为空")
     @FieldDesc(description = "名称")

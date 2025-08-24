@@ -14,6 +14,7 @@
 package cn.chenyunlong.qing.anime.domain.anime;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
+import cn.chenyunlong.qing.anime.domain.anime.models.CategoryId;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Category extends BaseAggregate {
+public class Category extends BaseAggregate<CategoryId> {
 
     public static final long ROOT_PID = -1L;
 
@@ -40,7 +41,7 @@ public class Category extends BaseAggregate {
 
     public static Category create(String name, Integer orderNo, Category parent) {
         Category category = new Category();
-        category.setPid(parent != null ? parent.getId().getId() : Long.valueOf(ROOT_PID));
+        category.setPid(parent != null ? parent.getId().getValue() : Long.valueOf(ROOT_PID));
         category.setName(name);
         category.setOrderNo(orderNo);
         return category;

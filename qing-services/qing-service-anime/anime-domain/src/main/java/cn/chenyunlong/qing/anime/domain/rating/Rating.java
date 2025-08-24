@@ -13,12 +13,12 @@
 
 package cn.chenyunlong.qing.anime.domain.rating;
 
+import java.time.LocalDateTime;
+
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 /**
  * 评分评论聚合根
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class Rating extends BaseAggregate {
+public class Rating extends BaseAggregate<RatingId> {
 
     @FieldDesc(description = "用户ID")
     private Long userId;
@@ -60,17 +60,18 @@ public class Rating extends BaseAggregate {
     /**
      * 受保护的构造函数
      */
-    protected Rating() {}
+    protected Rating() {
+    }
 
     /**
      * 创建评分记录
      */
-    public static Rating create(Long userId, Long animeId, Integer score, String comment, 
-                              Boolean isAnonymous, Boolean isPublic) {
+    public static Rating create(Long userId, Long animeId, Integer score, String comment,
+            Boolean isAnonymous, Boolean isPublic) {
         if (score < 1 || score > 10) {
             throw new IllegalArgumentException("评分必须在1-10之间");
         }
-        
+
         Rating rating = new Rating();
         rating.userId = userId;
         rating.animeId = animeId;

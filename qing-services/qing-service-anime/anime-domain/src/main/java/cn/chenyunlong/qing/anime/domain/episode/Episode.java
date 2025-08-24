@@ -25,7 +25,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Episode extends BaseAggregate {
+public class Episode extends BaseAggregate<EpisodeId> {
 
     @FieldDesc(name = "名称")
     private String name;
