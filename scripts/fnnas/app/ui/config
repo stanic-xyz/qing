@@ -1,0 +1,11 @@
+{
+    ".url": {
+        "fnnas.qing.Application": {
+            "title": "Qing",
+            "icon": "images/icon_{0}.png",
+            "type": "url",
+            "protocol": "http",
+            "port": "8080"
+        }
+    }
+}
