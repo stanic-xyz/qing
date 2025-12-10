@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.anime.domain.playback;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
-import lombok.Getter;
+import cn.chenyunlong.qing.domain.common.Identifiable;
 import lombok.NonNull;
 
 /**
@@ -16,24 +15,24 @@ import lombok.NonNull;
  *   <li>自验证：确保ID值的有效性</li>
  * </ul>
  *
+ * @param value 播放进度的唯一标识符
  * @author chenyunlong
  * @since 1.0.0
  */
-@Getter
-public class PlaybackProgressId extends EntityId<Long> {
+public record PlaybackProgressId(Long value) implements Identifiable<Long> {
 
-    /**
-     * 播放进度的唯一标识符
-     */
-    @NonNull
-    Long value;
+
+    @Override
+    public Long id() {
+        return value;
+    }
 
     /**
      * 私有构造函数，确保只能通过工厂方法创建
      *
      * @param value ID值
      */
-    private PlaybackProgressId(@NonNull Long value) {
+    public PlaybackProgressId(@NonNull Long value) {
         if (value <= 0) {
             throw new IllegalArgumentException("播放进度ID必须为正数");
         }

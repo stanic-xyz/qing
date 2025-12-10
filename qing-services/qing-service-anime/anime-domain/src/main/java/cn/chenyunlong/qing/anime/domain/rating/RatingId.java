@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.anime.domain.rating;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
+import cn.chenyunlong.qing.domain.common.Identifiable;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -20,7 +20,7 @@ import lombok.NonNull;
  * @since 1.0.0
  */
 @Getter
-public class RatingId extends EntityId<Long> {
+public class RatingId implements Identifiable<Long> {
 
     /**
      * 评分的唯一标识符
@@ -68,10 +68,10 @@ public class RatingId extends EntityId<Long> {
      * 兼容旧API的方法
      *
      * @return ID值
-     * @deprecated 使用 {@link #getValue()} 替代
+     * @deprecated 使用 {@link #id()} 替代
      */
     @Deprecated
-    public Long getValue() {
+    public Long id() {
         return value;
     }
 

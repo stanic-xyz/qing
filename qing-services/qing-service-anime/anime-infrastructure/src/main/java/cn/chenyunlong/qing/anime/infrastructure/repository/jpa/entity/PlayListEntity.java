@@ -15,7 +15,6 @@ package cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaEntity;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;

@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.anime.domain.favorite;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class Favorite extends BaseAggregate<FavoriteId> {
+public class Favorite extends BaseSimpleBusinessEntity<FavoriteId> {
 
     @FieldDesc(description = "用户ID")
     private Long userId;

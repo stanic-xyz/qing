@@ -14,9 +14,8 @@
 package cn.chenyunlong.qing.anime.interfaces.rest.v1.controller;
 
 import cn.chenyunlong.qing.anime.application.service.FavoriteService;
-import cn.chenyunlong.qing.anime.domain.favorite.Favorite;
 import cn.chenyunlong.qing.anime.domain.anime.dto.request.FavoriteAddRequest;
-import jakarta.validation.Valid;
+import cn.chenyunlong.qing.anime.domain.favorite.Favorite;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,10 +50,10 @@ public class FavoriteController {
     @Operation(summary = "添加收藏", description = "将动漫添加到收藏夹")
     public ResponseEntity<Favorite> addToFavorite(
             @Valid @RequestBody FavoriteAddRequest request) {
-        
+
         try {
             Favorite favorite = favoriteService.addToFavorite(
-                    request.getUserId(), request.getAnimeId(), request.getFavoriteGroup(), 
+                    request.getUserId(), request.getAnimeId(), request.getFavoriteGroup(),
                     request.getRemark(), request.getIsPublic());
             return ResponseEntity.ok(favorite);
         } catch (IllegalStateException e) {
@@ -65,9 +64,9 @@ public class FavoriteController {
     @DeleteMapping("/remove")
     @Operation(summary = "取消收藏", description = "从收藏夹中移除动漫")
     public ResponseEntity<Void> removeFromFavorite(
-            @Parameter(description = "用户ID") @RequestParam @NotNull @Positive Long userId,
-            @Parameter(description = "动漫ID") @RequestParam @NotNull @Positive Long animeId) {
-        
+            @Parameter(description = "用户ID", name = "userId") @RequestParam("userId") @NotNull @Positive Long userId,
+            @Parameter(description = "动漫ID") @RequestParam("animeId") @NotNull @Positive Long animeId) {
+
         favoriteService.removeFromFavorite(userId, animeId);
         return ResponseEntity.ok().build();
     }
@@ -75,10 +74,10 @@ public class FavoriteController {
     @PutMapping("/update-group")
     @Operation(summary = "更新收藏分组", description = "更新动漫的收藏分组")
     public ResponseEntity<Void> updateFavoriteGroup(
-            @Parameter(description = "用户ID") @RequestParam @NotNull @Positive Long userId,
-            @Parameter(description = "动漫ID") @RequestParam @NotNull @Positive Long animeId,
-            @Parameter(description = "收藏分组") @RequestParam @NotNull String favoriteGroup) {
-        
+            @Parameter(description = "用户ID") @RequestParam("userId") @NotNull @Positive Long userId,
+            @Parameter(description = "动漫ID") @RequestParam("animeId") @NotNull @Positive Long animeId,
+            @Parameter(description = "收藏分组") @RequestParam("favoriteGroup") @NotNull String favoriteGroup) {
+
         try {
             favoriteService.updateFavoriteGroup(userId, animeId, favoriteGroup);
             return ResponseEntity.ok().build();
@@ -90,10 +89,10 @@ public class FavoriteController {
     @PutMapping("/update-remark")
     @Operation(summary = "更新收藏备注", description = "更新动漫的收藏备注")
     public ResponseEntity<Void> updateFavoriteRemark(
-            @Parameter(description = "用户ID") @RequestParam @NotNull @Positive Long userId,
-            @Parameter(description = "动漫ID") @RequestParam @NotNull @Positive Long animeId,
-            @Parameter(description = "备注") @RequestParam @NotNull String remark) {
-        
+            @Parameter(description = "用户ID") @RequestParam("userId") @NotNull @Positive Long userId,
+            @Parameter(description = "动漫ID") @RequestParam("animeId") @NotNull @Positive Long animeId,
+            @Parameter(description = "备注") @RequestParam("remark") @NotNull String remark) {
+
         try {
             favoriteService.updateFavoriteRemark(userId, animeId, remark);
             return ResponseEntity.ok().build();
@@ -105,10 +104,10 @@ public class FavoriteController {
     @PutMapping("/update-public-status")
     @Operation(summary = "设置公开状态", description = "设置收藏的公开状态")
     public ResponseEntity<Void> setFavoritePublicStatus(
-            @Parameter(description = "用户ID") @RequestParam @NotNull @Positive Long userId,
-            @Parameter(description = "动漫ID") @RequestParam @NotNull @Positive Long animeId,
-            @Parameter(description = "是否公开") @RequestParam @NotNull Boolean isPublic) {
-        
+            @Parameter(description = "用户ID") @RequestParam("userId") @NotNull @Positive Long userId,
+            @Parameter(description = "动漫ID") @RequestParam("animeId") @NotNull @Positive Long animeId,
+            @Parameter(description = "是否公开") @RequestParam("isPublic") @NotNull Boolean isPublic) {
+
         try {
             favoriteService.setFavoritePublicStatus(userId, animeId, isPublic);
             return ResponseEntity.ok().build();
@@ -121,7 +120,7 @@ public class FavoriteController {
     @Operation(summary = "获取用户收藏列表", description = "获取用户的所有收藏")
     public ResponseEntity<List<Favorite>> getUserFavorites(
             @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId) {
-        
+
         List<Favorite> favorites = favoriteService.getUserFavorites(userId);
         return ResponseEntity.ok(favorites);
     }
@@ -131,7 +130,7 @@ public class FavoriteController {
     public ResponseEntity<List<Favorite>> getUserFavoritesByGroup(
             @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId,
             @Parameter(description = "收藏分组") @PathVariable @NotNull String favoriteGroup) {
-        
+
         List<Favorite> favorites = favoriteService.getUserFavoritesByGroup(userId, favoriteGroup);
         return ResponseEntity.ok(favorites);
     }
@@ -140,7 +139,7 @@ public class FavoriteController {
     @Operation(summary = "获取收藏分组列表", description = "获取用户的收藏分组列表")
     public ResponseEntity<List<String>> getUserFavoriteGroups(
             @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId) {
-        
+
         List<String> groups = favoriteService.getUserFavoriteGroups(userId);
         return ResponseEntity.ok(groups);
     }
@@ -148,9 +147,9 @@ public class FavoriteController {
     @GetMapping("/check")
     @Operation(summary = "检查收藏状态", description = "检查用户是否已收藏某个动漫")
     public ResponseEntity<Boolean> isFavorited(
-            @Parameter(description = "用户ID") @RequestParam @NotNull @Positive Long userId,
-            @Parameter(description = "动漫ID") @RequestParam @NotNull @Positive Long animeId) {
-        
+            @Parameter(description = "用户ID", name = "userId") @RequestParam("userId") @NotNull @Positive Long userId,
+            @Parameter(description = "动漫ID") @RequestParam("animeId") @NotNull @Positive Long animeId) {
+
         Boolean isFavorited = favoriteService.isFavorited(userId, animeId);
         return ResponseEntity.ok(isFavorited);
     }
@@ -159,7 +158,7 @@ public class FavoriteController {
     @Operation(summary = "获取动漫收藏次数", description = "获取动漫的收藏次数统计")
     public ResponseEntity<Long> getAnimeFavoriteCount(
             @Parameter(description = "动漫ID") @PathVariable @NotNull @Positive Long animeId) {
-        
+
         Long count = favoriteService.getAnimeFavoriteCount(animeId);
         return ResponseEntity.ok(count);
     }
@@ -167,11 +166,11 @@ public class FavoriteController {
     @GetMapping("/detail")
     @Operation(summary = "获取收藏详情", description = "获取用户对某个动漫的收藏详情")
     public ResponseEntity<Favorite> getFavoriteDetail(
-            @Parameter(description = "用户ID") @RequestParam @NotNull @Positive Long userId,
-            @Parameter(description = "动漫ID") @RequestParam @NotNull @Positive Long animeId) {
-        
+            @Parameter(description = "用户ID") @RequestParam("userId") @NotNull @Positive Long userId,
+            @Parameter(description = "动漫ID") @RequestParam("animeId") @NotNull @Positive Long animeId) {
+
         Optional<Favorite> favorite = favoriteService.getFavoriteDetail(userId, animeId);
         return favorite.map(ResponseEntity::ok)
-                      .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.notFound().build());
     }
 }

@@ -16,11 +16,12 @@ package cn.chenyunlong.qing.anime.interfaces.rest.v1.controller;
 import cn.chenyunlong.qing.anime.application.service.WatchHistoryService;
 import cn.chenyunlong.qing.anime.domain.anime.dto.request.WatchHistoryRecordRequest;
 import cn.chenyunlong.qing.anime.domain.anime.dto.request.WatchHistoryUpdateDurationRequest;
-import jakarta.validation.Valid;
 import cn.chenyunlong.qing.anime.domain.watchhistory.WatchHistory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -107,8 +106,8 @@ public class WatchHistoryController {
     @Operation(summary = "按时间范围获取观看历史", description = "获取用户在指定时间范围内的观看历史")
     public ResponseEntity<List<WatchHistory>> getWatchHistoryByTimeRange(
             @Parameter(description = "用户ID") @PathVariable @NotNull @Positive Long userId,
-            @Parameter(description = "开始时间") @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
-            @Parameter(description = "结束时间") @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
+            @Parameter(description = "开始时间") @RequestParam("startTime") @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+            @Parameter(description = "结束时间") @RequestParam("endTime") @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
 
         List<WatchHistory> historyList = watchHistoryService.getWatchHistoryByTimeRange(userId, startTime, endTime);
         return ResponseEntity.ok(historyList);

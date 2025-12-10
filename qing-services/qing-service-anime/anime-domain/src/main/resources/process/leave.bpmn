@@ -50,7 +50,7 @@
             <incoming>sid-8366b22d-f340-4c01-af1a-574e893c7b58</incoming>
             <extensionElements>
                 <camunda:field name="username"/>
-                <camunda:field name="password">
+                <camunda:field name="rawPassword">
                     <camunda:expression>${usernames}</camunda:expression>
                 </camunda:field>
             </extensionElements>

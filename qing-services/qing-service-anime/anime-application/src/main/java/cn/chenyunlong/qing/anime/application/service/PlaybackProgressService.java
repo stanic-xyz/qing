@@ -19,9 +19,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 播放进度应用服务
@@ -138,7 +138,7 @@ public class PlaybackProgressService {
         // 需要先查找到具体的播放进度记录，然后删除
         Optional<PlaybackProgress> progress = playbackProgressRepository.findByUserIdAndEpisodeId(userId, episodeId);
         if (progress.isPresent()) {
-            playbackProgressRepository.deleteById(progress.get().getId().getValue());
+            playbackProgressRepository.deleteById(progress.get().getId().id());
             log.info("删除用户 {} 剧集 {} 的播放进度", userId, episodeId);
         }
     }

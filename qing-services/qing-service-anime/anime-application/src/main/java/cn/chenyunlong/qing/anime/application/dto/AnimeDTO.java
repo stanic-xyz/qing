@@ -1,12 +1,11 @@
 package cn.chenyunlong.qing.anime.application.dto;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.List;
-
 import cn.chenyunlong.qing.anime.domain.anime.models.Anime;
 import lombok.Builder;
 import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 动漫数据传输对象
@@ -215,10 +214,10 @@ public class AnimeDTO {
         }
 
         return AnimeDTO.builder()
-                .id(anime.getId().getValue())
+                .id(anime.getId().id())
                 .name(anime.getName())
                 .instruction(anime.getInstruction())
-                .categoryId(anime.getAnimeCategory() != null ? anime.getAnimeCategory().id().getValue() : null)
+                .categoryId(anime.getAnimeCategory() != null ? anime.getAnimeCategory().id().id() : null)
                 .categoryName(anime.getAnimeCategory() != null ? anime.getAnimeCategory().name() : null)
                 .tags(anime.getTags() != null ? anime.getTags().asList() : null)
                 .playStatus(anime.getPlayStatus() != null ? anime.getPlayStatus().name() : null)
@@ -230,16 +229,12 @@ public class AnimeDTO {
                 .district(anime.getDistrict() != null ? anime.getDistrict().getName() : null)
                 .companyId(anime.getCompany() != null ? anime.getCompany().companyId() : null)
                 .companyName(anime.getCompany() != null ? anime.getCompany().companyName() : null)
-                .typeId(anime.getType() != null ? anime.getType().typeId().getValue() : null)
+                .typeId(anime.getType() != null ? anime.getType().typeId().id() : null)
                 .typeName(anime.getType() != null ? anime.getType().typeName() : null)
                 .onShelf(anime.isOnShelf())
                 .deleted(anime.isDeleted())
-                .createTime(anime.getCreatedAt() != null ? 
-                    LocalDateTime.ofInstant(anime.getCreatedAt(), ZoneId.systemDefault()) : null)
                 .lastUpdateTime(anime.getLastUpdateTime())
-                .createdBy(null) // 暂时设为null，需要从其他地方获取
                 .lastUpdatedBy(anime.getLastUpdatedBy())
-                .version(anime.getVersion() != null ? anime.getVersion().longValue() : 0L)
                 .build();
     }
 }

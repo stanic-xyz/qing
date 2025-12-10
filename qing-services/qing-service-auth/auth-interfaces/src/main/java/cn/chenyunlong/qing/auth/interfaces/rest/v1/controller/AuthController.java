@@ -1,37 +1,44 @@
 package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 
 import cn.chenyunlong.common.model.JsonResult;
-import cn.chenyunlong.qing.auth.application.service.UserService;
-import cn.chenyunlong.qing.auth.application.dto.AuthenticationResult;
-import cn.chenyunlong.qing.auth.application.dto.LoginRequest;
-import cn.chenyunlong.qing.auth.application.dto.LoginResponse;
-import cn.chenyunlong.qing.auth.application.service.AuthenticationService;
-import cn.chenyunlong.qing.auth.domain.user.QingUser;
-import cn.chenyunlong.qing.auth.domain.user.dto.creator.UserCreator;
+import cn.chenyunlong.qing.auth.application.dto.*;
+import cn.chenyunlong.qing.auth.application.dto.dto.UserDTO;
+import cn.chenyunlong.qing.auth.application.service.AuthApplicationService;
+import cn.chenyunlong.qing.auth.domain.authentication.service.UserDomainService;
+import cn.chenyunlong.qing.auth.domain.user.User;
+import cn.chenyunlong.qing.auth.domain.user.command.AuthenticationByUsernamePasswordCommand;
+import cn.chenyunlong.qing.auth.domain.user.command.UserRegistrationCommand;
+import cn.chenyunlong.qing.auth.domain.user.command.UserResetActiveCodeCommand;
+import cn.chenyunlong.qing.auth.domain.user.dto.response.UserResponse;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.Username;
 import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.RegisterRequest;
+import cn.chenyunlong.qing.auth.interfaces.validation.SecurityValidated;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.net.URI;
 
 
 /**
  * 认证控制器
  * 提供用户注册、登录等功能
  */
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 @Tag(name = "认证接口", description = "提供用户注册、登录等功能")
-@RequiredArgsConstructor
-@Slf4j
 public class AuthController {
 
-    private final UserService userService;
-    private final AuthenticationService authenticationService;
+    private final AuthApplicationService authApplicationService;
+    private final UserDomainService userDomainService;
 
     /**
      * 用户注册
@@ -40,19 +47,15 @@ public class AuthController {
      * @return 注册结果
      */
     @PostMapping("/register")
-    @Operation(summary = "用户注册", description = "注册新用户")
-    public JsonResult<String> register(@RequestBody RegisterRequest request) {
-        UserCreator creator = new UserCreator();
-        creator.setUsername(request.getUsername());
-        creator.setPassword(request.getPassword());
-        creator.setEmail(request.getEmail());
+    @Operation(summary = "用户注册")
+    @ResponseStatus(HttpStatus.CREATED)
+    @SecurityValidated
+    public ResponseEntity<UserResponse> register(@RequestBody @Valid RegisterRequest request) {
+        UserRegistrationCommand command = UserRegistrationCommand.create(request.getUsername(), request.getPassword(), request.getEmail(), request.getPhone(), request.getNickname());
 
-        Optional<QingUser> userOptional = userService.register(creator);
-        if (userOptional.isPresent()) {
-            return JsonResult.success("注册成功");
-        } else {
-            return JsonResult.fail("注册失败");
-        }
+        User user = userDomainService.register(command);
+        return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId().id()))
+                .body(UserResponse.from(user));
     }
 
     /**
@@ -64,9 +67,8 @@ public class AuthController {
      */
     @PostMapping("/login")
     @Operation(summary = "用户登录", description = "用户登录认证")
-    public JsonResult<LoginResponse> login(
-        @RequestBody cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.LoginRequest request,
-        HttpServletRequest httpServletRequest) {
+    @SecurityValidated
+    public JsonResult<LoginResponse> login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
 
         // 转换为应用层DTO
         LoginRequest loginRequest = new LoginRequest();
@@ -77,22 +79,51 @@ public class AuthController {
         String ipAddress = getClientIpAddress(httpServletRequest);
         String userAgent = httpServletRequest.getHeader("User-Agent");
 
+        AuthenticationByUsernamePasswordCommand command = AuthenticationByUsernamePasswordCommand.create(loginRequest.getUsername(), loginRequest.getPassword(), ipAddress, userAgent);
+
         // 调用应用服务进行认证
-        AuthenticationResult result =
-            authenticationService.login(loginRequest, ipAddress, userAgent);
+        AuthenticationResultDTO result = authApplicationService.login(command);
 
         // 转换认证结果
-        LoginResponse response = LoginResponse.fromAuthenticationResult(result);
-        if (result.isSuccess()) {
-            // 转换为接口层DTO
-            LoginResponse interfaceResponse = new LoginResponse();
-            interfaceResponse.setTokenInfo(result.getTokenInfo());
-            interfaceResponse.setUserId(result.getUser().getId().getValue());
-            interfaceResponse.setUsername(result.getUser().getUsername());
-            return JsonResult.success(interfaceResponse);
-        } else {
-            return JsonResult.fail(result.getFailureReason());
+        if (!result.success()) {
+            return JsonResult.fail(result.failureReason());
         }
+
+        // 转换为接口层DTO
+        LoginResponse interfaceResponse = LoginResponse.fromAuthenticationResult(result);
+        return JsonResult.success(interfaceResponse);
+    }
+
+    /**
+     * 用户登录
+     *
+     * @param request 登录请求
+     * @return 登录结果
+     */
+    @PostMapping("/active")
+    @Operation(summary = "用户登录", description = "用户登录认证")
+    @SecurityValidated
+    public JsonResult<LoginResponse> active(
+            @RequestBody UserActiveRequest request) {
+        // 调用应用服务进行认证
+        authApplicationService.activateUser(request.getUsername(), request.getActiveCode());
+        return JsonResult.success();
+    }
+
+    /**
+     * 用户登录
+     *
+     * @param request 登录请求
+     * @return 登录结果
+     */
+    @PostMapping("/resetActiveCode")
+    @Operation(summary = "用户登录", description = "用户登录认证")
+    @SecurityValidated
+    public JsonResult<LoginResponse> resetActiveCode(
+            @RequestBody UserActiveRequest request) {
+        // 调用应用服务进行认证
+        userDomainService.resetActiveCode(UserResetActiveCodeCommand.create(Username.of(request.getUsername())));
+        return JsonResult.success();
     }
 
     /**
@@ -102,32 +133,31 @@ public class AuthController {
      * @param httpServletRequest HTTP请求
      * @return 用户信息
      */
-    @GetMapping("/current-user")
+    @GetMapping("/me")
     @Operation(summary = "获取当前用户信息", description = "根据token获取当前登录用户信息")
-    public JsonResult<QingUser> getCurrentUser(
-        @RequestHeader("Authorization") String token,
-        HttpServletRequest httpServletRequest) {
-        try {
-            if (token.startsWith("Bearer ")) {
-                token = token.substring(7);
-            }
-
-            // 获取客户端信息
-            String ipAddress = getClientIpAddress(httpServletRequest);
-            String userAgent = httpServletRequest.getHeader("User-Agent");
-
-            // 验证令牌
-            AuthenticationResult result = authenticationService.validateToken(token, ipAddress, userAgent);
-
-            if (result.isSuccess()) {
-                return JsonResult.success(result.getUser());
-            } else {
-                return JsonResult.fail(result.getFailureReason());
-            }
-        } catch (Exception e) {
-            log.error("解析token失败", e);
-            return JsonResult.fail("无效的token");
+    public JsonResult<UserDTO> getCurrentUser(
+            @RequestHeader("Authorization") String token,
+            HttpServletRequest httpServletRequest) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
         }
+        // 验证令牌
+        UserDTO userInfoByToken = authApplicationService.getUserInfoByToken(token);
+        return JsonResult.success(userInfoByToken);
+    }
+
+    /**
+     * 刷新令牌接口
+     * 用于处理用户注销登录请求
+     *
+     * @param request 请求头中的Authorization字段，用于验证用户身份
+     * @return 返回操作结果，成功或失败信息
+     */
+    @PostMapping("/refresh")
+    public JsonResult<String> refreshToken(@RequestBody RefreshTokenRequest request) {
+        // 注销登录
+        String s = authApplicationService.refreshToken(request.getRefreshToken());
+        return JsonResult.success(s);
     }
 
     /**
@@ -145,7 +175,7 @@ public class AuthController {
             }
 
             // 注销登录
-            authenticationService.logout(token);
+            authApplicationService.logout(token);
 
             return JsonResult.success("注销成功");
         } catch (Exception e) {

@@ -58,7 +58,7 @@ public class AnimeQueryServiceImpl implements AnimeQueryService {
 
         // 转换AnimeId列表为Long列表
         List<Long> ids = animeIds.stream()
-                .map(AnimeId::getValue)
+                .map(AnimeId::id)
                 .collect(Collectors.toList());
 
         return animeRepository.findByIds(ids)

@@ -101,6 +101,6 @@ public class AnimeCreatedEvent extends ApplicationEvent {
     @Override
     public String toString() {
         return String.format("AnimeCreatedEvent{animeId=%s, animeName='%s', categoryId=%d, createTime=%s}",
-                animeId.getValue(), animeName, categoryId, createTime);
+                animeId.id(), animeName, categoryId, createTime);
     }
 }

@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.anime.domain.anime.models;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
+import cn.chenyunlong.qing.domain.common.Identifiable;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -20,7 +20,8 @@ import lombok.NonNull;
  * @since 1.0.0
  */
 @Getter
-public class TagId extends EntityId<Long> {
+public class TagId implements Identifiable<Long> {
+
 
     /**
      * 标签的唯一标识符
@@ -75,10 +76,10 @@ public class TagId extends EntityId<Long> {
      * 获取ID值（兼容旧API）
      *
      * @return ID值
-     * @deprecated 使用 {@link #getValue()} 替代
+     * @deprecated 使用 {@link #id()} 替代
      */
     @Deprecated
-    public Long getValue() {
+    public Long id() {
         return value;
     }
 }

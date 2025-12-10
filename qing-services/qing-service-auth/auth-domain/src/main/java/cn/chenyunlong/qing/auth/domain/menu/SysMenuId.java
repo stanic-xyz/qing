@@ -1,13 +1,21 @@
 package cn.chenyunlong.qing.auth.domain.menu;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
+import cn.chenyunlong.qing.domain.common.Identifiable;
+import cn.hutool.core.util.IdUtil;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.io.Serializable;
+public class SysMenuId implements Identifiable<Long> {
 
-public class SysMenuId extends EntityId<Serializable> {
+    public static SysMenuId next() {
+        return new SysMenuId(IdUtil.getSnowflakeNextId());
+    }
+
+    @Override
+    public Long id() {
+        return value;
+    }
 
     /**
      * 分类的唯一标识符

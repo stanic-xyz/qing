@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 15s # 默认抓取间隔
+
+scrape_configs:
+  - job_name: 'spring-boot-app'
+    metrics_path: '/actuator/prometheus' # 根据Spring Boot应用的配置调整
+    static_configs:
+      - targets: [ 'localhost:8080' ] # 替换为你的应用地址和端口
+    # 如果应用有安全认证，需要配置basic_auth等

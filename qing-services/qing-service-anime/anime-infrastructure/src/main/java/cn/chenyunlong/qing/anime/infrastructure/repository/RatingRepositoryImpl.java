@@ -14,10 +14,10 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository;
 
 import cn.chenyunlong.qing.anime.domain.rating.Rating;
-import cn.chenyunlong.qing.anime.domain.rating.repository.RatingRepository;
-import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.RatingJpaRepository;
-import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.RatingEntity;
 import cn.chenyunlong.qing.anime.domain.rating.RatingId;
+import cn.chenyunlong.qing.anime.domain.rating.repository.RatingRepository;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.RatingEntity;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.RatingJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -128,7 +128,7 @@ public class RatingRepositoryImpl implements RatingRepository {
     private RatingEntity toEntity(Rating rating) {
         RatingEntity entity = new RatingEntity();
         if (rating.getId() != null) {
-            entity.setId(rating.getId().getValue());
+            entity.setId(rating.getId().id());
         }
         entity.setUserId(rating.getUserId());
         entity.setAnimeId(rating.getAnimeId());

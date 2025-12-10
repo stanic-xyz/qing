@@ -1,29 +1,12 @@
 package cn.chenyunlong.qing.anime.application.command;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.anime.application.mapper.AnimeCategoryApplicationMapper;
 import cn.chenyunlong.qing.anime.domain.anime.Category;
 import cn.chenyunlong.qing.anime.domain.anime.PlayStatus;
 import cn.chenyunlong.qing.anime.domain.anime.Tag;
 import cn.chenyunlong.qing.anime.domain.anime.enums.District;
-import cn.chenyunlong.qing.anime.domain.anime.models.Anime;
-import cn.chenyunlong.qing.anime.domain.anime.models.AnimeCategory;
-import cn.chenyunlong.qing.anime.domain.anime.models.AnimeId;
-import cn.chenyunlong.qing.anime.domain.anime.models.AnimeType;
-import cn.chenyunlong.qing.anime.domain.anime.models.CategoryId;
-import cn.chenyunlong.qing.anime.domain.anime.models.Company;
-import cn.chenyunlong.qing.anime.domain.anime.models.PlotTypes;
-import cn.chenyunlong.qing.anime.domain.anime.models.PremiereDate;
-import cn.chenyunlong.qing.anime.domain.anime.models.TagId;
+import cn.chenyunlong.qing.anime.domain.anime.models.*;
 import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeRepository;
 import cn.chenyunlong.qing.anime.domain.anime.repository.TagRepository;
@@ -31,6 +14,14 @@ import cn.chenyunlong.qing.anime.domain.type.TypeId;
 import cn.hutool.core.collection.CollUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 动漫命令处理器
@@ -247,7 +238,7 @@ public class AnimeCommandHandler {
 
         List<Long> existingTagIds = existingTags.stream()
                 .map(Tag::getId)
-                .map(TagId::getValue)
+                .map(TagId::id)
                 .toList();
 
         // 找出不存在的标签ID

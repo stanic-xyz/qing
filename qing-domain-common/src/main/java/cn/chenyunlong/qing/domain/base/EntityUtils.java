@@ -13,14 +13,13 @@
 
 package cn.chenyunlong.qing.domain.base;
 
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
+import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
-import cn.chenyunlong.qing.domain.common.EntityId;
-import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 实体操作工具类，提供简化的静态方法
@@ -45,7 +44,7 @@ public final class EntityUtils {
      * @param <ID>       ID类型
      * @return 创建的实体，如果失败返回空
      */
-    public static <T extends BaseAggregate<ID>, ID extends EntityId<?>> Optional<T> createAndSave(
+    public static <T extends BaseSimpleBusinessEntity<ID>, ID> Optional<T> createAndSave(
             BaseRepository<T, ID> repository, Supplier<T> supplier) {
         try {
             T entity = supplier.get();
@@ -68,7 +67,9 @@ public final class EntityUtils {
      * @param <ID>       ID类型
      * @return 创建的实体，如果失败返回空
      */
-    public static <T extends BaseAggregate<ID>, ID extends EntityId<?>> Optional<T> createUpdateAndSave(
+    public static <T extends BaseSimpleBusinessEntity<ID>, ID>
+
+    Optional<T> createUpdateAndSave(
             BaseRepository<T, ID> repository,
             Supplier<T> supplier,
             Consumer<T> updater) {
@@ -94,7 +95,9 @@ public final class EntityUtils {
      * @param <ID>       ID类型
      * @return 更新后的实体，如果失败返回空
      */
-    public static <T extends BaseAggregate<ID>, ID extends EntityId<?>> Optional<T> findUpdateAndSave(
+    public static <T extends BaseSimpleBusinessEntity<ID>, ID>
+
+    Optional<T> findUpdateAndSave(
             BaseRepository<T, ID> repository,
             ID id,
             Consumer<T> updater) {
@@ -126,7 +129,9 @@ public final class EntityUtils {
      * @param <ID>       ID类型
      * @return 更新后的实体，如果失败返回空
      */
-    public static <T extends BaseAggregate<ID>, ID extends EntityId<?>> Optional<T> updateAndSave(
+    public static <T extends BaseSimpleBusinessEntity<ID>, ID>
+
+    Optional<T> updateAndSave(
             BaseRepository<T, ID> repository,
             T entity,
             Consumer<T> updater) {
@@ -150,7 +155,9 @@ public final class EntityUtils {
      * @param <ID>       ID类型
      * @return 实体，如果不存在返回空
      */
-    public static <T extends BaseAggregate<ID>, ID extends EntityId<?>> Optional<T> findSafely(
+    public static <T extends BaseSimpleBusinessEntity<ID>, ID>
+
+    Optional<T> findSafely(
             BaseRepository<T, ID> repository, ID id) {
         try {
             return repository.findById(id);
@@ -169,7 +176,9 @@ public final class EntityUtils {
      * @param <ID>       ID类型
      * @return 保存后的实体，如果失败返回空
      */
-    public static <T extends BaseAggregate<ID>, ID extends EntityId<?>> Optional<T> saveSafely(
+    public static <T extends BaseSimpleBusinessEntity<ID>, ID>
+
+    Optional<T> saveSafely(
             BaseRepository<T, ID> repository, T entity) {
         try {
             T saved = repository.save(entity);
@@ -190,8 +199,10 @@ public final class EntityUtils {
      * @param <ID>       ID类型
      * @return 如果存在返回true，否则返回false
      */
-    public static <T extends BaseAggregate<ID>, ID extends EntityId<?>> boolean exists(BaseRepository<T, ID> repository,
-            ID id) {
+    public static <T extends BaseSimpleBusinessEntity<ID>, ID>
+
+    boolean exists(BaseRepository<T, ID> repository,
+                   ID id) {
         try {
             return repository.findById(id).isPresent();
         } catch (Exception e) {

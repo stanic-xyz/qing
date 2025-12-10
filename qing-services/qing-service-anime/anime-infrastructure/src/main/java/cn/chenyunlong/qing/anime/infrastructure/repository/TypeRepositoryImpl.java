@@ -30,6 +30,6 @@ public class TypeRepositoryImpl implements TypeRepository {
         if (id == null) {
             return Optional.empty();
         }
-        return typeJpaRepository.findById(id.getValue()).map(typeMapper::entityToDomain);
+        return typeJpaRepository.findById(id.id()).map(typeMapper::entityToDomain);
     }
 }

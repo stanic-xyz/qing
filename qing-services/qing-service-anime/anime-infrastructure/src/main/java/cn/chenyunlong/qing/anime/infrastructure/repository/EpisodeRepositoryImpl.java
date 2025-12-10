@@ -41,10 +41,10 @@ public class EpisodeRepositoryImpl implements EpisodeRepository {
 
     @Override
     public Optional<Episode> findById(EpisodeId id) {
-        if (id == null || id.getValue() == null) {
+        if (id == null || id.id() == null) {
             return Optional.empty();
         }
-        return episodeJpaRepository.findById(id.getValue())
+        return episodeJpaRepository.findById(id.id())
                 .map(episodeConverter::toDomain);
     }
 

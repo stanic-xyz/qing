@@ -13,15 +13,14 @@
 
 package cn.chenyunlong.qing.domain.base;
 
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
-import cn.chenyunlong.qing.domain.common.EntityId;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * 简化的实体服务类，提供更简单易用的API
@@ -32,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class SimpleEntityService<T extends BaseAggregate<ID>, ID extends EntityId<?>> {
+public class SimpleEntityService<T extends BaseSimpleBusinessEntity<ID>, ID> {
 
     private final BaseRepository<T, ID> repository;
 
@@ -67,9 +66,9 @@ public class SimpleEntityService<T extends BaseAggregate<ID>, ID extends EntityI
      * @return 创建的实体，如果失败返回空
      */
     public Optional<T> create(Supplier<T> supplier,
-            Consumer<T> updater,
-            Consumer<T> successHook,
-            Consumer<Throwable> errorHook) {
+                              Consumer<T> updater,
+                              Consumer<T> successHook,
+                              Consumer<Throwable> errorHook) {
         try {
             T entity = supplier.get();
             if (updater != null) {
@@ -116,9 +115,9 @@ public class SimpleEntityService<T extends BaseAggregate<ID>, ID extends EntityI
      * @return 更新后的实体，如果失败返回空
      */
     public Optional<T> updateById(ID id,
-            Consumer<T> updater,
-            Consumer<T> successHook,
-            Consumer<Throwable> errorHook) {
+                                  Consumer<T> updater,
+                                  Consumer<T> successHook,
+                                  Consumer<Throwable> errorHook) {
         try {
             Optional<T> entityOpt = repository.findById(id);
             if (entityOpt.isEmpty()) {
@@ -169,9 +168,9 @@ public class SimpleEntityService<T extends BaseAggregate<ID>, ID extends EntityI
      * @return 更新后的实体，如果失败返回空
      */
     public Optional<T> update(T entity,
-            Consumer<T> updater,
-            Consumer<T> successHook,
-            Consumer<Throwable> errorHook) {
+                              Consumer<T> updater,
+                              Consumer<T> successHook,
+                              Consumer<Throwable> errorHook) {
         try {
             updater.accept(entity);
 

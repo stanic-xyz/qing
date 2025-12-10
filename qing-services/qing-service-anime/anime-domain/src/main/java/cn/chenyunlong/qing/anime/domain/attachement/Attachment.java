@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.anime.domain.attachement;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.*;
 
 import java.time.Instant;
@@ -27,7 +27,7 @@ import java.time.Instant;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Attachment extends BaseAggregate<AttachmentId> {
+public class Attachment extends BaseSimpleBusinessEntity<AttachmentId> {
 
     @FieldDesc(name = "文件类型", description = "文件描述信息")
     private String mimeType;
@@ -53,4 +53,15 @@ public class Attachment extends BaseAggregate<AttachmentId> {
     @FieldDesc(name = "上传时间", description = "文件上传时间")
     private Instant uploadTime;
 
+    public static Attachment createAttachment(AttachmentId attachmentId, String fileName, Long fileSize, String path, Long storageType, String contentHash, Instant uploadTime) {
+        Attachment attachment = new Attachment();
+        attachment.setId(attachmentId);
+        attachment.setFileName(fileName);
+        attachment.setFileSize(fileSize);
+        attachment.setPath(path);
+        attachment.setStorageType(storageType);
+        attachment.setContentHash(contentHash);
+        attachment.setUploadTime(uploadTime);
+        return attachment;
+    }
 }

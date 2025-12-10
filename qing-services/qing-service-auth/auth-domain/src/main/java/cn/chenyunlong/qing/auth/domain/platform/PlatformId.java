@@ -1,20 +1,17 @@
 package cn.chenyunlong.qing.auth.domain.platform;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import cn.chenyunlong.qing.domain.common.Identifiable;
 import lombok.NonNull;
 
-import java.io.Serializable;
+/**
+ * @param value 分类的唯一标识符
+ */
+public record PlatformId(Long value) implements Identifiable<Long> {
 
-public class PlatformId extends EntityId<Serializable> {
-
-    /**
-     * 分类的唯一标识符
-     */
-    @Getter
-    @NotNull
-    Long value;
+    @Override
+    public Long id() {
+        return value;
+    }
 
     /**
      * 构造函数
@@ -22,7 +19,7 @@ public class PlatformId extends EntityId<Serializable> {
      * @param value 分类的唯一标识符
      * @throws IllegalArgumentException 当ID无效时
      */
-    private PlatformId(@NonNull Long value) {
+    public PlatformId(@NonNull Long value) {
         if (value <= 0) {
             throw new IllegalArgumentException("分类ID必须大于0");
         }

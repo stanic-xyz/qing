@@ -1,9 +1,5 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import cn.chenyunlong.qing.anime.domain.anime.Category;
 import cn.chenyunlong.qing.anime.domain.anime.models.CategoryId;
 import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeCategoryRepository;
@@ -12,6 +8,9 @@ import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.CategoryEn
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.AnimeCategoryJpaRepository;
 import jakarta.annotation.Resource;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AnimeCategoryRepositoryImpl implements AnimeCategoryRepository {
@@ -38,7 +37,7 @@ public class AnimeCategoryRepositoryImpl implements AnimeCategoryRepository {
         if (id == null) {
             return Optional.empty();
         }
-        return animeCategoryJpaRepository.findById(id.getValue())
+        return animeCategoryJpaRepository.findById(id.id())
                 .map(animeCategoryInfrastructureMapper::entityToEntity);
     }
 

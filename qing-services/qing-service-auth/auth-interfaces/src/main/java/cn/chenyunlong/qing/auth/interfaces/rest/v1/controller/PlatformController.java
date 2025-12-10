@@ -30,16 +30,17 @@ public class PlatformController {
         return JsonResult.success(platformService.createPlatform(creator));
     }
 
-    @PostMapping("updatePlatform")
+    @PutMapping("/{id}")
     public JsonResult<String> updatePlatform(
-        @RequestBody
-        PlatformUpdateRequest request) {
+            @PathVariable("id") Long id,
+            @RequestBody PlatformUpdateRequest request) {
+        request.setId(id);
         PlatformUpdater updater = PlatformMapper.INSTANCE.request2Updater(request);
         platformService.updatePlatform(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    @PostMapping("valid/{id}")
+    @PatchMapping("/{id}/valid")
     public JsonResult<String> validPlatform(
         @PathVariable("id")
         Long id) {
@@ -47,7 +48,7 @@ public class PlatformController {
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    @PostMapping("invalid/{id}")
+    @PatchMapping("/{id}/invalid")
     public JsonResult<String> invalidPlatform(
         @PathVariable("id")
         Long id) {

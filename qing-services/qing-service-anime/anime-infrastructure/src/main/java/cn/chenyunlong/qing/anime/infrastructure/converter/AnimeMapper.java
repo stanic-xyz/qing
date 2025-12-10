@@ -1,14 +1,13 @@
 package cn.chenyunlong.qing.anime.infrastructure.converter;
 
 import cn.chenyunlong.common.infrustructure.CustomMapper;
-import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.qing.anime.domain.anime.dto.command.CreatorAnimeCommand;
-import cn.chenyunlong.qing.anime.domain.anime.dto.vo.AnimeDetailVO;
 import cn.chenyunlong.qing.anime.domain.anime.dto.vo.AnimeVO;
 import cn.chenyunlong.qing.anime.domain.anime.models.*;
 import cn.chenyunlong.qing.anime.domain.type.TypeId;
+import cn.chenyunlong.qing.anime.infrastructure.converter.base.AggregateMapper;
+import cn.chenyunlong.qing.anime.infrastructure.converter.base.DateMapper;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.AnimeEntity;
-import cn.chenyunlong.qing.domain.common.converter.AggregateMapper;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
@@ -36,8 +35,6 @@ public interface AnimeMapper {
     }
 
     AnimeVO entityToVo(Anime anime);
-
-    AnimeDetailVO entityToDetailVo(Anime anime);
 
     default List<Long> map(String value) {
         if (StrUtil.isBlank(value)) {
@@ -98,7 +95,7 @@ public interface AnimeMapper {
     }
 
     default Long toAnimeIdValue(AnimeId tagId) {
-        return tagId != null ? tagId.getValue() : null;
+        return tagId != null ? tagId.id() : null;
     }
 
     default AnimeId longToAnimeId(Long id) {
@@ -106,7 +103,7 @@ public interface AnimeMapper {
     }
 
     default Long toValue(TypeId tagId) {
-        return tagId != null ? tagId.getValue() : null;
+        return tagId != null ? tagId.id() : null;
     }
 
     default TypeId longToTypeId(Long id) {

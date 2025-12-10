@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.anime.domain.playback;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class PlaybackProgress extends BaseAggregate<PlaybackProgressId> {
+public class PlaybackProgress extends BaseSimpleBusinessEntity<PlaybackProgressId> {
 
     @FieldDesc(description = "用户ID")
     private Long userId;
@@ -86,11 +86,11 @@ public class PlaybackProgress extends BaseAggregate<PlaybackProgressId> {
         if (progressSeconds < 0 || progressSeconds > this.totalSeconds) {
             throw new IllegalArgumentException("播放进度不能小于0或大于总时长");
         }
-        
+
         this.progressSeconds = progressSeconds;
         this.progressPercentage = (double) progressSeconds / totalSeconds * 100;
         this.lastPlayTime = LocalDateTime.now();
-        
+
         // 如果播放进度超过95%，认为已完成观看
         if (this.progressPercentage >= 95.0) {
             this.isCompleted = true;

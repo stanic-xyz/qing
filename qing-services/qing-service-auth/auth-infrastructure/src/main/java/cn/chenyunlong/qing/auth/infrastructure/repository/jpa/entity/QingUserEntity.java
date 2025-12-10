@@ -10,8 +10,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
+/**
+ * 用户表数据库对象
+ */
 @Getter
 @Setter
 @ToString
@@ -40,7 +43,64 @@ public class QingUserEntity extends BaseJpaEntity {
     private String email;
     private String avatar;
     private String description;
-    private LocalDateTime expireTime;
+    private Instant expireTime;
     private MFAType mfaType;
     private String mfaKey;
+
+    private boolean active;
+
+    /**
+     * 激活时间
+     */
+    private Instant activationTime;
+
+    /**
+     * 激活码
+     */
+    private String activationCode;
+
+    /**
+     * 激活码过期时间
+     */
+    private Instant activeCodeExpireAt;
+
+    /**
+     * 是否锁定
+     */
+    private boolean locked;
+
+    /**
+     * 已终止
+     */
+    private boolean isSuspended;
+
+    /**
+     * 已删除
+     */
+    private boolean isDeleted;
+
+    /**
+     * 尝试次数
+     */
+    private int loginAttempts = 0;
+
+    /**
+     * 锁定时间
+     */
+    private Instant lockedUntil;
+
+    /**
+     * 注册时间
+     */
+    private Instant registeredAt;
+
+    /**
+     * 上次登录时间
+     */
+    private Instant lastLoginAt;
+
+    /**
+     * 上次登录ip
+     */
+    private String lastLoginIp;
 }

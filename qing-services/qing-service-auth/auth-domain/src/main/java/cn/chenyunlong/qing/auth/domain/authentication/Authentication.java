@@ -16,9 +16,13 @@ package cn.chenyunlong.qing.auth.domain.authentication;
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.qing.auth.domain.authentication.event.AuthenticationFailed;
 import cn.chenyunlong.qing.auth.domain.authentication.event.AuthenticationSucceeded;
-import cn.chenyunlong.qing.auth.domain.user.QingUser;
-import cn.chenyunlong.qing.auth.domain.user.QingUserId;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.AuthFailureReason;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.AuthenticationId;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.AuthenticationType;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.IpAddress;
+import cn.chenyunlong.qing.auth.domain.user.User;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,7 +36,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class Authentication extends BaseAggregate<AuthenticationId> {
+public class Authentication extends BaseSimpleBusinessEntity<AuthenticationId> {
 
     @FieldDesc(name = "认证类型")
     private AuthenticationType type;
@@ -56,13 +60,20 @@ public class Authentication extends BaseAggregate<AuthenticationId> {
     private String userAgent;
 
     @FieldDesc(name = "关联用户ID")
-    private QingUserId userId;
+    private UserId userId;
 
     @FieldDesc(description = "认证是否成功")
     private boolean successful;
 
     @FieldDesc(description = "失败原因")
-    private String failureReason;
+    private AuthFailureReason failureReason;
+
+    @FieldDesc(description = "失败原因详情")
+    private String failureDetails;
+
+    private IpAddress clientIpAddress;
+
+    private AuthenticationToken tokenInfo;
 
     /**
      * 创建认证实例
@@ -92,12 +103,28 @@ public class Authentication extends BaseAggregate<AuthenticationId> {
         return authentication;
     }
 
+    public static Authentication createForUser(User user, IpAddress clientIpAddress) {
+
+        Authentication authentication = new Authentication();
+
+        authentication.setId(AuthenticationId.generate());
+        authentication.setAuthenticatedAt(LocalDateTime.now());
+        authentication.setUserId(user.getId());
+        authentication.setClientIpAddress(clientIpAddress);
+
+        return authentication;
+    }
+
+    public static Authentication createFailed(User user, IpAddress clientIpAddress, String userAgent, String message) {
+        return create(AuthenticationId.generate(), AuthenticationType.USERNAME_PASSWORD, user.getUsername().value(), user.getEncodedPassword().value(), clientIpAddress.getValue(), userAgent);
+    }
+
     /**
      * 认证成功
      *
      * @param user 认证用户
      */
-    public void succeed(QingUser user) {
+    public void succeed(User user) {
         if (this.status != AuthenticationStatus.PENDING) {
             throw new IllegalStateException("认证已完成，不能重复认证");
         }
@@ -125,5 +152,14 @@ public class Authentication extends BaseAggregate<AuthenticationId> {
 
         // 发布认证失败事件
         registerEvent(new AuthenticationFailed(this.getId(), reason));
+    }
+
+    /**
+     * 认证失败
+     *
+     * @param authFailureReason 失败原因
+     */
+    public void fail(AuthFailureReason authFailureReason) {
+        fail(authFailureReason.toString());
     }
 }

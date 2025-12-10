@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.auth.domain.authentication.event;
 
-import cn.chenyunlong.qing.auth.domain.authentication.TokenId;
-import cn.chenyunlong.qing.auth.domain.user.QingUserId;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenId;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -35,7 +35,7 @@ public class TokenCreated {
     /**
      * 用户ID
      */
-    private final QingUserId userId;
+    private final UserId userId;
 
     /**
      * 创建时间
@@ -48,7 +48,7 @@ public class TokenCreated {
      * @param tokenId 令牌ID
      * @param userId  用户ID
      */
-    public TokenCreated(TokenId tokenId, QingUserId userId) {
+    public TokenCreated(TokenId tokenId, UserId userId) {
         this.tokenId = tokenId;
         this.userId = userId;
         this.createdAt = LocalDateTime.now();

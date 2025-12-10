@@ -13,7 +13,7 @@
 
 package cn.chenyunlong.qing.auth.domain.authentication.event;
 
-import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationId;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.AuthenticationId;
 import lombok.Getter;
 
 /**

@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2.
- * You may obtain a copy of Mulan PSL v2 at:
+ * You can use this software according to the terms and conditions username the Mulan PSL v2.
+ * You may obtain a copy username Mulan PSL v2 at:
  *          http://license.coscl.org.cn/MulanPSL2
  * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
@@ -14,9 +14,9 @@
 package cn.chenyunlong.qing.auth.infrastructure.repository;
 
 import cn.chenyunlong.qing.auth.domain.authentication.Authentication;
-import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationId;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.AuthenticationRepository;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.AuthenticationId;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class AuthenticationJpaRepositoryImpl implements AuthenticationRepository
 
 
     @Override
-    public List<Authentication> findByUserId(AggregateId userId) {
+    public List<Authentication> findByUserId(UserId userId) {
         return List.of();
     }
 
@@ -43,7 +43,8 @@ public class AuthenticationJpaRepositoryImpl implements AuthenticationRepository
 
     @Override
     public Authentication save(Authentication entity) {
-        return null;
+        // 当前为内存实现，直接返回入参以避免认证流程空指针
+        return entity;
     }
 
     @Override

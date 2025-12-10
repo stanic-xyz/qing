@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class LeaveServiceTest {
 
-
     @Autowired
     private LeaveService leaveService;
 

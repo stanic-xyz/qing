@@ -14,7 +14,6 @@ import cn.chenyunlong.qing.anime.domain.anime.models.*;
 import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeCategoryRepository;
 import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeRepository;
 import cn.chenyunlong.qing.anime.domain.anime.repository.TagRepository;
-import cn.chenyunlong.qing.anime.domain.anime.models.TagId;
 import cn.chenyunlong.qing.anime.domain.type.TypeId;
 import cn.hutool.core.util.IdUtil;
 import lombok.RequiredArgsConstructor;
@@ -76,7 +75,7 @@ public class AnimeApplicationServiceImpl implements AnimeApplicationService {
         // 保存到仓储
         Anime savedAnime = animeRepository.save(anime);
 
-        log.info("动漫创建成功，ID: {}, 名称: {}", savedAnime.getId().getValue(), savedAnime.getName());
+        log.info("动漫创建成功，ID: {}, 名称: {}", savedAnime.getId().id(), savedAnime.getName());
 
         return convertToDTO(savedAnime);
     }
@@ -128,7 +127,7 @@ public class AnimeApplicationServiceImpl implements AnimeApplicationService {
         // 保存到仓储
         Anime savedAnime = animeRepository.save(anime);
 
-        log.info("动漫更新成功，ID: {}, 名称: {}", savedAnime.getId().getValue(), savedAnime.getName());
+        log.info("动漫更新成功，ID: {}, 名称: {}", savedAnime.getId().id(), savedAnime.getName());
 
         return convertToDTO(savedAnime);
     }
@@ -165,7 +164,7 @@ public class AnimeApplicationServiceImpl implements AnimeApplicationService {
         // 保存到仓储
         Anime savedAnime = animeRepository.save(anime);
 
-        log.info("动漫状态操作成功，ID: {}, 操作: {}", savedAnime.getId().getValue(), command.getOperation());
+        log.info("动漫状态操作成功，ID: {}, 操作: {}", savedAnime.getId().id(), command.getOperation());
 
         return convertToDTO(savedAnime);
     }
@@ -361,10 +360,10 @@ public class AnimeApplicationServiceImpl implements AnimeApplicationService {
      */
     private AnimeDTO convertToDTO(Anime anime) {
         return AnimeDTO.builder()
-                .id(anime.getId().getValue())
+                .id(anime.getId().id())
                 .name(anime.getName())
                 .instruction(anime.getInstruction())
-                .categoryId(anime.getAnimeCategory() != null ? anime.getAnimeCategory().id().getValue() : null)
+                .categoryId(anime.getAnimeCategory() != null ? anime.getAnimeCategory().id().id() : null)
                 .tags(anime.getTags() != null ? anime.getTags().tags() : null)
                 .playStatus(anime.getPlayStatus() != null ? anime.getPlayStatus().name() : null)
                 .coverUrl(anime.getCover())
@@ -374,12 +373,11 @@ public class AnimeApplicationServiceImpl implements AnimeApplicationService {
                 .officialWebsite(anime.getOfficialWebsite())
                 .district(anime.getDistrict() != null ? anime.getDistrict().getName() : null)
                 .companyId(anime.getCompany() != null ? anime.getCompany().companyId() : null)
-                .typeId(anime.getType() != null ? anime.getType().typeId().getValue() : null)
+                .typeId(anime.getType() != null ? anime.getType().typeId().id() : null)
                 .onShelf(anime.isOnShelf())
                 .deleted(anime.isDeleted())
                 .lastUpdateTime(anime.getLastUpdateTime())
                 .lastUpdatedBy(anime.getLastUpdatedBy())
-                .version(anime.getVersion() != null ? anime.getVersion().longValue() : 0L)
                 .build();
     }
 }

@@ -25,6 +25,10 @@ import lombok.Getter;
 public enum ValidStatus implements BaseEnum<Integer> {
 
     /**
+     * 初始化
+     */
+    INITIAL(-1, "初始状态"),
+    /**
      * 有效。
      */
     VALID(1, "valid"),

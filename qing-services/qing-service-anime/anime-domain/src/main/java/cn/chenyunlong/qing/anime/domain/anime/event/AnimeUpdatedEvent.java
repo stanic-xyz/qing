@@ -179,6 +179,6 @@ public class AnimeUpdatedEvent extends ApplicationEvent {
     @Override
     public String toString() {
         return String.format("AnimeUpdatedEvent{animeId=%s, animeName='%s', updateType=%s, updateTime=%s}",
-                           animeId.getValue(), animeName, updateType, updateTime);
+                animeId.id(), animeName, updateType, updateTime);
     }
 }

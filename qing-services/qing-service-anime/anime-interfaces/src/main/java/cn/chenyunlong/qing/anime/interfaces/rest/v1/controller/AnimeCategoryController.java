@@ -45,7 +45,7 @@ public class AnimeCategoryController {
             AnimeCategoryCreateRequest request) {
         AnimeCategoryCreator creator = animeCategoryInfrastructureMapper.request2Dto(request);
         Category animeCategory = animeCategoryService.createAnimeCategory(creator);
-        return JsonResult.success(animeCategory.getId().getValue());
+        return JsonResult.success(animeCategory.getId().id());
     }
 
     @PutMapping("{catId}")

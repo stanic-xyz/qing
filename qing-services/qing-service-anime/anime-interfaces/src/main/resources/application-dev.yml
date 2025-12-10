@@ -12,7 +12,7 @@ spring:
       enabled: true
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
@@ -29,6 +29,8 @@ qing:
   api:
     doc-disabled: false
   security:
+    white-list:
+      - "/admin"
     jwt:
       secret: 123123
       header: jwt

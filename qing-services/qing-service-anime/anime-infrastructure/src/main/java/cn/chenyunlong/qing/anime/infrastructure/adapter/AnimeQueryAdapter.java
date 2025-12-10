@@ -47,7 +47,7 @@ public class AnimeQueryAdapter extends EntityOperations implements AnimeQueryPor
     public Optional<AnimeDTO> findById(AnimeId animeId) {
         log.debug("查询动漫，ID: {}", animeId);
 
-        return animeJpaRepository.findById(animeId.getValue())
+        return animeJpaRepository.findById(animeId.id())
                 .filter(entity -> !entity.getIsDeleted())
                 .map(this::convertToDTO);
     }
@@ -61,7 +61,7 @@ public class AnimeQueryAdapter extends EntityOperations implements AnimeQueryPor
         }
 
         List<Long> ids = animeIds.stream()
-                .map(AnimeId::getValue)
+                .map(AnimeId::id)
                 .collect(Collectors.toList());
 
         return animeJpaRepository.findAllById(ids)
@@ -183,7 +183,7 @@ public class AnimeQueryAdapter extends EntityOperations implements AnimeQueryPor
     @Override
     public boolean existsByNameExcludeId(String name, AnimeId excludeId) {
         log.debug("检查动漫名称是否存在（排除指定ID），名称: {}, 排除ID: {}", name, excludeId);
-        return animeJpaRepository.existsByNameAndIdNotAndIsDeletedFalse(name, excludeId.getValue());
+        return animeJpaRepository.existsByNameAndIdNotAndIsDeletedFalse(name, excludeId.id());
     }
 
     @Override

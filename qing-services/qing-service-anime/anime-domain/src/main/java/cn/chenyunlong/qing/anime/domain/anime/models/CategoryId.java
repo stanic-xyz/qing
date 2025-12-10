@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.anime.domain.anime.models;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
+import cn.chenyunlong.qing.domain.common.Identifiable;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NonNull;
@@ -24,7 +24,12 @@ import lombok.NonNull;
  * @author chenyunlong
  * @since 1.0.0
  */
-public class CategoryId extends EntityId<Long> {
+public class CategoryId implements Identifiable<Long> {
+
+    @Override
+    public Long id() {
+        return value;
+    }
 
     /**
      * 分类的唯一标识符

@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.anime.domain.type;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
-import lombok.Getter;
+import cn.chenyunlong.qing.domain.common.Identifiable;
 import lombok.NonNull;
 
 /**
@@ -16,22 +15,21 @@ import lombok.NonNull;
  *   <li>自验证：确保ID值的有效性</li>
  * </ul>
  *
+ * @param value 类型的唯一标识符
  * @author chenyunlong
  * @since 1.0.0
  */
-@Getter
-public class TypeId extends EntityId<Long> {
+public record TypeId(Long value) implements Identifiable<Long> {
 
-    /**
-     * 类型的唯一标识符
-     */
-    @NonNull
-    Long value;
+    @Override
+    public Long id() {
+        return value;
+    }
 
     /**
      * 私有构造函数，强制使用工厂方法
      */
-    private TypeId(@NonNull Long value) {
+    public TypeId(@NonNull Long value) {
         if (value <= 0) {
             throw new IllegalArgumentException("Type ID must be positive");
         }

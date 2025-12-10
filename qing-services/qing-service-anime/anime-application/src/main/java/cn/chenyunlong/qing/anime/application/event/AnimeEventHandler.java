@@ -59,26 +59,26 @@ public class AnimeEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleAnimeCreated(AnimeCreatedEvent event) {
         log.info("处理动漫创建事件，动漫ID: {}, 名称: {}",
-                event.getAnimeId().getValue(), event.getAnimeName());
+                event.getAnimeId().id(), event.getAnimeName());
 
         try {
             // 记录操作日志
-            recordOperationLog("ANIME_CREATED", event.getAnimeId().getValue(),
+            recordOperationLog("ANIME_CREATED", event.getAnimeId().id(),
                     "动漫创建成功: " + event.getAnimeName());
 
             // 发送创建通知
             sendCreationNotification(event);
 
             // 更新搜索索引
-            updateSearchIndex(event.getAnimeId().getValue());
+            updateSearchIndex(event.getAnimeId().id());
 
             // 清理相关缓存
             clearRelatedCache(event.getCategoryId());
 
-            log.info("动漫创建事件处理完成，动漫ID: {}", event.getAnimeId().getValue());
+            log.info("动漫创建事件处理完成，动漫ID: {}", event.getAnimeId().id());
 
         } catch (Exception e) {
-            log.error("处理动漫创建事件失败，动漫ID: {}", event.getAnimeId().getValue(), e);
+            log.error("处理动漫创建事件失败，动漫ID: {}", event.getAnimeId().id(), e);
             // 这里可以发送告警或重试
         }
     }
@@ -102,26 +102,26 @@ public class AnimeEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleAnimeUpdated(AnimeUpdatedEvent event) {
         log.info("处理动漫更新事件，动漫ID: {}, 名称: {}",
-                event.getAnimeId().getValue(), event.getAnimeName());
+                event.getAnimeId().id(), event.getAnimeName());
 
         try {
             // 记录操作日志
-            recordOperationLog("ANIME_UPDATED", event.getAnimeId().getValue(),
+            recordOperationLog("ANIME_UPDATED", event.getAnimeId().id(),
                     "动漫信息更新: " + event.getAnimeName());
 
             // 发送更新通知
             sendUpdateNotification(event);
 
             // 更新搜索索引
-            updateSearchIndex(event.getAnimeId().getValue());
+            updateSearchIndex(event.getAnimeId().id());
 
             // 清理相关缓存
-            clearAnimeCache(event.getAnimeId().getValue());
+            clearAnimeCache(event.getAnimeId().id());
 
-            log.info("动漫更新事件处理完成，动漫ID: {}", event.getAnimeId().getValue());
+            log.info("动漫更新事件处理完成，动漫ID: {}", event.getAnimeId().id());
 
         } catch (Exception e) {
-            log.error("处理动漫更新事件失败，动漫ID: {}", event.getAnimeId().getValue(), e);
+            log.error("处理动漫更新事件失败，动漫ID: {}", event.getAnimeId().id(), e);
         }
     }
 
@@ -144,27 +144,27 @@ public class AnimeEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleAnimeStatusChanged(AnimeStatusChangedEvent event) {
         log.info("处理动漫状态变更事件，动漫ID: {}, 状态: {} -> {}",
-                event.getAnimeId().getValue(), event.getOldStatus(), event.getNewStatus());
+                event.getAnimeId().id(), event.getOldStatus(), event.getNewStatus());
 
         try {
             // 记录操作日志
-            recordOperationLog("ANIME_STATUS_CHANGED", event.getAnimeId().getValue(),
+            recordOperationLog("ANIME_STATUS_CHANGED", event.getAnimeId().id(),
                     String.format("动漫状态变更: %s -> %s", event.getOldStatus(), event.getNewStatus()));
 
             // 发送状态变更通知
             sendStatusChangeNotification(event);
 
             // 更新搜索索引
-            updateSearchIndex(event.getAnimeId().getValue());
+            updateSearchIndex(event.getAnimeId().id());
 
             // 清理相关缓存
-            clearAnimeCache(event.getAnimeId().getValue());
+            clearAnimeCache(event.getAnimeId().id());
             clearStatusCache(event.getNewStatus());
 
-            log.info("动漫状态变更事件处理完成，动漫ID: {}", event.getAnimeId().getValue());
+            log.info("动漫状态变更事件处理完成，动漫ID: {}", event.getAnimeId().id());
 
         } catch (Exception e) {
-            log.error("处理动漫状态变更事件失败，动漫ID: {}", event.getAnimeId().getValue(), e);
+            log.error("处理动漫状态变更事件失败，动漫ID: {}", event.getAnimeId().id(), e);
         }
     }
 
@@ -188,30 +188,30 @@ public class AnimeEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleAnimeDeleted(AnimeDeletedEvent event) {
         log.info("处理动漫删除事件，动漫ID: {}, 名称: {}",
-                event.getAnimeId().getValue(), event.getAnimeName());
+                event.getAnimeId().id(), event.getAnimeName());
 
         try {
             // 记录操作日志
-            recordOperationLog("ANIME_DELETED", event.getAnimeId().getValue(),
+            recordOperationLog("ANIME_DELETED", event.getAnimeId().id(),
                     "动漫删除: " + event.getAnimeName());
 
             // 发送删除通知
             sendDeletionNotification(event);
 
             // 清理搜索索引
-            removeFromSearchIndex(event.getAnimeId().getValue());
+            removeFromSearchIndex(event.getAnimeId().id());
 
             // 清理相关缓存
-            clearAnimeCache(event.getAnimeId().getValue());
+            clearAnimeCache(event.getAnimeId().id());
             clearRelatedCache(event.getCategoryId());
 
             // 清理相关文件（如封面图片等）
-            cleanupRelatedFiles(event.getAnimeId().getValue());
+            cleanupRelatedFiles(event.getAnimeId().id());
 
-            log.info("动漫删除事件处理完成，动漫ID: {}", event.getAnimeId().getValue());
+            log.info("动漫删除事件处理完成，动漫ID: {}", event.getAnimeId().id());
 
         } catch (Exception e) {
-            log.error("处理动漫删除事件失败，动漫ID: {}", event.getAnimeId().getValue(), e);
+            log.error("处理动漫删除事件失败，动漫ID: {}", event.getAnimeId().id(), e);
         }
     }
 
@@ -233,7 +233,7 @@ public class AnimeEventHandler {
      * @param event 动漫创建事件
      */
     private void sendCreationNotification(AnimeCreatedEvent event) {
-        log.debug("发送动漫创建通知，动漫ID: {}", event.getAnimeId().getValue());
+        log.debug("发送动漫创建通知，动漫ID: {}", event.getAnimeId().id());
         // 这里可以集成消息队列或通知服务
     }
 
@@ -243,7 +243,7 @@ public class AnimeEventHandler {
      * @param event 动漫更新事件
      */
     private void sendUpdateNotification(AnimeUpdatedEvent event) {
-        log.debug("发送动漫更新通知，动漫ID: {}", event.getAnimeId().getValue());
+        log.debug("发送动漫更新通知，动漫ID: {}", event.getAnimeId().id());
         // 这里可以集成消息队列或通知服务
     }
 
@@ -253,7 +253,7 @@ public class AnimeEventHandler {
      * @param event 动漫状态变更事件
      */
     private void sendStatusChangeNotification(AnimeStatusChangedEvent event) {
-        log.debug("发送动漫状态变更通知，动漫ID: {}", event.getAnimeId().getValue());
+        log.debug("发送动漫状态变更通知，动漫ID: {}", event.getAnimeId().id());
         // 这里可以集成消息队列或通知服务
     }
 
@@ -263,7 +263,7 @@ public class AnimeEventHandler {
      * @param event 动漫删除事件
      */
     private void sendDeletionNotification(AnimeDeletedEvent event) {
-        log.debug("发送动漫删除通知，动漫ID: {}", event.getAnimeId().getValue());
+        log.debug("发送动漫删除通知，动漫ID: {}", event.getAnimeId().id());
         // 这里可以集成消息队列或通知服务
     }
 

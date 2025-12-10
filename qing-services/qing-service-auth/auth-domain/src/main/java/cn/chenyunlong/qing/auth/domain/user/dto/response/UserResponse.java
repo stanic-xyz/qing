@@ -1,83 +1,45 @@
 package cn.chenyunlong.qing.auth.domain.user.dto.response;
 
-import cn.chenyunlong.common.enums.MFAType;
 import cn.chenyunlong.common.model.AbstractJpaResponse;
+import cn.chenyunlong.qing.auth.domain.user.User;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Setter
 @Getter
 @Schema
+@Builder(access = AccessLevel.PRIVATE)
 public class UserResponse extends AbstractJpaResponse {
 
 
-    @Schema(
-        title = "uid",
-        description = "用户唯一ID"
-    )
-    private Long uid;
-
-    @Schema(
-        title = "username",
-        description = "用户名"
-    )
+    private Long id;
     private String username;
 
-    @Schema(
-        title = "nickname",
-        description = "昵称"
-    )
-    private String nickname;
+    // UTC时间
+    private Instant registeredAt;
 
-    @Schema(
-        title = "password",
-        description = "password"
-    )
-    private String password;
+    private Instant lastLoginAt;
 
-    @Schema(
-        title = "phone",
-        description = "phone"
-    )
-    private String phone;
+    // 本地时间
+    private LocalDateTime localRegisteredAt;
 
-    @Schema(
-        title = "email",
-        description = "email"
-    )
-    private String email;
+    private LocalDateTime localLastLoginAt;
 
-    @Schema(
-        title = "avatar",
-        description = "avatar"
-    )
-    private String avatar;
+    private String timeZone;
 
-    @Schema(
-        title = "description",
-        description = "description"
-    )
-    private String description;
-
-    @Schema(
-        title = "expireTime",
-        description = "expireTime"
-    )
-    private LocalDateTime expireTime;
-
-    @Schema(
-        title = "mfaType",
-        description = "mfaType"
-    )
-    private MFAType mfaType;
-
-    @Schema(
-        title = "mfaKey",
-        description = "mfaKey"
-    )
-    private String mfaKey;
-
+    public static UserResponse from(User user) {
+        return UserResponse.builder()
+                .id(user.getId().id())
+                .username(user.getUsername().value())
+                .registeredAt(user.getRegisteredAt())
+                .timeZone(ZoneOffset.UTC.getId())
+                .build();
+    }
 }

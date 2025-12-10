@@ -19,7 +19,7 @@ import cn.chenyunlong.qing.anime.domain.anime.enums.District;
 import cn.chenyunlong.qing.anime.domain.anime.event.AnimeCreatedEvent;
 import cn.chenyunlong.qing.anime.domain.anime.event.AnimeStatusChangedEvent;
 import cn.chenyunlong.qing.anime.domain.anime.event.AnimeUpdatedEvent;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,7 +53,7 @@ import java.util.Objects;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class Anime extends BaseAggregate<AnimeId> {
+public class Anime extends BaseSimpleBusinessEntity<AnimeId> {
 
     /**
      * 最大标签数量限制
@@ -147,8 +147,23 @@ public class Anime extends BaseAggregate<AnimeId> {
         anime.isOnShelf = false;
         anime.isDeleted = false;
         anime.lastUpdateTime = LocalDateTime.now();
-
         return anime;
+    }
+
+    /**
+     * 创建新的动漫聚合根
+     *
+     * @param animeId       动漫ID
+     * @param name          动漫名称
+     * @param animeCategory 动漫分类
+     * @param instruction   动漫介绍
+     * @return 新创建的动漫实例
+     */
+    public static Anime createMock(AnimeId animeId, String name, AnimeCategory animeCategory, String instruction) {
+        Assert.notNull(animeId, "动漫ID不能为空");
+        Assert.hasText(name, "动漫名称不能为空");
+        Assert.notNull(animeCategory, "动漫分类不能为空");
+        return create(animeId, name, animeCategory, instruction);
     }
 
     /**
@@ -198,7 +213,7 @@ public class Anime extends BaseAggregate<AnimeId> {
     public void initialize() {
         this.lastUpdateTime = LocalDateTime.now();
         registerEvent(AnimeCreatedEvent.of(this, getId(), name,
-                animeCategory != null ? animeCategory.id().getValue() : null,
+                animeCategory != null ? animeCategory.id().id() : null,
                 tags, playStatus != null ? playStatus.name() : null,
                 lastUpdateTime, 1L)); // 临时使用固定值，后续需要从上下文获取
     }

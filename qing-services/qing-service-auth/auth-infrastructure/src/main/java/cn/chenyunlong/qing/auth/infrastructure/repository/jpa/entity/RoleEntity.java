@@ -18,13 +18,10 @@ public class RoleEntity extends BaseJpaEntity {
 
     @Unique
     @FieldDesc(name = "角色编码")
-    private String role;
+    private String code;
 
     @FieldDesc(name = "角色名称")
     private String name;
-
-    @FieldDesc(name = "平台Id", description = "默认为空")
-    private Long platformId;
 
     @FieldDesc(name = "备注")
     private String remark;

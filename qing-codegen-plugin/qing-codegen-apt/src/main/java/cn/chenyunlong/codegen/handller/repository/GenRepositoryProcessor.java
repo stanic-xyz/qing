@@ -19,7 +19,6 @@ import cn.chenyunlong.codegen.annotation.SupportedGenTypes;
 import cn.chenyunlong.codegen.cache.CacheStrategy;
 import cn.chenyunlong.codegen.handller.AbstractCodeGenProcessor;
 import cn.chenyunlong.codegen.spi.CodeGenProcessor;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 import com.google.auto.service.AutoService;
 import org.springframework.data.jpa.repository.JpaRepository;

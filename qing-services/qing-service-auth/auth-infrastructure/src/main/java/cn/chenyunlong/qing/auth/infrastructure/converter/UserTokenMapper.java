@@ -1,41 +1,37 @@
 package cn.chenyunlong.qing.auth.infrastructure.converter;
 
 import cn.chenyunlong.common.infrustructure.CustomMapper;
-import cn.chenyunlong.common.mapper.DateMapper;
-import cn.chenyunlong.common.mapper.GenericEnumMapper;
-import cn.chenyunlong.qing.auth.domain.user.UserToken;
+import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenId;
 import cn.chenyunlong.qing.auth.domain.user.dto.creator.UserTokenCreator;
-import cn.chenyunlong.qing.auth.domain.user.dto.query.UserTokenQuery;
 import cn.chenyunlong.qing.auth.domain.user.dto.request.UserTokenCreateRequest;
-import cn.chenyunlong.qing.auth.domain.user.dto.request.UserTokenQueryRequest;
-import cn.chenyunlong.qing.auth.domain.user.dto.request.UserTokenUpdateRequest;
-import cn.chenyunlong.qing.auth.domain.user.dto.response.UserTokenResponse;
-import cn.chenyunlong.qing.auth.domain.user.dto.updater.UserTokenUpdater;
-import cn.chenyunlong.qing.auth.domain.user.dto.vo.UserTokenVO;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
+import cn.chenyunlong.qing.auth.infrastructure.converter.base.AggregateMapper;
+import cn.chenyunlong.qing.auth.infrastructure.converter.base.DateMapper;
+import cn.chenyunlong.qing.auth.infrastructure.converter.base.GenericEnumMapper;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.TokenEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {
-    GenericEnumMapper.class,
-    DateMapper.class,
-    CustomMapper.class
-}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+        GenericEnumMapper.class,
+        DateMapper.class,
+        CustomMapper.class, AggregateMapper.class
+}, unmappedTargetPolicy = ReportingPolicy.WARN, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserTokenMapper {
-
-    UserTokenMapper INSTANCE = Mappers.getMapper(UserTokenMapper.class);
-
-    UserToken dtoToEntity(UserTokenCreator dto);
-
-    UserTokenUpdater request2Updater(UserTokenUpdateRequest request);
 
     UserTokenCreator request2Dto(UserTokenCreateRequest request);
 
-    UserTokenQuery request2Query(UserTokenQueryRequest request);
+    TokenEntity domainToEntity(AuthenticationToken entity);
 
-    UserTokenResponse vo2Response(UserTokenVO vo);
+    AuthenticationToken entityToDomain(TokenEntity byTokenValue);
 
-    UserTokenResponse vo2CustomResponse(UserTokenVO vo);
+    default TokenId map(Long value) {
+        return TokenId.of(value);
+    }
 
-    UserTokenVO entity2Vo(UserToken userToken);
+    default UserId mapUserId(Long value) {
+        return UserId.of(value);
+    }
 }

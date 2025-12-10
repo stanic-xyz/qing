@@ -14,10 +14,10 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository;
 
 import cn.chenyunlong.qing.anime.domain.watchhistory.WatchHistory;
-import cn.chenyunlong.qing.anime.domain.watchhistory.repository.WatchHistoryRepository;
-import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.WatchHistoryJpaRepository;
-import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.WatchHistoryEntity;
 import cn.chenyunlong.qing.anime.domain.watchhistory.WatchHistoryId;
+import cn.chenyunlong.qing.anime.domain.watchhistory.repository.WatchHistoryRepository;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.WatchHistoryEntity;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.WatchHistoryJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -101,7 +101,7 @@ public class WatchHistoryRepositoryImpl implements WatchHistoryRepository {
     private WatchHistoryEntity toEntity(WatchHistory watchHistory) {
         WatchHistoryEntity entity = new WatchHistoryEntity();
         if (watchHistory.getId() != null) {
-            entity.setId(watchHistory.getId().getValue());
+            entity.setId(watchHistory.getId().id());
         }
         entity.setUserId(watchHistory.getUserId());
         entity.setAnimeId(watchHistory.getAnimeId());
