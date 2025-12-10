@@ -56,7 +56,7 @@ helm install qing qing/qing
 | Name                 | Description                                                          | Value                   |
 |----------------------|----------------------------------------------------------------------|-------------------------|
 | `qingUsername`       | Qing username                                                        | `admin`                 |
-| `qingPassword`       | Qing qingUser password                                               | `""`                    |
+| `qingPassword`       | Qing user rawPassword                                                | `""`                    |
 | `existingSecret`     | Name of existing secret containing Qing credentials                  | `""`                    |
 | `qingExternalUrl`    | 外部访问地址，请根据实际需要修改                                                     | `http://localhost:8090` |
 | `qingScheme`         | Scheme to use to generate Qing URLs                                  | `http`                  |
@@ -72,20 +72,20 @@ helm install qing qing/qing
 |-----------------------------------------------|-----------------------------------------------------------------------------------|--------------|
 | `postgresql.enabled`                          | Deploy a PostgreSQL server to satisfy the applications database requirements      | `true`       |
 | `postgresql.architecture`                     | PostgreSQL architecture. Allowed values: `standalone` or `replication`            | `standalone` |
-| `postgresql.auth.rootPassword`                | PostgreSQL root password                                                          | `""`         |
+| `postgresql.auth.rootPassword`                | PostgreSQL root rawPassword                                                       | `""`         |
 | `postgresql.auth.database`                    | PostgreSQL custom database                                                        | `qing`       |
-| `postgresql.auth.username`                    | PostgreSQL custom qingUser name                                                   | `qing`       |
-| `postgresql.auth.password`                    | PostgreSQL custom qingUser password                                               | `""`         |
+| `postgresql.auth.username`                    | PostgreSQL custom user name                                                       | `qing`       |
+| `postgresql.auth.rawPassword`                 | PostgreSQL custom user rawPassword                                                | `""`         |
 | `postgresql.primary.persistence.enabled`      | Enable persistence on PostgreSQL using PVC(s)                                     | `true`       |
 | `postgresql.primary.persistence.storageClass` | Persistent Volume storage class                                                   | `""`         |
 | `postgresql.primary.persistence.accessModes`  | Persistent Volume access modes                                                    | `[]`         |
 | `postgresql.primary.persistence.size`         | Persistent Volume size                                                            | `8Gi`        |
 | `mysql.enabled`                               | Deploy a MySQL server to satisfy the applications database requirements           | `false`      |
 | `mysql.architecture`                          | MySQL architecture. Allowed values: `standalone` or `replication`                 | `standalone` |
-| `mysql.auth.rootPassword`                     | MySQL root password                                                               | `""`         |
+| `mysql.auth.rootPassword`                     | MySQL root rawPassword                                                            | `""`         |
 | `mysql.auth.database`                         | MySQL custom database                                                             | `qing`       |
-| `mysql.auth.username`                         | MySQL custom qingUser name                                                        | `qing`       |
-| `mysql.auth.password`                         | MySQL custom qingUser password                                                    | `""`         |
+| `mysql.auth.username`                         | MySQL custom user name                                                            | `qing`       |
+| `mysql.auth.rawPassword`                      | MySQL custom user rawPassword                                                     | `""`         |
 | `mysql.primary.persistence.enabled`           | Enable persistence on MySQL using PVC(s)                                          | `true`       |
 | `mysql.primary.persistence.storageClass`      | Persistent Volume storage class                                                   | `""`         |
 | `mysql.primary.persistence.accessModes`       | Persistent Volume access modes                                                    | `[]`         |
@@ -93,8 +93,8 @@ helm install qing qing/qing
 | `externalDatabase.platform`                   | External Database platform                                                        | `postgresql` |
 | `externalDatabase.host`                       | External Database server host                                                     | `""`         |
 | `externalDatabase.port`                       | External Database server port                                                     | `""`         |
-| `externalDatabase.qingUser`                   | External Database username                                                        | `""`         |
-| `externalDatabase.password`                   | External Database qingUser password                                               | `""`         |
+| `externalDatabase.user`                       | External Database username                                                        | `""`         |
+| `externalDatabase.rawPassword`                | External Database user rawPassword                                                | `""`         |
 | `externalDatabase.database`                   | External Database database name                                                   | `""`         |
 | `externalDatabase.existingSecret`             | The name of an existing secret with database credentials. Evaluated as a template | `""`         |
 

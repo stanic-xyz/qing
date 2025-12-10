@@ -71,3 +71,9 @@ dependency-analysis*.md
 
 # 环境配置示例
 .env.example
+/scripts/tools/docker/immich/postgres
+/scripts/tools/docker/immich/library
+/scripts/rabbitmq/data
+
+.trae
+changelog.md
