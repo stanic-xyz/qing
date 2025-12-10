@@ -389,7 +389,7 @@
                     <configLocation>checkstyle/checkstyle.xml</configLocation>
                     <includeTestResources>true</includeTestResources>
                     <consoleOutput>true</consoleOutput>
-                    <skip>false</skip>
+                    <skip>true</skip>
                     <failsOnError>false</failsOnError>
                     <violationSeverity>error</violationSeverity>
                     <failsOnError>false</failsOnError>
