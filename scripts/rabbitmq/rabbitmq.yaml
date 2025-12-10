@@ -1,0 +1,26 @@
+version: '3.8'
+
+name: rabbitmq
+
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine  # 轻量版
+    container_name: rabbitmq-production
+    hostname: rabbitmq-server
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15692:15692"  # Prometheus metrics
+    expose:
+      - "4369"  # epmd端口
+      - "5671"  # AMQP SSL
+      - "25672" # 集群间通信
+    environment:
+      # 基础认证
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-SecurePass123!}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST:-/}
+
+      # 时区设置
+      TZ: Asia/Shanghai
