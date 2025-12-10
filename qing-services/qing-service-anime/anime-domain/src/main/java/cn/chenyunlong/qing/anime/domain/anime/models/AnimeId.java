@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.anime.domain.anime.models;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
+import cn.chenyunlong.qing.domain.common.Identifiable;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -24,7 +24,12 @@ import lombok.NonNull;
  * @since 1.0.0
  */
 @Getter
-public class AnimeId extends EntityId<Long> {
+public class AnimeId implements Identifiable<Long> {
+
+    @Override
+    public Long id() {
+        return value;
+    }
 
     /**
      * 动漫的唯一标识符

@@ -4,7 +4,7 @@ import cn.chenyunlong.common.enums.MFAType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Schema
 @Data
@@ -62,7 +62,7 @@ public class UserUpdater {
         title = "expireTime",
         description = "expireTime"
     )
-    private LocalDateTime expireTime;
+    private Instant expireTime;
 
     @Schema(
         title = "mfaType",

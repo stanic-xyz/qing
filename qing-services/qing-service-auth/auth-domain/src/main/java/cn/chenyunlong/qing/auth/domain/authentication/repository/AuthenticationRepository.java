@@ -14,8 +14,8 @@
 package cn.chenyunlong.qing.auth.domain.authentication.repository;
 
 import cn.chenyunlong.qing.auth.domain.authentication.Authentication;
-import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationId;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.AuthenticationId;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public interface AuthenticationRepository extends BaseRepository<Authentication,
      * @param userId 用户ID
      * @return 认证记录列表
      */
-    List<Authentication> findByUserId(AggregateId userId);
+    List<Authentication> findByUserId(UserId userId);
 
     /**
      * 根据认证主体查询认证记录

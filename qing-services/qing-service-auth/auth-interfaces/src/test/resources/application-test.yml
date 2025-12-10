@@ -1,9 +1,21 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+      - cn.chenyunlong.qing.security.autoconfigure.QingSecurityAutoConfiguration
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL
     username: sa
-    password: 
+    password:
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -19,3 +31,22 @@ jwt:
   expiration: 3600000 # 1小时
   header: Authorization
   tokenHead: Bearer
+
+qing:
+  security:
+    whiteList:
+      - /api/v1/auth/login
+      - /api/v1/auth/register
+  rate-limit:
+    enabled: true
+    ip:
+      enabled: false
+    user:
+      enabled: false
+    api:
+      enabled: true
+      loginLimit: 1
+      registerLimit: 1
+      windowSeconds: 60
+    global:
+      enabled: false

@@ -13,15 +13,16 @@
 
 package cn.chenyunlong.qing.auth.domain.authentication;
 
-import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.qing.auth.domain.authentication.event.TokenCreated;
 import cn.chenyunlong.qing.auth.domain.authentication.event.TokenRevoked;
-import cn.chenyunlong.qing.auth.domain.user.QingUserId;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenId;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenType;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * 认证令牌实体
@@ -31,44 +32,54 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class AuthenticationToken extends BaseAggregate<TokenId> {
+public class AuthenticationToken extends BaseSimpleBusinessEntity<TokenId> {
 
-    @FieldDesc(name = "令牌值")
+    // 令牌值，用于认证
     private String tokenValue;
 
-    @FieldDesc(name = "令牌类型")
+    // 刷新令牌值，用于获取新的访问令牌
+    private String refreshTokenValue;
+
+    // 令牌类型，如访问令牌、刷新令牌等
     private TokenType tokenType;
 
-    @FieldDesc(name = "关联用户ID")
-    private QingUserId userId;
+    // 用户ID，标识令牌所属的用户
+    private UserId userId;
 
-    @FieldDesc(name = "过期时间")
-    private LocalDateTime expiresAt;
+    // 过期时间，令牌失效的时间点
+    private Instant expiresAt;
 
-    @FieldDesc(name = "是否已撤销")
+    // 是否已撤销，标记令牌状态
     private boolean revoked;
 
-    @FieldDesc(name = "撤销时间")
-    private LocalDateTime revokedAt;
+    // 撤销时间，记录令牌被撤销的具体时间
+    private Instant revokedAt;
 
-    @FieldDesc(name = "撤销原因")
+    // 撤销原因，说明令牌被撤销的理由
     private String revocationReason;
+
+    // 用户代理信息，记录客户端信息
+    private String userAgent;
 
     /**
      * 创建认证令牌
      *
-     * @param tokenId    聚合根ID
-     * @param tokenValue 令牌值
-     * @param tokenType  令牌类型
-     * @param userId     用户ID
-     * @param expiresAt  过期时间
+     * @param tokenId      聚合根ID
+     * @param tokenValue   令牌值
+     * @param tokenType    令牌类型
+     * @param refreshToken 刷新令牌
+     * @param userId       用户ID
+     * @param expiresAt    过期时间
+     * @param userAgent    用户代理信息
      * @return 认证令牌实例
      */
     public static AuthenticationToken create(TokenId tokenId,
                                              String tokenValue,
                                              TokenType tokenType,
-                                             QingUserId userId,
-                                             LocalDateTime expiresAt) {
+                                             String refreshToken,
+                                             UserId userId,
+                                             Instant expiresAt,
+                                             String userAgent) {
         AuthenticationToken token = new AuthenticationToken();
         token.setId(tokenId);
         token.setTokenValue(tokenValue);
@@ -76,6 +87,8 @@ public class AuthenticationToken extends BaseAggregate<TokenId> {
         token.setUserId(userId);
         token.setExpiresAt(expiresAt);
         token.setRevoked(false);
+        token.setRefreshTokenValue(refreshToken);
+        token.setUserAgent(userAgent);
 
         // 发布令牌创建事件
         token.registerEvent(new TokenCreated(tokenId, userId));
@@ -94,7 +107,7 @@ public class AuthenticationToken extends BaseAggregate<TokenId> {
         }
 
         this.revoked = true;
-        this.revokedAt = LocalDateTime.now();
+        this.revokedAt = Instant.now();
         this.revocationReason = reason;
 
         // 发布令牌撤销事件
@@ -107,6 +120,6 @@ public class AuthenticationToken extends BaseAggregate<TokenId> {
      * @return 是否有效
      */
     public boolean isValid() {
-        return !revoked && LocalDateTime.now().isBefore(expiresAt);
+        return !revoked && Instant.now().isBefore(expiresAt);
     }
 }

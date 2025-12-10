@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.anime.domain.watchhistory;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public class WatchHistory extends BaseAggregate<WatchHistoryId> {
+public class WatchHistory extends BaseSimpleBusinessEntity<WatchHistoryId> {
 
     @FieldDesc(description = "用户ID")
     private Long userId;
@@ -62,9 +62,9 @@ public class WatchHistory extends BaseAggregate<WatchHistoryId> {
     /**
      * 创建观看历史记录
      */
-    public static WatchHistory create(Long userId, Long animeId, Long episodeId, 
-                                    Integer watchDuration, String deviceType, 
-                                    String ipAddress, String userAgent) {
+    public static WatchHistory create(Long userId, Long animeId, Long episodeId,
+                                      Integer watchDuration, String deviceType,
+                                      String ipAddress, String userAgent) {
         WatchHistory history = new WatchHistory();
         history.userId = userId;
         history.animeId = animeId;

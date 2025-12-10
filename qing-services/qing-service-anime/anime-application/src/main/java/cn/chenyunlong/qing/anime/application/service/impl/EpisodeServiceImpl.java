@@ -4,14 +4,12 @@ import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.anime.application.service.IEpisodeService;
 import cn.chenyunlong.qing.anime.domain.episode.Episode;
+import cn.chenyunlong.qing.anime.domain.episode.EpisodeId;
 import cn.chenyunlong.qing.anime.domain.episode.dto.creator.EpisodeCreator;
 import cn.chenyunlong.qing.anime.domain.episode.dto.updater.EpisodeUpdater;
 import cn.chenyunlong.qing.anime.domain.episode.dto.vo.EpisodeVO;
 import cn.chenyunlong.qing.anime.domain.episode.repository.EpisodeRepository;
-
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.anime.domain.episode.EpisodeId;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,7 +49,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
         episode.setPlayListId(creator.getPlayListId());
         episode.setPlayUrl(creator.getPlayUrl());
         Episode savedEpisode = episodeRepository.save(episode);
-        return savedEpisode.getId().getValue();
+        return savedEpisode.getId().id();
     }
 
     /**
@@ -69,7 +67,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
     public void validEpisode(Long id) {
         EntityOperations.doUpdate(episodeRepository)
             .loadById(EpisodeId.of(id))
-            .update(BaseAggregate::valid)
+                .update(Episode::valid)
             .execute();
     }
 
@@ -77,7 +75,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
     public void invalidEpisode(Long id) {
         EntityOperations.doUpdate(episodeRepository)
             .loadById(EpisodeId.of(id))
-            .update(BaseAggregate::invalid)
+                .update(Episode::invalid)
             .execute();
     }
 
@@ -92,14 +90,12 @@ public class EpisodeServiceImpl implements IEpisodeService {
 
     private EpisodeVO entityToVo(Episode episode) {
         EpisodeVO vo = new EpisodeVO();
-        vo.setId(episode.getId().getValue());
+        vo.setId(episode.getId().id());
         vo.setAnimeId(episode.getAnimeId());
         vo.setName(episode.getName());
         vo.setDescription(episode.getDescription());
         vo.setPlayListId(episode.getPlayListId());
         vo.setPlayUrl(episode.getPlayUrl());
-        vo.setCreatedAt(episode.getCreatedAt());
-        vo.setUpdatedAt(episode.getUpdatedAt());
         return vo;
     }
 }

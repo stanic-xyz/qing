@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8080
 spring:
   application:
     name: qing-service-auth
@@ -11,6 +11,11 @@ spring:
     username: postgres
     password: admin@123456
     driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: 192.168.3.11
+      database: 0
+      port: 6379
 qing:
   api:
     description: QING-AUTH-SERVICE

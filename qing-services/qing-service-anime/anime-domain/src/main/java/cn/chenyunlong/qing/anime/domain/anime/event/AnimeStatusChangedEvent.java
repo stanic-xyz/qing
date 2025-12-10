@@ -198,6 +198,6 @@ public class AnimeStatusChangedEvent extends ApplicationEvent {
     @Override
     public String toString() {
         return String.format("AnimeStatusChangedEvent{animeId=%s, animeName='%s', operation=%s, oldStatus=%s, newStatus=%s, operationTime=%s}",
-                animeId.getValue(), animeName, operation, oldStatus, newStatus, operationTime);
+                animeId.id(), animeName, operation, oldStatus, newStatus, operationTime);
     }
 }

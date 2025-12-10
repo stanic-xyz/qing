@@ -1,18 +1,11 @@
 package cn.chenyunlong.qing.anime.infrastructure.converter;
 
 import cn.chenyunlong.common.infrustructure.CustomMapper;
-import cn.chenyunlong.common.mapper.DateMapper;
-import cn.chenyunlong.qing.anime.domain.anime.Tag;
 import cn.chenyunlong.qing.anime.domain.anime.dto.command.TagCreator;
-import cn.chenyunlong.qing.anime.domain.anime.dto.query.TagQuery;
 import cn.chenyunlong.qing.anime.domain.anime.dto.request.TagCreateRequest;
-import cn.chenyunlong.qing.anime.domain.anime.dto.request.TagQueryRequest;
-import cn.chenyunlong.qing.anime.domain.anime.dto.request.TagUpdateRequest;
-import cn.chenyunlong.qing.anime.domain.anime.dto.response.TagResponse;
-import cn.chenyunlong.qing.anime.domain.anime.dto.updater.TagUpdater;
-import cn.chenyunlong.qing.anime.domain.anime.dto.vo.TagVO;
 import cn.chenyunlong.qing.anime.domain.anime.models.TagId;
-import cn.chenyunlong.qing.domain.common.converter.AggregateMapper;
+import cn.chenyunlong.qing.anime.infrastructure.converter.base.AggregateMapper;
+import cn.chenyunlong.qing.anime.infrastructure.converter.base.DateMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -22,25 +15,9 @@ public interface TagMapper {
 
     TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);
 
-    Tag dtoToEntity(TagCreator dto);
-
-    TagUpdater request2Updater(TagUpdateRequest request);
-
     TagCreator request2Dto(TagCreateRequest request);
 
-    TagQuery request2Query(TagQueryRequest request);
-
-    TagResponse vo2CustomResponse(TagVO vo);
-
-    TagResponse vo2Response(TagVO vo);
-
-    TagVO entityToVo(Tag tag);
-
     default Long map(TagId tagId) {
-        return tagId != null ? tagId.getValue() : null;
-    }
-
-    default TagId longToTypeId(Long id) {
-        return id != null ? TagId.of(id) : null;
+        return tagId != null ? tagId.id() : null;
     }
 }

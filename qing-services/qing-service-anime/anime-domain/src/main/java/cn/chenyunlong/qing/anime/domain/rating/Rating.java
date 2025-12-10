@@ -13,12 +13,12 @@
 
 package cn.chenyunlong.qing.anime.domain.rating;
 
-import java.time.LocalDateTime;
-
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 /**
  * 评分评论聚合根
@@ -28,7 +28,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Rating extends BaseAggregate<RatingId> {
+public class Rating extends BaseSimpleBusinessEntity<RatingId> {
 
     @FieldDesc(description = "用户ID")
     private Long userId;

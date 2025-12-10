@@ -13,8 +13,7 @@
 
 package cn.chenyunlong.qing.domain.base;
 
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
-import cn.chenyunlong.qing.domain.common.EntityId;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 
 /**
@@ -24,12 +23,12 @@ import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
  */
 public abstract class EntityOperations {
 
-    public static <T extends BaseAggregate<ID>, ID extends EntityId<?>> EntityUpdater<T, ID> doUpdate(
+    public static <T extends BaseSimpleBusinessEntity<ID>, ID> EntityUpdater<T, ID> doUpdate(
             BaseRepository<T, ID> repository) {
         return new EntityUpdater<>(repository);
     }
 
-    public static <T extends BaseAggregate<ID>, ID extends EntityId<?>> EntityCreator<T, ID> doCreate(
+    public static <T extends BaseSimpleBusinessEntity<ID>, ID> EntityCreator<T, ID> doCreate(
             BaseRepository<T, ID> repository) {
         return new EntityCreator<>(repository);
     }

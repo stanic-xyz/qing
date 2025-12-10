@@ -1,15 +1,14 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import cn.chenyunlong.qing.anime.domain.attachement.Attachment;
 import cn.chenyunlong.qing.anime.domain.attachement.AttachmentId;
 import cn.chenyunlong.qing.anime.domain.attachement.AttachmentRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.AttachmentEntity;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.AttachmentJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +25,14 @@ public class AttachmentRepositoryImpl implements AttachmentRepository {
 
     @Override
     public Optional<Attachment> findById(AttachmentId id) {
-        return attachmentJpaRepository.findById(id.getValue())
+        return attachmentJpaRepository.findById(id.id())
                 .map(this::toDomain);
     }
 
     private AttachmentEntity toEntity(Attachment domain) {
         AttachmentEntity entity = new AttachmentEntity();
         if (domain.getId() != null) {
-            entity.setId(domain.getId().getValue());
+            entity.setId(domain.getId().id());
         }
         entity.setMimeType(domain.getMimeType());
         entity.setFileName(domain.getFileName());

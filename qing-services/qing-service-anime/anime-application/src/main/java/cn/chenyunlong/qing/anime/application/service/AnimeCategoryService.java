@@ -7,11 +7,9 @@ import cn.chenyunlong.qing.anime.domain.anime.Category;
 import cn.chenyunlong.qing.anime.domain.anime.dto.command.AnimeCategoryCreator;
 import cn.chenyunlong.qing.anime.domain.anime.dto.updater.AnimeCategoryUpdater;
 import cn.chenyunlong.qing.anime.domain.anime.dto.vo.AnimeCategoryVO;
-import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeCategoryRepository;
-
-import cn.chenyunlong.qing.domain.base.EntityOperations;
 import cn.chenyunlong.qing.anime.domain.anime.models.CategoryId;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.anime.domain.anime.repository.AnimeCategoryRepository;
+import cn.chenyunlong.qing.domain.base.EntityOperations;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -60,7 +58,7 @@ public class AnimeCategoryService {
     public void validAnimeCategory(Long id) {
         EntityOperations.doUpdate(animeCategoryRepository)
             .loadById(CategoryId.of(id))
-            .update(BaseAggregate::valid)
+                .update(Category::valid)
             .execute();
     }
 
@@ -68,7 +66,7 @@ public class AnimeCategoryService {
     public void invalidAnimeCategory(Long id) {
         EntityOperations.doUpdate(animeCategoryRepository)
             .loadById(CategoryId.of(id))
-            .update(BaseAggregate::invalid)
+                .update(Category::invalid)
             .execute();
     }
 
@@ -80,12 +78,10 @@ public class AnimeCategoryService {
         Optional<Category> animeCategoryOptional = animeCategoryRepository.findById(CategoryId.of(id));
         return animeCategoryOptional.map(category -> {
             AnimeCategoryVO vo = new AnimeCategoryVO();
-            vo.setId(category.getId().getValue());
+            vo.setId(category.getId().id());
             vo.setName(category.getName());
             vo.setOrderNo(category.getOrderNo());
             vo.setPid(category.getPid() != null && !category.getPid().equals(Category.ROOT_PID) ? category.getPid() : null);
-            vo.setCreatedAt(category.getCreatedAt());
-            vo.setUpdatedAt(category.getUpdatedAt());
             return vo;
         }).orElseThrow(() -> new BusinessException(CodeEnum.NotFoundError));
     }

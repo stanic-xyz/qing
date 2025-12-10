@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.auth.infrastructure.converter;
 
 import cn.chenyunlong.common.infrustructure.CustomMapper;
-import cn.chenyunlong.common.mapper.DateMapper;
 import cn.chenyunlong.qing.auth.domain.platform.Platform;
 import cn.chenyunlong.qing.auth.domain.platform.dto.creator.PlatformCreator;
 import cn.chenyunlong.qing.auth.domain.platform.dto.query.PlatformQuery;
@@ -11,6 +10,7 @@ import cn.chenyunlong.qing.auth.domain.platform.dto.request.PlatformUpdateReques
 import cn.chenyunlong.qing.auth.domain.platform.dto.response.PlatformResponse;
 import cn.chenyunlong.qing.auth.domain.platform.dto.updater.PlatformUpdater;
 import cn.chenyunlong.qing.auth.domain.platform.dto.vo.PlatformVO;
+import cn.chenyunlong.qing.auth.infrastructure.converter.base.DateMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;

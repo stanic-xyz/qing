@@ -222,4 +222,9 @@ public record Tags(List<String> tags) {
 
         return Collections.unmodifiableList(cleanedTags);
     }
+
+    @Override
+    public String toString() {
+        return String.join(",", tags);
+    }
 }

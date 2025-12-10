@@ -1,9 +1,10 @@
 package cn.chenyunlong.qing.anime.interfaces.config;
 
+import cn.chenyunlong.qing.anime.infrastructure.converter.base.DateMapper;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import cn.chenyunlong.common.mapper.DateMapper;
 
 /**
  * Mapper配置类
@@ -22,6 +23,7 @@ public class MapperConfiguration {
      * @return DateMapper实例
      */
     @Bean
+    @ConditionalOnMissingBean
     public DateMapper dateMapper() {
         return new DateMapper();
     }

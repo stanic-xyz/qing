@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.auth.application.service;
 
 import cn.chenyunlong.qing.auth.domain.platform.Platform;
+import cn.chenyunlong.qing.auth.domain.platform.PlatformId;
 import cn.chenyunlong.qing.auth.domain.platform.dto.creator.PlatformCreator;
 import cn.chenyunlong.qing.auth.domain.platform.dto.updater.PlatformUpdater;
 import cn.chenyunlong.qing.auth.domain.platform.repository.PlatformRepository;
@@ -25,19 +26,31 @@ public class PlatformService {
      */
     public Long createPlatform(PlatformCreator creator) {
         Optional<Platform> platform = EntityOperations.doCreate(platformRepository)
-            .create(() -> Platform.create(creator))
-            .update(Platform::init)
-            .execute();
-        return platform.isPresent() ? platform.get().getId().getValue() : 0;
+                .create(() -> Platform.create(creator))
+                .update(Platform::init)
+                .execute();
+        return platform.isPresent() ? platform.get().getId().id() : 0;
     }
 
     public void updatePlatform(PlatformUpdater updater) {
+        EntityOperations.doUpdate(platformRepository)
+                .loadById(PlatformId.of(updater.getId()))
+                .update(updater::updatePlatform)
+                .execute();
     }
 
     public void validPlatform(Long id) {
+        EntityOperations.doUpdate(platformRepository)
+                .loadById(PlatformId.of(id))
+                .update(platform -> platform.valid())
+                .execute();
     }
 
     public void invalidPlatform(Long id) {
+        EntityOperations.doUpdate(platformRepository)
+                .loadById(PlatformId.of(id))
+                .update(platform -> platform.invalid())
+                .execute();
     }
 
 }

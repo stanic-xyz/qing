@@ -25,9 +25,7 @@ import cn.chenyunlong.codegen.util.StringUtils;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.model.PageRequestWrapper;
-import cn.chenyunlong.jpa.support.BaseJpaEntity;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.AggregateId;
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import lombok.RequiredArgsConstructor;
@@ -60,13 +58,13 @@ public class GenServiceImplProcessor extends AbstractCodeGenProcessor {
                               boolean useLombok) {
         NameContext nameContext = getNameContext(typeElement);
         String className = typeElement.getSimpleName() + IMPL_SUFFIX;
-        
+
         // 检查必要的包名是否为null
-        if (StringUtils.containsNull(nameContext.getServicePackageName(), 
+        if (StringUtils.containsNull(nameContext.getServicePackageName(),
                                    nameContext.getRepositoryPackageName())) {
             return;
         }
-        
+
         final TypeSpec.Builder builder = TypeSpec
             .classBuilder(className)
             .addSuperinterface(

@@ -14,10 +14,11 @@
 package cn.chenyunlong.qing.auth.domain.authentication.repository;
 
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
-import cn.chenyunlong.qing.auth.domain.authentication.TokenId;
-import cn.chenyunlong.qing.auth.domain.authentication.TokenType;
-import cn.chenyunlong.qing.domain.common.AggregateId;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenId;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenType;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,13 +38,22 @@ public interface TokenRepository extends BaseRepository<AuthenticationToken, Tok
      */
     Optional<AuthenticationToken> findByTokenValue(String tokenValue);
 
+
+    /**
+     * 根据刷新令牌值查找令牌
+     *
+     * @param refreshToken 刷新令牌值
+     * @return 令牌对象
+     */
+    Optional<AuthenticationToken> findByRefreshTokenValue(@NotBlank(message = "刷新令牌不能为空") String refreshToken);
+
     /**
      * 根据用户ID查找有效的令牌列表
      *
      * @param userId 用户ID
      * @return 令牌列表
      */
-    List<AuthenticationToken> findValidTokensByUserId(AggregateId userId);
+    List<AuthenticationToken> findValidTokensByUserId(UserId userId);
 
     /**
      * 根据用户ID和令牌类型查找有效的令牌
@@ -52,7 +62,7 @@ public interface TokenRepository extends BaseRepository<AuthenticationToken, Tok
      * @param tokenType 令牌类型
      * @return 令牌列表
      */
-    List<AuthenticationToken> findValidTokensByUserIdAndType(AggregateId userId, TokenType tokenType);
+    List<AuthenticationToken> findValidTokensByUserIdAndType(UserId userId, TokenType tokenType);
 
     /**
      * 撤销用户的所有令牌
@@ -61,5 +71,5 @@ public interface TokenRepository extends BaseRepository<AuthenticationToken, Tok
      * @param reason 撤销原因
      * @return 撤销的令牌数量
      */
-    int revokeAllTokensByUserId(AggregateId userId, String reason);
+    int revokeAllTokensByUserId(UserId userId, String reason);
 }

@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: qing-auth
+    password: 4745701816@Long
+    url: jdbc:postgresql://postgresql:5432/qing-auth
+  data:
+    redis:
+      host: redis
+  rabbitmq:
+    host: rabbitmq
+    username: rabbitmq
+    password: rabbitmq
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+qing:
+  mp:
+    app-id: 123
+    aes-key: 1232
+    secret: 123123
+    token: 123123
+management:
+  health:
+    diskspace:
+      # 配置磁盘健康检查阈值
+      threshold: 10MB
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+app:
+  monitoring:
+    username: stan
+    password: 123456
+logging:
+  file:
+    path: ./log/

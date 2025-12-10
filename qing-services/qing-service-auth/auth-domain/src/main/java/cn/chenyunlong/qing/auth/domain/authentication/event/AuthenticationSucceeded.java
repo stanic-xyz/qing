@@ -13,8 +13,8 @@
 
 package cn.chenyunlong.qing.auth.domain.authentication.event;
 
-import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationId;
-import cn.chenyunlong.qing.auth.domain.user.QingUserId;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.AuthenticationId;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import lombok.Getter;
 
 /**
@@ -26,10 +26,10 @@ import lombok.Getter;
 public class AuthenticationSucceeded {
 
     private final AuthenticationId authenticationId;
-    private final QingUserId userId;
+    private final UserId userId;
     private final long timestamp;
 
-    public AuthenticationSucceeded(AuthenticationId authenticationId, QingUserId userId) {
+    public AuthenticationSucceeded(AuthenticationId authenticationId, UserId userId) {
         this.authenticationId = authenticationId;
         this.userId = userId;
         this.timestamp = System.currentTimeMillis();

@@ -14,10 +14,10 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository;
 
 import cn.chenyunlong.qing.anime.domain.playback.PlaybackProgress;
-import cn.chenyunlong.qing.anime.domain.playback.repository.PlaybackProgressRepository;
-import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.PlaybackProgressJpaRepository;
-import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.PlaybackProgressEntity;
 import cn.chenyunlong.qing.anime.domain.playback.PlaybackProgressId;
+import cn.chenyunlong.qing.anime.domain.playback.repository.PlaybackProgressRepository;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.PlaybackProgressEntity;
+import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.PlaybackProgressJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -97,7 +97,7 @@ public class PlaybackProgressRepositoryImpl implements PlaybackProgressRepositor
     private PlaybackProgressEntity toEntity(PlaybackProgress progress) {
         PlaybackProgressEntity entity = new PlaybackProgressEntity();
         if (progress.getId() != null) {
-            entity.setId(progress.getId().getValue());
+            entity.setId(progress.getId().id());
         }
         entity.setUserId(progress.getUserId());
         entity.setAnimeId(progress.getAnimeId());
@@ -114,9 +114,9 @@ public class PlaybackProgressRepositoryImpl implements PlaybackProgressRepositor
     private PlaybackProgress toDomain(PlaybackProgressEntity entity) {
         // 使用反射创建PlaybackProgress实例
         PlaybackProgress progress = PlaybackProgress.create(
-            entity.getUserId(), 
-            entity.getAnimeId(), 
-            entity.getEpisodeId(), 
+                entity.getUserId(),
+                entity.getAnimeId(),
+                entity.getEpisodeId(),
             entity.getTotalDuration().intValue()
         );
         progress.setId(PlaybackProgressId.of(entity.getId()));

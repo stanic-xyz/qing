@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {
-        "cn.chenyunlong.qing.anime.*"
-})
+@ComponentScan(basePackages = {"cn.chenyunlong.qing.anime", "cn.chenyunlong.qing.infrastructure"})
 public class QingAnimeWebApplication {
 
     /**

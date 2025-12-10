@@ -13,20 +13,18 @@
 
 package cn.chenyunlong.qing.domain.base;
 
+import cn.chenyunlong.common.constants.CodeEnum;
+import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.validator.CreateGroup;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
+import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
+import com.google.common.base.Preconditions;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import com.google.common.base.Preconditions;
-
-import cn.chenyunlong.common.constants.CodeEnum;
-import cn.chenyunlong.common.exception.BusinessException;
-import cn.chenyunlong.common.validator.CreateGroup;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
-import cn.chenyunlong.qing.domain.common.EntityId;
-import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 实体类更新器。
@@ -34,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author gim 2022/3/5 9:36 下午
  */
 @Slf4j
-public class EntityUpdater<T extends BaseAggregate<ID>, ID extends EntityId<?>> extends BaseEntityOperation
+public class EntityUpdater<T extends BaseSimpleBusinessEntity<ID>, ID> extends BaseEntityOperation
         implements Loader<T, ID>, UpdateHandler<T>, Executor<T>, Validate<T> {
 
     private final BaseRepository<T, ID> repository;

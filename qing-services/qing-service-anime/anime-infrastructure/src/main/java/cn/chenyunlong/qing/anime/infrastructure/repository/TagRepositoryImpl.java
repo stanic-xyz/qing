@@ -1,16 +1,15 @@
 package cn.chenyunlong.qing.anime.infrastructure.repository;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import cn.chenyunlong.qing.anime.domain.anime.Tag;
 import cn.chenyunlong.qing.anime.domain.anime.models.TagId;
 import cn.chenyunlong.qing.anime.domain.anime.repository.TagRepository;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.TagEntity;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.repository.TagJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +34,7 @@ public class TagRepositoryImpl implements TagRepository {
 
     @Override
     public Optional<Tag> findById(TagId id) {
-        return tagJpaRepository.findById(id.getValue())
+        return tagJpaRepository.findById(id.id())
                 .map(this::toDomain);
     }
 
@@ -51,8 +50,6 @@ public class TagRepositoryImpl implements TagRepository {
         tag.setId(TagId.of(entity.getId()));
         tag.setName(entity.getName());
         tag.setInstruction(entity.getInstruction());
-        tag.setCreatedAt(entity.getCreatedAt());
-        tag.setUpdatedAt(entity.getUpdatedAt());
         tag.setValidStatus(entity.getValidStatus());
         return tag;
     }
@@ -60,12 +57,10 @@ public class TagRepositoryImpl implements TagRepository {
     private TagEntity toEntity(Tag tag) {
         TagEntity entity = new TagEntity();
         if (tag.getId() != null) {
-            entity.setId(tag.getId().getValue());
+            entity.setId(tag.getId().id());
         }
         entity.setName(tag.getName());
         entity.setInstruction(tag.getInstruction());
-        entity.setCreatedAt(tag.getCreatedAt());
-        entity.setUpdatedAt(tag.getUpdatedAt());
         entity.setValidStatus(tag.getValidStatus());
         return entity;
     }

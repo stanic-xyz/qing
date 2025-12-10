@@ -6,5 +6,4 @@ import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 
 public interface SysMenuRepository extends BaseRepository<SysMenu, SysMenuId> {
 
-
 }

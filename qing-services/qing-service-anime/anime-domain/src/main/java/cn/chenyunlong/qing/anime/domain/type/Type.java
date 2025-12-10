@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.anime.domain.type;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +26,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Type extends BaseAggregate<TypeId> {
+public class Type extends BaseSimpleBusinessEntity<TypeId> {
 
     @FieldDesc(description = "名称")
     private String name;
@@ -34,15 +34,11 @@ public class Type extends BaseAggregate<TypeId> {
     @FieldDesc(description = "介绍")
     private String instruction;
 
-    public String getInstruction() {
-        return instruction;
-    }
-
-    public void setInstruction(String instruction) {
-        this.instruction = instruction;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public static Type createType(TypeId typeId, String name, String instruction) {
+        Type type = new Type();
+        type.setId(typeId);
+        type.setName(name);
+        type.setInstruction(instruction);
+        return type;
     }
 }

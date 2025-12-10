@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2.
- * You may obtain a copy of Mulan PSL v2 at:
+ * You can use this software according to the terms and conditions username the Mulan PSL v2.
+ * You may obtain a copy username Mulan PSL v2 at:
  *          http://license.coscl.org.cn/MulanPSL2
  * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * 令牌实体
@@ -46,6 +46,12 @@ public class TokenEntity extends BaseJpaEntity {
     private String tokenValue;
 
     /**
+     * 刷新令牌值
+     */
+    @Column(name = "refresh_token_value", nullable = false, length = 1024)
+    private String refreshTokenValue;
+
+    /**
      * 令牌类型
      */
     @Column(name = "token_type", nullable = false, length = 50)
@@ -55,7 +61,7 @@ public class TokenEntity extends BaseJpaEntity {
      * 过期时间
      */
     @Column(name = "expires_at", nullable = false)
-    private LocalDateTime expiresAt;
+    private Instant expiresAt;
 
     /**
      * 是否已撤销

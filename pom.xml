@@ -28,7 +28,6 @@
         <module>qing-bom</module>
         <module>qing-archetypes</module>
         <module>qing-application</module>
-        <module>qing-feign</module>
         <module>qing-commons</module>
         <module>qing-config-server</module>
         <module>qing-eureka-server</module>
@@ -36,9 +35,9 @@
         <module>qing-bus-server</module>
         <module>qing-codegen-plugin</module>
         <module>qing-starters</module>
-        <module>qing-infrastructure</module>
         <module>qing-services</module>
         <module>qing-domain-common</module>
+        <module>qing-infrastructure</module>
         <module>qing-infrastructure-data-jpa</module>
     </modules>
 
@@ -114,36 +113,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-codegen-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.geekhalo.lego</groupId>
-                <artifactId>lego-starter</artifactId>
-                <version>${lego.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-app</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-codegen-apt</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-infrastructure-email</artifactId>
-                <version>0.0.3-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-infrastructure-common</artifactId>
-                <version>0.0.3-SNAPSHOT</version>
-            </dependency>
             <dependency>
                 <groupId>com.yomahub</groupId>
                 <artifactId>tlog-all-spring-boot-starter</artifactId>

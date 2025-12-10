@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.auth.domain.menu;
 
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.auth.domain.menu.dto.enums.MenuType;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,7 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class SysMenu extends BaseAggregate<SysMenuId> {
+public class SysMenu extends BaseSimpleBusinessEntity<SysMenuId> {
 
     /**
      * 菜单ID
@@ -53,7 +54,7 @@ public class SysMenu extends BaseAggregate<SysMenuId> {
 
 
     /**
-     * 组件路径
+     * 组件路径。vue组件可能使用
      */
     @Size(max = 200, message = "组件路径不能超过255个字符")
     private String component;
@@ -77,7 +78,7 @@ public class SysMenu extends BaseAggregate<SysMenuId> {
      * 类型（M目录 C菜单 F按钮）
      */
     @NotBlank(message = "菜单类型不能为空")
-    private String menuType;
+    private MenuType menuType;
 
     /**
      * 显示状态（0显示 1隐藏）
@@ -92,7 +93,7 @@ public class SysMenu extends BaseAggregate<SysMenuId> {
     /**
      * 权限字符串
      */
-    @Size(min = 0, max = 100, message = "权限标识长度不能超过100个字符")
+    @Size(max = 100, message = "权限标识长度不能超过100个字符")
     private String perms;
 
     /**
@@ -100,4 +101,13 @@ public class SysMenu extends BaseAggregate<SysMenuId> {
      */
     private String icon;
 
+    public static SysMenu create(SysMenuId menuId, Long id, String menuName, MenuType menuType, Integer orderNum) {
+        SysMenu sysMenu = new SysMenu();
+        sysMenu.setId(menuId);
+        sysMenu.setMenuId(id);
+        sysMenu.setMenuName(menuName);
+        sysMenu.setMenuType(menuType);
+        sysMenu.setOrderNum(orderNum);
+        return sysMenu;
+    }
 }

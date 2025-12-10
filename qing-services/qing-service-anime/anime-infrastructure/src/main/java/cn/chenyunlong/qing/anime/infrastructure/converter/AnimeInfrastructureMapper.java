@@ -1,11 +1,12 @@
 package cn.chenyunlong.qing.anime.infrastructure.converter;
 
-import cn.chenyunlong.qing.anime.domain.anime.PlayStatus;
+import cn.chenyunlong.common.infrustructure.CustomMapper;
 import cn.chenyunlong.qing.anime.domain.anime.enums.District;
 import cn.chenyunlong.qing.anime.domain.anime.models.*;
 import cn.chenyunlong.qing.anime.domain.type.TypeId;
+import cn.chenyunlong.qing.anime.infrastructure.converter.base.AggregateMapper;
+import cn.chenyunlong.qing.anime.infrastructure.converter.base.DateMapper;
 import cn.chenyunlong.qing.anime.infrastructure.repository.jpa.entity.AnimeEntity;
-import cn.chenyunlong.qing.domain.common.converter.AggregateMapper;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import org.mapstruct.Mapper;
@@ -23,16 +24,9 @@ import java.util.stream.Collectors;
  *
  * @author 陈云龙
  */
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = AggregateMapper.class)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {CustomMapper.class, DateMapper.class,
+        AggregateMapper.class})
 public interface AnimeInfrastructureMapper {
-
-    /**
-     * 领域对象转换为JPA实体
-     *
-     * @param anime 动漫领域对象
-     * @return JPA实体
-     */
-    AnimeEntity toJpaEntity(Anime anime);
 
     /**
      * JPA实体转换为领域对象
@@ -100,7 +94,7 @@ public interface AnimeInfrastructureMapper {
     }
 
     default Long map(AnimeId animeId) {
-        return animeId != null ? animeId.getValue() : null;
+        return animeId != null ? animeId.id() : null;
     }
 
     default PremiereDate map(LocalDate localDate) {
@@ -117,14 +111,6 @@ public interface AnimeInfrastructureMapper {
                 .collect(Collectors.toList());
     }
 
-    default String playStatusToString(PlayStatus playStatus) {
-        return playStatus != null ? playStatus.name() : null;
-    }
-
-    default String tagsToString(Tags tags) {
-        return tags != null ? tags.toString() : null;
-    }
-
     /**
      * 将领域对象转换为实体对象
      *
@@ -132,5 +118,9 @@ public interface AnimeInfrastructureMapper {
      * @return 实体对象
      */
     AnimeEntity toEntity(Anime anime);
+
+    default String tagsToString(Tags value) {
+        return value.toString();
+    }
 
 }

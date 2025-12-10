@@ -3,13 +3,15 @@ package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.auth.application.service.SysMenuService;
-import cn.chenyunlong.qing.auth.domain.menu.dto.creator.SysMenuCreator;
+import cn.chenyunlong.qing.auth.domain.menu.dto.command.CreateSysMenuCommand;
+import cn.chenyunlong.qing.auth.domain.menu.dto.command.UpdateSysMenuCommand;
 import cn.chenyunlong.qing.auth.domain.menu.dto.request.SysMenuCreateRequest;
 import cn.chenyunlong.qing.auth.domain.menu.dto.request.SysMenuUpdateRequest;
 import cn.chenyunlong.qing.auth.domain.menu.dto.response.SysMenuResponse;
-import cn.chenyunlong.qing.auth.domain.menu.dto.updater.SysMenuUpdater;
 import cn.chenyunlong.qing.auth.domain.menu.dto.vo.SysMenuVO;
 import cn.chenyunlong.qing.auth.infrastructure.converter.SysMenuMapper;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.MenuEntity;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.SysMenuJpaRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,64 +28,70 @@ import java.util.stream.Collectors;
 public class SysMenuController {
 
     private final SysMenuService sysMenuService;
+    private final SysMenuJpaRepository sysMenuJpaRepository;
+    private final SysMenuMapper sysMenuMapper;
 
-    private static List<SysMenuResponse> convertMenuToResponse(List<SysMenuVO> menuVOList) {
+    private static List<SysMenuResponse> convertMenuToResponse(List<SysMenuVO> menuVOList, SysMenuMapper sysMenuMapper) {
         return menuVOList.stream().map(menuVO -> {
-            SysMenuResponse sysMenuResponse = SysMenuMapper.INSTANCE.vo2Response(menuVO);
-            sysMenuResponse.setChildren(convertMenuToResponse(menuVO.getChildren()));
+            SysMenuResponse sysMenuResponse = sysMenuMapper.vo2Response(menuVO);
+            sysMenuResponse.setChildren(convertMenuToResponse(menuVO.getChildren(), sysMenuMapper));
             return sysMenuResponse;
         }).collect(Collectors.toList());
     }
 
     @PostMapping
     public JsonResult<Long> createSysMenu(
-        @RequestBody
-        SysMenuCreateRequest request) {
-        SysMenuCreator creator = SysMenuMapper.INSTANCE.request2Dto(request);
+            @RequestBody
+            SysMenuCreateRequest request) {
+        CreateSysMenuCommand creator = sysMenuMapper.request2Dto(request);
         return JsonResult.success(sysMenuService.createSysMenu(creator));
     }
 
-    @PostMapping("updateSysMenu")
+    @PutMapping("/{id}")
     public JsonResult<String> updateSysMenu(
-        @RequestBody
-        SysMenuUpdateRequest request) {
-        SysMenuUpdater updater = SysMenuMapper.INSTANCE.request2Updater(request);
+            @PathVariable("id") Long id,
+            @RequestBody SysMenuUpdateRequest request) {
+        request.setId(id);
+        UpdateSysMenuCommand updater = sysMenuMapper.request2Updater(request);
         sysMenuService.updateSysMenu(updater);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    @PostMapping("valid/{id}")
+    @PatchMapping("/{id}/valid")
     public JsonResult<String> validSysMenu(
-        @PathVariable("id")
-        Long id) {
+            @PathVariable("id")
+            Long id) {
         sysMenuService.validSysMenu(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    @PostMapping("invalid/{id}")
+    @PatchMapping("/{id}/invalid")
     public JsonResult<String> invalidSysMenu(
-        @PathVariable("id")
-        Long id) {
+            @PathVariable("id")
+            Long id) {
         sysMenuService.invalidSysMenu(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
-    @GetMapping("findById/{id}")
+    @GetMapping("/{id}")
     public JsonResult<SysMenuResponse> findById(
-        @PathVariable("id")
-        Long id) {
+            @PathVariable("id")
+            Long id) {
         SysMenuVO vo = sysMenuService.findById(id);
-        SysMenuResponse response = SysMenuMapper.INSTANCE.vo2Response(vo);
+        SysMenuResponse response = sysMenuMapper.vo2Response(vo);
         return JsonResult.success(response);
     }
 
     /**
      * 查询树状列表
      */
-    @GetMapping("menuTree")
+    @GetMapping("/tree")
     public JsonResult<List<SysMenuResponse>> tree() {
-        List<SysMenuVO> menuVOList = sysMenuService.treeMenu();
-        List<SysMenuResponse> menuResponseList = convertMenuToResponse(menuVOList);
+        List<MenuEntity> menuEntityList = sysMenuJpaRepository.findAll();
+
+        List<SysMenuVO> sysMenuVOS = sysMenuMapper.entity2Vo(menuEntityList);
+
+        List<SysMenuResponse> menuResponseList = convertMenuToResponse(sysMenuVOS, sysMenuMapper);
         return JsonResult.success(menuResponseList);
     }
 }

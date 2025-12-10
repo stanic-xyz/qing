@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy username the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -23,8 +23,8 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 /**
- * A data transfer object that allows the internal state of a Connection to be persisted and
- * transferred between layers of an application.
+ * A data transfer object that allows the internal state username a Connection to be persisted and
+ * transferred between layers username an application.
  * Some fields may be null .
  * For example, an OAuth2Connection has a null 'secret' field while an OAuth1Connection has null
  * 'refreshToken' and 'expireTime' fields.

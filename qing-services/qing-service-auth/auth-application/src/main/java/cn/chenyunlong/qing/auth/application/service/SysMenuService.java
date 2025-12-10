@@ -5,18 +5,18 @@ import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.auth.domain.menu.SysMenu;
 import cn.chenyunlong.qing.auth.domain.menu.SysMenuId;
-import cn.chenyunlong.qing.auth.domain.menu.dto.creator.SysMenuCreator;
-import cn.chenyunlong.qing.auth.domain.menu.dto.updater.SysMenuUpdater;
+import cn.chenyunlong.qing.auth.domain.menu.dto.command.CreateSysMenuCommand;
+import cn.chenyunlong.qing.auth.domain.menu.dto.command.UpdateSysMenuCommand;
 import cn.chenyunlong.qing.auth.domain.menu.dto.vo.SysMenuVO;
+import cn.chenyunlong.qing.auth.domain.menu.event.MenuCreatedEvent;
 import cn.chenyunlong.qing.auth.domain.menu.repository.SysMenuRepository;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -26,36 +26,42 @@ import java.util.Optional;
 public class SysMenuService {
 
     private final SysMenuRepository sysMenuRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * createImpl
+     * 创建菜单
      */
+    public Long createSysMenu(CreateSysMenuCommand command) {
+        // 创建菜单实体
+        SysMenu menuEntity = SysMenu.create(SysMenuId.next(), command.getMenuId(), command.getMenuName(), command.getMenuType(), command.getOrderNum());
 
-    public Long createSysMenu(SysMenuCreator creator) {
-        Optional<SysMenu> sysMenu = EntityOperations.doCreate(sysMenuRepository)
-                .create(() -> {
-                    SysMenu menuEntity = new SysMenu();
-                    Optional.ofNullable(creator.getParentId()).ifPresentOrElse(parentId -> {
-                        SysMenu parentMenu = sysMenuRepository.findById(SysMenuId.of(creator.getParentId()))
-                                .orElseThrow(() -> new NotFoundException("parent menu not found"));
-                        menuEntity.setParentId(parentMenu.getId().getValue());
-                        menuEntity.setParentName(parentMenu.getMenuName());
-                    }, () -> {
-                        menuEntity.setParentId(null);
-                        menuEntity.setParentName(null);
-                    });
-                    return menuEntity;
-                })
-                .update(SysMenu::init)
-                .execute();
-        return sysMenu.isPresent() ? sysMenu.get().getId().getValue() : 0;
+        if (command.getParentId() != null) {
+            // TODO 检查父级菜单是否存在
+            SysMenu parentMenu = sysMenuRepository.findById(SysMenuId.of(command.getParentId()))
+                    .orElseThrow(() -> new NotFoundException("父级菜单不存在"));
+
+            menuEntity.setParentId(parentMenu.getId().id());
+            menuEntity.setParentName(parentMenu.getMenuName());
+        } else {
+            menuEntity.setParentId(null);
+            menuEntity.setParentName(null);
+        }
+        SysMenu savedMenu = sysMenuRepository.save(menuEntity);
+
+        // 创建并发布领域事件
+        MenuCreatedEvent event = new MenuCreatedEvent(savedMenu);
+        // TODO 发布事件到事件总线
+        sysMenuRepository.save(savedMenu);
+
+        eventPublisher.publishEvent(event);
+        return savedMenu.getId().id();
     }
 
     /**
      * update
      */
 
-    public void updateSysMenu(SysMenuUpdater updater) {
+    public void updateSysMenu(UpdateSysMenuCommand updater) {
         EntityOperations.doUpdate(sysMenuRepository)
                 .loadById(SysMenuId.of(updater.getId()))
                 .update(updater::updateSysMenu)
@@ -66,7 +72,7 @@ public class SysMenuService {
     public void validSysMenu(Long id) {
         EntityOperations.doUpdate(sysMenuRepository)
                 .loadById(SysMenuId.of(id))
-                .update(BaseAggregate::valid)
+                .update(SysMenu::valid)
                 .execute();
     }
 
@@ -74,7 +80,7 @@ public class SysMenuService {
     public void invalidSysMenu(Long id) {
         EntityOperations.doUpdate(sysMenuRepository)
                 .loadById(SysMenuId.of(id))
-                .update(BaseAggregate::invalid)
+                .update(SysMenu::invalid)
                 .execute();
     }
 
@@ -88,10 +94,6 @@ public class SysMenuService {
 
     private SysMenuVO entityToVO(SysMenu sysMenu) {
         // TODO 解决这里的问题
-        return null;
-    }
-
-    public List<SysMenuVO> treeMenu() {
         return null;
     }
 }

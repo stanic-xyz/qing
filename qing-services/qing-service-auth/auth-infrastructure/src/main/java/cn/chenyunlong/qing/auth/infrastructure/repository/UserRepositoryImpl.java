@@ -1,20 +1,30 @@
 package cn.chenyunlong.qing.auth.infrastructure.repository;
 
-import cn.chenyunlong.qing.auth.domain.user.QingUser;
-import cn.chenyunlong.qing.auth.domain.user.QingUserId;
+import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.repository.PermissionRepository;
+import cn.chenyunlong.qing.auth.domain.rbac.userrole.UserRole;
+import cn.chenyunlong.qing.auth.domain.rbac.userrole.UserRoleId;
+import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
+import cn.chenyunlong.qing.auth.domain.user.User;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.Email;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.Username;
 import cn.chenyunlong.qing.auth.infrastructure.converter.UserMapper;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.QingUserEntity;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.RolePermissionEntity;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.UserRoleEntity;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.RolePermissionJpaRepository;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.UserConnectionJpaRepository;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.UserJpaRepository;
+import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.UserRoleJpaRepository;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,57 +32,96 @@ public class UserRepositoryImpl implements UserRepository {
 
     private final UserJpaRepository userJpaRepository;
     private final UserConnectionJpaRepository userConnectionJpaRepository;
+    private final UserMapper userMapper;
+    private final UserRoleJpaRepository userRoleRepository;
+    private final RoleRepository roleRepository;
+    private final RolePermissionJpaRepository rolePermissionJpaRepository;
+    private final PermissionRepository permissionRepository;
 
     @Override
-    public QingUser findByUsername(String username) {
-        QingUserEntity byUsername = userJpaRepository.findByUsername(username);
-        if (byUsername == null) {
-            return null;
+    public Optional<User> findByUsername(Username username) {
+        QingUserEntity byUsername = userJpaRepository.findByUsername(username.value());
+        return Optional.ofNullable(byUsername).map(this::getFullUser);
+    }
+
+    private User getFullUser(QingUserEntity userEntity) {
+        User user = userMapper.entityToDomain(userEntity);
+
+        List<UserRoleEntity> userRoleEntities = userRoleRepository.findByUserIdAndRevokedFalse(userEntity.getId());
+        List<UserRole> userRoles = new ArrayList<>();
+
+        for (UserRoleEntity userRoleEntity : userRoleEntities) {
+            UserRole userRole = new UserRole();
+            userRole.setId(new UserRoleId(userRoleEntity.getId()));
+            userRole.setUserId(UserId.of(userRoleEntity.getUserId()));
+            userRole.setRoleId(RoleId.of(userRoleEntity.getRoleId()));
+            userRole.setRevoked(Boolean.TRUE.equals(userRoleEntity.getRevoked()));
+            roleRepository.findById(RoleId.of(userRoleEntity.getRoleId())).ifPresent(userRole::setRole);
+
+            List<Long> permissionIds = rolePermissionJpaRepository.findByRoleId(userRoleEntity.getRoleId())
+                    .stream()
+                    .map(RolePermissionEntity::getPermissionId)
+                    .distinct()
+                    .toList();
+
+            List<Permission> permissions = permissionRepository.findByIds(permissionIds);
+            userRole.setPermissions(new HashSet<>(permissions));
+
+            userRoles.add(userRole);
         }
-        return UserMapper.INSTANCE.entityToDomain(byUsername);
+
+        user.setRoles(userRoles);
+        return user;
     }
 
     @Override
-    public QingUser findUserByUserId(String userId) {
-        QingUserEntity userEntity = userJpaRepository.findUserByUserId(userId);
-        if (userEntity == null) {
-            return null;
-        }
-        return UserMapper.INSTANCE.entityToDomain(userEntity);
+    public Optional<User> findUserByUserId(Long uid) {
+        QingUserEntity userEntity = userJpaRepository.findUserByUserId(uid);
+        return Optional.ofNullable(userEntity).map(userMapper::entityToDomain);
     }
 
     @Override
-    public List<QingUser> findByUserNames(Set<String> nickNames) {
+    public List<User> findByUserNames(Set<Username> nickNames) {
         if (CollUtil.isEmpty(nickNames)) {
             return CollUtil.newArrayList();
         }
-        return userJpaRepository.findByNickNames(nickNames).stream().map(UserMapper.INSTANCE::entityToDomain).toList();
+        Set<String> usernames = nickNames.stream().map(Username::value).collect(Collectors.toSet());
+        return userJpaRepository.findByNickNames(usernames).stream().map(userMapper::entityToDomain).toList();
     }
 
     @Override
-    public QingUser findByEmail(String email) {
-        if (StrUtil.isBlank(email)) {
-            return null;
+    public Optional<User> findByEmail(Email email) {
+        if (email == null) {
+            return Optional.empty();
         }
-        QingUserEntity byEmail = userJpaRepository.findByEmail(email);
-        if (byEmail == null) {
-            return null;
-        }
-        return UserMapper.INSTANCE.entityToDomain(byEmail);
+        QingUserEntity byEmail = userJpaRepository.findByEmail(email.value());
+        return Optional.ofNullable(byEmail).map(userMapper::entityToDomain);
     }
 
     @Override
-    public boolean existsByUsername(String username) {
-        return userJpaRepository.existsByUsername(username);
+    public boolean existsByUsername(Username username) {
+        return userJpaRepository.existsByUsername(username.value());
     }
 
     @Override
-    public QingUser save(QingUser entity) {
-        return null;
+    public boolean existsByEmail(Email email) {
+        return userJpaRepository.existsByEmail(email.value());
     }
 
     @Override
-    public Optional<QingUser> findById(QingUserId id) {
-        return Optional.empty();
+    public User save(User entity) {
+        QingUserEntity userEntity = userMapper.toDataObject(entity);
+        userJpaRepository.save(userEntity);
+        return entity;
+    }
+
+    @Override
+    public Optional<User> findById(UserId id) {
+        return userJpaRepository.findById(id.id()).map(userMapper::entityToDomain);
+    }
+
+    @Override
+    public boolean existsByNicknames(String nickname) {
+        return userJpaRepository.existsByNickname(nickname);
     }
 }

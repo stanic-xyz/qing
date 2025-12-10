@@ -15,7 +15,7 @@ public interface AnimeApplicationMapper {
     AnimeDTO mapToDto(Anime anime);
 
     default Long map(AnimeId tagId) {
-        return tagId != null ? tagId.getValue() : null;
+        return tagId != null ? tagId.id() : null;
     }
 
     default AnimeId longToAnimeId(Long id) {

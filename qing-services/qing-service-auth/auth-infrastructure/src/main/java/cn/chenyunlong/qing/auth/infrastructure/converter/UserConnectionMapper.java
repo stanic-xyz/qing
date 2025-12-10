@@ -1,9 +1,9 @@
 package cn.chenyunlong.qing.auth.infrastructure.converter;
 
-import cn.chenyunlong.common.mapper.DateMapper;
-import cn.chenyunlong.common.mapper.GenericEnumMapper;
-import cn.chenyunlong.qing.auth.domain.user.QingConnectionData;
 import cn.chenyunlong.qing.auth.domain.user.UserConnection;
+import cn.chenyunlong.qing.auth.domain.user.UserConnectionData;
+import cn.chenyunlong.qing.auth.infrastructure.converter.base.DateMapper;
+import cn.chenyunlong.qing.auth.infrastructure.converter.base.GenericEnumMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -15,5 +15,5 @@ public interface UserConnectionMapper {
 
     UserConnectionMapper INSTANCE = Mappers.getMapper(UserConnectionMapper.class);
 
-    QingConnectionData entityToConnectionData(UserConnection connection);
+    UserConnectionData entityToConnectionData(UserConnection connection);
 }

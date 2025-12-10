@@ -19,7 +19,6 @@ import cn.chenyunlong.qing.anime.domain.anime.repository.TagRepository;
 import cn.chenyunlong.qing.anime.domain.services.FileStorageService;
 import cn.chenyunlong.qing.anime.domain.type.Type;
 import cn.chenyunlong.qing.anime.domain.type.repository.TypeRepository;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import cn.hutool.core.util.IdUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,7 +76,7 @@ public class AnimeDomainService {
                     animeCategory);
         })
                 .update(Anime::initialize)
-                .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId().getValue()))
+                .successHook(animeInfo -> log.info("动漫信息添加成功，动漫Id：{}", animeInfo.getId().id()))
                 .execute()
                 .orElseThrow(() -> new BusinessException(CodeEnum.CreateError, "创建动漫失败"));
     }
@@ -114,14 +113,14 @@ public class AnimeDomainService {
     public void validAnime(Long id) {
         doUpdate(animeRepository)
                 .loadById(AnimeId.of(id))
-                .update(BaseAggregate::valid)
+                .update(Anime::valid)
                 .execute();
     }
 
     public void invalidAnime(Long id) {
         doUpdate(animeRepository)
                 .loadById(AnimeId.of(id))
-                .update(BaseAggregate::invalid)
+                .update(Anime::invalid)
                 .execute();
     }
 }

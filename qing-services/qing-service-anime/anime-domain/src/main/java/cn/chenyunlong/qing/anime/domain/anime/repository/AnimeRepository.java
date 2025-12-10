@@ -52,7 +52,6 @@ public interface AnimeRepository extends BaseRepository<Anime, AnimeId> {
      * @return 保存后的动漫聚合根
      * @throws IllegalArgumentException 当动漫为null时
      */
-    @NonNull
     Anime save(@NonNull Anime anime);
 
     /**

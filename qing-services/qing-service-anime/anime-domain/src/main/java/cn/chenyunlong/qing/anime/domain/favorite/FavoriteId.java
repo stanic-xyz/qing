@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.anime.domain.favorite;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
-import lombok.Getter;
+import cn.chenyunlong.qing.domain.common.Identifiable;
 import lombok.NonNull;
 
 /**
@@ -16,24 +15,23 @@ import lombok.NonNull;
  *   <li>自验证：确保ID值的有效性</li>
  * </ul>
  *
+ * @param value 收藏的唯一标识符
  * @author chenyunlong
  * @since 1.0.0
  */
-@Getter
-public class FavoriteId extends EntityId<Long> {
+public record FavoriteId(Long value) implements Identifiable<Long> {
 
-    /**
-     * 收藏的唯一标识符
-     */
-    @NonNull
-    Long value;
+    @Override
+    public Long id() {
+        return value;
+    }
 
     /**
      * 私有构造函数，确保只能通过工厂方法创建
      *
      * @param value ID值
      */
-    private FavoriteId(@NonNull Long value) {
+    public FavoriteId(@NonNull Long value) {
         if (value <= 0) {
             throw new IllegalArgumentException("收藏ID必须为正数");
         }
@@ -62,10 +60,5 @@ public class FavoriteId extends EntityId<Long> {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("无效的收藏ID格式: " + id, e);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "FavoriteId(" + value + ")";
     }
 }

@@ -1,6 +1,5 @@
 package cn.chenyunlong.qing.auth.config;
 
-import cn.chenyunlong.qing.auth.application.utils.AuthJwtTokenUtil;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -23,16 +22,4 @@ public class TestConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * 提供JWT工具类
-     */
-    @Bean
-    @Primary
-    public AuthJwtTokenUtil authJwtTokenUtil() {
-        AuthJwtTokenUtil tokenUtil = new AuthJwtTokenUtil();
-        // 设置测试环境的JWT配置
-        tokenUtil.setSecret("test-secret-key-for-jwt-token-authentication-in-unit-tests");
-        tokenUtil.setExpiration(3600000L); // 1小时
-        return tokenUtil;
-    }
 }

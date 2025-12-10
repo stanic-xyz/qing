@@ -1,21 +1,5 @@
 package cn.chenyunlong.qing.anime.application.service.impl;
 
-import static org.mockito.Mockito.doAnswer;
-
-import java.util.Collection;
-import java.util.Optional;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.MimeTypeUtils;
-
 import cn.chenyunlong.qing.anime.application.service.AnimeDomainService;
 import cn.chenyunlong.qing.anime.domain.anime.Category;
 import cn.chenyunlong.qing.anime.domain.anime.dto.command.CreatorAnimeCommand;
@@ -34,6 +18,21 @@ import cn.chenyunlong.qing.anime.domain.type.TypeId;
 import cn.chenyunlong.qing.anime.domain.type.repository.TypeRepository;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Optional;
+
+import static org.mockito.Mockito.doAnswer;
 
 @ExtendWith(MockitoExtension.class)
 class AnimeApplicationServiceTest {
@@ -86,24 +85,22 @@ class AnimeApplicationServiceTest {
         doAnswer(invocation -> Optional.of(category)).when(categoryRepository).findById(Mockito.any());
         command.setTypeId(TypeId.of(1L));
 
-        Attachment attachment = new Attachment();
-        attachment.setId(AttachmentId.of(IdUtil.getSnowflakeNextId()));
-        attachment.setPath(
-                "https://i0.hdslb.com/bfs/bangumi/image/95d2881427fd43431f6a696a05623675ecdce9d9.jpg@450w_600h.webp");
-        attachment.setFileName("95d2881427fd43431f6a696a05623675ecdce9d9.jpg");
-        attachment.setFileSize(100000000000L);
-        attachment.setMimeType(MimeTypeUtils.APPLICATION_XML_VALUE);
+
+        Attachment attachment = Attachment.createAttachment(AttachmentId.of(IdUtil.getSnowflakeNextId()),
+                "95d2881427fd43431f6a696a05623675ecdce9d9.jpg",
+                1L,
+                "https://i0.hdslb.com/bfs/bangumi/image/95d2881427fd43431f6a696a05623675ecdce9d9.jpg@450w_600h.webp",
+                1L,
+                "contentHash", Instant.now()
+        );
         command.setCover("cover.avatar");
 
-        Type type = new Type();
-        type.setId(TypeId.of(IdUtil.getSnowflakeNextId()));
-        type.setName("TV动画");
+        Type type = Type.createType(TypeId.of(IdUtil.getSnowflakeNextId()), "TV动画", "TV动画就是TV动画！");
 
         doAnswer(invocation -> {
             log.info("查询：{}", invocation);
             return Optional.of(type);
         }).when(typeRepository).findById(Mockito.any());
-
         command.setCompanyId(1L);
 
         Anime anime = animeService.createAnime(command);

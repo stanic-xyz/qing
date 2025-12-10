@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.anime.domain.attachement;
 
-import cn.chenyunlong.qing.domain.common.EntityId;
+import cn.chenyunlong.qing.domain.common.Identifiable;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -11,7 +11,12 @@ import lombok.ToString;
  */
 @Getter
 @ToString
-public class AttachmentId extends EntityId<Long> {
+public class AttachmentId implements Identifiable<Long> {
+
+    @Override
+    public Long id() {
+        return value;
+    }
 
     private final Long value;
 

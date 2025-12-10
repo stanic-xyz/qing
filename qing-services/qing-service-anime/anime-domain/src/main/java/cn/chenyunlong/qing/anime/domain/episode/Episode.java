@@ -14,7 +14,7 @@
 package cn.chenyunlong.qing.anime.domain.episode;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +25,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Episode extends BaseAggregate<EpisodeId> {
+public class Episode extends BaseSimpleBusinessEntity<EpisodeId> {
 
     @FieldDesc(name = "名称")
     private String name;

@@ -1,19 +1,17 @@
 package cn.chenyunlong.qing.anime.application.service.impl;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import cn.chenyunlong.qing.anime.application.service.ITypeService;
 import cn.chenyunlong.qing.anime.domain.type.Type;
 import cn.chenyunlong.qing.anime.domain.type.TypeId;
 import cn.chenyunlong.qing.anime.domain.type.dto.creator.TypeCreator;
 import cn.chenyunlong.qing.anime.domain.type.repository.TypeRepository;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -29,7 +27,7 @@ public class TypeServiceImpl implements ITypeService {
                 .create(() -> dtoToEntity(creator))
                 .update(Type::init)
                 .execute();
-        return type.isPresent() ? type.get().getId().getValue() : 0;
+        return type.isPresent() ? type.get().getId().id() : 0;
     }
 
     private Type dtoToEntity(TypeCreator creator) {
@@ -43,7 +41,7 @@ public class TypeServiceImpl implements ITypeService {
     public void validType(Long id) {
         EntityOperations.doUpdate(typeRepository)
                 .loadById(TypeId.of(id))
-                .update(BaseAggregate::valid)
+                .update(Type::valid)
                 .execute();
     }
 
@@ -51,7 +49,7 @@ public class TypeServiceImpl implements ITypeService {
     public void invalidType(Long id) {
         EntityOperations.doUpdate(typeRepository)
                 .loadById(TypeId.of(id))
-                .update(BaseAggregate::invalid)
+                .update(Type::invalid)
                 .execute();
     }
 }

@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
  * @since 2024-12-30
  */
 @Slf4j
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class AnimeRepositoryJpaImpl implements AnimeRepository {
 
     private final AnimeJpaRepository animeJpaRepository;
@@ -38,7 +38,7 @@ public class AnimeRepositoryJpaImpl implements AnimeRepository {
     public Optional<Anime> findById(AnimeId animeId) {
         log.debug("根据ID查找动漫，ID: {}", animeId);
 
-        return animeJpaRepository.findById(animeId.getValue())
+        return animeJpaRepository.findById(animeId.id())
                 .filter(entity -> !entity.getIsDeleted())
                 .map(mapper::toDomain);
     }
@@ -67,7 +67,7 @@ public class AnimeRepositoryJpaImpl implements AnimeRepository {
         log.debug("根据AnimeId列表批量查找动漫，ID列表: {}", animeIds);
 
         List<Long> ids = animeIds.stream()
-                .map(AnimeId::getValue)
+                .map(AnimeId::id)
                 .collect(Collectors.toList());
         return findByIds(ids);
     }
@@ -78,7 +78,7 @@ public class AnimeRepositoryJpaImpl implements AnimeRepository {
     public List<Anime> findByCategory(@NonNull AnimeCategory category) {
         log.debug("根据分类查找动漫，分类: {}", category);
 
-        return animeJpaRepository.findByCategoryId(category.id().getValue())
+        return animeJpaRepository.findByCategoryId(category.id().id())
                 .stream()
                 .filter(entity -> !entity.getIsDeleted())
                 .map(mapper::toDomain)
@@ -126,7 +126,6 @@ public class AnimeRepositoryJpaImpl implements AnimeRepository {
     @Override
     public Anime save(@NonNull Anime anime) {
         log.debug("保存动漫，ID: {}", anime.getId());
-
         AnimeEntity entity = mapper.toEntity(anime);
         AnimeEntity savedEntity = animeJpaRepository.save(entity);
         return mapper.toDomain(savedEntity);
@@ -150,13 +149,13 @@ public class AnimeRepositoryJpaImpl implements AnimeRepository {
     @Transactional(readOnly = true)
     public long countByCategory(@NonNull AnimeCategory category) {
         log.debug("统计指定分类的动漫数量，分类: {}", category);
-        return animeJpaRepository.countByTypeIdAndIsDeletedFalse(category.id().getValue());
+        return animeJpaRepository.countByTypeIdAndIsDeletedFalse(category.id().id());
     }
 
     @Override
     public void deleteById(@NonNull AnimeId animeId) {
         log.debug("删除动漫，ID: {}", animeId);
-        animeJpaRepository.deleteById(animeId.getValue());
+        animeJpaRepository.deleteById(animeId.id());
     }
 
     @Override
@@ -164,7 +163,7 @@ public class AnimeRepositoryJpaImpl implements AnimeRepository {
         log.debug("批量删除动漫，ID列表: {}", animeIds);
 
         List<Long> ids = animeIds.stream()
-                .map(AnimeId::getValue)
+                .map(AnimeId::id)
                 .collect(Collectors.toList());
         animeJpaRepository.deleteAllById(ids);
     }
@@ -177,7 +176,7 @@ public class AnimeRepositoryJpaImpl implements AnimeRepository {
     @Override
     public boolean existsByNameExcludeId(String cleanName, @NonNull AnimeId animeId) {
         log.debug("检查动漫名称是否存在（排除指定ID），名称: {}, 排除ID: {}", cleanName, animeId);
-        return animeJpaRepository.existsByNameAndIdNotAndIsDeletedFalse(cleanName, animeId.getValue());
+        return animeJpaRepository.existsByNameAndIdNotAndIsDeletedFalse(cleanName, animeId.id());
     }
 
     @Override

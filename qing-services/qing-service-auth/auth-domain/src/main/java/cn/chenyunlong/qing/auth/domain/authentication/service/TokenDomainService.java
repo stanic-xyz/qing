@@ -14,19 +14,16 @@
 package cn.chenyunlong.qing.auth.domain.authentication.service;
 
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
-import cn.chenyunlong.qing.auth.domain.authentication.TokenId;
-import cn.chenyunlong.qing.auth.domain.authentication.TokenType;
 import cn.chenyunlong.qing.auth.domain.authentication.exception.AuthenticationException;
+import cn.chenyunlong.qing.auth.domain.authentication.repository.TokenCacheRepository;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.TokenRepository;
-import cn.chenyunlong.qing.auth.domain.user.QingUserId;
-import cn.chenyunlong.qing.domain.common.AggregateId;
-import cn.hutool.core.util.IdUtil;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 令牌领域服务
@@ -39,28 +36,7 @@ import java.util.Optional;
 public class TokenDomainService {
 
     private final TokenRepository tokenRepository;
-
-    /**
-     * 创建JWT令牌
-     *
-     * @param userId     用户ID
-     * @param tokenValue JWT令牌值
-     * @param expiresAt  过期时间
-     * @return 创建的令牌
-     */
-    public AuthenticationToken createJwtToken(QingUserId userId, String tokenValue, LocalDateTime expiresAt) {
-        // 创建令牌实体
-        AuthenticationToken token = AuthenticationToken.create(
-                TokenId.of(IdUtil.getSnowflakeNextId()),
-                tokenValue,
-                TokenType.JWT,
-                userId,
-                expiresAt
-        );
-
-        // 保存令牌
-        return tokenRepository.save(token);
-    }
+    private final TokenCacheRepository tokenCacheRepository;
 
     /**
      * 验证令牌
@@ -104,6 +80,9 @@ public class TokenDomainService {
             throw new AuthenticationException("令牌不存在");
         }
 
+        // token过期
+        tokenCacheRepository.addBlacklist(tokenValue, TimeUnit.DAYS.toMillis(30));
+
         AuthenticationToken token = tokenOpt.get();
 
         // 撤销令牌
@@ -118,7 +97,7 @@ public class TokenDomainService {
      * @param reason 撤销原因
      * @return 撤销的令牌数量
      */
-    public int revokeAllUserTokens(AggregateId userId, String reason) {
+    public int revokeAllUserTokens(UserId userId, String reason) {
         return tokenRepository.revokeAllTokensByUserId(userId, reason);
     }
 
@@ -128,7 +107,7 @@ public class TokenDomainService {
      * @param userId 用户ID
      * @return 令牌列表
      */
-    public List<AuthenticationToken> getUserValidTokens(AggregateId userId) {
+    public List<AuthenticationToken> getUserValidTokens(UserId userId) {
         return tokenRepository.findValidTokensByUserId(userId);
     }
 }
