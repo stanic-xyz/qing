@@ -1,7 +1,7 @@
 package cn.chenyunlong.codegen.example.domain;
 
 import cn.chenyunlong.codegen.annotation.*;
-import cn.chenyunlong.qing.domain.common.BaseAggregate;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +23,7 @@ import lombok.Setter;
 @GenUpdateRequest
 @GenQueryRequest
 @GenResponse
-public class Order extends BaseAggregate {
+public class Order extends BaseSimpleBusinessEntity<OrderId> {
 
     /**
      * 订单号
