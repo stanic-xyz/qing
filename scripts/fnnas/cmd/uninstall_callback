@@ -1,0 +1,26 @@
+#!/bin/bash
+
+### This script is called after the user uninstalls the application.
+
+#!/bin/bash
+
+# 获取用户在向导中的选择
+ADMIN_USERNAME="$wizard_admin_username"
+ADMIN_PASSWORD="$wizard_admin_password"
+DATABASE_TYPE="$wizard_database_type"
+APP_PORT="$wizard_app_port"
+
+echo "正在卸载服务！"
+
+echo "管理员用户名: $ADMIN_USERNAME"
+echo "数据库类型: $DATABASE_TYPE"
+echo "应用端口: $APP_PORT"
+
+# 根据用户选择执行相应逻辑
+if [ "$DATABASE_TYPE" = "mysql" ]; then
+    echo "配置MySQL数据库..."
+else
+    echo "使用SQLite数据库..."
+fi
+
+exit 0
