@@ -60,7 +60,7 @@ sidebar_position: 4
      datasource:
        url: jdbc:mysql://localhost:3306/qing?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
        username: root
-       password: your_password
+       rawPassword: your_password
    ```
 
 3. **创建数据库**：
@@ -99,7 +99,7 @@ sidebar_position: 4
      redis:
        host: localhost
        port: 6379
-       password: # 如果设置了密码
+       rawPassword: # 如果设置了密码
        database: 0
    ```
 

@@ -424,7 +424,7 @@ CREATE TABLE anime_category (
 CREATE TABLE user (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL UNIQUE COMMENT '用户名',
-    password VARCHAR(255) NOT NULL COMMENT '密码',
+    rawPassword VARCHAR(255) NOT NULL COMMENT '密码',
     email VARCHAR(255) NOT NULL UNIQUE COMMENT '邮箱',
     nickname VARCHAR(100) COMMENT '昵称',
     avatar VARCHAR(500) COMMENT '头像',
@@ -603,7 +603,7 @@ spring:
     host: localhost
     port: 5672
     username: guest
-    password: guest
+    rawPassword: guest
     virtual-host: /
     publisher-confirms: true
     publisher-returns: true

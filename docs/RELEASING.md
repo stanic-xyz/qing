@@ -32,7 +32,7 @@
         <server>
             <id>sonatype-nexus-staging</id>
             <username>your-nexus-username</username>
-            <password>your-nexus-password</password>
+            <rawPassword>your-nexus-rawPassword</rawPassword>
         </server>
     </servers>
 </settings>

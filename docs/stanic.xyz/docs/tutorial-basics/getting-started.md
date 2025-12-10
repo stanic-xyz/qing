@@ -64,7 +64,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/qing_main?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: your_username
-    password: your_password
+    rawPassword: your_password
     driver-class-name: com.mysql.cj.jdbc.Driver
 ```
 
@@ -77,7 +77,7 @@ spring:
   redis:
     host: localhost
     port: 6379
-    password: # 如果有密码请填写
+    rawPassword: # 如果有密码请填写
     database: 0
 ```
 

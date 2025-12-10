@@ -698,11 +698,11 @@ public class UserVO {
     private String username;
     
     @JsonIgnore
-    private String password;
+    private String rawPassword;
     
     @Override
     public String toString() {
-        return "UserVO{username='" + username + "', password='***'}";
+        return "UserVO{username='" + username + "', rawPassword='***'}";
     }
 }
 ```
@@ -825,7 +825,7 @@ jobs:
     
     - name: Push to registry
       run: |
-        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --rawPassword-stdin
         docker push qing/eureka-server:${{ github.sha }}
         docker push qing/gateway:${{ github.sha }}
 ```

@@ -182,13 +182,13 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/qing_main?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: qing
-    password: your_password
+    rawPassword: your_password
     driver-class-name: com.mysql.cj.jdbc.Driver
   
   redis:
     host: localhost
     port: 6379
-    password: your_redis_password
+    rawPassword: your_redis_password
     database: 0
 
 eureka:

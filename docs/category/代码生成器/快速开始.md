@@ -47,7 +47,7 @@ public class TestDomain extends BaseEntity {
 
   private String username;
 
-  private String password;
+  private String rawPassword;
 }
 ```
 

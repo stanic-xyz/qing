@@ -53,7 +53,7 @@ Content-Type: application/json
 
 {
   "username": "user@example.com",
-  "password": "password123"
+  "rawPassword": "password123"
 }
 ```
 
@@ -418,7 +418,7 @@ Content-Type: application/json
 ```json
 {
   "username": "newuser@example.com",
-  "password": "password123",
+  "rawPassword": "password123",
   "confirmPassword": "password123",
   "nickname": "新用户",
   "email": "newuser@example.com",
@@ -428,13 +428,13 @@ Content-Type: application/json
 
 **字段验证规则**：
 
-| 字段       | 规则            |
-|----------|---------------|
-| username | 邮箱格式，唯一       |
-| password | 8-20位，包含字母和数字 |
-| nickname | 2-20位字符       |
-| email    | 邮箱格式，唯一       |
-| phone    | 11位手机号        |
+| 字段          | 规则            |
+|-------------|---------------|
+| username    | 邮箱格式，唯一       |
+| rawPassword | 8-20位，包含字母和数字 |
+| nickname    | 2-20位字符       |
+| email       | 邮箱格式，唯一       |
+| phone       | 11位手机号        |
 
 **响应示例**：
 
@@ -505,7 +505,7 @@ Authorization: Bearer your-token
 #### 修改密码
 
 ```http
-PUT /api/v1/auth/password
+PUT /api/v1/auth/rawPassword
 Content-Type: application/json
 Authorization: Bearer your-token
 ```
@@ -822,9 +822,9 @@ class QingApiClient:
         response.raise_for_status()
         return response.json()
     
-    def login(self, username: str, password: str) -> Dict:
+    def login(self, username: str, rawPassword: str) -> Dict:
         """用户登录"""
-        login_data = {"username": username, "password": password}
+        login_data = {"username": username, "rawPassword": rawPassword}
         response = self.session.post(
             f"{self.base_url}/auth/login",
             json=login_data,

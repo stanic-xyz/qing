@@ -381,7 +381,7 @@ if (!pm.environment.get("token")) {
             mode: 'raw',
             raw: JSON.stringify({
                 username: "admin",
-                password: "admin123"
+                rawPassword: "admin123"
             })
         }
     }, function (err, response) {
@@ -575,7 +575,7 @@ docker run -d --name sonarqube -p 9000:9000 sonarqube:latest
   -Dsonar.projectKey=qing \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.login=admin \
-  -Dsonar.password=admin
+  -Dsonar.rawPassword=admin
 ```
 
 ### 2. SpotBugs

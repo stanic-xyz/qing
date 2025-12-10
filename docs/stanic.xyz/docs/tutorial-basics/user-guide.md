@@ -168,7 +168,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/qing_main?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:password}
+    rawPassword: ${DB_PASSWORD:rawPassword}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -186,7 +186,7 @@ spring:
   redis:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:}
+    rawPassword: ${REDIS_PASSWORD:}
     database: 0
     timeout: 2000ms
     lettuce:
@@ -284,7 +284,7 @@ curl -X POST "http://localhost:8080/auth/api/v1/login" \
   -H "Content-Type: application/json" \
   -d '{
     "username": "user@example.com",
-    "password": "password123"
+    "rawPassword": "password123"
   }'
 ```
 
