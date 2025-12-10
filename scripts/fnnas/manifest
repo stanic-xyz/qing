@@ -1,0 +1,15 @@
+appname=fnnas.qing
+version=0.0.1
+desc=这里是我的自建应用
+arch=x86_64
+display_name=Qing
+maintainer=Stan
+maintainer_url=https://dev.stanic.xyz
+distributor=Stan
+distributor_url=https://dev.stanic.xyz
+desktop_uidir=ui
+desktop_applaunchname=fnnas.qing.Application
+source=thirdparty
+install_dep_apps=java-21-openjdk:redis
+ctl_stop=false
+os_min_version=0.9.0
