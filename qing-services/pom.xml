@@ -13,17 +13,6 @@
     <packaging>pom</packaging>
     <artifactId>qing-services</artifactId>
 
-    <modules>
-        <module>qing-service-aggregate-interface</module>
-        <module>qing-service-anime</module>
-        <module>qing-service-auth</module>
-        <module>qing-service-eureka</module>
-        <module>qing-service-config</module>
-        <module>qing-service-gateway</module>
-        <module>qing-service-stream</module>
-        <module>qing-service-sa-token</module>
-    </modules>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -35,4 +24,15 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <modules>
+        <module>qing-service-aggregate-interface</module>
+        <module>qing-service-anime</module>
+        <module>qing-service-auth</module>
+        <module>qing-service-eureka</module>
+        <module>qing-service-config</module>
+        <module>qing-service-gateway</module>
+        <module>qing-service-stream</module>
+        <module>qing-service-sa-token</module>
+    </modules>
 </project>

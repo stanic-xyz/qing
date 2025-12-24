@@ -19,13 +19,12 @@
 
     <parent>
         <groupId>cn.chenyunlong</groupId>
-        <artifactId>qing-parent</artifactId>
+        <artifactId>qing-support</artifactId>
         <version>0.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>qing-starters</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -39,4 +38,16 @@
         <module>qing-dingtalk-spring-boot-starter</module>
         <module>qing-registry-spring-boot-starter</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

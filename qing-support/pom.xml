@@ -19,7 +19,6 @@
     </properties>
 
     <modules>
-        <module>qing-bom</module>
         <module>qing-codegen-plugin</module>
         <module>qing-commons</module>
         <module>qing-domain-common</module>

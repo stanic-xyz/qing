@@ -22,22 +22,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.3-SNAPSHOT</version>
 
     <artifactId>qing-oss-spring-boot-starter</artifactId>
     <name>qing-oss-spring-boot-starter</name>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -50,15 +37,6 @@
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>1.12.267</version>
         </dependency>
-        <dependency>
-            <groupId>com.qcloud</groupId>
-            <artifactId>cos_api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.qcloud</groupId>
-            <artifactId>cos-sts_api</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

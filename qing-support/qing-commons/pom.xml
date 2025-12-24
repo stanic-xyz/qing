@@ -18,12 +18,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.chenyunlong</groupId>
-        <artifactId>qing-parent</artifactId>
+        <artifactId>qing-support</artifactId>
         <version>0.0.3-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>qing-commons</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -52,9 +51,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <!-- fastjson依赖已移除，未在此模块中使用 -->
-        <!-- hutool-all依赖已移除，未在此模块中使用 -->
-
         <!-- 添加实际使用的依赖 -->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>

@@ -19,18 +19,6 @@
         <kotlin.version>1.9.23</kotlin.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>io.seata</groupId>

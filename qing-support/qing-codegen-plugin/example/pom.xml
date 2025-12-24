@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
+        <artifactId>qing-codegen-plugin</artifactId>
         <groupId>cn.chenyunlong</groupId>
-        <artifactId>qing-parent</artifactId>
         <version>0.0.3-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>qing-codegen-example</artifactId>

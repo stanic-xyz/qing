@@ -25,8 +25,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>qing-bom</module>
         <module>qing-services</module>
         <module>qing-support</module>
+        <module>qing-frontend</module>
     </modules>
 
     <url>https://www.chenyunlong.cn</url>
@@ -98,129 +100,6 @@
         <system>Gitee Issues</system>
         <url>https://github.com/stanic-xyz/qing/issues</url>
     </issueManagement>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.yomahub</groupId>
-                <artifactId>tlog-all-spring-boot-starter</artifactId>
-                <version>1.5.2</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-camunda-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.5.9</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2025.0.1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.statemachine</groupId>
-                <artifactId>spring-statemachine-bom</artifactId>
-                <version>${spring-statemachine.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.auto.service</groupId>
-                <artifactId>auto-service-annotations</artifactId>
-                <version>${auto.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.auto.service</groupId>
-                <artifactId>auto-service</artifactId>
-                <version>${auto.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.testing.compile</groupId>
-                <artifactId>compile-testing</artifactId>
-                <version>${google-testing.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.querydsl</groupId>
-                <artifactId>querydsl-jpa</artifactId>
-                <version>${querydsl.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-core</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.vavr</groupId>
-                <artifactId>vavr</artifactId>
-                <version>${vavr.version}</version>
-            </dependency>
-            <!-- Dependencies managed by qing-bom are removed from here -->
-            <!-- 第三方库依赖 -->
-            <dependency>
-                <groupId>com.qcloud</groupId>
-                <artifactId>cos_api</artifactId>
-                <version>5.6.155</version>
-            </dependency>
-            <dependency>
-                <groupId>com.qcloud</groupId>
-                <artifactId>cos-sts_api</artifactId>
-                <version>3.1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.yomahub</groupId>
-                <artifactId>liteflow-spring-boot-starter</artifactId>
-                <version>${liteflow.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>42.7.0</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.authing</groupId>
-                <artifactId>authing-java-sdk</artifactId>
-                <version>3.1.9</version>
-            </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>2.2.220</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.plugin</groupId>
-                <artifactId>spring-plugin-core</artifactId>
-                <version>3.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>0.9.1</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.chenyunlong</groupId>
-                <artifactId>qing-bom</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <reporting>
         <plugins>

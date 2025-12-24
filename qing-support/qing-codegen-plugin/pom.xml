@@ -17,7 +17,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>cn.chenyunlong</groupId>
-        <artifactId>qing-parent</artifactId>
+        <artifactId>qing-support</artifactId>
         <version>0.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -25,6 +25,18 @@
 
     <artifactId>qing-codegen-plugin</artifactId>
     <packaging>pom</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <modules>
         <module>qing-codegen-api</module>

@@ -17,7 +17,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>cn.chenyunlong</groupId>
-        <artifactId>qing-parent</artifactId>
+        <artifactId>qing-services</artifactId>
         <version>0.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
