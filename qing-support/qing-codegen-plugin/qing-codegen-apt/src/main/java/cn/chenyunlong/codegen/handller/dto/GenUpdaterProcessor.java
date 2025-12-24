@@ -71,8 +71,8 @@ public class GenUpdaterProcessor extends AbstractCodeGenProcessor {
             TypeSpec.classBuilder(sourceClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(schemaAnnotation)
-                .addJavadoc("$L更新数据传输对象\n\n@author 代码生成器\n@since $L\n",
-                    typeElement.getSimpleName(),
+                    .addJavadoc("$L更新数据传输对象\n\n@author 代码生成器\n@since $L\n",
+                            typeElement.getSimpleName(),
                     java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         if (useLombok) {
