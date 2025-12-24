@@ -25,20 +25,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>qing-bom</module>
-        <module>qing-archetypes</module>
-        <module>qing-application</module>
-        <module>qing-commons</module>
-        <module>qing-config-server</module>
-        <module>qing-eureka-server</module>
-        <module>qing-service-cloud-gateway</module>
-        <module>qing-bus-server</module>
-        <module>qing-codegen-plugin</module>
-        <module>qing-starters</module>
         <module>qing-services</module>
-        <module>qing-domain-common</module>
-        <module>qing-infrastructure</module>
-        <module>qing-infrastructure-data-jpa</module>
+        <module>qing-support</module>
     </modules>
 
     <url>https://www.chenyunlong.cn</url>
@@ -95,12 +83,12 @@
         <fastjson.version>2.0.21</fastjson.version>
         <auto.version>1.1.1</auto.version>
         <liteflow.version>2.12.2.3</liteflow.version>
-        <spring-boot.version>3.3.5</spring-boot.version>
-        <spring-boot-admin.version>3.3.4</spring-boot-admin.version>
-        <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <spring-boot.version>3.5.9</spring-boot.version>
+        <spring-cloud.version>2025.0.1</spring-cloud.version>
         <spring-statemachine.version>3.2.0</spring-statemachine.version>
         <lego.version>0.1.23</lego.version>
-        <knife4j.version>4.5.0</knife4j.version>
+        <knife4j.version>4.4.0</knife4j.version>
+        <springdoc.version>2.5.0</springdoc.version>
         <querydsl.version>5.0.0</querydsl.version>
         <jimmer.version>0.9.69</jimmer.version>
         <google-testing.version>0.21.0</google-testing.version>
@@ -126,21 +114,14 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>3.5.9</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-dependencies</artifactId>
-                <version>${spring-boot-admin.version}</version>
+                <version>2025.0.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -314,6 +295,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.3.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
