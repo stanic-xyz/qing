@@ -1,0 +1,15 @@
+spring:
+  security:
+    user:
+      name: user
+      password: 123456
+  data:
+    redis:
+      database: 0
+      port: 6379
+      host: 192.168.10.104
+      password:
+  cloud:
+    consul:
+      discovery:
+        acl-token: 12

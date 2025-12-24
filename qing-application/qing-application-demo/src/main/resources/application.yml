@@ -1,5 +1,0 @@
-server:
-  port: 8896
-spring:
-  application:
-    name: qing-service-demo

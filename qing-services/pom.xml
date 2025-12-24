@@ -14,12 +14,14 @@
     <artifactId>qing-services</artifactId>
 
     <modules>
-        <module>qing-service-sa-token</module>
+        <module>qing-service-aggregate-interface</module>
         <module>qing-service-anime</module>
         <module>qing-service-auth</module>
-        <module>qing-service-aggregate-interface</module>
-        <module>qing-service-registry</module>
+        <module>qing-service-eureka</module>
         <module>qing-service-config</module>
+        <module>qing-service-gateway</module>
+        <module>qing-service-stream</module>
+        <module>qing-service-sa-token</module>
     </modules>
 
     <dependencyManagement>
@@ -28,8 +30,9 @@
                 <groupId>cn.chenyunlong</groupId>
                 <artifactId>qing-bom</artifactId>
                 <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 </project>

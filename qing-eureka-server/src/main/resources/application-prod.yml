@@ -1,8 +1,0 @@
-spring:
-  cloud:
-    config:
-      server:
-        git:
-          uri: https://github.com/stanic-xyz/qing-config.git
-          username: ${GIT_USER}
-          password: ${GIT_PASS}
