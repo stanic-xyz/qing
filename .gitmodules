@@ -1,3 +1,3 @@
-[submodule "qing-web-anime/qing-frontend"]
+[submodule "qing-frontend/qing-frontend"]
 	path = qing-web-anime/qing-frontend
 	url = https://github.com/stanic-xyz/qing-frontend.git
