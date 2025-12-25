@@ -77,8 +77,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
-        <!-- jackson-databind依赖已移除，未在此模块中使用 -->
-        <!-- jjwt依赖已移除，未在此模块中使用 -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>

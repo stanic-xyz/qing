@@ -78,7 +78,7 @@
         <zhangli.common.version>1.0.0.RELEASE</zhangli.common.version>
         <guava.version>33.0.0-jre</guava.version>
         <lombok.version>1.18.34</lombok.version>
-        <hutool.version>5.8.36</hutool.version>
+        <hutool.version>5.8.40</hutool.version>
         <authing.version>3.0.14</authing.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <vavr.version>0.10.4</vavr.version>

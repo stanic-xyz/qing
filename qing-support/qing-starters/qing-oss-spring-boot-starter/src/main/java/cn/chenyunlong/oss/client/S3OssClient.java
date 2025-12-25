@@ -59,7 +59,7 @@ public class S3OssClient implements OssClient {
         objectMetadata.setContentLength(size);
         objectMetadata.setContentType(contextType);
         PutObjectRequest putObjectRequest =
-            new PutObjectRequest(bucketName, objectName, stream, objectMetadata);
+                new PutObjectRequest(bucketName, objectName, stream, objectMetadata);
         putObjectRequest.getRequestClientOptions().setReadLimit(Long.valueOf(size).intValue() + 1);
         return amazonS3.putObject(putObjectRequest);
     }

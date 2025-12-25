@@ -15,16 +15,15 @@ package cn.chenyunlong.oss.controller;
 
 import cn.chenyunlong.common.model.ApiResult;
 import cn.chenyunlong.common.model.JsonResult;
+import cn.chenyunlong.common.model.Response;
 import cn.chenyunlong.oss.config.OssProperties;
 import cn.chenyunlong.oss.controller.model.TempSecretResponse;
-import com.qcloud.cos.COSClient;
-import com.qcloud.cos.exception.CosClientException;
-import com.qcloud.cos.model.Bucket;
-import com.qcloud.cos.model.COSObjectSummary;
-import com.qcloud.cos.model.ListObjectsRequest;
-import com.qcloud.cos.model.ObjectListing;
-import com.tencent.cloud.CosStsClient;
-import com.tencent.cloud.Response;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +52,7 @@ import java.util.TreeMap;
 public class FileController {
 
     private final OssProperties ossProperties;
-    private final COSClient cosClient;
+    private final AmazonS3 cosClient;
 
     @Operation(summary = "获取存储桶列表")
     @GetMapping("bucket/list")
@@ -99,44 +98,44 @@ public class FileController {
         // 密钥的权限列表。必须在这里指定本次临时密钥所需要的权限。
         // 简单上传、表单上传和分块上传需要以下的权限，其他权限列表请参见 https://cloud.tencent.com/document/product/436/31923
         String[] allowActions = new String[]{
-            // 简单上传
-            "name/cos:PutObject",
-            // 表单上传、小程序上传
-            "name/cos:PostObject",
-            // 分块上传
-            "name/cos:InitiateMultipartUpload", "name/cos:ListMultipartUploads",
-            "name/cos:ListParts", "name/cos:UploadPart", "name/cos:CompleteMultipartUpload"};
+                // 简单上传
+                "name/cos:PutObject",
+                // 表单上传、小程序上传
+                "name/cos:PostObject",
+                // 分块上传
+                "name/cos:InitiateMultipartUpload", "name/cos:ListMultipartUploads",
+                "name/cos:ListParts", "name/cos:UploadPart", "name/cos:CompleteMultipartUpload"};
         config.put("allowActions", allowActions);
         // 设置condition（如有需要）
         //# 临时密钥生效条件，关于condition的详细设置规则和COS支持的condition类型可以参考 https://cloud.tencent.com/document/product/436/71307
         final String raw_policy = """
-            {
-              "version":"2.0",
-              "statement":[
                 {
-                  "effect":"allow",
-                  "action":[
-                      "name/cos:PutObject",
-                      "name/cos:PostObject",
-                      "name/cos:InitiateMultipartUpload",
-                      "name/cos:ListMultipartUploads",
-                      "name/cos:ListParts",
-                      "name/cos:UploadPart",
-                      "name/cos:CompleteMultipartUpload"
-                    ],
-                  "resource":[
-                      "*"
-                  ],
-                  "condition": {}
+                  "version":"2.0",
+                  "statement":[
+                    {
+                      "effect":"allow",
+                      "action":[
+                          "name/cos:PutObject",
+                          "name/cos:PostObject",
+                          "name/cos:InitiateMultipartUpload",
+                          "name/cos:ListMultipartUploads",
+                          "name/cos:ListParts",
+                          "name/cos:UploadPart",
+                          "name/cos:CompleteMultipartUpload"
+                        ],
+                      "resource":[
+                          "*"
+                      ],
+                      "condition": {}
+                    }
+                  ]
                 }
-              ]
-            }
-            """;
+                """;
 
         config.put("policy", raw_policy);
-        Response response = CosStsClient.getCredential(config);
-        TempSecretResponse tempSecretResponse = getTempSecretResponse(response);
-        return JsonResult.success(tempSecretResponse);
+        //        cosClient.
+        //        TempSecretResponse tempSecretResponse = getTempSecretResponse(response);
+        return JsonResult.success(null);
     }
 
     /**
@@ -144,13 +143,13 @@ public class FileController {
      */
     private TempSecretResponse getTempSecretResponse(Response response) {
         TempSecretResponse tempSecretResponse = new TempSecretResponse();
-        tempSecretResponse.setTmpSecretId(response.credentials.tmpSecretId);
-        tempSecretResponse.setTmpSecretKey(response.credentials.tmpSecretKey);
-        tempSecretResponse.setSessionToken(response.credentials.sessionToken);
-        tempSecretResponse.setStartTime(response.startTime);
-        tempSecretResponse.setExpiredTime(response.expiredTime);
-        tempSecretResponse.setBucketName(ossProperties.getBucket());
-        tempSecretResponse.setRegion(ossProperties.getRegion());
+        //        tempSecretResponse.setTmpSecretId(response.credentials.tmpSecretId);
+        //        tempSecretResponse.setTmpSecretKey(response.credentials.tmpSecretKey);
+        //        tempSecretResponse.setSessionToken(response.credentials.sessionToken);
+        //        tempSecretResponse.setStartTime(response.startTime);
+        //        tempSecretResponse.setExpiredTime(response.expiredTime);
+        //        tempSecretResponse.setBucketName(ossProperties.getBucket());
+        //        tempSecretResponse.setRegion(ossProperties.getRegion());
         return tempSecretResponse;
     }
 
@@ -159,14 +158,12 @@ public class FileController {
      */
     @Operation(summary = "上传文件到腾讯对象存储", description = "上传文件到腾讯对象存储")
     @PostMapping("cos/upload")
-    public ApiResult<List<COSObjectSummary>> cosUpload() {
+    public ApiResult<List<S3ObjectSummary>> cosUpload() {
         List<Bucket> buckets = cosClient.listBuckets();
         for (Bucket bucket : buckets) {
             String bucketName = bucket.getName();
-            String bucketLocation = bucket.getLocation();
 
             log.info("存储桶名称：{}", bucketName);
-            log.info("存储桶地址：{}", bucketLocation);
         }
 
 
@@ -180,11 +177,11 @@ public class FileController {
         // 设置最大遍历出多少个对象, 一次 listObject 最大支持1000
         listObjectsRequest.setMaxKeys(1000);
         ObjectListing objectListing;
-        List<COSObjectSummary> cosObjects = new LinkedList<>();
+        List<S3ObjectSummary> cosObjects = new LinkedList<>();
         do {
             try {
                 objectListing = cosClient.listObjects(listObjectsRequest);
-            } catch (CosClientException e) {
+            } catch (AmazonServiceException e) {
                 log.error("获取OSS文件列表失败：{}", e.getMessage(), e);
                 return ApiResult.fail(e.getMessage());
             }
@@ -193,8 +190,8 @@ public class FileController {
             System.out.println("commonPrefix = " + commonPrefix);
 
             // object summary表示所有列出的object列表
-            List<COSObjectSummary> cosObjectSummaries = objectListing.getObjectSummaries();
-            for (COSObjectSummary cosObjectSummary : cosObjectSummaries) {
+            List<S3ObjectSummary> cosObjectSummaries = objectListing.getObjectSummaries();
+            for (S3ObjectSummary cosObjectSummary : cosObjectSummaries) {
                 // 文件的路径key
                 String key = cosObjectSummary.getKey();
                 System.out.println("key = " + key);
