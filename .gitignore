@@ -50,4 +50,5 @@ changelog.md
 application-local.yml
 # 避免上传打包结果
 *.jar
+# 代码生成器单元测试
 !lib/swagger-annotations-2.2.8.jar

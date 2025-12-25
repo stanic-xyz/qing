@@ -36,7 +36,6 @@ public abstract class BaseJpaEntity extends BaseEntity {
      * 实体唯一标识符
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
