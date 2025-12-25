@@ -46,14 +46,8 @@ jobs:
           filters: |
             anime:
               - 'qing-services/qing-service-anime/**'
-              - 'qing-support/**'
-              - 'qing-bom/**'
-              - 'pom.xml'
             auth:
               - 'qing-services/qing-service-auth/**'
-              - 'qing-support/**'
-              - 'qing-bom/**'
-              - 'pom.xml'
             common:
               - 'qing-support/**'
               - 'qing-bom/**'
@@ -105,10 +99,10 @@ jobs:
         service:
           - name: anime
             path: qing-services/qing-service-anime
-            condition: ${{ needs.detect-changes.outputs.anime-changed == 'true' }}
+            condition: ${{ needs.detect-changes.outputs.common-changed == 'true' || needs.detect-changes.outputs.anime-changed == 'true' }}
           - name: auth
             path: qing-services/qing-service-auth
-            condition: ${{ needs.detect-changes.outputs.auth-changed == 'true' }}
+            condition: ${{ needs.detect-changes.outputs.common-changed == 'true' || needs.detect-changes.outputs.auth-changed == 'true' }}
     steps:
       - name: Skip if service unchanged
         if: matrix.service.condition != 'true'
