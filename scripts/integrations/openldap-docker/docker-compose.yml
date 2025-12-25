@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # OpenLDAP 服务
+  openldap:
+    image: osixia/openldap:latest
+    container_name: openldap
+    hostname: ldap.example.com
+    environment:
+      # LDAP 管理员密码
+      LDAP_ADMIN_PASSWORD: adminpassword
+
+      # LDAP 基础配置
+      LDAP_ORGANISATION: "Example Inc."
+      LDAP_DOMAIN: "example.com"
+      LDAP_BASE_DN: "dc=example,dc=com"
+
+      # 允许匿名访问（生产环境建议关闭）
+      LDAP_ALLOW_ANON_BINDING: "false"
+
+      # 启用 TLS（可选）
+      # LDAP_TLS: "true"
+      # LDAP_TLS_CRT_FILENAME: ldap.crt
+      # LDAP_TLS_KEY_FILENAME: ldap.key
+      # LDAP_TLS_CA_CRT_FILENAME: ca.crt
+      # LDAP_TLS_DH_PARAM_FILENAME: dhparam.pem
+      # LDAP_TLS_VERIFY_CLIENT: "demand"
+
+      # 复制配置（多实例时使用）
+      # LDAP_REPLICATION: "true"
+      # LDAP_REPLICATION_HOSTS: "#PYTHON2BASH:['ldap://ldap.example.com','ldap://ldap2.example.com']"
+
+    volumes:
+      # 持久化数据
+      - ./data/slapd/database:/var/lib/ldap
+      - ./data/slapd/config:/etc/ldap/slapd.d
+
+      # 自定义配置和架构（可选）
+      # - ./config:/container/service/slapd/assets/config/bootstrap/ldif/custom
+
+    ports:
+      - "389:389"   # LDAP
+      - "636:636"   # LDAPS
+
+    networks:
+      - ldap-network
+
+    restart: unless-stopped
+
+  # phpLDAPadmin Web 管理界面
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    container_name: phpldapadmin
+    hostname: phpldapadmin.example.com
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: openldap
+      PHPLDAPADMIN_HTTPS: "false"  # 开发环境可用 HTTP
+
+      # 如果需要 HTTPS，可以启用以下配置
+      # PHPLDAPADMIN_HTTPS: "true"
+      # PHPLDAPADMIN_TRUST_PROXY_SSL: "true"
+
+    ports:
+      - "8080:80"  # Web 管理界面
+
+    depends_on:
+      - openldap
+
+    networks:
+      - ldap-network
+
+    restart: unless-stopped
+
+networks:
+  ldap-network:
+    driver: bridge

@@ -1,0 +1,30 @@
+version: "3"
+services:
+  busybox:
+    image: busybox
+    command: "ls /jfs"
+    volumes:
+      - ./mnt:/jfs
+    depends_on:
+      juicefs:
+        condition: service_healthy
+
+  juicefs:
+    image: juicedata/mount:ce-v1.1.2
+    container_name: myjfs
+    volumes:
+      - ./mnt:/mnt:rw,rshared
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse
+    security_opt:
+      - apparmor:unconfined
+    command: [ "juicefs", "mount", "rediss://user:password@xxx.your-redis-server.com:6379/1", "/mnt" ]
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "cat /mnt/.control" ]
+      interval: 60s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
