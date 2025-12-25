@@ -26,7 +26,6 @@ public interface AnimeMapper {
         if (request == null) {
             return null;
         }
-        // 使用静态方法创建Anime对象
         return Anime.create(
                 AnimeId.of(IdUtil.getSnowflakeNextId()),
                 request.getName(),
@@ -43,9 +42,6 @@ public interface AnimeMapper {
         return StrUtil.split(value, ",").stream().map(Long::parseLong).collect(Collectors.toList());
     }
 
-    @Mappings({
-            @Mapping(source = "type.typeId", target = "typeId")
-    })
     AnimeEntity domainToEntity(Anime anime);
 
     default LocalDate primerDateMap(PremiereDate value) {

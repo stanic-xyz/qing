@@ -54,7 +54,6 @@ public interface AnimeWebMapper {
      * @param request 状态请求
      * @return 状态命令
      */
-    @Mapping(target = "operation", expression = "java(parseStatusOperation(request.getOperation()))")
     AnimeStatusCommand toStatusCommand(Long animeId, AnimeStatusRequest request);
 
     /**
