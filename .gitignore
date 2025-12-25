@@ -50,3 +50,4 @@ changelog.md
 application-local.yml
 # 避免上传打包结果
 *.jar
+!lib/swagger-annotations-2.2.8.jar
