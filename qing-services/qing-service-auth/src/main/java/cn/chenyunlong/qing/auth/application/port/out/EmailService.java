@@ -1,6 +1,8 @@
 package cn.chenyunlong.qing.auth.application.port.out;
 
 
+import jakarta.mail.MessagingException;
+
 /**
  * 邮件服务端口
  * <p>
@@ -12,5 +14,5 @@ public interface EmailService {
      *
      * @param message 邮件消息
      */
-    void send(EmailMessage message);
+    void sendActivateEmail(EmailMessage message) throws MessagingException;
 }

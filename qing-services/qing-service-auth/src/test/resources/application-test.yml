@@ -8,12 +8,10 @@ spring:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
       - org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration
       - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
-      - org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration
       - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
-      - cn.chenyunlong.qing.security.autoconfigure.QingSecurityAutoConfiguration
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    url: jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;MODE=MySQL
     username: sa
     password:
   jpa:

@@ -13,6 +13,8 @@ import cn.chenyunlong.qing.auth.domain.user.dto.response.UserResponse;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Username;
 import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.RegisterRequest;
 import cn.chenyunlong.qing.auth.interfaces.validation.SecurityValidated;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -107,6 +109,22 @@ public class AuthController {
             @RequestBody UserActiveRequest request) {
         // 调用应用服务进行认证
         authApplicationService.activateUser(request.getUsername(), request.getActiveCode());
+        return JsonResult.success();
+    }
+
+    @GetMapping("/action")
+    @Operation(summary = "用户登录", description = "用户登录认证")
+    @SecurityValidated
+    public JsonResult<LoginResponse> action(@RequestParam("action") String action,
+                                            @RequestParam("hash") String hash) {
+
+        JSONObject jsonObject = JSONUtil.parseObj(hash);
+
+        String userName = jsonObject.get("userName", String.class);
+        String code = jsonObject.get("code", String.class);
+
+        // 调用应用服务进行认证
+        authApplicationService.activateUser(userName, code);
         return JsonResult.success();
     }
 

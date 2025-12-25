@@ -4,6 +4,8 @@ import cn.chenyunlong.qing.auth.application.port.out.EmailMessage;
 import cn.chenyunlong.qing.auth.application.port.out.EmailService;
 import cn.chenyunlong.qing.auth.domain.user.User;
 import cn.chenyunlong.qing.auth.domain.user.event.UserRegistered;
+import cn.hutool.core.util.URLUtil;
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 用户注册事件处理器
@@ -23,7 +28,7 @@ public class UserRegisteredEventHandler {
 
     private final EmailService emailService;
 
-    @Value("${app.base-url:http://localhost:8080}")
+    @Value("${app.base-url:http://localhost:8088}")
     private String baseUrl;
 
     public UserRegisteredEventHandler(EmailService emailService) {
@@ -45,7 +50,7 @@ public class UserRegisteredEventHandler {
 
         try {
             EmailMessage emailMessage = prepareActivationEmail(user);
-            emailService.send(emailMessage);
+            emailService.sendActivateEmail(emailMessage);
             log.info("激活邮件发送请求已提交，用户ID: {}", user.getId().id());
         } catch (Exception e) {
             log.error("发送激活邮件失败，用户ID: {}", user.getId().id(), e);
@@ -54,8 +59,17 @@ public class UserRegisteredEventHandler {
     }
 
     private EmailMessage prepareActivationEmail(User user) {
-        String activationLink = String.format("%s/api/v1/auth?code=%s",
-                baseUrl, user.getActivationCode());
+
+        Map<String, String> map = new HashMap<>();
+        map.put("clientId", user.getEmail().value());
+        map.put("clientIpAddress", user.getEmail().value());
+        map.put("userAgent", user.getEmail().value());
+        map.put("userName", user.getUsername().value());
+        map.put("code", user.getActivationCode());
+
+        String activationLink = String.format("%s/api/v1/auth/action?action=checkEmail&hash=%s",
+                baseUrl,
+                URLUtil.encode(JSONUtil.toJsonStr(map)));
 
         String content = getString(user, activationLink);
 
