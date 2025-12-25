@@ -3,9 +3,10 @@
 *.ipr
 *.iws
 .idea
-.fastRequest
 !.idea/icon.png
 !.idea/runConfigurations/
+
+.fastRequest
 
 # Eclipse
 .classpath
@@ -30,58 +31,22 @@ settings.xml
 
 # 日志文件
 logs
+log
 
 doc/db/.back_Qing
 
 # 本地上传文件测试
-/docker/redis/data/
-/codegen/
-/qing-config-git/src/main/resources/config/zhangli-service-provider/
-/charts/node_modules
-qing-third/
-application-local.yml
-pom.xml.versionsBackup
-
-# 代码生成器生成的文件 (仅example目录)
-qing-codegen-plugin/example/src/main/java/**/dto/creator/
-qing-codegen-plugin/example/src/main/java/**/dto/query/
-qing-codegen-plugin/example/src/main/java/**/dto/request/
-qing-codegen-plugin/example/src/main/java/**/dto/response/
-qing-codegen-plugin/example/src/main/java/**/dto/updater/
-qing-codegen-plugin/example/src/main/java/**/dto/vo/
-qing-codegen-plugin/example/src/main/java/**/controller/*Controller.java
-qing-codegen-plugin/example/src/main/java/**/service/*Service.java
-qing-codegen-plugin/example/src/main/java/**/service/impl/*ServiceImpl.java
-qing-codegen-plugin/example/src/main/java/**/repository/*Repository.java
-qing-codegen-plugin/example/src/main/java/**/mapper/*Mapper.java
-
-# 部署和配置文件
-deploy.bat
-deploy.sh
-docker-compose.yml
-DOCKER_DEPLOYMENT.md
-config/redis.conf
-
-# 依赖分析文件
-dependency-analysis*.txt
-dependency-analysis*.md
+node_modules
 
 # Vercel配置
 .vercel/
 
-# 环境配置示例
-.env.example
-/scripts/tools/docker/immich/postgres
-/scripts/tools/docker/immich/library
-/scripts/rabbitmq/data
+# 测试项目产生的本地文件
+data
 
 .trae
 changelog.md
 
+application-local.yml
+# 避免上传打包结果
 *.jar
-
-log
-/scripts/integrations/docker/immich
-
-/qing-frontend/qing-frontend/node_modules/
-/qing-frontend/my-app/node_modules/

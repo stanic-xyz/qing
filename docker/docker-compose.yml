@@ -1,0 +1,410 @@
+version: '3.8'
+
+networks:
+  qing-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  consul_data:
+  minio_data:
+
+services:
+  # ===========================================
+  # 基础设施服务
+  # ===========================================
+  
+  # PostgreSQL 数据库
+  postgres:
+    image: postgres:15-alpine
+    container_name: qing-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-qing}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin@123456}
+      TZ: Asia/Shanghai
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 缓存服务
+  redis:
+    image: redis:7.0-alpine
+    container_name: qing-redis
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+      - ./config/redis.conf:/etc/redis/redis.conf
+    command: redis-server /etc/redis/redis.conf --requirepass ${REDIS_PASSWORD:-}
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # Consul 服务注册与发现
+  consul:
+    image: consul:1.15
+    container_name: qing-consul
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "${CONSUL_PORT:-8500}:8500"
+      - "8600:8600/udp"
+    volumes:
+      - consul_data:/consul/data
+    command: >
+      consul agent -server -ui -node=server-1 -bootstrap-expect=1
+      -client=0.0.0.0 -data-dir=/consul/data
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "consul", "members"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # MinIO 对象存储服务
+  minio:
+    image: minio/minio:latest
+    container_name: qing-minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-qingminio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-qingminio123}
+      TZ: Asia/Shanghai
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # RabbitMQ 消息队列
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: qing-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-rabbitmq}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-rabbitmq}
+      TZ: Asia/Shanghai
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ===========================================
+  # 配置和注册中心服务
+  # ===========================================
+
+  # 配置中心服务
+  qing-config-server:
+    image: qing/qing-config-server:${QING_VERSION:-latest}
+    container_name: qing-config-server
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${CONFIG_PROFILE:-prod}
+      GIT_USER: ${GIT_USER:-}
+      GIT_PASS: ${GIT_PASS:-}
+      TZ: Asia/Shanghai
+    ports:
+      - "${CONFIG_SERVER_PORT:-8888}:8888"
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Eureka 注册中心（可选，如果使用Consul可以禁用）
+  qing-eureka-server:
+    image: qing/qing-eureka-server:${QING_VERSION:-latest}
+    container_name: qing-eureka-server
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${EUREKA_PROFILE:-prod}
+      TZ: Asia/Shanghai
+    ports:
+      - "${EUREKA_PORT:-8761}:8761"
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    profiles:
+      - eureka
+
+  # ===========================================
+  # 应用服务
+  # ===========================================
+
+  # API 网关服务
+  qing-gateway:
+    image: qing/qing-service-cloud-gateway:${QING_VERSION:-latest}
+    container_name: qing-gateway
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${GATEWAY_PROFILE:-prod}
+      REDIS_HOST: redis
+      CONSUL_HOST: consul
+      CONFIG_SERVER_URI: http://qing-config-server:8888
+      TZ: Asia/Shanghai
+    ports:
+      - "${GATEWAY_PORT:-9527}:9527"
+    depends_on:
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      qing-config-server:
+        condition: service_healthy
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9527/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # 认证服务
+  qing-auth-service:
+    image: qing/qing-service-auth:${QING_VERSION:-latest}
+    container_name: qing-auth-service
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${AUTH_PROFILE:-prod}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-qing}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-admin@123456}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      CONSUL_HOST: consul
+      CONFIG_SERVER_URI: http://qing-config-server:8888
+      JWT_SECRET: ${JWT_SECRET:-qingSecretKey}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-18000}
+      TZ: Asia/Shanghai
+    ports:
+      - "${AUTH_SERVICE_PORT:-8088}:8088"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      qing-config-server:
+        condition: service_healthy
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  # 动漫服务
+  qing-anime-service:
+    image: qing/qing-service-anime:${QING_VERSION:-latest}
+    container_name: qing-anime-service
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ANIME_PROFILE:-prod}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-qing}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-admin@123456}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      CONSUL_HOST: consul
+      CONFIG_SERVER_URI: http://qing-config-server:8888
+      TZ: Asia/Shanghai
+    ports:
+      - "${ANIME_SERVICE_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      qing-config-server:
+        condition: service_healthy
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  # SA-Token 服务
+  qing-sa-token-service:
+    image: qing/qing-service-sa-token:${QING_VERSION:-latest}
+    container_name: qing-sa-token-service
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SA_TOKEN_PROFILE:-prod}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-qing}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-admin@123456}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      CONSUL_HOST: consul
+      CONFIG_SERVER_URI: http://qing-config-server:8888
+      TZ: Asia/Shanghai
+    ports:
+      - "${SA_TOKEN_SERVICE_PORT:-8089}:8089"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      qing-config-server:
+        condition: service_healthy
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8089/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  # 聚合接口服务
+  qing-aggregate-service:
+    image: qing/qing-service-aggregate:${QING_VERSION:-latest}
+    container_name: qing-aggregate-service
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${AGGREGATE_PROFILE:-prod}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-qing}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-admin@123456}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      CONSUL_HOST: consul
+      CONFIG_SERVER_URI: http://qing-config-server:8888
+      TZ: Asia/Shanghai
+    ports:
+      - "${AGGREGATE_SERVICE_PORT:-8090}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+      qing-config-server:
+        condition: service_healthy
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  # ===========================================
+  # 监控和管理服务
+  # ===========================================
+
+  # Spring Boot Admin 监控服务
+  qing-monitor:
+    image: qing/qing-application-monitor:${QING_VERSION:-latest}
+    container_name: qing-monitor
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${MONITOR_PROFILE:-prod}
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://qing-eureka-server:8761/eureka/
+      TZ: Asia/Shanghai
+    ports:
+      - "${MONITOR_PORT:-10086}:10086"
+    depends_on:
+      - qing-eureka-server
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:10086/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+    profiles:
+      - monitor
+
+  # 消息总线服务
+  qing-bus-server:
+    image: qing/qing-bus-server:${QING_VERSION:-latest}
+    container_name: qing-bus-server
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: ${BUS_PROFILE:-prod}
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: ${RABBITMQ_USER:-rabbitmq}
+      SPRING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmq}
+      BUS_SERVER_PORT: ${BUS_SERVER_PORT:-8071}
+      TZ: Asia/Shanghai
+    ports:
+      - "${BUS_SERVER_PORT:-8071}:8071"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - qing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8071/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+    profiles:
+      - bus
