@@ -11,10 +11,7 @@ on:
       - ".github/workflows/build.yml"
       - "pom.xml"
       - "qing-bom/**"
-      - "qing-commons/**"
-      - "qing-starters/**"
-      - "qing-domain-common/**"
-      - "qing-infrastructure/**"
+      - "qing-support/**"
       - "qing-services/qing-service-anime/**"
       - "qing-services/qing-service-auth/**"
   pull_request:
@@ -49,24 +46,17 @@ jobs:
           filters: |
             anime:
               - 'qing-services/qing-service-anime/**'
-              - 'qing-commons/**'
-              - 'qing-domain-common/**'
-              - 'qing-infrastructure/**'
+              - 'qing-support/**'
               - 'qing-bom/**'
               - 'pom.xml'
             auth:
               - 'qing-services/qing-service-auth/**'
-              - 'qing-commons/**'
-              - 'qing-domain-common/**'
-              - 'qing-infrastructure/**'
+              - 'qing-support/**'
               - 'qing-bom/**'
               - 'pom.xml'
             common:
-              - 'qing-commons/**'
-              - 'qing-domain-common/**'
-              - 'qing-infrastructure/**'
+              - 'qing-support/**'
               - 'qing-bom/**'
-              - 'qing-starters/**'
               - 'pom.xml'
 
   # 构建公共模块
@@ -80,14 +70,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1  # 浅克隆节省时间
-      
+
       - name: Set up JDK 21
         uses: useblacksmith/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      
+
       - name: Cache Maven dependencies
         uses: actions/cache@v4
         with:
@@ -98,16 +88,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-common-
             ${{ runner.os }}-maven-
-      
-      - name: Build Common Modules
+
+      - name: Build And Install Common Modules
         run: |
-          mvn ${{ env.MAVEN_CLI_OPTS }} clean compile \
-            -pl qing-commons,qing-domain-common,qing-infrastructure,qing-bom,qing-starters \
-            -am -f pom.xml
+          mvn ${{ env.MAVEN_CLI_OPTS }} clean install -pl qing-support -f pom.xml
 
   # 并行构建服务
   build-services:
-    needs: [detect-changes, build-common]
+    needs: [ detect-changes, build-common ]
     if: always() && (needs.detect-changes.outputs.anime-changed == 'true' || needs.detect-changes.outputs.auth-changed == 'true')
     timeout-minutes: 12
     runs-on: blacksmith-4vcpu-ubuntu-2404
@@ -116,10 +104,10 @@ jobs:
       matrix:
         service:
           - name: anime
-            path: qing-services/qing-service-anime/anime-interfaces
+            path: qing-services/qing-service-anime
             condition: ${{ needs.detect-changes.outputs.anime-changed == 'true' }}
           - name: auth
-            path: qing-services/qing-service-auth/auth-interfaces
+            path: qing-services/qing-service-auth
             condition: ${{ needs.detect-changes.outputs.auth-changed == 'true' }}
     steps:
       - name: Skip if service unchanged
@@ -127,13 +115,13 @@ jobs:
         run: |
           echo "Skipping ${{ matrix.service.name }} service - no changes detected"
           exit 0
-      
+
       - name: Checkout
         if: matrix.service.condition == 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      
+
       - name: Set up JDK 21
         if: matrix.service.condition == 'true'
         uses: useblacksmith/setup-java@v5
@@ -141,7 +129,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      
+
       - name: Cache Maven dependencies
         if: matrix.service.condition == 'true'
         uses: actions/cache@v4
@@ -154,18 +142,18 @@ jobs:
             ${{ runner.os }}-maven-${{ matrix.service.name }}-
             ${{ runner.os }}-maven-common-
             ${{ runner.os }}-maven-
-      
+
       - name: Build ${{ matrix.service.name }} Service
         if: matrix.service.condition == 'true'
         run: |
           mvn ${{ env.MAVEN_CLI_OPTS }} clean package \
             -pl ${{ matrix.service.path }} -am -f pom.xml \
             -DskipTests=false -Dcheckstyle.skip=false
-      
+
       - name: Upload build artifacts
         if: matrix.service.condition == 'true' && success()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.service.name }}-service-jar
+          name: qing-service-${{ matrix.service.name }}.jar
           path: ${{ matrix.service.path }}/target/*.jar
           retention-days: 1
