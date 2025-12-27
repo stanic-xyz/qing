@@ -356,7 +356,7 @@ public class User extends BaseSimpleBusinessEntity<UserId> {
             throw new IllegalArgumentException("用户已激活，无需再次激活！");
         }
         this.active = true;
-        registerEvent(new UserActivated(getId()));
+        registerEvent(new UserActivated(this, getId()));
     }
 
     public void activateByAdmin() {
@@ -364,7 +364,7 @@ public class User extends BaseSimpleBusinessEntity<UserId> {
             throw new IllegalArgumentException("用户已激活，无需再次激活！");
         }
         this.active = true;
-        registerEvent(new UserActivated(getId()));
+        registerEvent(new UserActivated(this, getId()));
     }
 
     public void deactivateByAdmin() {

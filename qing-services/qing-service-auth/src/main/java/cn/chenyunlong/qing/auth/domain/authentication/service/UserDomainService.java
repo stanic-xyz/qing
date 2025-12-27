@@ -103,7 +103,7 @@ public class UserDomainService {
         user.generateActivationCode();
 
         // 生成新的激活码
-        eventPublisher.publish(new EmailChangedEvent(user.getId(), newEmail));
+        eventPublisher.publish(new EmailChangedEvent(this, user.getId(), newEmail));
     }
 
     private void validateEmailUniqueness(Email newEmail) {

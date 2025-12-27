@@ -10,7 +10,8 @@ public final class EmailChangedEvent extends DomainEvent {
     private final UserId id;
     private final Email newEmail;
 
-    public EmailChangedEvent(UserId id, Email newEmail) {
+    public EmailChangedEvent(Object source, UserId id, Email newEmail) {
+        super(source);
         this.id = id;
         this.newEmail = newEmail;
     }

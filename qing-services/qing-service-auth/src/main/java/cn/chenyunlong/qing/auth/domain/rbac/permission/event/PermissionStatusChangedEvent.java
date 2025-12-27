@@ -12,6 +12,7 @@ import java.time.Instant;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PermissionStatusChangedEvent extends DomainEvent {
+
     private final PermissionId id;
     private final PermissionStatus oldStatus;
     private final PermissionStatus newStatus;
@@ -19,7 +20,8 @@ public class PermissionStatusChangedEvent extends DomainEvent {
     private final Operator operator;
     private final Instant now;
 
-    public PermissionStatusChangedEvent(PermissionId id, PermissionStatus oldStatus, PermissionStatus newStatus, String reason, Operator operator, Instant now) {
+    public PermissionStatusChangedEvent(Object source, PermissionId id, PermissionStatus oldStatus, PermissionStatus newStatus, String reason, Operator operator, Instant now) {
+        super(source);
         this.id = id;
         this.oldStatus = oldStatus;
         this.newStatus = newStatus;

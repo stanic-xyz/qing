@@ -13,7 +13,6 @@
 package cn.chenyunlong.qing.auth.domain.rbac;
 
 import cn.chenyunlong.qing.auth.domain.platform.PlatformId;
-import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
 import cn.chenyunlong.qing.auth.domain.role.event.PermissionsAssignedToRoleEvent;
 import cn.chenyunlong.qing.auth.domain.role.event.PermissionsRemovedFromRoleEvent;
 import cn.chenyunlong.qing.domain.common.AuditInfo;
@@ -185,11 +184,19 @@ public class Role extends BaseSimpleBusinessEntity<RoleId> {
         // 业务规则验证
         validateAssignPermissions(permissionIds);
 
-        CollUtil.addAll(this.permissionIds, permissionIds);
+        List<PermissionId> newPermissions = permissionIds.stream()
+                .filter(id -> !this.permissionIds.contains(id))
+                .toList();
+
+        if (CollUtil.isEmpty(newPermissions)) {
+            return;
+        }
+
+        CollUtil.addAll(this.permissionIds, newPermissions);
 
         this.auditInfo.update("");
         // 发布领域事件
-        registerEvent(new PermissionsAssignedToRoleEvent(this.id, permissionIds));
+        registerEvent(new PermissionsAssignedToRoleEvent(this, this.id, newPermissions));
     }
 
     private void validateAssignPermissions(Collection<PermissionId> permissionIds) {
@@ -201,11 +208,19 @@ public class Role extends BaseSimpleBusinessEntity<RoleId> {
         // 业务规则验证
         validateRemovePermissions(permissionIds);
 
+        List<PermissionId> removedPermissions = permissionIds.stream()
+                .filter(id -> this.permissionIds.contains(id))
+                .toList();
+
+        if (CollUtil.isEmpty(removedPermissions)) {
+            return;
+        }
+
         // 移除权限
-        permissionIds.forEach(this.permissionIds::remove);
+        removedPermissions.forEach(this.permissionIds::remove);
 
         // 发布领域事件
-        registerEvent(new PermissionsRemovedFromRoleEvent(this.id, permissionIds));
+        registerEvent(new PermissionsRemovedFromRoleEvent(this, this.id, removedPermissions));
     }
 
     private void validateRemovePermissions(List<PermissionId> permissionIds) {

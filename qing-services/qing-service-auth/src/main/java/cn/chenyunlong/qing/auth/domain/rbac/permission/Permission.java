@@ -270,7 +270,7 @@ public class Permission extends BaseSimpleBusinessEntity<PermissionId> {
         handleStatusChangeSideEffects(oldStatus, newStatus, reason);
 
         // 发布领域事件
-        registerEvent(new PermissionStatusChangedEvent(this.id, oldStatus, newStatus, reason, operator, Instant.now()));
+        registerEvent(new PermissionStatusChangedEvent(this, this.id, oldStatus, newStatus, reason, operator, Instant.now()));
     }
 
     // 处理状态变更的副作用

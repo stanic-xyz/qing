@@ -8,7 +8,10 @@ import java.util.Objects;
 public final class UserActivated extends DomainEvent {
     private final UserId aggregateId;
 
-    public UserActivated(UserId aggregateId) {this.aggregateId = aggregateId;}
+    public UserActivated(Object source, UserId aggregateId) {
+        super(source);
+        this.aggregateId = aggregateId;
+    }
 
     public UserId aggregateId() {return aggregateId;}
 

@@ -17,7 +17,6 @@ import cn.chenyunlong.qing.auth.application.dto.AuthenticationResultDTO;
 import cn.chenyunlong.qing.auth.application.dto.dto.UserDTO;
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
 import cn.chenyunlong.qing.auth.domain.authentication.exception.AuthenticationException;
-import cn.chenyunlong.qing.auth.domain.authentication.repository.AuthenticationRepository;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.TokenCacheRepository;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.TokenRepository;
 import cn.chenyunlong.qing.auth.domain.authentication.service.TokenDomainService;
@@ -26,7 +25,6 @@ import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenId;
 import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenType;
 import cn.chenyunlong.qing.auth.domain.rbac.PermissionId;
 import cn.chenyunlong.qing.auth.domain.rbac.Role;
-import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.CreatePermissionCommand;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.DeletePermissionCommand;
@@ -35,11 +33,8 @@ import cn.chenyunlong.qing.auth.domain.rbac.permission.command.UpdatePermissionS
 import cn.chenyunlong.qing.auth.domain.rbac.permission.exception.PermissionDuplicateException;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.exception.PermissionNotFoundException;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.repository.PermissionRepository;
-import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.RolePermission;
 import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.command.RemovePermissionFromRoleCommand;
-import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.permission.RolePermissionRepository;
 import cn.chenyunlong.qing.auth.domain.rbac.userrole.UserRole;
-import cn.chenyunlong.qing.auth.domain.rbac.userrole.repository.UserRoleRepository;
 import cn.chenyunlong.qing.auth.domain.role.command.CreateRoleCommand;
 import cn.chenyunlong.qing.auth.domain.role.command.RoleAssignPermissionsCommand;
 import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
@@ -86,7 +81,6 @@ public class AuthApplicationService {
     private final TokenCacheRepository tokenCacheRepository;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
-    private final RolePermissionRepository rolePermissionRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     /**
@@ -317,27 +311,11 @@ public class AuthApplicationService {
         role.assignPermissions(permissionIdList);
         roleRepository.save(role);
 
-
-        // 4. 处理副作用：维护关联关系（如果需要）
-        saveRolePermissionAssociations(role, permissions, command.getAssignedBy());
-
         // 5. 发布领域事件（如果使用事件驱动架构）
         for (Object domainEvent : role.domainEvents()) {
             applicationEventPublisher.publishEvent(domainEvent);
         }
         log.info("角色[{}]已关联权限: {}", command.getRoleId(), permissionIdList);
-    }
-
-    private void saveRolePermissionAssociations(Role role, List<Permission> permissions, @NotBlank String assignedBy) {
-        // 批量处理，避免N+1问题
-        Set<PermissionId> existingPermissionIds = rolePermissionRepository.findPermissionIdsByRoleId(role.getId());
-
-        permissions.stream()
-                .filter(permission -> !CollUtil.contains(existingPermissionIds, permission.getId()))
-                .forEach(permission -> {
-                    RolePermission association = RolePermission.create(role.getId(), permission.getId());
-                    rolePermissionRepository.save(association);
-                });
     }
 
     /**
@@ -350,11 +328,12 @@ public class AuthApplicationService {
         Role role = roleRepository.findById(command.roleId()).orElseThrow(() -> new AuthenticationException("角色不存在"));
         Permission permission = permissionRepository.findById(command.permissionId()).orElseThrow(() -> new PermissionNotFoundException("权限不存在"));
 
-        if (!rolePermissionRepository.existsByRoleIdAndPermissionId(command.roleId(), command.permissionId())) {
+        if (!role.getPermissionIds().contains(command.permissionId())) {
             throw new AuthenticationException("关联不存在");
         }
+
         role.removePermissions(CollUtil.toList(permission.getId()));
-        rolePermissionRepository.deleteByRoleIdAndPermissionId(command.roleId(), command.permissionId());
+        roleRepository.save(role);
         log.info("角色[{}]已取消权限关联:{}", command.roleId().id(), command.permissionId().id());
     }
 }

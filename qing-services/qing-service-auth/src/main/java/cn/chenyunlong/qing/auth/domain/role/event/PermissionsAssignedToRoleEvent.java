@@ -8,13 +8,14 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Collection;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data
 public class PermissionsAssignedToRoleEvent extends DomainEvent {
     private RoleId roleId;
     private Collection<PermissionId> permissionIds;
 
-    public PermissionsAssignedToRoleEvent(RoleId roleId, Collection<PermissionId> permissionIds) {
+    public PermissionsAssignedToRoleEvent(Object source, RoleId roleId, Collection<PermissionId> permissionIds) {
+        super(source);
         this.roleId = roleId;
         this.permissionIds = permissionIds;
     }
