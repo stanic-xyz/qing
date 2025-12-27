@@ -15,6 +15,7 @@ package cn.chenyunlong.qing.auth.interfaces.exception;
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.auth.domain.authentication.exception.AuthenticationException;
+import cn.hutool.core.io.resource.NoResourceException;
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -408,7 +410,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException ex, HttpServletRequest request) {
         log.warn("非法状态: {}, 请求路径: {}", ex.getMessage(), request.getRequestURI());
-
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.CONFLICT.value())
@@ -448,13 +449,12 @@ public class GlobalExceptionHandler {
      * 处理通用异常
      *
      * @param ex      通用异常
-     * @param request HTTP请求
+     * @param request HTTP 请求
      * @return 错误响应
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex, HttpServletRequest request) {
         log.error("系统异常: {}, 请求路径: {}", ex.getMessage(), request.getRequestURI(), ex);
-
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -463,7 +463,6 @@ public class GlobalExceptionHandler {
                 .path(request.getRequestURI())
                 .code("INTERNAL_SERVER_ERROR")
                 .build();
-
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 

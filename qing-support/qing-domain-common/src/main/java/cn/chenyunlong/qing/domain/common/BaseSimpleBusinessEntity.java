@@ -4,7 +4,9 @@ import cn.chenyunlong.common.constants.ValidStatus;
 import cn.chenyunlong.common.model.ValidateResult;
 import cn.chenyunlong.qing.domain.common.exception.ValidationException;
 import cn.hutool.core.collection.CollUtil;
+import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.lang.NonNull;
 
@@ -20,8 +22,13 @@ public abstract class BaseSimpleBusinessEntity<ID> extends AbstractAggregateRoot
 
     @Setter
     protected ID id;
+
+    @Setter
+    @Getter
+    @Version
     protected Integer version = 0;
-    protected AuditInfo auditInfo;
+
+    protected AuditInfo auditInfo; // 需要映射的对象
     protected ValidStatus validStatus;
 
     // 构造器
@@ -37,11 +44,6 @@ public abstract class BaseSimpleBusinessEntity<ID> extends AbstractAggregateRoot
     @Override
     public ID getId() {
         return id;
-    }
-
-    @Override
-    public Integer getVersion() {
-        return version;
     }
 
     // Auditable 接口实现

@@ -54,4 +54,6 @@ public class PlatformController {
         platformService.invalidPlatform(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
+
+
 }

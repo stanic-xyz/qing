@@ -14,11 +14,16 @@ package cn.chenyunlong.qing.auth.domain.rbac;
 
 import cn.chenyunlong.qing.auth.domain.platform.PlatformId;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
+import cn.chenyunlong.qing.auth.domain.role.event.PermissionsAssignedToRoleEvent;
+import cn.chenyunlong.qing.auth.domain.role.event.PermissionsRemovedFromRoleEvent;
 import cn.chenyunlong.qing.domain.common.AuditInfo;
 import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
+import cn.hutool.core.collection.CollUtil;
 import lombok.*;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -72,7 +77,7 @@ public class Role extends BaseSimpleBusinessEntity<RoleId> {
     private Integer sortOrder;
 
     /**
-     * 父角色ID
+     * 父角色标识
      */
     private RoleId parentId;
 
@@ -84,7 +89,7 @@ public class Role extends BaseSimpleBusinessEntity<RoleId> {
     /**
      * 角色拥有的权限
      */
-    private Set<Permission> permissions;
+    private Set<PermissionId> permissionIds;
 
     /**
      * 子角色
@@ -96,7 +101,7 @@ public class Role extends BaseSimpleBusinessEntity<RoleId> {
      * 构造函数
      */
     private Role() {
-        this.permissions = new HashSet<>();
+        this.permissionIds = new HashSet<>();
         this.children = new HashSet<>();
         this.status = RoleStatus.ENABLED;
         this.type = RoleType.CUSTOM;
@@ -119,13 +124,14 @@ public class Role extends BaseSimpleBusinessEntity<RoleId> {
         role.setCode(code);
         role.setDescription(description);
         role.setAuditInfo(AuditInfo.create(createdBy));
+        role.init();
         return role;
     }
 
     /**
      * 创建系统角色
      *
-     * @param roleId      角色ID
+     * @param roleId      角色标识
      * @param name        角色名称
      * @param code        角色编码
      * @param description 角色描述
@@ -173,53 +179,52 @@ public class Role extends BaseSimpleBusinessEntity<RoleId> {
     /**
      * 添加权限
      *
-     * @param permission 权限
+     * @param permissionIds 权限
      */
-    public void addPermission(Permission permission) {
-        if (permission != null) {
-            this.permissions.add(permission);
-            this.auditInfo.update("");
-        }
-    }
+    public void assignPermissions(Collection<PermissionId> permissionIds) {
+        // 业务规则验证
+        validateAssignPermissions(permissionIds);
 
-    /**
-     * 移除权限
-     *
-     * @param permission 权限
-     */
-    public void removePermission(Permission permission) {
-        if (permission != null) {
-            this.permissions.remove(permission);
-            this.auditInfo.update("");
-        }
-    }
+        CollUtil.addAll(this.permissionIds, permissionIds);
 
-    /**
-     * 批量设置权限
-     *
-     * @param permissions 权限集合
-     */
-    public void setPermissions(Set<Permission> permissions) {
-        this.permissions.clear();
-        if (permissions != null) {
-            this.permissions.addAll(permissions);
-        }
         this.auditInfo.update("");
+        // 发布领域事件
+        registerEvent(new PermissionsAssignedToRoleEvent(this.id, permissionIds));
+    }
+
+    private void validateAssignPermissions(Collection<PermissionId> permissionIds) {
+
+    }
+
+    public void removePermissions(List<PermissionId> permissionIds) {
+
+        // 业务规则验证
+        validateRemovePermissions(permissionIds);
+
+        // 移除权限
+        permissionIds.forEach(this.permissionIds::remove);
+
+        // 发布领域事件
+        registerEvent(new PermissionsRemovedFromRoleEvent(this.id, permissionIds));
+    }
+
+    private void validateRemovePermissions(List<PermissionId> permissionIds) {
+
     }
 
     /**
      * 检查是否拥有指定权限
      *
-     * @param permission 权限
+     * @param permissionId 权限
      * @return 是否拥有权限
      */
-    public boolean hasPermission(Permission permission) {
-        if (permission == null) {
+    public boolean hasPermission(PermissionId permissionId) {
+        if (permissionId == null) {
             return false;
         }
 
         // 检查直接权限
-        if (permissions.contains(permission)) {
+        if (permissionIds.contains(permissionId)) {
             return true;
         }
 
@@ -231,34 +236,6 @@ public class Role extends BaseSimpleBusinessEntity<RoleId> {
         }
 
         return false;
-    }
-
-    /**
-     * 检查是否拥有指定权限编码
-     *
-     * @param permissionCode 权限编码
-     * @return 是否拥有权限
-     */
-    public boolean hasPermission(String permissionCode) {
-        if (permissionCode == null || permissionCode.trim().isEmpty()) {
-            return false;
-        }
-
-        return permissions.stream()
-                .anyMatch(permission -> permissionCode.equals(permission.getCode()));
-    }
-
-    /**
-     * 获取所有权限编码
-     *
-     * @return 权限编码集合
-     */
-    public Set<String> getPermissionCodes() {
-        Set<String> codes = new HashSet<>();
-        for (Permission permission : permissions) {
-            codes.add(permission.getCode());
-        }
-        return codes;
     }
 
     /**

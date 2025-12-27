@@ -12,12 +12,15 @@
 
 package cn.chenyunlong.qing.auth.domain.rbac;
 
+import lombok.Getter;
+
 /**
  * 权限状态枚举
  *
  * @author 陈云龙
  * @since 1.0.0
  */
+@Getter
 public enum PermissionStatus {
 
     /**
@@ -36,7 +39,4 @@ public enum PermissionStatus {
         this.description = description;
     }
 
-    public String getDescription() {
-        return description;
-    }
 }

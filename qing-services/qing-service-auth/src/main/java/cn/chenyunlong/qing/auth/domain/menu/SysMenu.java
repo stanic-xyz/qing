@@ -18,7 +18,7 @@ import lombok.Setter;
 public class SysMenu extends BaseSimpleBusinessEntity<SysMenuId> {
 
     /**
-     * 菜单ID
+     * 菜单标识
      */
     private Long menuId;
 
@@ -35,7 +35,7 @@ public class SysMenu extends BaseSimpleBusinessEntity<SysMenuId> {
     private String parentName;
 
     /**
-     * 父菜单ID
+     * 父菜单标识
      */
     private Long parentId;
 

@@ -1,10 +1,11 @@
 package cn.chenyunlong.qing.auth.infrastructure.converter.base;
 
+import cn.chenyunlong.jpa.support.BaseJpaEntity;
+import cn.chenyunlong.qing.domain.common.AuditInfo;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import cn.chenyunlong.qing.domain.common.Identifiable;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import cn.chenyunlong.qing.infrastructure.entity.BaseEntity;
+import org.mapstruct.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -23,6 +24,8 @@ public class AggregateMapper {
 
     private static final ConcurrentMap<Class<?>, Method> OF_METHOD_CACHE = new ConcurrentHashMap<>();
     private static final ConcurrentMap<Class<?>, Constructor<?>> CONSTRUCTOR_CACHE = new ConcurrentHashMap<>();
+
+    public AggregateMapper() {}
 
     /**
      * 获取Long类型ID值
@@ -151,5 +154,38 @@ public class AggregateMapper {
 
     Long mapDomainId2Value(Identifiable<Long> id) {
         return id != null ? id.id() : null;
+    }
+
+    /**
+     * 将 BaseJpaEntity 的审计字段映射到 BaseSimpleBusinessEntity 的 AuditInfo
+     */
+    @AfterMapping
+    public void mapAuditFields(BaseJpaEntity source, @MappingTarget BaseSimpleBusinessEntity<?> target) {
+        if (source == null) return;
+        // 创建或设置 AuditInfo
+        AuditInfo auditInfo = target.getAuditInfo();
+        if (auditInfo == null) {
+            auditInfo = AuditInfo.restore(source.getCreateBy(), source.getCreatedAt(), source.getUpdatedBy(), source.getUpdatedAt());
+            target.setAuditInfo(auditInfo);
+        }
+        target.setVersion(source.getVersion());
+        // 如果有 validStatus 需要映射
+        target.setValidStatus(source.getValidStatus());
+    }
+
+    /**
+     * 反向映射：将 BaseSimpleBusinessEntity 的 AuditInfo 映射到 BaseJpaEntity
+     */
+    @AfterMapping
+    public void mapAuditFieldsReverse(BaseSimpleBusinessEntity<?> anySource, @MappingTarget BaseJpaEntity target) {
+        if (anySource == null) return;
+        AuditInfo auditInfo = anySource.getAuditInfo();
+        if (auditInfo != null) {
+            target.setCreatedAt(auditInfo.createdAt());
+            target.setCreateBy(auditInfo.createdBy());
+            target.setUpdatedAt(auditInfo.updatedAt());
+            target.setUpdatedBy(auditInfo.updatedBy());
+        }
+        target.setVersion(anySource.getVersion());
     }
 }

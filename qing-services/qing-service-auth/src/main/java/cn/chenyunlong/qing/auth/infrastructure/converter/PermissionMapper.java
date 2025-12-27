@@ -32,6 +32,9 @@ public interface PermissionMapper {
      * @param entity 权限JPA实体
      * @return 权限领域对象
      */
+    @Mappings({
+            @Mapping(source = "version", target = "version")
+    })
     Permission entity2Domain(PermissionEntity entity);
 
     default PermissionId map2PermissionId(Long value) {

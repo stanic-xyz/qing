@@ -23,7 +23,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public List<Role> findByIds(List<RoleId> roleIds) {
-        // 批量根据ID查询角色并映射为领域对象
+        // 批量根据标识查询角色并映射为领域对象
         if (CollUtil.isEmpty(roleIds)) {
             return java.util.Collections.emptyList();
         }

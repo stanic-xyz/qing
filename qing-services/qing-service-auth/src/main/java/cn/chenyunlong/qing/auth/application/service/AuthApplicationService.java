@@ -31,6 +31,7 @@ import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.CreatePermissionCommand;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.DeletePermissionCommand;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.UpdatePermissionCommand;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.command.UpdatePermissionStatusCommand;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.exception.PermissionDuplicateException;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.exception.PermissionNotFoundException;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.repository.PermissionRepository;
@@ -40,6 +41,7 @@ import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.permission.RolePermis
 import cn.chenyunlong.qing.auth.domain.rbac.userrole.UserRole;
 import cn.chenyunlong.qing.auth.domain.rbac.userrole.repository.UserRoleRepository;
 import cn.chenyunlong.qing.auth.domain.role.command.CreateRoleCommand;
+import cn.chenyunlong.qing.auth.domain.role.command.RoleAssignPermissionsCommand;
 import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
 import cn.chenyunlong.qing.auth.domain.user.User;
 import cn.chenyunlong.qing.auth.domain.user.command.AuthenticationByUsernamePasswordCommand;
@@ -47,12 +49,14 @@ import cn.chenyunlong.qing.auth.domain.user.command.UserActiveCommand;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.auth.domain.user.specification.UserAuthenticationSpecification;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Username;
+import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import io.jsonwebtoken.Claims;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,16 +79,15 @@ public class AuthApplicationService {
 
     private final TokenDomainService tokenDomainService;
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
     private final UserDomainService userDomainService;
     private final JwtTokenService jwtTokenService;
     private final UserAuthenticationSpecification authenticationSpecification;
-    private final AuthenticationRepository authenticationRepository;
     private final TokenRepository userTokenRepository;
     private final TokenCacheRepository tokenCacheRepository;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
     private final RolePermissionRepository rolePermissionRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     /**
      * 用户登录
@@ -245,60 +248,96 @@ public class AuthApplicationService {
     public void updatePermission(UpdatePermissionCommand command) {
         Permission permission = permissionRepository.findById(command.getId())
                 .orElseThrow(() -> new PermissionNotFoundException("权限不存在"));
-        permission.updateInfo(command.getName(), command.getDescription(), command.getResource(), command.getAction(),
-                "system");
+        if (!permission.canModify()) {
+            throw new AuthenticationException("当前权限无法修改");
+        }
+        permission.updateInfo(command.getName(), command.getDescription(), command.getResource(), command.getAction(), "system");
         permission.setSortOrder(command.getSortOrder());
         permissionRepository.save(permission);
     }
 
     /**
-     * 删除权限
+     * 启用权限
      *
-     * @param command 删除权限命令
+     * @param command 启用权限
+     */
+    public void updateStatus(UpdatePermissionStatusCommand command) {
+        Permission permission = permissionRepository.findById(command.getId()).orElseThrow(() -> new PermissionNotFoundException("权限不存在"));
+        // 领域仓储接口没有删除方法，采用标记删除或由基础设施层实现
+        // 这里简化为禁用
+        permission.updateStatus(command.getStatus(), command.getReason(), command.getOperator());
+        permissionRepository.save(permission);
+    }
+
+    /**
+     * 删除权限
      */
     public void deletePermission(DeletePermissionCommand command) {
-        Permission permission = permissionRepository.findById(command.getId())
-                .orElseThrow(() -> new PermissionNotFoundException("权限不存在"));
+        Permission permission = permissionRepository.findById(command.getId()).orElseThrow(() -> new PermissionNotFoundException("权限不存在"));
         if (!permission.canDelete()) {
-            throw new AuthenticationException("权限包含子权限，无法删除");
+            throw new AuthenticationException("当前权限无法删除");
         }
         // 领域仓储接口没有删除方法，采用标记删除或由基础设施层实现
         // 这里简化为禁用
-        permission.disable("system");
+        permission.delete();
         permissionRepository.save(permission);
     }
 
     /**
      * 为角色批量关联权限
      *
-     * @param roleId        角色ID
-     * @param permissionIds 权限ID列表
      */
     @Transactional
-    public void assignPermissionsToRole(Long roleId, List<Long> permissionIds) {
+    public void assignPermissionsToRole(RoleAssignPermissionsCommand command) {
         // 校验角色存在
-        roleRepository.findById(RoleId.of(roleId))
-                .orElseThrow(() -> new AuthenticationException("角色不存在"));
+        Role role = roleRepository.findById(command.getRoleId()).orElseThrow(() -> new AuthenticationException("角色不存在"));
 
-        // 校验权限ID列表有效
-        if (permissionIds == null || permissionIds.isEmpty()) {
-            throw new AuthenticationException("权限ID列表不能为空");
+        // 校验权限标识列表有效
+        if (CollUtil.isEmpty(command.getPermissionIds())) {
+            throw new AuthenticationException("权限标识列表不能为空");
         }
 
-        List<Permission> permissions = permissionRepository.findByIds(permissionIds);
-        if (permissions.size() != permissionIds.size()) {
-            throw new AuthenticationException("存在无效的权限ID");
-        }
+        List<Permission> permissions = permissionRepository.findByIds(command.getPermissionIds());
+        if (permissions.size() != CollUtil.size(command.getPermissionIds())) {
 
-        // 逐个建立关联（去重处理）
-        for (Long pid : permissionIds) {
-            if (!rolePermissionRepository.existsByRoleIdAndPermissionId(RoleId.of(roleId), PermissionId.of(pid))) {
-                RolePermission entity = RolePermission.create(RoleId.of(roleId), PermissionId.of(pid));
-                rolePermissionRepository.save(entity);
+            // 验证所有权限都存在
+            if (permissions.size() != CollUtil.size(command.getPermissionIds())) {
+                Set<PermissionId> foundIds = permissions.stream()
+                        .map(Permission::getId)
+                        .collect(Collectors.toSet());
+                List<PermissionId> missingIds = foundIds.stream()
+                        .filter(id -> !foundIds.contains(id))
+                        .collect(Collectors.toList());
+                throw new PermissionNotFoundException(missingIds);
             }
+            throw new AuthenticationException("存在无效的权限标识");
         }
 
-        log.info("角色[{}]已关联权限:{}", roleId, permissionIds);
+        List<PermissionId> permissionIdList = permissions.stream().map(BaseSimpleBusinessEntity::getId).toList();
+        role.assignPermissions(permissionIdList);
+        roleRepository.save(role);
+
+
+        // 4. 处理副作用：维护关联关系（如果需要）
+        saveRolePermissionAssociations(role, permissions, command.getAssignedBy());
+
+        // 5. 发布领域事件（如果使用事件驱动架构）
+        for (Object domainEvent : role.domainEvents()) {
+            applicationEventPublisher.publishEvent(domainEvent);
+        }
+        log.info("角色[{}]已关联权限: {}", command.getRoleId(), permissionIdList);
+    }
+
+    private void saveRolePermissionAssociations(Role role, List<Permission> permissions, @NotBlank String assignedBy) {
+        // 批量处理，避免N+1问题
+        Set<PermissionId> existingPermissionIds = rolePermissionRepository.findPermissionIdsByRoleId(role.getId());
+
+        permissions.stream()
+                .filter(permission -> !CollUtil.contains(existingPermissionIds, permission.getId()))
+                .forEach(permission -> {
+                    RolePermission association = RolePermission.create(role.getId(), permission.getId());
+                    rolePermissionRepository.save(association);
+                });
     }
 
     /**
@@ -308,14 +347,13 @@ public class AuthApplicationService {
     @Transactional
     public void removePermissionFromRole(RemovePermissionFromRoleCommand command) {
         // 校验角色与权限存在
-        roleRepository.findById(command.roleId())
-                .orElseThrow(() -> new AuthenticationException("角色不存在"));
-        permissionRepository.findById(command.permissionId())
-                .orElseThrow(() -> new PermissionNotFoundException("权限不存在"));
+        Role role = roleRepository.findById(command.roleId()).orElseThrow(() -> new AuthenticationException("角色不存在"));
+        Permission permission = permissionRepository.findById(command.permissionId()).orElseThrow(() -> new PermissionNotFoundException("权限不存在"));
 
         if (!rolePermissionRepository.existsByRoleIdAndPermissionId(command.roleId(), command.permissionId())) {
             throw new AuthenticationException("关联不存在");
         }
+        role.removePermissions(CollUtil.toList(permission.getId()));
         rolePermissionRepository.deleteByRoleIdAndPermissionId(command.roleId(), command.permissionId());
         log.info("角色[{}]已取消权限关联:{}", command.roleId().id(), command.permissionId().id());
     }

@@ -2,8 +2,7 @@ package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,5 +24,4 @@ public class RoleEntity extends BaseJpaEntity {
 
     @FieldDesc(name = "备注")
     private String remark;
-
 }

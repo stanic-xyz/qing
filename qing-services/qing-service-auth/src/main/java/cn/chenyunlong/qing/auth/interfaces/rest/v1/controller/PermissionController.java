@@ -2,12 +2,14 @@ package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.auth.application.service.AuthApplicationService;
+import cn.chenyunlong.qing.auth.domain.rbac.Operator;
 import cn.chenyunlong.qing.auth.domain.rbac.PermissionId;
 import cn.chenyunlong.qing.auth.domain.rbac.PermissionStatus;
 import cn.chenyunlong.qing.auth.domain.rbac.PermissionType;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.CreatePermissionCommand;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.DeletePermissionCommand;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.UpdatePermissionCommand;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.command.UpdatePermissionStatusCommand;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.exception.PermissionDuplicateException;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.exception.PermissionNotFoundException;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.PermissionEntity;
@@ -15,6 +17,7 @@ import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.Permiss
 import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.permission.BatchCreatePermissionRequest;
 import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.permission.CreatePermissionRequest;
 import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.permission.UpdatePermissionRequest;
+import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.permission.UpdatePermissionStatusRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -102,10 +105,10 @@ public class PermissionController {
     @PutMapping("/{id}")
     @Operation(summary = "修改权限")
     public ResponseEntity<JsonResult<Void>> updatePermission(
-            @PathVariable("id") Long id,
+            @PathVariable("id") Long permissionId,
             @RequestBody @Valid UpdatePermissionRequest request) {
         UpdatePermissionCommand command = UpdatePermissionCommand.builder()
-                .id(new PermissionId(id))
+                .id(PermissionId.of(permissionId))
                 .name(request.getName())
                 .description(request.getDescription())
                 .resource(request.getResource())
@@ -119,10 +122,25 @@ public class PermissionController {
     /**
      * 删除权限
      */
+    @PatchMapping("/{id}/status")
+    @Operation(summary = "禁用权限")
+    public ResponseEntity<JsonResult<Void>> updatePermissionStatus(@PathVariable("id") Long permissionId, @RequestBody UpdatePermissionStatusRequest statusRequest) {
+        UpdatePermissionStatusCommand command = UpdatePermissionStatusCommand.builder()
+                .id(PermissionId.of(permissionId))
+                .status(statusRequest.getStatus())
+                .reason("system").operator(Operator.system())
+                .build();
+        authApplicationService.updateStatus(command);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 删除权限
+     */
     @DeleteMapping("/{id}")
     @Operation(summary = "删除权限")
-    public ResponseEntity<JsonResult<Void>> deletePermission(@PathVariable("id") Long id) {
-        authApplicationService.deletePermission(DeletePermissionCommand.builder().id(new PermissionId(id)).build());
+    public ResponseEntity<JsonResult<Void>> enablePermission(@PathVariable("id") Long permissionId) {
+        authApplicationService.deletePermission(DeletePermissionCommand.builder().id(PermissionId.of(permissionId)).build());
         return ResponseEntity.noContent().build();
     }
 
@@ -141,12 +159,12 @@ public class PermissionController {
     }
 
     /**
-     * 根据ID查询权限
+     * 根据标识查询权限
      */
     @GetMapping("/{id}")
-    @Operation(summary = "根据ID查询权限")
-    public ResponseEntity<JsonResult<PermissionEntity>> findById(@PathVariable("id") Long id) {
-        Optional<PermissionEntity> entity = permissionJpaRepository.findById(id);
+    @Operation(summary = "根据标识查询权限")
+    public ResponseEntity<JsonResult<PermissionEntity>> findById(@PathVariable("id") Long permissionId) {
+        Optional<PermissionEntity> entity = permissionJpaRepository.findById(permissionId);
         return entity.map(e -> ResponseEntity.ok(JsonResult.success(e)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(JsonResult.fail("资源不存在")));
     }

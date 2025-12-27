@@ -6,9 +6,13 @@ import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.RolePermission;
 import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.RolePermissionId;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
 
+import java.util.Set;
+
 public interface RolePermissionRepository extends BaseRepository<RolePermission, RolePermissionId> {
 
     boolean existsByRoleIdAndPermissionId(RoleId roleId, PermissionId permissionId);
 
     void deleteByRoleIdAndPermissionId(RoleId roleId, PermissionId permissionId);
+
+    Set<PermissionId> findPermissionIdsByRoleId(RoleId id);
 }

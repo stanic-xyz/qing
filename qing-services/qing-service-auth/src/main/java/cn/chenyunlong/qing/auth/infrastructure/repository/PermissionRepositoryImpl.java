@@ -78,11 +78,11 @@ public class PermissionRepositoryImpl implements PermissionRepository {
      * @return 权限列表
      */
     @Override
-    public List<Permission> findByIds(List<Long> permissionIds) {
+    public List<Permission> findByIds(List<PermissionId> permissionIds) {
         if (permissionIds == null || permissionIds.isEmpty()) {
             return List.of();
         }
-        return permissionJpaRepository.findAllById(permissionIds)
+        return permissionJpaRepository.findAllById(permissionIds.stream().map(PermissionId::id).toList())
                 .stream()
                 .map(permissionMapper::entity2Domain)
                 .collect(Collectors.toList());

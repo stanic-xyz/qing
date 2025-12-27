@@ -37,7 +37,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 @Tag(name = "认证接口", description = "提供用户注册、登录等功能")
-public class AuthController {
+public class AuthenticationController {
 
     private final AuthApplicationService authApplicationService;
     private final UserDomainService userDomainService;

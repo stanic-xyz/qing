@@ -69,7 +69,7 @@ public class JwtTokenService {
     private final TokenCacheRepository tokenCacheRepository;
 
     /**
-     * JWT密钥
+     * JWT 密钥
      */
     @Value("${qing.jwt.secret:qing-auth-service-jwt-secret-key-2025}")
     private String jwtSecret;

@@ -38,11 +38,10 @@ public class SysMenuId implements Identifiable<Long> {
     }
 
     /**
-     * 创建分类ID的工厂方法
+     * 创建分类标识的工厂方法
      *
      * @param value 分类的唯一标识符
-     * @return 分类ID实例
-     * @throws IllegalArgumentException 当ID无效时
+     * @return 分类标识实例
      */
     public static SysMenuId of(Long value) {
         return new SysMenuId(value);
@@ -52,9 +51,8 @@ public class SysMenuId implements Identifiable<Long> {
      * 创建分类ID的工厂方法（字符串形式）
      *
      * @param id 分类的唯一标识符字符串
-     * @return 分类ID实例
-     * @throws IllegalArgumentException 当ID无效时
-     * @throws NumberFormatException    当字符串无法转换为数字时
+     * @return 分类标识实例
+     * @throws NumberFormatException 当字符串无法转换为数字时
      */
     public static SysMenuId of(String id) {
         if (id == null || id.trim().isEmpty()) {

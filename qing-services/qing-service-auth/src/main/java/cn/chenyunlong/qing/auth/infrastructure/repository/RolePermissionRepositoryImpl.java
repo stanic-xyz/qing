@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,5 +42,12 @@ public class RolePermissionRepositoryImpl implements RolePermissionRepository {
     @Override
     public void deleteByRoleIdAndPermissionId(RoleId roleId, PermissionId permissionId) {
         rolePermissionJpaRepository.deleteByRoleIdAndPermissionId(roleId.id(), permissionId.id());
+    }
+
+    @Override
+    public Set<PermissionId> findPermissionIdsByRoleId(RoleId roleId) {
+        return rolePermissionJpaRepository.findByRoleId(roleId.id()).stream()
+                .map(RolePermissionEntity::getPermissionId).map(PermissionId::of)
+                .collect(Collectors.toSet());
     }
 }

@@ -225,7 +225,7 @@ public class User extends BaseSimpleBusinessEntity<UserId> {
      * @param rawPassword 用户的密码
      * @param phoneNumber 用户的手机号码
      * @param email       用户的电子邮箱
-     * @return 返回创建并配置好的QingUser对象
+     * @return 返回创建并配置好的 QingUser 对象
      */
     // 注册时校验用户名唯一性（依赖领域服务）
     public static User register(UserId userId, Username username, RawPassword rawPassword, PhoneNumber phoneNumber, Email email, String nickname) {
@@ -249,7 +249,7 @@ public class User extends BaseSimpleBusinessEntity<UserId> {
     }
 
     /**
-     * 根据用户ID和用户名恢复用户信息的静态方法
+     * 根据用户 ID 和用户名恢复用户信息的静态方法
      *
      * @param id       用户ID对象，包含用户的唯一标识信息
      * @param username 用户名对象，包含用户的名称信息
@@ -314,7 +314,7 @@ public class User extends BaseSimpleBusinessEntity<UserId> {
      * 生成6位的纯数字的激活码
      */
     public void generateActivationCode() {
-        String activeCode = RandomStringUtils.randomNumeric(6);
+        String activeCode = RandomStringUtils.secure().nextNumeric(6);
         setActivationCode(activeCode);
         setActiveCodeExpireAt(Instant.now().plusSeconds(60 * 5));
     }

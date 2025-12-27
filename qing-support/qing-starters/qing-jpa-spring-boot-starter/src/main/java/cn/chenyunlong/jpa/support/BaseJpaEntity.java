@@ -36,7 +36,7 @@ public abstract class BaseJpaEntity extends BaseEntity {
      * 实体唯一标识符
      */
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
     private Long id;
 
     /**

@@ -33,5 +33,5 @@ public interface PermissionRepository extends BaseRepository<Permission, Permiss
      * @param permissionIds 权限ID列表
      * @return 权限列表
      */
-    List<Permission> findByIds(List<Long> permissionIds);
+    List<Permission> findByIds(List<PermissionId> permissionIds);
 }

@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.auth.infrastructure.repository;
 
+import cn.chenyunlong.qing.auth.domain.rbac.PermissionId;
 import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.repository.PermissionRepository;
@@ -58,9 +59,10 @@ public class UserRepositoryImpl implements UserRepository {
             userRole.setRevoked(Boolean.TRUE.equals(userRoleEntity.getRevoked()));
             roleRepository.findById(RoleId.of(userRoleEntity.getRoleId())).ifPresent(userRole::setRole);
 
-            List<Long> permissionIds = rolePermissionJpaRepository.findByRoleId(userRoleEntity.getRoleId())
+            List<PermissionId> permissionIds = rolePermissionJpaRepository.findByRoleId(userRoleEntity.getRoleId())
                     .stream()
                     .map(RolePermissionEntity::getPermissionId)
+                    .map(PermissionId::of)
                     .distinct()
                     .toList();
 

@@ -12,16 +12,22 @@
 
 package cn.chenyunlong.qing.auth.domain.rbac.permission;
 
+import cn.chenyunlong.qing.auth.domain.rbac.Operator;
 import cn.chenyunlong.qing.auth.domain.rbac.PermissionId;
 import cn.chenyunlong.qing.auth.domain.rbac.PermissionStatus;
 import cn.chenyunlong.qing.auth.domain.rbac.PermissionType;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.event.PermissionStatusChangedEvent;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.exception.PermissionDomainException;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.spec.EnablePermissionSpec;
 import cn.chenyunlong.qing.domain.common.AuditInfo;
 import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.NotImplementedException;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,6 +61,11 @@ public class Permission extends BaseSimpleBusinessEntity<PermissionId> {
     private String name;
 
     /**
+     * 是否是内置权限
+     */
+    private Boolean isSystem;
+
+    /**
      * 权限描述
      */
     private String description;
@@ -85,7 +96,7 @@ public class Permission extends BaseSimpleBusinessEntity<PermissionId> {
     private Integer sortOrder;
 
     /**
-     * 父权限ID
+     * 父权限 ID
      */
     private PermissionId parentId;
 
@@ -93,6 +104,11 @@ public class Permission extends BaseSimpleBusinessEntity<PermissionId> {
      * 子权限
      */
     private Set<Permission> children;
+
+    /**
+     * 父权限
+     */
+    private Permission parent;
 
     /**
      * 构造函数
@@ -126,13 +142,14 @@ public class Permission extends BaseSimpleBusinessEntity<PermissionId> {
         permission.setResource(resource);
         permission.setAction(action);
         permission.setAuditInfo(AuditInfo.create(createdBy));
+        permission.validate();
         return permission;
     }
 
     /**
      * 创建菜单权限
      *
-     * @param permissionId 权限ID
+     * @param permissionId 权限标识
      * @param name         权限名称
      * @param code         权限编码
      * @param resource     菜单路径
@@ -191,6 +208,22 @@ public class Permission extends BaseSimpleBusinessEntity<PermissionId> {
         this.resource = resource;
         this.action = action;
         this.auditInfo.update(updatedBy);
+        validate();
+    }
+
+    // 验证聚合根的完整性
+    private void validate() {
+        if (this.code == null) {
+            throw new PermissionDomainException("权限编码不能为空");
+        }
+
+        if (this.name == null || this.name.trim().isEmpty()) {
+            throw new PermissionDomainException("权限名称不能为空");
+        }
+
+        if (this.type == null) {
+            throw new PermissionDomainException("权限类型不能为空");
+        }
     }
 
     /**
@@ -209,8 +242,87 @@ public class Permission extends BaseSimpleBusinessEntity<PermissionId> {
      * @param updatedBy 更新者
      */
     public void disable(String updatedBy) {
+        if (this.status == PermissionStatus.DISABLED) {
+            throw new IllegalStateException("已被禁用，无法再次禁用！");
+        }
         this.status = PermissionStatus.DISABLED;
         this.auditInfo.update(updatedBy);
+    }
+
+    // 更新状态 - 核心领域行为
+    public void updateStatus(PermissionStatus newStatus, String reason, Operator operator) {
+        // 状态不变，直接返回
+        if (this.status.equals(newStatus)) {
+            throw new PermissionDomainException(String.format("权限已经处于%s状态", newStatus.getDescription()));
+        }
+
+        // 验证状态变更规则
+        validateStatusChange(newStatus, reason);
+
+        // 记录旧状态
+        PermissionStatus oldStatus = this.status;
+
+        // 更新状态
+        this.status = newStatus;
+        this.auditInfo.update("system");
+
+        // 处理状态变更的副作用
+        handleStatusChangeSideEffects(oldStatus, newStatus, reason);
+
+        // 发布领域事件
+        registerEvent(new PermissionStatusChangedEvent(this.id, oldStatus, newStatus, reason, operator, Instant.now()));
+    }
+
+    // 处理状态变更的副作用
+    private void handleStatusChangeSideEffects(PermissionStatus oldStatus,
+                                               PermissionStatus newStatus,
+                                               String reason) {
+        // 如果权限被禁用，清理相关缓存
+        if (newStatus == PermissionStatus.DISABLED) {
+            clearRelatedCache();
+        }
+
+        // 如果从禁用变为启用，重新计算排序等
+        if (oldStatus == PermissionStatus.DISABLED && newStatus == PermissionStatus.ENABLED) {
+            resetSortIfNeeded();
+        }
+    }
+
+    private void resetSortIfNeeded() {
+        //todo 可能需要重新计算排序
+    }
+
+    private void clearRelatedCache() {
+        // todo 删除相关的缓存
+    }
+
+    // 验证状态变更的业务规则
+    private void validateStatusChange(PermissionStatus newStatus, String reason) {
+        // 规约模式
+        EnablePermissionSpec enableSpec = new EnablePermissionSpec();
+
+        enableSpec.isSatisfiedBy(this);
+
+        // 系统内置权限不能禁用
+        if (Boolean.TRUE.equals(isSystem) && newStatus == PermissionStatus.DISABLED) {
+            throw new PermissionDomainException("系统内置权限不允许禁用");
+        }
+
+        // 如果是禁用操作，检查是否有启用的子权限
+        if (newStatus == PermissionStatus.DISABLED) {
+            boolean hasEnabledChildren = children.stream()
+                    .anyMatch(child -> child.getStatus() == PermissionStatus.ENABLED);
+            if (hasEnabledChildren) {
+                throw new PermissionDomainException("请先禁用所有子权限");
+            }
+        }
+
+        // 如果是启用操作，检查父权限状态
+        if (newStatus == PermissionStatus.ENABLED && parent != null) {
+            if (parent.getStatus() == PermissionStatus.DISABLED) {
+                throw new PermissionDomainException("父权限被禁用，无法启用当前权限");
+            }
+        }
     }
 
     /**
@@ -284,12 +396,19 @@ public class Permission extends BaseSimpleBusinessEntity<PermissionId> {
     }
 
     /**
+     * 判断当前权限是否可以修改
+     */
+    public boolean canModify() {
+        return isEnabled();
+    }
+
+    /**
      * 检查是否可以删除
      *
      * @return 是否可以删除
      */
     public boolean canDelete() {
-        // 有子权限的权限不能删除
+        //todo 有子权限的权限不能删除等等
         return !CollUtil.isNotEmpty(children);
     }
 
@@ -346,5 +465,13 @@ public class Permission extends BaseSimpleBusinessEntity<PermissionId> {
     public String toString() {
         return String.format("Permission{id=%s, name='%s', code='%s', type=%s, resource='%s', action='%s'}",
                 getId(), name, code, type, resource, action);
+    }
+
+    /**
+     * 删除权限信息
+     */
+    public void delete() {
+        // 当前暂时没有可删除的方法！
+        throw new NotImplementedException("删除方法未实现");
     }
 }

@@ -3,8 +3,11 @@ package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.auth.application.service.AuthApplicationService;
 import cn.chenyunlong.qing.auth.domain.authentication.service.UserDomainService;
+import cn.chenyunlong.qing.auth.domain.rbac.PermissionId;
+import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
 import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.command.RemovePermissionFromRoleCommand;
 import cn.chenyunlong.qing.auth.domain.role.command.CreateRoleCommand;
+import cn.chenyunlong.qing.auth.domain.role.command.RoleAssignPermissionsCommand;
 import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.RoleEntity;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.RoleJpaRepository;
@@ -64,21 +67,27 @@ public class RoleController {
      * @param request 权限ID列表请求
      * @return 操作结果
      */
-    @PostMapping("/{roleId}/permissions")
+    @PostMapping("/{id}/permissions")
     @Operation(summary = "角色关联权限")
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<JsonResult<Void>> assignPermissions(
-            @PathVariable("roleId") @Parameter(description = "角色ID") Long roleId,
+            @PathVariable("id") @Parameter(description = "角色标识") Long roleId,
             @RequestBody AssignPermissionsRequest request) {
-        authApplicationService.assignPermissionsToRole(roleId, request.getPermissionIds());
+
+        RoleAssignPermissionsCommand command = RoleAssignPermissionsCommand.builder()
+                .roleId(RoleId.of(roleId))
+                .permissionIds(request.getPermissionIds().stream().map(PermissionId::of).toList())
+                .build();
+
+        authApplicationService.assignPermissionsToRole(command);
         return ResponseEntity.status(HttpStatus.CREATED).body(JsonResult.success());
     }
 
     /**
      * 取消角色与权限的关联
      *
-     * @param roleId       角色ID
-     * @param permissionId 权限ID
+     * @param roleId       角色标识
+     * @param permissionId 权限标识
      * @return 操作结果
      */
     @DeleteMapping("/{roleId}/permissions/{permissionId}")
