@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -41,6 +42,7 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     @Operation(summary = "获取用户信息", description = "根据用户ID获取用户信息")
+    @PreAuthorize("hasAuthority('user:read')")
     public JsonResult<User> getUserById(@PathVariable("userId") Long userId) {
         Optional<User> userOptional = userDomainService.loadUserById(userId);
         return userOptional.map(JsonResult::success)
@@ -55,7 +57,7 @@ public class UserController {
      */
     @PatchMapping("/{userId}/activate")
     @Operation(summary = "激活用户", description = "激活指定用户")
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('user:active')")
     public JsonResult<String> activateUser(@PathVariable("userId") Long userId) {
         userDomainService.activeFromAdmin(AdminActiveUserCommand.create(userId, "admin"));
         return JsonResult.success("用户激活成功");
@@ -69,7 +71,7 @@ public class UserController {
      */
     @PatchMapping("/{userId}/deActivate")
     @Operation(summary = "激活用户", description = "激活指定用户")
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('user:deactive')")
     public JsonResult<String> deActivate(@PathVariable("userId") Long userId) {
         userDomainService.deActiveFromAdmin(AdminDeActiveUserCommand.create(userId, "admin"));
         return JsonResult.success("用户激活成功");
@@ -83,7 +85,7 @@ public class UserController {
      */
     @PatchMapping("/{userId}/lock")
     @Operation(summary = "禁用用户", description = "禁用指定用户")
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('user:lock')")
     public JsonResult<String> deactivateUser(@PathVariable("userId") Long userId) {
         userDomainService.lockAccount(userId);
         return JsonResult.success("用户禁用成功");
@@ -97,7 +99,7 @@ public class UserController {
      */
     @PatchMapping("/{userId}/unlock")
     @Operation(summary = "解锁用户", description = "解锁被锁定的用户")
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('user:unlock')")
     public JsonResult<String> unlockUser(@PathVariable("userId") Long userId) {
         userDomainService.unLockAccount(userId);
         return JsonResult.success();
@@ -109,7 +111,7 @@ public class UserController {
      */
     @PostMapping("assignRoleToUser")
     @Operation(summary = "为用户指定角色")
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('user:assign-role')")
     public JsonResult<Void> assignRoleToUser(@RequestBody AssignRoleRequest request) {
         userRoleAssignmentService.assignRole(AssignRoleCommand.create(request.getUserId(), request.getRoleId()));
         return JsonResult.success();
@@ -121,7 +123,7 @@ public class UserController {
      */
     @PostMapping("revokeRoleForUser")
     @Operation(summary = "激活用户", description = "激活指定用户")
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('user:revoke-role')")
     public JsonResult<Void> revokeRoleForUser(@RequestBody RevokeRoleRequest request) {
         userRoleAssignmentService.revokeRoleForUser(RevokeRoleCommand.create(request.getUserId(), request.getRoleId()));
         return JsonResult.success();

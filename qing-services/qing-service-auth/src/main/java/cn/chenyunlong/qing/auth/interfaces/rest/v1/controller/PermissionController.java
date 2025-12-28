@@ -29,6 +29,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +61,7 @@ public class PermissionController {
      */
     @PostMapping
     @Operation(summary = "创建权限")
+    @PreAuthorize("hasAuthority('permission:create')")
     public JsonResult<Void> createPermission(@RequestBody @Valid CreatePermissionRequest request) {
         CreatePermissionCommand command = CreatePermissionCommand.builder()
                 .code(request.getCode())
@@ -81,6 +83,7 @@ public class PermissionController {
      */
     @PostMapping("/batch")
     @Operation(summary = "批量创建权限")
+    @PreAuthorize("hasAuthority('permission:create')")
     public ResponseEntity<JsonResult<Void>> batchCreate(@RequestBody @Valid BatchCreatePermissionRequest request) {
         List<CreatePermissionRequest> items = request.getItems();
         for (CreatePermissionRequest item : items) {
@@ -104,6 +107,7 @@ public class PermissionController {
      */
     @PutMapping("/{id}")
     @Operation(summary = "修改权限")
+    @PreAuthorize("hasAuthority('permission:update')")
     public ResponseEntity<JsonResult<Void>> updatePermission(
             @PathVariable("id") Long permissionId,
             @RequestBody @Valid UpdatePermissionRequest request) {
@@ -124,6 +128,7 @@ public class PermissionController {
      */
     @PatchMapping("/{id}/status")
     @Operation(summary = "禁用权限")
+    @PreAuthorize("hasAuthority('permission:update')")
     public ResponseEntity<JsonResult<Void>> updatePermissionStatus(@PathVariable("id") Long permissionId, @RequestBody UpdatePermissionStatusRequest statusRequest) {
         UpdatePermissionStatusCommand command = UpdatePermissionStatusCommand.builder()
                 .id(PermissionId.of(permissionId))
@@ -139,6 +144,7 @@ public class PermissionController {
      */
     @DeleteMapping("/{id}")
     @Operation(summary = "删除权限")
+    @PreAuthorize("hasAuthority('permission:delete')")
     public ResponseEntity<JsonResult<Void>> enablePermission(@PathVariable("id") Long permissionId) {
         authApplicationService.deletePermission(DeletePermissionCommand.builder().id(PermissionId.of(permissionId)).build());
         return ResponseEntity.noContent().build();
@@ -149,6 +155,7 @@ public class PermissionController {
      */
     @GetMapping
     @Operation(summary = "分页查询权限列表")
+    @PreAuthorize("hasAuthority('permission:read')")
     public JsonResult<Page<PermissionEntity>> page(
             @Parameter(description = "页码", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
             @Parameter(description = "每页条数", example = "20") @RequestParam(value = "size", defaultValue = "20") int size,
@@ -163,6 +170,7 @@ public class PermissionController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "根据标识查询权限")
+    @PreAuthorize("hasAuthority('permission:read')")
     public ResponseEntity<JsonResult<PermissionEntity>> findById(@PathVariable("id") Long permissionId) {
         Optional<PermissionEntity> entity = permissionJpaRepository.findById(permissionId);
         return entity.map(e -> ResponseEntity.ok(JsonResult.success(e)))
@@ -174,6 +182,7 @@ public class PermissionController {
      */
     @GetMapping("/search")
     @Operation(summary = "条件查询权限")
+    @PreAuthorize("hasAuthority('permission:read')")
     public JsonResult<Page<PermissionEntity>> search(
             @RequestParam(value = "code", required = false) String code,
             @RequestParam(value = "name", required = false) String name,

@@ -20,16 +20,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 /**
- * 用户管理控制器
+ * 角色管理控制器
  */
 @RestController
 @RequestMapping("/api/v1/roles")
-@Tag(name = "用户管理", description = "用户管理相关接口")
+@Tag(name = "角色管理", description = "角色管理相关接口")
 @RequiredArgsConstructor
 @Slf4j
 public class RoleController {
@@ -40,20 +41,22 @@ public class RoleController {
     private final RoleJpaRepository roleJpaRepository;
 
     /**
-     * 获取用户信息
+     * 获取角色信息
      *
      * @param roleId 角色id
-     * @return 用户信息
+     * @return 角色信息
      */
     @GetMapping("/{roleId}")
-    @Operation(summary = "获取用户信息", description = "根据用户ID获取用户信息")
-    public JsonResult<RoleEntity> getUserById(@PathVariable("roleId") Long roleId) {
+    @Operation(summary = "获取角色信息", description = "根据角色ID获取角色信息")
+    @PreAuthorize("hasAuthority('role:read')")
+    public JsonResult<RoleEntity> getRoleById(@PathVariable("roleId") Long roleId) {
         Optional<RoleEntity> byId = roleJpaRepository.findById(roleId);
-        return byId.map(JsonResult::success).orElseGet(() -> JsonResult.fail("用户不存在"));
+        return byId.map(JsonResult::success).orElseGet(() -> JsonResult.fail("角色不存在"));
     }
 
     @PostMapping
     @Operation(summary = "创建角色")
+    @PreAuthorize("hasAuthority('role:create')")
     public JsonResult<Void> create(@RequestBody CreateRoleRequest request) {
         authApplicationService
                 .createRole(CreateRoleCommand.create(request.getCode(), request.getName(), request.getDescription()));
@@ -69,7 +72,7 @@ public class RoleController {
      */
     @PostMapping("/{id}/permissions")
     @Operation(summary = "角色关联权限")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('role:assign-permissions')")
     public ResponseEntity<JsonResult<Void>> assignPermissions(
             @PathVariable("id") @Parameter(description = "角色标识") Long roleId,
             @RequestBody AssignPermissionsRequest request) {
@@ -92,7 +95,7 @@ public class RoleController {
      */
     @DeleteMapping("/{roleId}/permissions/{permissionId}")
     @Operation(summary = "取消角色权限关联")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('role:revoke-permissions')")
     public ResponseEntity<JsonResult<Void>> revokePermission(
             @PathVariable("roleId") @Parameter(description = "角色ID") Long roleId,
             @PathVariable("permissionId") @Parameter(description = "权限ID") Long permissionId) {
