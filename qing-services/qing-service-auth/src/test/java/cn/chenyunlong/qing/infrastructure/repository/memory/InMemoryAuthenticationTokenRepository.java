@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 内存 Token 仓库实现，仅用于集成测试
  */
-@Repository
 public class InMemoryAuthenticationTokenRepository implements AuthenticationTokenRepository {
 
     private final Map<TokenId, AuthenticationToken> store = new ConcurrentHashMap<>();

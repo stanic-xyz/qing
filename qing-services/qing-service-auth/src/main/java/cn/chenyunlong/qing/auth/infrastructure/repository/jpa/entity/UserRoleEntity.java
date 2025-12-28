@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity;
+package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.entiry;
 
 import cn.chenyunlong.jpa.support.BaseJpaEntity;
 import jakarta.persistence.Entity;

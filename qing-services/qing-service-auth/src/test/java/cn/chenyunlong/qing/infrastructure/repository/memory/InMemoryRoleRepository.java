@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 /**
  * 内存 Role 仓库，仅用于测试
  */
-@Repository
 public class InMemoryRoleRepository implements RoleRepository {
 
     private final Map<RoleId, Role> store = new ConcurrentHashMap<>();

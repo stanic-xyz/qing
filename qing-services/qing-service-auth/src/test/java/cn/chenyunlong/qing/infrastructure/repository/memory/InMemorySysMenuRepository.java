@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public class InMemorySysMenuRepository implements SysMenuRepository {
     @Override
     public SysMenu save(SysMenu entity) {

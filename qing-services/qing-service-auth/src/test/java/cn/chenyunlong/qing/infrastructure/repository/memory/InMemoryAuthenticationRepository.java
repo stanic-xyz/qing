@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 /**
  * 内存 Authentication 仓库实现，仅用于集成测试
  */
-@Repository
 public class InMemoryAuthenticationRepository implements AuthenticationRepository {
 
     private final Map<AuthenticationId, Authentication> store = new ConcurrentHashMap<>();

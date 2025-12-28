@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
 public class InMemoryPermissionRepository implements PermissionRepository {
 
     private final Map<PermissionId, Permission> store = new ConcurrentHashMap<>();

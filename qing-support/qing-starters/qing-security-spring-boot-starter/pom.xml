@@ -25,7 +25,6 @@
 
     <artifactId>qing-security-spring-boot-starter</artifactId>
     <name>qing-security-spring-boot-starter</name>
-    <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencyManagement>

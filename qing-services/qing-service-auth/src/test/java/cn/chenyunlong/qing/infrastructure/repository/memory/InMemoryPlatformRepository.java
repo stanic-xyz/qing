@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class InMemoryPlatformRepository implements PlatformRepository {
     @Override
     public List<Platform> findByIds(List<Long> platformIds) {

@@ -15,7 +15,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-@Repository
 @RequiredArgsConstructor
 public class InMemoryTokenRepository implements TokenRepository {
 

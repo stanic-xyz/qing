@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-@Repository
 public class InMemoryRolePermissionRepository implements RolePermissionRepository {
 
     private final Map<RolePermissionId, RolePermission> store = new ConcurrentHashMap<>();
