@@ -1,6 +1,6 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity;
+package cn.chenyunlong.qing.infrastructure.repository.entity;
 
-import cn.chenyunlong.qing.auth.infrastructure.repository.TestEntityRepository;
+import cn.chenyunlong.qing.infrastructure.repository.TestEntityRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;

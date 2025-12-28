@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity;
+package cn.chenyunlong.qing.infrastructure.repository.entity;
 
 import jakarta.persistence.*;
 
