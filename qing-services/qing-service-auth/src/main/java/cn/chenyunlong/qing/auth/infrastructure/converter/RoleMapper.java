@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.auth.infrastructure.converter;
 
 import cn.chenyunlong.common.infrustructure.CustomMapper;
-import cn.chenyunlong.jpa.support.BaseJpaEntity;
 import cn.chenyunlong.qing.auth.domain.platform.PlatformId;
 import cn.chenyunlong.qing.auth.domain.rbac.Role;
 import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
@@ -11,7 +10,6 @@ import cn.chenyunlong.qing.auth.infrastructure.converter.base.AggregateMapper;
 import cn.chenyunlong.qing.auth.infrastructure.converter.base.BaseEntityMapper;
 import cn.chenyunlong.qing.auth.infrastructure.converter.base.DateMapper;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.RoleEntity;
-import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import org.mapstruct.*;
 
 @Mapper(uses = {CustomMapper.class, DateMapper.class, AggregateMapper.class, BaseEntityMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)

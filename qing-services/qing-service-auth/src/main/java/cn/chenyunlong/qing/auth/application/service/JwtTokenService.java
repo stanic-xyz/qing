@@ -298,7 +298,7 @@ public class JwtTokenService {
     public UserId getUserIdFromToken(String token) {
         Claims claims = parseToken(token);
         if (claims != null) {
-            Long userId = claims.get("user", Long.class);
+            Long userId = claims.get("userId", Long.class);
             return userId != null ? UserId.of(userId) : null;
         }
         return null;

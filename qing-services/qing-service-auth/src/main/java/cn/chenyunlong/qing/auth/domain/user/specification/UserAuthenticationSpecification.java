@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.auth.domain.user.specification;
 
+import cn.chenyunlong.qing.auth.application.service.SecurityPolicyService;
 import cn.chenyunlong.qing.auth.domain.authentication.Authentication;
 import cn.chenyunlong.qing.auth.domain.authentication.exception.AuthenticationException;
 import cn.chenyunlong.qing.auth.domain.authentication.valueObject.AuthFailureReason;
@@ -20,6 +21,7 @@ public class UserAuthenticationSpecification {
 
     private final UserRepository userRepository;
     private final SecurityPolicyPort securityPolicyPort;
+    private final SecurityPolicyService securityPolicyService;
 
     /**
      * 用户登录规约检查（状态、锁定、密码）
@@ -38,16 +40,29 @@ public class UserAuthenticationSpecification {
     public void check(User user, EncryptedPassword password, IpAddress ipAddress, String userAgent) {
         checkAccountLockSpecification(user);
         checkUserStatusSpecification(user);
-        // 密码验证与失败次数处理
-        if (!user.verifyPassword(password)) {
-            throw new AuthenticationException("用户名或密码错误");
-        }
-        if (user.getLoginAttempts() > securityPolicyPort.getMaxLoginAttempts()) {
-            throw new AuthenticationException("重试次数过多，请稍后再试");
-        }
+        
+        // 检查IP是否允许
         if (!securityPolicyPort.isIpAllowed(ipAddress)) {
             throw new AuthenticationException("当前IP地址不允许登录");
         }
+        
+        // 检查登录失败次数 (从Redis获取)
+        long failures = securityPolicyService.getLoginFailures(user.getUsername().value());
+        if (failures >= securityPolicyPort.getMaxLoginAttempts()) {
+            throw new AuthenticationException("重试次数过多，账户已暂时锁定，请稍后再试");
+        }
+        
+        // 密码验证
+        if (!user.verifyPassword(password)) {
+            // 记录失败次数
+            long currentFailures = securityPolicyService.recordLoginFailure(user.getUsername().value());
+            long remaining = securityPolicyPort.getMaxLoginAttempts() - currentFailures;
+            throw new AuthenticationException("用户名或密码错误，剩余重试次数: " + (remaining > 0 ? remaining : 0));
+        }
+        
+        // 登录成功，重置失败次数
+        securityPolicyService.resetLoginFailure(user.getUsername().value());
+
         if (!securityPolicyPort.isLoginTimeAllowed()) {
             throw new AuthenticationException("当前时间段不允许登录");
         }
