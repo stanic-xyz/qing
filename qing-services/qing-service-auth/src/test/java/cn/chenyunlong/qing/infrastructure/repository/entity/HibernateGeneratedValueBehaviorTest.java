@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.infrastructure.repository.entity;
 
+import cn.chenyunlong.qing.auth.AuthWebApplication;
 import cn.chenyunlong.qing.infrastructure.repository.TestEntityRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -8,9 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -20,8 +24,11 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
 @ActiveProfiles("test")
+@DataJpaTest
+@ContextConfiguration(classes = AuthWebApplication.class)
+@EnableJpaRepositories(basePackages = "cn.chenyunlong.qing.infrastructure.repository")
+@EntityScan(basePackages = "cn.chenyunlong.qing.infrastructure.repository.entity")
 @DisplayName("Hibernate 6.6+ @GeneratedValue 行为测试")
 class HibernateGeneratedValueBehaviorTest {
 
