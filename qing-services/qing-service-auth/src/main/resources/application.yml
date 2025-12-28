@@ -3,25 +3,27 @@ server:
 spring:
   application:
     name: qing-service-auth
-  graphql:
-    graphiql:
-      enabled: true
   datasource:
-    url: jdbc:postgresql://192.168.3.10:5433/qing
-    username: postgres
-    password: admin@123456
     driver-class-name: org.postgresql.Driver
+    username: qing-auth
+    password: 123456
+    url: jdbc:postgresql://192.168.3.112:5432/qing-auth
   data:
     redis:
-      host: 192.168.3.11
-      database: 0
+      host: 192.168.3.112
       port: 6379
+      database: 0
+  rabbitmq:
+    host: 192.168.3.112
+    username: rabbitmq
+    password: 123456
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
 qing:
   api:
     description: QING-AUTH-SERVICE
-  security:
-    authing:
-      auth-login-url-prefix: /api/auth2/authorization
 
 jwt:
   secret: qingSecretKey

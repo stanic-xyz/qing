@@ -24,7 +24,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -51,8 +51,7 @@ public class UserDomainService {
                 command.nickname());
 
         User save = repository.save(user);
-        eventPublisher.publishAll(user.domainEvents());
-        user.clearDomainEvents();
+        publishDomainEvents(user);
         return save;
     }
 
@@ -61,8 +60,14 @@ public class UserDomainService {
         if (user.isActive()) {
             throw new IllegalArgumentException("用户已激活，无需再次激活！");
         }
-        user.generateActivationCode();
+        user.resetActivationCode();
+        publishDomainEvents(user);
         userRepository.save(user);
+    }
+
+    private void publishDomainEvents(User user) {
+        eventPublisher.publishAll(user.domainEvents());
+        user.clearDomainEvents();
     }
 
     public void active(UserActiveCommand command) {
@@ -175,8 +180,7 @@ public class UserDomainService {
         User user = userByUserId.get();
         user.unlock();
         userRepository.save(user);
-        eventPublisher.publishAll(user.domainEvents());
-        user.clearDomainEvents();
+        publishDomainEvents(user);
     }
 
     public void lockAccount(Long userId) {
@@ -187,6 +191,10 @@ public class UserDomainService {
     }
 
     public void refreshToken(@NotBlank(message = "刷新令牌不能为空") String refreshToken) {
+
+    }
+
+    public void updateUser(UpdateUserCommand updateUserCommand) {
 
     }
 }

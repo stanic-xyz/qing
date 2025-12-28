@@ -310,6 +310,13 @@ public class User extends BaseSimpleBusinessEntity<UserId> {
         //        DomainEventPublisher.publish(new UserLoginEvent(this, ip, userAgent));
     }
 
+    public void resetActivationCode() {
+        // 为用户生成激活代码
+        generateActivationCode();
+        // 注册用户已注册事件，用于领域事件处理
+        registerEvent(new UserActivateCodeChangeEvent(this));
+    }
+
     /**
      * 生成6位的纯数字的激活码
      */

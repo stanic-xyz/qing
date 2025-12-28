@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.auth.application.eventhandlers;
 import cn.chenyunlong.qing.auth.application.port.out.EmailMessage;
 import cn.chenyunlong.qing.auth.application.port.out.EmailService;
 import cn.chenyunlong.qing.auth.domain.user.User;
+import cn.chenyunlong.qing.auth.domain.user.event.UserActivateCodeChangeEvent;
 import cn.chenyunlong.qing.auth.domain.user.event.UserRegistered;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
@@ -47,7 +48,25 @@ public class UserRegisteredEventHandler {
         User user = event.user();
         log.info("开始处理用户注册事件，准备发送激活邮件。用户ID: {}, 邮箱: {}",
                 user.getId().id(), user.getEmail().value());
+        sendVerifyCodeEmail(user);
+    }
 
+    /**
+     * 处理用户注册事件 - 发送激活邮件
+     * <p>
+     * 使用 @TransactionalEventListener 确保在事务提交后执行
+     * 使用 @Async 异步执行，避免阻塞主线程
+     */
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void handleActivateCodeChangedEvent(UserActivateCodeChangeEvent event) {
+        User user = event.user();
+        log.info("用户重置邮件激活码，准备发送激活邮件。用户ID: {}, 邮箱: {}",
+                user.getId().id(), user.getEmail().value());
+        sendVerifyCodeEmail(user);
+    }
+
+    private void sendVerifyCodeEmail(User user) {
         try {
             EmailMessage emailMessage = prepareActivationEmail(user);
             emailService.sendActivateEmail(emailMessage);

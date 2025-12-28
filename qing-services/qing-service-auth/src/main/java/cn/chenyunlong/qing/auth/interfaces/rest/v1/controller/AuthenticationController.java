@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -91,22 +92,16 @@ public class AuthenticationController {
             return JsonResult.fail(result.failureReason());
         }
 
-        // 转换为接口层DTO
+        // 转换为接口层 DTO
         LoginResponse interfaceResponse = LoginResponse.fromAuthenticationResult(result);
         return JsonResult.success(interfaceResponse);
     }
 
-    /**
-     * 用户登录
-     *
-     * @param request 登录请求
-     * @return 登录结果
-     */
     @PostMapping("/active")
     @Operation(summary = "用户登录", description = "用户登录认证")
+    @PreAuthorize("hasRole('admin')")
     @SecurityValidated
-    public JsonResult<LoginResponse> active(
-            @RequestBody UserActiveRequest request) {
+    public JsonResult<LoginResponse> active(@RequestBody UserActiveRequest request) {
         // 调用应用服务进行认证
         authApplicationService.activateUser(request.getUsername(), request.getActiveCode());
         return JsonResult.success();
@@ -137,8 +132,7 @@ public class AuthenticationController {
     @PostMapping("/resetActiveCode")
     @Operation(summary = "用户登录", description = "用户登录认证")
     @SecurityValidated
-    public JsonResult<LoginResponse> resetActiveCode(
-            @RequestBody UserActiveRequest request) {
+    public JsonResult<LoginResponse> resetActiveCode(@RequestBody UserActiveRequest request) {
         // 调用应用服务进行认证
         userDomainService.resetActiveCode(UserResetActiveCodeCommand.create(Username.of(request.getUsername())));
         return JsonResult.success();
@@ -151,6 +145,7 @@ public class AuthenticationController {
      * @return 用户信息
      */
     @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "获取当前用户信息", description = "根据token获取当前登录用户信息")
     public JsonResult<UserDTO> getCurrentUser(
             @RequestHeader("Authorization") String token) {

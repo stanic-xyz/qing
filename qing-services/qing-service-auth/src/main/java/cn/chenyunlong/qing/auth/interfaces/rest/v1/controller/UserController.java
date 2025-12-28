@@ -5,12 +5,11 @@ import cn.chenyunlong.qing.auth.application.service.AuthApplicationService;
 import cn.chenyunlong.qing.auth.application.service.UserRoleAssignmentService;
 import cn.chenyunlong.qing.auth.domain.authentication.service.UserDomainService;
 import cn.chenyunlong.qing.auth.domain.user.User;
-import cn.chenyunlong.qing.auth.domain.user.command.AdminActiveUserCommand;
-import cn.chenyunlong.qing.auth.domain.user.command.AdminDeActiveUserCommand;
-import cn.chenyunlong.qing.auth.domain.user.command.AssignRoleCommand;
-import cn.chenyunlong.qing.auth.domain.user.command.RevokeRoleCommand;
+import cn.chenyunlong.qing.auth.domain.user.command.*;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.AssignRoleRequest;
 import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.role.RevokeRoleRequest;
+import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.user.UpdateUserRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +46,17 @@ public class UserController {
         Optional<User> userOptional = userDomainService.loadUserById(userId);
         return userOptional.map(JsonResult::success)
                 .orElseGet(() -> JsonResult.fail("用户不存在"));
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "编辑用户信息")
+    @PreAuthorize("hasAuthority('user:update')")
+    public JsonResult<String> updateUser(@PathVariable("id") Long userId, @RequestBody UpdateUserRequest request) {
+        UpdateUserCommand updateUserCommand = UpdateUserCommand.builder()
+                .userId(UserId.of(userId)).avatar(request.getAvatar())
+                .build();
+        userDomainService.updateUser(updateUserCommand);
+        return JsonResult.success("用户激活成功");
     }
 
     /**
