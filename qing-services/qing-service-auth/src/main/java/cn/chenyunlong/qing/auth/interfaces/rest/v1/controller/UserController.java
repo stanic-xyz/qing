@@ -39,10 +39,10 @@ public class UserController {
      * @param userId 用户ID
      * @return 用户信息
      */
-    @GetMapping("/{userId}")
+    @GetMapping("/{id}")
     @Operation(summary = "获取用户信息", description = "根据用户ID获取用户信息")
-    @PreAuthorize("hasAuthority('user:read')")
-    public JsonResult<User> getUserById(@PathVariable("userId") Long userId) {
+    @PreAuthorize("isAuthenticated()")
+    public JsonResult<User> getUserById(@PathVariable("id") Long userId) {
         Optional<User> userOptional = userDomainService.loadUserById(userId);
         return userOptional.map(JsonResult::success)
                 .orElseGet(() -> JsonResult.fail("用户不存在"));
@@ -50,7 +50,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Operation(summary = "编辑用户信息")
-    @PreAuthorize("hasAuthority('user:update')")
+    @PreAuthorize("isAuthenticated()")
     public JsonResult<String> updateUser(@PathVariable("id") Long userId, @RequestBody UpdateUserRequest request) {
         UpdateUserCommand updateUserCommand = UpdateUserCommand.builder()
                 .userId(UserId.of(userId))
