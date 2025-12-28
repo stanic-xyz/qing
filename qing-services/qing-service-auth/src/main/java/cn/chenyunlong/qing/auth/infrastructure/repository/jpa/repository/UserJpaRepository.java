@@ -31,4 +31,6 @@ public interface UserJpaRepository extends BaseJpaQueryRepository<QingUserEntity
     boolean existsByNickname(String nickname);
 
     Optional<QingUserEntity> findByUid(Long uid);
+
+    boolean existsByPhone(String phoneNumber);
 }

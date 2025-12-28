@@ -10,6 +10,7 @@ import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
 import cn.chenyunlong.qing.auth.domain.user.User;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Email;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.PhoneNumber;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Username;
 import cn.chenyunlong.qing.auth.infrastructure.converter.UserMapper;
@@ -108,6 +109,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean existsByEmail(Email email) {
         return userJpaRepository.existsByEmail(email.value());
+    }
+
+    @Override
+    public boolean existsByPhone(PhoneNumber phone) {
+        return userJpaRepository.existsByPhone(phone.value());
     }
 
     @Override

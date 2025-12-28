@@ -465,4 +465,54 @@ public class User extends BaseSimpleBusinessEntity<UserId> {
     public void resetLoginAttempts() {
         loginAttempts = 0;
     }
+
+    /**
+     * 更新用户基本信息
+     *
+     * @param nickname    昵称
+     * @param avatar      头像
+     * @param description 描述
+     */
+    public void updateBasicInfo(String nickname, String avatar, String description) {
+        if (nickname != null && !nickname.trim().isEmpty()) {
+            this.nickname = nickname;
+        }
+        if (avatar != null && !avatar.trim().isEmpty()) {
+            this.avatar = avatar;
+        }
+        if (description != null) {
+            this.description = description;
+        }
+    }
+
+    /**
+     * 修改用户邮箱
+     *
+     * @param email 新邮箱
+     */
+    public void changeEmail(Email email) {
+        if (email == null) {
+            throw new IllegalArgumentException("邮箱不能为空");
+        }
+        if (this.email != null && this.email.equals(email)) {
+            return;
+        }
+        this.email = email;
+        registerEvent(new EmailChangedEvent(this, this.getId(), this.email));
+    }
+
+    /**
+     * 修改用户手机号
+     *
+     * @param phone 新手机号
+     */
+    public void changePhone(PhoneNumber phone) {
+        if (phone == null) {
+            throw new IllegalArgumentException("手机号不能为空");
+        }
+        if (this.phone != null && this.phone.equals(phone)) {
+            return;
+        }
+        this.phone = phone;
+    }
 }

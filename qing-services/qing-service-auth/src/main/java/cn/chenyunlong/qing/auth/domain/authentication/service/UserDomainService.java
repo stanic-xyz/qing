@@ -33,7 +33,6 @@ public class UserDomainService {
     private final UserRepository userRepository;
     private final UserRegistrationSpecification userRegistrationSpecification;
     private final UserAuthenticationSpecification authenticationSpecification;
-    private final UserRepository repository;
     private final DomainEventPublisher eventPublisher;
 
     /**
@@ -50,7 +49,7 @@ public class UserDomainService {
                 command.email(),
                 command.nickname());
 
-        User save = repository.save(user);
+        User save = userRepository.save(user);
         publishDomainEvents(user);
         return save;
     }
@@ -65,6 +64,9 @@ public class UserDomainService {
         userRepository.save(user);
     }
 
+    /**
+     * 发布领域事件
+     */
     private void publishDomainEvents(User user) {
         eventPublisher.publishAll(user.domainEvents());
         user.clearDomainEvents();
@@ -194,7 +196,31 @@ public class UserDomainService {
 
     }
 
-    public void updateUser(UpdateUserCommand updateUserCommand) {
+    public void updateUser(UpdateUserCommand command) {
+        User user = userRepository.findById(command.getUserId()).orElseThrow(() -> new AuthenticationException("用户不存在"));
 
+        if (StrUtil.isNotBlank(command.getPhone())) {
+            PhoneNumber newPhone = PhoneNumber.of(command.getPhone());
+            if (user.getPhone() == null || !newPhone.equals(user.getPhone())) {
+                if (userRepository.existsByPhone(newPhone)) {
+                    throw new IllegalArgumentException("手机号已存在");
+                }
+                user.changePhone(newPhone);
+            }
+        }
+
+        if (StrUtil.isNotBlank(command.getEmail())) {
+            Email newEmail = Email.of(command.getEmail());
+            if (user.getEmail() == null || !newEmail.equals(user.getEmail())) {
+                if (userRepository.existsByEmail(newEmail)) {
+                    throw new IllegalArgumentException("邮箱已存在");
+                }
+                user.changeEmail(newEmail);
+            }
+        }
+
+        user.updateBasicInfo(command.getNickname(), command.getAvatar(), command.getDescription());
+        userRepository.save(user);
+        publishDomainEvents(user);
     }
 }

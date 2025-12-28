@@ -10,5 +10,13 @@ public class UpdateUserCommand {
 
     private UserId userId;
 
+    private String nickname;
+
     private String avatar;
+
+    private String phone;
+
+    private String email;
+
+    private String description;
 }

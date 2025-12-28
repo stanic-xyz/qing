@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.auth.domain.user.repository;
 
 import cn.chenyunlong.qing.auth.domain.user.User;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Email;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.PhoneNumber;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Username;
 import cn.chenyunlong.qing.domain.common.repository.BaseRepository;
@@ -23,6 +24,8 @@ public interface UserRepository extends BaseRepository<User, UserId> {
     boolean existsByUsername(Username username);
 
     boolean existsByEmail(Email email);
+
+    boolean existsByPhone(PhoneNumber phone);
 
     boolean existsByNicknames(String nickname);
 }

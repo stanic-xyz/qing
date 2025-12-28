@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.infrastructure.jpa.memory;
 import cn.chenyunlong.qing.auth.domain.user.User;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Email;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.PhoneNumber;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Username;
 import cn.hutool.core.util.StrUtil;
@@ -51,6 +52,11 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public boolean existsByEmail(Email email) {
         return store.values().stream().anyMatch(qingUser -> Objects.equals(qingUser.getEmail().value(), email.value()));
+    }
+
+    @Override
+    public boolean existsByPhone(PhoneNumber phone) {
+        return store.values().stream().anyMatch(qingUser -> StrUtil.equals(qingUser.getPhone().value(), phone.value()));
     }
 
     @Override
