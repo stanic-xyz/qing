@@ -53,10 +53,15 @@ public class UserController {
     @PreAuthorize("hasAuthority('user:update')")
     public JsonResult<String> updateUser(@PathVariable("id") Long userId, @RequestBody UpdateUserRequest request) {
         UpdateUserCommand updateUserCommand = UpdateUserCommand.builder()
-                .userId(UserId.of(userId)).avatar(request.getAvatar())
+                .userId(UserId.of(userId))
+                .avatar(request.getAvatar())
+                .nickname(request.getNickname())
+                .phone(request.getPhone())
+                .email(request.getEmail())
+                .description(request.getDescription())
                 .build();
         userDomainService.updateUser(updateUserCommand);
-        return JsonResult.success("用户激活成功");
+        return JsonResult.success("用户更新成功");
     }
 
     /**
