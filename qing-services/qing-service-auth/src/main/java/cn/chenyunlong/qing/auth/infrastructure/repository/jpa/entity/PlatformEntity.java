@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.entiry;
+package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity;
 
 import cn.chenyunlong.common.annotation.FieldDesc;
 import cn.chenyunlong.jpa.support.BaseJpaEntity;

@@ -423,6 +423,29 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 处理访问拒绝异常
+     *
+     * @param ex      访问拒绝异常
+     * @param request HTTP请求
+     * @return 错误响应
+     */
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(org.springframework.security.access.AccessDeniedException ex, HttpServletRequest request) {
+        log.warn("访问拒绝: {}, 请求路径: {}", ex.getMessage(), request.getRequestURI());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.FORBIDDEN.value())
+                .error("Forbidden")
+                .message("没有权限执行此操作")
+                .path(request.getRequestURI())
+                .code("ACCESS_DENIED")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+    }
+
+    /**
      * 处理运行时异常
      *
      * @param ex      运行时异常
