@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.memory;
+package cn.chenyunlong.qing.infrastructure.repository.memory;
 
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.TokenRepository;
@@ -7,7 +7,6 @@ import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenType;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 @RequiredArgsConstructor
 public class InMemoryTokenRepository implements TokenRepository {
 

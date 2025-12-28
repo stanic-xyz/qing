@@ -1,6 +1,7 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.memory;
+package cn.chenyunlong.qing.infrastructure.repository.memory;
 
 import cn.chenyunlong.qing.auth.domain.authentication.repository.TokenCacheRepository;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Set;
 /**
  * 内存 Token 缓存实现（测试用）
  */
+@Repository
 public class InMemoryTokenCacheRepository implements TokenCacheRepository {
     private final Set<String> blacklist = new HashSet<>();
     private final Map<Long, Map<String, String>> userTokens = new HashMap<>();

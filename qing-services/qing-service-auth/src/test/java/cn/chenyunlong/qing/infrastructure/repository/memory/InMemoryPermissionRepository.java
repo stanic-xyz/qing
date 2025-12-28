@@ -1,10 +1,11 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.memory;
+package cn.chenyunlong.qing.infrastructure.repository.memory;
 
 import cn.chenyunlong.qing.auth.domain.rbac.PermissionId;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.repository.PermissionRepository;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class InMemoryPermissionRepository implements PermissionRepository {
 
     private final Map<PermissionId, Permission> store = new ConcurrentHashMap<>();

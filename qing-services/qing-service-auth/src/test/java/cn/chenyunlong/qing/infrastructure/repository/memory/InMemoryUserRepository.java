@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.memory;
+package cn.chenyunlong.qing.infrastructure.repository.memory;
 
 import cn.chenyunlong.qing.auth.domain.user.User;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
@@ -6,11 +6,13 @@ import cn.chenyunlong.qing.auth.domain.user.valueObject.Email;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Username;
 import cn.hutool.core.util.StrUtil;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class InMemoryUserRepository implements UserRepository {
 
     private final Map<Long, User> store = new ConcurrentHashMap<>();

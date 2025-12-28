@@ -1,19 +1,21 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.memory;
+package cn.chenyunlong.qing.infrastructure.repository.memory;
 
 import cn.chenyunlong.qing.auth.domain.authentication.AuthenticationToken;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.AuthenticationTokenRepository;
 import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenId;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
-import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * 内存 Token 仓库实现，仅用于集成测试
  */
+@Repository
 public class InMemoryAuthenticationTokenRepository implements AuthenticationTokenRepository {
 
     private final Map<TokenId, AuthenticationToken> store = new ConcurrentHashMap<>();

@@ -1,10 +1,9 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.memory;
+package cn.chenyunlong.qing.infrastructure.repository.memory;
 
 import cn.chenyunlong.qing.auth.domain.rbac.Role;
 import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
 import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
 import cn.hutool.core.util.StrUtil;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -13,9 +12,12 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * 内存 Role 仓库，仅用于测试
  */
+@Repository
 public class InMemoryRoleRepository implements RoleRepository {
 
     private final Map<RoleId, Role> store = new ConcurrentHashMap<>();

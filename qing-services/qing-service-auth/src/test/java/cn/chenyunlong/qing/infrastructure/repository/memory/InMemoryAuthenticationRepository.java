@@ -1,10 +1,9 @@
-package cn.chenyunlong.qing.auth.infrastructure.repository.memory;
+package cn.chenyunlong.qing.infrastructure.repository.memory;
 
 import cn.chenyunlong.qing.auth.domain.authentication.Authentication;
 import cn.chenyunlong.qing.auth.domain.authentication.repository.AuthenticationRepository;
 import cn.chenyunlong.qing.auth.domain.authentication.valueObject.AuthenticationId;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.UserId;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -12,9 +11,12 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * 内存 Authentication 仓库实现，仅用于集成测试
  */
+@Repository
 public class InMemoryAuthenticationRepository implements AuthenticationRepository {
 
     private final Map<AuthenticationId, Authentication> store = new ConcurrentHashMap<>();
