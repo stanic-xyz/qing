@@ -4,6 +4,7 @@ import cn.chenyunlong.qing.auth.interfaces.security.filter.JwtAuthenticationFilt
 import cn.chenyunlong.qing.auth.interfaces.security.handler.RestAccessDeniedHandler;
 import cn.chenyunlong.qing.auth.interfaces.security.handler.RestAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -67,6 +68,17 @@ public class SecurityConfig {
     }
 
     /**
+     * 防止JwtAuthenticationFilter被Spring Boot自动注册为全局过滤器
+     * 因为我们已经在SecurityFilterChain中手动添加了它
+     */
+    @Bean
+    public FilterRegistrationBean<JwtAuthenticationFilter> jwtAuthenticationFilterRegistration(JwtAuthenticationFilter filter) {
+        FilterRegistrationBean<JwtAuthenticationFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
+    }
+
+    /**
      * CORS配置
      */
     @Bean
@@ -76,7 +88,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));
-        
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

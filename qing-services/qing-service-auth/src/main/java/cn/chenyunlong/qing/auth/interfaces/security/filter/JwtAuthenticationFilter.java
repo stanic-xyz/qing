@@ -47,18 +47,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = claims.getSubject();
 
                 if (username != null) {
-                    // 从Token中获取权限信息
                     List<String> roles = claims.get("roles", List.class);
                     List<String> permissions = claims.get("permissions", List.class);
-                    
+
                     List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                    
+
                     if (roles != null) {
                         authorities.addAll(roles.stream()
                                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                                 .collect(Collectors.toList()));
                     }
-                    
+
                     if (permissions != null) {
                         authorities.addAll(permissions.stream()
                                 .map(SimpleGrantedAuthority::new)
@@ -67,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             username, null, authorities);
-                    
+
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
