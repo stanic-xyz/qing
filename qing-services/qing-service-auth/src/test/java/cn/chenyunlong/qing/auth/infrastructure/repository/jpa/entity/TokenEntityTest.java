@@ -1,7 +1,6 @@
-package cn.chenyunlong.qing.infrastructure.repository.entity;
+package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity;
 
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.TokenJpaRepository;
-import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.TokenEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

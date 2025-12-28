@@ -1,7 +1,8 @@
-package cn.chenyunlong.qing.infrastructure.repository.entity;
+package cn.chenyunlong.qing.infrastructure.jpa;
 
 import cn.chenyunlong.qing.auth.AuthWebApplication;
-import cn.chenyunlong.qing.infrastructure.repository.TestEntityRepository;
+import cn.chenyunlong.qing.infrastructure.jpa.entity.TestEntity;
+import cn.chenyunlong.qing.infrastructure.jpa.repository.TestEntityRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -27,8 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @DataJpaTest
 @ContextConfiguration(classes = AuthWebApplication.class)
-@EnableJpaRepositories(basePackages = "cn.chenyunlong.qing.infrastructure.repository")
-@EntityScan(basePackages = "cn.chenyunlong.qing.infrastructure.repository.entity")
+@EnableJpaRepositories(basePackages = "cn.chenyunlong.qing.infrastructure.jpa")
+@EntityScan(basePackages = "cn.chenyunlong.qing.infrastructure.jpa.entity")
 @DisplayName("Hibernate 6.6+ @GeneratedValue 行为测试")
 class HibernateGeneratedValueBehaviorTest {
 

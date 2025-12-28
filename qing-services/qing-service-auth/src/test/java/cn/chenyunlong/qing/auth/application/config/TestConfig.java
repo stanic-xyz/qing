@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ComponentScan(basePackages = {
         "cn.chenyunlong.qing.auth.application",
         "cn.chenyunlong.qing.auth.domain",
-        "cn.chenyunlong.qing.infrastructure.repository.memory"
+        "cn.chenyunlong.qing.infrastructure.jpa.memory"
 })
 public class TestConfig {
 

@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrastructure.repository.memory;
+package cn.chenyunlong.qing.infrastructure.jpa.memory;
 
 import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
 import cn.chenyunlong.qing.auth.domain.rbac.userrole.UserRole;

@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.infrastructure.repository.memory;
+package cn.chenyunlong.qing.infrastructure.jpa.memory;
 
 import cn.chenyunlong.qing.auth.domain.platform.Platform;
 import cn.chenyunlong.qing.auth.domain.platform.PlatformId;

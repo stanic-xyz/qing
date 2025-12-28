@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 
+import cn.chenyunlong.qing.auth.AuthWebApplication;
 import cn.chenyunlong.qing.auth.application.service.AuthApplicationService;
 import cn.chenyunlong.qing.auth.application.service.UserRoleAssignmentService;
 import cn.chenyunlong.qing.auth.domain.authentication.service.UserDomainService;
@@ -35,11 +36,13 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
+@ActiveProfiles("test")
+@SpringBootTest(
+        classes = {AuthWebApplication.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
         "spring.mail.username=test@example.com"
 })
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 class ControllerSecurityIntegrationTest {
 
     @Autowired
