@@ -16,4 +16,10 @@ public interface SecurityPolicyPort {
     PasswordExpiredHandlePolicy getPasswordExpiredPolicy();
 
     int getMaxLoginAttempts();
+
+    void resetLoginFailure(String value);
+
+    long recordLoginFailure(String value);
+
+    long getLoginFailures(String value);
 }

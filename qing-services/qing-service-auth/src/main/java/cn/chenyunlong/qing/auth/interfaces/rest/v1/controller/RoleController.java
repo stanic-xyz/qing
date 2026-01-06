@@ -56,12 +56,60 @@ public class RoleController {
 
     @PostMapping
     @Operation(summary = "创建角色")
-    @PreAuthorize("hasAuthority('role:create')")
+    @PreAuthorize("hasRole('admin')")
     public JsonResult<Void> create(@RequestBody CreateRoleRequest request) {
-        authApplicationService
-                .createRole(CreateRoleCommand.create(request.getCode(), request.getName(), request.getDescription()));
+        authApplicationService.createRole(CreateRoleCommand.create(request.getCode(), request.getName(), request.getDescription()));
         return JsonResult.success();
     }
+
+    /**
+     * 更新角色
+     * TODO: 实现更新角色逻辑
+     */
+    @PutMapping("/{id}")
+    @Operation(summary = "更新角色")
+    @PreAuthorize("hasAuthority('role:update')")
+    public JsonResult<Void> update(@PathVariable("id") Long id, @RequestBody Object request) {
+        // TODO: 实现更新角色逻辑
+        return JsonResult.success();
+    }
+
+    /**
+     * 删除角色
+     * TODO: 实现删除角色逻辑
+     */
+    @DeleteMapping("/{id}")
+    @Operation(summary = "删除角色")
+    @PreAuthorize("hasAuthority('role:delete')")
+    public JsonResult<Void> delete(@PathVariable("id") Long id) {
+        // TODO: 实现删除角色逻辑
+        return JsonResult.success();
+    }
+
+    /**
+     * 获取角色列表
+     * TODO: 实现获取角色列表逻辑
+     */
+    @GetMapping
+    @Operation(summary = "获取角色列表")
+    @PreAuthorize("hasAuthority('role:list')")
+    public JsonResult<Object> list(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+        // TODO: 实现获取角色列表逻辑
+        return JsonResult.success(null);
+    }
+
+    /**
+     * 获取角色的权限列表
+     * TODO: 实现获取角色权限列表逻辑
+     */
+    @GetMapping("/{id}/permissions")
+    @Operation(summary = "获取角色的权限列表")
+    @PreAuthorize("hasAuthority('role:read')")
+    public JsonResult<Object> getRolePermissions(@PathVariable("id") Long id) {
+        // TODO: 实现获取角色权限列表逻辑
+        return JsonResult.success(null);
+    }
+
 
     /**
      * 为角色批量关联权限
@@ -72,7 +120,7 @@ public class RoleController {
      */
     @PostMapping("/{id}/permissions")
     @Operation(summary = "角色关联权限")
-    @PreAuthorize("hasAuthority('role:assign-permissions')")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<JsonResult<Void>> assignPermissions(
             @PathVariable("id") @Parameter(description = "角色标识") Long roleId,
             @RequestBody AssignPermissionsRequest request) {
@@ -95,7 +143,7 @@ public class RoleController {
      */
     @DeleteMapping("/{roleId}/permissions/{permissionId}")
     @Operation(summary = "取消角色权限关联")
-    @PreAuthorize("hasAuthority('role:revoke-permissions')")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<JsonResult<Void>> revokePermission(
             @PathVariable("roleId") @Parameter(description = "角色ID") Long roleId,
             @PathVariable("permissionId") @Parameter(description = "权限ID") Long permissionId) {

@@ -5,6 +5,7 @@ import cn.chenyunlong.qing.auth.domain.authentication.valueObject.PasswordExpire
 import cn.chenyunlong.qing.auth.domain.user.port.SecurityPolicyPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -47,14 +48,15 @@ public class SecurityPolicyService implements SecurityPolicyPort {
         String ip = ipAddress.getValue();
 
         // 1. 如果白名单不为空，则必须在白名单中
-        Long whitelistSize = redisTemplate.opsForSet().size(IP_WHITELIST_KEY);
+        SetOperations<String, String> stringSetOperations = redisTemplate.opsForSet();
+        Long whitelistSize = stringSetOperations.size(IP_WHITELIST_KEY);
         if (whitelistSize != null && whitelistSize > 0) {
-            Boolean isWhitelisted = redisTemplate.opsForSet().isMember(IP_WHITELIST_KEY, ip);
+            Boolean isWhitelisted = stringSetOperations.isMember(IP_WHITELIST_KEY, ip);
             return Boolean.TRUE.equals(isWhitelisted);
         }
 
         // 2. 检查黑名单
-        Boolean isBlacklisted = redisTemplate.opsForSet().isMember(IP_BLACKLIST_KEY, ip);
+        Boolean isBlacklisted = stringSetOperations.isMember(IP_BLACKLIST_KEY, ip);
         return !Boolean.TRUE.equals(isBlacklisted);
     }
 

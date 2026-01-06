@@ -31,7 +31,7 @@ public class InMemoryPermissionRepository implements PermissionRepository {
 
     @Override
     public List<Permission> findByIds(List<PermissionId> permissionIds) {
-        return store.values().stream().filter(p -> CollUtil.contains(permissionIds, p.getId().id())).toList();
+        return store.values().stream().filter(p -> CollUtil.contains(permissionIds, p.getId())).toList();
     }
 
     @Override

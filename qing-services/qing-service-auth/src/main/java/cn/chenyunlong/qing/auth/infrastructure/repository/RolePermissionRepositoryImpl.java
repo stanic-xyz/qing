@@ -11,6 +11,7 @@ import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.RolePer
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,6 +49,15 @@ public class RolePermissionRepositoryImpl implements RolePermissionRepository {
     public Set<PermissionId> findPermissionIdsByRoleId(RoleId roleId) {
         return rolePermissionJpaRepository.findByRoleId(roleId.id()).stream()
                 .map(RolePermissionEntity::getPermissionId).map(PermissionId::of)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<PermissionId> findPermissionIdsByRoleIds(List<RoleId> roleIds) {
+        return rolePermissionJpaRepository.findByRoleIdIn(roleIds.stream().map(RoleId::value).toList())
+                .stream()
+                .map(RolePermissionEntity::getPermissionId)
+                .map(PermissionId::of)
                 .collect(Collectors.toSet());
     }
 }

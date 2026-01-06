@@ -70,7 +70,6 @@ public class AuthenticationController {
      */
     @PostMapping("/login")
     @Operation(summary = "用户登录", description = "用户登录认证")
-    @SecurityValidated
     public JsonResult<LoginResponse> login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
 
         // 转换为应用层DTO

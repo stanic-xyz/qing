@@ -2,8 +2,10 @@ package cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository;
 
 import cn.chenyunlong.jpa.support.BaseJpaRepository;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.RolePermissionEntity;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,6 +23,9 @@ public interface RolePermissionJpaRepository extends BaseJpaRepository<RolePermi
      * 根据角色ID查询已关联的权限记录
      */
     List<RolePermissionEntity> findByRoleId(Long roleId);
+
+    @Query("select r from RolePermissionEntity r where r.roleId in ?1")
+    List<RolePermissionEntity> findByRoleIdIn(Collection<Long> roleIds);
 
     /**
      * 取消角色与权限的关联

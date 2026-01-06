@@ -4,6 +4,7 @@ import cn.chenyunlong.jpa.support.BaseJpaRepository;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.UserRoleEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,5 +22,5 @@ public interface UserRoleJpaRepository extends BaseJpaRepository<UserRoleEntity,
     /**
      * 根据用户ID查询未撤销的角色关联
      */
-    java.util.List<UserRoleEntity> findByUserIdAndRevokedFalse(Long userId);
+    List<UserRoleEntity> findByUserIdAndRevokedFalse(Long userId);
 }

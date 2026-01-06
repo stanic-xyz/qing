@@ -99,7 +99,7 @@ public class PermissionController {
                     .parentId(item.getParentId() != null ? new PermissionId(item.getParentId()) : null)
                     .build());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(JsonResult.success());
+        return ResponseEntity.ok(JsonResult.success());
     }
 
     /**
@@ -145,7 +145,7 @@ public class PermissionController {
     @DeleteMapping("/{id}")
     @Operation(summary = "删除权限")
     @PreAuthorize("hasAuthority('permission:delete')")
-    public ResponseEntity<JsonResult<Void>> enablePermission(@PathVariable("id") Long permissionId) {
+    public ResponseEntity<JsonResult<Void>> delete(@PathVariable("id") Long permissionId) {
         authApplicationService.deletePermission(DeletePermissionCommand.builder().id(PermissionId.of(permissionId)).build());
         return ResponseEntity.noContent().build();
     }

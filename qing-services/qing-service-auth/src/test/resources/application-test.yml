@@ -17,7 +17,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -48,3 +48,6 @@ qing:
       windowSeconds: 60
     global:
       enabled: false
+logging:
+  level:
+    root: error

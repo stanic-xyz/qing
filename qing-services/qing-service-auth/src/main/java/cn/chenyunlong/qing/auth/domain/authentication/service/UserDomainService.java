@@ -3,6 +3,15 @@ package cn.chenyunlong.qing.auth.domain.authentication.service;
 import cn.chenyunlong.qing.auth.domain.authentication.exception.AuthenticationException;
 import cn.chenyunlong.qing.auth.domain.authentication.valueObject.UserLockReason;
 import cn.chenyunlong.qing.auth.domain.event.DomainEventPublisher;
+import cn.chenyunlong.qing.auth.domain.rbac.PermissionId;
+import cn.chenyunlong.qing.auth.domain.rbac.Role;
+import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.repository.PermissionRepository;
+import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.permission.RolePermissionRepository;
+import cn.chenyunlong.qing.auth.domain.rbac.userrole.UserRole;
+import cn.chenyunlong.qing.auth.domain.rbac.userrole.repository.UserRoleRepository;
+import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
 import cn.chenyunlong.qing.auth.domain.user.User;
 import cn.chenyunlong.qing.auth.domain.user.UserConnection;
 import cn.chenyunlong.qing.auth.domain.user.command.*;
@@ -12,6 +21,7 @@ import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.auth.domain.user.specification.UserAuthenticationSpecification;
 import cn.chenyunlong.qing.auth.domain.user.specification.UserRegistrationSpecification;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.*;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import jakarta.validation.constraints.NotBlank;
@@ -22,7 +32,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
@@ -31,9 +44,13 @@ import java.util.Optional;
 public class UserDomainService {
 
     private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
     private final UserRegistrationSpecification userRegistrationSpecification;
     private final UserAuthenticationSpecification authenticationSpecification;
     private final DomainEventPublisher eventPublisher;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
+    private final RolePermissionRepository rolePermissionRepository;
 
     /**
      * createImpl
@@ -222,5 +239,43 @@ public class UserDomainService {
         user.updateBasicInfo(command.getNickname(), command.getAvatar(), command.getDescription());
         userRepository.save(user);
         publishDomainEvents(user);
+    }
+
+    /**
+     * 获取用户的角色和权限信息
+     * 该方法封装了用户角色权限信息的获取逻辑，遵循DDD原则
+     *
+     * @param userId 用户标识
+     * @return 用户角色权限信息值对象
+     */
+    public UserRolePermissionInfo getUserRolePermissionInfo(UserId userId) {
+        // 1. 获取用户的所有角色关联
+        List<UserRole> userRoles = userRoleRepository.findByUserId(userId);
+
+        if (CollUtil.isEmpty(userRoles)) {
+            return UserRolePermissionInfo.of(List.of(), List.of());
+        }
+
+        // 2. 提取角色编码（去重）
+        List<RoleId> roleIds = userRoles.stream()
+                .map(UserRole::getRoleId)
+                .filter(Objects::nonNull)
+                .distinct().toList();
+
+        List<Role> roleList = roleRepository.findByIds(roleIds);
+
+        List<String> roleCodes = roleList.stream().map(Role::getCode).toList();
+
+        Set<PermissionId> permissionIdSet = rolePermissionRepository.findPermissionIdsByRoleIds(roleIds);
+
+        List<Permission> permissionList = permissionRepository.findByIds(permissionIdSet.stream().toList());
+
+        // 3. 提取权限编码（去重）
+        Set<String> permissionCodes = permissionList.stream()
+                .filter(Objects::nonNull)
+                .map(Permission::getCode)
+                .collect(Collectors.toSet());
+
+        return UserRolePermissionInfo.of(roleCodes, List.copyOf(permissionCodes));
     }
 }

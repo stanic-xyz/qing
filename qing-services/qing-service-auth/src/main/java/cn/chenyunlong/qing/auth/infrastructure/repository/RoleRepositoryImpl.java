@@ -10,6 +10,7 @@ import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.entity.RolePermiss
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.RoleJpaRepository;
 import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.RolePermissionJpaRepository;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +50,6 @@ public class RoleRepositoryImpl implements RoleRepository {
 
         // 维护权限关联
         updateRolePermissions(domain);
-
         return domain;
     }
 
@@ -97,6 +97,7 @@ public class RoleRepositoryImpl implements RoleRepository {
                 .filter(id -> !existingPermissionIds.contains(id))
                 .map(permissionId -> {
                     RolePermissionEntity entity = new RolePermissionEntity();
+                    entity.setId(IdUtil.getSnowflakeNextId());
                     entity.setRoleId(roleId);
                     entity.setPermissionId(permissionId);
                     return entity;

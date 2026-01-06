@@ -34,7 +34,6 @@ import cn.chenyunlong.qing.auth.domain.rbac.permission.exception.PermissionDupli
 import cn.chenyunlong.qing.auth.domain.rbac.permission.exception.PermissionNotFoundException;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.repository.PermissionRepository;
 import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.command.RemovePermissionFromRoleCommand;
-import cn.chenyunlong.qing.auth.domain.rbac.userrole.UserRole;
 import cn.chenyunlong.qing.auth.domain.role.command.CreateRoleCommand;
 import cn.chenyunlong.qing.auth.domain.role.command.RoleAssignPermissionsCommand;
 import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
@@ -43,6 +42,7 @@ import cn.chenyunlong.qing.auth.domain.user.command.AuthenticationByUsernamePass
 import cn.chenyunlong.qing.auth.domain.user.command.UserActiveCommand;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.auth.domain.user.specification.UserAuthenticationSpecification;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.UserRolePermissionInfo;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.Username;
 import cn.chenyunlong.qing.domain.common.BaseSimpleBusinessEntity;
 import cn.hutool.core.collection.CollUtil;
@@ -91,34 +91,29 @@ public class AuthApplicationService {
      */
     @Transactional(rollbackFor = Exception.class)
     public AuthenticationResultDTO login(AuthenticationByUsernamePasswordCommand command) {
-        // 2. 查找用户
+        // 1. 查找用户
         User user = userRepository.findByUsername(command.getUsername()).orElseThrow(() -> new AuthenticationException("用户不存在"));
 
-        // 规约收敛：状态、锁定、密码校验
+        // 2. 规约收敛：状态、锁定、密码校验
         authenticationSpecification.check(user, command.getPassword(), command.getClientIpAddress(), command.getUserAgent());
         user.resetLoginAttempts();
         userRepository.save(user);
 
-
-        // 4. 认证成功处理
+        // 3. 认证成功处理
         log.info("用户认证成功: username={}, user={}", command.getUsername(), user.getId());
 
-        List<UserRole> userRoles = user.getRoles();
-        Set<Permission> permissionSet = userRoles.stream().flatMap(userRole -> {
-            Set<Permission> rolePermissions = userRole.getPermissions();
-            List<Permission> objectArrayList = CollUtil.toList();
-            return rolePermissions == null ? objectArrayList.stream() : rolePermissions.stream();
-        }).collect(Collectors.toSet());
-        List<Role> roleList = userRoles.stream().map(UserRole::getRole).toList();
-        List<String> permissionCodes = permissionSet.stream().map(Permission::getCode).distinct().toList();
-        List<String> roleCodes = roleList.stream().map(Role::getCode).distinct().toList();
+        // 4. 获取用户完整的角色和权限信息（通过领域服务）
+        UserRolePermissionInfo rolePermissionInfo = userDomainService.getUserRolePermissionInfo(user.getId());
 
-        // 生成 JWT 令牌
-        String accessToken = jwtTokenService.generateAccessToken(user, null, roleCodes, permissionCodes);
+        // 5. 生成 JWT 令牌（包含完整的角色和权限信息）
+        String accessToken = jwtTokenService.generateAccessToken(user, null,
+                rolePermissionInfo.getRoleCodes(), rolePermissionInfo.getPermissionCodes());
         String refreshToken = jwtTokenService.generateRefreshToken(user);
 
+        // 6. 记录登录成功
         user.recordLoginSuccess(command.getClientIpAddress(), command.getUserAgent());
 
+        // 7. 创建并保存认证令牌
         AuthenticationToken authenticationToken = AuthenticationToken.create(TokenId.generate(), accessToken,
                 TokenType.JWT, refreshToken, user.getId(), Instant.now(), command.getUserAgent());
         userTokenRepository.save(authenticationToken);
@@ -198,7 +193,7 @@ public class AuthApplicationService {
         return accessToken;
     }
 
-    public void createRole(CreateRoleCommand command) {
+    public Role createRole(CreateRoleCommand command) {
 
         if (roleRepository.existsByCode(command.getCode())) {
             throw new AuthenticationException("角色编码重复");
@@ -210,14 +205,16 @@ public class AuthApplicationService {
 
         Role role = Role.create(command.getName(), command.getCode(), command.getDescription(), "system");
         roleRepository.save(role);
+        return role;
     }
 
     /**
      * 创建权限
      *
      * @param command 创建权限命令
+     * @return
      */
-    public void createPermission(CreatePermissionCommand command) {
+    public Permission createPermission(CreatePermissionCommand command) {
         if (permissionRepository.existsByCode(command.getCode())) {
             throw new PermissionDuplicateException("权限编码重复");
         }
@@ -232,6 +229,7 @@ public class AuthApplicationService {
                 command.getAction(),
                 "system");
         permissionRepository.save(permission);
+        return permission;
     }
 
     /**
