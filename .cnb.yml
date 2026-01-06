@@ -14,14 +14,10 @@ main:
   push:
     - name: 编译构建
       docker:
-        # 声明式的构建环境 https://docs.cnb.cool/
-        # 可以去dockerhub上 https://hub.docker.com/_/maven 找到您需要maven和jdk版本
         image: maven:3.9.9-amazoncorretto-21
         volumes:
-          # 声明式的构建缓存 https://docs.cnb.cool/zh/grammar/pipeline.html#volumes
           - /root/.m2:copy-on-write
       services:
-        # 流水线中启用 docker in docker
         - docker
       stages:
         - name: 检查变更文件
@@ -33,9 +29,9 @@ main:
           script:
             # 只有当auth相关文件变更时才构建
             - |
-              if grep -E "(qing-services/qing-service-auth|qing-commons|qing-domain-common|qing-infrastructure|qing-bom|pom.xml)" changed_files.txt; then
+              if grep -E "(qing-services/qing-service-auth|qing-bom|pom.xml)" changed_files.txt; then
                 echo "检测到Auth服务相关变更，开始构建..."
-                mvn clean package -pl qing-services/qing-service-auth/auth-interfaces -am -f pom.xml -T 2C --batch-mode
+                mvn clean package -pl qing-services/qing-service-auth -am -f pom.xml -T 2C --batch-mode
               else
                 echo "未检测到Auth服务相关变更，跳过构建"
               fi
@@ -43,13 +39,12 @@ main:
           script:
             # 只有当anime相关文件变更时才构建
             - |
-              if grep -E "(qing-services/qing-service-anime|qing-commons|qing-domain-common|qing-infrastructure|qing-bom|pom.xml)" changed_files.txt; then
+              if grep -E "(qing-services/qing-service-anime|qing-bom|pom.xml)" changed_files.txt; then
                 echo "检测到Anime服务相关变更，开始构建..."
-                mvn clean package -pl qing-services/qing-service-anime/anime-interfaces -am -f pom.xml -T 2C --batch-mode
+                mvn clean package -pl qing-services/qing-service-anime -am -f pom.xml -T 2C --batch-mode
               else
                 echo "未检测到Anime服务相关变更，跳过构建"
               fi
-        # 云原生构建自动构建Docker镜像并将它发布到制品库，【上传Docker制品】https://docs.cnb.cool/zh/artifact/docker.html
         - name: echo tag name
           script:
             - echo current branch $CNB_BRANCH
@@ -82,39 +77,29 @@ main:
             - |
               echo "## 📋 变更总结" > pr_summary.md
               echo "" >> pr_summary.md
-              
+
               # 检查各个模块的变更
               anime_changed=false
               auth_changed=false
               common_changed=false
               infra_changed=false
               ci_changed=false
-              
+
               if grep -q "qing-services/qing-service-anime" pr_changed_files.txt; then
                 echo "- 🎬 **Anime服务**: 检测到变更" >> pr_summary.md
                 anime_changed=true
               fi
-              
+
               if grep -q "qing-services/qing-service-auth" pr_changed_files.txt; then
                 echo "- 🔐 **Auth服务**: 检测到变更" >> pr_summary.md
                 auth_changed=true
               fi
-              
-              if grep -q "qing-commons" pr_changed_files.txt; then
-                echo "- 🔧 **公共模块**: 检测到变更" >> pr_summary.md
-                common_changed=true
-              fi
-              
-              if grep -q "qing-infrastructure" pr_changed_files.txt; then
-                echo "- 🏗️ **基础设施**: 检测到变更" >> pr_summary.md
-                infra_changed=true
-              fi
-              
+
               if grep -q "\.cnb\.yml\|charts/" pr_changed_files.txt; then
                 echo "- ⚙️ **CI/CD配置**: 检测到变更" >> pr_summary.md
                 ci_changed=true
               fi
-              
+
               # 添加构建建议
               echo "" >> pr_summary.md
               echo "### 🚀 构建建议" >> pr_summary.md
@@ -127,13 +112,13 @@ main:
               if [ "$ci_changed" = true ]; then
                 echo "- 需要验证 CI/CD 配置" >> pr_summary.md
               fi
-              
+
               echo "" >> pr_summary.md
               echo "### 📁 变更文件详情" >> pr_summary.md
               echo "\`\`\`" >> pr_summary.md
               cat pr_changed_files.txt >> pr_summary.md
               echo "\`\`\`" >> pr_summary.md
-              
+
               echo "变更总结已生成:"
               cat pr_summary.md
         - name: 变更总结
@@ -150,8 +135,6 @@ v*.*.*:
   tag_push:
     - name: 构建镜像
       docker:
-        # 声明式的构建环境 https://docs.cnb.cool/
-        # 可以去dockerhub上 https://hub.docker.com/_/maven 找到需要maven和jdk版本
         image: maven:3.9.9-amazoncorretto-21
         volumes:
           - /root/.m2:copy-on-write
@@ -167,7 +150,7 @@ v*.*.*:
             - echo "检查标签 $CNB_BRANCH 对应的变更..."
             - git diff --name-only HEAD~1 HEAD > tag_changed_files.txt
             - cat tag_changed_files.txt
-        
+
         - name: 并行Maven构建
           script:
             - echo "开始并行构建服务..."
@@ -175,17 +158,17 @@ v*.*.*:
               # 检查是否需要构建Anime服务
               if grep -E "(qing-services/qing-service-anime|qing-commons|qing-domain-common|qing-infrastructure|qing-bom|pom.xml)" tag_changed_files.txt; then
                 echo "构建Anime服务..."
-                mvn clean package -pl qing-services/qing-service-anime/anime-interfaces -am -f pom.xml -T 2C --batch-mode &
+                mvn clean package -pl qing-services/qing-service-anime -am -f pom.xml -T 2C --batch-mode &
                 ANIME_PID=$!
               fi
-              
+
               # 检查是否需要构建Auth服务
               if grep -E "(qing-services/qing-service-auth|qing-commons|qing-domain-common|qing-infrastructure|qing-bom|pom.xml)" tag_changed_files.txt; then
                 echo "构建Auth服务..."
-                mvn clean package -pl qing-services/qing-service-auth/auth-interfaces -am -f pom.xml -T 2C --batch-mode &
+                mvn clean package -pl qing-services/qing-service-auth -am -f pom.xml -T 2C --batch-mode &
                 AUTH_PID=$!
               fi
-              
+
               # 等待所有构建完成
               if [ ! -z "$ANIME_PID" ]; then
                 wait $ANIME_PID
@@ -195,37 +178,37 @@ v*.*.*:
                 wait $AUTH_PID
                 echo "Auth服务构建完成"
               fi
-        
+
         - name: echo tag name
           script:
             - echo  当前发布tag版本：$CNB_BRANCH
-        
+
         - name: docker login
           script:
             - docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
-        
+
         - name: 并行构建Docker镜像
           script:
             - |
               # 并行构建Docker镜像
-              if [ -f "qing-services/qing-service-anime/anime-interfaces/target/*.jar" ]; then
+              if [ -f "qing-services/qing-service-anime/target/*.jar" ]; then
                 echo "构建Anime Docker镜像..."
                 docker build --cache-from ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-anime:latest \
                   -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-anime:${CNB_COMMIT} \
                   -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-anime:latest \
-                  ${CNB_BUILD_WORKSPACE}/qing-services/qing-service-anime/anime-interfaces/ &
+                  ${CNB_BUILD_WORKSPACE}/qing-services/qing-service-anime/ &
                 ANIME_DOCKER_PID=$!
               fi
-              
-              if [ -f "qing-services/qing-service-auth/auth-interfaces/target/*.jar" ]; then
+
+              if [ -f "qing-services/qing-service-auth/target/*.jar" ]; then
                 echo "构建Auth Docker镜像..."
                 docker build --cache-from ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-auth:latest \
                   -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-auth:${CNB_COMMIT} \
                   -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-auth:latest \
-                  ${CNB_BUILD_WORKSPACE}/qing-services/qing-service-auth/auth-interfaces/ &
+                  ${CNB_BUILD_WORKSPACE}/qing-services/qing-service-auth/ &
                 AUTH_DOCKER_PID=$!
               fi
-              
+
               # 等待Docker构建完成
               if [ ! -z "$ANIME_DOCKER_PID" ]; then
                 wait $ANIME_DOCKER_PID
@@ -235,7 +218,7 @@ v*.*.*:
                 wait $AUTH_DOCKER_PID
                 echo "Auth Docker镜像构建完成"
               fi
-        
+
         - name: 推送Docker镜像
           script:
             - |
@@ -245,14 +228,14 @@ v*.*.*:
                 docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-anime:${CNB_COMMIT} &
                 docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-anime:latest &
               fi
-              
+
               # 推送Auth镜像
               if docker images | grep -q "${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-auth:${CNB_COMMIT}"; then
                 echo "推送Auth镜像..."
                 docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-auth:${CNB_COMMIT} &
                 docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}-auth:latest &
               fi
-              
+
               # 等待所有推送完成
               wait
               echo "所有镜像推送完成"

@@ -1,0 +1,281 @@
+package cn.chenyunlong.qing.auth.domain.authentication.service;
+
+import cn.chenyunlong.qing.auth.domain.authentication.exception.AuthenticationException;
+import cn.chenyunlong.qing.auth.domain.authentication.valueObject.UserLockReason;
+import cn.chenyunlong.qing.auth.domain.event.DomainEventPublisher;
+import cn.chenyunlong.qing.auth.domain.rbac.PermissionId;
+import cn.chenyunlong.qing.auth.domain.rbac.Role;
+import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
+import cn.chenyunlong.qing.auth.domain.rbac.permission.repository.PermissionRepository;
+import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.permission.RolePermissionRepository;
+import cn.chenyunlong.qing.auth.domain.rbac.userrole.UserRole;
+import cn.chenyunlong.qing.auth.domain.rbac.userrole.repository.UserRoleRepository;
+import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
+import cn.chenyunlong.qing.auth.domain.user.User;
+import cn.chenyunlong.qing.auth.domain.user.UserConnection;
+import cn.chenyunlong.qing.auth.domain.user.command.*;
+import cn.chenyunlong.qing.auth.domain.user.dto.entity.QingAuthUser;
+import cn.chenyunlong.qing.auth.domain.user.event.EmailChangedEvent;
+import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
+import cn.chenyunlong.qing.auth.domain.user.specification.UserAuthenticationSpecification;
+import cn.chenyunlong.qing.auth.domain.user.specification.UserRegistrationSpecification;
+import cn.chenyunlong.qing.auth.domain.user.valueObject.*;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Transactional(rollbackFor = Exception.class)
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class UserDomainService {
+
+    private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final UserRegistrationSpecification userRegistrationSpecification;
+    private final UserAuthenticationSpecification authenticationSpecification;
+    private final DomainEventPublisher eventPublisher;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
+    private final RolePermissionRepository rolePermissionRepository;
+
+    /**
+     * createImpl
+     */
+    public User register(UserRegistrationCommand command) {
+        userRegistrationSpecification.check(command);
+
+        User user = User.register(
+                UserId.generate(),
+                command.username(),
+                RawPassword.of(command.password()),
+                command.phoneNumber(),
+                command.email(),
+                command.nickname());
+
+        User save = userRepository.save(user);
+        publishDomainEvents(user);
+        return save;
+    }
+
+    public void resetActiveCode(UserResetActiveCodeCommand command) {
+        User user = userRepository.findByUsername(command.username()).orElseThrow();
+        if (user.isActive()) {
+            throw new IllegalArgumentException("用户已激活，无需再次激活！");
+        }
+        user.resetActivationCode();
+        publishDomainEvents(user);
+        userRepository.save(user);
+    }
+
+    /**
+     * 发布领域事件
+     */
+    private void publishDomainEvents(User user) {
+        eventPublisher.publishAll(user.domainEvents());
+        user.clearDomainEvents();
+    }
+
+    public void active(UserActiveCommand command) {
+        User user = userRepository.findByUsername(command.getUsername()).orElseThrow();
+
+        authenticationSpecification.checkActiveCondition(user);
+        if (!StrUtil.equals(user.getActivationCode(), command.getActiveCode())) {
+            throw new IllegalArgumentException("激活码错误");
+        }
+        user.activateBySelf();
+        userRepository.save(user);
+    }
+
+    public void activeFromAdmin(AdminActiveUserCommand command) {
+        User user = userRepository.findUserByUserId(command.getUid()).orElseThrow();
+
+        authenticationSpecification.checkActiveConditionForAdminActivation(user, command.getAdminUsername());
+        user.activateByAdmin();
+        userRepository.save(user);
+    }
+
+    public void deActiveFromAdmin(AdminDeActiveUserCommand command) {
+        User user = userRepository.findUserByUserId(command.getUid()).orElseThrow();
+
+        authenticationSpecification.checkDeActiveConditionForAdminActivation(user, command.getAdminUsername());
+        user.deactivateByAdmin();
+        userRepository.save(user);
+    }
+
+    /**
+     * 更改邮箱
+     */
+    public void changeEmail(User user, Email newEmail) {
+        validateEmailUniqueness(newEmail);
+        user.setEmail(newEmail);
+        // 需要重新验证邮箱
+        user.setActive(false);
+        user.generateActivationCode();
+
+        // 生成新的激活码
+        eventPublisher.publish(new EmailChangedEvent(this, user.getId(), newEmail));
+    }
+
+    private void validateEmailUniqueness(Email newEmail) {
+        boolean exists = userRepository.existsByEmail(newEmail);
+        if (exists) {
+            throw new IllegalArgumentException("邮箱已存在");
+        }
+    }
+
+    public Optional<User> loadUserById(Long userId) {
+        return userRepository.findById(UserId.of(userId));
+    }
+
+    /**
+     * 绑定用户
+     *
+     * @param command 注册用户命令
+     */
+    public void registerConnection(RegisterConnectionCommand command) {
+        Optional<User> qingUser = userRepository.findByUsername(command.username());
+
+        Assert.isTrue(qingUser.isPresent(), "用户不存在，不能绑定！");
+
+        QingAuthUser qingAuthUser = command.qingAuthUser();
+
+        if (qingUser.isPresent()) {
+            User user = qingUser.get();
+
+            UserConnection userConnection = UserConnection.builder()
+                    .accessToken(qingAuthUser.getToken().getAccessToken())
+                    .authProvider(qingAuthUser.getSource())
+                    .displayName(qingAuthUser.getUsername())
+                    .avatarUrl(qingAuthUser.getAvatar())
+                    .refreshToken(qingAuthUser.getToken().getRefreshToken())
+                    .providerUserId(qingAuthUser.getUuid())
+                    .build();
+
+            user.addConnection(userConnection);
+            userRepository.save(user);
+        }
+    }
+
+    public List<UserConnection> findConnectionByProviderIdAndProviderUserId(String providerId, String providerUserId) {
+        return null;
+    }
+
+    /**
+     * 批量验证用户名是否可用
+     */
+    public List<UsernameAvailability> checkUsernameAvailability(List<String> usernames) {
+        return usernames.stream()
+                .map(username -> {
+                    try {
+                        Username usernameObj = Username.of(username);
+                        boolean available = !userRepository.existsByUsername(usernameObj);
+                        return new UsernameAvailability(username, available);
+                    } catch (IllegalArgumentException e) {
+                        return new UsernameAvailability(username, false, e.getMessage());
+                    }
+                })
+                .toList();
+    }
+
+    public void unLockAccount(Long userId) {
+        Optional<User> userByUserId = userRepository.findUserByUserId(userId);
+        if (userByUserId.isEmpty()) {
+            throw new AuthenticationException("用户不存在");
+        }
+        User user = userByUserId.get();
+        user.unlock();
+        userRepository.save(user);
+        publishDomainEvents(user);
+    }
+
+    public void lockAccount(Long userId) {
+        User user = userRepository.findUserByUserId(userId).orElseThrow(() -> new AuthenticationException("用户不存在"));
+        user.lockAccount(UserLockReason.EXCEEDED_MAX_ATTEMPTS, Duration.ofDays(1));
+        userRepository.save(user);
+        eventPublisher.publishAll(user.domainEvents());
+    }
+
+    public void refreshToken(@NotBlank(message = "刷新令牌不能为空") String refreshToken) {
+
+    }
+
+    public void updateUser(UpdateUserCommand command) {
+        User user = userRepository.findById(command.getUserId()).orElseThrow(() -> new AuthenticationException("用户不存在"));
+
+        if (StrUtil.isNotBlank(command.getPhone())) {
+            PhoneNumber newPhone = PhoneNumber.of(command.getPhone());
+            if (user.getPhone() == null || !newPhone.equals(user.getPhone())) {
+                if (userRepository.existsByPhone(newPhone)) {
+                    throw new IllegalArgumentException("手机号已存在");
+                }
+                user.changePhone(newPhone);
+            }
+        }
+
+        if (StrUtil.isNotBlank(command.getEmail())) {
+            Email newEmail = Email.of(command.getEmail());
+            if (user.getEmail() == null || !newEmail.equals(user.getEmail())) {
+                if (userRepository.existsByEmail(newEmail)) {
+                    throw new IllegalArgumentException("邮箱已存在");
+                }
+                user.changeEmail(newEmail);
+            }
+        }
+
+        user.updateBasicInfo(command.getNickname(), command.getAvatar(), command.getDescription());
+        userRepository.save(user);
+        publishDomainEvents(user);
+    }
+
+    /**
+     * 获取用户的角色和权限信息
+     * 该方法封装了用户角色权限信息的获取逻辑，遵循DDD原则
+     *
+     * @param userId 用户标识
+     * @return 用户角色权限信息值对象
+     */
+    public UserRolePermissionInfo getUserRolePermissionInfo(UserId userId) {
+        // 1. 获取用户的所有角色关联
+        List<UserRole> userRoles = userRoleRepository.findByUserId(userId);
+
+        if (CollUtil.isEmpty(userRoles)) {
+            return UserRolePermissionInfo.of(List.of(), List.of());
+        }
+
+        // 2. 提取角色编码（去重）
+        List<RoleId> roleIds = userRoles.stream()
+                .map(UserRole::getRoleId)
+                .filter(Objects::nonNull)
+                .distinct().toList();
+
+        List<Role> roleList = roleRepository.findByIds(roleIds);
+
+        List<String> roleCodes = roleList.stream().map(Role::getCode).toList();
+
+        Set<PermissionId> permissionIdSet = rolePermissionRepository.findPermissionIdsByRoleIds(roleIds);
+
+        List<Permission> permissionList = permissionRepository.findByIds(permissionIdSet.stream().toList());
+
+        // 3. 提取权限编码（去重）
+        permissionList.stream()
+                .filter(Objects::nonNull)
+                .map(Permission::getCode)
+                .collect(Collectors.toSet());
+
+        return UserRolePermissionInfo.of(roleCodes, List.copyOf(permissionCodes));
+    }
+}
