@@ -12,4 +12,6 @@ public interface SysMenuJpaRepository extends BaseJpaRepository<MenuEntity, Long
 
     @Query("select menu from MenuEntity menu")
     List<MenuEntity> listAll();
+
+    boolean existsByMenuName(String menuName);
 }

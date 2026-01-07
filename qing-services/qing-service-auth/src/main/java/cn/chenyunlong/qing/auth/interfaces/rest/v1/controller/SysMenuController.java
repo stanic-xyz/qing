@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 import cn.chenyunlong.common.constants.CodeEnum;
 import cn.chenyunlong.common.model.JsonResult;
 import cn.chenyunlong.qing.auth.application.service.SysMenuService;
+import cn.chenyunlong.qing.auth.domain.menu.SysMenu;
 import cn.chenyunlong.qing.auth.domain.menu.dto.command.CreateSysMenuCommand;
 import cn.chenyunlong.qing.auth.domain.menu.dto.command.UpdateSysMenuCommand;
 import cn.chenyunlong.qing.auth.domain.menu.dto.request.SysMenuCreateRequest;
@@ -15,8 +16,10 @@ import cn.chenyunlong.qing.auth.infrastructure.repository.jpa.repository.SysMenu
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,17 +43,14 @@ public class SysMenuController {
     }
 
     @PostMapping
-    public JsonResult<Long> createSysMenu(
-            @RequestBody
-            SysMenuCreateRequest request) {
+    public ResponseEntity<Long> createSysMenu(@RequestBody SysMenuCreateRequest request) {
         CreateSysMenuCommand creator = sysMenuMapper.request2Dto(request);
-        return JsonResult.success(sysMenuService.createSysMenu(creator));
+        SysMenu sysMenu = sysMenuService.createSysMenu(creator);
+        return ResponseEntity.created(URI.create("api/v1/sys-menu/" + sysMenu.getId().id())).build();
     }
 
     @PutMapping("/{id}")
-    public JsonResult<String> updateSysMenu(
-            @PathVariable("id") Long id,
-            @RequestBody SysMenuUpdateRequest request) {
+    public JsonResult<String> updateSysMenu(@PathVariable("id") Long id, @RequestBody SysMenuUpdateRequest request) {
         request.setId(id);
         UpdateSysMenuCommand updater = sysMenuMapper.request2Updater(request);
         sysMenuService.updateSysMenu(updater);
@@ -58,25 +58,19 @@ public class SysMenuController {
     }
 
     @PatchMapping("/{id}/valid")
-    public JsonResult<String> validSysMenu(
-            @PathVariable("id")
-            Long id) {
+    public JsonResult<String> validSysMenu(@PathVariable("id") Long id) {
         sysMenuService.validSysMenu(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
     @PatchMapping("/{id}/invalid")
-    public JsonResult<String> invalidSysMenu(
-            @PathVariable("id")
-            Long id) {
+    public JsonResult<String> invalidSysMenu(@PathVariable("id") Long id) {
         sysMenuService.invalidSysMenu(id);
         return JsonResult.success(CodeEnum.Success.getName());
     }
 
     @GetMapping("/{id}")
-    public JsonResult<SysMenuResponse> findById(
-            @PathVariable("id")
-            Long id) {
+    public JsonResult<SysMenuResponse> findById(@PathVariable("id") Long id) {
         SysMenuVO vo = sysMenuService.findById(id);
         SysMenuResponse response = sysMenuMapper.vo2Response(vo);
         return JsonResult.success(response);

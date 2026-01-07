@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
 
 import cn.chenyunlong.common.model.JsonResult;
+import cn.chenyunlong.qing.auth.interfaces.rest.v1.dto.ThirdPartyResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -29,4 +29,9 @@ public class SysMenuRepositoryImpl implements SysMenuRepository {
     public Optional<SysMenu> findById(SysMenuId id) {
         return sysMenuJpaRepository.findById(id.id()).map(sysMenuMapper::entity2Domain);
     }
+
+    @Override
+    public boolean existsByName(String menuName) {
+        return sysMenuJpaRepository.existsByMenuName(menuName);
+    }
 }

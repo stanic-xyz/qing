@@ -1,4 +1,4 @@
-package cn.chenyunlong.qing.auth.interfaces.rest.v1.controller;
+package cn.chenyunlong.qing.auth.interfaces.rest.v1.dto;
 
 import lombok.Data;
 

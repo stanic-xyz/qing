@@ -11,6 +11,7 @@ import cn.chenyunlong.qing.auth.domain.menu.dto.vo.SysMenuVO;
 import cn.chenyunlong.qing.auth.domain.menu.event.MenuCreatedEvent;
 import cn.chenyunlong.qing.auth.domain.menu.repository.SysMenuRepository;
 import cn.chenyunlong.qing.domain.base.EntityOperations;
+import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -31,9 +32,12 @@ public class SysMenuService {
     /**
      * 创建菜单
      */
-    public Long createSysMenu(CreateSysMenuCommand command) {
+    public SysMenu createSysMenu(CreateSysMenuCommand command) {
         // 创建菜单实体
         SysMenu menuEntity = SysMenu.create(SysMenuId.next(), command.getMenuId(), command.getMenuName(), command.getMenuType(), command.getOrderNum());
+
+        Assert.notBlank(command.getMenuName(), "菜单名称不能为空！");
+        Assert.isFalse(sysMenuRepository.existsByName(command.getMenuName()), "菜单已存在！");
 
         if (command.getParentId() != null) {
             // TODO 检查父级菜单是否存在
@@ -54,7 +58,7 @@ public class SysMenuService {
         sysMenuRepository.save(savedMenu);
 
         eventPublisher.publishEvent(event);
-        return savedMenu.getId().id();
+        return savedMenu;
     }
 
     /**
