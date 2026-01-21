@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'maven:3.9.12-eclipse-temurin-21'
             args '''
-                -v /root/.m2/repository:/root/.m2/repository
+                -v ${JENKINS_HOME}/.m2/repository:/root/.m2/repository
                 -u root:root
                 -v /var/run/docker.sock:/var/run/docker.sock
             '''
@@ -13,7 +13,7 @@ pipeline {
     }
 
     options {
-        skipDefaultCheckout(false)
+        skipDefaultCheckout(true)
         disableConcurrentBuilds()
         buildDiscarder(logRotator(numToKeepStr: '10'))
         timeout(time: 20, unit: 'MINUTES')
@@ -31,7 +31,8 @@ pipeline {
     environment {
         // 定义 Maven 本地仓库路径
         MAVEN_LOCAL_REPO = "${JENKINS_HOME}/.m2/repository"
-        MAVEN_CLI_OPTS = "--no-transfer-progress --batch-mode --errors --fail-at-end --show-version -Dmaven.repo.local=${MAVEN_LOCAL_REPO}"
+        // -no-transfer-progress
+        MAVEN_CLI_OPTS = "--batch-mode --errors --fail-at-end --show-version -Dmaven.repo.local=${MAVEN_LOCAL_REPO}"
         // 可选：设置阿里云镜像加速
         MAVEN_MIRROR_URL = "https://maven.aliyun.com/repository/public"
     }
@@ -43,41 +44,12 @@ pipeline {
             }
         }
 
-        stage('验证依赖完整性') {
-            steps {
-                script {
-                    echo "验证项目依赖..."
-                    sh """
-                        mvn ${env.MAVEN_CLI_OPTS} clean install -f pom.xml
-                    """
-                }
-            }
-        }
-
-        stage('编译核心模块') {
-            steps {
-                script {
-                    echo "开始编译核心模块..."
-                    // 先编译公共模块
-                    sh """
-                        mvn ${env.MAVEN_CLI_OPTS} compile \
-                        -pl qing-common \
-                        -am \
-                        -f pom.xml
-                    """
-                }
-            }
-        }
-
         stage('单元测试') {
             steps {
                 script {
                     echo "开始执行单元测试..."
                     sh """
-                        mvn ${env.MAVEN_CLI_OPTS} test \
-                        -pl qing-services/qing-service-auth \
-                        -am \
-                        -f pom.xml
+                        mvn ${env.MAVEN_CLI_OPTS} clean test -pl qing-services/qing-service-auth -f pom.xml
                     """
                 }
             }
@@ -95,8 +67,6 @@ pipeline {
                 }
                 failure {
                     echo "单元测试失败，请检查测试用例"
-                    // 保存测试日志
-                    archiveArtifacts artifacts: 'qing-services/qing-service-auth/target/surefire-reports/*.txt, qing-services/qing-service-auth/target/surefire-reports/*.xml'
                 }
             }
         }
@@ -130,11 +100,7 @@ pipeline {
                     }
 
                     sh """
-                        mvn ${env.MAVEN_CLI_OPTS} ${mavenCommand} \
-                        -pl qing-services/qing-service-auth \
-                        -DskipTests=true \
-                        -am
-                        -f pom.xml
+                        mvn ${env.MAVEN_CLI_OPTS} ${mavenCommand} -pl qing-services/qing-service-auth -f pom.xml
                     """
                 }
             }
