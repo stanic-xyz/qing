@@ -1,11 +1,31 @@
 pipeline {
     agent {
-        label 'maven-agent'
+        docker {
+            image 'maven:3.9.12-eclipse-temurin-21'
+            args '''
+                -v /root/.m2:/root/.m2
+            '''
+            args '-u root:root'  // 用户权限
+            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Docker in Docker
+            reuseNode true
+            alwaysPull false  // 是否总是拉取最新镜像
+        }
     }
-    tools {
-        // 配置 JDK 和 Maven 版本
-        maven 'Maven-3.8.4'
-        jdk 'JDK-1.8'
+
+    options {
+        skipDefaultCheckout(false)
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 20, unit: 'MINUTES')
+        retry(0)
+    }
+
+    parameters {
+        choice(
+                name: 'BUILD_TYPE',
+                choices: ['debug', 'release'],
+                description: '选择构建类型'
+        )
     }
     options {
         // 保留最近 10 次构建记录
