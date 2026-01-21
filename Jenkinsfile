@@ -59,11 +59,7 @@ pipeline {
             steps {
                 echo "安装基础依赖包 Security Starter"
                 sh """
-                    mvn ${env.MAVEN_CLI_OPTS} clean install \
-                    -pl qing-support \
-                    -DskipTests=true \
-                    -Dmaven.test.skip=true \
-                    -f pom.xml
+                    mvn ${env.MAVEN_CLI_OPTS} clean install -Dmaven.test.skip=true -f pom.xml
                 """
             }
         }
@@ -76,6 +72,7 @@ pipeline {
                     sh """
                         mvn ${env.MAVEN_CLI_OPTS} compile \
                         -pl qing-common \
+                        -am \
                         -f pom.xml
                     """
                 }
@@ -89,6 +86,7 @@ pipeline {
                     sh """
                         mvn ${env.MAVEN_CLI_OPTS} test \
                         -pl qing-services/qing-service-auth \
+                        -am \
                         -f pom.xml
                     """
                 }
@@ -145,6 +143,7 @@ pipeline {
                         mvn ${env.MAVEN_CLI_OPTS} ${mavenCommand} \
                         -pl qing-services/qing-service-auth \
                         -DskipTests=true \
+                        -am
                         -f pom.xml
                     """
                 }
