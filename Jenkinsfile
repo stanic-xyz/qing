@@ -122,13 +122,6 @@ pipeline {
                     echo "编译打包成功"
                     // 归档生成的工件
                     archiveArtifacts artifacts: 'qing-services/qing-service-auth/target/*.jar', fingerprint: true
-
-                    // 可选：记录构建信息
-                    script {
-                        def jarFile = findFiles(glob: 'qing-services/qing-service-auth/target/*.jar')[0]
-                        echo "生成的JAR文件: ${jarFile.name}"
-                        echo "文件大小: ${jarFile.length()} bytes"
-                    }
                 }
                 failure {
                     echo "编译打包失败"
