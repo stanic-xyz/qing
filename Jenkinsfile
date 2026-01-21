@@ -48,19 +48,9 @@ pipeline {
                 script {
                     echo "验证项目依赖..."
                     sh """
-                        mvn ${env.MAVEN_CLI_OPTS} validate \
-                        -f pom.xml
+                        mvn ${env.MAVEN_CLI_OPTS} clean install -f pom.xml
                     """
                 }
-            }
-        }
-
-        stage('安装基础依赖包') {
-            steps {
-                echo "安装基础依赖包 Security Starter"
-                sh """
-                    mvn ${env.MAVEN_CLI_OPTS} clean install -Dmaven.test.skip=true -f pom.xml
-                """
             }
         }
 
