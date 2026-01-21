@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'maven:3.9.12-eclipse-temurin-21'
             args '''
-                -v ${JENKINS_HOME}/.m2/repository:/root/.m2/repository
+                -v /root/.m2/repository:/root/.m2/repository
                 -u root:root
                 -v /var/run/docker.sock:/var/run/docker.sock
             '''
@@ -30,7 +30,7 @@ pipeline {
 
     environment {
         // 定义 Maven 本地仓库路径
-        MAVEN_LOCAL_REPO = "${JENKINS_HOME}/.m2/repository"
+        MAVEN_LOCAL_REPO = "/root/.m2/repository"
         // -no-transfer-progress
         MAVEN_CLI_OPTS = "--batch-mode --errors --fail-at-end --show-version -Dmaven.repo.local=${MAVEN_LOCAL_REPO}"
         // 可选：设置阿里云镜像加速
@@ -63,7 +63,7 @@ pipeline {
                 script {
                     echo "开始执行单元测试..."
                     sh """
-                        mvn ${env.MAVEN_CLI_OPTS} clean test -pl qing-services/qing-service-auth -DskipTests=true
+                        mvn ${env.MAVEN_CLI_OPTS} clean test -pl qing-services/qing-service-auth
                     """
                 }
             }
