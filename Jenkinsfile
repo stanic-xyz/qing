@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'maven:3.9.12-eclipse-temurin-21'
             args '''
-                -v /root/.m2:/root/.m2
+                -v /root/.m2/repository:/root/.m2/repository
             '''
             args '-u root:root'  // 用户权限
             args '-v /var/run/docker.sock:/var/run/docker.sock'  // Docker in Docker
@@ -26,12 +26,6 @@ pipeline {
                 choices: ['debug', 'release'],
                 description: '选择构建类型'
         )
-    }
-    options {
-        // 保留最近 10 次构建记录
-        buildDiscarder(logRotator(numToKeepStr: '10'))
-        // 构建超时时间为 30 分钟
-        timeout(time: 30, unit: 'MINUTES')
     }
     environment {
         // 定义 Maven 本地仓库路径
@@ -83,12 +77,6 @@ pipeline {
                         subject: "构建失败: ${JOB_NAME} #${BUILD_NUMBER}",
                         body: "在编译打包 Domain 阶段失败，请检查日志: ${BUILD_URL}"
                 }
-            }
-        }
-        stage('编译打包 Domain') {
-            steps {
-                sh '''echo 开始编译'''
-                sh '''mvn clean package -pl qing-domain -f pom.xml -DskipTests=true'''
             }
         }
         stage('部署到生产环境') {
