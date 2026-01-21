@@ -43,7 +43,22 @@ pipeline {
                 checkout scm
             }
         }
-
+        stage('安装基础依赖包') {
+            steps {
+                echo "安装基础依赖包"
+                sh """
+                    mvn ${env.MAVEN_CLI_OPTS} clean install \
+                    -pl qing-support,\
+                    qing-support/qing-codegen-plugin/qing-codegen-apt,\
+                    qing-support/qing-commons,\
+                    qing-support/qing-domain-common,\
+                    qing-support/qing-infrastructure/qing-infrastructure-common,\
+                    qing-support/qing-starters/qing-security-spring-boot-starter \
+                    -am \
+                    -f pom.xml
+                """
+            }
+        }
         stage('单元测试') {
             steps {
                 script {
@@ -100,7 +115,7 @@ pipeline {
                     }
 
                     sh """
-                        mvn ${env.MAVEN_CLI_OPTS} ${mavenCommand} -pl qing-services/qing-service-auth -f pom.xml
+                        mvn ${env.MAVEN_CLI_OPTS} ${mavenCommand} -pl qing-services/qing-service-auth -Dmaven.tests.skip=true -f pom.xml
                     """
                 }
             }
