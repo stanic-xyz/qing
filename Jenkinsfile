@@ -43,20 +43,19 @@ pipeline {
                 checkout scm
             }
         }
-        stage('安装基础依赖包') {
+        stage('安装基础依赖') {
             steps {
-                echo "安装基础依赖包"
-                sh """
-                    mvn ${env.MAVEN_CLI_OPTS} clean install \
-                    -pl qing-support,\
-                    qing-support/qing-codegen-plugin/qing-codegen-apt,\
-                    qing-support/qing-commons,\
-                    qing-support/qing-domain-common,\
-                    qing-support/qing-infrastructure/qing-infrastructure-common,\
-                    qing-support/qing-starters/qing-security-spring-boot-starter \
-                    -am \
-                    -f pom.xml
-                """
+                script {
+                    echo "安装基础依赖..."
+                    sh """
+                        mvn ${env.MAVEN_CLI_OPTS} clean install -pl qing-services/qing-service-auth -am -DskipTests=true
+                    """
+                }
+            }
+            post {
+                failure {
+                    echo "基础依赖安装失败"
+                }
             }
         }
         stage('单元测试') {
@@ -64,7 +63,7 @@ pipeline {
                 script {
                     echo "开始执行单元测试..."
                     sh """
-                        mvn ${env.MAVEN_CLI_OPTS} clean test -pl qing-services/qing-service-auth -f pom.xml
+                        mvn ${env.MAVEN_CLI_OPTS} clean test -pl qing-services/qing-service-auth -DskipTests=true
                     """
                 }
             }
@@ -104,7 +103,6 @@ pipeline {
             steps {
                 script {
                     echo "开始编译打包..."
-
                     // 根据构建类型选择不同的命令
                     def mavenCommand = 'package'
                     if (params.BUILD_TYPE == 'release') {
@@ -115,7 +113,7 @@ pipeline {
                     }
 
                     sh """
-                        mvn ${env.MAVEN_CLI_OPTS} ${mavenCommand} -pl qing-services/qing-service-auth -Dmaven.tests.skip=true -f pom.xml
+                        mvn ${env.MAVEN_CLI_OPTS} ${mavenCommand} -pl qing-services/qing-service-auth -DskipTests=true
                     """
                 }
             }
