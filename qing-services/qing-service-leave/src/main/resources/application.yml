@@ -1,0 +1,22 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: qing-service-leave
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: qing-leave
+    password: 123456
+    url: jdbc:postgresql://192.168.3.112:5432/qing-leave
+
+camunda:
+  bpm:
+    webapp:
+      application-path: /camunda
+    database:
+      schema-update: true
+
+logging:
+  level:
+    root: info
