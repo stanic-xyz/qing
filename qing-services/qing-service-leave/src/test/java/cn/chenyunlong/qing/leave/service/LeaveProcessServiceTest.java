@@ -1,4 +1,4 @@
-package cn.chenyunlong.oss.leave;
+package cn.chenyunlong.qing.leave.service;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
@@ -21,7 +21,7 @@ class LeaveProcessServiceTest {
     @BeforeEach
     void setUp() {
         processEngine = ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration()
-            .setJdbcUrl("jdbc:h2:mem:leave-flow;DB_CLOSE_DELAY=-1;MODE=MySQL")
+            .setJdbcUrl("jdbc:h2:mem:leave-flow;DB_CLOSE_DELAY=-1;MODE=PostgreSQL")
             .setJdbcDriver("org.h2.Driver")
             .setJdbcUsername("sa")
             .setJdbcPassword("")
@@ -70,9 +70,7 @@ class LeaveProcessServiceTest {
     @Test
     void withdrawShouldTerminateProcessFromBoundaryEvent() {
         ProcessInstance processInstance = startAndSubmit();
-
         leaveProcessService.withdraw(processInstance.getProcessInstanceId());
-
         Assertions.assertNull(runtimeService.createProcessInstanceQuery()
             .processInstanceId(processInstance.getId())
             .singleResult());
@@ -81,7 +79,6 @@ class LeaveProcessServiceTest {
     @Test
     void supervisorApproveShouldMoveToHr() {
         ProcessInstance processInstance = startAndSubmit();
-
         Task supervisorTask = leaveProcessService.querySingleTask(processInstance.getProcessInstanceId());
         leaveProcessService.completeSupervisorTask(supervisorTask.getId(), true);
 
@@ -93,7 +90,6 @@ class LeaveProcessServiceTest {
     @Test
     void supervisorRejectShouldReturnToApplicantRework() {
         ProcessInstance processInstance = startAndSubmit();
-
         Task supervisorTask = leaveProcessService.querySingleTask(processInstance.getProcessInstanceId());
         leaveProcessService.completeSupervisorTask(supervisorTask.getId(), false);
 
