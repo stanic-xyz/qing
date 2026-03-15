@@ -21,7 +21,9 @@ class LeaveProcessServiceTest {
     @BeforeEach
     void setUp() {
         processEngine = ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration()
-            .setJdbcUrl("jdbc:h2:mem:leave-flow;DB_CLOSE_DELAY=-1;MODE=PostgreSQL")
+            // Camunda 7.15's built-in H2 SQL uses 0/1 for boolean-ish columns; H2 2.x rejects BOOLEAN vs INTEGER.
+            // LEGACY mode restores the 1.4 behavior so the in-memory engine works for these unit tests.
+            .setJdbcUrl("jdbc:h2:mem:leave-flow;DB_CLOSE_DELAY=-1;MODE=LEGACY")
             .setJdbcDriver("org.h2.Driver")
             .setJdbcUsername("sa")
             .setJdbcPassword("")
