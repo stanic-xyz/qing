@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                  id="Definitions_LeaveApproval"
+                  targetNamespace="http://camunda.org/examples">
+
+    <bpmn:signal id="Signal_WithdrawLeave" name="Signal_WithdrawLeave"/>
+
+    <bpmn:process id="leaveApprovalProcess" name="请假审批流程" isExecutable="true">
+        <bpmn:startEvent id="StartEvent_LeaveRequest" name="发起流程"/>
+        <bpmn:userTask id="Task_SubmitRequest" name="发起请假" camunda:candidateGroups="applicant"/>
+        <bpmn:userTask id="Task_SupervisorApproval" name="主管审批" camunda:candidateGroups="supervisor"/>
+        <bpmn:boundaryEvent id="Boundary_SupervisorWithdraw" attachedToRef="Task_SupervisorApproval" cancelActivity="true">
+            <bpmn:signalEventDefinition signalRef="Signal_WithdrawLeave"/>
+        </bpmn:boundaryEvent>
+        <bpmn:exclusiveGateway id="Gateway_SupervisorResult" name="主管审批结果"/>
+        <bpmn:userTask id="Task_HrApproval" name="HR审批" camunda:candidateGroups="hr"/>
+        <bpmn:boundaryEvent id="Boundary_HrWithdraw" attachedToRef="Task_HrApproval" cancelActivity="true">
+            <bpmn:signalEventDefinition signalRef="Signal_WithdrawLeave"/>
+        </bpmn:boundaryEvent>
+        <bpmn:exclusiveGateway id="Gateway_HrResult" name="HR审批结果"/>
+        <bpmn:userTask id="Task_GmApproval" name="总经理审批" camunda:candidateGroups="gm"/>
+        <bpmn:boundaryEvent id="Boundary_GmWithdraw" attachedToRef="Task_GmApproval" cancelActivity="true">
+            <bpmn:signalEventDefinition signalRef="Signal_WithdrawLeave"/>
+        </bpmn:boundaryEvent>
+        <bpmn:exclusiveGateway id="Gateway_GmResult" name="总经理审批结果"/>
+        <bpmn:userTask id="Task_ReworkByApplicant" name="申请人修改并重新提交" camunda:candidateGroups="applicant"/>
+        <bpmn:endEvent id="End_Approved" name="审批通过"/>
+        <bpmn:endEvent id="End_Withdrawn" name="申请人撤回"/>
+
+        <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_LeaveRequest" targetRef="Task_SubmitRequest"/>
+        <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_SubmitRequest" targetRef="Task_SupervisorApproval"/>
+        <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_SupervisorApproval" targetRef="Gateway_SupervisorResult"/>
+        <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_SupervisorResult" targetRef="Task_HrApproval">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${supervisorApproved == true}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow id="Flow_5" sourceRef="Gateway_SupervisorResult" targetRef="Task_ReworkByApplicant">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${supervisorApproved == false}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+
+        <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_HrApproval" targetRef="Gateway_HrResult"/>
+        <bpmn:sequenceFlow id="Flow_7" sourceRef="Gateway_HrResult" targetRef="Task_GmApproval">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hrApproved == true}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow id="Flow_8" sourceRef="Gateway_HrResult" targetRef="Task_ReworkByApplicant">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hrApproved == false}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+
+        <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_GmApproval" targetRef="Gateway_GmResult"/>
+        <bpmn:sequenceFlow id="Flow_10" sourceRef="Gateway_GmResult" targetRef="End_Approved">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${gmApproved == true}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow id="Flow_11" sourceRef="Gateway_GmResult" targetRef="Task_ReworkByApplicant">
+            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${gmApproved == false}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+
+        <bpmn:sequenceFlow id="Flow_12" sourceRef="Task_ReworkByApplicant" targetRef="Task_SupervisorApproval"/>
+        <bpmn:sequenceFlow id="Flow_13" sourceRef="Boundary_SupervisorWithdraw" targetRef="End_Withdrawn"/>
+        <bpmn:sequenceFlow id="Flow_14" sourceRef="Boundary_HrWithdraw" targetRef="End_Withdrawn"/>
+        <bpmn:sequenceFlow id="Flow_15" sourceRef="Boundary_GmWithdraw" targetRef="End_Withdrawn"/>
+    </bpmn:process>
+
+    <bpmndi:BPMNDiagram id="BPMNDiagram_LeaveApproval">
+        <bpmndi:BPMNPlane id="BPMNPlane_LeaveApproval" bpmnElement="leaveApprovalProcess"/>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>
