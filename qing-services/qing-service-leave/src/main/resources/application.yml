@@ -16,6 +16,7 @@ camunda:
       application-path: /camunda
     database:
       schema-update: true
+    history-level: audit
 
 logging:
   level:
