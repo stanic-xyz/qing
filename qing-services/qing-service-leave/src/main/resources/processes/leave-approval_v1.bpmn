@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14nkqod" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.45.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+  <bpmn:process id="Signal_WithdrawLeave" name="请假审批流程" isExecutable="true" camunda:candidateStarterGroups="leaveApprovalProcess" camunda:historyTimeToLive="60">
+    <bpmn:extensionElements>
+      <camunda:executionListener class="cn.chenyunlong.qing.leave.event.TaskListener" event="start">
+        <camunda:field name="TaskListener">
+          <camunda:string>TaskListener</camunda:string>
+        </camunda:field>
+      </camunda:executionListener>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_LeaveRequest" name="发起流程">
+      <bpmn:extensionElements>
+        <camunda:formData />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0dxgrt9</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0dxgrt9" sourceRef="StartEvent_LeaveRequest" targetRef="Task_SupervisorApproval" />
+    <bpmn:exclusiveGateway id="Gateway_SupervisorResult" name="主管审批结果">
+      <bpmn:incoming>Flow_1rmcydn</bpmn:incoming>
+      <bpmn:outgoing>Flow_12wmwy1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0bj1tcy</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1rmcydn" sourceRef="Task_SupervisorApproval" targetRef="Gateway_SupervisorResult" />
+    <bpmn:sequenceFlow id="Flow_12wmwy1" sourceRef="Gateway_SupervisorResult" targetRef="Task_HrApproval">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${supervisorApproved == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1g92j2v" name="HR审批结果">
+      <bpmn:incoming>Flow_0ff8052</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zz4p9b</bpmn:outgoing>
+      <bpmn:outgoing>Flow_07sccq3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0ff8052" sourceRef="Task_HrApproval" targetRef="Gateway_1g92j2v" />
+    <bpmn:sequenceFlow id="Flow_0zz4p9b" sourceRef="Gateway_1g92j2v" targetRef="Task_GmApproval">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hrApproved == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_18c3d1c" name="总经理审批结果">
+      <bpmn:incoming>Flow_1kxso3y</bpmn:incoming>
+      <bpmn:outgoing>Flow_0srwdr5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1m668x5</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1kxso3y" sourceRef="Task_GmApproval" targetRef="Gateway_18c3d1c" />
+    <bpmn:endEvent id="End_Approved" name="审批通过">
+      <bpmn:incoming>Flow_0srwdr5</bpmn:incoming>
+      <bpmn:incoming>Flow_0bj1tcy</bpmn:incoming>
+      <bpmn:incoming>Flow_07sccq3</bpmn:incoming>
+      <bpmn:incoming>Flow_1gpvqnb</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0srwdr5" sourceRef="Gateway_18c3d1c" targetRef="End_Approved">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${gmApproved == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Task_HrApproval" name="HR审批" camunda:formRef="" camunda:formRefBinding="deployment" camunda:candidateGroups="hyper visor">
+      <bpmn:incoming>Flow_12wmwy1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ff8052</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_SupervisorApproval" name="主管审批" camunda:asyncBefore="true" camunda:asyncAfter="true" camunda:assignee="${directSupervisor}">
+      <bpmn:incoming>Flow_0dxgrt9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1rmcydn</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_GmApproval" name="总经理审批">
+      <bpmn:incoming>Flow_0zz4p9b</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kxso3y</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0bj1tcy" sourceRef="Gateway_SupervisorResult" targetRef="End_Approved" />
+    <bpmn:sequenceFlow id="Flow_07sccq3" sourceRef="Gateway_1g92j2v" targetRef="End_Approved" />
+    <bpmn:task id="Activity_1n8917a" name="通知结果">
+      <bpmn:incoming>Flow_1m668x5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gpvqnb</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1m668x5" sourceRef="Gateway_18c3d1c" targetRef="Activity_1n8917a" />
+    <bpmn:sequenceFlow id="Flow_1gpvqnb" sourceRef="Activity_1n8917a" targetRef="End_Approved" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Signal_WithdrawLeave">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_LeaveRequest">
+        <dc:Bounds x="162" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="255" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_15le34j_di" bpmnElement="Gateway_SupervisorResult" isMarkerVisible="true">
+        <dc:Bounds x="475" y="205" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="466" y="181" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1g92j2v_di" bpmnElement="Gateway_1g92j2v" isMarkerVisible="true">
+        <dc:Bounds x="815" y="205" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="810" y="262" width="61" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_18c3d1c_di" bpmnElement="Gateway_18c3d1c" isMarkerVisible="true">
+        <dc:Bounds x="1155" y="205" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1141" y="181" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1h87ze4_di" bpmnElement="End_Approved">
+        <dc:Bounds x="1272" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1317.5" y="223" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jvqxhf_di" bpmnElement="Task_HrApproval">
+        <dc:Bounds x="620" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1rq8jhp_di" bpmnElement="Task_SupervisorApproval">
+        <dc:Bounds x="280" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1r1aval_di" bpmnElement="Task_GmApproval">
+        <dc:Bounds x="960" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1n8917a_di" bpmnElement="Activity_1n8917a">
+        <dc:Bounds x="1130" y="280" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0dxgrt9_di" bpmnElement="Flow_0dxgrt9">
+        <di:waypoint x="198" y="230" />
+        <di:waypoint x="280" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rmcydn_di" bpmnElement="Flow_1rmcydn">
+        <di:waypoint x="380" y="230" />
+        <di:waypoint x="475" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12wmwy1_di" bpmnElement="Flow_12wmwy1">
+        <di:waypoint x="525" y="230" />
+        <di:waypoint x="620" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bj1tcy_di" bpmnElement="Flow_0bj1tcy">
+        <di:waypoint x="500" y="255" />
+        <di:waypoint x="500" y="380" />
+        <di:waypoint x="1290" y="380" />
+        <di:waypoint x="1290" y="248" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ff8052_di" bpmnElement="Flow_0ff8052">
+        <di:waypoint x="720" y="230" />
+        <di:waypoint x="815" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zz4p9b_di" bpmnElement="Flow_0zz4p9b">
+        <di:waypoint x="865" y="230" />
+        <di:waypoint x="960" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07sccq3_di" bpmnElement="Flow_07sccq3">
+        <di:waypoint x="840" y="205" />
+        <di:waypoint x="840" y="80" />
+        <di:waypoint x="1290" y="80" />
+        <di:waypoint x="1290" y="212" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1kxso3y_di" bpmnElement="Flow_1kxso3y">
+        <di:waypoint x="1060" y="230" />
+        <di:waypoint x="1155" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0srwdr5_di" bpmnElement="Flow_0srwdr5">
+        <di:waypoint x="1205" y="230" />
+        <di:waypoint x="1272" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1m668x5_di" bpmnElement="Flow_1m668x5">
+        <di:waypoint x="1180" y="255" />
+        <di:waypoint x="1180" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gpvqnb_di" bpmnElement="Flow_1gpvqnb">
+        <di:waypoint x="1230" y="320" />
+        <di:waypoint x="1290" y="320" />
+        <di:waypoint x="1290" y="248" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
