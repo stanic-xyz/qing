@@ -72,7 +72,7 @@ jobs:
           fetch-depth: 1 # 浅克隆节省时间，除非需要 lastUpdated
       
       - name: Setup Node
-        uses: useblacksmith/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
