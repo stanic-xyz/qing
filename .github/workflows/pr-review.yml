@@ -1,0 +1,166 @@
+name: 🔍 PR 自动审查
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+env:
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  OPENCLAW_GATEWAY_URL: ${{ secrets.OPENCLAW_GATEWAY_URL }}
+  OPENCLAW_HOOKS_TOKEN: ${{ secrets.OPENCLAW_HOOKS_TOKEN }}
+  DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
+
+jobs:
+  # ── PR 基础信息 ─────────────────────────────────────────────
+  pr-info:
+    name: 📋 收集 PR 信息
+    runs-on: ubuntu-latest
+    outputs:
+      pr_number: ${{ steps.pr.outputs.number }}
+      pr_title: ${{ steps.pr.outputs.title }}
+      pr_body: ${{ steps.pr.outputs.body }}
+      pr_user: ${{ steps.pr.outputs.user_login }}
+      target_branch: ${{ steps.pr.outputs.base_ref }}
+      source_branch: ${{ steps.pr.outputs.head_ref }}
+      changed_files: ${{ steps.files.outputs.count }}
+    steps:
+      - name: 📥 拉取 PR 信息
+        uses: actions/checkout@v4
+
+      - name: 🔧 解析 PR 数据
+        id: pr
+        run: |
+          echo "number=${{ github.event.pull_request.number || github.event.issue.number }}" >> $GITHUB_OUTPUT
+          echo "title=$(echo '${{ github.event.pull_request.title || github.event.issue.title }}' | sed 's/\"/\\\"/g')" >> $GITHUB_OUTPUT
+          echo "body=$(echo '${{ github.event.pull_request.body || github.event.issue.body }}' | sed 's/\"/\\\"/g; s/\n/ /g' | cut -c1-500)" >> $GITHUB_OUTPUT
+          echo "user_login=${{ github.event.pull_request.user.login || github.event.issue.user.login }}" >> $GITHUB_OUTPUT
+          echo "base_ref=${{ github.event.pull_request.base.ref || 'main' }}" >> $GITHUB_OUTPUT
+          echo "head_ref=${{ github.event.pull_request.head.ref || 'unknown' }}" >> $GITHUB_OUTPUT
+
+      - name: 📁 统计变更文件数
+        id: files
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            COUNT=$(curl -s -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | \
+              python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo "0")
+          else
+            COUNT="0"
+          fi
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+  # ── 调用 OpenClaw Agent 审查 ─────────────────────────────────
+  agent-review:
+    name: 🤖 OpenClaw 代码审查
+    runs-on: ubuntu-latest
+    needs: pr-info
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: 📥 拉取代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: 🔍 获取 PR diff
+        id: diff
+        run: |
+          PR_NUM="${{ needs.pr-info.outputs.pr_number }}"
+          DIFF_FILE="/tmp/pr-$PR_NUM.diff"
+          curl -s -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUM" \
+            > /tmp/pr-$PR_NUM.json
+          echo "diff_file=$DIFF_FILE" >> $GITHUB_OUTPUT
+
+          # 下载每个文件的 diff
+          curl -s -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUM/files" \
+            | python3 -c "
+import sys, json, urllib.request
+files = json.load(sys.stdin)
+for f in files[:30]:  # 最多30个文件
+    url = f['raw_url']
+    filename = f['filename'].replace('/', '_')
+    try:
+        content = urllib.request.urlopen(url).read().decode('utf-8', errors='ignore')
+        with open(f'/tmp/pr_files_{PR_NUM}/{filename}', 'w') as out:
+            out.write(content)
+    except: pass
+" 2>/dev/null || true
+
+      - name: 📝 构建审查上下文
+        id: context
+        run: |
+          PR_NUM="${{ needs.pr-info.outputs.pr_number }}"
+          echo "review_context=$(cat /tmp/pr-$PR_NUM.json | python3 -c "
+import sys, json
+pr = json.load(sys.stdin)
+body = (pr.get('body') or '').replace('\"','\\\"')[:1000]
+title = pr.get('title','').replace('\"','\\\"')
+base = pr.get('base',{}).get('ref','')
+head = pr.get('head',{}).get('ref','')
+print(f'TITLE: {title} | BASE: {base} | HEAD: {head} | AUTHOR: {pr[\"user\"][\"login\"]} | BODY: {body}')
+" 2>/dev/null)" >> $GITHUB_OUTPUT
+
+      - name: 🚀 调用 OpenClaw Agent
+        env:
+          PR_NUM: ${{ needs.pr-info.outputs.pr_number }}
+          PR_TITLE: ${{ needs.pr-info.outputs.pr_title }}
+          PR_USER: ${{ needs.pr-info.outputs.pr_user }}
+          TARGET_BRANCH: ${{ needs.pr-info.outputs.target_branch }}
+          SOURCE_BRANCH: ${{ needs.pr-info.outputs.source_branch }}
+          GH_REPO: ${{ github.repository }}
+          REVIEW_CTX: ${{ needs.pr-info.outputs.context }}
+        run: |
+          echo "=== PR 审查任务已触发 ==="
+          echo "PR: #$PR_NUM - $PR_TITLE"
+          echo "分支: $TARGET_BRANCH <- $SOURCE_BRANCH"
+
+          # 调用 OpenClaw /hooks/agent 端点
+          RESPONSE=$(curl -s -X POST "${OPENCLAW_GATEWAY_URL}/hooks/agent" \
+            -H "Authorization: Bearer $OPENCLAW_HOOKS_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"name\": \"pr-review\",
+              \"message\": \"对 GitHub PR 进行代码审查。\\n\\nPR 信息：#$PR_NUM - $PR_TITLE\\n作者：$PR_USER\\n源分支：$SOURCE_BRANCH → 目标分支：$TARGET_BRANCH\\n仓库：$GH_REPO\\n\\n请执行以下审查步骤：\\n1. 读取仓库代码（git clone https://github.com/$GH_REPO.git /tmp/qing-review）\\n2. 分析 $SOURCE_BRANCH 分支与 $TARGET_BRANCH 的差异\\n3. 基于 AGENTS.md 中的规范进行审查\\n4. 在 GitHub 上以 PR 评论形式提交审查结果（使用 gh cli）\\n\\n审查要求：\\n- 5 维度评分：功能正确性、代码质量、测试覆盖、安全性、向后兼容\\n- 每维度：✅/⚠️/❌ + 简要说明\\n- 总体结论：可合并/需修改/拒绝\\n- 如需修改，列出具体文件和修改建议\\n\\n**注意**：必须使用 gh cli 登录后评论：\\ngh auth login --token \$GH_TOKEN\\ngh pr comment $PR_NUM --body '审查结果...'\\n\\n完成审查后，回复：done\",
+              \"sessionKey\": \"pr-review:$PR_NUM\",
+              \"wakeMode\": \"now\",
+              \"timeoutSeconds\": 600
+            }" 2>&1)
+
+          echo "Response: $RESPONSE"
+          echo "review_triggered=true" >> $GITHUB_OUTPUT
+
+  # ── 审查结果汇总通知 ──────────────────────────────────────────
+  review-notify:
+    name: 📢 审查结果通知
+    runs-on: ubuntu-latest
+    needs: [pr-info, agent-review]
+    if: always()
+
+    steps:
+      - name: 📢 推送审查状态
+        run: |
+          STATUS="${{ needs.agent-review.result }}"
+          PR_NUM="${{ needs.pr-info.outputs.pr_number }}"
+          TITLE="${{ needs.pr-info.outputs.pr_title }}"
+          USER="${{ needs.pr-info.outputs.pr_user }}"
+
+          if [ "$STATUS" == "success" ]; then
+            MSG="### 🔍 PR 审查完成\\n\\n**#$PR_NUM** $TITLE\\n**作者**：@$USER\\n\\n✅ 审查已完成，请在 PR 下方查看详细意见。"
+          elif [ "$STATUS" == "skipped" ]; then
+            MSG="### 🔍 PR 审查跳过\\n\\n**#$PR_NUM** $TITLE\\n**作者**：@$USER\\n\\n⏭️ 本次提交无需自动审查，请人工 Code Review。"
+          else
+            MSG="### ⚠️ 审查流程异常\\n\\n**#$PR_NUM** $TITLE\\n**作者**：@$USER\\n\\n🤖 自动化审查遇到问题，请检查 Agent 运行状态。"
+          fi
+
+          curl -s -X POST "$DINGTALK_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"msgtype\": \"markdown\",
+              \"markdown\": {
+                \"title\": \"PR 审查状态\",
+                \"text\": \"$MSG\\n\\n_由 Qing 自动化流水线推送_\"
+              }
+            }"
