@@ -52,3 +52,10 @@ application-local.yml
 *.jar
 # 代码生成器单元测试
 !lib/swagger-annotations-2.2.8.jar
+# 避免上传本地的账单信息
+qing-services/qing-service-llm/src/test/resources/bills/理财信息/
+*.zip
+*.pdf
+*.csv
+*.xls
+*.xlsx

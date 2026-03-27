@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Scanner;
 
 @RestController
 @RequestMapping("/api/leave")
@@ -58,5 +59,86 @@ public class LeaveProcessController {
     @PostMapping("/{processInstanceId}/withdraw")
     public void withdraw(@PathVariable String processInstanceId) {
         leaveProcessService.withdraw(processInstanceId);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String s = scanner.nextLine();
+        boolean flag = true;
+        if (s.contains("joker") || s.contains("JOKER")) {
+            flag = false;
+            System.out.println("ERROR");
+        }
+        if (flag) {
+            String[] strArr = s.split(" ");
+            int[] arr = new int[strArr.length];
+            for (int i = 0; i < strArr.length; i++) {
+                switch (strArr[i]) {
+                    case "J":
+                        arr[i] = 11;
+                        break;
+                    case "Q":
+                        arr[i] = 12;
+                        break;
+                    case "K":
+                        arr[i] = 13;
+                        break;
+                    case "A":
+                        arr[i] = 1;
+                        break;
+                    default:
+                        arr[i] = Integer.parseInt(strArr[i]);
+                        break;
+                }
+            }
+            boolean[] vis = new boolean[arr.length];
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < arr.length; i++) {
+                int tmp = arr[i];
+                vis[i] = true;
+                if (dfs(arr, strArr, vis, 1, tmp, strArr[i], buffer)) {
+                    break;
+                }
+                vis[i] = false;
+            }
+            if (buffer.length() == 0) {
+                System.out.println("NONE");
+            } else {
+                System.out.println(buffer.toString());
+            }
+        }
+
+    }
+
+    public static boolean dfs(int[] arr, String[] strArr, boolean[] vis, int count, int sum, String s, StringBuffer buffer) {
+        if (count == 4) {
+            if (sum == 24) {
+                buffer.append(s);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        for (int i = 0; i < arr.length; i++) {
+            if (vis[i]) continue;
+            vis[i] = true;
+            if (dfs(arr, strArr, vis, count + 1, sum + arr[i], s + "+" + strArr[i], buffer)) {
+                return true;
+            }
+
+            if (dfs(arr, strArr, vis, count + 1, sum - arr[i], s + "-" + strArr[i], buffer)) {
+                return true;
+            }
+
+            if (dfs(arr, strArr, vis, count + 1, sum * arr[i], s + "*" + strArr[i], buffer)) {
+                return true;
+            }
+
+            if (arr[i] != 0 && dfs(arr, strArr, vis, count + 1, sum / arr[i], s + "/" + strArr[i], buffer)) {
+                return true;
+            }
+            vis[i] = false;
+        }
+        return false;
     }
 }

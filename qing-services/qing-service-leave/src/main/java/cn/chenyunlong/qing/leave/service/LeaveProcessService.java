@@ -58,9 +58,9 @@ public class LeaveProcessService {
 
     public void withdraw(String processInstanceId) {
         Execution execution = runtimeService.createExecutionQuery()
-            .processInstanceId(processInstanceId)
-            .signalEventSubscriptionName(SIGNAL_WITHDRAW)
-            .singleResult();
+                .processInstanceId(processInstanceId)
+                .signalEventSubscriptionName(SIGNAL_WITHDRAW)
+                .singleResult();
         if (execution != null) {
             runtimeService.signalEventReceived(SIGNAL_WITHDRAW, execution.getId());
         }
