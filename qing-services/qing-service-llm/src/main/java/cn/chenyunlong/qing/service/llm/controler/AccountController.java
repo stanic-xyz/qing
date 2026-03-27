@@ -31,13 +31,16 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public Result<Account> updateAccount(@PathVariable Long id, @RequestBody Account account) {
+    public Result<Account> updateAccount(@PathVariable("id") Long id, @RequestBody Account account) {
         Account existing = accountRepo.findById(id).orElse(null);
         if (existing == null) return Result.error(404, "Account not found");
         
         existing.setAccountName(account.getAccountName());
         existing.setAccountType(account.getAccountType());
         existing.setBankName(account.getBankName());
+        existing.setChannel(account.getChannel());
+        existing.setIcon(account.getIcon());
+        existing.setRemark(account.getRemark());
         existing.setCardNumber(account.getCardNumber());
         existing.setInitialBalance(account.getInitialBalance());
         existing.setStatus(account.getStatus());
@@ -46,7 +49,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public Result<Void> deleteAccount(@PathVariable Long id) {
+    public Result<Void> deleteAccount(@PathVariable("id") Long id) {
         accountRepo.deleteById(id);
         return Result.success(null);
     }

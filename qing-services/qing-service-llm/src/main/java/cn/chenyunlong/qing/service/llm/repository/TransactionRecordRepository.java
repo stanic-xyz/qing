@@ -12,4 +12,7 @@ import java.util.List;
 public interface TransactionRecordRepository extends JpaRepository<TransactionRecord, Long>, JpaSpecificationExecutor<TransactionRecord> {
     List<TransactionRecord> findByReconciliationStatusAndTransactionTimeBetween(String status, LocalDateTime start, LocalDateTime end);
     List<TransactionRecord> findByUploadId(String uploadId);
+    
+    // 用于分类删除时校验关联
+    boolean existsByCategoryOrSubCategory(String category, String subCategory);
 }

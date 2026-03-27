@@ -31,7 +31,7 @@ export default function Transactions() {
 
   const fetchTransactions = async () => {
     try {
-      const params = {
+      const params: Record<string, any> = {
         page,
         size,
         sortField,

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { CHANNELS, CHANNEL_LIST } from '../config/channels';
+import { Banknote } from 'lucide-react';
 
 export default function Accounts() {
   const [accounts, setAccounts] = useState([]);
@@ -44,9 +46,34 @@ export default function Accounts() {
     }
   };
 
-  const openModal = (account: any = { accountName: '', accountType: 'DEBIT', bankName: '', cardNumber: '', initialBalance: 0, status: 'ACTIVE' }) => {
+  const openModal = (account: any = { accountName: '', accountType: 'DEBIT', bankName: '', channel: '', remark: '', cardNumber: '', initialBalance: 0, status: 'ACTIVE' }) => {
     setEditingAccount({ ...account });
     setShowModal(true);
+  };
+
+  const handleChannelChange = (channelCode: string) => {
+    const selectedChannel = CHANNELS[channelCode];
+    if (selectedChannel) {
+      setEditingAccount({
+        ...editingAccount,
+        channel: channelCode,
+        bankName: selectedChannel.name
+      });
+    } else {
+      setEditingAccount({
+        ...editingAccount,
+        channel: channelCode
+      });
+    }
+  };
+
+  const renderIcon = (channelCode: string) => {
+    const config = CHANNELS[channelCode];
+    if (config && config.icon) {
+      const IconComp = config.icon;
+      return <IconComp className={`w-8 h-8 ${config.colorClass} mb-2`} />;
+    }
+    return <Banknote className="w-8 h-8 text-gray-400 mb-2" />;
   };
 
   return (
@@ -55,17 +82,23 @@ export default function Accounts() {
         <h1 className="text-2xl font-bold">账户管理</h1>
         <button onClick={() => openModal()} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">添加账户</button>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {accounts.map((acc: any) => (
-          <div key={acc.id} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 relative group">
+          <div key={acc.id} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 relative group flex flex-col">
             <div className="absolute top-4 right-4 hidden group-hover:flex space-x-2">
               <button onClick={() => openModal(acc)} className="text-blue-500 hover:text-blue-700 text-sm">编辑</button>
               <button onClick={() => handleDelete(acc.id)} className="text-red-500 hover:text-red-700 text-sm">删除</button>
             </div>
-            <h3 className="text-lg font-bold text-gray-800">{acc.accountName} <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">{acc.accountType}</span></h3>
+            <div className="flex items-start justify-between">
+              <div>
+                {renderIcon(acc.channel)}
+                <h3 className="text-lg font-bold text-gray-800">{acc.accountName} <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">{acc.accountType}</span></h3>
+              </div>
+            </div>
             <p className="text-gray-500 text-sm mt-1">{acc.bankName || '无机构'} {acc.cardNumber ? `- ${acc.cardNumber}` : ''}</p>
-            <div className="mt-4 pt-4 border-t border-gray-100">
+            {acc.remark && <p className="text-gray-400 text-xs mt-1">备注: {acc.remark}</p>}
+            <div className="mt-auto pt-4 border-t border-gray-100">
               <p className="text-sm text-gray-500">期初余额 / 当前余额</p>
               <p className="text-2xl font-bold text-gray-900 mt-1">¥ {acc.initialBalance || '0.00'}</p>
             </div>
@@ -85,7 +118,7 @@ export default function Accounts() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">账户名称</label>
-                <input type="text" value={editingAccount.accountName} onChange={e => setEditingAccount({...editingAccount, accountName: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm p-2 border" />
+                <input type="text" value={editingAccount.accountName} onChange={e => setEditingAccount({...editingAccount, accountName: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm p-2 border" placeholder="如：日常支付宝" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">账户类型</label>
@@ -98,12 +131,25 @@ export default function Accounts() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">发卡机构/平台</label>
-                <input type="text" value={editingAccount.bankName || ''} onChange={e => setEditingAccount({...editingAccount, bankName: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm p-2 border" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">所属渠道/平台</label>
+                <select value={editingAccount.channel || ''} onChange={e => handleChannelChange(e.target.value)} className="w-full border-gray-300 rounded-md shadow-sm p-2 border">
+                  <option value="">未指定 / 手动输入</option>
+                  {CHANNEL_LIST.map(c => (
+                    <option key={c.code} value={c.code}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">发卡机构名称</label>
+                <input type="text" value={editingAccount.bankName || ''} onChange={e => setEditingAccount({...editingAccount, bankName: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm p-2 border" placeholder="如：建设银行" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">卡号/账号(后四位)</label>
-                <input type="text" value={editingAccount.cardNumber || ''} onChange={e => setEditingAccount({...editingAccount, cardNumber: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm p-2 border" />
+                <input type="text" value={editingAccount.cardNumber || ''} onChange={e => setEditingAccount({...editingAccount, cardNumber: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm p-2 border" placeholder="如：8888" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">备注名</label>
+                <input type="text" value={editingAccount.remark || ''} onChange={e => setEditingAccount({...editingAccount, remark: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm p-2 border" placeholder="如：用于还房贷" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">期初余额</label>

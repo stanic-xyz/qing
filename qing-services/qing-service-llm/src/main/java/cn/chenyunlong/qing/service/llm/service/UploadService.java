@@ -5,6 +5,8 @@ import cn.chenyunlong.qing.service.llm.dto.PreviewRecordDTO;
 import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.entity.UploadFileRecord;
+import cn.chenyunlong.qing.service.llm.entity.Account;
+import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.UploadFileRecordRepository;
 import cn.chenyunlong.qing.service.llm.service.parser.FileParser;
@@ -34,6 +36,9 @@ public class UploadService {
 
     @Resource
     private TransactionRecordRepository transactionRepo;
+
+    @Resource
+    private AccountRepository accountRepository;
 
     @Resource
     private UploadFileRecordRepository uploadFileRepo;
@@ -139,11 +144,27 @@ public class UploadService {
             throw new RuntimeException("上传会话已过期或不存在");
         }
 
+        // 获取并校验关联账户
+        Account targetAccount = null;
+        if (request.getAccountId() != null) {
+            targetAccount = accountRepository.findById(request.getAccountId())
+                .orElseThrow(() -> new RuntimeException("指定的账户不存在"));
+        } else {
+            throw new RuntimeException("导入时必须选择一个关联账户");
+        }
+
         // 过滤用户确认的记录（假设前端传了 confirmedTempIds）
         List<TransactionRecord> toImport = allRecords;
         if (request.getConfirmedTempIds() != null && !request.getConfirmedTempIds().isEmpty()) {
             // 根据临时ID过滤（实际可用映射关系）
             // 这里简化：直接使用全部
+        }
+
+        // 绑定账户信息到每一条流水记录
+        for (TransactionRecord record : toImport) {
+            record.setAccount(targetAccount);
+            record.setAccountName(targetAccount.getAccountName()); // 冗余字段
+            record.setAccountType(targetAccount.getAccountType());
         }
 
         // 批量保存

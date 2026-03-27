@@ -6,6 +6,7 @@ import Transactions from './pages/Transactions';
 import Accounts from './pages/Accounts';
 import ImportHistory from './pages/ImportHistory';
 import TransactionCompare from './pages/TransactionCompare';
+import Categories from './pages/Categories';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="transactions" element={<Transactions />} />
           <Route path="transaction-compare" element={<TransactionCompare />} />
           <Route path="accounts" element={<Accounts />} />
+          <Route path="categories" element={<Categories />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import {Outlet, Link} from 'react-router-dom';
-import {LayoutDashboard, UploadCloud, List, Wallet, History, GitCompare} from 'lucide-react';
+import {LayoutDashboard, UploadCloud, List, Wallet, History, GitCompare, Tags} from 'lucide-react';
 
 export default function MainLayout() {
     return (
@@ -28,6 +28,11 @@ export default function MainLayout() {
                           className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
                         <Wallet size={20}/>
                         账户管理
+                    </Link>
+                    <Link to="/categories"
+                          className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
+                        <Tags size={20}/>
+                        分类管理
                     </Link>
                     <Link to="/import"
                           className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">

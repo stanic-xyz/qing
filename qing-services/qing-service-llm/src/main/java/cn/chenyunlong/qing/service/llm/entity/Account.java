@@ -18,6 +18,9 @@ public class Account {
     private String accountName; // 账户名称
     private String accountType; // 账户类型 DEBIT/CREDIT/WALLET
     private String bankName; // 开户行/发卡机构
+    private String channel; // 渠道标识 (如 ALIPAY, WECHAT, CMB 等)
+    private String icon; // 渠道图标
+    private String remark; // 备注名
     private String cardNumber; // 卡号(脱敏)
     private LocalDateTime openingDate; // 开户日期
     
