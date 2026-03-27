@@ -35,6 +35,39 @@
         <module>qing-service-stream</module>
         <module>qing-service-sa-token</module>
         <module>qing-service-leave</module>
-        <module>qing-service-llm</module>
     </modules>
 </project>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.chenyunlong</groupId>
+        <artifactId>qing-parent</artifactId>
+        <version>0.0.3-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <packaging>pom</packaging>
+    <artifactId>qing-services</artifactId>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.chenyunlong</groupId>
+                <artifactId>qing-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <modules>
+        <module>qing-service-aggregate-interface</module>
+        <module>qing-service-anime</module>
+        <module>qing-service-auth</module>
+        <module>qing-service-eureka</module>
+        <module>qing-service-config</module>
+        <module>qing-service-gateway</module>
+        <module>qing-service-stream</module>
+        <module>qing-service-sa-token</module>
+        <module>qing-service-leave</module>
+        <module>qing-service-llm</module>
+    </modules>
