@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.junit.jupiter.api.AfterEach;
@@ -20,21 +21,20 @@ class LeaveProcessServiceTest {
 
     @BeforeEach
     void setUp() {
-        processEngine = ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration()
-            // Camunda 7.15's built-in H2 SQL uses 0/1 for boolean-ish columns; H2 2.x rejects BOOLEAN vs INTEGER.
-            // LEGACY mode restores the 1.4 behavior so the in-memory engine works for these unit tests.
-            .setJdbcUrl("jdbc:h2:mem:leave-flow;DB_CLOSE_DELAY=-1;MODE=LEGACY")
-            .setJdbcDriver("org.h2.Driver")
-            .setJdbcUsername("sa")
-            .setJdbcPassword("")
-            .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE)
-            .buildProcessEngine();
+        StandaloneInMemProcessEngineConfiguration config = new StandaloneInMemProcessEngineConfiguration();
+        config.setJdbcUrl("jdbc:h2:mem:leave-flow;DB_CLOSE_DELAY=-1");
+        config.setJdbcDriver("org.h2.Driver");
+        config.setJdbcUsername("sa");
+        config.setJdbcPassword("");
+        config.setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
+        config.setEnforceHistoryTimeToLive(false);
+        processEngine = config.buildProcessEngine();
 
         RepositoryService repositoryService = processEngine.getRepositoryService();
         repositoryService.createDeployment()
-            .name("leave-approval-test")
-            .addClasspathResource("processes/leave-approval.bpmn")
-            .deploy();
+                .name("leave-approval-test")
+                .addClasspathResource("processes/leave-approval.bpmn")
+                .deploy();
 
         TaskService taskService = processEngine.getTaskService();
         runtimeService = processEngine.getRuntimeService();
@@ -65,8 +65,8 @@ class LeaveProcessServiceTest {
         leaveProcessService.completeGmTask(gmTask.getId(), true);
 
         Assertions.assertNull(runtimeService.createProcessInstanceQuery()
-            .processInstanceId(processInstance.getId())
-            .singleResult());
+                .processInstanceId(processInstance.getId())
+                .singleResult());
     }
 
     @Test
@@ -74,8 +74,8 @@ class LeaveProcessServiceTest {
         ProcessInstance processInstance = startAndSubmit();
         leaveProcessService.withdraw(processInstance.getProcessInstanceId());
         Assertions.assertNull(runtimeService.createProcessInstanceQuery()
-            .processInstanceId(processInstance.getId())
-            .singleResult());
+                .processInstanceId(processInstance.getId())
+                .singleResult());
     }
 
     @Test
