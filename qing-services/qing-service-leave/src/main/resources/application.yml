@@ -9,14 +9,39 @@ spring:
     username: qing-leave
     password: 123456
     url: jdbc:postgresql://192.168.3.112:5432/qing-leave
-
+  #  data:
+  #    redis:
+  #      sentinel:
+  #        password: 123456
+  #        master: your-master-name
+  #        nodes:
+  #          - 192.168.1.101:26379
+  #          - 192.168.1.102:26379
+  #          - 192.168.1.103:26379
+  #      lettuce:
+  #        pool:
+  #          enabled: false
+  redis:
+    # 主节点配置（写）
+    master:
+      host: 192.168.3.112
+      port: 6380
+      password: 123456
+    # 从节点配置（读）
+    slave:
+      host: 192.168.3.112
+      port: 6381
+      password: 123456
 camunda:
   bpm:
     webapp:
       application-path: /camunda
     database:
       schema-update: true
-
+    history-level: full
+    generic-properties:
+      properties:
+        enforceHistoryTimeToLive: false
 logging:
   level:
     root: info

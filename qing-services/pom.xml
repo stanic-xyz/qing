@@ -36,5 +36,6 @@
         <module>qing-service-sa-token</module>
         <module>qing-service-leave</module>
         <module>qing-service-llm</module>
+        <module>qing-service-minimall</module>
     </modules>
 </project>
