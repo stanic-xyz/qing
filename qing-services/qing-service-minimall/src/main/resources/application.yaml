@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: qing-service-minimall
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: qing-llm
+    password: 123456
+    url: jdbc:postgresql://192.168.3.112:5432/qing-mall
+  data:
+    redis:
+      timeout: 5000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+      host: 192.168.3.112
+      port: 6379
+      password: 123456
+      database: 0
+  jpa:
+    hibernate:
+      ddl-auto: update           # 自动创建/更新表结构
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  kafka:
+    bootstrap-servers: 192.168.3.112:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: order-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual
