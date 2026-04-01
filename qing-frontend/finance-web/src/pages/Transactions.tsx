@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getEnumText } from '../utils/enumMap';
+import ChannelAccountCascader from '../components/ChannelAccountCascader';
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -16,11 +17,13 @@ export default function Transactions() {
   // 搜索过滤状态
   const [filters, setFilters] = useState({
     keyword: '',
-    channel: '',
     type: '',
     startDate: '',
     endDate: ''
   });
+  
+  const [selectedChannels, setSelectedChannels] = useState<number[]>([]);
+  const [selectedAccounts, setSelectedAccounts] = useState<number[]>([]);
 
   // 编辑弹窗状态
   const [editingRecord, setEditingRecord] = useState<any>(null);
@@ -36,6 +39,8 @@ export default function Transactions() {
         size,
         sortField,
         sortDirection,
+        channelIds: selectedChannels.join(','),
+        accountIds: selectedAccounts.join(','),
         ...filters
       };
 
@@ -84,11 +89,12 @@ export default function Transactions() {
   const handleReset = () => {
     setFilters({
       keyword: '',
-      channel: '',
       type: '',
       startDate: '',
       endDate: ''
     });
+    setSelectedChannels([]);
+    setSelectedAccounts([]);
     setPage(0);
     setSortField('transactionTime');
     setSortDirection('DESC');
@@ -120,9 +126,9 @@ export default function Transactions() {
     <div className="flex flex-col h-full relative">
       <h1 className="text-2xl font-bold mb-6">交易流水</h1>
 
-      {/* 搜索面板 */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      {/* 搜索面板 - 卡片包裹 */}
+      <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">关键字</label>
             <input
@@ -131,70 +137,72 @@ export default function Transactions() {
               value={filters.keyword}
               onChange={handleFilterChange}
               placeholder="搜索对方/商品/备注"
-              className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-sm"
+              className="w-full border-gray-300 rounded-md shadow-sm p-1.5 border text-sm focus:ring-blue-500 focus:border-blue-500 h-[38px]"
             />
           </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">渠道</label>
-            <select
-              name="channel"
-              value={filters.channel}
-              onChange={handleFilterChange}
-              className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-sm"
-            >
-              <option value="">全部渠道</option>
-              <option value="ALIPAY">支付宝</option>
-              <option value="WECHAT">微信</option>
-              <option value="QIANJI">钱迹</option>
-              <option value="JINGDONG">京东</option>
-              <option value="CMB">招商银行</option>
-              <option value="BOC_CREDIT">中国银行信用卡</option>
-              <option value="CITIC_CREDIT">中信银行信用卡</option>
-              <option value="CCB">建设银行</option>
-              <option value="PINGAN">平安银行</option>
-              <option value="BOCOM_CREDIT">交通银行信用卡</option>
-            </select>
+          
+          <div className="lg:col-span-2">
+            <label className="block text-xs font-medium text-gray-700 mb-1">渠道与账户</label>
+            <ChannelAccountCascader 
+              selectedChannels={selectedChannels} 
+              selectedAccounts={selectedAccounts} 
+              onChange={(channels, accounts) => {
+                setSelectedChannels(channels);
+                setSelectedAccounts(accounts);
+              }} 
+            />
           </div>
+
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">收支类型</label>
             <select
               name="type"
               value={filters.type}
               onChange={handleFilterChange}
-              className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-sm"
+              className="w-full border-gray-300 rounded-md shadow-sm p-1.5 border text-sm focus:ring-blue-500 focus:border-blue-500 h-[38px]"
             >
               <option value="">全部类型</option>
-              <option value="INCOME">收入</option>
               <option value="EXPENSE">支出</option>
-              <option value="OTHER">其他</option>
+              <option value="INCOME">收入</option>
+              <option value="TRANSFER">转账</option>
             </select>
           </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">开始日期</label>
-            <input
-              type="date"
-              name="startDate"
-              value={filters.startDate}
-              onChange={handleFilterChange}
-              className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">结束日期</label>
-            <input
-              type="date"
-              name="endDate"
-              value={filters.endDate}
-              onChange={handleFilterChange}
-              className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-sm"
-            />
+
+          <div className="flex space-x-2">
+            <div className="w-1/2">
+              <label className="block text-xs font-medium text-gray-700 mb-1">开始日期</label>
+              <input
+                type="date"
+                name="startDate"
+                value={filters.startDate}
+                onChange={handleFilterChange}
+                className="w-full border-gray-300 rounded-md shadow-sm p-1.5 border text-sm focus:ring-blue-500 focus:border-blue-500 h-[38px]"
+              />
+            </div>
+            <div className="w-1/2">
+              <label className="block text-xs font-medium text-gray-700 mb-1">结束日期</label>
+              <input
+                type="date"
+                name="endDate"
+                value={filters.endDate}
+                onChange={handleFilterChange}
+                className="w-full border-gray-300 rounded-md shadow-sm p-1.5 border text-sm focus:ring-blue-500 focus:border-blue-500 h-[38px]"
+              />
+            </div>
           </div>
         </div>
-        <div className="mt-4 flex justify-end space-x-2">
-          <button onClick={handleReset} className="px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+        
+        <div className="mt-5 flex justify-end space-x-3">
+          <button
+            onClick={handleReset}
+            className="px-4 py-1.5 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+          >
             重置
           </button>
-          <button onClick={handleSearch} className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
+          <button
+            onClick={handleSearch}
+            className="px-4 py-1.5 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+          >
             查询
           </button>
         </div>

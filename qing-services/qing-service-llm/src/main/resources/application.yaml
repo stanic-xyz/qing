@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: qing-service-llm
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   datasource:
     driver-class-name: org.postgresql.Driver
     username: qing-llm

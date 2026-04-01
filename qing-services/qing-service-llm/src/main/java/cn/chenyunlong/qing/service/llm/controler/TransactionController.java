@@ -18,6 +18,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.chenyunlong.qing.service.llm.entity.Channel;
+import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
+
 @RestController
 @RequestMapping("/api/finance/transactions")
 @Slf4j
@@ -25,12 +28,16 @@ public class TransactionController {
 
     @Autowired
     private TransactionRecordRepository transactionRepo;
+    
+    @Autowired
+    private ChannelRepository channelRepo;
 
     @GetMapping
     public Result<Page<TransactionRecord>> getTransactions(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size,
-            @RequestParam(value = "channel", required = false) String channel,
+            @RequestParam(value = "channelIds", required = false) List<Long> channelIds,
+            @RequestParam(value = "accountIds", required = false) List<Long> accountIds,
             @RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "startDate", required = false) String startDate,
@@ -44,8 +51,16 @@ public class TransactionController {
         Specification<TransactionRecord> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             
-            if (channel != null && !channel.isEmpty()) {
-                predicates.add(cb.equal(root.get("channel"), channel));
+            if (channelIds != null && !channelIds.isEmpty()) {
+                List<String> codes = channelRepo.findAllById(channelIds).stream().map(Channel::getCode).toList();
+                if (!codes.isEmpty()) {
+                    predicates.add(root.get("channel").in(codes));
+                } else {
+                    predicates.add(cb.disjunction()); // Return empty if no codes match
+                }
+            }
+            if (accountIds != null && !accountIds.isEmpty()) {
+                predicates.add(root.get("account").get("id").in(accountIds));
             }
             if (type != null && !type.isEmpty()) {
                 predicates.add(cb.equal(root.get("type"), type));

@@ -4,7 +4,9 @@ import Dashboard from './pages/Dashboard';
 import Import from './pages/Import';
 import Transactions from './pages/Transactions';
 import Accounts from './pages/Accounts';
+import ChannelAccountManager from './pages/ChannelAccountManager';
 import ImportHistory from './pages/ImportHistory';
+import FundsFlowChart from './pages/FundsFlowChart';
 import TransactionCompare from './pages/TransactionCompare';
 import Categories from './pages/Categories';
 
@@ -19,6 +21,8 @@ function App() {
           <Route path="transactions" element={<Transactions />} />
           <Route path="transaction-compare" element={<TransactionCompare />} />
           <Route path="accounts" element={<Accounts />} />
+          <Route path="channel-accounts" element={<ChannelAccountManager />} />
+          <Route path="funds-flow" element={<FundsFlowChart />} />
           <Route path="categories" element={<Categories />} />
         </Route>
       </Routes>

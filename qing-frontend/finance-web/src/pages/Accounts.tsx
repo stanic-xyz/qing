@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { CHANNELS, CHANNEL_LIST } from '../config/channels';
-import { Banknote } from 'lucide-react';
+import { Banknote, UploadCloud } from 'lucide-react';
+import AccountImportModal from '../components/AccountImportModal';
 
 export default function Accounts() {
   const [accounts, setAccounts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const [editingAccount, setEditingAccount] = useState<any>(null);
 
   useEffect(() => {
@@ -80,7 +82,15 @@ export default function Accounts() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">账户管理</h1>
-        <button onClick={() => openModal()} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">添加账户</button>
+        <div className="flex space-x-3">
+          <button
+            onClick={() => setShowImportModal(true)}
+            className="flex items-center px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+          >
+            <UploadCloud className="w-4 h-4 mr-2" /> 批量导入
+          </button>
+          <button onClick={() => openModal()} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">添加账户</button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -162,6 +172,16 @@ export default function Accounts() {
             </div>
           </div>
         </div>
+      )}
+
+      {showImportModal && (
+        <AccountImportModal
+          onClose={() => setShowImportModal(false)}
+          onSuccess={() => {
+            setShowImportModal(false);
+            fetchAccounts();
+          }}
+        />
       )}
     </div>
   );
