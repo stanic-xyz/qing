@@ -1,5 +1,5 @@
 import {Outlet, Link} from 'react-router-dom';
-import {LayoutDashboard, UploadCloud, List, Wallet, History, GitCompare, Tags, ArrowRightLeft} from 'lucide-react';
+import {LayoutDashboard, UploadCloud, List, Wallet, GitCompare, Tags, ArrowRightLeft, Settings, Users} from 'lucide-react';
 
 export default function MainLayout() {
     return (
@@ -39,15 +39,20 @@ export default function MainLayout() {
                         <Tags size={20}/>
                         分类管理
                     </Link>
+                    <Link to="/counterparties"
+                          className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
+                        <Users size={20}/>
+                        交易对手
+                    </Link>
+                    <Link to="/matchers"
+                          className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
+                        <Settings size={20}/>
+                        匹配规则
+                    </Link>
                     <Link to="/import"
                           className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
                         <UploadCloud size={20}/>
                         账单导入
-                    </Link>
-                    <Link to="/import-history"
-                          className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
-                        <History size={20}/>
-                        导入记录
                     </Link>
                 </nav>
             </aside>

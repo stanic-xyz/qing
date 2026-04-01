@@ -1,22 +1,75 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getEnumText } from '../utils/enumMap';
+import { Search, RotateCcw } from 'lucide-react';
 
 export default function TransactionCompare() {
   const [compareGroups, setCompareGroups] = useState([]);
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
+  const [accounts, setAccounts] = useState<any[]>([]);
+
+  const [filters, setFilters] = useState({
+    startDate: '',
+    endDate: '',
+    minAmount: '',
+    maxAmount: '',
+    type: '',
+    compareStatus: 'MATCHED',
+    channel: '',
+    accountId: ''
+  });
 
   useEffect(() => {
     fetchCompareData();
+    fetchAccounts();
   }, []);
 
-  const fetchCompareData = async () => {
+  const fetchAccounts = async () => {
     try {
-      const res = await axios.get('/api/finance/compare');
-      setCompareGroups(res.data.data || []);
+      const res = await axios.get('/api/finance/accounts');
+      setAccounts(res.data.data || []);
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const fetchCompareData = async (currentFilters = filters) => {
+    try {
+      const params = new URLSearchParams();
+      Object.entries(currentFilters).forEach(([key, value]) => {
+        if (value !== '') {
+          params.append(key, String(value));
+        }
+      });
+      const res = await axios.get(`/api/finance/compare?${params.toString()}`);
+      setCompareGroups(res.data.data || []);
+      setExpandedGroupId(null);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value });
+  };
+
+  const handleSearch = () => {
+    fetchCompareData(filters);
+  };
+
+  const handleReset = () => {
+    const defaultFilters = {
+      startDate: '',
+      endDate: '',
+      minAmount: '',
+      maxAmount: '',
+      type: '',
+      compareStatus: 'MATCHED',
+      channel: '',
+      accountId: ''
+    };
+    setFilters(defaultFilters);
+    fetchCompareData(defaultFilters);
   };
 
   const toggleExpand = (groupId: string) => {
@@ -26,10 +79,75 @@ export default function TransactionCompare() {
   const CHANNELS = ['ALIPAY', 'WECHAT', 'CMB', 'PINGAN', 'BOC_CREDIT', 'CITIC_CREDIT', 'CCB', 'BOCOM_CREDIT', 'QIANJI', 'JINGDONG'];
 
   return (
-    <div className="flex flex-col h-full">
-      <h1 className="text-2xl font-bold mb-6">交易比对</h1>
-      <p className="text-gray-500 mb-4 text-sm">此视图将金额和日期完全相同的交易聚合在一起，横向比对不同账单渠道的记录差异。</p>
-      
+    <div className="flex flex-col h-full gap-4">
+      <div>
+        <h1 className="text-2xl font-bold mb-2">对账工具</h1>
+        <p className="text-gray-500 text-sm">此视图将金额和日期完全相同的交易聚合在一起，横向比对不同账单渠道的记录差异。</p>
+      </div>
+
+      {/* 高级过滤栏 */}
+      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">开始日期</label>
+            <input type="date" name="startDate" value={filters.startDate} onChange={handleFilterChange} className="w-full border-gray-300 rounded-md shadow-sm p-2 text-sm border focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">结束日期</label>
+            <input type="date" name="endDate" value={filters.endDate} onChange={handleFilterChange} className="w-full border-gray-300 rounded-md shadow-sm p-2 text-sm border focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">最小金额</label>
+            <input type="number" name="minAmount" value={filters.minAmount} onChange={handleFilterChange} placeholder="￥0.00" className="w-full border-gray-300 rounded-md shadow-sm p-2 text-sm border focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">最大金额</label>
+            <input type="number" name="maxAmount" value={filters.maxAmount} onChange={handleFilterChange} placeholder="￥9999.00" className="w-full border-gray-300 rounded-md shadow-sm p-2 text-sm border focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">收支类型</label>
+            <select name="type" value={filters.type} onChange={handleFilterChange} className="w-full border-gray-300 rounded-md shadow-sm p-2 text-sm border focus:ring-blue-500 focus:border-blue-500">
+              <option value="">全部</option>
+              <option value="EXPENSE">支出</option>
+              <option value="INCOME">收入</option>
+              <option value="TRANSFER">转账</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">对比状态</label>
+            <select name="compareStatus" value={filters.compareStatus} onChange={handleFilterChange} className="w-full border-gray-300 rounded-md shadow-sm p-2 text-sm border focus:ring-blue-500 focus:border-blue-500">
+              <option value="ALL">全部 (含单边孤立账单)</option>
+              <option value="MATCHED">仅看已匹配 (&gt;=2个渠道)</option>
+              <option value="UNMATCHED">仅看未匹配 (单边孤立账单)</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">包含渠道</label>
+            <select name="channel" value={filters.channel} onChange={handleFilterChange} className="w-full border-gray-300 rounded-md shadow-sm p-2 text-sm border focus:ring-blue-500 focus:border-blue-500">
+              <option value="">不限</option>
+              {CHANNELS.map(ch => <option key={ch} value={ch}>{getEnumText('channel', ch)}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-700 mb-1">包含账户</label>
+            <select name="accountId" value={filters.accountId} onChange={handleFilterChange} className="w-full border-gray-300 rounded-md shadow-sm p-2 text-sm border focus:ring-blue-500 focus:border-blue-500">
+              <option value="">不限</option>
+              {accounts.map(acc => <option key={acc.id} value={acc.id}>{acc.accountName}</option>)}
+            </select>
+          </div>
+        </div>
+        <div className="mt-4 flex justify-end space-x-3">
+          <button onClick={handleReset} className="flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+            <RotateCcw className="w-4 h-4 mr-2" />
+            重置
+          </button>
+          <button onClick={handleSearch} className="flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+            <Search className="w-4 h-4 mr-2" />
+            查询
+          </button>
+        </div>
+      </div>
+
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 flex-1 overflow-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50 sticky top-0 z-10">
@@ -46,7 +164,7 @@ export default function TransactionCompare() {
               return (
                 <React.Fragment key={group.groupId}>
                   {/* 主行 */}
-                  <tr 
+                  <tr
                     className={`hover:bg-gray-50 cursor-pointer ${isExpanded ? 'bg-blue-50' : ''}`}
                     onClick={() => toggleExpand(group.groupId)}
                   >
@@ -69,7 +187,7 @@ export default function TransactionCompare() {
                       );
                     })}
                   </tr>
-                  
+
                   {/* 展开行（详情列表） */}
                   {isExpanded && (
                     <tr>
