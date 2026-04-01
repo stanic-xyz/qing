@@ -35,20 +35,19 @@ public class UploadRecordController {
     }
 
     @GetMapping("/{id}/transactions")
-    public Result<List<TransactionRecord>> getTransactionsByUploadId(@PathVariable Long id) {
+    public Result<List<TransactionRecord>> getTransactionsByUploadId(@PathVariable("id") Long id) {
         UploadFileRecord record = uploadFileRepo.findById(id).orElse(null);
         if (record == null) {
             return Result.error(404, "导入记录不存在");
         }
-        // 由于我们之前的逻辑中 uploadId 是 UUID，为了方便对应，我们可以通过文件 Hash 或者直接查询
-        // 这里假设我们需要根据实际关联去查，如果使用 uuid，应该在 UploadFileRecord 加个 uploadId 字段
-        // 为了简便，我们假设 uploadId 就通过 fileName 等来推导，或者我们最好给 UploadFileRecord 加一个 uploadId 字段
-        // 先临时通过 sourceFile 查找
+
         List<TransactionRecord> transactions = transactionRepo.findByUploadId(String.valueOf(record.getId()));
-        if (transactions.isEmpty()) {
-            // 回退到用文件名查找
-            // ...
+
+        if (transactions.isEmpty() && record.getFileName() != null) {
+            // 回退到用文件名查找 (兼容旧数据)
+            transactions = transactionRepo.findAll((root, query, cb) -> cb.equal(root.get("sourceFile"), record.getFileName()));
         }
+
         return Result.success(transactions);
     }
 
@@ -58,9 +57,9 @@ public class UploadRecordController {
         if (record == null) {
             return Result.error(404, "导入记录不存在");
         }
-        
+
         List<TransactionRecord> transactions = transactionRepo.findByUploadId(String.valueOf(record.getId()));
-        
+
         if (softDelete) {
             transactions.forEach(t -> t.setIsDeleted(true));
             transactionRepo.saveAll(transactions);
@@ -70,7 +69,7 @@ public class UploadRecordController {
             uploadFileRepo.delete(record);
             return Result.success(null);
         }
-        
+
         uploadFileRepo.save(record);
         return Result.success(null);
     }

@@ -84,6 +84,12 @@ public class TransactionController {
             // 默认不查询已软删除的数据
             predicates.add(cb.equal(root.get("isDeleted"), false));
             
+            // 彻底隔离未导入的数据 (兼容历史数据 isImported is null)
+            predicates.add(cb.or(
+                cb.equal(root.get("isImported"), true),
+                cb.isNull(root.get("isImported"))
+            ));
+            
             return cb.and(predicates.toArray(new Predicate[0]));
         };
         

@@ -26,7 +26,7 @@ public class DashboardController {
     @GetMapping("/stats")
     public Result<DashboardStatsDTO> getStats() {
         List<TransactionRecord> allRecords = transactionRepo.findAll()
-                .stream().filter(r -> !r.getIsDeleted()).collect(Collectors.toList());
+                .stream().filter(r -> !r.getIsDeleted() && (r.getIsImported() == null || r.getIsImported())).collect(Collectors.toList());
 
         BigDecimal totalIncome = BigDecimal.ZERO;
         BigDecimal totalExpense = BigDecimal.ZERO;

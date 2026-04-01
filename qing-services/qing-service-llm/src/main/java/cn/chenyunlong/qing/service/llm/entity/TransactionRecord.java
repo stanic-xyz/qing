@@ -6,8 +6,10 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
+
 @Entity
-@Table(name = "transaction_record")
+@Table(name = "finance_transaction_record")
 @Data
 public class TransactionRecord {
     @Id
@@ -45,12 +47,20 @@ public class TransactionRecord {
     
     private Boolean isDeleted = false; // 软删除标记
     private Boolean isModified = false; // 修改标记
+    private Boolean isImported = true; // 是否已正式导入（用于支持分步导入）
     
     @Column(columnDefinition = "TEXT")
     private String originalData; // 存储 JSON 格式的原始解析数据
 
     private String reconciliationStatus; // PENDING/MATCHED/MANUAL
     private Boolean confirmed;
+
+    // ======== 新增的匹配与转账相关字段 ========
+    @Enumerated(EnumType.STRING)
+    private MatchStatusEnum matchStatus = MatchStatusEnum.ORIGINAL;
+
+    private Long targetAccountId; // 内部转账时，目标账户的ID
+    private String matchRuleName; // 触发此状态的规则名称
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

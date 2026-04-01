@@ -46,7 +46,14 @@ public class AlipayParser extends BaseFileParser {
                     record.setTransactionTime(LocalDateTime.parse(timeStr, ALIPAY_FORMAT));
 
                     record.setCategory(line[1].trim());
-                    record.setCounterparty(line[2].trim());
+
+                    String counterparty = line[2].trim();
+                    String counterpartyAccount = line[3].trim();
+                    if (!counterpartyAccount.isEmpty() && !"/".equals(counterpartyAccount)) {
+                        counterparty = counterparty + " (" + counterpartyAccount + ")";
+                    }
+                    record.setCounterparty(counterparty);
+
                     record.setMerchant(line[4].trim());
 
                     // 状态: [8]
@@ -68,10 +75,28 @@ public class AlipayParser extends BaseFileParser {
 
                     record.setAmount(amount);
 
-                    // 备注: [11] (如果有的话)
-                    if (line.length > 11) {
-                        record.setRemark(line[11].trim());
+                    // 交易订单号
+                    if (line.length > 9) {
+                        record.setOriginalId(line[9].trim());
                     }
+
+                    // 构建丰富的备注信息
+                    StringBuilder remarkBuilder = new StringBuilder();
+                    if (line.length > 7 && !line[7].trim().isEmpty() && !"/".equals(line[7].trim())) {
+                        remarkBuilder.append("付款方式: ").append(line[7].trim()).append("; ");
+                    }
+                    if (line.length > 10 && !line[10].trim().isEmpty() && !"/".equals(line[10].trim())) {
+                        remarkBuilder.append("商家订单号: ").append(line[10].trim()).append("; ");
+                    }
+                    if (line.length > 11 && !line[11].trim().isEmpty() && !"/".equals(line[11].trim())) {
+                        remarkBuilder.append("备注: ").append(line[11].trim());
+                    }
+
+                    String finalRemark = remarkBuilder.toString().trim();
+                    if (finalRemark.endsWith(";")) {
+                        finalRemark = finalRemark.substring(0, finalRemark.length() - 1);
+                    }
+                    record.setRemark(finalRemark);
 
                     record.setAccountName("支付宝");
                     record.setAccountType("WALLET");
