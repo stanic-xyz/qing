@@ -33,7 +33,7 @@ export default function ImportRecordList({
   lockedTempIds, setLockedTempIds, isMatching, setIsMatching,
   isImporting, setIsImporting, onImportSuccess
 }: ImportRecordListProps) {
-  
+
   const renderMatchStatus = (status: string, ruleName?: string) => {
     switch (status) {
       case 'AUTO_MATCHED':
@@ -66,7 +66,7 @@ export default function ImportRecordList({
         <tbody className="bg-white divide-y divide-gray-200">
           {records.map((r: any) => (
             <React.Fragment key={r.id}>
-              <tr 
+              <tr
                 className={`hover:bg-gray-50 cursor-pointer ${expandedUploadId === String(r.id) ? 'bg-blue-50/30' : ''}`}
                 onClick={() => onToggleExpand(String(r.id))}
               >
@@ -85,16 +85,16 @@ export default function ImportRecordList({
                 <td className="px-4 py-3 text-sm text-gray-500">{r.startTime && r.endTime ? `${r.startTime.split('T')[0]} ~ ${r.endTime.split('T')[0]}` : '-'}</td>
                 <td className="px-4 py-3 text-sm font-medium space-x-3 flex items-center">
                   {r.status !== 'IMPORTED' && (
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); onToggleExpand(String(r.id)); }} 
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onToggleExpand(String(r.id)); }}
                       className="text-blue-600 hover:text-blue-900 flex items-center"
                     >
                       {expandedUploadId === String(r.id) ? <><ChevronUp size={16} className="mr-1"/>收起</> : <><ChevronDown size={16} className="mr-1"/>展开处理</>}
                     </button>
                   )}
                   {r.status !== 'IMPORTED' && (
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); onDeleteUpload(r.id); }} 
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onDeleteUpload(r.id); }}
                       className="text-red-600 hover:text-red-900"
                     >
                       撤销
@@ -119,33 +119,33 @@ export default function ImportRecordList({
                             <p className="text-sm text-gray-500">此批次数据已成功导入并归档，不可修改。以下为最终入库的流水详情及命中的规则。</p>
                           </div>
                         </div>
-                        <div className="bg-white border rounded-lg overflow-hidden max-h-[600px] overflow-y-auto">
-                          <table className="min-w-full divide-y divide-gray-200">
+                        <div className="bg-white border rounded-lg overflow-hidden max-h-[600px] overflow-x-auto overflow-y-auto">
+                          <table className="min-w-full divide-y divide-gray-200 table-fixed">
                             <thead className="bg-gray-100 sticky top-0 z-10">
                               <tr>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">匹配状态</th>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">时间</th>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">说明/对方</th>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">商户/平台</th>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">收支</th>
-                                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500">金额</th>
+                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">匹配状态</th>
+                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-40">时间</th>
+                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-64">说明/对方</th>
+                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">商户/平台</th>
+                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-24">收支</th>
+                                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 w-32 sticky right-0 bg-gray-100 z-10">金额</th>
                               </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-100">
+                            <tbody className="divide-y divide-gray-100 bg-white">
                               {processPreview.previewRecords.map((record) => (
                                 <tr key={record.tempId} className="hover:bg-gray-50">
-                                  <td className="px-4 py-2 whitespace-nowrap">
+                                  <td className="px-4 py-2 whitespace-nowrap truncate" title={record.matchRuleName || record.matchStatus}>
                                     {renderMatchStatus(record.matchStatus, record.matchRuleName)}
                                   </td>
-                                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600">{record.transactionTime}</td>
-                                  <td className="px-4 py-2 text-sm text-gray-900 max-w-[200px] truncate" title={record.counterparty}>{record.counterparty}</td>
-                                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700">{record.merchant || '-'}</td>
+                                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 truncate" title={record.transactionTime}>{record.transactionTime}</td>
+                                  <td className="px-4 py-2 text-sm text-gray-900 truncate" title={record.counterparty}>{record.counterparty}</td>
+                                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 truncate" title={record.merchant || '-'}>{record.merchant || '-'}</td>
                                   <td className="px-4 py-2 whitespace-nowrap">
                                     <span className={`text-sm ${record.type === 'INCOME' ? 'text-green-600' : record.type === 'EXPENSE' ? 'text-red-600' : 'text-gray-600'}`}>
                                       {record.type}
                                     </span>
                                   </td>
-                                  <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-semibold text-gray-900">{record.amount}</td>
+                                  <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-semibold text-gray-900 sticky right-0 bg-inherit shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.1)]">{record.amount}</td>
                                 </tr>
                               ))}
                             </tbody>
@@ -153,7 +153,7 @@ export default function ImportRecordList({
                         </div>
                       </div>
                     ) : (
-                      <ProcessTable 
+                      <ProcessTable
                         uploadId={String(r.id)}
                         processPreview={processPreview}
                         setProcessPreview={setProcessPreview}

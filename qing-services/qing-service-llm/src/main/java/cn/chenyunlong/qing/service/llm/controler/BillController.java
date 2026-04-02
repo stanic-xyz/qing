@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.service.llm.controler;
 
 import cn.chenyunlong.qing.service.llm.dto.ImportRequest;
 import cn.chenyunlong.qing.service.llm.dto.Result;
+import cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse;
 import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
 import cn.chenyunlong.qing.service.llm.service.UploadService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +23,11 @@ public class BillController {
     private UploadService uploadService;
 
     @PostMapping(value = "/upload-batch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Result> uploadBillBatch(@RequestParam("files") List<MultipartFile> files,
+    public ResponseEntity<Result<List<UploadBatchPreviewResponse>>> uploadBillBatch(@RequestParam("files") List<MultipartFile> files,
                                                   @RequestParam("channel") String channel,
                                                   @RequestParam("accountId") Long accountId) {
         try {
-            List<cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse> previews = uploadService.parseAndPreviewBatch(files, channel, accountId);
+            List<UploadBatchPreviewResponse> previews = uploadService.parseAndPreviewBatch(files, channel, accountId);
             return ResponseEntity.ok(Result.success(previews));
         } catch (Exception e) {
             log.error("批量上传解析失败", e);
@@ -35,7 +36,7 @@ public class BillController {
     }
 
     @GetMapping("/preview/{uploadId}")
-    public ResponseEntity<Result> getPreview(@PathVariable("uploadId") String uploadId) {
+    public ResponseEntity<Result<UploadPreview>> getPreview(@PathVariable("uploadId") String uploadId) {
         try {
             return ResponseEntity.ok(Result.success(uploadService.getPreviewData(uploadId)));
         } catch (Exception e) {

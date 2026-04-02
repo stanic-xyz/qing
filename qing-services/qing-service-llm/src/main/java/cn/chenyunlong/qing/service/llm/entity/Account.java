@@ -25,6 +25,7 @@ public class Account {
     private LocalDateTime openingDate; // 开户日期
     
     private BigDecimal initialBalance; // 期初余额
+    private BigDecimal currentBalance; // 当前余额
     private LocalDateTime balanceAsOf; // 余额对应日期
     
     private String status; // ACTIVE/CLOSED
@@ -36,6 +37,9 @@ public class Account {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        if (currentBalance == null) {
+            currentBalance = initialBalance != null ? initialBalance : BigDecimal.ZERO;
+        }
     }
 
     @PreUpdate

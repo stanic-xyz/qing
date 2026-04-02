@@ -285,6 +285,8 @@ public class UploadService {
         Map<String, cn.chenyunlong.qing.service.llm.entity.TransactionMatcher> matchersMap = matcherRepository.findAll().stream()
                 .collect(Collectors.toMap(cn.chenyunlong.qing.service.llm.entity.TransactionMatcher::getName, m -> m));
         
+        Map<Long, Account> accountsToUpdate = new java.util.HashMap<>();
+
         for (TransactionRecord record : toImport) {
             record.setIsImported(true);
             
@@ -298,8 +300,44 @@ public class UploadService {
                     }
                 }
             }
+
+            // 账户余额联动
+            Account srcAccount = record.getAccount();
+            if (srcAccount != null && record.getAmount() != null) {
+                if (!accountsToUpdate.containsKey(srcAccount.getId())) {
+                    accountsToUpdate.put(srcAccount.getId(), srcAccount);
+                }
+                Account acc = accountsToUpdate.get(srcAccount.getId());
+                java.math.BigDecimal current = acc.getCurrentBalance() != null ? acc.getCurrentBalance() : java.math.BigDecimal.ZERO;
+                
+                if ("INCOME".equals(record.getType())) {
+                    acc.setCurrentBalance(current.add(record.getAmount()));
+                } else if ("EXPENSE".equals(record.getType())) {
+                    acc.setCurrentBalance(current.subtract(record.getAmount()));
+                } else if ("TRANSFER".equals(record.getType())) {
+                    acc.setCurrentBalance(current.subtract(record.getAmount())); // 源账户减去金额
+                    
+                    // 目标账户增加金额
+                    if (record.getTargetAccountId() != null) {
+                        Account targetAcc = accountsToUpdate.get(record.getTargetAccountId());
+                        if (targetAcc == null) {
+                            targetAcc = accountRepository.findById(record.getTargetAccountId()).orElse(null);
+                            if (targetAcc != null) {
+                                accountsToUpdate.put(targetAcc.getId(), targetAcc);
+                            }
+                        }
+                        if (targetAcc != null) {
+                            java.math.BigDecimal targetCurrent = targetAcc.getCurrentBalance() != null ? targetAcc.getCurrentBalance() : java.math.BigDecimal.ZERO;
+                            targetAcc.setCurrentBalance(targetCurrent.add(record.getAmount()));
+                        }
+                    }
+                }
+            }
         }
         matcherRepository.saveAll(matchersMap.values());
+        if (!accountsToUpdate.isEmpty()) {
+            accountRepository.saveAll(accountsToUpdate.values());
+        }
 
         // 批量保存
         List<TransactionRecord> saved = transactionRepo.saveAll(toImport);

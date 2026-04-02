@@ -191,20 +191,20 @@ export default function ProcessTable({
         </div>
       </div>
 
-      <div className="bg-white border rounded-lg overflow-hidden max-h-[600px] overflow-y-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+    <div className="bg-white border rounded-lg overflow-hidden max-h-[600px] overflow-x-auto overflow-y-auto">
+        <table className="min-w-full divide-y divide-gray-200 table-fixed">
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">状态</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">时间</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">说明/对方</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">提取商户 {processStep===2 && <Edit2 size={12} className="inline text-blue-500"/>}</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">收支 {processStep===2 && <Edit2 size={12} className="inline text-blue-500"/>}</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">转账目标 {processStep===2 && <Edit2 size={12} className="inline text-blue-500"/>}</th>
-              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500">操作</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-28">状态</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">时间</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-48">说明/对方</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">提取商户 {processStep===2 && <Edit2 size={12} className="inline text-blue-500"/>}</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-24">收支 {processStep===2 && <Edit2 size={12} className="inline text-blue-500"/>}</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">转账目标 {processStep===2 && <Edit2 size={12} className="inline text-blue-500"/>}</th>
+              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 w-32 sticky right-0 bg-gray-100 z-10">操作</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-100 bg-white">
             {processPreview.previewRecords.map((record) => {
               const mod = modifiedRecords[record.tempId] || {};
               const currentType = mod.type || record.type;
@@ -215,21 +215,21 @@ export default function ProcessTable({
 
               return (
                 <tr key={record.tempId} className={`hover:bg-blue-50/20 ${isModified ? 'bg-yellow-50/20' : ''} ${isLocked ? 'bg-gray-50 opacity-80' : ''}`}>
-                  <td className="px-4 py-2 whitespace-nowrap">
+                  <td className="px-4 py-2 whitespace-nowrap truncate" title={record.matchRuleName || record.matchStatus}>
                     {renderMatchStatus(processStep === 1 ? (record.matchStatus || 'ORIGINAL') : (isModified ? 'MANUAL_EDITED' : record.matchStatus), record.matchRuleName)}
                   </td>
-                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600">{record.transactionTime}</td>
-                  <td className="px-4 py-2 text-sm text-gray-900 max-w-[150px] truncate" title={record.counterparty}>{record.counterparty}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 truncate" title={record.transactionTime}>{record.transactionTime}</td>
+                  <td className="px-4 py-2 text-sm text-gray-900 truncate" title={record.counterparty}>{record.counterparty}</td>
                   
-                  <td className="px-4 py-2 whitespace-nowrap">
+                  <td className="px-4 py-2 whitespace-nowrap truncate" title={currentMerchant || record.merchant || '-'}>
                     {processStep === 2 ? (
-                      <input type="text" value={currentMerchant || ''} onChange={e => handleRecordChange(record.tempId, 'merchant', e.target.value)} className="text-sm border-gray-300 rounded px-2 py-1 w-full max-w-[120px] border focus:ring-blue-500" placeholder="未提取" />
+                      <input type="text" value={currentMerchant || ''} onChange={e => handleRecordChange(record.tempId, 'merchant', e.target.value)} className="text-sm border-gray-300 rounded px-2 py-1 w-full border focus:ring-blue-500" placeholder="未提取" />
                     ) : <span className="text-sm text-gray-500">{record.merchant || '-'}</span>}
                   </td>
 
                   <td className="px-4 py-2 whitespace-nowrap">
                     {processStep === 2 ? (
-                      <select value={currentType} onChange={e => handleRecordChange(record.tempId, 'type', e.target.value)} className={`text-sm border-gray-300 rounded px-2 py-1 border focus:ring-blue-500 ${currentType === 'INCOME' ? 'text-green-600' : currentType === 'EXPENSE' ? 'text-red-600' : 'text-blue-600'}`}>
+                      <select value={currentType} onChange={e => handleRecordChange(record.tempId, 'type', e.target.value)} className={`text-sm border-gray-300 rounded px-2 py-1 border focus:ring-blue-500 w-full ${currentType === 'INCOME' ? 'text-green-600' : currentType === 'EXPENSE' ? 'text-red-600' : 'text-blue-600'}`}>
                         <option value="EXPENSE">支出</option>
                         <option value="INCOME">收入</option>
                         <option value="TRANSFER">转账</option>
@@ -237,16 +237,16 @@ export default function ProcessTable({
                     ) : <span className={`text-sm ${record.type === 'INCOME' ? 'text-green-600' : record.type === 'EXPENSE' ? 'text-red-600' : 'text-gray-600'}`}>{record.type}</span>}
                   </td>
 
-                  <td className="px-4 py-2 whitespace-nowrap">
+                  <td className="px-4 py-2 whitespace-nowrap truncate">
                     {processStep === 2 && currentType === 'TRANSFER' ? (
-                      <select value={currentTargetAccount || ''} onChange={e => handleRecordChange(record.tempId, 'targetAccountId', e.target.value ? Number(e.target.value) : undefined)} className="text-sm border-gray-300 rounded px-2 py-1 w-full max-w-[120px] border focus:ring-blue-500">
+                      <select value={currentTargetAccount || ''} onChange={e => handleRecordChange(record.tempId, 'targetAccountId', e.target.value ? Number(e.target.value) : undefined)} className="text-sm border-gray-300 rounded px-2 py-1 w-full border focus:ring-blue-500">
                         <option value="">选择目标</option>
-                        {accounts.map(a => <option key={a.id} value={a.id}>{a.accountName}</option>)}
+                        {accounts.map(a => <option key={a.id} value={a.id} title={a.accountName}>{a.accountName}</option>)}
                       </select>
                     ) : <span className="text-gray-400 text-sm">-</span>}
                   </td>
 
-                  <td className="px-4 py-2 whitespace-nowrap text-right space-x-2">
+                  <td className="px-4 py-2 whitespace-nowrap text-right space-x-2 sticky right-0 bg-inherit shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.1)]">
                     {processStep === 1 && (
                       <>
                         <button onClick={() => handleTestSingleMatch(record.tempId)} className="text-blue-600 hover:text-blue-800 text-xs flex items-center inline-flex" title="单条测试">
