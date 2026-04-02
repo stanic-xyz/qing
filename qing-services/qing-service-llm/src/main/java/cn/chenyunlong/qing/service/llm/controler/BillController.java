@@ -24,10 +24,13 @@ public class BillController {
 
     @PostMapping(value = "/upload-batch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Result<List<UploadBatchPreviewResponse>>> uploadBillBatch(@RequestParam("files") List<MultipartFile> files,
-                                                  @RequestParam("channel") String channel,
+                                                  @RequestParam(value = "parserId", required = false) String parserId,
+                                                  @RequestParam(value = "channel", required = false) String channel,
                                                   @RequestParam("accountId") Long accountId) {
         try {
-            List<UploadBatchPreviewResponse> previews = uploadService.parseAndPreviewBatch(files, channel, accountId);
+            // 兼容旧逻辑
+            String targetParserId = parserId != null ? parserId : channel;
+            List<UploadBatchPreviewResponse> previews = uploadService.parseAndPreviewBatch(files, targetParserId, accountId);
             return ResponseEntity.ok(Result.success(previews));
         } catch (Exception e) {
             log.error("批量上传解析失败", e);

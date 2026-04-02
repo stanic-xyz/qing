@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,8 @@ public class CmbParserTest extends BaseParserTest {
         }
 
         try (InputStream is = pathResource.getInputStream()) {
-            List<TransactionRecord> records = parser.parse(is, "cmb_bill.pdf");
+            ParseResult parseResult = parser.parse(is, "cmb_bill.pdf");
+        List<TransactionRecord> records = parseResult.getRecords();
             System.out.println("招商银行解析条数: " + records.size());
             assertFalse(records.isEmpty(), "解析结果不应为空");
 

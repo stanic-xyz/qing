@@ -12,12 +12,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 
 @Component("BANK")
 public class BankParser extends BaseFileParser {
     @Override
-    public List<TransactionRecord> parse(InputStream inputStream, String originalFilename) throws Exception {
+    public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         // 根据文件名后缀选择解析方式
         if (originalFilename.endsWith(".xls") || originalFilename.endsWith(".xlsx")) {
             return parseExcel(inputStream, originalFilename);
@@ -32,7 +34,7 @@ public class BankParser extends BaseFileParser {
         }
     }
 
-    private List<TransactionRecord> parseExcel(InputStream inputStream, String filename) throws Exception {
+    private ParseResult parseExcel(InputStream inputStream, String filename) throws Exception {
         Workbook workbook;
         if (filename.endsWith(".xlsx")) {
             workbook = new XSSFWorkbook(inputStream);
@@ -74,20 +76,20 @@ public class BankParser extends BaseFileParser {
             record.setConfirmed(false);
             records.add(record);
         }
-        return records;
+        return wrapResult(records);
     }
 
-    private List<TransactionRecord> parseCsv(InputStream inputStream) {
+    private ParseResult parseCsv(InputStream inputStream) {
         // 实现CSV解析
-        return new ArrayList<>();
+        return wrapResult(new ArrayList<>());
     }
 
-    private List<TransactionRecord> parseTxt(InputStream inputStream) {
+    private ParseResult parseTxt(InputStream inputStream) {
         // 实现TXT解析，可能为固定宽度或分隔符
-        return new ArrayList<>();
+        return wrapResult(new ArrayList<>());
     }
 
-    private List<TransactionRecord> parsePdf(InputStream inputStream) throws Exception {
+    private ParseResult parsePdf(InputStream inputStream) throws Exception {
         // 使用PDFBox提取文本，然后解析
         // 示例代码：
         /*
@@ -97,6 +99,6 @@ public class BankParser extends BaseFileParser {
             // 按行解析text
         }
         */
-        return new ArrayList<>();
+        return wrapResult(new ArrayList<>());
     }
 }

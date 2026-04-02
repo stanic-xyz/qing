@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,8 @@ public class CcbParserTest extends BaseParserTest {
         }
 
         try (InputStream is = Files.newInputStream(testFile.get())) {
-            List<TransactionRecord> records = parser.parse(is, "ccb_test.pdf");
+            ParseResult parseResult = parser.parse(is, "ccb_test.pdf");
+        List<TransactionRecord> records = parseResult.getRecords();
             System.out.println("建设银行解析条数: " + records.size());
             assertFalse(records.isEmpty(), "解析结果不应为空");
             

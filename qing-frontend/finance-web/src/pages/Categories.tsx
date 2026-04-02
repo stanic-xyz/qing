@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Plus, Edit2, Trash2, ChevronRight, ChevronDown } from 'lucide-react';
+import { Plus, Edit2, Trash2, ChevronRight, ChevronDown, Link } from 'lucide-react';
+import RuleSelector from '../components/RuleSelector';
 
 interface Category {
   id: number;
@@ -18,6 +19,11 @@ export default function Categories() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [expandedRowKeys, setExpandedRowKeys] = useState<Set<number>>(new Set());
+  
+  // 规则绑定相关状态
+  const [showRuleSelector, setShowRuleSelector] = useState(false);
+  const [bindingItem, setBindingItem] = useState<Category | null>(null);
+  const [boundRuleIds, setBoundRuleIds] = useState<number[]>([]);
   
   // Form states
   const [formData, setFormData] = useState({
@@ -125,6 +131,50 @@ export default function Categories() {
     return result;
   };
 
+  const handleBindRules = async (item: Category) => {
+    try {
+      const res = await axios.get('/api/finance/matchers');
+      if (res.data.code === 200) {
+        const matchers = res.data.data || [];
+        const bound = matchers.filter((m: any) => m.targetType === 'CATEGORY' && m.targetId === item.id).map((m: any) => m.id);
+        setBoundRuleIds(bound);
+        setBindingItem(item);
+        setShowRuleSelector(true);
+      }
+    } catch (e) {
+      console.error(e);
+      alert('获取规则列表失败');
+    }
+  };
+
+  const handleSaveBindings = async (ruleIds: number[]) => {
+    if (!bindingItem) return;
+    try {
+      const res = await axios.get('/api/finance/matchers');
+      if (res.data.code === 200) {
+        const allMatchers = res.data.data || [];
+        
+        const toUnbind = allMatchers.filter((m: any) => m.targetType === 'CATEGORY' && m.targetId === bindingItem.id && !ruleIds.includes(m.id));
+        const toBind = allMatchers.filter((m: any) => ruleIds.includes(m.id) && !(m.targetType === 'CATEGORY' && m.targetId === bindingItem.id));
+
+        const promises = [];
+        for (const m of toUnbind) {
+          promises.push(axios.put(`/api/finance/matchers/${m.id}`, { ...m, targetType: null, targetId: null }));
+        }
+        for (const m of toBind) {
+          promises.push(axios.put(`/api/finance/matchers/${m.id}`, { ...m, targetType: 'CATEGORY', targetId: bindingItem.id }));
+        }
+
+        await Promise.all(promises);
+        setShowRuleSelector(false);
+        alert('绑定成功');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('绑定失败');
+    }
+  };
+
   const renderTypeTag = (type: string) => {
     switch(type) {
       case 'EXPENSE': return <span className="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">支出</span>;
@@ -150,6 +200,9 @@ export default function Categories() {
             {renderTypeTag(node.type)}
           </div>
           <div className="flex space-x-2">
+            <button onClick={() => handleBindRules(node)} className="p-1 text-purple-600 hover:bg-purple-50 rounded" title="绑定规则">
+              <Link size={16} />
+            </button>
             {node.level === 0 && (
               <button onClick={() => handleAdd(node.id)} className="p-1 text-blue-600 hover:bg-blue-50 rounded" title="添加子类">
                 <Plus size={16} />
@@ -273,6 +326,16 @@ export default function Categories() {
             </div>
           </div>
         </div>
+      )}
+
+      {bindingItem && (
+        <RuleSelector
+          isOpen={showRuleSelector}
+          onClose={() => setShowRuleSelector(false)}
+          onSelect={handleSaveBindings}
+          initialSelectedIds={boundRuleIds}
+          targetType="CATEGORY"
+        />
       )}
     </div>
   );

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -34,7 +35,8 @@ public class JingdongParserTest extends BaseParserTest {
         }
 
         try (InputStream is = Files.newInputStream(testFile.get())) {
-            List<TransactionRecord> records = parser.parse(is, "jd_test.csv");
+            ParseResult parseResult = parser.parse(is, "jd_test.csv");
+        List<TransactionRecord> records = parseResult.getRecords();
             System.out.println("京东解析条数: " + records.size());
             assertFalse(records.isEmpty(), "解析结果不应为空");
 

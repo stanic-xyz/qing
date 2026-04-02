@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 
 @Slf4j
@@ -19,7 +21,7 @@ public class PingAnParser extends BaseFileParser {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public List<TransactionRecord> parse(InputStream inputStream, String originalFilename) throws Exception {
+    public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
         
         try (Workbook workbook = WorkbookFactory.create(inputStream)) {
@@ -101,7 +103,7 @@ public class PingAnParser extends BaseFileParser {
                 }
             }
         }
-        return records;
+        return wrapResult(records);
     }
     
     private String getCellValueAsString(Cell cell) {

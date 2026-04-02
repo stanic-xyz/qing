@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +32,7 @@ public class BocCreditParser extends BaseFileParser {
     private static final Pattern AMOUNT_PATTERN = Pattern.compile("^(.*?)\\s*([\\d,]+\\.\\d{2})$");
 
     @Override
-    public List<TransactionRecord> parse(InputStream inputStream, String originalFilename) throws Exception {
+    public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
         
         if (originalFilename.toLowerCase().endsWith(".pdf")) {
@@ -113,7 +115,7 @@ public class BocCreditParser extends BaseFileParser {
                 }
             }
         }
-        return records;
+        return wrapResult(records);
     }
 
     private void finalizeRecord(TransactionRecord record, String fullDesc) {

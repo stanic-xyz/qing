@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 
 @Slf4j
@@ -22,7 +24,7 @@ public class QianjiParser extends BaseFileParser {
     private static final DateTimeFormatter QIANJI_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public List<TransactionRecord> parse(InputStream inputStream, String originalFilename) throws Exception {
+    public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
         try (CSVReader reader = new CSVReaderBuilder(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).build()) {
             String[] line;
@@ -66,6 +68,6 @@ public class QianjiParser extends BaseFileParser {
                 }
             }
         }
-        return records;
+        return wrapResult(records);
     }
 }

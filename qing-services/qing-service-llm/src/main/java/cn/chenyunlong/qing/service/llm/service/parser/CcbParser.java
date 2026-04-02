@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,7 +39,7 @@ public class CcbParser extends BaseFileParser {
     private static final Pattern PDF_LINE_PATTERN = Pattern.compile("^\\d+\\s+(.+?)\\s+(\\d{8})\\s+([\\-\\d,.]+)\\s+([\\d,.]+)\\s*(.*)$");
 
     @Override
-    public List<TransactionRecord> parse(InputStream inputStream, String originalFilename) throws Exception {
+    public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
         
         if (originalFilename.toLowerCase().endsWith(".pdf")) {
@@ -138,7 +140,7 @@ public class CcbParser extends BaseFileParser {
                 parseLine(line, records);
             }
         }
-        return records;
+        return wrapResult(records);
     }
 
     private void finalizeRecord(TransactionRecord record, String fullRemark) {

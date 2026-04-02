@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.qing.service.llm.dto.ImportRequest;
+import cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse;
 import cn.chenyunlong.qing.service.llm.dto.PreviewRecordDTO;
 import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
@@ -9,6 +10,9 @@ import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.UploadFileRecordRepository;
+import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
+import cn.chenyunlong.qing.service.llm.repository.ParserConfigRepository;
+import cn.chenyunlong.qing.service.llm.service.parser.DynamicFileParser;
 import cn.chenyunlong.qing.service.llm.service.parser.FileParser;
 import cn.chenyunlong.qing.service.llm.util.FileHashUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,11 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -33,6 +33,9 @@ public class UploadService {
 
     @Resource
     private Map<String, FileParser> parserMap; // 渠道名 -> 解析器 Bean
+
+    @Resource
+    private ParserConfigRepository parserConfigRepository;
 
     @Resource
     private TransactionRecordRepository transactionRepo;
@@ -59,13 +62,35 @@ public class UploadService {
     private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     // 临时存储异步匹配任务状态
-    private Map<String, cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse> matchStatusMap = new ConcurrentHashMap<>();
+    private final Map<String, MatchStatusResponse> matchStatusMap = new ConcurrentHashMap<>();
 
-    public List<cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse> parseAndPreviewBatch(List<MultipartFile> files, String channel, Long accountId) throws Exception {
+    public List<cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse> parseAndPreviewBatch(List<MultipartFile> files, String parserId, Long accountId) throws Exception {
         Account targetAccount = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("指定的账户不存在"));
 
         List<cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse> responses = new java.util.ArrayList<>();
+
+        // 解析 parserId: "builtin:ALIPAY" 或 "custom:12" 或 "ALIPAY" (兼容旧的)
+        FileParser parser = null;
+        String actualChannel = parserId;
+
+        if (parserId != null && parserId.startsWith("builtin:")) {
+            actualChannel = parserId.substring(8);
+            parser = parserMap.get(actualChannel.toUpperCase());
+        } else if (parserId != null && parserId.startsWith("custom:")) {
+            Long configId = Long.parseLong(parserId.substring(7));
+            ParserConfig config = parserConfigRepository.findById(configId)
+                    .orElseThrow(() -> new RuntimeException("找不到指定的自定义解析器"));
+            actualChannel = config.getChannel();
+            parser = new DynamicFileParser(config);
+        } else {
+            // 兼容旧逻辑
+            parser = parserMap.get(Objects.requireNonNull(parserId).toUpperCase());
+        }
+
+        if (parser == null) {
+            throw new RuntimeException("找不到有效的解析器: " + parserId);
+        }
 
         for (MultipartFile file : files) {
             String originalFilename = file.getOriginalFilename();
@@ -78,12 +103,8 @@ public class UploadService {
                 throw new RuntimeException("文件已上传过，请勿重复上传: " + originalFilename);
             }
 
-            FileParser parser = parserMap.get(channel.toUpperCase());
-            if (parser == null) {
-                throw new RuntimeException("不支持的渠道: " + channel);
-            }
-
-            List<TransactionRecord> records = parser.parse(file.getInputStream(), originalFilename);
+            cn.chenyunlong.qing.service.llm.dto.parser.ParseResult parseResult = parser.parse(file.getInputStream(), originalFilename);
+            List<TransactionRecord> records = parseResult.getRecords();
 
             LocalDateTime minTime = null;
             LocalDateTime maxTime = null;
@@ -103,7 +124,7 @@ public class UploadService {
             fileRecord.setFileName(originalFilename);
             fileRecord.setFileHash(fileHash);
             fileRecord.setFileSize(fileSize);
-            fileRecord.setChannel(channel);
+            fileRecord.setChannel(actualChannel);
             fileRecord.setStatus("UPLOADED");
             fileRecord.setParsedCount(records.size());
             fileRecord.setStartTime(minTime);
@@ -157,7 +178,7 @@ public class UploadService {
             throw new RuntimeException("上传记录为空或已删除");
         }
 
-        cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse status = new cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse();
+        MatchStatusResponse status = new MatchStatusResponse();
         status.setStatus("PROCESSING");
         matchStatusMap.put(uploadId, status);
 
@@ -175,7 +196,7 @@ public class UploadService {
                     record.setMatchStatus(cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum.ORIGINAL);
                     record.setMatchRuleName(null);
                     record.setIsModified(false);
-                    
+
                     matcherService.applyMatchers(record);
                 }
 
@@ -208,8 +229,8 @@ public class UploadService {
         });
     }
 
-    public cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse getMatchStatus(String uploadId) {
-        cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse status = matchStatusMap.get(uploadId);
+    public MatchStatusResponse getMatchStatus(String uploadId) {
+        MatchStatusResponse status = matchStatusMap.get(uploadId);
         if (status == null) {
             throw new RuntimeException("任务不存在或已过期");
         }
@@ -219,7 +240,7 @@ public class UploadService {
     public PreviewRecordDTO matchSingleRecord(String recordId, List<Long> ruleIds) {
         TransactionRecord record = transactionRepo.findById(Long.parseLong(recordId))
                 .orElseThrow(() -> new RuntimeException("未找到该记录"));
-        
+
         // 重置为初始状态（如果是重新匹配）
         record.setMatchStatus(cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum.ORIGINAL);
         record.setMatchRuleName(null);
@@ -232,7 +253,7 @@ public class UploadService {
         } else {
             matcherService.applyMatchers(record);
         }
-        
+
         // 这里只是预览，并不保存到数据库
         return PreviewRecordDTO.fromEntity(record, String.valueOf(record.getId()));
     }
@@ -284,12 +305,12 @@ public class UploadService {
         // 标记为已正式导入并统计规则正确率
         Map<String, cn.chenyunlong.qing.service.llm.entity.TransactionMatcher> matchersMap = matcherRepository.findAll().stream()
                 .collect(Collectors.toMap(cn.chenyunlong.qing.service.llm.entity.TransactionMatcher::getName, m -> m));
-        
+
         Map<Long, Account> accountsToUpdate = new java.util.HashMap<>();
 
         for (TransactionRecord record : toImport) {
             record.setIsImported(true);
-            
+
             // 统计正确率
             if (record.getMatchRuleName() != null && !record.getMatchRuleName().isEmpty()) {
                 cn.chenyunlong.qing.service.llm.entity.TransactionMatcher matcher = matchersMap.get(record.getMatchRuleName());
@@ -309,27 +330,27 @@ public class UploadService {
                 }
                 Account acc = accountsToUpdate.get(srcAccount.getId());
                 java.math.BigDecimal current = acc.getCurrentBalance() != null ? acc.getCurrentBalance() : java.math.BigDecimal.ZERO;
-                
+
                 if ("INCOME".equals(record.getType())) {
                     acc.setCurrentBalance(current.add(record.getAmount()));
                 } else if ("EXPENSE".equals(record.getType())) {
                     acc.setCurrentBalance(current.subtract(record.getAmount()));
                 } else if ("TRANSFER".equals(record.getType())) {
                     acc.setCurrentBalance(current.subtract(record.getAmount())); // 源账户减去金额
-                    
-                    // 目标账户增加金额
-                    if (record.getTargetAccountId() != null) {
-                        Account targetAcc = accountsToUpdate.get(record.getTargetAccountId());
-                        if (targetAcc == null) {
-                            targetAcc = accountRepository.findById(record.getTargetAccountId()).orElse(null);
-                            if (targetAcc != null) {
-                                accountsToUpdate.put(targetAcc.getId(), targetAcc);
-                            }
-                        }
+                }
+
+                // 处理转账的目标账户增加金额
+                if ("TRANSFER".equals(record.getType()) && record.getTargetAccountId() != null) {
+                    Account targetAcc = accountsToUpdate.get(record.getTargetAccountId());
+                    if (targetAcc == null) {
+                        targetAcc = accountRepository.findById(record.getTargetAccountId()).orElse(null);
                         if (targetAcc != null) {
-                            java.math.BigDecimal targetCurrent = targetAcc.getCurrentBalance() != null ? targetAcc.getCurrentBalance() : java.math.BigDecimal.ZERO;
-                            targetAcc.setCurrentBalance(targetCurrent.add(record.getAmount()));
+                            accountsToUpdate.put(targetAcc.getId(), targetAcc);
                         }
+                    }
+                    if (targetAcc != null) {
+                        java.math.BigDecimal targetCurrent = targetAcc.getCurrentBalance() != null ? targetAcc.getCurrentBalance() : java.math.BigDecimal.ZERO;
+                        targetAcc.setCurrentBalance(targetCurrent.add(record.getAmount()));
                     }
                 }
             }

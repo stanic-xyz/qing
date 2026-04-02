@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 
 @Slf4j
@@ -19,7 +21,7 @@ public class WechatParser extends BaseFileParser {
     private static final DateTimeFormatter WECHAT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public List<TransactionRecord> parse(InputStream inputStream, String originalFilename) throws Exception {
+    public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
         try (Workbook workbook = new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
@@ -81,6 +83,15 @@ public class WechatParser extends BaseFileParser {
                         else record.setType("OTHER");
                     }
 
+                    // 支付方式 (资金来源)
+                    Cell paymentMethodCell = row.getCell(6);
+                    if (paymentMethodCell != null && paymentMethodCell.getCellType() == CellType.STRING) {
+                        String pm = paymentMethodCell.getStringCellValue().trim();
+                        if (!pm.isEmpty() && !"/".equals(pm)) {
+                            record.setFundSource(pm);
+                        }
+                    }
+
                     // 状态
                     Cell statusCell = row.getCell(7);
                     if (statusCell != null) {
@@ -104,7 +115,7 @@ public class WechatParser extends BaseFileParser {
                 }
             }
         }
-        return records;
+        return wrapResult(records);
     }
 
     private String mapStatus(String status) {

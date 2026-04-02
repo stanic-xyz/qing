@@ -50,6 +50,26 @@ export default function ImportRecordList({
     }
   };
 
+  const channel = processPreview?.previewRecords[0]?.channel;
+  const getDynamicColumns = (ch?: string) => {
+    switch (ch) {
+      case 'ALIPAY':
+      case 'JINGDONG':
+        return [
+          { key: 'paymentMethod', label: '付款方式', width: 'w-24' },
+          { key: 'merchantOrderNo', label: '商家订单号', width: 'w-32' },
+        ];
+      case 'CITIC_CREDIT':
+        return [
+          { key: 'cardLast4', label: '卡号', width: 'w-20' },
+          { key: 'billingAmount', label: '结算金额', width: 'w-24' },
+        ];
+      default:
+        return [];
+    }
+  };
+  const dynamicColumns = getDynamicColumns(channel);
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
       <table className="min-w-full divide-y divide-gray-200">
@@ -126,6 +146,9 @@ export default function ImportRecordList({
                                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">匹配状态</th>
                                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-40">时间</th>
                                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-64">说明/对方</th>
+                                {dynamicColumns.map(col => (
+                                  <th key={col.key} className={`px-4 py-2 text-left text-xs font-medium text-gray-500 ${col.width}`}>{col.label}</th>
+                                ))}
                                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">商户/平台</th>
                                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-24">收支</th>
                                 <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 w-32 sticky right-0 bg-gray-100 z-10">金额</th>
@@ -139,6 +162,11 @@ export default function ImportRecordList({
                                   </td>
                                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 truncate" title={record.transactionTime}>{record.transactionTime}</td>
                                   <td className="px-4 py-2 text-sm text-gray-900 truncate" title={record.counterparty}>{record.counterparty}</td>
+                                  {dynamicColumns.map(col => (
+                                    <td key={col.key} className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 truncate" title={record.extData?.[col.key] || '-'}>
+                                      {record.extData?.[col.key] || '-'}
+                                    </td>
+                                  ))}
                                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 truncate" title={record.merchant || '-'}>{record.merchant || '-'}</td>
                                   <td className="px-4 py-2 whitespace-nowrap">
                                     <span className={`text-sm ${record.type === 'INCOME' ? 'text-green-600' : record.type === 'EXPENSE' ? 'text-red-600' : 'text-gray-600'}`}>

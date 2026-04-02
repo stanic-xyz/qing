@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { CHANNELS, CHANNEL_LIST } from '../config/channels';
-import { Banknote, UploadCloud, Scale } from 'lucide-react';
+import { Banknote, UploadCloud, Scale, Link } from 'lucide-react';
 import AccountImportModal from '../components/AccountImportModal';
+import RuleSelector from '../components/RuleSelector';
 
 export default function Accounts() {
   const [accounts, setAccounts] = useState([]);
@@ -12,6 +13,11 @@ export default function Accounts() {
   const [editingAccount, setEditingAccount] = useState<any>(null);
   const [calibratingAccount, setCalibratingAccount] = useState<any>(null);
   const [calibrateAmount, setCalibrateAmount] = useState<string>('');
+
+  // 规则绑定相关状态
+  const [showRuleSelector, setShowRuleSelector] = useState(false);
+  const [bindingItem, setBindingItem] = useState<any>(null);
+  const [boundRuleIds, setBoundRuleIds] = useState<number[]>([]);
 
   useEffect(() => {
     fetchAccounts();
@@ -96,6 +102,50 @@ export default function Accounts() {
     }
   };
 
+  const handleBindRules = async (item: any) => {
+    try {
+      const res = await axios.get('/api/finance/matchers');
+      if (res.data.code === 200) {
+        const matchers = res.data.data || [];
+        const bound = matchers.filter((m: any) => m.targetType === 'ACCOUNT' && m.targetId === item.id).map((m: any) => m.id);
+        setBoundRuleIds(bound);
+        setBindingItem(item);
+        setShowRuleSelector(true);
+      }
+    } catch (e) {
+      console.error(e);
+      alert('获取规则列表失败');
+    }
+  };
+
+  const handleSaveBindings = async (ruleIds: number[]) => {
+    if (!bindingItem) return;
+    try {
+      const res = await axios.get('/api/finance/matchers');
+      if (res.data.code === 200) {
+        const allMatchers = res.data.data || [];
+        
+        const toUnbind = allMatchers.filter((m: any) => m.targetType === 'ACCOUNT' && m.targetId === bindingItem.id && !ruleIds.includes(m.id));
+        const toBind = allMatchers.filter((m: any) => ruleIds.includes(m.id) && !(m.targetType === 'ACCOUNT' && m.targetId === bindingItem.id));
+
+        const promises = [];
+        for (const m of toUnbind) {
+          promises.push(axios.put(`/api/finance/matchers/${m.id}`, { ...m, targetType: null, targetId: null }));
+        }
+        for (const m of toBind) {
+          promises.push(axios.put(`/api/finance/matchers/${m.id}`, { ...m, targetType: 'ACCOUNT', targetId: bindingItem.id }));
+        }
+
+        await Promise.all(promises);
+        setShowRuleSelector(false);
+        alert('绑定成功');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('绑定失败');
+    }
+  };
+
   const renderIcon = (channelCode: string) => {
     const config = CHANNELS[channelCode];
     if (config && config.icon) {
@@ -124,6 +174,7 @@ export default function Accounts() {
         {accounts.map((acc: any) => (
           <div key={acc.id} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 relative group flex flex-col">
             <div className="absolute top-4 right-4 hidden group-hover:flex space-x-2">
+              <button onClick={() => handleBindRules(acc)} className="text-purple-500 hover:text-purple-700 text-sm flex items-center" title="绑定规则"><Link className="w-3 h-3 mr-1"/>绑定规则</button>
               <button onClick={() => openCalibrateModal(acc)} className="text-orange-500 hover:text-orange-700 text-sm flex items-center"><Scale className="w-3 h-3 mr-1"/>平账</button>
               <button onClick={() => openModal(acc)} className="text-blue-500 hover:text-blue-700 text-sm">编辑</button>
               <button onClick={() => handleDelete(acc.id)} className="text-red-500 hover:text-red-700 text-sm">删除</button>
@@ -236,6 +287,16 @@ export default function Accounts() {
             </div>
           </div>
         </div>
+      )}
+
+      {bindingItem && (
+        <RuleSelector
+          isOpen={showRuleSelector}
+          onClose={() => setShowRuleSelector(false)}
+          onSelect={handleSaveBindings}
+          initialSelectedIds={boundRuleIds}
+          targetType="ACCOUNT"
+        />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { UploadCloud, Loader2, X } from 'lucide-react';
-import type { Account, UploadBatchPreviewResponse } from '../types';
+import type { Account, UploadBatchPreviewResponse, ParserItem } from '../types';
 
 interface UploadViewProps {
   accounts: Account[];
@@ -10,7 +10,8 @@ interface UploadViewProps {
 
 export default function UploadView({ accounts, onClose }: UploadViewProps) {
   const [files, setFiles] = useState<FileList | null>(null);
-  const [channel, setChannel] = useState('ALIPAY');
+  const [parserId, setParserId] = useState('');
+  const [parsers, setParsers] = useState<ParserItem[]>([]);
   const [accountId, setAccountId] = useState<number | undefined>(undefined);
   const [filteredAccounts, setFilteredAccounts] = useState<Account[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -18,7 +19,26 @@ export default function UploadView({ accounts, onClose }: UploadViewProps) {
   const [activePreviewTab, setActivePreviewTab] = useState(0);
 
   useEffect(() => {
-    const filtered = accounts.filter(acc => acc.channel === channel);
+    fetchParsers();
+  }, []);
+
+  const fetchParsers = async () => {
+    try {
+      const res = await axios.get('/api/finance/parsers');
+      setParsers(res.data.data);
+      if (res.data.data.length > 0) {
+        setParserId(res.data.data[0].id);
+      }
+    } catch (e) {
+      console.error('获取解析器失败', e);
+    }
+  };
+
+  const currentParser = useMemo(() => parsers.find(p => p.id === parserId), [parserId, parsers]);
+
+  useEffect(() => {
+    if (!currentParser) return;
+    const filtered = accounts.filter(acc => acc.channel === currentParser.channel);
     setFilteredAccounts(filtered);
     if (filtered.length === 1) {
       setAccountId(filtered[0].id);
@@ -27,7 +47,7 @@ export default function UploadView({ accounts, onClose }: UploadViewProps) {
     } else if (filtered.length === 0) {
       setAccountId(undefined);
     }
-  }, [channel, accounts]);
+  }, [currentParser, accounts]);
 
   const handleUploadBatch = async () => {
     if (!files || files.length === 0) {
@@ -43,11 +63,13 @@ export default function UploadView({ accounts, onClose }: UploadViewProps) {
     Array.from(files).forEach(file => {
       formData.append('files', file);
     });
-    formData.append('channel', channel);
+    formData.append('parserId', parserId);
     formData.append('accountId', String(accountId));
 
     try {
-      const res = await axios.post('/api/bills/upload-batch', formData);
+      const res = await axios.post('/api/bills/upload-batch', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
       setBatchPreviews(res.data.data);
       setActivePreviewTab(0);
     } catch (e: any) {
@@ -87,18 +109,11 @@ export default function UploadView({ accounts, onClose }: UploadViewProps) {
         <div className="space-y-6 max-w-2xl">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">支付渠道</label>
-              <select value={channel} onChange={e => setChannel(e.target.value)} className="w-full border-gray-300 rounded-md shadow-sm p-2.5 border focus:ring-blue-500 focus:border-blue-500">
-                <option value="ALIPAY">支付宝</option>
-                <option value="WECHAT">微信</option>
-                <option value="CMB">招商银行</option>
-                <option value="CCB">建设银行</option>
-                <option value="QIANJI">钱迹</option>
-                <option value="JINGDONG">京东</option>
-                <option value="BOC_CREDIT">中国银行信用卡</option>
-                <option value="CITIC_CREDIT">中信银行信用卡</option>
-                <option value="PINGAN">平安银行</option>
-                <option value="BOCOM_CREDIT">交通银行信用卡</option>
+              <label className="block text-sm font-medium text-gray-700 mb-2">解析器类型</label>
+              <select value={parserId} onChange={e => setParserId(e.target.value)} className="w-full border-gray-300 rounded-md shadow-sm p-2.5 border focus:ring-blue-500 focus:border-blue-500">
+                {parsers.map(p => (
+                  <option key={p.id} value={p.id}>{p.name} {p.isBuiltIn ? '(内置)' : '(自定义)'}</option>
+                ))}
               </select>
             </div>
             <div>
@@ -118,7 +133,7 @@ export default function UploadView({ accounts, onClose }: UploadViewProps) {
                 <div className="flex text-sm text-gray-600 justify-center">
                   <label className="relative cursor-pointer bg-transparent rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none">
                     <span>选择多个文件</span>
-                    <input type="file" multiple className="sr-only" onChange={e => setFiles(e.target.files)} accept=".csv,.xls,.xlsx,.pdf" />
+                    <input type="file" multiple className="sr-only" onChange={e => setFiles(e.target.files)} accept={currentParser?.fileType === 'CSV' ? '.csv' : (currentParser?.fileType === 'EXCEL' ? '.xls,.xlsx' : '.csv,.xls,.xlsx,.pdf')} />
                   </label>
                 </div>
                 {files && <p className="text-sm font-medium text-green-600 mt-2">已选择 {files.length} 个文件</p>}

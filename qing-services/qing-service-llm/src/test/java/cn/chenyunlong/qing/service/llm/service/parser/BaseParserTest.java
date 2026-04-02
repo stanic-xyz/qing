@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,8 +12,11 @@ import java.util.stream.Stream;
 public abstract class BaseParserTest {
 
     protected InputStream getFirstFileInDir(String relativeDirPath, String suffix) throws Exception {
+
+        ClassPathResource pathResource = new ClassPathResource("mock/" + relativeDirPath);
+
         Path dir = Paths.get("src/test/resources/bills/理财信息", relativeDirPath);
-        if (!Files.exists(dir) || !Files.isDirectory(dir)) {
+        if (!pathResource.exists() || pathResource.isFile()) {
             System.out.println("目录不存在，跳过测试: " + dir.toAbsolutePath());
             return null;
         }

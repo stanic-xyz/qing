@@ -129,6 +129,26 @@ export default function ProcessTable({
     });
   };
 
+  const channel = processPreview.previewRecords[0]?.channel;
+  const getDynamicColumns = (ch?: string) => {
+    switch (ch) {
+      case 'ALIPAY':
+      case 'JINGDONG':
+        return [
+          { key: 'paymentMethod', label: '付款方式', width: 'w-24' },
+          { key: 'merchantOrderNo', label: '商家订单号', width: 'w-32' },
+        ];
+      case 'CITIC_CREDIT':
+        return [
+          { key: 'cardLast4', label: '卡号', width: 'w-20' },
+          { key: 'billingAmount', label: '结算金额', width: 'w-24' },
+        ];
+      default:
+        return [];
+    }
+  };
+  const dynamicColumns = getDynamicColumns(channel);
+
   const handleRecordChange = (tempId: string, field: string, value: any) => {
     setModifiedRecords(prev => {
       const current = prev[tempId] || {};
@@ -198,6 +218,9 @@ export default function ProcessTable({
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-28">状态</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">时间</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-48">说明/对方</th>
+              {dynamicColumns.map(col => (
+                <th key={col.key} className={`px-4 py-2 text-left text-xs font-medium text-gray-500 ${col.width}`}>{col.label}</th>
+              ))}
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">提取商户 {processStep===2 && <Edit2 size={12} className="inline text-blue-500"/>}</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-24">收支 {processStep===2 && <Edit2 size={12} className="inline text-blue-500"/>}</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 w-32">转账目标 {processStep===2 && <Edit2 size={12} className="inline text-blue-500"/>}</th>
@@ -221,6 +244,12 @@ export default function ProcessTable({
                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 truncate" title={record.transactionTime}>{record.transactionTime}</td>
                   <td className="px-4 py-2 text-sm text-gray-900 truncate" title={record.counterparty}>{record.counterparty}</td>
                   
+                  {dynamicColumns.map(col => (
+                    <td key={col.key} className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 truncate" title={record.extData?.[col.key] || '-'}>
+                      {record.extData?.[col.key] || '-'}
+                    </td>
+                  ))}
+
                   <td className="px-4 py-2 whitespace-nowrap truncate" title={currentMerchant || record.merchant || '-'}>
                     {processStep === 2 ? (
                       <input type="text" value={currentMerchant || ''} onChange={e => handleRecordChange(record.tempId, 'merchant', e.target.value)} className="text-sm border-gray-300 rounded px-2 py-1 w-full border focus:ring-blue-500" placeholder="未提取" />

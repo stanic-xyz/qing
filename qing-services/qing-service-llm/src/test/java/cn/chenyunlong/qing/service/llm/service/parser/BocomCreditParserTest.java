@@ -4,6 +4,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,7 +18,8 @@ public class BocomCreditParserTest extends BaseParserTest {
         if (is == null) return;
         
         try (is) {
-            List<TransactionRecord> records = parser.parse(is, "bocom_test.pdf");
+            ParseResult parseResult = parser.parse(is, "bocom_test.pdf");
+        List<TransactionRecord> records = parseResult.getRecords();
             System.out.println("交通银行信用卡解析条数: " + records.size());
             assertFalse(records.isEmpty());
             records.stream().limit(5).forEach(System.out::println);

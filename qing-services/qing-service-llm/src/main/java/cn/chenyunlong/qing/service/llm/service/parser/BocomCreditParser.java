@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +27,7 @@ public class BocomCreditParser extends BaseFileParser {
     private static final Pattern TRANSACTION_PATTERN = Pattern.compile("^(\\d{4}[-/]\\d{2}[-/]\\d{2}|\\d{2}[-/]\\d{2})\\s+(.*?)(\\s+-?\\d+\\.\\d{2})$");
 
     @Override
-    public List<TransactionRecord> parse(InputStream inputStream, String originalFilename) throws Exception {
+    public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
         
         try (PDDocument document = Loader.loadPDF(inputStream.readAllBytes())) {
@@ -96,6 +98,6 @@ public class BocomCreditParser extends BaseFileParser {
                 }
             }
         }
-        return records;
+        return wrapResult(records);
     }
 }

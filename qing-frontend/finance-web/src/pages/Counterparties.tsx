@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Plus, Edit2, Trash2, Power, PowerOff } from 'lucide-react';
+import { Plus, Edit2, Trash2, Power, PowerOff, Link } from 'lucide-react';
+import RuleSelector from '../components/RuleSelector';
 
 interface Counterparty {
   id: number;
@@ -15,6 +16,11 @@ export default function Counterparties() {
   const [counterparties, setCounterparties] = useState<Counterparty[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<Partial<Counterparty> | null>(null);
+
+  // 规则绑定相关状态
+  const [showRuleSelector, setShowRuleSelector] = useState(false);
+  const [bindingItem, setBindingItem] = useState<Counterparty | null>(null);
+  const [boundRuleIds, setBoundRuleIds] = useState<number[]>([]);
 
   useEffect(() => {
     fetchCounterparties();
@@ -87,6 +93,50 @@ export default function Counterparties() {
     setShowModal(true);
   };
 
+  const handleBindRules = async (item: Counterparty) => {
+    try {
+      const res = await axios.get('/api/finance/matchers');
+      if (res.data.code === 200) {
+        const matchers = res.data.data || [];
+        const bound = matchers.filter((m: any) => m.targetType === 'COUNTERPARTY' && m.targetId === item.id).map((m: any) => m.id);
+        setBoundRuleIds(bound);
+        setBindingItem(item);
+        setShowRuleSelector(true);
+      }
+    } catch (e) {
+      console.error(e);
+      alert('获取规则列表失败');
+    }
+  };
+
+  const handleSaveBindings = async (ruleIds: number[]) => {
+    if (!bindingItem) return;
+    try {
+      const res = await axios.get('/api/finance/matchers');
+      if (res.data.code === 200) {
+        const allMatchers = res.data.data || [];
+        
+        const toUnbind = allMatchers.filter((m: any) => m.targetType === 'COUNTERPARTY' && m.targetId === bindingItem.id && !ruleIds.includes(m.id));
+        const toBind = allMatchers.filter((m: any) => ruleIds.includes(m.id) && !(m.targetType === 'COUNTERPARTY' && m.targetId === bindingItem.id));
+
+        const promises = [];
+        for (const m of toUnbind) {
+          promises.push(axios.put(`/api/finance/matchers/${m.id}`, { ...m, targetType: null, targetId: null }));
+        }
+        for (const m of toBind) {
+          promises.push(axios.put(`/api/finance/matchers/${m.id}`, { ...m, targetType: 'COUNTERPARTY', targetId: bindingItem.id }));
+        }
+
+        await Promise.all(promises);
+        setShowRuleSelector(false);
+        alert('绑定成功');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('绑定失败');
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -129,6 +179,7 @@ export default function Counterparties() {
                 <td className="px-6 py-4 text-gray-500">{m.remark || '-'}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex space-x-3">
+                    <button onClick={() => handleBindRules(m)} className="text-purple-600 hover:text-purple-900" title="绑定规则"><Link className="w-4 h-4" /></button>
                     <button onClick={() => openModal(m)} className="text-blue-600 hover:text-blue-900"><Edit2 className="w-4 h-4" /></button>
                     <button onClick={() => handleToggleStatus(m)} className="text-yellow-600 hover:text-yellow-900">
                       {m.isActive ? <PowerOff className="w-4 h-4" /> : <Power className="w-4 h-4" />}
@@ -210,6 +261,16 @@ export default function Counterparties() {
             </div>
           </div>
         </div>
+      )}
+
+      {bindingItem && (
+        <RuleSelector
+          isOpen={showRuleSelector}
+          onClose={() => setShowRuleSelector(false)}
+          onSelect={handleSaveBindings}
+          initialSelectedIds={boundRuleIds}
+          targetType="COUNTERPARTY"
+        />
       )}
     </div>
   );

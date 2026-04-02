@@ -2,13 +2,16 @@ package cn.chenyunlong.qing.service.llm.dto;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Map;
 
 @Data
 public class PreviewRecordDTO {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     private String tempId;
     private String transactionTime;
     private String channel;
@@ -20,6 +23,10 @@ public class PreviewRecordDTO {
     private MatchStatusEnum matchStatus;
     private String matchRuleName;
     private Long targetAccountId;
+    private String fundType;
+    private String fundSource;
+    private Long fundSourceAccountId;
+    private Map<String, Object> extData; // 差异化扩展数据
 
     public static PreviewRecordDTO fromEntity(TransactionRecord record, String tempId) {
         PreviewRecordDTO dto = new PreviewRecordDTO();
@@ -34,6 +41,18 @@ public class PreviewRecordDTO {
         dto.setMatchStatus(record.getMatchStatus());
         dto.setMatchRuleName(record.getMatchRuleName());
         dto.setTargetAccountId(record.getTargetAccountId());
+        dto.setFundType(record.getFundType());
+        dto.setFundSource(record.getFundSource());
+        dto.setFundSourceAccountId(record.getFundSourceAccountId());
+
+        // 解析 originalData JSON 到 extData Map
+        if (record.getOriginalData() != null && !record.getOriginalData().isEmpty()) {
+            try {
+                dto.setExtData(objectMapper.readValue(record.getOriginalData(), Map.class));
+            } catch (Exception e) {
+                // 解析失败时忽略，或记录日志
+            }
+        }
         return dto;
     }
 }

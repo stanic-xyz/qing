@@ -13,6 +13,9 @@ public interface TransactionRecordRepository extends JpaRepository<TransactionRe
     List<TransactionRecord> findByReconciliationStatusAndTransactionTimeBetween(String status, LocalDateTime start, LocalDateTime end);
     List<TransactionRecord> findByUploadId(String uploadId);
     
+    // 用于跨账单撮合查找潜在匹配
+    List<TransactionRecord> findByAmountAndTransactionTimeBetweenAndIsImportedTrue(java.math.BigDecimal amount, LocalDateTime start, LocalDateTime end);
+
     // 用于分类删除时校验关联
     boolean existsByCategoryOrSubCategory(String category, String subCategory);
 }

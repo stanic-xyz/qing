@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 
 @Slf4j
@@ -26,7 +28,7 @@ public class CiticCreditParser extends BaseFileParser {
             .toFormatter();
 
     @Override
-    public List<TransactionRecord> parse(InputStream inputStream, String originalFilename) throws Exception {
+    public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
         
         try (Workbook workbook = WorkbookFactory.create(inputStream)) {
@@ -95,6 +97,6 @@ public class CiticCreditParser extends BaseFileParser {
                 }
             }
         }
-        return records;
+        return wrapResult(records);
     }
 }

@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 
 @Slf4j
@@ -24,7 +26,7 @@ public class AlipayParser extends BaseFileParser {
     private static final DateTimeFormatter ALIPAY_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public List<TransactionRecord> parse(InputStream inputStream, String originalFilename) throws Exception {
+    public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
         try (CSVReader reader = new CSVReaderBuilder(new InputStreamReader(inputStream, GBK)).build()) {
             String[] line;
@@ -83,7 +85,9 @@ public class AlipayParser extends BaseFileParser {
                     // 构建丰富的备注信息
                     StringBuilder remarkBuilder = new StringBuilder();
                     if (line.length > 7 && !line[7].trim().isEmpty() && !"/".equals(line[7].trim())) {
-                        remarkBuilder.append("付款方式: ").append(line[7].trim()).append("; ");
+                        String paymentMethod = line[7].trim();
+                        remarkBuilder.append("付款方式: ").append(paymentMethod).append("; ");
+                        record.setFundSource(paymentMethod);
                     }
                     if (line.length > 10 && !line[10].trim().isEmpty() && !"/".equals(line[10].trim())) {
                         remarkBuilder.append("商家订单号: ").append(line[10].trim()).append("; ");
@@ -108,7 +112,7 @@ public class AlipayParser extends BaseFileParser {
                 }
             }
         }
-        return records;
+        return wrapResult(records);
     }
 
     private String mapStatus(String status) {

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { UploadCloud, FileText } from 'lucide-react';
+import { UploadCloud, FileText, Settings } from 'lucide-react';
 import UploadView from './components/UploadView';
 import ImportRecordList from './components/ImportRecordList';
 import RulesPanel from './components/RulesPanel';
+import ParserConfigDrawer from './components/ParserConfigDrawer';
 import type { Account, ActiveRule, PreviewRecord } from './types';
 
 export default function Import() {
@@ -15,6 +16,7 @@ export default function Import() {
   // 视图控制
   const [isUploadView, setIsUploadView] = useState(false);
   const [showRulesPanel, setShowRulesPanel] = useState(false);
+  const [showParserConfig, setShowParserConfig] = useState(false);
   const [expandedUploadId, setExpandedUploadId] = useState<string | null>(null);
 
   // 处理阶段共享状态
@@ -117,6 +119,13 @@ export default function Import() {
         </div>
         <div className="flex space-x-3">
           <button
+            onClick={() => setShowParserConfig(true)}
+            className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors shadow-sm"
+          >
+            <Settings size={18} className="mr-2" />
+            解析器配置
+          </button>
+          <button
             onClick={() => setShowRulesPanel(!showRulesPanel)}
             className={`flex items-center px-4 py-2 rounded-md shadow-sm transition-colors border ${showRulesPanel ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}
           >
@@ -182,6 +191,10 @@ export default function Import() {
           />
         )}
       </div>
+
+      {showParserConfig && (
+        <ParserConfigDrawer isOpen={showParserConfig} onClose={() => setShowParserConfig(false)} />
+      )}
     </div>
   );
 }
