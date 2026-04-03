@@ -73,7 +73,6 @@ public class DataMigrationRunner implements ApplicationRunner {
                     boolean relExists = channelAccountRelRepository
                             .findByChannelIdAndAccountIdAndIsDeletedFalse(channel.getId(), account.getId())
                             .isPresent();
-                    
                     if (!relExists) {
                         ChannelAccountRel rel = new ChannelAccountRel();
                         rel.setChannelId(channel.getId());
@@ -86,7 +85,7 @@ public class DataMigrationRunner implements ApplicationRunner {
                 }
             }
         }
-        
+
         log.info("Data migration completed.");
     }
 }

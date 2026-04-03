@@ -5,8 +5,10 @@ import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public abstract class BaseFileParser implements FileParser {
@@ -14,7 +16,25 @@ public abstract class BaseFileParser implements FileParser {
     protected static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     protected LocalDateTime parseDateTime(String str, String pattern) {
-        return LocalDateTime.parse(str, DateTimeFormatter.ofPattern(pattern));
+        if (str == null || str.trim().isEmpty()) {
+            return null;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        try {
+            // 先尝试直接解析为 LocalDateTime（要求字符串包含时间）
+            return LocalDateTime.parse(str, formatter);
+        } catch (DateTimeParseException e) {
+            // 失败则尝试解析为 LocalDate（纯日期）
+            try {
+                LocalDate date = LocalDate.parse(str, formatter);
+                return date.atStartOfDay(); // 时间设为 00:00:00
+            } catch (DateTimeParseException e2) {
+                // 如果还是失败，抛出原始异常或包装后的异常
+                throw new DateTimeParseException(
+                        String.format("无法解析日期时间，str='%s', pattern='%s'", str, pattern),
+                        str, 0, e2);
+            }
+        }
     }
 
     protected BigDecimal parseAmount(String str) {

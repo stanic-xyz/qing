@@ -5,6 +5,7 @@ import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse;
 import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
 import cn.chenyunlong.qing.service.llm.service.UploadService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class BillController {
 
-    @Autowired
+    @Resource
     private UploadService uploadService;
 
     @PostMapping(value = "/upload-batch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

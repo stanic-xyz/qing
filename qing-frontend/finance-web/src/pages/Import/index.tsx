@@ -83,13 +83,13 @@ export default function Import() {
       setExpandedUploadId(null);
       return;
     }
-    
+
     setExpandedUploadId(uploadId);
     setProcessStep(1);
     setModifiedRecords({});
     setLockedTempIds(new Set());
     setProcessPreview(null);
-    
+
     try {
       const res = await axios.get(`/api/bills/preview/${uploadId}`);
       setProcessPreview(res.data.data);
@@ -120,14 +120,14 @@ export default function Import() {
         <div className="flex space-x-3">
           <button
             onClick={() => setShowParserConfig(true)}
-            className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors shadow-sm"
+            className="flex items-center px-4 py-2 bg-white text-gray-700 rounded-md hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
           >
             <Settings size={18} className="mr-2" />
             解析器配置
           </button>
           <button
             onClick={() => setShowRulesPanel(!showRulesPanel)}
-            className={`flex items-center px-4 py-2 rounded-md shadow-sm transition-colors border ${showRulesPanel ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+            className={`flex items-center px-4 py-2 rounded-md shadow-sm cursor-pointer transition-colors border ${showRulesPanel ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}
           >
             <FileText size={18} className="mr-2" />
             生效匹配规则 ({activeRules.length})
@@ -135,9 +135,9 @@ export default function Import() {
           {!isUploadView && (
             <button
               onClick={() => setIsUploadView(true)}
-              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 shadow-sm transition-colors"
+              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 shadow-sm transition-colors cursor-pointer"
             >
-              <UploadCloud size={18} className="mr-2" />
+              <UploadCloud size={18} className="mr-2 cursor-pointer" />
               上传账单
             </button>
           )}
@@ -147,15 +147,15 @@ export default function Import() {
       <div className="flex gap-6 items-start">
         <div className={`flex-1 transition-all ${showRulesPanel ? 'w-2/3' : 'w-full'}`}>
           {isUploadView ? (
-            <UploadView 
-              accounts={accounts} 
+            <UploadView
+              accounts={accounts}
               onClose={() => {
                 setIsUploadView(false);
                 fetchUploads();
-              }} 
+              }}
             />
           ) : (
-            <ImportRecordList 
+            <ImportRecordList
               records={records}
               expandedUploadId={expandedUploadId}
               onToggleExpand={handleToggleExpand}
@@ -183,11 +183,11 @@ export default function Import() {
         </div>
 
         {showRulesPanel && (
-          <RulesPanel 
-            activeRules={activeRules} 
-            selectedRuleIds={selectedRuleIds} 
-            onToggleRule={handleToggleRule} 
-            onClose={() => setShowRulesPanel(false)} 
+          <RulesPanel
+            activeRules={activeRules}
+            selectedRuleIds={selectedRuleIds}
+            onToggleRule={handleToggleRule}
+            onClose={() => setShowRulesPanel(false)}
           />
         )}
       </div>

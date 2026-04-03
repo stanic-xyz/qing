@@ -121,4 +121,99 @@ public class DynamicFileParserTest {
             System.out.println("成功验证单条动态解析结果: " + record);
         }
     }
+
+    @Test
+    public void testParsePingAnExcel() throws Exception {
+        ClassPathResource pathResource = new ClassPathResource("mock/pingan/excel/pingan_excel.xlsx");
+        Assertions.assertTrue(pathResource.exists() && pathResource.isReadable(), "平安银行测试文件不存在或者不可读！");
+
+        // 1. 构建模拟的动态解析器配置 (针对平安银行 Excel)
+        ParserConfig config = new ParserConfig();
+        config.setName("动态平安银行解析器测试");
+        config.setChannel("PINGAN");
+        config.setFileType("EXCEL");
+        config.setEncoding("GBK");
+        config.setSkipRows(6); // 平安账单从第26行（索引25）开始是真实数据
+
+        // 构建字段映射规则
+        FieldMappingRule fTime = new FieldMappingRule();
+        fTime.setTargetField("transactionTime");
+        fTime.setSourceIndex(1);
+        fTime.setDateFormat("yyyy-MM-dd");
+
+        FieldMappingRule fAmount = new FieldMappingRule();
+        fAmount.setTargetField("amount");
+        fAmount.setSourceIndex(2);
+        fAmount.setCleanRules(Arrays.asList("REMOVE_RMB", "REMOVE_COMMAS"));
+
+        FieldMappingRule fType = new FieldMappingRule();
+        fType.setTargetField("type");
+        fType.setSourceIndex(5);
+
+        FieldMappingRule fCounterparty = new FieldMappingRule();
+        fCounterparty.setTargetField("counterparty");
+        fCounterparty.setSourceIndex(2);
+
+        FieldMappingRule fMerchant = new FieldMappingRule();
+        fMerchant.setTargetField("merchant");
+        fMerchant.setSourceIndex(7);
+
+        FieldMappingRule fFundSource = new FieldMappingRule();
+        fFundSource.setTargetField("fundSource");
+        fFundSource.setSourceIndex(7);
+        fFundSource.setCleanRules(Arrays.asList("TRIM", "REMOVE_TABS"));
+
+        FieldMappingRule fExtPayment = new FieldMappingRule();
+        fExtPayment.setTargetField("extData.paymentMethod");
+        fExtPayment.setSourceIndex(6);
+        fExtPayment.setCleanRules(Arrays.asList("TRIM", "REMOVE_TABS"));
+
+        FieldMappingRule fExtOrder = new FieldMappingRule();
+        fExtOrder.setTargetField("extData.merchantOrderNo");
+        fExtOrder.setSourceIndex(9);
+        fExtOrder.setCleanRules(Arrays.asList("TRIM", "REMOVE_TABS"));
+
+        config.setFieldMappingRules(objectMapper.writeValueAsString(Arrays.asList(
+                fTime, fAmount, fType, fCounterparty, fMerchant, fFundSource, fExtPayment, fExtOrder
+        )));
+
+        // 2. 执行解析
+        DynamicFileParser parser = new DynamicFileParser(config);
+
+        try (InputStream is = pathResource.getInputStream()) {
+            ParseResult result = parser.parse(is, "pingan_excel.xlsx");
+            List<TransactionRecord> records = result.getRecords();
+
+            // 3. 断言验证元数据
+            Assertions.assertNotNull(result.getMetadata());
+            //            Assertions.assertEquals(26, result.getMetadata().getRecordCount(), "元数据中的记录笔数提取应为26");
+            Assertions.assertNotNull(result.getMetadata().getStartTime(), "应自动推算出起始时间");
+
+            // 4. 断言验证交易记录
+            Assertions.assertFalse(records.isEmpty());
+            System.out.println("动态解析出的记录数：" + records.size());
+
+            // 取索引为 7 的记录 (即原测试中的第8条数据：4.5元的停车费)
+            TransactionRecord record = records.get(7);
+            Assertions.assertNotNull(record);
+
+            // 验证基础字段映射
+            Assertions.assertEquals(0, BigDecimal.valueOf(0.16).compareTo(record.getAmount()));
+            Assertions.assertEquals("EXPENSE", record.getType()); // 动态解析器应自动将"支出"映射为EXPENSE
+            Assertions.assertEquals("川北医学院附属医院", record.getCounterparty());
+            Assertions.assertEquals("停车缴费-渝C093D6-川北医学院附属医院茂源南路综合院区", record.getMerchant());
+
+            // 验证资金来源与自动打标
+            Assertions.assertEquals("交通银行信用卡(7581)&红包", record.getFundSource());
+            Assertions.assertEquals("EXTERNAL", record.getFundType(), "包含信用卡字样，应自动推断为EXTERNAL资金");
+
+            // 验证扩展数据 (JSON 映射)
+            Assertions.assertNotNull(record.getOriginalData());
+            String extDataStr = record.getOriginalData();
+            Assertions.assertTrue(extDataStr.contains("\"paymentMethod\":\"交通银行信用卡(7581)&红包\""));
+            Assertions.assertTrue(extDataStr.contains("\"merchantOrderNo\":\"301260305DGQHN6EE9Z42\""));
+
+            System.out.println("成功验证单条动态解析结果: " + record);
+        }
+    }
 }

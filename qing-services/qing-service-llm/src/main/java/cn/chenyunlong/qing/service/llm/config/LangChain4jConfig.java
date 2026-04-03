@@ -20,7 +20,7 @@ public class LangChain4jConfig {
     }
 
     @Bean
-    public EmbeddingStore vectorStore(OllamaChatModel embeddingModel) {
+    public InMemoryEmbeddingStore<?> vectorStore(OllamaChatModel embeddingModel) {
         // 使用 Chroma 或内存存储
         return new InMemoryEmbeddingStore<>();
     }

@@ -2,11 +2,12 @@ package cn.chenyunlong.qing.service.llm.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "finance_channel_account_rel", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"channelId", "accountId"})
+        @UniqueConstraint(columnNames = {"channelId", "accountId", "isDeleted"})
 })
 @Data
 public class ChannelAccountRel {

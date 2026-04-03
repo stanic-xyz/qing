@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.dto.parser;
 
 import lombok.Data;
+
 import java.util.List;
 
 @Data
