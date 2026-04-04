@@ -40,6 +40,14 @@ public class ParserConfig {
     private Boolean isBuiltIn = false; // 是否内置预设
     
     // 操作状态：DRAFT (草稿), PUBLISHED (已发布)
+    @Column(columnDefinition = "TEXT")
+    private String postScript;
+
+    @Column(length = 32)
+    private String postScriptLanguage = "groovy";
+
+    private Boolean postScriptEnabled = false;
+
     @Column(length = 20)
     private String status = "PUBLISHED"; 
 }

@@ -6,6 +6,7 @@ import cn.chenyunlong.qing.service.llm.dto.parser.MetadataRule;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
@@ -18,10 +19,13 @@ import org.springframework.beans.BeanWrapperImpl;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.util.*;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,9 +34,20 @@ public class DynamicFileParser extends BaseFileParser {
 
     private final ParserConfig config;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ScriptExecutorFactory scriptExecutorFactory;
+    private final boolean strictMode;
 
-    public DynamicFileParser(ParserConfig config) {
+    public DynamicFileParser(ParserConfig config, ScriptExecutorFactory scriptExecutorFactory) {
+        this(config, scriptExecutorFactory, false);
+    }
+
+    /**
+     * @param strictMode strict 模式下脚本执行/类型校验失败将直接抛出异常（用于配置测试）
+     */
+    public DynamicFileParser(ParserConfig config, ScriptExecutorFactory scriptExecutorFactory, boolean strictMode) {
         this.config = config;
+        this.scriptExecutorFactory = scriptExecutorFactory;
+        this.strictMode = strictMode;
     }
 
     @Override
@@ -92,6 +107,7 @@ public class DynamicFileParser extends BaseFileParser {
                     record.setConfirmed(false);
 
                     Map<String, Object> extData = new HashMap<>();
+                    Map<String, Object> rowContext = new HashMap<>();
 
                     for (FieldMappingRule rule : fieldRules) {
                         if (rule.getSourceIndex() != null && rule.getSourceIndex() < line.length) {
@@ -101,29 +117,47 @@ public class DynamicFileParser extends BaseFileParser {
                                 cleanVal = rule.getDefaultValue();
                             }
 
+                            if (rule.getTargetField() == null || rule.getTargetField().trim().isEmpty()) {
+                                continue;
+                            }
+
+                            Object mappedValue = cleanVal;
+                            if (shouldExecuteScript(rule)) {
+                                Object scriptResult = executeRuleScript(rule, cleanVal, rowContext);
+                                if (scriptResult instanceof Map<?, ?> resultMap) {
+                                    if (rule.getTargetField().startsWith("extData.")) {
+                                        throw new IllegalArgumentException("extData 字段不支持 Map 返回值脚本: " + rule.getTargetField());
+                                    }
+                                    for (Map.Entry<?, ?> entry : resultMap.entrySet()) {
+                                        String field = String.valueOf(entry.getKey());
+                                        Object v = entry.getValue();
+                                        if (v == null) continue;
+                                        setRecordField(record, field, v, null);
+                                        rowContext.put(field, v);
+                                    }
+                                    continue;
+                                }
+                                mappedValue = scriptResult;
+                            }
+
                             if (rule.getTargetField().startsWith("extData.")) {
-                                String extKey = rule.getTargetField().substring("extData.".length());
-                                extData.put(extKey, cleanVal);
+                                if (mappedValue != null) {
+                                    String extKey = rule.getTargetField().substring("extData.".length());
+                                    extData.put(extKey, mappedValue);
+                                }
                             } else {
-                                setRecordField(record, rule.getTargetField(), cleanVal, rule.getDateFormat());
+                                if (mappedValue != null) {
+                                    rowContext.put(rule.getTargetField(), mappedValue);
+                                    setRecordField(record, rule.getTargetField(), mappedValue, rule.getDateFormat());
+                                }
                             }
                         }
                     }
 
+                    applyPostScriptIfEnabled(record, rowContext, extData);
+
                     if (!extData.isEmpty()) {
                         record.setOriginalData(objectMapper.writeValueAsString(extData));
-                    }
-
-                    // 特殊处理收支类型映射
-                    if (record.getType() != null) {
-                        String t = record.getType();
-                        if (t.contains("收") && !t.contains("支")) {
-                            record.setType("INCOME");
-                        } else if (t.contains("支") || t.contains("付") || t.contains("买")) {
-                            record.setType("EXPENSE");
-                        } else {
-                            record.setType("OTHER");
-                        }
                     }
 
                     // 如果没有解析出时间，或者核心字段缺失，则跳过
@@ -131,6 +165,9 @@ public class DynamicFileParser extends BaseFileParser {
                         records.add(record);
                     }
                 } catch (Exception e) {
+                    if (strictMode) {
+                        throw e;
+                    }
                     log.warn("解析第 {} 行失败: {}", i, Arrays.toString(line), e);
                 }
             }
@@ -197,21 +234,207 @@ public class DynamicFileParser extends BaseFileParser {
         }
     }
 
-    private void setRecordField(TransactionRecord record, String field, String value, String format) {
-        if (value == null || value.isEmpty()) return;
-        try {
-            BeanWrapper wrapper = new BeanWrapperImpl(record);
-            if ("amount".equals(field)) {
-                wrapper.setPropertyValue(field, parseAmount(value));
-            } else if ("transactionTime".equals(field)) {
-                String f = (format != null && !format.isEmpty()) ? format : "yyyy-MM-dd HH:mm:ss";
-                wrapper.setPropertyValue(field, parseDateTime(value, f));
-            } else {
-                wrapper.setPropertyValue(field, value);
+    private void setRecordField(TransactionRecord record, String field, Object value, String dateFormat) {
+        if (value == null) return;
+        if (value instanceof String s && s.trim().isEmpty()) return;
+
+        BeanWrapper wrapper = new BeanWrapperImpl(record);
+        if (!wrapper.isWritableProperty(field)) {
+            if (strictMode) {
+                throw new IllegalArgumentException("Unknown target field: " + field);
             }
-        } catch (Exception e) {
-            log.warn("设置记录字段 {} 失败: {}", field, value, e);
+            log.warn("Unknown target field: {}", field);
+            return;
         }
+
+        Class<?> targetType = wrapper.getPropertyType(field);
+        Object coerced = coerceToPropertyType(targetType, value, dateFormat);
+        wrapper.setPropertyValue(field, coerced);
+    }
+
+    private Object executeRuleScript(FieldMappingRule rule, String value, Map<String, Object> rowContext) {
+        if (!shouldExecuteScript(rule)) return null;
+        if (scriptExecutorFactory == null) {
+            throw new IllegalStateException("Script executor factory is not available");
+        }
+
+        String language = normalizeScriptLanguage(rule.getScriptLanguage());
+        if (!scriptExecutorFactory.isSupported(language)) {
+            throw new IllegalArgumentException("Unsupported script language: " + language);
+        }
+
+        Map<String, Object> context = new HashMap<>(rowContext);
+        context.put("value", value);
+        context.put("targetField", rule.getTargetField());
+        Object result = scriptExecutorFactory.execute(language, rule.getScriptRule(), context);
+        if (result instanceof Map<?, ?>) {
+            throw new IllegalArgumentException("Field-mapping script must return a scalar value; use postScript for Map results: " + rule.getTargetField());
+        }
+        return result;
+    }
+
+    private void applyPostScriptIfEnabled(TransactionRecord record, Map<String, Object> rowContext, Map<String, Object> extData) {
+        if (record == null) return;
+        if (scriptExecutorFactory == null) return;
+
+        String script = config.getPostScript();
+        if (script == null || script.trim().isEmpty()) {
+            return;
+        }
+
+        Boolean enabled = config.getPostScriptEnabled();
+        if (enabled != null && !enabled) {
+            return;
+        }
+
+        String language = normalizeScriptLanguage(config.getPostScriptLanguage());
+        if (!scriptExecutorFactory.isSupported(language)) {
+            throw new IllegalArgumentException("Unsupported script language: " + language);
+        }
+
+        Map<String, Object> context = new HashMap<>(rowContext);
+        context.put("record", record);
+        context.put("row", rowContext);
+        context.put("extData", extData);
+        context.put("channel", config.getChannel());
+
+        Object result = scriptExecutorFactory.execute(language, script, context);
+        if (result == null) return;
+
+        if (!(result instanceof Map<?, ?> resultMap)) {
+            String msg = "Post script must return Map or null, actual=" + result.getClass().getSimpleName();
+            if (strictMode) {
+                throw new IllegalArgumentException(msg);
+            }
+            log.warn(msg);
+            return;
+        }
+
+        for (Map.Entry<?, ?> entry : resultMap.entrySet()) {
+            String field = String.valueOf(entry.getKey());
+            Object v = entry.getValue();
+            if (v == null) continue;
+
+            if (field.startsWith("extData.")) {
+                String extKey = field.substring("extData.".length());
+                extData.put(extKey, v);
+                continue;
+            }
+
+            setRecordField(record, field, v, null);
+            rowContext.put(field, v);
+        }
+    }
+
+    private boolean shouldExecuteScript(FieldMappingRule rule) {
+        if (rule == null) return false;
+        if (rule.getScriptRule() == null || rule.getScriptRule().trim().isEmpty()) return false;
+        if (rule.getScriptEnabled() == null) {
+            return true; // 兼容旧版：只要 scriptRule 有值就执行
+        }
+        return Boolean.TRUE.equals(rule.getScriptEnabled());
+    }
+
+    private String normalizeScriptLanguage(String language) {
+        if (language == null || language.trim().isEmpty()) {
+            return "groovy";
+        }
+        return language.trim().toLowerCase();
+    }
+
+    private Object coerceToPropertyType(Class<?> targetType, Object value, String dateFormat) {
+        if (targetType == null) {
+            throw new IllegalArgumentException("Unknown target type");
+        }
+        if (value == null) return null;
+        if (targetType.isInstance(value)) {
+            return value;
+        }
+
+        if (String.class.equals(targetType)) {
+            return String.valueOf(value);
+        }
+        if (BigDecimal.class.equals(targetType)) {
+            return coerceBigDecimal(value);
+        }
+        if (LocalDateTime.class.equals(targetType)) {
+            return coerceLocalDateTime(value, dateFormat);
+        }
+        if (Long.class.equals(targetType) || long.class.equals(targetType)) {
+            return coerceLong(value);
+        }
+        if (Boolean.class.equals(targetType) || boolean.class.equals(targetType)) {
+            return coerceBoolean(value);
+        }
+        if (targetType.isEnum()) {
+            @SuppressWarnings("unchecked")
+            Class<? extends Enum<?>> enumType = (Class<? extends Enum<?>>) targetType;
+            return coerceEnum(enumType, value);
+        }
+
+        throw new IllegalArgumentException("Script output type mismatch: expected=" + targetType.getSimpleName()
+                + ", actual=" + value.getClass().getSimpleName());
+    }
+
+    private BigDecimal coerceBigDecimal(Object value) {
+        if (value instanceof BigDecimal bd) return bd;
+        if (value instanceof Number n) {
+            return new BigDecimal(String.valueOf(n));
+        }
+        if (value instanceof String s) {
+            return parseAmount(s);
+        }
+        throw new IllegalArgumentException("Cannot coerce to BigDecimal: " + value.getClass().getName());
+    }
+
+    private LocalDateTime coerceLocalDateTime(Object value, String dateFormat) {
+        if (value instanceof LocalDateTime dt) return dt;
+        if (value instanceof Date d) {
+            return LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
+        }
+        if (value instanceof Number n) {
+            Instant instant = Instant.ofEpochMilli(n.longValue());
+            return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        }
+        if (value instanceof String s) {
+            String fVal = (dateFormat != null && !dateFormat.isEmpty()) ? dateFormat : "yyyy-MM-dd HH:mm:ss";
+            return parseDateTime(s, fVal);
+        }
+        throw new IllegalArgumentException("Cannot coerce to LocalDateTime: " + value.getClass().getName());
+    }
+
+    private Long coerceLong(Object value) {
+        if (value instanceof Long l) return l;
+        if (value instanceof Number n) return n.longValue();
+        if (value instanceof String s) return Long.parseLong(s.trim());
+        throw new IllegalArgumentException("Cannot coerce to Long: " + value.getClass().getName());
+    }
+
+    private Boolean coerceBoolean(Object value) {
+        if (value instanceof Boolean b) return b;
+        if (value instanceof Number n) return n.intValue() != 0;
+        if (value instanceof String s) {
+            String v = s.trim().toLowerCase();
+            if ("true".equals(v) || "1".equals(v) || "yes".equals(v) || "y".equals(v)) return true;
+            if ("false".equals(v) || "0".equals(v) || "no".equals(v) || "n".equals(v)) return false;
+        }
+        throw new IllegalArgumentException("Cannot coerce to Boolean: " + value.getClass().getName());
+    }
+
+    private Enum<?> coerceEnum(Class<? extends Enum<?>> enumType, Object value) {
+        if (enumType.isInstance(value)) {
+            return (Enum<?>) value;
+        }
+        if (value instanceof String s) {
+            String name = s.trim();
+            for (Enum<?> e : enumType.getEnumConstants()) {
+                if (e.name().equalsIgnoreCase(name)) {
+                    return e;
+                }
+            }
+            throw new IllegalArgumentException("Invalid enum value: " + s + ", enum=" + enumType.getSimpleName());
+        }
+        throw new IllegalArgumentException("Cannot coerce to Enum: " + value.getClass().getName());
     }
 
     private ParseResult parseExcel(InputStream inputStream, String originalFilename) throws Exception {
@@ -273,6 +496,7 @@ public class DynamicFileParser extends BaseFileParser {
                     record.setConfirmed(false);
 
                     Map<String, Object> extData = new HashMap<>();
+                    Map<String, Object> rowContext = new HashMap<>();
 
                     for (FieldMappingRule rule : fieldRules) {
                         Integer sourceIdx = rule.getSourceIndex();
@@ -284,14 +508,44 @@ public class DynamicFileParser extends BaseFileParser {
                                 cleanVal = rule.getDefaultValue();
                             }
 
+                            if (rule.getTargetField() == null || rule.getTargetField().trim().isEmpty()) {
+                                continue;
+                            }
+
+                            Object mappedValue = cleanVal;
+                            if (shouldExecuteScript(rule)) {
+                                Object scriptResult = executeRuleScript(rule, cleanVal, rowContext);
+                                if (scriptResult instanceof Map<?, ?> resultMap) {
+                                    if (rule.getTargetField().startsWith("extData.")) {
+                                        throw new IllegalArgumentException("extData 字段不支持 Map 返回值脚本: " + rule.getTargetField());
+                                    }
+                                    for (Map.Entry<?, ?> entry : resultMap.entrySet()) {
+                                        String field = String.valueOf(entry.getKey());
+                                        Object v = entry.getValue();
+                                        if (v == null) continue;
+                                        setRecordField(record, field, v, null);
+                                        rowContext.put(field, v);
+                                    }
+                                    continue;
+                                }
+                                mappedValue = scriptResult;
+                            }
+
                             if (rule.getTargetField().startsWith("extData.")) {
-                                String extKey = rule.getTargetField().substring("extData.".length());
-                                extData.put(extKey, cleanVal);
+                                if (mappedValue != null) {
+                                    String extKey = rule.getTargetField().substring("extData.".length());
+                                    extData.put(extKey, mappedValue);
+                                }
                             } else {
-                                setRecordField(record, rule.getTargetField(), cleanVal, rule.getDateFormat());
+                                if (mappedValue != null) {
+                                    rowContext.put(rule.getTargetField(), mappedValue);
+                                    setRecordField(record, rule.getTargetField(), mappedValue, rule.getDateFormat());
+                                }
                             }
                         }
                     }
+
+                    applyPostScriptIfEnabled(record, rowContext, extData);
 
                     if (!extData.isEmpty()) {
                         record.setOriginalData(objectMapper.writeValueAsString(extData));
@@ -300,6 +554,10 @@ public class DynamicFileParser extends BaseFileParser {
                     // 特殊处理收支类型映射（与CSV逻辑一致）
                     if (record.getType() != null) {
                         String t = record.getType();
+                        String upper = t.trim().toUpperCase();
+                        if ("INCOME".equals(upper) || "EXPENSE".equals(upper) || "OTHER".equals(upper)) {
+                            record.setType(upper);
+                        } else {
                         if (t.contains("收") && !t.contains("支")) {
                             record.setType("INCOME");
                         } else if (t.contains("支") || t.contains("付") || t.contains("买")) {
@@ -307,12 +565,16 @@ public class DynamicFileParser extends BaseFileParser {
                         } else {
                             record.setType("OTHER");
                         }
+                        }
                     }
 
                     if (record.getTransactionTime() != null && record.getAmount() != null) {
                         records.add(record);
                     }
                 } catch (Exception e) {
+                    if (strictMode) {
+                        throw e;
+                    }
                     log.warn("解析Excel第 {} 行失败: {}", i, e.getMessage(), e);
                 }
             }

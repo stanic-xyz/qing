@@ -57,5 +57,8 @@ export interface ParserConfig extends ParserItem {
   metadataRules: string;
   fieldMappingRules: string;
   script?: string;
+  postScript?: string;
+  postScriptLanguage?: string;
+  postScriptEnabled?: boolean;
   status?: string;
 }

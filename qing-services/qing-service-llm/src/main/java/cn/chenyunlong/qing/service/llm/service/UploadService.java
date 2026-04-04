@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.service.llm.service;
 import cn.chenyunlong.qing.service.llm.dto.ImportRequest;
 import cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse;
 import cn.chenyunlong.qing.service.llm.dto.PreviewRecordDTO;
+import cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse;
 import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.entity.UploadFileRecord;
@@ -14,6 +15,7 @@ import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
 import cn.chenyunlong.qing.service.llm.repository.ParserConfigRepository;
 import cn.chenyunlong.qing.service.llm.service.parser.DynamicFileParser;
 import cn.chenyunlong.qing.service.llm.service.parser.FileParser;
+import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
 import cn.chenyunlong.qing.service.llm.util.FileHashUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -47,6 +49,9 @@ public class UploadService {
     private UploadFileRecordRepository uploadFileRepo;
 
     @Resource
+    private ScriptExecutorFactory scriptExecutorFactory;
+
+    @Resource
     private ReconciliationService reconciliationService;
 
     @Resource
@@ -64,11 +69,11 @@ public class UploadService {
     // 临时存储异步匹配任务状态
     private final Map<String, MatchStatusResponse> matchStatusMap = new ConcurrentHashMap<>();
 
-    public List<cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse> parseAndPreviewBatch(List<MultipartFile> files, String parserId, Long accountId) throws Exception {
+    public List<UploadBatchPreviewResponse> parseAndPreviewBatch(List<MultipartFile> files, String parserId, Long accountId) throws Exception {
         Account targetAccount = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("指定的账户不存在"));
 
-        List<cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse> responses = new java.util.ArrayList<>();
+        List<UploadBatchPreviewResponse> responses = new java.util.ArrayList<>();
 
         // 解析 parserId: "builtin:ALIPAY" 或 "custom:12" 或 "ALIPAY" (兼容旧的)
         FileParser parser = null;
@@ -82,7 +87,7 @@ public class UploadService {
             ParserConfig config = parserConfigRepository.findById(configId)
                     .orElseThrow(() -> new RuntimeException("找不到指定的自定义解析器"));
             actualChannel = config.getChannel();
-            parser = new DynamicFileParser(config);
+            parser = new DynamicFileParser(config, scriptExecutorFactory);
         } else {
             // 兼容旧逻辑
             parser = parserMap.get(Objects.requireNonNull(parserId).toUpperCase());
@@ -90,6 +95,14 @@ public class UploadService {
 
         if (parser == null) {
             throw new RuntimeException("找不到有效的解析器: " + parserId);
+        }
+
+        // 账号与渠道一致性校验：避免选错解析器导致数据落错账户
+        if (targetAccount.getChannel() != null
+                && actualChannel != null
+                && !targetAccount.getChannel().trim().equalsIgnoreCase(actualChannel.trim())) {
+            throw new RuntimeException("所选账号渠道(" + targetAccount.getChannel()
+                    + ")与解析器渠道(" + actualChannel + ")不一致，请重新选择");
         }
 
         for (MultipartFile file : files) {
@@ -151,7 +164,7 @@ public class UploadService {
                     .map(r -> PreviewRecordDTO.fromEntity(r, String.valueOf(r.getId())))
                     .collect(Collectors.toList());
 
-            responses.add(cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse.builder()
+            responses.add(UploadBatchPreviewResponse.builder()
                     .uploadId(finalUploadId)
                     .fileName(originalFilename)
                     .parsedCount(records.size())

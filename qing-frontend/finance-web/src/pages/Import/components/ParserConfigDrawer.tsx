@@ -21,7 +21,26 @@ interface FieldMappingRule {
   dateFormat: string;
   cleanRules: string[];
   defaultValue: string;
+  scriptEnabled?: boolean;
+  scriptLanguage?: string;
+  scriptRule: string;
 }
+
+const CHANNEL_OPTIONS = [
+  'ALIPAY',
+  'WECHAT',
+  'CMB',
+  'CCB',
+  'BOC_CREDIT',
+  'CITIC_CREDIT',
+  'BOCOM_CREDIT',
+  'PINGAN',
+  'QIANJI',
+  'JINGDONG',
+  'BANK',
+  'YIPAY',
+  'TIKTOK',
+];
 
 export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDrawerProps) {
   const [configs, setConfigs] = useState<ParserConfig[]>([]);
@@ -34,6 +53,50 @@ export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDraw
   const [testFile, setTestFile] = useState<File | null>(null);
   const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState<any>(null);
+
+  const [ruleTestValue, setRuleTestValue] = useState<Record<number, string>>({});
+  const [ruleTestStatus, setRuleTestStatus] = useState<Record<number, { loading: boolean; result?: any; error?: string }>>({});
+
+  const getScriptSamples = (targetField?: string) => {
+    if (targetField === 'amount') {
+      return [
+        {
+          name: '金额解析',
+          code:
+            "def sign = (value?.toString()?.startsWith('-')) ? -1 : 1\n" +
+            "def clean = value.toString().replace(',', '').replace('¥','').replace('￥','').replace('-','').replace('+','')\n" +
+            "return new BigDecimal(clean) * sign\n",
+        },
+        {
+          name: '金额+类型',
+          code:
+            "def sign = (value?.toString()?.startsWith('-')) ? -1 : 1\n" +
+            "def clean = value.toString().replace(',', '').replace('¥','').replace('￥','').replace('-','').replace('+','')\n" +
+            "def amt = new BigDecimal(clean) * sign\n" +
+            "return amt\n",
+        },
+      ];
+    }
+    if (targetField === 'transactionTime') {
+      return [
+        {
+          name: '解析时间',
+          code:
+            "def fmt = java.time.format.DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm:ss')\n" +
+            "return java.time.LocalDateTime.parse(value.toString(), fmt)\n",
+        },
+      ];
+    }
+    return [
+      {
+        name: 'Trim',
+        code: "return value?.toString()?.trim()\n",
+      },
+    ];
+  };
+
+  const isRuleScriptEnabled = (rule: FieldMappingRule) =>
+    rule.scriptEnabled ?? (!!rule.scriptRule && rule.scriptRule.trim().length > 0);
 
   const handleTestFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -62,6 +125,30 @@ export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDraw
       alert('测试失败: ' + (e.response?.data?.message || e.message));
     } finally {
       setIsTesting(false);
+    }
+  };
+
+  const handleRuleScriptTest = async (idx: number) => {
+    const rule = fieldRules[idx];
+    if (!rule || !rule.scriptRule || rule.scriptRule.trim().length === 0) return;
+
+    const value = ruleTestValue[idx] ?? '';
+    setRuleTestStatus(prev => ({ ...prev, [idx]: { loading: true } }));
+
+    try {
+      const res = await axios.post('/api/finance/parsers/script/test', {
+        language: rule.scriptLanguage || 'groovy',
+        script: rule.scriptRule,
+        context: { value, targetField: rule.targetField },
+        allowMap: false,
+        expectNumber: rule.targetField === 'amount',
+      });
+      setRuleTestStatus(prev => ({ ...prev, [idx]: { loading: false, result: res.data.data } }));
+    } catch (e: any) {
+      setRuleTestStatus(prev => ({
+        ...prev,
+        [idx]: { loading: false, error: e.response?.data?.message || e.message }
+      }));
     }
   };
 
@@ -100,6 +187,9 @@ export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDraw
       fileType: 'CSV',
       encoding: 'UTF-8',
       skipRows: 0,
+      postScriptEnabled: false,
+      postScriptLanguage: 'groovy',
+      postScript: '',
     });
     setMetadataRules([]);
     setFieldRules([]);
@@ -119,8 +209,10 @@ export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDraw
       } else {
         await axios.put(`/api/finance/parsers/configs/${editingId}`, payload);
       }
-      setEditingId(null);
-      fetchConfigs();
+      if (status === 'PUBLISHED') {
+          setEditingId(null);
+          fetchConfigs();
+      }
     } catch (e) {
       alert('保存失败');
     }
@@ -221,7 +313,17 @@ export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDraw
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">渠道</label>
-                      <input type="text" value={formData.channel || ''} onChange={e => setFormData({...formData, channel: e.target.value})} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" placeholder="如: ALIPAY" />
+                      <input
+                        type="text"
+                        list="channel-options"
+                        value={formData.channel || ''}
+                        onChange={e => setFormData({...formData, channel: e.target.value})}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                        placeholder="如: ALIPAY"
+                      />
+                      <datalist id="channel-options">
+                        {CHANNEL_OPTIONS.map(c => <option key={c} value={c} />)}
+                      </datalist>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">文件类型</label>
@@ -270,7 +372,7 @@ export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDraw
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-md font-medium text-gray-800">交易字段映射规则</h3>
-                    <button onClick={() => setFieldRules([...fieldRules, { targetField: '', sourceIndex: 0, dateFormat: '', cleanRules: [], defaultValue: '' }])} className="text-sm text-blue-600 hover:text-blue-700 flex items-center">
+                    <button onClick={() => setFieldRules([...fieldRules, { targetField: '', sourceIndex: 0, dateFormat: '', cleanRules: [], defaultValue: '', scriptEnabled: false, scriptLanguage: 'groovy', scriptRule: '' }])} className="text-sm text-blue-600 hover:text-blue-700 flex items-center">
                       <Plus size={14} className="mr-1" /> 添加映射
                     </button>
                   </div>
@@ -316,9 +418,147 @@ export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDraw
                           <label className="flex items-center"><input type="checkbox" className="mr-1" checked={rule.cleanRules?.includes('REMOVE_TABS')} onChange={e => { const n = [...fieldRules]; if(e.target.checked) { n[idx].cleanRules = [...(n[idx].cleanRules||[]), 'REMOVE_TABS'] } else { n[idx].cleanRules = (n[idx].cleanRules||[]).filter(x => x!=='REMOVE_TABS') }; setFieldRules(n); }} /> 去隐藏制表符</label>
                         </div>
                       </div>
+                      <div className="flex w-full mt-2 items-center gap-3">
+                        <label className="flex items-center text-sm text-gray-700">
+                          <input
+                            type="checkbox"
+                            className="mr-1"
+                            checked={isRuleScriptEnabled(rule)}
+                            onChange={e => {
+                              const n = [...fieldRules];
+                              n[idx].scriptEnabled = e.target.checked;
+                              if (e.target.checked && (!n[idx].scriptLanguage || n[idx].scriptLanguage === '')) {
+                                n[idx].scriptLanguage = 'groovy';
+                              }
+                              setFieldRules(n);
+                            }}
+                          />
+                          使用脚本
+                        </label>
+                        <select
+                          className="border rounded p-1.5 text-sm"
+                          disabled={!isRuleScriptEnabled(rule)}
+                          value={(rule.scriptLanguage || 'groovy')}
+                          onChange={e => {
+                            const n = [...fieldRules];
+                            n[idx].scriptLanguage = e.target.value;
+                            setFieldRules(n);
+                          }}
+                        >
+                          <option value="groovy">Groovy</option>
+                        </select>
+                        <div className="flex-1" />
+                        {isRuleScriptEnabled(rule) && (
+                          <div className="flex gap-2 flex-wrap justify-end">
+                            {getScriptSamples(rule.targetField).map(s => (
+                              <button
+                                key={s.name}
+                                type="button"
+                                className="px-2 py-1 text-xs border rounded bg-gray-50 hover:bg-gray-100"
+                                onClick={() => {
+                                  const n = [...fieldRules];
+                                  n[idx].scriptRule = s.code;
+                                  setFieldRules(n);
+                                }}
+                                title="插入示例脚本"
+                              >
+                                {s.name}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      {isRuleScriptEnabled(rule) && (
+                        <div className="flex w-full mt-2">
+                          <textarea
+                            placeholder="脚本返回值需要符合当前字段类型。可用变量: value(清洗后字符串), targetField, 以及本行已解析出的字段。"
+                            value={rule.scriptRule || ''}
+                            onChange={e => {
+                              const n = [...fieldRules];
+                              n[idx].scriptRule = e.target.value;
+                              setFieldRules(n);
+                            }}
+                            className="border rounded p-2 text-xs w-full font-mono bg-gray-50"
+                            rows={5}
+                          />
+                          <div className="mt-2 flex gap-2 items-center">
+                            <input
+                              type="text"
+                              value={ruleTestValue[idx] ?? ''}
+                              onChange={e => setRuleTestValue(prev => ({ ...prev, [idx]: e.target.value }))}
+                              className="flex-1 border rounded p-2 text-xs font-mono"
+                              placeholder="脚本测试 value（建议填清洗后的原始值）"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRuleScriptTest(idx)}
+                              disabled={ruleTestStatus[idx]?.loading}
+                              className="px-3 py-2 text-xs border rounded bg-white hover:bg-gray-50 disabled:opacity-50"
+                            >
+                              {ruleTestStatus[idx]?.loading ? '测试中...' : '测试脚本'}
+                            </button>
+                          </div>
+                          {ruleTestStatus[idx]?.error && (
+                            <div className="mt-1 text-xs text-red-600">{ruleTestStatus[idx]?.error}</div>
+                          )}
+                          {ruleTestStatus[idx]?.result !== undefined && !ruleTestStatus[idx]?.error && (
+                            <div className="mt-1 text-xs text-green-700">结果: {String(ruleTestStatus[idx]?.result)}</div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   ))}
                   {fieldRules.length === 0 && <div className="text-sm text-gray-500">暂无映射规则。</div>}
+                </div>
+
+                <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+                  <div className="flex items-center gap-3">
+                    <label className="flex items-center gap-2 text-sm text-gray-700">
+                      <input
+                        type="checkbox"
+                        checked={formData.postScriptEnabled ?? (!!formData.postScript && formData.postScript.trim().length > 0)}
+                        onChange={e => setFormData({ ...formData, postScriptEnabled: e.target.checked })}
+                      />
+                      启用后置脚本（字段映射完成后执行）
+                    </label>
+                    <select
+                      className="border rounded p-1.5 text-sm"
+                      disabled={!(formData.postScriptEnabled ?? (!!formData.postScript && formData.postScript.trim().length > 0))}
+                      value={(formData.postScriptLanguage || 'groovy')}
+                      onChange={e => setFormData({ ...formData, postScriptLanguage: e.target.value })}
+                    >
+                      <option value="groovy">Groovy</option>
+                    </select>
+                    <div className="flex-1" />
+                    <button
+                      type="button"
+                      className="px-2 py-1 text-xs border rounded bg-white hover:bg-gray-50"
+                      onClick={() =>
+                        setFormData({
+                          ...formData,
+                          postScriptEnabled: true,
+                          postScriptLanguage: formData.postScriptLanguage || 'groovy',
+                          postScript: `def amt = record?.amount
+if (amt == null) return null
+return [type: (amt.signum() < 0 ? 'EXPENSE' : 'INCOME')]
+`
+                        })
+                      }
+                      title="插入示例后置脚本"
+                    >
+                      示例脚本
+                    </button>
+                  </div>
+                  <textarea
+                    placeholder="后置脚本：可使用 record、row、extData。返回 Map（key=字段名或 extData.xxx，value=字段值）或返回 null。"
+                    value={formData.postScript || ''}
+                    onChange={e => setFormData({ ...formData, postScript: e.target.value })}
+                    className="border rounded p-2 text-xs w-full font-mono bg-white"
+                    rows={6}
+                  />
+                  <p className="text-xs text-gray-500">
+                    用途：把“金额→收支类型”等跨字段逻辑放到这里；字段映射脚本建议仅返回标量值（如金额 BigDecimal）。
+                  </p>
                 </div>
 
                 <div className="flex justify-end space-x-3 pt-4 border-t">
