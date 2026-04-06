@@ -7,6 +7,8 @@ import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ImportModeEnum;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
+import cn.chenyunlong.qing.service.llm.entity.Channel;
+import cn.chenyunlong.qing.service.llm.enums.ProcessStatusEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +44,9 @@ class AccountImportServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        lenient().when(channelRepository.findAllByIsDeletedFalseAndCodeIn(anyList())).thenReturn(java.util.Collections.emptyList());
+        Channel mockChannel = new Channel();
+        mockChannel.setCode("TEST_CHANNEL");
+        lenient().when(channelRepository.findAllByIsDeletedFalseAndCodeIn(anyList())).thenReturn(java.util.Collections.singletonList(mockChannel));
     }
 
     @Test
@@ -58,6 +62,7 @@ class AccountImportServiceTest {
         valid.setAccountName("Test1");
         valid.setAccountType(AccountType.DEBIT);
         valid.setInitialBalance(BigDecimal.ZERO);
+        valid.setChannelCode("TEST_CHANNEL");
 
         AccountImportDTO invalid = new AccountImportDTO();
 
@@ -75,6 +80,8 @@ class AccountImportServiceTest {
         dto.setExistingAccountId(1L);
         dto.setAccountType(AccountType.CREDIT);
         dto.setInitialBalance(new BigDecimal("100"));
+        dto.setProcessStatus(ProcessStatusEnum.DUPLICATE_OVERWRITE);
+        dto.setChannelCode("TEST_CHANNEL");
 
         Account existingAccount = new Account();
         existingAccount.setId(1L);

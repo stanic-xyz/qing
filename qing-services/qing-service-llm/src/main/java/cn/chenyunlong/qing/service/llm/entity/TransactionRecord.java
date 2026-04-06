@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
 import cn.chenyunlong.qing.service.llm.enums.*;
+import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -108,6 +109,9 @@ public class TransactionRecord {
 
     // 关联资金源账户：跨账单对账成功后绑定到具体的银行卡账户ID
     private Long fundSourceAccountId;
+
+    @Enumerated(EnumType.STRING)
+    private RecordRoleEnum recordRole = RecordRoleEnum.PRIMARY;
 
     @Enumerated(EnumType.STRING)
     private TransactionRecordTypeEnum transactionRecordType;

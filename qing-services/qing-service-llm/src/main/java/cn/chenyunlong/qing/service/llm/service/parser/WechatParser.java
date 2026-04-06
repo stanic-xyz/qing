@@ -5,6 +5,7 @@ import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -82,7 +83,18 @@ public class WechatParser extends BaseFileParser {
                         String pm = paymentMethodCell.getStringCellValue().trim();
                         if (!pm.isEmpty() && !"/".equals(pm)) {
                             record.setFundSource(pm);
+                            if (pm.contains("\u96f6\u94b1") || pm.contains("\u4eb2\u5c5e\u5361") || pm.contains("\u7ea2\u5305")) {
+                                record.setRecordRole(RecordRoleEnum.PRIMARY);
+                            } else if (pm.contains("\u50a8\u84c4\u5361") || pm.contains("\u4fe1\u7528\u5361") || pm.contains("\u94f6\u884c")) {
+                                record.setRecordRole(RecordRoleEnum.TRACE);
+                            } else {
+                                record.setRecordRole(RecordRoleEnum.PRIMARY);
+                            }
+                        } else {
+                            record.setRecordRole(RecordRoleEnum.PRIMARY);
                         }
+                    } else {
+                        record.setRecordRole(RecordRoleEnum.PRIMARY);
                     }
 
                     // 状态

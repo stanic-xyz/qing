@@ -4,6 +4,10 @@ import cn.chenyunlong.qing.service.llm.dto.parser.FileMetadata;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.FundTypeEnum;
+import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -53,6 +57,10 @@ public abstract class BaseFileParser implements FileParser {
             // 自动推算资金类型 (fundType)
             if (record.getFundType() == null && record.getFundSource() != null) {
                 record.setFundType(deduceFundType(record.getFundSource()));
+            }
+
+            if (record.getRecordRole() == null) {
+                record.setRecordRole(RecordRoleEnum.PRIMARY);
             }
 
             if (record.getTransactionTime() != null) {

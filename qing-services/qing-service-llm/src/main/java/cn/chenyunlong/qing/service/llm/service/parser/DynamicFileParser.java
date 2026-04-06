@@ -7,7 +7,9 @@ import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -374,6 +376,16 @@ public class DynamicFileParser extends BaseFileParser {
             Class<? extends Enum<?>> enumType = (Class<? extends Enum<?>>) targetType;
             return coerceEnum(enumType, value);
         }
+        if (cn.chenyunlong.qing.service.llm.entity.Counterparty.class.equals(targetType)) {
+            cn.chenyunlong.qing.service.llm.entity.Counterparty cp = new cn.chenyunlong.qing.service.llm.entity.Counterparty();
+            cp.setName(String.valueOf(value));
+            return cp;
+        }
+        if (cn.chenyunlong.qing.service.llm.entity.Category.class.equals(targetType)) {
+            cn.chenyunlong.qing.service.llm.entity.Category cat = new cn.chenyunlong.qing.service.llm.entity.Category();
+            cat.setName(String.valueOf(value));
+            return cat;
+        }
 
         throw new IllegalArgumentException("Script output type mismatch: expected=" + targetType.getSimpleName()
                 + ", actual=" + value.getClass().getSimpleName());
@@ -434,6 +446,16 @@ public class DynamicFileParser extends BaseFileParser {
                 if (e.name().equalsIgnoreCase(name)) {
                     return e;
                 }
+            }
+            if (enumType.getSimpleName().equals("TrasactionType")) {
+                if (name.contains("\u6536\u5165") || name.contains("\u9000\u6b3e") || name.contains("\u8f6c\u5165") || name.contains("\u6c47\u5165") || name.contains("\u6536\u6b3e")) return cn.chenyunlong.qing.service.llm.enums.TrasactionType.INCOME;
+                if (name.contains("\u652f\u51fa") || name.contains("\u6d88\u8d39") || name.contains("\u8f6c\u51fa") || name.contains("\u6c47\u51fa") || name.contains("\u4ed8\u6b3e") || name.contains("\u4ee3\u6536")) return cn.chenyunlong.qing.service.llm.enums.TrasactionType.EXPENSE;
+                if (name.contains("\u8f6c\u8d26") || name.contains("\u63d0\u73b0") || name.contains("\u5145\u503c")) return cn.chenyunlong.qing.service.llm.enums.TrasactionType.TRANSFER;
+                return cn.chenyunlong.qing.service.llm.enums.TrasactionType.OTHER;
+            }
+            System.out.println("Failed to match TrasactionType for name: " + name + ", length=" + name.length());
+            for (char c : name.toCharArray()) {
+                System.out.println("char: " + c + " int: " + (int)c);
             }
             throw new IllegalArgumentException("Invalid enum value: " + s + ", enum=" + enumType.getSimpleName());
         }

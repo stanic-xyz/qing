@@ -41,12 +41,7 @@ export default function Dashboard() {
         }
     };
 
-    const renderIcon = (channelCode: string) => {
-        const config = CHANNELS[channelCode];
-        if (config && config.icon) {
-            const IconComp = config.icon;
-            return <IconComp className={`w-6 h-6 ${config.colorClass}`}/>;
-        }
+    const renderIcon = (_channelCode: string) => {
         return <Landmark className="w-6 h-6 text-gray-400"/>;
     };
 

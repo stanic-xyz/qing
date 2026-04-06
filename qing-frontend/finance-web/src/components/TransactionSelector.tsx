@@ -126,7 +126,7 @@ export default function TransactionSelector({ isOpen, onClose, onSelect }: Trans
                           />
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{t.transactionTime}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{getEnumText('channel', t.channel)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{getEnumText('channel', t.channel?.id)}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{t.amount}</td>
                         <td className="px-6 py-4 text-sm text-gray-500 max-w-[200px] truncate" title={t.merchant || t.counterparty}>
                           {t.merchant || t.counterparty || '-'}

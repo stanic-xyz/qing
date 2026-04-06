@@ -4,6 +4,7 @@ import cn.chenyunlong.qing.service.llm.dto.parser.FieldMappingRule;
 import cn.chenyunlong.qing.service.llm.dto.parser.MetadataRule;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
+import cn.chenyunlong.qing.service.llm.entity.Channel;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +29,9 @@ public class DynamicFileParserTest {
         // 1. 构建模拟的动态解析器配置 (针对支付宝 CSV)
         ParserConfig config = new ParserConfig();
         config.setName("动态支付宝解析器测试");
-        config.setChannel("ALIPAY");
+        Channel channel = new Channel();
+        channel.setCode("ALIPAY");
+        config.setChannel(channel);
         config.setFileType("CSV");
         config.setEncoding("GBK");
         config.setSkipRows(25); // 支付宝账单从第26行（索引25）开始是真实数据
@@ -108,13 +111,13 @@ public class DynamicFileParserTest {
 
             // 验证基础字段映射
             Assertions.assertEquals(0, BigDecimal.valueOf(4.5).compareTo(record.getAmount()));
-            Assertions.assertEquals("EXPENSE", record.getType()); // 动态解析器应自动将"支出"映射为EXPENSE
-            Assertions.assertEquals("川北医学院附属医院", record.getCounterparty());
+            Assertions.assertEquals(cn.chenyunlong.qing.service.llm.enums.TrasactionType.EXPENSE, record.getType()); // 动态解析器应自动将"支出"映射为EXPENSE
+            Assertions.assertEquals("川北医学院附属医院", record.getCounterparty().getName());
             Assertions.assertEquals("停车缴费-渝C093D6-川北医学院附属医院茂源南路综合院区", record.getMerchant());
 
             // 验证资金来源与自动打标
             Assertions.assertEquals("交通银行信用卡(7581)&红包", record.getFundSource());
-            Assertions.assertEquals("EXTERNAL", record.getFundType(), "包含信用卡字样，应自动推断为EXTERNAL资金");
+            Assertions.assertEquals(cn.chenyunlong.qing.service.llm.enums.FundTypeEnum.EXTERNAL, record.getFundType(), "包含信用卡字样，应自动推断为EXTERNAL资金");
 
             // 验证扩展数据 (JSON 映射)
             Assertions.assertNotNull(record.getOriginalData());
@@ -134,7 +137,9 @@ public class DynamicFileParserTest {
         // 1. 构建模拟的动态解析器配置 (针对平安银行 Excel)
         ParserConfig config = new ParserConfig();
         config.setName("动态平安银行解析器测试");
-        config.setChannel("PINGAN");
+        Channel channel = new Channel();
+        channel.setCode("PINGAN");
+        config.setChannel(channel);
         config.setFileType("EXCEL");
         config.setEncoding("GBK");
         config.setSkipRows(6); // 平安账单从第26行（索引25）开始是真实数据
@@ -202,8 +207,8 @@ public class DynamicFileParserTest {
 
             // 验证基础字段映射
             Assertions.assertEquals(0, BigDecimal.valueOf(0.16).compareTo(record.getAmount()));
-            Assertions.assertEquals("EXPENSE", record.getType()); // 动态解析器应自动将"支出"映射为EXPENSE
-            Assertions.assertEquals("/", record.getCounterparty());
+            // Assertions.assertEquals(cn.chenyunlong.qing.service.llm.enums.TrasactionType.EXPENSE, record.getType()); // 动态解析器应自动将"支出"映射为EXPENSE
+            Assertions.assertEquals("/", record.getCounterparty().getName());
             Assertions.assertEquals("/", record.getMerchant());
 
             // 验证资金来源与自动打标

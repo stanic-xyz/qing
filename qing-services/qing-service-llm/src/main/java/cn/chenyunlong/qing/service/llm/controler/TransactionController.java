@@ -50,6 +50,7 @@ public class TransactionController {
             @RequestParam(value = "startDate", required = false) String startDate,
             @RequestParam(value = "endDate", required = false) String endDate,
             @RequestParam(value = "matchStatus", required = false) MatchStatusEnum matchStatus,
+            @RequestParam(value = "recordRole", defaultValue = "PRIMARY") cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum recordRole,
             @RequestParam(value = "sortField", defaultValue = "transactionTime") String sortField,
             @RequestParam(value = "sortDirection", defaultValue = "DESC") String sortDirection) {
 
@@ -96,6 +97,10 @@ public class TransactionController {
                 predicates.add(cb.lessThanOrEqualTo(root.get("transactionTime"), end));
             }
 
+            if (recordRole != null) {
+                predicates.add(cb.equal(root.get("recordRole"), recordRole));
+            }
+
             // 默认不查询已软删除的数据
             predicates.add(cb.equal(root.get("isDeleted"), false));
 
@@ -110,6 +115,33 @@ public class TransactionController {
 
         Page<TransactionRecord> result = transactionRepo.findAll(spec, pageRequest);
         return Result.success(result);
+    }
+
+    @GetMapping("/{id}/trace")
+    public Result<List<TransactionRecord>> getTraceRecords(@PathVariable Long id) {
+        TransactionRecord record = transactionRepo.findById(id).orElse(null);
+        if (record == null) {
+            return Result.error(404, "记录不存在");
+        }
+        
+        LocalDateTime start = record.getTransactionTime().minusDays(1).with(java.time.LocalTime.MIN);
+        LocalDateTime end = record.getTransactionTime().plusDays(1).with(java.time.LocalTime.MAX);
+        
+        Specification<TransactionRecord> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("amount"), record.getAmount()));
+            predicates.add(cb.equal(root.get("type"), record.getType()));
+            predicates.add(cb.between(root.get("transactionTime"), start, end));
+            predicates.add(cb.equal(root.get("isDeleted"), false));
+            predicates.add(cb.or(
+                    cb.equal(root.get("isImported"), true),
+                    cb.isNull(root.get("isImported"))
+            ));
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+        
+        List<TransactionRecord> related = transactionRepo.findAll(spec, Sort.by(Sort.Direction.ASC, "transactionTime"));
+        return Result.success(related);
     }
 
     @PutMapping("/{id}")

@@ -1,8 +1,7 @@
 import {useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
 import {Loader2, UploadCloud, X} from 'lucide-react';
-import type {Account, ChannelItem, ParserItem, UploadBatchPreviewResponse} from '../types';
-import {getEnumText} from "../../../utils/enumMap.ts";
+import type {Account, ParserItem, UploadBatchPreviewResponse} from '../types';
 
 interface UploadViewProps {
     accounts: Account[];
@@ -11,14 +10,11 @@ interface UploadViewProps {
 
 export default function UploadView({accounts, onClose}: UploadViewProps) {
     const [files, setFiles] = useState<FileList | null>(null);
-    const [selectedChannel, setSelectedChannel] = useState('');
-    const [channels, setChannels] = useState<ChannelItem[]>([]);
     const [parsers, setParsers] = useState<ParserItem[]>([]);
     const [filteredParsers, setFilteredParsers] = useState<ParserItem[]>([]);
     const [parserId, setParserId] = useState('');
 
     const [accountId, setAccountId] = useState<number | undefined>(undefined);
-    const [filteredAccounts, setFilteredAccounts] = useState<Account[]>([]);
 
     const [isUploading, setIsUploading] = useState(false);
     const [batchPreviews, setBatchPreviews] = useState<UploadBatchPreviewResponse[]>([]);
@@ -34,24 +30,8 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
                 alert('获取解析器失败');
             }
 
-            try {
-                const res = await axios.get('/api/finance/channels');
-                setChannels(res.data.data || []);
-            } catch (e) {
-                console.error(e);
-                alert('获取解析器失败');
-            }
-
         })();
     }, []);
-
-    const channelOptions = useMemo(() => {
-        console.debug('accounts', accounts);
-        console.debug('parsers', parsers);
-        const fromAccounts = accounts.map(a => a.channel).filter(Boolean) as string[];
-        const fromParsers = parsers.map(p => p.channel).filter(Boolean) as string[];
-        return Array.from(new Set([...fromAccounts, ...fromParsers]));
-    }, [accounts, parsers]);
 
     const selectedFileTypes = useMemo(() => {
         if (!files || files.length === 0) return new Set<string>();
@@ -66,25 +46,18 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
     }, [files]);
 
     useEffect(() => {
-        if (selectedChannel) return;
-        if (channelOptions.length > 0) setSelectedChannel(channelOptions[0]);
-    }, [channelOptions, selectedChannel]);
+        const selectedAccount = accounts.find(a => a.id === accountId);
+        const activeChannelId = selectedAccount?.channelDto?.id;
 
-    useEffect(() => {
-        const next = selectedChannel ? accounts.filter(a => a.channel === selectedChannel) : accounts;
-        setFilteredAccounts(next);
-        if (next.length === 1) {
-            setAccountId(next[0].id);
-        } else if (accountId && !next.find(a => a.id === accountId)) {
-            setAccountId(undefined);
-        }
-    }, [accounts, selectedChannel]);
-
-    useEffect(() => {
-        let next = selectedChannel ? parsers.filter(p => p.channel === selectedChannel) : parsers;
+        let next = activeChannelId ? parsers.filter(p => p.channel?.id === activeChannelId) : [];
+        
         if (selectedFileTypes.size === 1) {
             const onlyType = Array.from(selectedFileTypes)[0];
-            const typed = next.filter(p => (p.fileType || '').toUpperCase() === onlyType);
+            const typed = next.filter(p => {
+                const pt = (p.fileType || '').toUpperCase();
+                if (onlyType === 'EXCEL') return pt === 'EXCEL' || pt === 'XLS' || pt === 'XLSX';
+                return pt === onlyType;
+            });
             if (typed.length > 0) next = typed;
         }
 
@@ -96,7 +69,7 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
         if (!next.find(p => p.id === parserId)) {
             setParserId(next[0].id);
         }
-    }, [parsers, selectedChannel, selectedFileTypes]);
+    }, [parsers, accountId, selectedFileTypes, accounts]);
 
     const currentParser = useMemo(() => filteredParsers.find(p => p.id === parserId), [filteredParsers, parserId]);
 
@@ -110,7 +83,6 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
 
     const handleUploadBatch = async () => {
         if (!files || files.length === 0) return alert('请先选择文件');
-        if (!selectedChannel) return alert('请先选择渠道类型');
         if (!accountId) return alert('请先选择关联账户');
         if (!parserId) return alert('请先选择解析器');
 
@@ -160,24 +132,6 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
                 <div className="space-y-6 max-w-2xl">
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">渠道类型</label>
-                            <select
-                                value={selectedChannel}
-                                onChange={e => {
-                                    setSelectedChannel(e.target.value);
-                                    setAccountId(undefined);
-                                    setFiles(null);
-                                }}
-                                className="w-full border-gray-300 rounded-md shadow-sm p-2.5 border focus:ring-blue-500 focus:border-blue-500"
-                            >
-                                {channels.map(c => (
-                                    <option key={c.id} value={c.name}>
-                                        {c.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">关联本方账户</label>
                             <select
                                 value={accountId || ''}
@@ -185,14 +139,14 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
                                 className="w-full border-gray-300 rounded-md shadow-sm p-2.5 border focus:ring-blue-500 focus:border-blue-500"
                             >
                                 <option value="">请选择导入目标账户</option>
-                                {filteredAccounts.map(acc => (
+                                {accounts.map(acc => (
                                     <option key={acc.id} value={acc.id}>
-                                        {acc.accountName} ({getEnumText('accountType', acc.accountType)})
+                                        {acc.accountName} [{acc.channelDto?.name || '未知渠道'}]
                                     </option>
                                 ))}
                             </select>
                         </div>
-                        <div className="col-span-2">
+                        <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">解析器</label>
                             <select
                                 value={parserId}

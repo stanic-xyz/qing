@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.service.llm.service.parser;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -80,6 +81,7 @@ public class BankParser extends BaseFileParser {
             record.setAccountType(AccountType.DEBIT);
             record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
             record.setConfirmed(false);
+            record.setRecordRole(RecordRoleEnum.PRIMARY);
             records.add(record);
         }
         return wrapResult(records);

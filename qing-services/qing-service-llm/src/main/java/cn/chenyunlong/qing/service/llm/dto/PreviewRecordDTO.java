@@ -33,6 +33,7 @@ public class PreviewRecordDTO {
     private String fundSource;
     private Long fundSourceAccountId;
     private Map<String, Object> extData; // 差异化扩展数据
+    private String recordRole;
 
     public static PreviewRecordDTO fromEntity(TransactionRecord record, String tempId) {
         PreviewRecordDTO dto = new PreviewRecordDTO();
@@ -52,6 +53,7 @@ public class PreviewRecordDTO {
         dto.setFundType(record.getFundType() != null ? record.getFundType().name() : null);
         dto.setFundSource(record.getFundSource());
         dto.setFundSourceAccountId(record.getFundSourceAccountId());
+        dto.setRecordRole(record.getRecordRole() != null ? record.getRecordRole().name() : "PRIMARY");
 
         // 解析 originalData JSON 到 extData Map
         if (record.getOriginalData() != null && !record.getOriginalData().isEmpty()) {

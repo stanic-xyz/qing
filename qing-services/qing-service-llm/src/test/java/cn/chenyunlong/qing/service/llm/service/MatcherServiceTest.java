@@ -37,6 +37,8 @@ public class MatcherServiceTest {
     private CounterpartyRepository counterpartyRepository;
     @Mock
     private TransactionRecordRepository transactionRecordRepository;
+    @Mock
+    private cn.chenyunlong.qing.service.llm.repository.CategoryRepository categoryRepository;
 
     @InjectMocks
     private MatcherService matcherService;
@@ -56,11 +58,15 @@ public class MatcherServiceTest {
         TransactionMatcher rule = new TransactionMatcher();
         rule.setName("Test EQ");
         rule.setConditionNode(objectMapper.readTree("{\"field\":\"merchant\", \"operator\":\"EQ\", \"value\":\"鲜农果蔬\"}"));
-        rule.setActionNode(objectMapper.readTree("[{\"actionType\":\"SET_CATEGORY\", \"value\":\"餐饮美食\"}]"));
+        rule.setActionNode(objectMapper.readTree("[{\"actionType\":\"SET_CATEGORY\", \"value\":1}]"));
+
+        Category mockCategory = new Category();
+        mockCategory.setName("餐饮美食");
+        lenient().when(categoryRepository.findById(1L)).thenReturn(Optional.of(mockCategory));
 
         matcherService.applyMatchers(record, List.of(rule));
 
-        assertEquals("餐饮美食", record.getCategory());
+        assertEquals("餐饮美食", record.getCategory().getName());
         assertEquals(MatchStatusEnum.AUTO_MATCHED, record.getMatchStatus());
     }
 
@@ -141,7 +147,7 @@ public class MatcherServiceTest {
         matcherService.applyMatchers(record, Arrays.asList(rule1, rule2));
 
         // rule1 命中且阻断，所以不会执行 rule2
-        assertEquals("INCOME", record.getType());
+        assertEquals(TrasactionType.INCOME, record.getType());
         assertEquals("Rule1", record.getMatchRuleName());
     }
 
@@ -160,14 +166,18 @@ public class MatcherServiceTest {
         rule2.setName("Rule2");
         rule2.setStopOnMatch(false);
         rule2.setConditionNode(objectMapper.readTree("{\"field\":\"remark\", \"operator\":\"CONTAINS\", \"value\":\"测试\"}"));
-        rule2.setActionNode(objectMapper.readTree("[{\"actionType\":\"SET_CATEGORY\", \"value\":\"测试分类\"}]"));
+        rule2.setActionNode(objectMapper.readTree("[{\"actionType\":\"SET_CATEGORY\", \"value\":2}]"));
+
+        Category mockCategory = new Category();
+        mockCategory.setName("测试分类");
+        lenient().when(categoryRepository.findById(2L)).thenReturn(Optional.of(mockCategory));
 
         // 假设按照优先级，rule1先执行
         matcherService.applyMatchers(record, Arrays.asList(rule1, rule2));
 
         // rule1 命中但不阻断，所以 rule2 也会执行
-        assertEquals("INCOME", record.getType());
-        assertEquals("测试分类", record.getCategory());
+        assertEquals(TrasactionType.INCOME, record.getType());
+        assertEquals("测试分类", record.getCategory().getName());
         // ruleName 被最后一次命中的规则覆盖
         assertEquals("Rule2", record.getMatchRuleName());
     }

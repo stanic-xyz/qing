@@ -183,7 +183,7 @@ export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDraw
     setEditingId('new');
     setFormData({
       name: '',
-      channel: 'ALIPAY',
+      channel: { id: 1, name: '支付宝', code: 'ALIPAY' } as any,
       fileType: 'CSV',
       encoding: 'UTF-8',
       skipRows: 0,
@@ -316,8 +316,8 @@ export default function ParserConfigDrawer({ isOpen, onClose }: ParserConfigDraw
                       <input
                         type="text"
                         list="channel-options"
-                        value={formData.channel || ''}
-                        onChange={e => setFormData({...formData, channel: e.target.value})}
+                        value={formData.channel?.code || ''}
+                        onChange={e => setFormData({...formData, channel: { code: e.target.value } as any})}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                         placeholder="如: ALIPAY"
                       />
@@ -579,7 +579,7 @@ return [type: (amt.signum() < 0 ? 'EXPENSE' : 'INCOME')]
                     <div key={config.id} className="border rounded-lg p-4 flex justify-between items-center hover:bg-gray-50">
                       <div>
                         <h4 className="font-medium text-gray-900">{config.name} {config.isBuiltIn ? <span className="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded ml-2">内置</span> : ''} {config.status === 'DRAFT' ? <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded ml-2">草稿</span> : <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded ml-2">已发布</span>}</h4>
-                        <p className="text-sm text-gray-500 mt-1">渠道: {config.channel} | 类型: {config.fileType} | 编码: {config.encoding}</p>
+                        <p className="text-sm text-gray-500 mt-1">渠道: {config.channel?.name || config.channel?.code || '未知'} | 类型: {config.fileType} | 编码: {config.encoding}</p>
                       </div>
                       <div className="flex space-x-2">
                         <button onClick={() => handleEdit(config)} className="text-blue-600 hover:text-blue-800 text-sm font-medium">编辑</button>

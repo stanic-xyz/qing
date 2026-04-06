@@ -37,10 +37,15 @@ public class ParserConfigService {
         Map<String, Channel> channelMap = channelRepository.findAll().stream().collect(Collectors.toMap(Channel::getCode, channel -> channel));
         parserList.forEach(parser -> {
             ParserItemDTO dto = new ParserItemDTO();
-            dto.setId("builtin:" + parser.getMetaData().getChannelCode().toUpperCase());
+            String channelCode = parser.getMetaData().getChannelCode().toUpperCase();
+            dto.setId("builtin:" + channelCode);
             dto.setFileType(parser.getMetaData().getSupportedFileExtension());
             dto.setName(parser.getMetaData().getParserName());
             dto.setIsBuiltIn(true);
+            Channel ch = channelMap.get(channelCode);
+            if (ch != null) {
+                dto.setChannel(cn.chenyunlong.qing.service.llm.dto.channel.ChannelDto.of(ch));
+            }
             result.add(dto);
         });
 
@@ -54,6 +59,9 @@ public class ParserConfigService {
             dto.setId("custom:" + config.getId());
             dto.setName(config.getName());
             dto.setFileType(config.getFileType());
+            if (config.getChannel() != null) {
+                dto.setChannel(cn.chenyunlong.qing.service.llm.dto.channel.ChannelDto.of(config.getChannel()));
+            }
             dto.setIsBuiltIn(config.getIsBuiltIn() != null ? config.getIsBuiltIn() : false);
             result.add(dto);
         }

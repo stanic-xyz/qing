@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.service.llm.service.parser;
 import cn.chenyunlong.qing.service.llm.dto.parser.FieldMappingRule;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
+import cn.chenyunlong.qing.service.llm.entity.Channel;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +30,9 @@ public class DynamicFileParserScriptTest {
     private static ParserConfig baseCsvConfig() {
         ParserConfig config = new ParserConfig();
         config.setName("script-test");
-        config.setChannel("ALIPAY");
+        Channel channel = new Channel();
+        channel.setCode("ALIPAY");
+        config.setChannel(channel);
         config.setFileType("CSV");
         config.setEncoding("UTF-8");
         config.setSkipRows(0);

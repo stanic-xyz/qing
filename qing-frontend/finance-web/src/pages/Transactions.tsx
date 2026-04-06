@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {getEnumText} from '../utils/enumMap';
 import ChannelAccountCascader from '../components/ChannelAccountCascader';
@@ -20,11 +20,17 @@ export default function Transactions() {
         type: '',
         startDate: '',
         endDate: '',
-        matchStatus: ''
+        matchStatus: '',
+        recordRole: 'PRIMARY'
     });
 
     const [selectedChannels, setSelectedChannels] = useState<number[]>([]);
     const [selectedAccounts, setSelectedAccounts] = useState<number[]>([]);
+
+    // 展开轨迹状态
+    const [expandedTraceId, setExpandedTraceId] = useState<number | null>(null);
+    const [traceRecords, setTraceRecords] = useState<any[]>([]);
+    const [loadingTrace, setLoadingTrace] = useState(false);
 
     // 编辑弹窗状态
     const [editingRecord, setEditingRecord] = useState<any>(null);
@@ -93,7 +99,8 @@ export default function Transactions() {
             type: '',
             startDate: '',
             endDate: '',
-            matchStatus: ''
+            matchStatus: '',
+            recordRole: 'PRIMARY'
         });
         setSelectedChannels([]);
         setSelectedAccounts([]);
@@ -111,6 +118,26 @@ export default function Transactions() {
         } else {
             setSortField(field);
             setSortDirection('DESC');
+        }
+    };
+
+    const handleExpandTrace = async (t: any) => {
+        if (expandedTraceId === t.id) {
+            setExpandedTraceId(null);
+            setTraceRecords([]);
+            return;
+        }
+        setExpandedTraceId(t.id);
+        setLoadingTrace(true);
+        try {
+            const res = await axios.get(`/api/finance/transactions/${t.id}/trace`);
+            setTraceRecords(res.data.data || []);
+        } catch (e) {
+            console.error(e);
+            alert('获取关联轨迹失败');
+            setTraceRecords([]);
+        } finally {
+            setLoadingTrace(false);
         }
     };
 
@@ -186,6 +213,19 @@ export default function Transactions() {
                             <option value="SUSPICIOUS">存疑</option>
                         </select>
                     </div>
+                    <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">记录类型</label>
+                        <select
+                            name="recordRole"
+                            value={filters.recordRole}
+                            onChange={handleFilterChange}
+                            className="w-full border-gray-300 rounded-md shadow-sm p-1.5 border text-sm focus:ring-blue-500 focus:border-blue-500 h-[38px]"
+                        >
+                            <option value="PRIMARY">主流水(PRIMARY)</option>
+                            <option value="TRACE">辅助溯源流水(TRACE)</option>
+                            <option value="">全部类型</option>
+                        </select>
+                    </div>
                     <div className="flex space-x-2">
                         <div className="w-1/2">
                             <label className="block text-xs font-medium text-gray-700 mb-1">开始日期</label>
@@ -257,7 +297,8 @@ export default function Transactions() {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                         {transactions.map((t: any) => (
-                            <tr key={t.id} className="hover:bg-gray-50">
+                            <React.Fragment key={t.id}>
+                            <tr className="hover:bg-gray-50">
                                 <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{t.transactionTime}</td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{getEnumText('channel', t.channel.name)}</td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{t.accountName || '-'}</td>
@@ -297,6 +338,9 @@ export default function Transactions() {
                     </span>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
+                                    <button onClick={() => handleExpandTrace(t)}
+                                            className="text-indigo-600 hover:text-indigo-900 mr-3">展开轨迹
+                                    </button>
                                     <button onClick={() => setEditingRecord({...t})}
                                             className="text-blue-600 hover:text-blue-900 mr-3">编辑
                                     </button>
@@ -305,6 +349,86 @@ export default function Transactions() {
                                     </button>
                                 </td>
                             </tr>
+                            {expandedTraceId === t.id && (
+                                <tr className="bg-indigo-50 border-t border-b border-indigo-100">
+                                    <td colSpan={11} className="px-6 py-4">
+                                        <div className="mb-4">
+                                            <h4 className="text-sm font-bold text-indigo-800 mb-2">资金流动与关联溯源流水</h4>
+                                            {loadingTrace ? (
+                                                <div className="text-sm text-gray-500 py-4 text-center">正在获取轨迹数据...</div>
+                                            ) : traceRecords.length > 0 ? (
+                                                <div className="space-y-4">
+                                                    {/* 流水记录表格 */}
+                                                    <div className="bg-white rounded border border-indigo-100 overflow-hidden">
+                                                        <table className="min-w-full divide-y divide-indigo-100 text-xs">
+                                                            <thead className="bg-indigo-50">
+                                                                <tr>
+                                                                    <th className="px-3 py-2 text-left font-medium text-indigo-700">时间</th>
+                                                                    <th className="px-3 py-2 text-left font-medium text-indigo-700">渠道</th>
+                                                                    <th className="px-3 py-2 text-left font-medium text-indigo-700">收支</th>
+                                                                    <th className="px-3 py-2 text-left font-medium text-indigo-700">对方</th>
+                                                                    <th className="px-3 py-2 text-left font-medium text-indigo-700">说明</th>
+                                                                    <th className="px-3 py-2 text-left font-medium text-indigo-700">类型</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody className="divide-y divide-indigo-50">
+                                                                {traceRecords.map((tr: any) => (
+                                                                    <tr key={tr.id} className={tr.id === t.id ? 'bg-indigo-100' : ''}>
+                                                                        <td className="px-3 py-2 whitespace-nowrap">{tr.transactionTime}</td>
+                                                                        <td className="px-3 py-2 whitespace-nowrap">{getEnumText('channel', tr.channel?.name)}</td>
+                                                                        <td className="px-3 py-2 whitespace-nowrap font-bold">
+                                                                            <span className={tr.type === 'INCOME' ? 'text-green-600' : tr.type === 'EXPENSE' ? 'text-red-600' : 'text-gray-600'}>
+                                                                                {tr.amount}
+                                                                            </span>
+                                                                        </td>
+                                                                        <td className="px-3 py-2 truncate max-w-32" title={tr.counterparty?.name}>{tr.counterparty?.name || '-'}</td>
+                                                                        <td className="px-3 py-2 truncate max-w-32" title={tr.merchant}>{tr.merchant || tr.remark || '-'}</td>
+                                                                        <td className="px-3 py-2 whitespace-nowrap">
+                                                                            <span className={`px-2 inline-flex text-[10px] leading-4 font-semibold rounded-full ${
+                                                                                tr.recordRole === 'PRIMARY' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                                                                            }`}>
+                                                                                {tr.recordRole === 'PRIMARY' ? '主流水' : '溯源'}
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                    {/* 资金流动时序图 (简单 CSS 实现) */}
+                                                    <div className="bg-white p-4 rounded border border-indigo-100 overflow-x-auto">
+                                                        <h5 className="text-xs font-semibold text-gray-600 mb-4">时序路径</h5>
+                                                        <div className="flex items-center space-x-2 min-w-max">
+                                                            {traceRecords.map((tr: any, idx: number) => (
+                                                                <div key={'node-' + tr.id} className="flex items-center">
+                                                                    <div className={`flex flex-col items-center p-2 rounded-lg border ${tr.recordRole === 'PRIMARY' ? 'border-blue-300 bg-blue-50' : 'border-gray-200 bg-gray-50'} min-w-24 text-center`}>
+                                                                        <span className="text-xs font-bold text-gray-800">{getEnumText('channel', tr.channel?.name)}</span>
+                                                                        <span className="text-[10px] text-gray-500 mt-1">{tr.transactionTime.split(' ')[1]}</span>
+                                                                        <span className={`text-xs font-semibold mt-1 ${tr.type === 'INCOME' ? 'text-green-600' : tr.type === 'EXPENSE' ? 'text-red-600' : 'text-gray-600'}`}>
+                                                                            {tr.type === 'INCOME' ? '+' : '-'}{tr.amount}
+                                                                        </span>
+                                                                    </div>
+                                                                    {idx < traceRecords.length - 1 && (
+                                                                        <div className="flex flex-col items-center mx-2">
+                                                                            <div className="h-0.5 w-8 bg-indigo-300 relative">
+                                                                                <div className="absolute right-0 -top-1 w-2 h-2 border-t-2 border-r-2 border-indigo-300 transform rotate-45"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="text-sm text-gray-500 py-4 text-center">暂无相关溯源记录</div>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+                        </React.Fragment>
                         ))}
                         {transactions.length === 0 && (
                             <tr>

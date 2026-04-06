@@ -58,7 +58,7 @@ export interface ActiveRule {
 export interface ParserItem {
     id: string;
     name: string;
-    channel: string;
+    channel?: ChannelItem;
     fileType: string;
     isBuiltIn: boolean;
 }

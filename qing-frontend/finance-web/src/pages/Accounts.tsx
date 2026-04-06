@@ -11,7 +11,7 @@ export default function Accounts() {
     const [showModal, setShowModal] = useState(false);
     const [showImportModal, setShowImportModal] = useState(false);
     const [showCalibrateModal, setShowCalibrateModal] = useState(false);
-    const [editingAccount, setEditingAccount] = useState<Account>(null);
+    const [editingAccount, setEditingAccount] = useState<Account | null>(null);
     const [calibratingAccount, setCalibratingAccount] = useState<any>(null);
     const [calibrateAmount, setCalibrateAmount] = useState<string>('');
 
@@ -47,6 +47,7 @@ export default function Accounts() {
 
     const handleSave = async () => {
         try {
+            if (!editingAccount) return;
             if (editingAccount.id) {
                 await axios.put(`/api/finance/accounts/${editingAccount.id}`, editingAccount);
             } else {
@@ -64,7 +65,7 @@ export default function Accounts() {
         if (window.confirm('确认删除该账户吗？')) {
             try {
                 await axios.delete(`/api/finance/accounts/${id}`);
-                fetchAccounts();
+                await fetchAccounts();
             } catch (e) {
                 console.error(e);
                 alert('删除失败');
@@ -84,7 +85,7 @@ export default function Accounts() {
             setShowCalibrateModal(false);
             setCalibrateAmount('');
             setCalibratingAccount(null);
-            fetchAccounts();
+            await fetchAccounts();
         } catch (e: any) {
             alert('平账失败: ' + (e.response?.data?.message || e.message));
         }
@@ -97,7 +98,7 @@ export default function Accounts() {
     };
 
     const openModal = (account: Account = {
-        id: '',
+        id: 0,
         accountName: '',
         accountType: 'DEBIT',
         bankName: '',
@@ -114,18 +115,19 @@ export default function Accounts() {
         setShowModal(true);
     };
 
-    const handleChannelChange = (channelCode: string) => {
-        console.log('选择结果', channelCode);
-        if (channelCode) {
+    const handleChannelChange = (_channelCode: string) => {
+        console.log('选择结果', _channelCode);
+        if (!editingAccount) return;
+        if (_channelCode) {
             console.log('选择结果有值');
             setEditingAccount({
                 ...editingAccount,
-                channel: channelCode
+                channel: _channelCode
             });
         } else {
             setEditingAccount({
                 ...editingAccount,
-                channel: channelCode
+                channel: _channelCode
             });
         }
     };
@@ -178,7 +180,7 @@ export default function Accounts() {
         }
     };
 
-    const renderIcon = (channelCode: string) => {
+    const renderIcon = (_channelCode: string) => {
         return <Banknote className="w-8 h-8 text-gray-400 mb-2"/>;
     };
 
@@ -311,7 +313,7 @@ export default function Accounts() {
                                 <input type="number" value={editingAccount.initialBalance}
                                        onChange={e => setEditingAccount({
                                            ...editingAccount,
-                                           initialBalance: e.target.value
+                                           initialBalance: Number(e.target.value)
                                        })} className="w-full border-gray-300 rounded-md shadow-sm p-2 border"/>
                             </div>
                         </div>

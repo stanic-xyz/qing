@@ -114,6 +114,23 @@ public class UploadService {
 
         for (MultipartFile file : files) {
             String originalFilename = file.getOriginalFilename();
+            
+            if (originalFilename != null && parser.getMetaData() != null && parser.getMetaData().getSupportedFileExtension() != null) {
+                String ext = "";
+                int dotIndex = originalFilename.lastIndexOf(".");
+                if (dotIndex > 0 && dotIndex < originalFilename.length() - 1) {
+                    ext = originalFilename.substring(dotIndex + 1).toUpperCase();
+                }
+                String expectedExt = parser.getMetaData().getSupportedFileExtension().toUpperCase();
+                if ("EXCEL".equals(expectedExt) || "XLS".equals(expectedExt) || "XLSX".equals(expectedExt)) {
+                    if (!("XLS".equals(ext) || "XLSX".equals(ext))) {
+                        throw new RuntimeException("文件 [" + originalFilename + "] 类型不匹配，解析器期望: EXCEL，实际后缀: " + ext);
+                    }
+                } else if (!expectedExt.equals(ext)) {
+                    throw new RuntimeException("文件 [" + originalFilename + "] 类型不匹配，解析器期望: " + expectedExt + "，实际后缀: " + ext);
+                }
+            }
+
             String fileHash = FileHashUtil.calcMD5(file.getInputStream());
             long fileSize = file.getSize();
 

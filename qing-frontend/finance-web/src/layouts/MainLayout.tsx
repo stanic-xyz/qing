@@ -22,7 +22,7 @@ export default function MainLayout() {
                     <Link to="/transaction-compare"
                           className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
                         <GitCompare size={20}/>
-                        对账工具
+                        交易轨迹
                     </Link>
                     <Link to="/accounts"
                           className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">

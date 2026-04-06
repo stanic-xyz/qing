@@ -4,6 +4,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -73,6 +74,7 @@ public class JingdongParser extends BaseFileParser {
                     record.setAccountType(AccountType.WALLET);
                     record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                     record.setConfirmed(false);
+                    record.setRecordRole(RecordRoleEnum.TRACE);
                     records.add(record);
                 } catch (Exception e) {
                     log.warn("解析京东账单行失败: {}, 错误: {}", Arrays.toString(line), e.getMessage());
