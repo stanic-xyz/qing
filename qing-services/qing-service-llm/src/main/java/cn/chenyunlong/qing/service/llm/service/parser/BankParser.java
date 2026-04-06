@@ -1,6 +1,9 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -12,8 +15,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 
 @Component("BANK")
@@ -51,7 +56,8 @@ public class BankParser extends BaseFileParser {
                 continue;
             }
             TransactionRecord record = new TransactionRecord();
-            record.setChannel("BANK");
+            // todo 设置渠道
+            // record.setChannel("BANK");
             // 根据银行常见的列顺序自定义映射
             // 这里假设：日期、摘要、金额、余额、对方账户...
             // 实际需要根据具体银行调整
@@ -69,10 +75,10 @@ public class BankParser extends BaseFileParser {
                 record.setAmount(BigDecimal.valueOf(val));
             }
             // 支出/收入判断（可能通过正负号或另一列）
-            record.setType("EXPENSE"); // 默认支出
+            record.setType(TrasactionType.EXPENSE); // 默认支出
             record.setAccountName("银行账户"); // 需要从文件名或内容提取
-            record.setAccountType("DEBIT");
-            record.setReconciliationStatus("PENDING");
+            record.setAccountType(AccountType.DEBIT);
+            record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
             record.setConfirmed(false);
             records.add(record);
         }

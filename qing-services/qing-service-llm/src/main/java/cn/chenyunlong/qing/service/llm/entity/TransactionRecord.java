@@ -1,12 +1,11 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
+import cn.chenyunlong.qing.service.llm.enums.*;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
 
 @Entity
 @Table(name = "finance_transaction_record")
@@ -17,7 +16,9 @@ public class TransactionRecord {
     private Long id;
 
     private LocalDateTime transactionTime;
-    private String channel;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Channel channel;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
@@ -25,26 +26,35 @@ public class TransactionRecord {
 
     // 账户信息冗余
     private String accountName; // 冗余
+
     // 账户类型冗余
-    private String accountType;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
 
     // 交易类型冗余
-    private String type; // INCOME/EXPENSE/TRANSFER
+    @Enumerated(EnumType.STRING)
+    private TrasactionType type; // INCOME/EXPENSE/TRANSFER
 
     // 交易金额
     private BigDecimal amount;
+
     // 交易余额
     private BigDecimal balance;
+
     // 对手方信息
-    private String counterparty;
+    @ManyToOne
+    private Counterparty counterparty;
     // 商家信息
     private String merchant;
     // 交易类别
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
     // 交易子类别
     private String subCategory;
     // 交易状态
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TransactionStatusEnum status;
     // 交易费用
     private BigDecimal fee;
     // 原始交易ID
@@ -76,7 +86,9 @@ public class TransactionRecord {
     private String originalData; // 存储 JSON 格式的原始解析数据
 
     // 对账状态
-    private String reconciliationStatus; // PENDING/MATCHED/MANUAL
+    @Enumerated(EnumType.STRING)
+    private ReconciliationStatusEnum reconciliationStatus; // PENDING/MATCHED/MANUAL
+
     // 是否已确认
     private Boolean confirmed;
 
@@ -88,13 +100,17 @@ public class TransactionRecord {
     private String matchRuleName; // 触发此状态的规则名称
 
     // 资金类型：INTERNAL(内部如余额宝), EXTERNAL(外部如银行卡), SPLIT(混合支付)
-    private String fundType;
+    @Enumerated(EnumType.STRING)
+    private FundTypeEnum fundType;
 
     // 资金来源描述：如 "招商银行储蓄卡(1234)"
     private String fundSource;
 
     // 关联资金源账户：跨账单对账成功后绑定到具体的银行卡账户ID
     private Long fundSourceAccountId;
+
+    @Enumerated(EnumType.STRING)
+    private TransactionRecordTypeEnum transactionRecordType;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

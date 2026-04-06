@@ -42,7 +42,7 @@ public class TransactionCompareController {
         // 1. 前置基础查询 (Pre-grouping filter)
         Specification<TransactionRecord> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            
+
             if (startDate != null && !startDate.isEmpty()) {
                 LocalDateTime start = LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE).atStartOfDay();
                 predicates.add(cb.greaterThanOrEqualTo(root.get("transactionTime"), start));
@@ -60,14 +60,14 @@ public class TransactionCompareController {
             if (type != null && !type.isEmpty()) {
                 predicates.add(cb.equal(root.get("type"), type));
             }
-            
+
             predicates.add(cb.equal(root.get("isDeleted"), false));
-            
+
             predicates.add(cb.or(
-                cb.equal(root.get("isImported"), true),
-                cb.isNull(root.get("isImported"))
+                    cb.equal(root.get("isImported"), true),
+                    cb.isNull(root.get("isImported"))
             ));
-            
+
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
@@ -86,7 +86,7 @@ public class TransactionCompareController {
         List<CompareGroupDTO> result = new ArrayList<>();
         for (Map.Entry<String, List<TransactionRecord>> entry : grouped.entrySet()) {
             List<TransactionRecord> groupRecords = entry.getValue();
-            
+
             // 过滤规则：compareStatus
             int groupSize = groupRecords.size();
             boolean statusMatch = false;
@@ -98,7 +98,7 @@ public class TransactionCompareController {
                 // 默认为 MATCHED
                 statusMatch = (groupSize > 1);
             }
-            
+
             if (!statusMatch) continue;
 
             // 过滤规则：channel (如果提供了 channel，组内必须包含该渠道的记录)
@@ -116,21 +116,22 @@ public class TransactionCompareController {
             CompareGroupDTO dto = new CompareGroupDTO();
             dto.setGroupId(entry.getKey());
             dto.setMainAmount(groupRecords.get(0).getAmount());
-            dto.setMainType(groupRecords.get(0).getType());
+            dto.setMainType(groupRecords.get(0).getType().name());
             dto.setMainDate(groupRecords.get(0).getTransactionTime().toLocalDate().toString());
-            
+
             // 将不同渠道的数据放进去
             Map<String, TransactionRecord> channelData = new HashMap<>();
             for (TransactionRecord tr : groupRecords) {
-                channelData.put(tr.getChannel(), tr);
+                // todo 这里的逻辑不对，后续完善
+                channelData.put(tr.getAccount().getAccountName(), tr);
             }
             dto.setChannelRecords(channelData);
             result.add(dto);
         }
-        
+
         // 按照日期倒序
         result.sort((a, b) -> b.getMainDate().compareTo(a.getMainDate()));
-        
+
         return Result.success(result);
     }
 

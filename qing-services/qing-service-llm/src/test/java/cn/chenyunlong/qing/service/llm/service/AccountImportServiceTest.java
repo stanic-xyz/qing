@@ -3,8 +3,10 @@ package cn.chenyunlong.qing.service.llm.service;
 import cn.chenyunlong.qing.service.llm.dto.AccountImportDTO;
 import cn.chenyunlong.qing.service.llm.dto.AccountPreviewResult;
 import cn.chenyunlong.qing.service.llm.entity.Account;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ImportModeEnum;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
+import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +22,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
+
+import org.mockito.MockitoAnnotations;
 
 @ExtendWith(MockitoExtension.class)
 class AccountImportServiceTest {
@@ -28,8 +33,17 @@ class AccountImportServiceTest {
     @Mock
     private AccountRepository accountRepository;
 
+    @Mock
+    private ChannelRepository channelRepository;
+
     @InjectMocks
     private AccountImportService accountImportService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        lenient().when(channelRepository.findAllByIsDeletedFalseAndCodeIn(anyList())).thenReturn(java.util.Collections.emptyList());
+    }
 
     @Test
     void testDownloadTemplate() throws Exception {
@@ -41,13 +55,11 @@ class AccountImportServiceTest {
     @Test
     void testExecuteImport_SkipInvalid() {
         AccountImportDTO valid = new AccountImportDTO();
-        valid.setProcessStatus("VALID");
         valid.setAccountName("Test1");
-        valid.setAccountType("DEBIT");
+        valid.setAccountType(AccountType.DEBIT);
         valid.setInitialBalance(BigDecimal.ZERO);
 
         AccountImportDTO invalid = new AccountImportDTO();
-        invalid.setProcessStatus("INVALID");
 
         List<AccountImportDTO> list = Arrays.asList(valid, invalid);
         int count = accountImportService.executeImport(list, ImportModeEnum.SKIP);
@@ -59,10 +71,9 @@ class AccountImportServiceTest {
     @Test
     void testExecuteImport_Overwrite() {
         AccountImportDTO dto = new AccountImportDTO();
-        dto.setProcessStatus("DUPLICATE_OVERWRITE");
         dto.setAccountName("ExistingAccount");
         dto.setExistingAccountId(1L);
-        dto.setAccountType("CREDIT");
+        dto.setAccountType(AccountType.CREDIT);
         dto.setInitialBalance(new BigDecimal("100"));
 
         Account existingAccount = new Account();
@@ -75,8 +86,8 @@ class AccountImportServiceTest {
         int count = accountImportService.executeImport(list, ImportModeEnum.OVERWRITE);
 
         assertEquals(1, count);
-        verify(accountRepository, times(1)).save(argThat(acc -> 
-            acc.getId() != null && acc.getId().equals(1L) && "CREDIT".equals(acc.getAccountType())
+        verify(accountRepository, times(1)).save(argThat(acc ->
+            acc.getId() != null && acc.getId().equals(1L) && AccountType.CREDIT.equals(acc.getAccountType())
         ));
     }
 }

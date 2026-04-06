@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
+import cn.chenyunlong.qing.service.llm.enums.ConfigStatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -16,8 +17,8 @@ public class ParserConfig {
     @Column(nullable = false)
     private String name;           // 解析器名称
 
-    @Column(nullable = false)
-    private String channel;        // 适用的渠道, 比如 ALIPAY, WECHAT
+    @ManyToOne
+    private Channel channel;        // 适用的渠道, 比如 ALIPAY, WECHAT
 
     @Column(nullable = false)
     private String fileType;       // 适用文件类型 CSV, EXCEL
@@ -38,8 +39,7 @@ public class ParserConfig {
     private String script;         // 兜底脚本
 
     private Boolean isBuiltIn = false; // 是否内置预设
-    
-    // 操作状态：DRAFT (草稿), PUBLISHED (已发布)
+
     @Column(columnDefinition = "TEXT")
     private String postScript;
 
@@ -48,6 +48,8 @@ public class ParserConfig {
 
     private Boolean postScriptEnabled = false;
 
+    // 操作状态：DRAFT (草稿), PUBLISHED (已发布)
     @Column(length = 20)
-    private String status = "PUBLISHED"; 
+    @Enumerated(EnumType.STRING)
+    private ConfigStatusEnum status = ConfigStatusEnum.DRAFT;
 }

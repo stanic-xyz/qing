@@ -309,16 +309,6 @@ export default function Matchers() {
                             <div className="col-span-2 space-y-6">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">规则名称
-                                            *</label>
-                                        <input type="text" value={editingMatcher.name || ''}
-                                               onChange={e => setEditingMatcher({
-                                                   ...editingMatcher,
-                                                   name: e.target.value
-                                               })} className="w-full border-gray-300 rounded p-2 text-sm"
-                                               placeholder="如：银联识别高德打车"/>
-                                    </div>
-                                    <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">规则类型</label>
                                         <select
                                             value={editingMatcher.ruleType || 'MERCHANT'}
@@ -334,6 +324,16 @@ export default function Matchers() {
                                             <option value="INTERNAL_TRANSFER">内部转账匹配</option>
                                             <option value="CUSTOM">自定义通用匹配</option>
                                         </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">规则名称
+                                            *</label>
+                                        <input type="text" value={editingMatcher.name || ''}
+                                               onChange={e => setEditingMatcher({
+                                                   ...editingMatcher,
+                                                   name: e.target.value
+                                               })} className="w-full border-gray-300 rounded p-2 text-sm"
+                                               placeholder="如：银联识别高德打车"/>
                                     </div>
                                     <div className="col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 mb-1">规则描述</label>

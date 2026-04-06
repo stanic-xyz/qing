@@ -44,19 +44,19 @@ public class RuleEngineService {
         Pattern pattern = Pattern.compile(regex);
 
         if ("COUNTERPARTY_FIX".equals(ruleType)) {
-            // 根据 counterparty 或 merchant 匹配
-            if (record.getCounterparty() != null && pattern.matcher(record.getCounterparty()).find()) {
-                record.setCounterparty(target);
-                record.setIsModified(true);
-            } else if (record.getMerchant() != null && pattern.matcher(record.getMerchant()).find()) {
-                record.setCounterparty(target);
-                record.setIsModified(true);
-            }
+//            // 根据 counterparty 或 merchant 匹配
+//            if (record.getCounterparty() != null && pattern.matcher(record.getCounterparty()).find()) {
+//                record.setCounterparty(target);
+//                record.setIsModified(true);
+//            } else if (record.getMerchant() != null && pattern.matcher(record.getMerchant()).find()) {
+//                record.setCounterparty(target);
+//                record.setIsModified(true);
+//            }
         } else if ("CATEGORY_MAP".equals(ruleType)) {
             // 根据 merchant 匹配分类
             if (record.getMerchant() != null && pattern.matcher(record.getMerchant()).find()) {
-                record.setCategory(target);
-                record.setIsModified(true);
+//                record.setCategory(target);
+//                record.setIsModified(true);
             }
         }
         // 可扩展其他规则...

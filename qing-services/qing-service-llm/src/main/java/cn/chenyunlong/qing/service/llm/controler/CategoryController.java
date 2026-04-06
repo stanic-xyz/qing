@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.service.llm.controler;
 
 import cn.chenyunlong.qing.service.llm.dto.CategoryTreeDTO;
 import cn.chenyunlong.qing.service.llm.dto.Result;
+import cn.chenyunlong.qing.service.llm.dto.counterpayty.CounterpartyUpdateDto;
 import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

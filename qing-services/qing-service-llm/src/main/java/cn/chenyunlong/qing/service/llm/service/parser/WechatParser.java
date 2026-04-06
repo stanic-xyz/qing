@@ -1,6 +1,10 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -11,8 +15,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 
 @Slf4j
@@ -29,33 +35,20 @@ public class WechatParser extends BaseFileParser {
                 try {
                     Cell timeCell = row.getCell(0);
                     if (timeCell == null) continue;
-                    
+
                     String timeStr = "";
                     if (timeCell.getCellType() == CellType.STRING) {
                         timeStr = timeCell.getStringCellValue().trim();
                     }
-                    
+
                     // 过滤表头及非数据行
                     if (!timeStr.startsWith("20")) {
                         continue;
                     }
 
                     TransactionRecord record = new TransactionRecord();
-                    record.setChannel("WECHAT");
+                    // todo 设置渠道
                     record.setTransactionTime(LocalDateTime.parse(timeStr, WECHAT_FORMAT));
-
-                    // 交易类型 (分类)
-                    Cell categoryCell = row.getCell(1);
-                    if (categoryCell != null) {
-                        record.setCategory(categoryCell.getStringCellValue().trim());
-                    }
-
-                    // 交易对方
-                    Cell counterpartyCell = row.getCell(2);
-                    if (counterpartyCell != null) {
-                        record.setCounterparty(counterpartyCell.getStringCellValue().trim());
-                    }
-
                     // 商品
                     Cell goodsCell = row.getCell(3);
                     if (goodsCell != null) {
@@ -78,9 +71,9 @@ public class WechatParser extends BaseFileParser {
                     Cell typeCell = row.getCell(4);
                     if (typeCell != null) {
                         String type = typeCell.getStringCellValue().trim();
-                        if ("支出".equals(type)) record.setType("EXPENSE");
-                        else if ("收入".equals(type)) record.setType("INCOME");
-                        else record.setType("OTHER");
+                        if ("支出".equals(type)) record.setType(TrasactionType.EXPENSE);
+                        else if ("收入".equals(type)) record.setType(TrasactionType.INCOME);
+                        else record.setType(TrasactionType.OTHER);
                     }
 
                     // 支付方式 (资金来源)
@@ -96,6 +89,7 @@ public class WechatParser extends BaseFileParser {
                     Cell statusCell = row.getCell(7);
                     if (statusCell != null) {
                         String status = statusCell.getStringCellValue().trim();
+                        // todo 状态映射
                         record.setStatus(mapStatus(status));
                     }
 
@@ -106,8 +100,8 @@ public class WechatParser extends BaseFileParser {
                     }
 
                     record.setAccountName("微信");
-                    record.setAccountType("WALLET");
-                    record.setReconciliationStatus("PENDING");
+                    record.setAccountType(AccountType.WALLET);
+                    record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                     record.setConfirmed(false);
                     records.add(record);
                 } catch (Exception e) {
@@ -118,9 +112,9 @@ public class WechatParser extends BaseFileParser {
         return wrapResult(records);
     }
 
-    private String mapStatus(String status) {
-        if (status.contains("支付成功") || status.contains("已全额退款") || status.contains("已收钱")) return "SUCCESS";
-        if (status.contains("退款")) return "SUCCESS"; // 简化处理
-        return "PENDING";
+    private TransactionStatusEnum mapStatus(String status) {
+        if (status.contains("支付成功") || status.contains("已全额退款") || status.contains("已收钱")) return TransactionStatusEnum.SUCCESS;
+        if (status.contains("退款")) return TransactionStatusEnum.SUCCESS; // 简化处理
+        return TransactionStatusEnum.PENDING;
     }
 }

@@ -1,9 +1,11 @@
 package cn.chenyunlong.qing.service.llm.service;
 
+import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.entity.Counterparty;
 import cn.chenyunlong.qing.service.llm.entity.TransactionMatcher;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
@@ -67,12 +69,10 @@ public class MatcherServiceTest {
         TransactionRecord record = new TransactionRecord();
         record.setMerchant("淘宝");
         record.setAmount(new BigDecimal("500.00"));
-        record.setChannel("ALIPAY");
 
         String conditionJson = "{" +
                 "\"operator\": \"AND\"," +
                 "\"children\": [" +
-                "  {\"field\": \"channel\", \"operator\": \"EQ\", \"value\": \"ALIPAY\"}," +
                 "  {" +
                 "    \"operator\": \"OR\"," +
                 "    \"children\": [" +
@@ -88,9 +88,8 @@ public class MatcherServiceTest {
         rule.setConditionNode(objectMapper.readTree(conditionJson));
         rule.setActionNode(objectMapper.readTree("[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]"));
 
-        matcherService.applyMatchers(record, Arrays.asList(rule));
-
-        assertEquals("EXPENSE", record.getType());
+        matcherService.applyMatchers(record, List.of(rule));
+        assertEquals(TrasactionType.EXPENSE, record.getType());
     }
 
     @Test
@@ -106,15 +105,19 @@ public class MatcherServiceTest {
         Counterparty mockCp = new Counterparty();
         mockCp.setId(1L);
         mockCp.setName("已知大商户");
-        mockCp.setDefaultCategory("购物");
+
+        Category defaultCategory = new Category();
+        defaultCategory.setName("购物");
+
+        mockCp.setDefaultCategory(defaultCategory);
 
         when(counterpartyRepository.findById(1L)).thenReturn(Optional.of(mockCp));
 
         matcherService.applyMatchers(record, List.of(rule));
 
-        assertEquals("已知大商户", record.getCounterparty());
-        assertEquals("已知大商户", record.getMerchant());
-        assertEquals("购物", record.getCategory());
+        assertEquals("已知大商户", record.getCounterparty().getName());
+        assertEquals("未知商户", record.getMerchant());
+        assertEquals("购物", record.getCategory().getName());
     }
 
     @Test

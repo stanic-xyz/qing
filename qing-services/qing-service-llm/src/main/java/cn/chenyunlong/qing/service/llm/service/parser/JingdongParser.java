@@ -1,6 +1,9 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +17,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,20 +48,15 @@ public class JingdongParser extends BaseFileParser {
 
                 try {
                     TransactionRecord record = new TransactionRecord();
-                    record.setChannel("JINGDONG");
                     record.setTransactionTime(LocalDateTime.parse(timeStr, JD_FORMAT));
                     // 真实京东账单列：交易时间,商户名称,交易说明,金额,收/付款方式,交易状态,收/支,交易分类,交易订单号,商家订单号,备注
-                    record.setCounterparty(line[1].trim());
+                    record.setCounterparty(null);
                     record.setMerchant(line[2].trim()); // 交易说明
 
-                    if (line.length > 7) {
-                        record.setCategory(line[7].trim());
-                    }
-
                     String typeStr = line[6].trim(); // 收/支
-                    if ("支出".equals(typeStr)) record.setType("EXPENSE");
-                    else if ("收入".equals(typeStr)) record.setType("INCOME");
-                    else record.setType("OTHER");
+                    if ("支出".equals(typeStr)) record.setType(TrasactionType.EXPENSE);
+                    else if ("收入".equals(typeStr)) record.setType(TrasactionType.INCOME);
+                    else record.setType(TrasactionType.OTHER);
 
                     String rawAmountStr = line[3].trim().replace("¥", "").replace(",", "");
                     Matcher matcher = AMOUNT_PATTERN.matcher(rawAmountStr);
@@ -66,12 +66,12 @@ public class JingdongParser extends BaseFileParser {
                         record.setAmount(BigDecimal.ZERO);
                     }
 
-                    record.setStatus(mapStatus(line[5].trim())); // 交易状态
+                    record.setStatus(null); // 交易状态
                     record.setRemark(line.length > 10 ? line[10].trim() : "");
 
                     record.setAccountName("京东");
-                    record.setAccountType("VIRTUAL");
-                    record.setReconciliationStatus("PENDING");
+                    record.setAccountType(AccountType.WALLET);
+                    record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                     record.setConfirmed(false);
                     records.add(record);
                 } catch (Exception e) {

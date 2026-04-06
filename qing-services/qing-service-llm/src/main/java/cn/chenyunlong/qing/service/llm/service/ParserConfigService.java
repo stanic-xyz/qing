@@ -1,10 +1,14 @@
 package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.qing.service.llm.dto.ParserItemDTO;
+import cn.chenyunlong.qing.service.llm.entity.Channel;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
+import cn.chenyunlong.qing.service.llm.enums.ConfigStatusEnum;
+import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import cn.chenyunlong.qing.service.llm.repository.ParserConfigRepository;
 import cn.chenyunlong.qing.service.llm.service.parser.FileParser;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,7 +23,10 @@ public class ParserConfigService {
     private ParserConfigRepository repository;
 
     @Resource
-    private Map<String, FileParser> parserMap;
+    private List<FileParser> parserList;
+
+    @Resource
+    private ChannelRepository channelRepository;
 
     /**
      * 获取所有可用的解析器列表（内置 + 自定义）
@@ -27,29 +34,25 @@ public class ParserConfigService {
     public List<ParserItemDTO> getAllAvailableParsers() {
         List<ParserItemDTO> result = new ArrayList<>();
 
-        // 1. 获取内置解析器
-        parserMap.forEach((key, parser) -> {
-            if ("baseFileParser".equals(key) || "dynamicFileParser".equals(key)) {
-                return; // 跳过抽象类或动态解析器基类
-            }
+        Map<String, Channel> channelMap = channelRepository.findAll().stream().collect(Collectors.toMap(Channel::getCode, channel -> channel));
+        parserList.forEach(parser -> {
             ParserItemDTO dto = new ParserItemDTO();
-            dto.setId("builtin:" + key.toUpperCase());
-            dto.setName(getBuiltInName(key.toUpperCase()));
-            dto.setChannel(key.toUpperCase());
-            dto.setFileType("CSV"); // 默认内置主要处理 CSV
+            dto.setId("builtin:" + parser.getMetaData().getChannelCode().toUpperCase());
+            dto.setFileType(parser.getMetaData().getSupportedFileExtension());
+            dto.setName(parser.getMetaData().getParserName());
             dto.setIsBuiltIn(true);
             result.add(dto);
         });
 
         // 2. 获取自定义解析器 (仅已发布的)
         List<ParserConfig> customConfigs = repository.findAll().stream()
-                .filter(c -> "PUBLISHED".equals(c.getStatus()))
-                .collect(Collectors.toList());
+                .filter(c -> ConfigStatusEnum.PUBLISHED.equals(c.getStatus()))
+                .toList();
+
         for (ParserConfig config : customConfigs) {
             ParserItemDTO dto = new ParserItemDTO();
             dto.setId("custom:" + config.getId());
             dto.setName(config.getName());
-            dto.setChannel(config.getChannel());
             dto.setFileType(config.getFileType());
             dto.setIsBuiltIn(config.getIsBuiltIn() != null ? config.getIsBuiltIn() : false);
             result.add(dto);

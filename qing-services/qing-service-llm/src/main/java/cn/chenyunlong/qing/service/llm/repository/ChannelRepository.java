@@ -11,6 +11,10 @@ import java.util.List;
 @Repository
 public interface ChannelRepository extends JpaRepository<Channel, Long>, JpaSpecificationExecutor<Channel> {
     Optional<Channel> findByCode(String code);
+
     List<Channel> findByIsDeletedFalse();
+
     List<Channel> findByIsDeletedFalseAndIsEnabledTrueAndStatus(String status);
+
+    List<Channel> findAllByIsDeletedFalseAndCodeIn(List<String> channelCodes);
 }

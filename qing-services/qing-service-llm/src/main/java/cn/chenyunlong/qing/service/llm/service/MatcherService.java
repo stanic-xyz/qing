@@ -1,14 +1,8 @@
 package cn.chenyunlong.qing.service.llm.service;
 
-import cn.chenyunlong.qing.service.llm.entity.Account;
-import cn.chenyunlong.qing.service.llm.entity.Counterparty;
-import cn.chenyunlong.qing.service.llm.entity.TransactionMatcher;
-import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
-import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
-import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
-import cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository;
-import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
-import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
+import cn.chenyunlong.qing.service.llm.entity.*;
+import cn.chenyunlong.qing.service.llm.enums.*;
+import cn.chenyunlong.qing.service.llm.repository.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +13,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.regex.Matcher;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 @Service
@@ -31,6 +26,7 @@ public class MatcherService {
     private final AccountRepository accountRepository;
     private final CounterpartyRepository counterpartyRepository;
     private final TransactionRecordRepository transactionRecordRepository;
+    private final CategoryRepository categoryRepository;
 
     /**
      * 应用所有启用的匹配器规则对单条记录进行增强
@@ -64,10 +60,11 @@ public class MatcherService {
             TransactionRecord walletRecord = null;
             TransactionRecord bankRecord = null;
 
-            if ("EXTERNAL".equalsIgnoreCase(record.getFundType()) && isWallet(record.getChannel()) && !isWallet(candidate.getChannel())) {
+            // 判断是否一个是 EXTERNAL 钱包流水，一个是银行卡流水
+            if (record.getFundType() != null && FundTypeEnum.EXTERNAL == record.getFundType() && isWallet(record.getAccount()) && !isWallet(candidate.getAccount())) {
                 walletRecord = record;
                 bankRecord = candidate;
-            } else if ("EXTERNAL".equalsIgnoreCase(candidate.getFundType()) && isWallet(candidate.getChannel()) && !isWallet(record.getChannel())) {
+            } else if (candidate.getFundType() != null && FundTypeEnum.EXTERNAL == candidate.getFundType() && isWallet(candidate.getAccount()) && !isWallet(record.getAccount())) {
                 walletRecord = candidate;
                 bankRecord = record;
             }
@@ -75,7 +72,7 @@ public class MatcherService {
             if (walletRecord != null && bankRecord != null) {
                 // 找到匹配！
                 // 将银行卡记录改为 TRANSFER
-                bankRecord.setType("TRANSFER");
+                bankRecord.setType(TrasactionType.TRANSFER);
                 if (walletRecord.getAccount() != null) {
                     bankRecord.setTargetAccountId(walletRecord.getAccount().getId());
                 }
@@ -86,7 +83,7 @@ public class MatcherService {
                 if (bankRecord.getAccount() != null) {
                     walletRecord.setFundSourceAccountId(bankRecord.getAccount().getId());
                 }
-                walletRecord.setReconciliationStatus("MATCHED_FUNDING");
+                walletRecord.setReconciliationStatus(ReconciliationStatusEnum.MATCHED_FUNDING);
 
                 // 由于 candidate 是已在库里的记录，需要 save；而 record 会在后续由 UploadService save
                 if (candidate.getId() != null) {
@@ -99,10 +96,9 @@ public class MatcherService {
         }
     }
 
-    private boolean isWallet(String channel) {
-        if (channel == null) return false;
-        String upper = channel.toUpperCase();
-        return upper.contains("ALIPAY") || upper.contains("WECHAT") || upper.contains("WALLET");
+    private boolean isWallet(Account account) {
+        if (account == null) return false;
+        return account.getAccountType() == AccountType.WALLET;
     }
 
     /**
@@ -113,14 +109,14 @@ public class MatcherService {
             try {
                 if (evaluateCondition(rule.getConditionNode(), record)) {
                     log.debug("Record {} matched rule: {}", record.getOriginalData(), rule.getName());
-                    
+
                     boolean modified = executeActions(rule.getActionNode(), record);
-                    
+
                     if (modified) {
                         record.setMatchStatus(MatchStatusEnum.AUTO_MATCHED);
                         record.setMatchRuleName(rule.getName());
                     }
-                    
+
                     if (Boolean.TRUE.equals(rule.getStopOnMatch())) {
                         log.debug("Rule {} triggered stopOnMatch", rule.getName());
                         break;
@@ -161,13 +157,13 @@ public class MatcherService {
             String field = node.get("field").asText();
             String op = node.get("operator").asText().toUpperCase();
             JsonNode valueNode = node.get("value");
-            
+
             BeanWrapper wrapper = new BeanWrapperImpl(record);
             Object actualValue = null;
             if (wrapper.isReadableProperty(field)) {
                 actualValue = wrapper.getPropertyValue(field);
             }
-            
+
             return evaluateLeafCondition(actualValue, op, valueNode);
         }
 
@@ -233,7 +229,7 @@ public class MatcherService {
             return false;
         }
 
-        boolean modified = false;
+        AtomicBoolean modified = new AtomicBoolean(false);
         for (JsonNode action : actionNode) {
             if (!action.has("actionType")) continue;
             String type = action.get("actionType").asText().toUpperCase();
@@ -242,47 +238,49 @@ public class MatcherService {
             switch (type) {
                 case "SET_TYPE":
                     if (valueNode != null) {
-                        record.setType(valueNode.asText());
-                        modified = true;
+                        record.setType(TrasactionType.valueOf(valueNode.asText().toUpperCase()));
+                        modified.set(true);
                     }
                     break;
                 case "SET_CATEGORY":
                     if (valueNode != null) {
-                        record.setCategory(valueNode.asText());
-                        modified = true;
+                        Optional<Category> categoryOptional = categoryRepository.findById(valueNode.asLong());
+                        categoryOptional.ifPresent(category -> {
+                            record.setCategory(category);
+                            modified.set(true);
+                        });
                     }
                     break;
                 case "SET_COUNTERPARTY":
                     if (valueNode != null && valueNode.isNumber()) {
-                        counterpartyRepository.findById(valueNode.asLong()).ifPresent(cp -> {
-                            record.setCounterparty(cp.getName());
-                            record.setMerchant(cp.getName());
-                            if (cp.getDefaultCategory() != null && !cp.getDefaultCategory().isEmpty()) {
-                                record.setCategory(cp.getDefaultCategory());
+                        counterpartyRepository.findById(valueNode.asLong()).ifPresent(counterparty -> {
+                            record.setCounterparty(counterparty);
+                            if (counterparty.getDefaultCategory() != null) {
+                                record.setCategory(counterparty.getDefaultCategory());
                             }
                         });
-                        modified = true;
+                        modified.set(true);
                     } else if (valueNode != null) {
-                        record.setCounterparty(valueNode.asText());
-                        modified = true;
+                        record.setCounterparty(null);
+                        modified.set(true);
                     }
                     break;
                 case "SET_TARGET_ACCOUNT":
                     if (valueNode != null && valueNode.isNumber()) {
                         record.setTargetAccountId(valueNode.asLong());
-                        record.setType("TRANSFER");
+                        record.setType(TrasactionType.TRANSFER);
                         record.setMatchStatus(MatchStatusEnum.INTERNAL_TRANSFER);
-                        modified = true;
+                        modified.set(true);
                     }
                     break;
                 case "SET_FUND_SOURCE_ACCOUNT":
                     if (valueNode != null && valueNode.isNumber()) {
                         record.setFundSourceAccountId(valueNode.asLong());
-                        modified = true;
+                        modified.set(true);
                     }
                     break;
             }
         }
-        return modified;
+        return modified.get();
     }
 }

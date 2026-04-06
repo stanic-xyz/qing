@@ -10,6 +10,7 @@ import java.util.List;
 
 @Component("YIPAY")
 public class YipayParser extends BaseFileParser {
+
     @Override
     public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         return wrapResult(java.util.Collections.emptyList());

@@ -1,6 +1,10 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -41,13 +45,13 @@ public class CcbParser extends BaseFileParser {
     @Override
     public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
-        
+
         if (originalFilename.toLowerCase().endsWith(".pdf")) {
             try (PDDocument document = Loader.loadPDF(inputStream.readAllBytes())) {
                 PDFTextStripper stripper = new PDFTextStripper();
                 String text = stripper.getText(document);
                 String[] lines = text.split("\\r?\\n");
-                
+
                 TransactionRecord currentRecord = null;
                 StringBuilder remarkBuilder = new StringBuilder();
 
@@ -65,27 +69,27 @@ public class CcbParser extends BaseFileParser {
                         }
 
                         currentRecord = new TransactionRecord();
-                        currentRecord.setChannel("CCB");
-                        currentRecord.setCategory(matcher.group(1).trim());
+                        // todo 设置渠道
+                        // currentRecord.setChannel("CCB");
                         currentRecord.setTransactionTime(LocalDateTime.parse(matcher.group(2), CCB_PDF_FORMAT));
 
                         String amountStr = matcher.group(3).replace(",", "");
                         BigDecimal amount = new BigDecimal(amountStr);
                         if (amount.compareTo(BigDecimal.ZERO) < 0) {
-                            currentRecord.setType("EXPENSE");
+                            currentRecord.setType(TrasactionType.EXPENSE);
                             currentRecord.setAmount(amount.abs());
                         } else {
-                            currentRecord.setType("INCOME");
+                            currentRecord.setType(TrasactionType.INCOME);
                             currentRecord.setAmount(amount);
                         }
 
                         currentRecord.setBalance(new BigDecimal(matcher.group(4).replace(",", "")));
-                        
+
                         currentRecord.setAccountName("建设银行");
-                        currentRecord.setAccountType("DEBIT");
-                        currentRecord.setReconciliationStatus("PENDING");
+                        currentRecord.setAccountType(AccountType.DEBIT);
+                        currentRecord.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                         currentRecord.setConfirmed(false);
-                        currentRecord.setStatus("SUCCESS");
+                        currentRecord.setStatus(TransactionStatusEnum.SUCCESS);
 
                         remarkBuilder.setLength(0);
                         String restInfo = matcher.group(5).trim();
@@ -97,7 +101,7 @@ public class CcbParser extends BaseFileParser {
                         remarkBuilder.append(line);
                     }
                 }
-                
+
                 if (currentRecord != null) {
                     finalizeRecord(currentRecord, remarkBuilder.toString());
                     records.add(currentRecord);
@@ -112,9 +116,10 @@ public class CcbParser extends BaseFileParser {
                         if (timeCell == null) continue;
                         String timeStr = timeCell.getStringCellValue().trim();
                         if (!timeStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")) continue;
-                        
+
                         TransactionRecord record = new TransactionRecord();
-                        record.setChannel("CCB");
+                        // todo 设置渠道
+                        // record.setChannel("CCB");
                         record.setTransactionTime(LocalDateTime.parse(timeStr, CCB_EXCEL_FORMAT));
                         // 根据建设银行表格格式提取字段
                         Cell amountCell = row.getCell(2);
@@ -122,11 +127,11 @@ public class CcbParser extends BaseFileParser {
                             record.setAmount(new BigDecimal(amountCell.getStringCellValue().replace(",", "")));
                         }
                         record.setAccountName("建设银行");
-                        record.setAccountType("DEBIT");
-                        record.setReconciliationStatus("PENDING");
+                        record.setAccountType(AccountType.DEBIT);
+                        record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                         record.setConfirmed(false);
-                        record.setStatus("SUCCESS");
-                        record.setType("EXPENSE"); // 需要根据具体列判断
+                        record.setStatus(TransactionStatusEnum.SUCCESS);
+                        record.setType(TrasactionType.EXPENSE); // 需要根据具体列判断
                         records.add(record);
                     } catch (Exception e) {
                         log.warn("解析建设银行Excel流水失败");
@@ -152,12 +157,10 @@ public class CcbParser extends BaseFileParser {
         String[] parts = remark.split(" ");
         if (parts.length >= 2) {
             record.setMerchant(parts[0]);
-            record.setCounterparty(parts[1]);
             if (parts.length > 2) {
                 record.setRemark(remark.substring(parts[0].length() + parts[1].length() + 2));
             }
         } else {
-            record.setCounterparty(remark);
             record.setMerchant(remark);
         }
     }
@@ -169,25 +172,25 @@ public class CcbParser extends BaseFileParser {
             try {
                 String timeStr = matcher.group(1);
                 String restStr = matcher.group(2);
-                
+
                 String[] parts = restStr.split("\\s+");
                 if (parts.length < 3) return;
 
                 TransactionRecord record = new TransactionRecord();
-                record.setChannel("CCB");
+                // todo 设置渠道
+                // record.setChannel("CCB");
                 record.setTransactionTime(LocalDateTime.parse(timeStr, CCB_EXCEL_FORMAT));
-                
+
                 record.setAmount(new BigDecimal(parts[parts.length - 2].replace(",", "")));
-                record.setCounterparty(parts[0]);
                 record.setMerchant(parts[1]);
-                
+
                 record.setAccountName("建设银行");
-                record.setAccountType("DEBIT");
-                record.setReconciliationStatus("PENDING");
+                record.setAccountType(AccountType.DEBIT);
+                record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                 record.setConfirmed(false);
-                record.setStatus("SUCCESS");
-                record.setType("EXPENSE");
-                
+                record.setStatus(TransactionStatusEnum.SUCCESS);
+                record.setType(TrasactionType.EXPENSE);
+
                 records.add(record);
             } catch (Exception e) {
                 log.warn("解析建设银行流水失败: {}", line);

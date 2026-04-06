@@ -6,6 +6,8 @@ import cn.chenyunlong.qing.service.llm.dto.parser.MetadataRule;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -101,9 +103,10 @@ public class DynamicFileParser extends BaseFileParser {
 
                 try {
                     TransactionRecord record = new TransactionRecord();
-                    record.setChannel(config.getChannel());
+                    // todo 设置渠道
+//                    record.setChannel(config.getChannel());
                     record.setAccountName(config.getName());
-                    record.setReconciliationStatus("PENDING");
+                    record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                     record.setConfirmed(false);
 
                     Map<String, Object> extData = new HashMap<>();
@@ -490,9 +493,10 @@ public class DynamicFileParser extends BaseFileParser {
 
                 try {
                     TransactionRecord record = new TransactionRecord();
-                    record.setChannel(config.getChannel());
+                    // todo 设置渠道
+//                    record.setChannel(config.getChannel());
                     record.setAccountName(config.getName());
-                    record.setReconciliationStatus("PENDING");
+                    record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                     record.setConfirmed(false);
 
                     Map<String, Object> extData = new HashMap<>();
@@ -553,17 +557,17 @@ public class DynamicFileParser extends BaseFileParser {
 
                     // 特殊处理收支类型映射（与CSV逻辑一致）
                     if (record.getType() != null) {
-                        String t = record.getType();
+                        String t = record.getType().name();
                         String upper = t.trim().toUpperCase();
                         if ("INCOME".equals(upper) || "EXPENSE".equals(upper) || "OTHER".equals(upper)) {
-                            record.setType(upper);
+                            record.setType(TrasactionType.valueOf(upper));
                         } else {
                         if (t.contains("收") && !t.contains("支")) {
-                            record.setType("INCOME");
+                            record.setType(TrasactionType.INCOME);
                         } else if (t.contains("支") || t.contains("付") || t.contains("买")) {
-                            record.setType("EXPENSE");
+                            record.setType(TrasactionType.EXPENSE);
                         } else {
-                            record.setType("OTHER");
+                            record.setType(TrasactionType.OTHER);
                         }
                         }
                     }

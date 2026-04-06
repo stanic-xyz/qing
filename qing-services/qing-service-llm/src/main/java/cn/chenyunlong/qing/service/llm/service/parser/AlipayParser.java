@@ -1,6 +1,10 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +18,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 
 @Slf4j
@@ -44,18 +50,17 @@ public class AlipayParser extends BaseFileParser {
                     // 表头对应关系:
                     // [0]交易时间, [1]交易分类, [2]交易对方, [3]对方账号, [4]商品说明, [5]收/支, [6]金额, [7]收/付款方式, [8]交易状态, [9]交易订单号, [10]商家订单号, [11]备注
                     TransactionRecord record = new TransactionRecord();
-                    record.setChannel("ALIPAY");
+                    // todo 设置渠道
+                    //  record.setChannel("ALIPAY");
                     record.setTransactionTime(LocalDateTime.parse(timeStr, ALIPAY_FORMAT));
 
-                    record.setCategory(line[1].trim());
+                    // record.setCategory(line[1].trim());
 
                     String counterparty = line[2].trim();
                     String counterpartyAccount = line[3].trim();
                     if (!counterpartyAccount.isEmpty() && !"/".equals(counterpartyAccount)) {
                         counterparty = counterparty + " (" + counterpartyAccount + ")";
                     }
-                    record.setCounterparty(counterparty);
-
                     record.setMerchant(line[4].trim());
 
                     // 状态: [8]
@@ -68,11 +73,11 @@ public class AlipayParser extends BaseFileParser {
                     // 收/支: [5]
                     String incomeExpense = line[5].trim();
                     if ("收入".equals(incomeExpense)) {
-                        record.setType("INCOME");
+                        record.setType(TrasactionType.INCOME);
                     } else if ("支出".equals(incomeExpense)) {
-                        record.setType("EXPENSE");
+                        record.setType(TrasactionType.EXPENSE);
                     } else {
-                        record.setType("OTHER");
+                        record.setType(TrasactionType.OTHER);
                     }
 
                     record.setAmount(amount);
@@ -103,8 +108,8 @@ public class AlipayParser extends BaseFileParser {
                     record.setRemark(finalRemark);
 
                     record.setAccountName("支付宝");
-                    record.setAccountType("WALLET");
-                    record.setReconciliationStatus("PENDING");
+                    record.setAccountType(AccountType.WALLET);
+                    record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                     record.setConfirmed(false);
                     records.add(record);
                 } catch (Exception e) {
@@ -115,12 +120,12 @@ public class AlipayParser extends BaseFileParser {
         return wrapResult(records);
     }
 
-    private String mapStatus(String status) {
+    private TransactionStatusEnum mapStatus(String status) {
         return switch (status) {
-            case "成功", "交易成功", "已完成", "已退款", "解冻成功" -> "SUCCESS";
-            case "失败", "交易关闭" -> "FAILED";
-            case "处理中", "退款中", "等待付款" -> "PENDING";
-            default -> "UNKNOWN";
+            case "成功", "交易成功", "已完成", "已退款", "解冻成功" -> TransactionStatusEnum.SUCCESS;
+            case "失败", "交易关闭" -> TransactionStatusEnum.FAILED;
+            case "处理中", "退款中", "等待付款" -> TransactionStatusEnum.PENDING;
+            default -> TransactionStatusEnum.FAILED;
         };
     }
 }

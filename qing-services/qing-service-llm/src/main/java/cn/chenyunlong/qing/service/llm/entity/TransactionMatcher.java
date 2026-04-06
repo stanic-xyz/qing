@@ -27,12 +27,12 @@ public class TransactionMatcher {
     // ---- 核心：积木式条件 AST ----
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json")
-    private JsonNode conditionNode; 
+    private JsonNode conditionNode;
 
     // ---- 核心：执行动作列表 ----
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json")
-    private JsonNode actionNode; 
+    private JsonNode actionNode;
 
     private Integer priority;     // 优先级，越大越优先
     private Boolean stopOnMatch = true; // 命中后是否阻断后续规则执行

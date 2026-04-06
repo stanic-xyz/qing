@@ -1,6 +1,10 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -59,33 +63,31 @@ public class CmbParser extends BaseFileParser {
                         remarkBuilder.setLength(0);
 
                         currentRecord = new TransactionRecord();
-                        currentRecord.setChannel("CMB");
+                        // todo 设置渠道
+                        //  currentRecord.setChannel("CMB");
                         String timeStr = matcher.group(1) + " 00:00:00";
                         currentRecord.setTransactionTime(LocalDateTime.parse(timeStr, CMB_FORMAT));
 
                         String amountStr = matcher.group(3).replace(",", "");
                         BigDecimal amount = new BigDecimal(amountStr);
                         if (amount.compareTo(BigDecimal.ZERO) < 0) {
-                            currentRecord.setType("EXPENSE");
+                            currentRecord.setType(TrasactionType.EXPENSE);
                             currentRecord.setAmount(amount.abs());
                         } else {
-                            currentRecord.setType("INCOME");
+                            currentRecord.setType(TrasactionType.INCOME);
                             currentRecord.setAmount(amount);
                         }
 
                         currentRecord.setBalance(new BigDecimal(matcher.group(4).replace(",", "")));
-                        currentRecord.setCategory(matcher.group(5).trim()); // 交易摘要作为分类
-
                         currentRecord.setAccountName("招商银行");
-                        currentRecord.setAccountType("DEBIT");
-                        currentRecord.setReconciliationStatus("PENDING");
+                        currentRecord.setAccountType(AccountType.DEBIT);
+                        currentRecord.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                         currentRecord.setConfirmed(false);
-                        currentRecord.setStatus("SUCCESS");
+                        currentRecord.setStatus(TransactionStatusEnum.SUCCESS);
 
                         // group(5) 可能是 "网联收款" 也可能连带了其他信息
                         String rest = matcher.group(5).trim();
                         String[] parts = rest.split("\\s+", 2);
-                        currentRecord.setCategory(parts[0]); // 第一部分作为交易摘要
                         if (parts.length > 1) {
                             merchantBuilder.append(parts[1]).append(" ");
                         }
@@ -119,7 +121,6 @@ public class CmbParser extends BaseFileParser {
             combined = combined.substring(0, 255);
         }
         // 将所有后续信息全部作为对手信息和备注，防止任何数据丢失
-        record.setCounterparty(combined);
         record.setRemark(combined);
 
         // 商户字段初始置空，交由 Matcher 智能提取，提取不到则前端显示未提取

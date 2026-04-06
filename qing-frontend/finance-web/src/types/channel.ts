@@ -24,6 +24,7 @@ export interface Account {
   cardNumber: string;
   openingDate: string;
   initialBalance: number;
+  currentBalance: number;
   balanceAsOf: string;
   status: string;
 }

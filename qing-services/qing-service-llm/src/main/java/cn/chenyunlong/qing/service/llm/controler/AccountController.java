@@ -3,15 +3,28 @@ package cn.chenyunlong.qing.service.llm.controler;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.dto.AccountImportDTO;
 import cn.chenyunlong.qing.service.llm.dto.AccountPreviewResult;
+import cn.chenyunlong.qing.service.llm.dto.account.AccountDTO;
+import cn.chenyunlong.qing.service.llm.dto.account.AccountUpdateDTO;
+import cn.chenyunlong.qing.service.llm.entity.Channel;
+import cn.chenyunlong.qing.service.llm.enums.AccountStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.ImportModeEnum;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import cn.chenyunlong.qing.service.llm.entity.Account;
+import cn.chenyunlong.qing.service.llm.event.AccountChangeEvent;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
+import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import cn.chenyunlong.qing.service.llm.service.AccountImportService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,22 +32,21 @@ import java.util.List;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/finance/accounts")
 @Slf4j
+@RequiredArgsConstructor
 public class AccountController {
 
-    @Autowired
-    private AccountRepository accountRepo;
-
-    @Autowired
-    private TransactionRecordRepository transactionRepo;
-
-    @Autowired
-    private AccountImportService accountImportService;
+    private final AccountRepository accountRepo;
+    private final TransactionRecordRepository transactionRepo;
+    private final AccountImportService accountImportService;
+    private final ChannelRepository channelRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @GetMapping("/import/template")
     public ResponseEntity<byte[]> downloadTemplate() {
@@ -80,34 +92,57 @@ public class AccountController {
     }
 
     @GetMapping
-    public Result<List<Account>> getAccounts() {
-        return Result.success(accountRepo.findAll());
+    public Result<List<AccountDTO>> getAccounts() {
+        List<AccountDTO> accountDTOs = accountRepo.findAll().stream()
+                .map(AccountDTO::of)
+                .toList();
+        return Result.success(accountDTOs);
     }
 
     @PostMapping
-    public Result<Account> createAccount(@RequestBody Account account) {
-        if (account.getStatus() == null) {
-            account.setStatus("ACTIVE");
+    public Result<AccountDTO> createAccount(@RequestBody AccountUpdateDTO dto) {
+        Account account = new Account();
+        account.setAccountName(dto.getAccountName());
+        account.setAccountType(dto.getAccountType());
+        account.setBankName(dto.getBankName());
+        account.setIcon(dto.getIcon());
+        account.setRemark(dto.getRemark());
+        account.setCardNumber(dto.getCardNumber());
+        account.setInitialBalance(dto.getInitialBalance());
+        account.setCurrentBalance(dto.getInitialBalance());
+        account.setStatus(dto.getStatus() != null ? dto.getStatus() : AccountStatusEnum.ACTIVE);
+
+        if (dto.getChannel() != null && !dto.getChannel().isEmpty()) {
+            channelRepository.findByCode(dto.getChannel()).ifPresent(account::setChannel);
         }
-        return Result.success(accountRepo.save(account));
+
+        return Result.success(AccountDTO.of(accountRepo.save(account)));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @PutMapping("/{id}")
-    public Result<Account> updateAccount(@PathVariable("id") Long id, @RequestBody Account account) {
+    public Result<AccountDTO> updateAccount(@PathVariable("id") Long id, @RequestBody AccountUpdateDTO account) {
         Account existing = accountRepo.findById(id).orElse(null);
         if (existing == null) return Result.error(404, "Account not found");
+
+        if (account.getChannel() != null && !account.getChannel().isEmpty()) {
+            Channel channel = channelRepository.findByCode(account.getChannel()).orElseThrow();
+            existing.setChannel(channel);
+        } else {
+            existing.setChannel(null);
+        }
 
         existing.setAccountName(account.getAccountName());
         existing.setAccountType(account.getAccountType());
         existing.setBankName(account.getBankName());
-        existing.setChannel(account.getChannel());
         existing.setIcon(account.getIcon());
         existing.setRemark(account.getRemark());
         existing.setCardNumber(account.getCardNumber());
         existing.setInitialBalance(account.getInitialBalance());
         existing.setStatus(account.getStatus());
-
-        return Result.success(accountRepo.save(existing));
+        Account saved = accountRepo.save(existing);
+        applicationEventPublisher.publishEvent(new AccountChangeEvent(this, saved));
+        return Result.success(AccountDTO.of(saved));
     }
 
     @DeleteMapping("/{id}")
@@ -117,7 +152,7 @@ public class AccountController {
     }
 
     @PostMapping("/{id}/calibrate")
-    public Result<Account> calibrateBalance(@PathVariable("id") Long id, @RequestBody java.util.Map<String, BigDecimal> payload) {
+    public Result<AccountDTO> calibrateBalance(@PathVariable("id") Long id, @RequestBody java.util.Map<String, BigDecimal> payload) {
         BigDecimal newBalance = payload.get("newBalance");
         if (newBalance == null) {
             return Result.error(400, "newBalance is required");
@@ -138,15 +173,13 @@ public class AccountController {
             record.setAccountType(account.getAccountType());
             record.setChannel(account.getChannel());
             record.setTransactionTime(LocalDateTime.now());
-            record.setType(diff.compareTo(BigDecimal.ZERO) > 0 ? "INCOME" : "EXPENSE");
+            record.setType(diff.compareTo(BigDecimal.ZERO) > 0 ? TrasactionType.INCOME : TrasactionType.EXPENSE);
             record.setAmount(diff.abs());
-            record.setCounterparty("系统平账");
-            record.setCategory("系统");
             record.setSubCategory("余额平账");
             record.setRemark("手动余额校准");
-            record.setStatus("SUCCESS");
+            record.setStatus(TransactionStatusEnum.SUCCESS);
             record.setConfirmed(true);
-            record.setReconciliationStatus("SUCCESS");
+            record.setReconciliationStatus(ReconciliationStatusEnum.MATCHED);
             record.setIsImported(true);
             record.setMatchStatus(cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum.MANUAL_EDITED);
 
@@ -156,6 +189,6 @@ public class AccountController {
             accountRepo.save(account);
         }
 
-        return Result.success(account);
+        return Result.success(AccountDTO.of(account));
     }
 }

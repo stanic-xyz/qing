@@ -208,7 +208,7 @@ export default function TransactionCompare() {
                                 <tr key={ch} className="hover:bg-gray-50">
                                   <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-blue-700">{getEnumText('channel', ch)}</td>
                                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">{record.transactionTime.split('T')[1]}</td>
-                                  <td className="px-4 py-3 text-sm text-gray-800 max-w-xs truncate" title={record.counterparty}>{record.counterparty || '-'}</td>
+                                  <td className="px-4 py-3 text-sm text-gray-800 max-w-xs truncate" title={record.counterparty?.name}>{record.counterparty?.name || '-'}</td>
                                   <td className="px-4 py-3 text-sm text-gray-600">
                                     <div className="max-w-md truncate" title={record.merchant}>说明: {record.merchant || '-'}</div>
                                     {record.remark && <div className="max-w-md truncate text-gray-400 mt-1" title={record.remark}>备注: {record.remark}</div>}

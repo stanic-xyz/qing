@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.qing.service.llm.dto.CategoryTreeDTO;
+import cn.chenyunlong.qing.service.llm.dto.counterpayty.CounterpartyUpdateDto;
 import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
@@ -34,7 +35,7 @@ public class CategoryService {
                 c.setType("EXPENSE");
                 categoryRepository.save(c);
             }
-            
+
             String[] defaultIncomes = {"工资", "理财", "红包", "其他收入"};
             for (String name : defaultIncomes) {
                 Category c = new Category();
@@ -53,11 +54,11 @@ public class CategoryService {
     public List<CategoryTreeDTO> getCategoryTree() {
         List<Category> all = categoryRepository.findByIsDeletedFalse();
         List<CategoryTreeDTO> dtos = all.stream().map(this::convertToDTO).collect(Collectors.toList());
-        
+
         Map<Long, List<CategoryTreeDTO>> childrenMap = dtos.stream()
                 .filter(d -> d.getParentId() != null)
                 .collect(Collectors.groupingBy(CategoryTreeDTO::getParentId));
-                
+
         List<CategoryTreeDTO> tree = new ArrayList<>();
         for (CategoryTreeDTO dto : dtos) {
             dto.setChildren(childrenMap.getOrDefault(dto.getId(), new ArrayList<>()));
@@ -71,7 +72,7 @@ public class CategoryService {
     public Category createCategory(Category category) {
         if (category.getParentId() != null) {
             Category parent = categoryRepository.findById(category.getParentId())
-                .orElseThrow(() -> new RuntimeException("父分类不存在"));
+                    .orElseThrow(() -> new RuntimeException("父分类不存在"));
             category.setLevel(parent.getLevel() + 1);
             category.setType(parent.getType());
         } else {
@@ -82,27 +83,28 @@ public class CategoryService {
 
     public Category updateCategory(Long id, Category updateInfo) {
         Category category = categoryRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("分类不存在"));
+                .orElseThrow(() -> new RuntimeException("分类不存在"));
         category.setName(updateInfo.getName());
         category.setIcon(updateInfo.getIcon());
+
         return categoryRepository.save(category);
     }
 
     @Transactional
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("分类不存在"));
-            
+                .orElseThrow(() -> new RuntimeException("分类不存在"));
+
         // 1. 检查是否有子分类
         if (categoryRepository.existsByParentIdAndIsDeletedFalse(id)) {
             throw new RuntimeException("无法删除：该分类下存在子分类，请先删除子分类");
         }
-        
+
         // 2. 检查是否有流水关联 (简单通过名称匹配)
-        if (transactionRecordRepository.existsByCategoryOrSubCategory(category.getName(), category.getName())) {
+        if (transactionRecordRepository.existsByCategory(category)) {
             throw new RuntimeException("无法删除：已有流水记录使用了该分类，请先解绑");
         }
-        
+
         category.setIsDeleted(true);
         categoryRepository.save(category);
     }

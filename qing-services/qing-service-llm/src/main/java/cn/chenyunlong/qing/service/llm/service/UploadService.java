@@ -5,9 +5,12 @@ import cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse;
 import cn.chenyunlong.qing.service.llm.dto.PreviewRecordDTO;
 import cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse;
 import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.entity.UploadFileRecord;
 import cn.chenyunlong.qing.service.llm.entity.Account;
+import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.UploadFileRecordRepository;
@@ -22,11 +25,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -69,6 +74,7 @@ public class UploadService {
     // 临时存储异步匹配任务状态
     private final Map<String, MatchStatusResponse> matchStatusMap = new ConcurrentHashMap<>();
 
+    @Transactional(rollbackFor = Exception.class)
     public List<UploadBatchPreviewResponse> parseAndPreviewBatch(List<MultipartFile> files, String parserId, Long accountId) throws Exception {
         Account targetAccount = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("指定的账户不存在"));
@@ -86,7 +92,7 @@ public class UploadService {
             Long configId = Long.parseLong(parserId.substring(7));
             ParserConfig config = parserConfigRepository.findById(configId)
                     .orElseThrow(() -> new RuntimeException("找不到指定的自定义解析器"));
-            actualChannel = config.getChannel();
+//            actualChannel = config.getChannel();
             parser = new DynamicFileParser(config, scriptExecutorFactory);
         } else {
             // 兼容旧逻辑
@@ -97,13 +103,14 @@ public class UploadService {
             throw new RuntimeException("找不到有效的解析器: " + parserId);
         }
 
+        // todo 设置渠道
         // 账号与渠道一致性校验：避免选错解析器导致数据落错账户
-        if (targetAccount.getChannel() != null
-                && actualChannel != null
-                && !targetAccount.getChannel().trim().equalsIgnoreCase(actualChannel.trim())) {
-            throw new RuntimeException("所选账号渠道(" + targetAccount.getChannel()
-                    + ")与解析器渠道(" + actualChannel + ")不一致，请重新选择");
-        }
+        //        if (targetAccount.getChannel() != null
+        //                && actualChannel != null
+        //                && !targetAccount.getChannel().trim().equalsIgnoreCase(actualChannel.trim())) {
+        //            throw new RuntimeException("所选账号渠道(" + targetAccount.getChannel()
+        //                    + ")与解析器渠道(" + actualChannel + ")不一致，请重新选择");
+        //        }
 
         for (MultipartFile file : files) {
             String originalFilename = file.getOriginalFilename();
@@ -116,7 +123,7 @@ public class UploadService {
                 throw new RuntimeException("文件已上传过，请勿重复上传: " + originalFilename);
             }
 
-            cn.chenyunlong.qing.service.llm.dto.parser.ParseResult parseResult = parser.parse(file.getInputStream(), originalFilename);
+            ParseResult parseResult = parser.parse(file.getInputStream(), originalFilename);
             List<TransactionRecord> records = parseResult.getRecords();
 
             LocalDateTime minTime = null;
@@ -133,11 +140,11 @@ public class UploadService {
                 }
             }
 
+
             UploadFileRecord fileRecord = new UploadFileRecord();
             fileRecord.setFileName(originalFilename);
             fileRecord.setFileHash(fileHash);
             fileRecord.setFileSize(fileSize);
-            fileRecord.setChannel(actualChannel);
             fileRecord.setStatus("UPLOADED");
             fileRecord.setParsedCount(records.size());
             fileRecord.setStartTime(minTime);
@@ -195,7 +202,7 @@ public class UploadService {
         status.setStatus("PROCESSING");
         matchStatusMap.put(uploadId, status);
 
-        java.util.concurrent.CompletableFuture.runAsync(() -> {
+        CompletableFuture.runAsync(() -> {
             try {
                 // 1. 应用规则引擎（老规则：基础映射）
                 ruleEngineService.applyRules(records);
@@ -206,7 +213,7 @@ public class UploadService {
                         continue; // 跳过被锁定的记录
                     }
                     // 重置状态
-                    record.setMatchStatus(cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum.ORIGINAL);
+                    record.setMatchStatus(MatchStatusEnum.ORIGINAL);
                     record.setMatchRuleName(null);
                     record.setIsModified(false);
 
@@ -255,7 +262,7 @@ public class UploadService {
                 .orElseThrow(() -> new RuntimeException("未找到该记录"));
 
         // 重置为初始状态（如果是重新匹配）
-        record.setMatchStatus(cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum.ORIGINAL);
+        record.setMatchStatus(MatchStatusEnum.ORIGINAL);
         record.setMatchRuleName(null);
         record.setIsModified(false);
 
@@ -303,13 +310,15 @@ public class UploadService {
             for (TransactionRecord record : toImport) {
                 ImportRequest.ModifiedRecord mod = mods.get(String.valueOf(record.getId()));
                 if (mod != null) {
-                    record.setType(mod.getType());
+                    if (mod.getType() != null) {
+                        record.setType(TrasactionType.valueOf(mod.getType().toUpperCase()));
+                    }
                     record.setMerchant(mod.getMerchant());
                     record.setTargetAccountId(mod.getTargetAccountId());
                     if (mod.getTargetAccountId() != null) {
-                        record.setType("TRANSFER"); // 强制为转账
+                        record.setType(TrasactionType.TRANSFER); // 强制为转账
                     }
-                    record.setMatchStatus(cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum.MANUAL_EDITED);
+                    record.setMatchStatus(MatchStatusEnum.MANUAL_EDITED);
                     record.setIsModified(true);
                 }
             }
@@ -344,16 +353,16 @@ public class UploadService {
                 Account acc = accountsToUpdate.get(srcAccount.getId());
                 java.math.BigDecimal current = acc.getCurrentBalance() != null ? acc.getCurrentBalance() : java.math.BigDecimal.ZERO;
 
-                if ("INCOME".equals(record.getType())) {
+                if (TrasactionType.INCOME == record.getType()) {
                     acc.setCurrentBalance(current.add(record.getAmount()));
-                } else if ("EXPENSE".equals(record.getType())) {
+                } else if (TrasactionType.EXPENSE == record.getType()) {
                     acc.setCurrentBalance(current.subtract(record.getAmount()));
-                } else if ("TRANSFER".equals(record.getType())) {
+                } else if (TrasactionType.TRANSFER == record.getType()) {
                     acc.setCurrentBalance(current.subtract(record.getAmount())); // 源账户减去金额
                 }
 
                 // 处理转账的目标账户增加金额
-                if ("TRANSFER".equals(record.getType()) && record.getTargetAccountId() != null) {
+                if (Objects.equals(TrasactionType.TRANSFER, record.getType()) && record.getTargetAccountId() != null) {
                     Account targetAcc = accountsToUpdate.get(record.getTargetAccountId());
                     if (targetAcc == null) {
                         targetAcc = accountRepository.findById(record.getTargetAccountId()).orElse(null);

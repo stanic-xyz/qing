@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.ChannelAccountRel;
+import cn.chenyunlong.qing.service.llm.enums.AccountStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.ApprovalState;
 import cn.chenyunlong.qing.service.llm.event.RelChangeEvent;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
@@ -32,7 +33,7 @@ public class ChannelAccountRelService {
 
         List<Long> accountIds = rels.stream().map(ChannelAccountRel::getAccountId).collect(Collectors.toList());
         return accountRepository.findAllById(accountIds).stream()
-                .filter(a -> "ACTIVE".equals(a.getStatus()))
+                .filter(a -> AccountStatusEnum.ACTIVE.equals(a.getStatus()))
                 .collect(Collectors.toList());
     }
 

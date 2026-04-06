@@ -78,7 +78,7 @@ public class GroovyScriptExecutor implements ScriptExecutor {
 
     @Override
     public long getTimeout() {
-        return 5000;
+        return ScriptExecutor.super.getTimeout();
     }
 
     @Override

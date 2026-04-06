@@ -60,23 +60,23 @@ public class MatcherController {
         // JPA实体如果是被Hibernate管理的，直接修改可能会触发Dirty Checking导致自动保存。
         // 所以我们最好不要将该实体保留在Session中，可以通过手动创建一个新的对象进行测试。
         TransactionRecord testRecord = cloneRecord(record);
-        
+
         TestResult result = new TestResult();
-        
+
         // 初始状态
         result.setOriginalRecord(cloneRecord(testRecord));
 
         // 应用规则
         try {
             matcherService.applyMatchers(testRecord, Collections.singletonList(req.getMatcher()));
-            
+
             // 检查是否命中
             if (testRecord.getMatchRuleName() != null && testRecord.getMatchRuleName().equals(req.getMatcher().getName())) {
                 result.setMatched(true);
             } else {
                 result.setMatched(false);
             }
-            
+
             result.setModifiedRecord(testRecord);
             return Result.success(result);
         } catch (Exception e) {

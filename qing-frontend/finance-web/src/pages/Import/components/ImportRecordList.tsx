@@ -139,7 +139,7 @@ export default function ImportRecordList({
                             <p className="text-sm text-gray-500">此批次数据已成功导入并归档，不可修改。以下为最终入库的流水详情及命中的规则。</p>
                           </div>
                         </div>
-                        <div className="bg-white border rounded-lg overflow-hidden max-h-[600px] overflow-x-auto overflow-y-auto">
+                        <div className="bg-white border rounded-lg overflow-hidden max-h-150 overflow-x-auto overflow-y-auto">
                           <table className="min-w-full divide-y divide-gray-200 table-fixed">
                             <thead className="bg-gray-100 sticky top-0 z-10">
                               <tr>
@@ -161,7 +161,7 @@ export default function ImportRecordList({
                                     {renderMatchStatus(record.matchStatus, record.matchRuleName)}
                                   </td>
                                   <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 truncate" title={record.transactionTime}>{record.transactionTime}</td>
-                                  <td className="px-4 py-2 text-sm text-gray-900 truncate" title={record.counterparty}>{record.counterparty}</td>
+                                  <td className="px-4 py-2 text-sm text-gray-900 truncate" title={record.counterparty}>{record.counterparty}{record.account.accountName}</td>
                                   {dynamicColumns.map(col => (
                                     <td key={col.key} className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 truncate" title={record.extData?.[col.key] || '-'}>
                                       {record.extData?.[col.key] || '-'}

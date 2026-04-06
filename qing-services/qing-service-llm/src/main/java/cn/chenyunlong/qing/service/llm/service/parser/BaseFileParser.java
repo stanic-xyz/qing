@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.service.llm.service.parser;
 import cn.chenyunlong.qing.service.llm.dto.parser.FileMetadata;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.FundTypeEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public abstract class BaseFileParser implements FileParser {
+
     protected static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     protected static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -75,19 +77,19 @@ public abstract class BaseFileParser implements FileParser {
     /**
      * 根据资金来源描述，自动推断属于内部资金还是外部资金
      */
-    protected String deduceFundType(String fundSource) {
+    protected FundTypeEnum deduceFundType(String fundSource) {
         if (fundSource == null || fundSource.isEmpty()) {
             return null;
         }
         String lower = fundSource.toLowerCase();
         // 内部资金关键词
         if (lower.contains("余额") || lower.contains("零钱") || lower.contains("钱包") || lower.contains("花呗")) {
-            return "INTERNAL";
+            return FundTypeEnum.INTERNAL;
         }
         // 外部资金关键词
         if (lower.contains("银行") || lower.contains("信用") || lower.contains("储蓄") || lower.contains("网商") || lower.contains("卡")) {
-            return "EXTERNAL";
+            return FundTypeEnum.EXTERNAL;
         }
-        return "UNKNOWN";
+        return FundTypeEnum.EXTERNAL;
     }
 }

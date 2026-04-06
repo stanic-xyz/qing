@@ -1,6 +1,10 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -34,13 +38,13 @@ public class BocCreditParser extends BaseFileParser {
     @Override
     public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         List<TransactionRecord> records = new ArrayList<>();
-        
+
         if (originalFilename.toLowerCase().endsWith(".pdf")) {
             try (PDDocument document = Loader.loadPDF(inputStream.readAllBytes())) {
                 PDFTextStripper stripper = new PDFTextStripper();
                 String text = stripper.getText(document);
                 String[] lines = text.split("\\r?\\n");
-                
+
                 String year = "2023"; // 默认回退值
                 TransactionRecord currentRecord = null;
                 StringBuilder descBuilder = new StringBuilder();
@@ -54,18 +58,18 @@ public class BocCreditParser extends BaseFileParser {
                         }
                         continue;
                     }
-                    
+
                     Matcher yearMatcher = YEAR_PATTERN.matcher(line);
                     if (yearMatcher.matches()) {
                         year = yearMatcher.group(1);
                         continue;
                     }
-                    
+
                     if (line.contains("交易日") || line.contains("Transaction Date")) {
                         isTransactionSection = true;
                         continue;
                     }
-                    
+
                     if (!isTransactionSection) {
                         continue;
                     }
@@ -77,21 +81,22 @@ public class BocCreditParser extends BaseFileParser {
                             finalizeRecord(currentRecord, descBuilder.toString());
                             records.add(currentRecord);
                         }
-                        
+
                         currentRecord = new TransactionRecord();
-                        currentRecord.setChannel("BOC_CREDIT");
-                        
+                        // todo 设置渠道
+                        //currentRecord.setChannel("BOC_CREDIT");
+
                         // startMatcher.group(1) 是交易日如 "07/03"
                         String dateStr = startMatcher.group(1).replace("/", "-");
                         String timeStr = year + "-" + dateStr + " 00:00:00";
                         currentRecord.setTransactionTime(LocalDateTime.parse(timeStr, BOC_DATE_FORMAT));
-                        
+
                         currentRecord.setAccountName("中国银行信用卡");
-                        currentRecord.setAccountType("CREDIT");
-                        currentRecord.setReconciliationStatus("PENDING");
+                        currentRecord.setAccountType(AccountType.CREDIT);
+                        currentRecord.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                         currentRecord.setConfirmed(false);
-                        currentRecord.setStatus("SUCCESS");
-                        
+                        currentRecord.setStatus(TransactionStatusEnum.SUCCESS);
+
                         descBuilder.setLength(0);
                         String restOfLine = startMatcher.group(4).trim();
                         if (!restOfLine.isEmpty()) {
@@ -107,7 +112,7 @@ public class BocCreditParser extends BaseFileParser {
                         }
                     }
                 }
-                
+
                 // 结算最后一条记录
                 if (currentRecord != null) {
                     finalizeRecord(currentRecord, descBuilder.toString());
@@ -122,7 +127,7 @@ public class BocCreditParser extends BaseFileParser {
         // 去除可能多余的货币符号如 CHN
         String cleanedDesc = fullDesc.replace("CHN", "").trim();
         Matcher amountMatcher = AMOUNT_PATTERN.matcher(cleanedDesc);
-        
+
         String desc = cleanedDesc;
         if (amountMatcher.matches()) {
             desc = amountMatcher.group(1).trim();
@@ -132,17 +137,16 @@ public class BocCreditParser extends BaseFileParser {
             // 解析不到金额则跳过或置0
             record.setAmount(BigDecimal.ZERO);
         }
-        
+
         if (desc.length() > 255) {
             desc = desc.substring(0, 255);
         }
         record.setMerchant(desc);
-        record.setCounterparty(desc); // 信用卡通常没有独立对方列
-        
+
         if (desc.contains("还款") || desc.contains("代付") || desc.contains("存入")) {
-            record.setType("INCOME");
+            record.setType(TrasactionType.INCOME);
         } else {
-            record.setType("EXPENSE");
+            record.setType(TrasactionType.EXPENSE);
         }
     }
 }
