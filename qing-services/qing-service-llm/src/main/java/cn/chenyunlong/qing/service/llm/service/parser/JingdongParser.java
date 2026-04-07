@@ -29,6 +29,15 @@ import java.util.regex.Pattern;
 @Slf4j
 @Component("JINGDONG")
 public class JingdongParser extends BaseFileParser {
+
+
+    public static final String CHANNEL_CODE = "JINGDONG";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
+
     private static final DateTimeFormatter JD_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final Pattern AMOUNT_PATTERN = Pattern.compile("([\\d.]+)");
 

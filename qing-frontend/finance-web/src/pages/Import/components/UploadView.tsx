@@ -47,10 +47,10 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
 
     useEffect(() => {
         const selectedAccount = accounts.find(a => a.id === accountId);
-        const activeChannelId = selectedAccount?.channelDto?.id;
+        const activeChannelCode = selectedAccount?.channelDto?.code;
 
-        let next = activeChannelId ? parsers.filter(p => p.channel?.id === activeChannelId) : [];
-        
+        let next = activeChannelCode ? parsers.filter(parserItem => parserItem.channel?.code === activeChannelCode) : [];
+
         if (selectedFileTypes.size === 1) {
             const onlyType = Array.from(selectedFileTypes)[0];
             const typed = next.filter(p => {
@@ -154,9 +154,9 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
                                 className="w-full border-gray-300 rounded-md shadow-sm p-2.5 border focus:ring-blue-500 focus:border-blue-500"
                                 disabled={!accountId || filteredParsers.length === 0}
                             >
-                                {filteredParsers.map(p => (
-                                    <option key={p.id} value={p.id}>
-                                        {p.name} ({(p.fileType || '').toUpperCase()}) {p.isBuiltIn ? '(内置)' : '(自定义)'}
+                                {filteredParsers.map(parserItem => (
+                                    <option key={parserItem.id} value={parserItem.id}>
+                                        {parserItem.name} ({(parserItem.fileType || '').toUpperCase()}) {parserItem.isBuiltIn ? '(内置)' : '(自定义)'}
                                     </option>
                                 ))}
                             </select>

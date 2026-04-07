@@ -4,12 +4,23 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 
 @Component("TikTok")
 public class TikTokParser extends BaseFileParser {
+
+    public static final String CHANNEL_CODE = "TIKTOK";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
+
+
     @Override
     public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
         return wrapResult(java.util.Collections.emptyList());

@@ -19,13 +19,24 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 
 @Slf4j
 @Component("QIANJI")
 public class QianjiParser extends BaseFileParser {
+
+    public static final String CHANNEL_CODE = "QIANJI";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
+
+
     private static final DateTimeFormatter QIANJI_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
@@ -46,9 +57,9 @@ public class QianjiParser extends BaseFileParser {
                 try {
                     TransactionRecord record = new TransactionRecord();
                     // todo 设置渠道
-//                    record.setChannel("QIANJI");
+                    //                    record.setChannel("QIANJI");
                     record.setTransactionTime(LocalDateTime.parse(timeStr, QIANJI_FORMAT));
-//                    record.setCategory(line[2].trim());
+                    //                    record.setCategory(line[2].trim());
                     record.setSubCategory(line[3].trim());
                     String typeStr = line[4].trim(); // 类型：支出/收入/转账
                     if ("支出".equals(typeStr)) record.setType(TrasactionType.EXPENSE);
@@ -59,7 +70,7 @@ public class QianjiParser extends BaseFileParser {
                     record.setAccountName(line[7].trim());
                     // 账户2 可能是对手账户
                     if (line.length > 8 && !line[8].trim().isEmpty()) {
-//                        record.setCounterparty(line[8].trim());
+                        //                        record.setCounterparty(line[8].trim());
                     }
                     if (line.length > 9) {
                         record.setRemark(line[9].trim());

@@ -14,7 +14,11 @@ public interface ChannelRepository extends JpaRepository<Channel, Long>, JpaSpec
 
     List<Channel> findByIsDeletedFalse();
 
+    Optional<Channel> findByIdAndIsDeletedFalse(Long code);
+
     List<Channel> findByIsDeletedFalseAndIsEnabledTrueAndStatus(String status);
 
     List<Channel> findAllByIsDeletedFalseAndCodeIn(List<String> channelCodes);
+
+    List<Channel> findAllByIsDeletedFalse();
 }

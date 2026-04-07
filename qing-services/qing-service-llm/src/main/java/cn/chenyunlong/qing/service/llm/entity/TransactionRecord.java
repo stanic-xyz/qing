@@ -9,16 +9,18 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "finance_transaction_record")
+@Table(name = "finance_transaction_record", indexes = {@Index(columnList = "channel_id"), @Index(columnList = "account_id")})
 @Data
 public class TransactionRecord {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private LocalDateTime transactionTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     @ManyToOne

@@ -62,7 +62,7 @@ public class DynamicFileParserScriptTest {
         ParseResult result = parser.parse(new ByteArrayInputStream(csv.getBytes(StandardCharsets.UTF_8)), "test.csv");
 
         Assertions.assertEquals(1, result.getRecords().size());
-        TransactionRecord record = result.getRecords().get(0);
+        TransactionRecord record = result.getRecords().getFirst();
         Assertions.assertEquals(LocalDateTime.of(2026, 1, 1, 0, 0, 0), record.getTransactionTime());
         Assertions.assertEquals(0, new BigDecimal("24.68").compareTo(record.getAmount()));
     }

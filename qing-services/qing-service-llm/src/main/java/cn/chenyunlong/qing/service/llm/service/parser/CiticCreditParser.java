@@ -16,13 +16,22 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 
 @Slf4j
 @Component("CITIC_CREDIT")
 public class CiticCreditParser extends BaseFileParser {
+
+    public static final String CHANNEL_CODE = "CITIC_CREDIT";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
 
     private static final DateTimeFormatter CITIC_DATE_FORMAT = new DateTimeFormatterBuilder()
             .appendPattern("yyyy-MM-dd")

@@ -12,6 +12,7 @@ import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
+import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.UploadFileRecordRepository;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
@@ -20,15 +21,16 @@ import cn.chenyunlong.qing.service.llm.service.parser.DynamicFileParser;
 import cn.chenyunlong.qing.service.llm.service.parser.FileParser;
 import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
 import cn.chenyunlong.qing.service.llm.util.FileHashUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -39,7 +41,7 @@ import java.util.stream.Collectors;
 public class UploadService {
 
     @Resource
-    private Map<String, FileParser> parserMap; // 渠道名 -> 解析器 Bean
+    private List<FileParser> parserList; // 渠道名 -> 解析器 Bean
 
     @Resource
     private ParserConfigRepository parserConfigRepository;
@@ -65,70 +67,88 @@ public class UploadService {
     @Resource
     private MatcherService matcherService;
 
-
     @Resource
-    private cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository matcherRepository;
+    private TransactionMatcherRepository matcherRepository;
+
+    // 缓存：解析器配置ID -> FileParser实例
+    private final Map<String, FileParser> parserCache = new ConcurrentHashMap<>();
+
 
     private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     // 临时存储异步匹配任务状态
     private final Map<String, MatchStatusResponse> matchStatusMap = new ConcurrentHashMap<>();
 
+    /**
+     * 根据解析器配置和文件名找到对应的内置解析器Bean
+     */
+    private FileParser getBuiltinParser(ParserConfig config, String ext) {
+        Long configId = config.getId();
+
+        if (StrUtil.isBlank(ext)) {
+            throw new RuntimeException("文件后缀不能为空");
+        }
+
+        ext = ext.toUpperCase();
+        String configKey = configId + ":" + ext;
+
+        // 先从缓存中查找
+        if (parserCache.containsKey(configKey)) {
+            return parserCache.get(configKey);
+        }
+
+        String channelCode = config.getChannel().getCode();
+
+        // 根据渠道代码和文件类型匹配解析器
+        // 匹配逻辑：渠道代码 + 文件类型
+        for (FileParser parser : parserList) {
+            String parserChannel = parser.channelCode();
+
+            // 渠道代码匹配
+            if (!parserChannel.equalsIgnoreCase(channelCode)) {
+                continue;
+            }
+
+            List<String> parserExtensions = parser.getMetaData().getSupportedFileExtension();
+            if (!CollUtil.contains(parserExtensions, ext)) {
+                continue;
+            }
+            // 缓存并返回
+            parserCache.put(configKey, parser);
+            return parser;
+        }
+
+        throw new RuntimeException(String.format(
+                "找不到匹配的内置解析器: channel=%s, fileType=%s",
+                channelCode, ext
+        ));
+    }
+
     @Transactional(rollbackFor = Exception.class)
-    public List<UploadBatchPreviewResponse> parseAndPreviewBatch(List<MultipartFile> files, String parserId, Long accountId) throws Exception {
+    public List<UploadBatchPreviewResponse> parseAndPreviewBatch(List<MultipartFile> files, Long parserId, Long accountId) throws Exception {
         Account targetAccount = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("指定的账户不存在"));
 
         List<UploadBatchPreviewResponse> responses = new java.util.ArrayList<>();
 
-        // 解析 parserId: "builtin:ALIPAY" 或 "custom:12" 或 "ALIPAY" (兼容旧的)
-        FileParser parser = null;
-        String actualChannel = parserId;
+        // 解析 parserId: "builtin:123" 或 "custom:456" 或 "ALIPAY" (兼容旧的)
 
-        if (parserId != null && parserId.startsWith("builtin:")) {
-            actualChannel = parserId.substring(8);
-            parser = parserMap.get(actualChannel.toUpperCase());
-        } else if (parserId != null && parserId.startsWith("custom:")) {
-            Long configId = Long.parseLong(parserId.substring(7));
-            ParserConfig config = parserConfigRepository.findById(configId)
-                    .orElseThrow(() -> new RuntimeException("找不到指定的自定义解析器"));
-//            actualChannel = config.getChannel();
-            parser = new DynamicFileParser(config, scriptExecutorFactory);
-        } else {
-            // 兼容旧逻辑
-            parser = parserMap.get(Objects.requireNonNull(parserId).toUpperCase());
-        }
+        ParserConfig parserConfig = parserConfigRepository.findById(parserId).orElseThrow(() -> new RuntimeException("指定的解析器不存在"));
 
-        if (parser == null) {
-            throw new RuntimeException("找不到有效的解析器: " + parserId);
-        }
-
-        // todo 设置渠道
-        // 账号与渠道一致性校验：避免选错解析器导致数据落错账户
-        //        if (targetAccount.getChannel() != null
-        //                && actualChannel != null
-        //                && !targetAccount.getChannel().trim().equalsIgnoreCase(actualChannel.trim())) {
-        //            throw new RuntimeException("所选账号渠道(" + targetAccount.getChannel()
-        //                    + ")与解析器渠道(" + actualChannel + ")不一致，请重新选择");
-        //        }
 
         for (MultipartFile file : files) {
             String originalFilename = file.getOriginalFilename();
-            
-            if (originalFilename != null && parser.getMetaData() != null && parser.getMetaData().getSupportedFileExtension() != null) {
-                String ext = "";
-                int dotIndex = originalFilename.lastIndexOf(".");
-                if (dotIndex > 0 && dotIndex < originalFilename.length() - 1) {
-                    ext = originalFilename.substring(dotIndex + 1).toUpperCase();
-                }
-                String expectedExt = parser.getMetaData().getSupportedFileExtension().toUpperCase();
-                if ("EXCEL".equals(expectedExt) || "XLS".equals(expectedExt) || "XLSX".equals(expectedExt)) {
-                    if (!("XLS".equals(ext) || "XLSX".equals(ext))) {
-                        throw new RuntimeException("文件 [" + originalFilename + "] 类型不匹配，解析器期望: EXCEL，实际后缀: " + ext);
-                    }
-                } else if (!expectedExt.equals(ext)) {
-                    throw new RuntimeException("文件 [" + originalFilename + "] 类型不匹配，解析器期望: " + expectedExt + "，实际后缀: " + ext);
-                }
+
+            // 新的内置解析器：通过数据库ID查找
+            // 根据渠道代码和文件类型找到对应的Bean
+            FileParser parser;
+            if (parserConfig.getIsBuiltIn()) {
+                parser = getBuiltinParser(parserConfig, FileUtil.getSuffix(originalFilename));
+            } else {
+                parser = new DynamicFileParser(parserConfig, scriptExecutorFactory);
+            }
+            if (parser == null) {
+                throw new RuntimeException("找不到有效的解析器: " + parserId);
             }
 
             String fileHash = FileHashUtil.calcMD5(file.getInputStream());
@@ -175,6 +195,7 @@ public class UploadService {
                 record.setSourceFile(originalFilename);
                 record.setUploadId(finalUploadId);
                 record.setAccount(targetAccount);
+                record.setChannel(targetAccount.getChannel());
                 record.setAccountName(targetAccount.getAccountName());
                 record.setAccountType(targetAccount.getAccountType());
                 record.setOriginalData(objectMapper.writeValueAsString(record));

@@ -16,8 +16,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +27,13 @@ import java.util.regex.Pattern;
 @Slf4j
 @Component("BOC_CREDIT")
 public class BocCreditParser extends BaseFileParser {
+
+    public static final String CHANNEL_CODE = "BOC_CREDIT";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
 
     private static final DateTimeFormatter BOC_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

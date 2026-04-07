@@ -16,8 +16,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +27,13 @@ import java.util.regex.Pattern;
 @Slf4j
 @Component("CMB")
 public class CmbParser extends BaseFileParser {
+
+    public static final String CHANNEL_CODE = "CMB";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
 
     private static final DateTimeFormatter CMB_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

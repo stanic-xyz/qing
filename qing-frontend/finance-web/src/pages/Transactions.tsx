@@ -300,7 +300,7 @@ export default function Transactions() {
                             <React.Fragment key={t.id}>
                             <tr className="hover:bg-gray-50">
                                 <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{t.transactionTime}</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{getEnumText('channel', t.channel.name)}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{getEnumText('channel', t.channel?.name)}</td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{t.accountName || '-'}</td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm">
                     <span
@@ -395,7 +395,7 @@ export default function Transactions() {
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                    
+
                                                     {/* 资金流动时序图 (简单 CSS 实现) */}
                                                     <div className="bg-white p-4 rounded border border-indigo-100 overflow-x-auto">
                                                         <h5 className="text-xs font-semibold text-gray-600 mb-4">时序路径</h5>
@@ -519,7 +519,7 @@ export default function Transactions() {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">对方</label>
                                 <input
                                     type="text"
-                                    value={editingRecord.counterparty.name || ''}
+                                    value={editingRecord.counterparty?.name || ''}
                                     onChange={(e) => setEditingRecord({...editingRecord, counterparty: e.target.value})}
                                     className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
                                 />

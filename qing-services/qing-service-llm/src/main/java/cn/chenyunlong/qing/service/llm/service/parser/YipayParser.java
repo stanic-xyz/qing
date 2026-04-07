@@ -1,15 +1,21 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
-import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
-import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
-import java.util.List;
 
 @Component("YIPAY")
 public class YipayParser extends BaseFileParser {
+
+    public static final String CHANNEL_CODE = "YIPAY";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
+
 
     @Override
     public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {

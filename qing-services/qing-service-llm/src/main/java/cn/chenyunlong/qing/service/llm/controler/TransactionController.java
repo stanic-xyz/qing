@@ -10,7 +10,6 @@ import cn.chenyunlong.qing.service.llm.service.ReconciliationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -82,11 +81,11 @@ public class TransactionController {
             }
             if (keyword != null && !keyword.trim().isEmpty()) {
                 String likePattern = "%" + keyword.trim() + "%";
-                predicates.add(cb.or(
-                        cb.like(root.get("counterparty"), likePattern),
-                        cb.like(root.get("merchant"), likePattern),
-                        cb.like(root.get("remark"), likePattern)
-                ));
+                predicates.add(
+                        cb.or(
+                                cb.like(root.get("merchant"), likePattern),
+                                cb.like(root.get("remark"), likePattern)
+                        ));
             }
             if (startDate != null && !startDate.isEmpty()) {
                 LocalDateTime start = LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE).atStartOfDay();
@@ -123,10 +122,10 @@ public class TransactionController {
         if (record == null) {
             return Result.error(404, "记录不存在");
         }
-        
+
         LocalDateTime start = record.getTransactionTime().minusDays(1).with(java.time.LocalTime.MIN);
         LocalDateTime end = record.getTransactionTime().plusDays(1).with(java.time.LocalTime.MAX);
-        
+
         Specification<TransactionRecord> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("amount"), record.getAmount()));
@@ -139,7 +138,7 @@ public class TransactionController {
             ));
             return cb.and(predicates.toArray(new Predicate[0]));
         };
-        
+
         List<TransactionRecord> related = transactionRepo.findAll(spec, Sort.by(Sort.Direction.ASC, "transactionTime"));
         return Result.success(related);
     }

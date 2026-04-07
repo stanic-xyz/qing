@@ -14,13 +14,23 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 
 @Slf4j
 @Component("PINGAN")
 public class PingAnParser extends BaseFileParser {
+
+    public static final String CHANNEL_CODE = "PINGAN";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
+
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -63,7 +73,7 @@ public class PingAnParser extends BaseFileParser {
 
                     TransactionRecord record = new TransactionRecord();
                     // todo 设置渠道
-//                    record.setChannel("PINGAN");
+                    //                    record.setChannel("PINGAN");
                     try {
                         record.setTransactionTime(LocalDateTime.parse(timeStr, DATE_FORMAT));
                     } catch (Exception e) {

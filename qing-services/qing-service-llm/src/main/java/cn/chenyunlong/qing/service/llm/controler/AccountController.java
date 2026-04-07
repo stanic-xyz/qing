@@ -111,11 +111,9 @@ public class AccountController {
         account.setInitialBalance(dto.getInitialBalance());
         account.setCurrentBalance(dto.getInitialBalance());
         account.setStatus(dto.getStatus() != null ? dto.getStatus() : AccountStatusEnum.ACTIVE);
-
-        if (dto.getChannel() != null && !dto.getChannel().isEmpty()) {
-            channelRepository.findByCode(dto.getChannel()).ifPresent(account::setChannel);
+        if (dto.getChannel() != null) {
+            channelRepository.findByIdAndIsDeletedFalse(dto.getChannel()).ifPresent(account::setChannel);
         }
-
         return Result.success(AccountDTO.of(accountRepo.save(account)));
     }
 
@@ -124,9 +122,8 @@ public class AccountController {
     public Result<AccountDTO> updateAccount(@PathVariable("id") Long id, @RequestBody AccountUpdateDTO account) {
         Account existing = accountRepo.findById(id).orElse(null);
         if (existing == null) return Result.error(404, "Account not found");
-
-        if (account.getChannel() != null && !account.getChannel().isEmpty()) {
-            Channel channel = channelRepository.findByCode(account.getChannel()).orElseThrow();
+        if (account.getChannel() != null) {
+            Channel channel = channelRepository.findByIdAndIsDeletedFalse(account.getChannel()).orElseThrow();
             existing.setChannel(channel);
         } else {
             existing.setChannel(null);

@@ -6,6 +6,8 @@ import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.List;
+
 @Entity
 @Table(name = "finance_parser_config")
 @Data
@@ -18,6 +20,7 @@ public class ParserConfig {
     private String name;           // 解析器名称
 
     @ManyToOne
+    @JoinColumn(name = "channel_id", nullable = false)
     private Channel channel;        // 适用的渠道, 比如 ALIPAY, WECHAT
 
     @Column(nullable = false)

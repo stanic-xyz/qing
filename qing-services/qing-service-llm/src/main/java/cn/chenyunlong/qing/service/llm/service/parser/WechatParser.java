@@ -25,6 +25,15 @@ import java.util.List;
 @Slf4j
 @Component("WECHAT")
 public class WechatParser extends BaseFileParser {
+
+    public static final String CHANNEL_CODE = "WECHAT";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
+
+
     private static final DateTimeFormatter WECHAT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override

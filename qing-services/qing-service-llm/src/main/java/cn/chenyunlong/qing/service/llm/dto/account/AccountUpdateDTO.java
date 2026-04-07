@@ -11,7 +11,7 @@ public class AccountUpdateDTO {
     private String accountName;
     private AccountType accountType;
     private String bankName;
-    private String channel;   // 接收字符串，如 "ALIPAY"
+    private Long channel;   // 接收字符串，如 "ALIPAY"
     private String icon;
     private String remark;
     private String cardNumber;

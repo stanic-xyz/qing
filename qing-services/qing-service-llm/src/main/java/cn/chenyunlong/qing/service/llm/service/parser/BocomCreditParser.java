@@ -17,8 +17,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +28,13 @@ import java.util.regex.Pattern;
 @Slf4j
 @Component("BOCOM_CREDIT")
 public class BocomCreditParser extends BaseFileParser {
+
+    private static final String CHANNEL_CODE = "BOCOM_CREDIT";
+
+    @Override
+    public String channelCode() {
+        return CHANNEL_CODE;
+    }
 
     // 匹配类似 "2023/10/01" 或 "2023-10-01" 或 "10/01" 的日期，加上金额等
     private static final Pattern TRANSACTION_PATTERN = Pattern.compile("^(\\d{4}[-/]\\d{2}[-/]\\d{2}|\\d{2}[-/]\\d{2})\\s+(.*?)(\\s+-?\\d+\\.\\d{2})$");
