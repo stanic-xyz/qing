@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
 import cn.chenyunlong.qing.service.llm.enums.CounterpartyTypeEnum;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -30,6 +31,10 @@ public class Counterparty {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "counterparty", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<CounterpartyAccount> accounts;
 
     @OneToMany
     private List<TransactionMatcher> matchers;

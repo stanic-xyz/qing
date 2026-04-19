@@ -151,12 +151,17 @@ public class CcbExcelParser extends BaseFileParser {
             }
         }
 
-        // 从第7列读取交易地点/附言
+        // 从第7列读取交易地点/附言(渠道）
         Cell locationCell = row.getCell(7);
+
+        StringBuilder remarkBuilder = new StringBuilder();
         if (locationCell != null) {
             String location = locationCell.getStringCellValue().trim();
             if (!location.isEmpty()) {
                 record.setMerchant(location);
+                remarkBuilder.append(location);
+            } else {
+                remarkBuilder.append(" ");
             }
         }
 

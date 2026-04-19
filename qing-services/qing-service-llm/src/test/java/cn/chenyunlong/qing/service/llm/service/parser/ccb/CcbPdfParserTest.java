@@ -218,7 +218,7 @@ class CcbPdfParserTest {
     @Test
     @DisplayName("测试支持的扩展名")
     void testSupportedExtensions() {
-        String extensions = parser.supportedFileExtensions();
+        List<String> extensions = parser.supportedFileExtensions();
         assertNotNull(extensions, "支持的扩展名不应为空");
         assertTrue(extensions.contains("pdf"), "应支持pdf格式");
         System.out.println("✅ 支持的扩展名: " + extensions);

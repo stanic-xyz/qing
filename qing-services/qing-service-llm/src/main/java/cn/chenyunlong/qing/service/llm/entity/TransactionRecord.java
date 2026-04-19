@@ -39,14 +39,17 @@ public class TransactionRecord {
     private TrasactionType type; // INCOME/EXPENSE/TRANSFER
 
     // 交易金额
+    @Column(precision = 19, scale = 2, nullable = false)
     private BigDecimal amount;
 
     // 交易余额
+    @Column(precision = 19, scale = 2, nullable = false)
     private BigDecimal balance;
 
     // 对手方信息
     @ManyToOne
     private Counterparty counterparty;
+
     // 商家信息
     private String merchant;
     // 交易类别
@@ -64,6 +67,11 @@ public class TransactionRecord {
     private String originalId;
     // 原始文件名
     private String sourceFile;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "detail_id")
+    private RecordDetail detail;
+
     // 交易备注
     private String remark;
     // 交易标签

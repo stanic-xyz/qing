@@ -275,9 +275,6 @@ public class DynamicFileParser extends BaseFileParser {
         context.put("value", value);
         context.put("targetField", rule.getTargetField());
         Object result = scriptExecutorFactory.execute(language, rule.getScriptRule(), context);
-        if (result instanceof Map<?, ?>) {
-            throw new IllegalArgumentException("Field-mapping script must return a scalar value; use postScript for Map results: " + rule.getTargetField());
-        }
         return result;
     }
 

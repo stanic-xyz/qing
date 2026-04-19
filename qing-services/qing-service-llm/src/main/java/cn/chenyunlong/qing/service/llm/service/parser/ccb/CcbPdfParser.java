@@ -89,7 +89,7 @@ public class CcbPdfParser extends BaseFileParser {
                     }
 
                     // 创建新记录
-                    currentRecord = createTransactionRecord(matcher);
+                    currentRecord = createTransactionRecord(matcher, line);
 
                     // 重置备注收集器
                     remarkBuilder.setLength(0);
@@ -136,15 +136,21 @@ public class CcbPdfParser extends BaseFileParser {
     /**
      * 从正则匹配结果创建交易记录
      */
-    private TransactionRecord createTransactionRecord(Matcher matcher) {
+    private TransactionRecord createTransactionRecord(Matcher matcher, String originalData) {
         TransactionRecord record = new TransactionRecord();
 
+        String group1 = matcher.group(1);
         // 解析交易时间
-        String dateStr = matcher.group(2);
-        record.setTransactionTime(LocalDateTime.parse(dateStr, CCB_PDF_FORMAT));
-
+        String group2 = matcher.group(2);
         // 解析交易金额
-        String amountStr = matcher.group(3).replace(",", "");
+        String group3 = matcher.group(3);
+        // 解析账户余额
+        String group4 = matcher.group(4);
+        String group5 = matcher.group(5);
+
+        record.setTransactionTime(LocalDateTime.parse(group2, CCB_PDF_FORMAT));
+
+        String amountStr = group3.replace(",", "");
         BigDecimal amount = new BigDecimal(amountStr);
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             record.setType(TrasactionType.EXPENSE);
@@ -154,9 +160,9 @@ public class CcbPdfParser extends BaseFileParser {
             record.setAmount(amount);
         }
 
-        // 解析账户余额
-        record.setBalance(new BigDecimal(matcher.group(4).replace(",", "")));
+        record.setBalance(new BigDecimal(group4.replace(",", "")));
 
+        record.setMerchant(group1);
         // 设置默认值
         record.setAccountName("建设银行");
         record.setAccountType(AccountType.DEBIT);

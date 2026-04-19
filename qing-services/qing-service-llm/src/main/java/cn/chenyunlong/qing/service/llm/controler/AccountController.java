@@ -114,6 +114,7 @@ public class AccountController {
         if (dto.getChannel() != null) {
             channelRepository.findByIdAndIsDeletedFalse(dto.getChannel()).ifPresent(account::setChannel);
         }
+
         return Result.success(AccountDTO.of(accountRepo.save(account)));
     }
 
@@ -122,8 +123,9 @@ public class AccountController {
     public Result<AccountDTO> updateAccount(@PathVariable("id") Long id, @RequestBody AccountUpdateDTO account) {
         Account existing = accountRepo.findById(id).orElse(null);
         if (existing == null) return Result.error(404, "Account not found");
+
         if (account.getChannel() != null) {
-            Channel channel = channelRepository.findByIdAndIsDeletedFalse(account.getChannel()).orElseThrow();
+            Channel channel = channelRepository.findByIdAndIsDeletedFalse(account.getChannel()).orElseThrow(()-> new IllegalArgumentException("Channel not found"));
             existing.setChannel(channel);
         } else {
             existing.setChannel(null);

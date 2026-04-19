@@ -24,15 +24,10 @@ import java.util.List;
 
 @Component("BANK")
 public class BankParser extends BaseFileParser {
-
     @Override
     public String channelCode() {
-        return CHANNEL_CODE;
+        return "OTHER";
     }
-
-    public static final String CHANNEL_CODE = "BANK";
-
-    public static final String CHANNEL_NAME = "银行";
 
     @Override
     public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {

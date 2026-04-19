@@ -29,17 +29,14 @@ import java.util.List;
 @Slf4j
 @Component("ALIPAY")
 public class AlipayParser extends BaseFileParser {
-
-    private static final String ALIPAY = "ALIPAY";
-
-    @Override
-    public String channelCode() {
-        return ALIPAY;
-    }
-
     // 支付宝CSV编码为GBK
     private static final Charset GBK = Charset.forName("GBK");
     private static final DateTimeFormatter ALIPAY_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    @Override
+    public String channelCode() {
+        return "ALIPAY";
+    }
 
     @Override
     public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {

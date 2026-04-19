@@ -1,5 +1,12 @@
 package cn.chenyunlong.qing.service.llm.enums;
 
 public enum TrasactionType {
-    INCOME, EXPENSE, TRANSFER, OTHER;
+    // 收入
+    INCOME,
+    // 支出
+    EXPENSE,
+    // 转账
+    TRANSFER,
+    // 其他
+    OTHER;
 }

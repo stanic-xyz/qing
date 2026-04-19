@@ -25,12 +25,11 @@ public class CmbParserTest extends BaseParserTest {
         CmbParser parser = new CmbParser();
 
         ClassPathResource pathResource = new ClassPathResource("bills/cmb/cmb_bill.pdf");
-        Assertions.assertTrue(pathResource.exists() && pathResource.isReadable(), "文件不存在或者不可读！");
-
         if (!pathResource.exists()) {
             System.out.println("找不到指定的招商测试文件");
             return;
         }
+        Assertions.assertTrue(pathResource.exists() && pathResource.isReadable(), "文件不存在或者不可读！");
 
         try (InputStream is = pathResource.getInputStream()) {
             ParseResult parseResult = parser.parse(is, "cmb_bill.pdf");
