@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,6 +29,9 @@ public class MatcherService {
     private final TransactionRecordRepository transactionRecordRepository;
     private final CategoryRepository categoryRepository;
 
+    @Autowired(required = false)
+    private LlmEnhancementService llmEnhancementService;
+
     /**
      * 应用所有启用的匹配器规则对单条记录进行增强
      */
@@ -36,6 +40,10 @@ public class MatcherService {
         applyMatchers(record, rules);
         // 执行跨账单撮合对账
         applyCrossBillMatch(record);
+        // 如果所有规则都没匹配上，尝试 LLM 增强
+        if (llmEnhancementService != null && record.getCategory() == null) {
+            llmEnhancementService.enhanceClassification(List.of(record));
+        }
     }
 
     /**
