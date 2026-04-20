@@ -55,15 +55,8 @@ public class PreviewRecordDTO {
         dto.setFundSourceAccountId(record.getFundSourceAccountId());
         dto.setRecordRole(record.getRecordRole() != null ? record.getRecordRole().name() : "PRIMARY");
 
-        // 解析 originalData JSON 到 extData Map
-        if (record.getOriginalData() != null && !record.getOriginalData().isEmpty()) {
-            try {
-                dto.setExtData(objectMapper.readValue(record.getOriginalData(), Map.class));
-            } catch (Exception e) {
-                // 解析失败时忽略，或记录日志
-                log.error("Failed to parse originalData JSON: {}", record.getOriginalData(), e);
-            }
-        }
+        // 预览时不返回 extData（数据量太大，仅详情需要时单独加载）
+        dto.setExtData(null);
         return dto;
     }
 }

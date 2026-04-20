@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.service.llm.controler;
 
 import cn.chenyunlong.qing.service.llm.dto.ImportRequest;
 import cn.chenyunlong.qing.service.llm.dto.Result;
+import cn.chenyunlong.qing.service.llm.dto.UploadBatchOverviewResponse;
 import cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse;
 import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
 import cn.chenyunlong.qing.service.llm.service.UploadService;
@@ -38,9 +39,12 @@ public class BillController {
     }
 
     @GetMapping("/preview/{uploadId}")
-    public ResponseEntity<Result<UploadPreview>> getPreview(@PathVariable("uploadId") String uploadId) {
+    public ResponseEntity<Result<UploadPreview>> getPreview(
+            @PathVariable("uploadId") String uploadId,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "100") int size) {
         try {
-            return ResponseEntity.ok(Result.success(uploadService.getPreviewData(uploadId)));
+            return ResponseEntity.ok(Result.success(uploadService.getPreviewData(uploadId, page, size)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
         }
@@ -77,6 +81,15 @@ public class BillController {
     public ResponseEntity<Result> getMatchStatus(@PathVariable("uploadId") String uploadId) {
         try {
             return ResponseEntity.ok(Result.success(uploadService.getMatchStatus(uploadId)));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
+        }
+    }
+
+    @GetMapping("/batch/overview/{uploadId}")
+    public ResponseEntity<Result<UploadBatchOverviewResponse>> getBatchOverview(@PathVariable("uploadId") String uploadId) {
+        try {
+            return ResponseEntity.ok(Result.success(uploadService.getBatchOverview(uploadId)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
         }

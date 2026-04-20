@@ -10,4 +10,7 @@ import java.util.List;
 public class UploadPreview {
     private String uploadId;
     private List<PreviewRecordDTO> previewRecords;
+    private long totalCount;
+    private boolean hasMore;
+    private String status; // UPLOADED, MATCHING, IMPORTED
 }

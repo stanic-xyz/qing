@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
-public class CounterpartyUpdateDto {
-
-    @Id
-    private Long id;
+public class CounterpartyCreateDto {
 
     private String name;        // e.g. 鲜农果蔬
 

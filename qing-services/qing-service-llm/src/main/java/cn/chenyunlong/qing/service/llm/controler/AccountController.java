@@ -144,8 +144,35 @@ public class AccountController {
         return Result.success(AccountDTO.of(saved));
     }
 
+    @GetMapping("/{id}/transaction-count")
+    public Result<Long> getTransactionCount(@PathVariable("id") Long id) {
+        Account account = accountRepo.findById(id).orElse(null);
+        if (account == null) {
+            return Result.error(404, "账户不存在");
+        }
+        long count = transactionRepo.countByAccount(account);
+        return Result.success(count);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     @DeleteMapping("/{id}")
-    public Result<Void> deleteAccount(@PathVariable("id") Long id) {
+    public Result<Void> deleteAccount(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "cascade", defaultValue = "false") boolean cascade) {
+        Account account = accountRepo.findById(id).orElse(null);
+        if (account == null) {
+            return Result.error(404, "账户不存在");
+        }
+
+        long transactionCount = transactionRepo.countByAccount(account);
+        if (transactionCount > 0 && !cascade) {
+            return Result.error(400, String.format("该账户下有 %d 条关联流水，如需删除请同时删除关联流水", transactionCount));
+        }
+
+        if (cascade && transactionCount > 0) {
+            transactionRepo.deleteAll(transactionRepo.findAllByAccount(account));
+        }
+
         accountRepo.deleteById(id);
         return Result.success(null);
     }

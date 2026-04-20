@@ -23,3 +23,6 @@ spring:
         format_sql: false
         jdbc:
           batch_size: 50
+
+baseEnum:
+  basePackage: cn.chenyunlong.qing.service.llm.enums

@@ -4,6 +4,8 @@ import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,8 @@ public interface TransactionRecordRepository extends JpaRepository<TransactionRe
 
     List<TransactionRecord> findByUploadId(String uploadId);
 
+    Page<TransactionRecord> findByUploadId(String uploadId, Pageable pageable);
+
     // 用于跨账单撮合查找潜在匹配
     List<TransactionRecord> findByAmountAndTransactionTimeBetweenAndIsImportedTrue(BigDecimal amount, LocalDateTime start, LocalDateTime end);
 
@@ -25,4 +29,6 @@ public interface TransactionRecordRepository extends JpaRepository<TransactionRe
     boolean existsByCategory(Category category);
 
     List<TransactionRecord> findAllByAccount(Account account);
+
+    long countByAccount(Account account);
 }

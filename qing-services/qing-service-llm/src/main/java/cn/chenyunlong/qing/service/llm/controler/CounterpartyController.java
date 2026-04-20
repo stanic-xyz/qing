@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
 import cn.chenyunlong.qing.service.llm.dto.Result;
+import cn.chenyunlong.qing.service.llm.dto.counterpayty.CounterpartyCreateDto;
 import cn.chenyunlong.qing.service.llm.dto.counterpayty.CounterpartyUpdateDto;
 import cn.chenyunlong.qing.service.llm.entity.Category;
 import org.springframework.data.domain.PageRequest;
@@ -69,27 +70,33 @@ public class CounterpartyController {
     }
 
     @PostMapping
-    public Result<Counterparty> create(@RequestBody Counterparty counterparty) {
+    public Result<Counterparty> create(@RequestBody CounterpartyCreateDto dto) {
+        final Category category = dto.getDefaultCategoryId() != null
+                ? categoryRepository.findById(dto.getDefaultCategoryId()).orElse(null)
+                : null;
+
+        Counterparty counterparty = new Counterparty();
+        counterparty.setName(dto.getName());
+        counterparty.setType(dto.getType());
+        counterparty.setDefaultCategory(category);
+        counterparty.setRemark(dto.getRemark());
+        counterparty.setIsActive(dto.getIsActive());
+
         return Result.success(counterpartyRepository.save(counterparty));
     }
 
     @PutMapping("/{id}")
     public Result<Counterparty> update(@PathVariable Long id, @RequestBody CounterpartyUpdateDto counterparty) {
         Optional<Counterparty> counterpartyOptional = counterpartyRepository.findById(id);
-        String defaultCategory = counterparty.getDefaultCategory();
-        Category nameAndIsDeletedFalse;
-
-        // 当前分类不存在或者为空的时候分类设置为空
-        if (defaultCategory == null || defaultCategory.isEmpty()) {
-            nameAndIsDeletedFalse = null;
-        } else {
-            nameAndIsDeletedFalse = categoryRepository.findByNameAndIsDeletedFalse(defaultCategory);
-        }
+        final Long defaultCategoryId = counterparty.getDefaultCategoryId();
+        final Category category = defaultCategoryId != null
+                ? categoryRepository.findById(defaultCategoryId).orElse(null)
+                : null;
 
         return counterpartyOptional.map(existing -> {
             existing.setName(counterparty.getName());
             existing.setType(counterparty.getType());
-            existing.setDefaultCategory(nameAndIsDeletedFalse);
+            existing.setDefaultCategory(category);
             existing.setRemark(counterparty.getRemark());
             existing.setIsActive(counterparty.getIsActive());
             return Result.success(counterpartyRepository.save(existing));

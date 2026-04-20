@@ -85,6 +85,9 @@ public class TransactionRecord {
     // 关联的导入批次ID
     private String uploadId; // 关联的导入批次ID
 
+    // 批次号，用于标记同一批次处理的记录
+    private String batchNo;
+
     // 软删除标记
     private Boolean isDeleted = false; // 软删除标记
     // 修改标记

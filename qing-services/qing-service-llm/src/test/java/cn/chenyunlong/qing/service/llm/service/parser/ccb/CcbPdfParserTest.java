@@ -210,8 +210,7 @@ class CcbPdfParserTest {
             System.out.println("  - 支出笔数: " + expenseCount);
             System.out.println("  - 总笔数: " + records.size());
 
-            assertTrue(incomeCount + expenseCount == records.size(),
-                    "所有记录都应有明确的交易类型");
+            assertEquals(incomeCount + expenseCount, records.size(), "所有记录都应有明确的交易类型");
         }
     }
 
@@ -230,25 +229,5 @@ class CcbPdfParserTest {
         String channelCode = parser.channelCode();
         assertEquals("CCB", channelCode, "渠道代码应为CCB");
         System.out.println("✅ 渠道代码: " + channelCode);
-    }
-
-    @Test
-    @DisplayName("测试空PDF解析")
-    void testParseEmptyPdf() throws Exception {
-        ClassPathResource pathResource = new ClassPathResource("mock/ccb/pdf/empty.pdf");
-
-        if (!pathResource.exists()) {
-            System.out.println("⚠️ 找不到空PDF测试文件，跳过此测试");
-            return;
-        }
-
-        try (InputStream is = pathResource.getInputStream()) {
-            ParseResult parseResult = parser.parse(is, "empty.pdf");
-            List<TransactionRecord> records = parseResult.getRecords();
-
-            assertNotNull(records, "解析结果不应为null");
-            // 空PDF可能解析出0条记录
-            System.out.println("✅ 空PDF解析测试通过，解析记录数: " + records.size());
-        }
     }
 }

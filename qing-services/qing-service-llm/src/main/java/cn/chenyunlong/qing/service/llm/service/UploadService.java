@@ -5,7 +5,14 @@ import cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse;
 import cn.chenyunlong.qing.service.llm.dto.PreviewRecordDTO;
 import cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse;
 import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
+import cn.chenyunlong.qing.service.llm.dto.UploadBatchOverviewResponse;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.entity.UploadBatch;
+import cn.chenyunlong.qing.service.llm.enums.BatchStatusEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.entity.UploadFileRecord;
 import cn.chenyunlong.qing.service.llm.entity.Account;
@@ -15,6 +22,7 @@ import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.UploadFileRecordRepository;
+import cn.chenyunlong.qing.service.llm.repository.UploadBatchRepository;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
 import cn.chenyunlong.qing.service.llm.repository.ParserConfigRepository;
 import cn.chenyunlong.qing.service.llm.service.parser.DynamicFileParser;
@@ -31,13 +39,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class UploadService {
 
     @Resource
@@ -54,6 +66,9 @@ public class UploadService {
 
     @Resource
     private UploadFileRecordRepository uploadFileRepo;
+
+    @Resource
+    private UploadBatchRepository uploadBatchRepo;
 
     @Resource
     private ScriptExecutorFactory scriptExecutorFactory;
@@ -187,46 +202,169 @@ public class UploadService {
             fileRecord.setStartTime(minTime);
             fileRecord.setEndTime(maxTime);
             fileRecord.setTemplateVersion("v1");
+            fileRecord.setChannel(targetAccount.getChannel() != null ? targetAccount.getChannel().getCode() : null);
 
             UploadFileRecord savedRecord = uploadFileRepo.save(fileRecord);
             String finalUploadId = String.valueOf(savedRecord.getId());
 
+            // 统计收入/支出/转账数量
+            int incomeCount = 0;
+            int expenseCount = 0;
+            int transferCount = 0;
+            BigDecimal totalIncome = BigDecimal.ZERO;
+            BigDecimal totalExpense = BigDecimal.ZERO;
+
             for (TransactionRecord record : records) {
-                record.setSourceFile(originalFilename);
-                record.setUploadId(finalUploadId);
-                record.setAccount(targetAccount);
-                record.setChannel(targetAccount.getChannel());
-                record.setAccountName(targetAccount.getAccountName());
-                record.setAccountType(targetAccount.getAccountType());
-                record.setOriginalData(objectMapper.writeValueAsString(record));
-                record.setIsImported(false); // 关键：半成品隔离标记
+                if (record.getType() == TrasactionType.INCOME) {
+                    incomeCount++;
+                    if (record.getAmount() != null) {
+                        totalIncome = totalIncome.add(record.getAmount());
+                    }
+                } else if (record.getType() == TrasactionType.EXPENSE) {
+                    expenseCount++;
+                    if (record.getAmount() != null) {
+                        totalExpense = totalExpense.add(record.getAmount());
+                    }
+                } else if (record.getType() == TrasactionType.TRANSFER) {
+                    transferCount++;
+                }
+            }
+
+            // 按批次大小分组创建批次（默认200条一批）
+            int BATCH_SIZE = 200;
+            int batchIndex = 0;
+
+            // 按交易时间从远到近排序
+            records.sort(Comparator.comparing(
+                    r -> r.getTransactionTime() != null ? r.getTransactionTime() : LocalDateTime.MAX));
+
+            for (int i = 0; i < records.size(); i += BATCH_SIZE) {
+                int end = Math.min(i + BATCH_SIZE, records.size());
+                List<TransactionRecord> batchRecords = records.subList(i, end);
+
+                // 创建批次记录
+                UploadBatch batch = new UploadBatch();
+                batch.setUploadId(finalUploadId);
+                batch.setBatchNo(String.format("%s_batch_%d", finalUploadId, batchIndex));
+                batch.setStatus(BatchStatusEnum.PENDING);
+                batch.setTotalRecords(batchRecords.size());
+                batch.setMatchedRecords(0);
+                batch.setUnmatchedRecords(batchRecords.size());
+                batch.setSuspiciousRecords(0);
+                batch.setTransactionStartTime(batchRecords.get(0).getTransactionTime());
+                batch.setTransactionEndTime(batchRecords.get(batchRecords.size() - 1).getTransactionTime());
+                UploadBatch savedBatch = uploadBatchRepo.save(batch);
+                uploadBatchRepo.flush(); // 立即刷新到数据库
+                log.info("Created batch: uploadId={}, batchNo={}, totalRecords={}", finalUploadId, savedBatch.getBatchNo(), savedBatch.getTotalRecords());
+
+                // 设置每条记录的批次号
+                for (TransactionRecord record : batchRecords) {
+                    record.setSourceFile(originalFilename);
+                    record.setUploadId(finalUploadId);
+                    record.setBatchNo(batch.getBatchNo());
+                    record.setAccount(targetAccount);
+                    record.setChannel(targetAccount.getChannel());
+                    record.setAccountName(targetAccount.getAccountName());
+                    record.setAccountType(targetAccount.getAccountType());
+                    record.setOriginalData(objectMapper.writeValueAsString(record));
+                    record.setIsImported(false);
+                }
+                batchIndex++;
             }
 
             // 直接保存到数据库
             transactionRepo.saveAll(records);
 
-            List<PreviewRecordDTO> previewList = records.stream()
-                    .map(r -> PreviewRecordDTO.fromEntity(r, String.valueOf(r.getId())))
-                    .collect(Collectors.toList());
+            int batchCount = (records.size() + BATCH_SIZE - 1) / BATCH_SIZE;
 
             responses.add(UploadBatchPreviewResponse.builder()
                     .uploadId(finalUploadId)
                     .fileName(originalFilename)
                     .parsedCount(records.size())
-                    .previewRecords(previewList)
+                    .previewRecords(null)  // 不再返回明细，前端显示概览
                     .build());
         }
         return responses;
     }
 
-    public UploadPreview getPreviewData(String uploadId) {
-        List<TransactionRecord> records = transactionRepo.findByUploadId(uploadId);
-        List<PreviewRecordDTO> previewList = records.stream()
+    public UploadPreview getPreviewData(String uploadId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "transactionTime"));
+        Page<TransactionRecord> recordPage = transactionRepo.findByUploadId(uploadId, pageable);
+
+        // 获取上传文件记录的状态
+        UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
+        String status = fileRecord != null ? fileRecord.getStatus() : null;
+
+        List<PreviewRecordDTO> previewList = recordPage.getContent().stream()
                 .map(r -> PreviewRecordDTO.fromEntity(r, String.valueOf(r.getId())))
                 .collect(Collectors.toList());
+
         return UploadPreview.builder()
                 .uploadId(uploadId)
                 .previewRecords(previewList)
+                .totalCount(recordPage.getTotalElements())
+                .hasMore(recordPage.hasNext())
+                .status(status)
+                .build();
+    }
+
+    public UploadBatchOverviewResponse getBatchOverview(String uploadId) {
+        UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId))
+                .orElseThrow(() -> new RuntimeException("上传记录不存在"));
+
+        List<TransactionRecord> records = transactionRepo.findByUploadId(uploadId);
+        List<UploadBatch> batches = uploadBatchRepo.findByUploadIdOrderByBatchNoAsc(uploadId);
+
+        int incomeCount = 0;
+        int expenseCount = 0;
+        int transferCount = 0;
+        BigDecimal totalIncome = BigDecimal.ZERO;
+        BigDecimal totalExpense = BigDecimal.ZERO;
+        LocalDateTime minTime = null;
+        LocalDateTime maxTime = null;
+
+        for (TransactionRecord record : records) {
+            if (record.getType() == TrasactionType.INCOME) {
+                incomeCount++;
+                if (record.getAmount() != null) {
+                    totalIncome = totalIncome.add(record.getAmount());
+                }
+            } else if (record.getType() == TrasactionType.EXPENSE) {
+                expenseCount++;
+                if (record.getAmount() != null) {
+                    totalExpense = totalExpense.add(record.getAmount());
+                }
+            } else if (record.getType() == TrasactionType.TRANSFER) {
+                transferCount++;
+            }
+
+            if (record.getTransactionTime() != null) {
+                if (minTime == null || record.getTransactionTime().isBefore(minTime)) {
+                    minTime = record.getTransactionTime();
+                }
+                if (maxTime == null || record.getTransactionTime().isAfter(maxTime)) {
+                    maxTime = record.getTransactionTime();
+                }
+            }
+        }
+
+        Account account = records.isEmpty() ? null : records.get(0).getAccount();
+        String accountName = account != null ? account.getAccountName() : "未知账户";
+
+        return UploadBatchOverviewResponse.builder()
+                .uploadId(uploadId)
+                .fileName(fileRecord.getFileName())
+                .fileSize(fileRecord.getFileSize())
+                .totalRecords(records.size())
+                .incomeCount(incomeCount)
+                .expenseCount(expenseCount)
+                .transferCount(transferCount)
+                .totalIncome(totalIncome)
+                .totalExpense(totalExpense)
+                .transactionStartTime(minTime)
+                .transactionEndTime(maxTime)
+                .batchCount(batches.size())
+                .accountName(accountName)
                 .build();
     }
 

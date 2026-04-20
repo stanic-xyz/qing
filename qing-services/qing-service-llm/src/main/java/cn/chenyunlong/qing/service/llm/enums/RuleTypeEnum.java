@@ -4,15 +4,12 @@ import cn.chenyunlong.common.enums.CommonEnum;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum TrasactionType implements CommonEnum {
-    // 收入
-    INCOME(1, "收入"),
-    // 支出
-    EXPENSE(2, "支出"),
-    // 转账
-    TRANSFER(3, "转账"),
-    // 其他
-    OTHER(4, "其他");
+public enum RuleTypeEnum implements CommonEnum {
+    CHANNEL(1, "渠道匹配"),
+    MERCHANT(2, "商户匹配"),
+    COUNTERPARTY(3, "对手账户匹配"),
+    INTERNAL_TRANSFER(4, "内部转账匹配"),
+    CUSTOM(5, "自定义通用匹配");
 
     private final int code;
     private final String description;
