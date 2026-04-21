@@ -32,7 +32,6 @@ jobs:
   # ── 后端：编译 + 单元测试 ──────────────────────────────
   backend:
     name: Backend / Java 21
-    needs: commons
     runs-on: ubuntu-latest
 
     steps:
@@ -98,25 +97,3 @@ jobs:
           name: frontend-dist
           path: qing-frontend/finance-web/dist
           retention-days: 3
-
-  # ── 辅助模块：qing-support ────────────────────────────
-  commons:
-    name: Commons / qing-support
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: qing-support
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: 21
-          distribution: temurin
-          cache: maven
-
-      - name: Build & install
-        run: mvn install -B -q -DskipTests
