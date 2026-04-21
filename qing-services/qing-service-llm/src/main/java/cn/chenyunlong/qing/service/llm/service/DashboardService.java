@@ -1,7 +1,9 @@
 package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.qing.service.llm.entity.Account;
+import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.dto.DashboardStatsDto;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import lombok.Data;
@@ -11,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -375,5 +379,154 @@ public class DashboardService {
         private String accountType;
         private String bankName;
         private String balance;
+    }
+
+    // ======== DashboardStats 聚合方法 ========
+
+    /**
+     * 系统总资产 = 所有账户当前余额之和
+     */
+    public BigDecimal getTotalAssets() {
+        return accountRepository.findAll().stream()
+                .filter(a -> a.getCurrentBalance() != null)
+                .map(Account::getCurrentBalance)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    /**
+     * 近N天每日收支趋势
+     */
+    public List<DashboardStatsDto.DailyTrend> getDailyTrends(int days) {
+        LocalDate today = LocalDate.now();
+        List<DashboardStatsDto.DailyTrend> trends = new java.util.ArrayList<>();
+        for (int i = days - 1; i >= 0; i--) {
+            LocalDate date = today.minusDays(i);
+            String prefix = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDateTime start = date.atStartOfDay();
+            LocalDateTime end = date.plusDays(1).atStartOfDay();
+
+            List<TransactionRecord> dayRecords = transactionRecordRepository.findAll().stream()
+                    .filter(r -> r.getIsImported() != null && r.getIsImported())
+                    .filter(r -> r.getIsDeleted() == null || !r.getIsDeleted())
+                    .filter(r -> r.getTransactionTime() != null)
+                    .filter(r -> {
+                        LocalDateTime t = r.getTransactionTime();
+                        return !t.isBefore(start) && t.isBefore(end);
+                    })
+                    .collect(Collectors.toList());
+
+            BigDecimal income = BigDecimal.ZERO;
+            BigDecimal expense = BigDecimal.ZERO;
+            for (TransactionRecord r : dayRecords) {
+                if (r.getAmount() == null) continue;
+                if (r.getType() != null && "INCOME".equals(r.getType().name())) {
+                    income = income.add(r.getAmount());
+                } else if (r.getType() != null && "EXPENSE".equals(r.getType().name())) {
+                    expense = expense.add(r.getAmount());
+                }
+            }
+
+            DashboardStatsDto.DailyTrend t = new DashboardStatsDto.DailyTrend();
+            t.setDate(prefix);
+            t.setIncome(income);
+            t.setExpense(expense);
+            trends.add(t);
+        }
+        return trends;
+    }
+
+    /**
+     * 本月支出分类饼图数据
+     */
+    public List<DashboardStatsDto.CategoryPie> getCategoryPie(int year, int month) {
+        YearMonth ym = YearMonth.of(year, month);
+        String prefix = ym.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+        LocalDateTime start = ym.atDay(1).atStartOfDay();
+        LocalDateTime end = ym.plusMonths(1).atDay(1).atStartOfDay();
+
+        List<TransactionRecord> records = transactionRecordRepository.findAll().stream()
+                .filter(r -> r.getIsImported() != null && r.getIsImported())
+                .filter(r -> r.getIsDeleted() == null || !r.getIsDeleted())
+                .filter(r -> r.getTransactionTime() != null)
+                .filter(r -> r.getType() != null && "EXPENSE".equals(r.getType().name()))
+                .filter(r -> {
+                    LocalDateTime t = r.getTransactionTime();
+                    return !t.isBefore(start) && t.isBefore(end);
+                })
+                .collect(Collectors.toList());
+
+        Map<String, BigDecimal> categoryMap = new LinkedHashMap<>();
+        for (TransactionRecord r : records) {
+            if (r.getAmount() == null) continue;
+            String catName = (r.getCategory() != null && r.getCategory().getName() != null)
+                    ? r.getCategory().getName() : "未分类";
+            categoryMap.put(catName, categoryMap.getOrDefault(catName, BigDecimal.ZERO).add(r.getAmount()));
+        }
+
+        return categoryMap.entrySet().stream()
+                .sorted(Map.Entry.<String, BigDecimal>comparingByValue().reversed())
+                .map(e -> {
+                    DashboardStatsDto.CategoryPie p = new DashboardStatsDto.CategoryPie();
+                    p.setCategory(e.getKey());
+                    p.setValue(e.getValue());
+                    return p;
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 聚合 DashboardStats（供 /stats 接口使用）
+     */
+    public DashboardStatsDto getDashboardStats() {
+        YearMonth current = YearMonth.now();
+        int year = current.getYear();
+        int month = current.getMonthValue();
+
+        MonthlyOverview monthly = getMonthlyOverview(year, month);
+        List<DashboardStatsDto.DailyTrend> trends = getDailyTrends(30);
+        List<DashboardStatsDto.CategoryPie> categoryStructure = getCategoryPie(year, month);
+
+        // totalAssets
+        BigDecimal totalAssets = getTotalAssets();
+
+        // monthly income/expense from monthly overview (stored as String like "1234.56")
+        BigDecimal monthlyIncome = parseBd(monthly.getIncome());
+        BigDecimal monthlyExpense = parseBd(monthly.getExpense());
+        BigDecimal monthlyBalance = parseBd(monthly.getNetIncome());
+
+        // accounts
+        List<DashboardStatsDto.AccountBalanceDto> accounts = accountRepository.findAll().stream()
+                .filter(a -> a.getStatus() != null && "ACTIVE".equals(a.getStatus().name()))
+                .map(a -> {
+                    DashboardStatsDto.AccountBalanceDto dto = new DashboardStatsDto.AccountBalanceDto();
+                    dto.setId(a.getId());
+                    dto.setAccountName(a.getAccountName());
+                    dto.setBankName(a.getBankName());
+                    dto.setCardNumber(a.getCardNumber());
+                    dto.setCurrentBalance(a.getCurrentBalance() != null
+                            ? a.getCurrentBalance().setScale(2, RoundingMode.HALF_UP) : BigDecimal.ZERO);
+                    dto.setChannelIcon(a.getIcon());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        DashboardStatsDto stats = new DashboardStatsDto();
+        stats.setTotalAssets(totalAssets);
+        stats.setMonthlyIncome(monthlyIncome);
+        stats.setMonthlyExpense(monthlyExpense);
+        stats.setMonthlyBalance(monthlyBalance);
+        stats.setTrends(trends);
+        stats.setCategoryStructure(categoryStructure);
+        stats.setAccounts(accounts);
+        return stats;
+    }
+
+    private BigDecimal parseBd(String s) {
+        if (s == null || s.isEmpty()) return BigDecimal.ZERO;
+        try {
+            return new BigDecimal(s);
+        } catch (NumberFormatException e) {
+            return BigDecimal.ZERO;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
+import cn.chenyunlong.qing.service.llm.dto.DashboardStatsDto;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.service.DashboardService;
@@ -19,6 +20,15 @@ public class DashboardController {
 
     @Autowired
     private DashboardService dashboardService;
+
+    /**
+     * 全局看板聚合数据
+     * GET /api/finance/dashboard/stats
+     */
+    @GetMapping("/stats")
+    public Result<DashboardStatsDto> getStats() {
+        return Result.success(dashboardService.getDashboardStats());
+    }
 
     /**
      * 月度收支汇总 (按月统计收入/支出/笔数)
