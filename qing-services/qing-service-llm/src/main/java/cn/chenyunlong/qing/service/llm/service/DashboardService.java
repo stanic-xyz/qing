@@ -181,8 +181,8 @@ public class DashboardService {
         for (TransactionRecord r : records) {
             if (r.getAmount() == null) continue;
             String method;
-            if (r.getChannel() != null && r.getChannel().getChannelName() != null) {
-                method = r.getChannel().getChannelName();
+            if (r.getChannel() != null && r.getChannel().getName() != null) {
+                method = r.getChannel().getName();
             } else if (r.getAccount() != null && r.getAccount().getAccountName() != null) {
                 method = r.getAccount().getAccountName();
             } else {
@@ -301,8 +301,8 @@ public class DashboardService {
         // 频繁: 同一天超过 5 笔
         Map<String, Long> dayCount = records.stream()
                 .filter(r -> r.getTransactionTime() != null)
-                .collect(Collectors.grouping(
-                        r -> r.getTransactionTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                .collect(Collectors.groupingBy(
+                        (TransactionRecord r) -> r.getTransactionTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                         Collectors.counting()
                 ));
         Set<String> frequentDays = dayCount.entrySet().stream()
