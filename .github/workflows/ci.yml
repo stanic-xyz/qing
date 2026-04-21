@@ -37,9 +37,6 @@ jobs:
   backend:
     name: Backend / Java ${{ env.JAVA_VERSION }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: qing-services/qing-service-llm
 
     steps:
       - name: Checkout
@@ -53,10 +50,13 @@ jobs:
           cache: maven
 
       - name: Maven compile
-        run: mvn compile -B -q
+        run: |
+          mvn compile -B -q -pl qing-services/qing-service-llm -am
 
       - name: Maven test
-        run: mvn test -B -q -Dtest='*Test' -DfailIfNoTests=false
+        run: |
+          mvn test -B -q -Dtest='*Test' -DfailIfNoTests=false \
+            -pl qing-services/qing-service-llm -am
 
       - name: Upload test results
         if: always()
@@ -95,7 +95,7 @@ jobs:
         run: npm run build
 
       - name: Upload dist
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: frontend-dist
