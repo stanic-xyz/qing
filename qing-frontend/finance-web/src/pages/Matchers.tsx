@@ -1,8 +1,8 @@
 import React, {useEffect, useState, useMemo} from 'react';
 import axios from 'axios';
-import {Plus, Edit2, Trash2, Power, PowerOff, ArrowUpDown, ChevronDown, ChevronRight, Search} from 'lucide-react';
-import RuleBuilder from '../components/RuleBuilder';
-import TransactionSelector from '../components/TransactionSelector';
+import {Plus, Edit2, Trash2, Power, PowerOff, ArrowUpDown, ChevronDown, ChevronRight} from 'lucide-react';
+import RuleEditorModal from '../components/RuleEditorModal';
+import {getEnumText} from '../utils/enumMap';
 
 interface Counterparty {
     id: number;
@@ -29,6 +29,7 @@ interface Matcher {
 export default function Matchers() {
     const [matchers, setMatchers] = useState<Matcher[]>([]);
     const [counterparties, setCounterparties] = useState<Counterparty[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [editingMatcher, setEditingMatcher] = useState<Matcher | null>(null);
 
@@ -36,16 +37,32 @@ export default function Matchers() {
     const [sortField, setSortField] = useState<'priority' | 'matchCount' | 'successCount' | 'accuracy'>('priority');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-    // 测试沙盒相关
-    const [showTransactionSelector, setShowTransactionSelector] = useState(false);
-    const [testTransaction, setTestTransaction] = useState<any>(null);
-    const [testResult, setTestResult] = useState<any>(null);
-    const [testing, setTesting] = useState(false);
+    const fetchCategories = async () => {
+        try {
+            const res = await axios.get('/api/categories');
+            if (res.data.code === 200) {
+                const flatten = (arr: any[]): any[] => {
+                    let result: any[] = [];
+                    arr.forEach(c => {
+                        result.push(c);
+                        if (c.children && c.children.length > 0) {
+                            result = result.concat(flatten(c.children));
+                        }
+                    });
+                    return result;
+                };
+                setCategories(flatten(res.data.data || []));
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     useEffect(() => {
         console.info("counterparties", counterparties)
         fetchMatchers();
         fetchCounterparties();
+        fetchCategories();
     }, []);
 
     const fetchCounterparties = async () => {
@@ -119,22 +136,31 @@ export default function Matchers() {
         }
     };
 
-    const handleSave = async () => {
-        if (!editingMatcher?.name) {
-            alert('请填写规则名称');
-            return;
+    const getTargetDisplay = (m: Matcher) => {
+        if (m.targetType === 'CATEGORY') {
+            const cat = categories.find(c => c.id === m.targetId);
+            return {
+                badge: <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full whitespace-nowrap">分类规则</span>,
+                text: `分类: ${cat ? cat.name : m.targetId || '-'}`
+            };
         }
-        try {
-            if (editingMatcher.id) {
-                await axios.put(`/api/finance/matchers/${editingMatcher.id}`, editingMatcher); // Notice: assuming PUT mapping exists or POST handles both. Controller uses POST for save. Let's use POST.
-            } else {
-                await axios.post('/api/finance/matchers', editingMatcher);
+        if (m.targetType === 'COUNTERPARTY') {
+            const cp = counterparties.find(c => c.id === m.targetId);
+            if (cp?.type === 'MERCHANT') {
+                return {
+                    badge: <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full whitespace-nowrap">商户规则</span>,
+                    text: `商户: ${cp.name}`
+                };
             }
-            setShowModal(false);
-            fetchMatchers();
-        } catch (e) {
-            alert('保存失败');
+            return {
+                badge: <span className="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full whitespace-nowrap">交易对手规则</span>,
+                text: `交易对手: ${cp ? cp.name : m.targetId || '-'}`
+            };
         }
+        return {
+            badge: <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full whitespace-nowrap">全局规则</span>,
+            text: '全局'
+        };
     };
 
     const handleDelete = async (id: number) => {
@@ -176,30 +202,7 @@ export default function Matchers() {
                 isActive: true
             });
         }
-        setTestTransaction(null);
-        setTestResult(null);
         setShowModal(true);
-    };
-
-    const handleTestRule = async () => {
-        if (!testTransaction || !editingMatcher) return;
-        setTesting(true);
-        setTestResult(null);
-        try {
-            const res = await axios.post('/api/finance/matchers/test', {
-                transactionId: testTransaction.id,
-                matcher: editingMatcher
-            });
-            if (res.data.code === 200) {
-                setTestResult(res.data.data);
-            } else {
-                alert(res.data.message || '测试失败');
-            }
-        } catch (e) {
-            alert('接口请求失败');
-        } finally {
-            setTesting(false);
-        }
     };
 
     return (
@@ -217,6 +220,7 @@ export default function Matchers() {
                     <thead className="bg-gray-50">
                     <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">类型与目标</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100"
                             onClick={() => toggleSort('priority')}>
                             <div className="flex items-center">优先级 <ArrowUpDown size={12} className="ml-1"/></div>
@@ -241,11 +245,11 @@ export default function Matchers() {
                                 {/* 分组头 */}
                                 <tr className="bg-gray-100 cursor-pointer hover:bg-gray-200"
                                     onClick={() => toggleGroup(type)}>
-                                    <td colSpan={6}
+                                    <td colSpan={7}
                                         className="px-6 py-2 text-sm font-semibold text-gray-700 flex items-center">
                                         {isExpanded ? <ChevronDown size={16} className="mr-2"/> :
                                             <ChevronRight size={16} className="mr-2"/>}
-                                        {type} <span
+                                        {getEnumText('ruleTypeEnum', type)} <span
                                         className="ml-2 text-xs font-normal text-gray-500">({groupRules.length} 个规则)</span>
                                     </td>
                                 </tr>
@@ -260,6 +264,12 @@ export default function Matchers() {
                               className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${m.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
                             {m.isActive ? '已启用' : '已停用'}
                           </span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="flex flex-col gap-1">
+                                                    {getTargetDisplay(m).badge}
+                                                    <span className="text-xs text-gray-500">{getTargetDisplay(m).text}</span>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{m.priority}</td>
                                             <td className="px-6 py-4">
@@ -290,7 +300,7 @@ export default function Matchers() {
                     })}
                     {Object.keys(groupedMatchers).length === 0 && (
                         <tr>
-                            <td colSpan={6} className="px-6 py-10 text-center text-gray-500">暂无匹配规则</td>
+                            <td colSpan={7} className="px-6 py-10 text-center text-gray-500">暂无匹配规则</td>
                         </tr>
                     )}
                     </tbody>
@@ -298,206 +308,16 @@ export default function Matchers() {
             </div>
 
             {showModal && editingMatcher && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 w-full max-w-6xl max-h-[90vh] overflow-y-auto shadow-xl">
-                        <div className="flex justify-between items-center mb-6 border-b pb-3">
-                            <h3 className="text-xl font-bold">{editingMatcher.id ? '编辑积木式匹配规则' : '新增积木式匹配规则'}</h3>
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-6">
-                            {/* 左侧：基本配置 & 动作配置 */}
-                            <div className="col-span-2 space-y-6">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">规则类型</label>
-                                        <select
-                                            value={editingMatcher.ruleType || 'MERCHANT'}
-                                            onChange={(e) => setEditingMatcher({
-                                                ...editingMatcher,
-                                                ruleType: e.target.value
-                                            })}
-                                            className="w-full border-gray-300 rounded p-2 text-sm"
-                                        >
-                                            <option value="CHANNEL">渠道匹配</option>
-                                            <option value="MERCHANT">商户匹配</option>
-                                            <option value="COUNTERPARTY">对手账户匹配</option>
-                                            <option value="INTERNAL_TRANSFER">内部转账匹配</option>
-                                            <option value="CUSTOM">自定义通用匹配</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">规则名称
-                                            *</label>
-                                        <input type="text" value={editingMatcher.name || ''}
-                                               onChange={e => setEditingMatcher({
-                                                   ...editingMatcher,
-                                                   name: e.target.value
-                                               })} className="w-full border-gray-300 rounded p-2 text-sm"
-                                               placeholder="如：银联识别高德打车"/>
-                                    </div>
-                                    <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">规则描述</label>
-                                        <input type="text" value={editingMatcher.description || ''}
-                                               onChange={e => setEditingMatcher({
-                                                   ...editingMatcher,
-                                                   description: e.target.value
-                                               })} className="w-full border-gray-300 rounded p-2 text-sm"
-                                               placeholder="对该规则的简单描述"/>
-                                    </div>
-                                </div>
-
-                                <RuleBuilder
-                                    conditionNode={editingMatcher.conditionNode}
-                                    onChangeCondition={(node) => setEditingMatcher({
-                                        ...editingMatcher,
-                                        conditionNode: node
-                                    })}
-                                    actionNode={editingMatcher.actionNode}
-                                    onChangeAction={(actions) => setEditingMatcher({
-                                        ...editingMatcher,
-                                        actionNode: actions
-                                    })}
-                                />
-                            </div>
-
-                            {/* 右侧：属性 & 测试 */}
-                            <div className="col-span-1 space-y-6 border-l pl-6">
-                                <div className="space-y-4">
-                                    <h4 className="font-semibold text-gray-700 border-b pb-2">规则属性</h4>
-                                    <div className="text-sm">
-                                        <span
-                                            className="font-medium text-gray-700 block mb-1">所属目标 (多态绑定)</span>
-                                        {editingMatcher.targetType && editingMatcher.targetId ? (
-                                            <div
-                                                className="bg-gray-50 border border-gray-200 rounded px-3 py-2 flex items-center justify-between">
-                        <span className="text-blue-600 font-medium">
-                          {editingMatcher.targetType === 'COUNTERPARTY' ? '交易对手' :
-                              editingMatcher.targetType === 'CATEGORY' ? '分类' :
-                                  editingMatcher.targetType === 'ACCOUNT' ? '账户' : editingMatcher.targetType}
-                            (ID: {editingMatcher.targetId})
-                        </span>
-                                                <span className="text-xs text-gray-500 ml-2">(由各实体页面分配)</span>
-                                            </div>
-                                        ) : (
-                                            <div
-                                                className="bg-gray-50 border border-gray-200 rounded px-3 py-2 text-gray-500 italic">
-                                                全局通用规则 (未绑定特定实体)
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">优先级
-                                            (越大越优先)</label>
-                                        <input type="number" value={editingMatcher.priority || 0}
-                                               onChange={e => setEditingMatcher({
-                                                   ...editingMatcher,
-                                                   priority: parseInt(e.target.value)
-                                               })} className="w-full border-gray-300 rounded p-2 text-sm"/>
-                                    </div>
-                                    <div className="flex flex-col gap-2 pt-2">
-                                        <label className="flex items-center cursor-pointer">
-                                            <input type="checkbox" checked={editingMatcher.stopOnMatch}
-                                                   onChange={e => setEditingMatcher({
-                                                       ...editingMatcher,
-                                                       stopOnMatch: e.target.checked
-                                                   })} className="text-blue-600 rounded mr-2"/>
-                                            <span className="text-sm text-gray-700">命中后阻断 (阻止低优规则)</span>
-                                        </label>
-                                        <label className="flex items-center cursor-pointer">
-                                            <input type="checkbox" checked={editingMatcher.isActive}
-                                                   onChange={e => setEditingMatcher({
-                                                       ...editingMatcher,
-                                                       isActive: e.target.checked
-                                                   })} className="text-blue-600 rounded mr-2"/>
-                                            <span className="text-sm text-gray-700">启用规则</span>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div className="pt-4 border-t border-gray-200">
-                                    <h4 className="font-semibold text-gray-700 mb-2">沙盒测试</h4>
-                                    <div className="bg-gray-50 p-3 rounded border border-gray-200 mb-3">
-                                        {testTransaction ? (
-                                            <div className="text-sm space-y-1">
-                                                <div className="font-medium truncate"
-                                                     title={testTransaction.merchant || testTransaction.counterparty}>{testTransaction.merchant || testTransaction.counterparty || '无对手方'}</div>
-                                                <div className="text-gray-500 flex justify-between">
-                                                    <span>{testTransaction.transactionTime?.split(' ')[0]}</span>
-                                                    <span
-                                                        className="font-medium text-gray-900">{testTransaction.amount}</span>
-                                                </div>
-                                                <button onClick={() => setShowTransactionSelector(true)}
-                                                        className="text-blue-600 text-xs mt-2 hover:underline">重新选择
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <div className="text-center py-4">
-                                                <button onClick={() => setShowTransactionSelector(true)}
-                                                        className="text-blue-600 text-sm flex items-center justify-center w-full hover:underline">
-                                                    <Search className="w-4 h-4 mr-1"/> 选择一条流水进行测试
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <button
-                                        onClick={handleTestRule}
-                                        disabled={!testTransaction || testing}
-                                        className={`w-full py-2 rounded text-sm text-white ${!testTransaction || testing ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-800 hover:bg-gray-900'}`}
-                                    >
-                                        {testing ? '测试中...' : '运行测试'}
-                                    </button>
-
-                                    {testResult && (
-                                        <div
-                                            className={`mt-3 p-3 rounded text-sm ${testResult.matched ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
-                                            {testResult.matched ? (
-                                                <div>
-                                                    <p className="font-bold text-green-800 mb-2">✅ 匹配成功！</p>
-                                                    <div className="space-y-1 text-xs text-gray-700">
-                                                        <p>
-                                                            <strong>修改前:</strong> {testResult.originalRecord.type} | {testResult.originalRecord.category || '无分类'}
-                                                        </p>
-                                                        <p>
-                                                            <strong>修改后:</strong> {testResult.modifiedRecord.type} | {testResult.modifiedRecord.category || '无分类'}
-                                                        </p>
-                                                        {testResult.modifiedRecord.counterparty !== testResult.originalRecord.counterparty && (
-                                                            <p>
-                                                                <strong>新对手:</strong> {testResult.modifiedRecord.counterparty}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ) : (
-                                                <p className="font-bold text-red-800">❌ 未命中该规则</p>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="mt-8 flex justify-end space-x-3 border-t pt-4">
-                            <button onClick={() => setShowModal(false)}
-                                    className="px-5 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">取消
-                            </button>
-                            <button onClick={handleSave}
-                                    className="px-5 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">保存规则
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <RuleEditorModal
+                    rule={editingMatcher}
+                    onClose={() => setShowModal(false)}
+                    onSaved={() => {
+                        setShowModal(false);
+                        fetchMatchers();
+                    }}
+                />
             )}
 
-            <TransactionSelector
-                isOpen={showTransactionSelector}
-                onClose={() => setShowTransactionSelector(false)}
-                onSelect={(record) => {
-                    setTestTransaction(record);
-                    setShowTransactionSelector(false);
-                    setTestResult(null);
-                }}
-            />
         </div>
     );
 }

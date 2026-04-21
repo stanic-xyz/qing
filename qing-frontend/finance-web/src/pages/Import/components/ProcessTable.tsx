@@ -1,13 +1,13 @@
 // 重写版 ProcessTable：使用 Zustand store，prop 接口大幅简化
-import React, { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import axios from 'axios';
 import { Edit2, Loader2, Play, Check, Pin, FlaskConical } from 'lucide-react';
-import { useImportStore } from '../../../store/importStore';
+import { useImportStore } from '../../../store/importstore';
 import type { PreviewRecord } from '../types';
 
 interface ProcessTableProps {
   uploadId: string;
-  preview: { uploadId: string; previewRecords: PreviewRecord[] };
+  preview: { previewRecords: PreviewRecord[] };
   accounts: any[];
   selectedRuleIds: Set<number>;
   onImportSuccess: () => void;

@@ -1,3 +1,11 @@
+import { fetchAllEnums } from '../api/enumApi';
+
+interface CommonEnumVO {
+    code: number;
+    name: string;
+    desc: string;
+}
+
 export const EnumMap = {
     status: {
         SUCCESS: '成功',
@@ -24,11 +32,11 @@ export const EnumMap = {
         MANUAL: '手动记账'
     },
     matchStatus: {
-        ORIGINAL: '原始数据，未匹配',
-        AUTO_MATCHED: '自动精确匹配（正则完全命中提取出关键信息）',
-        INTERNAL_TRANSFER: '自动识别为内部转账',
-        MANUAL_EDITED: '手动修改过',
-        SUSPICIOUS: '存疑（模糊匹配或可能出错）'
+        ORIGINAL: '原始数据',
+        AUTO_MATCHED: '自动精确匹配',
+        INTERNAL_TRANSFER: '内部转账',
+        MANUAL_EDITED: '手动修改',
+        SUSPICIOUS: '存疑'
     },
     counterParty: {
         MERCHANT: '商户',
@@ -42,8 +50,45 @@ export const EnumMap = {
     }
 };
 
-export const getEnumText = (category: keyof typeof EnumMap, code: string) => {
-    if (!code) return '-';
-    const map = EnumMap[category];
-    return map[code as keyof typeof map] || code;
+// Dynamic enum cache loaded from backend
+// Structure: { matchStatus: { ORIGINAL: "原始数据", ... }, ... }
+let dynamicEnumMap: Record<string, Record<string, string>> = {};
+let enumCacheInitialized = false;
+
+export const initializeEnumCache = async () => {
+    if (enumCacheInitialized) return;
+    try {
+        const res = await fetchAllEnums();
+        if (res.data.data) {
+            // Transform { matchStatus: [{code, name, desc}, ...] }
+            // to { matchStatus: { ORIGINAL: "原始数据", ... } }
+            const enumData = res.data.data as Record<string, CommonEnumVO[]>;
+            for (const [key, enums] of Object.entries(enumData)) {
+                dynamicEnumMap[key] = {};
+                for (const item of enums) {
+                    dynamicEnumMap[key][item.name] = item.desc;
+                }
+            }
+            enumCacheInitialized = true;
+        }
+    } catch (e) {
+        console.error('Failed to load dynamic enums:', e);
+    }
 };
+
+export const getEnumText = (category: string, code: string) => {
+    if (!code) return '-';
+    // First check dynamic enums
+    if (dynamicEnumMap[category]) {
+        const val = dynamicEnumMap[category][code];
+        if (val) return val;
+    }
+    // Fallback to static EnumMap
+    const map = (EnumMap as any)[category];
+    if (map) {
+        return map[code] || code;
+    }
+    return code;
+};
+
+export { dynamicEnumMap };

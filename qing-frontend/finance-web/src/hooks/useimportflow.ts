@@ -8,13 +8,13 @@
 
 import { useState, useCallback } from 'react';
 import { importApi } from '@/api/import';
-import type { PreviewRecord, UploadBatchOverviewResponse } from '@/pages/Import/types';
+import type { PreviewRecord, UploadBatchOverview } from '@/pages/Import/types';
 
 export type ImportStep = 'idle' | 'uploading' | 'preview' | 'matching' | 'confirming' | 'done';
 
 export interface ImportFlowState {
   // 当前批次概览
-  overview: UploadBatchOverviewResponse | null;
+  overview: UploadBatchOverview | null;
   // 预览记录
   previewRecords: PreviewRecord[];
   // 分页
@@ -154,7 +154,7 @@ export function useImportFlow() {
     setState(s => ({ ...s, step: 'matching', matchStatus: 'processing' }));
 
     try {
-      const res = await importApi.startMatching(
+      await importApi.startMatching(
         state.overview.uploadId,
         Array.from(state.lockedTempIds)
       );

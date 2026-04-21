@@ -39,7 +39,36 @@ export interface UploadBatchPreviewResponse {
     uploadId: string;
     fileName: string;
     parsedCount: number;
-    previewRecords: PreviewRecord[];
+    previewRecords: PreviewRecord[] | null;  // null表示返回概览而非明细
+}
+
+export interface UploadBatchOverview {
+    uploadId: string;
+    fileName: string;
+    fileSize: number;
+    totalRecords: number;
+    incomeCount: number;
+    expenseCount: number;
+    transferCount: number;
+    totalIncome: number;
+    totalExpense: number;
+    transactionStartTime: string;
+    transactionEndTime: string;
+    batchCount: number;
+    accountName: string;
+}
+
+export interface UploadBatch {
+    id: number;
+    uploadId: string;
+    batchNo: string;
+    status: 'PENDING' | 'MATCHING' | 'COMPLETED';
+    totalRecords: number;
+    matchedRecords: number;
+    unmatchedRecords: number;
+    suspiciousRecords: number;
+    transactionStartTime: string;
+    transactionEndTime: string;
 }
 
 export interface ActiveRule {

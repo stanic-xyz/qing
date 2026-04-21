@@ -1,7 +1,8 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import {Plus, Edit2, Trash2, ChevronRight, ChevronDown, Link} from 'lucide-react';
+import {Plus, Edit2, Trash2, ChevronDown, ChevronRight, Link, Settings} from 'lucide-react';
 import RuleSelector from '../components/RuleSelector';
+import RuleManagementPanel from '../components/RuleManagementPanel';
 
 interface Category {
     id: number;
@@ -24,6 +25,8 @@ export default function Categories() {
     const [showRuleSelector, setShowRuleSelector] = useState(false);
     const [bindingItem, setBindingItem] = useState<Category | null>(null);
     const [boundRuleIds, setBoundRuleIds] = useState<number[]>([]);
+
+    const [showRulePanelFor, setShowRulePanelFor] = useState<Category | null>(null);
 
     // Form states
     const [formData, setFormData] = useState({
@@ -210,6 +213,10 @@ export default function Categories() {
                         {renderTypeTag(node.type)}
                     </div>
                     <div className="flex space-x-2">
+                        <button onClick={() => setShowRulePanelFor(node)}
+                                className="p-1 text-teal-600 hover:bg-teal-50 rounded" title="规则管理">
+                            <Settings size={16}/>
+                        </button>
                         <button onClick={() => handleBindRules(node)}
                                 className="p-1 text-purple-600 hover:bg-purple-50 rounded" title="绑定规则">
                             <Link size={16}/>
@@ -357,6 +364,26 @@ export default function Categories() {
                     initialSelectedIds={boundRuleIds}
                     targetType="CATEGORY"
                 />
+            )}
+            {showRulePanelFor && (
+                <div className="fixed inset-0 z-40 flex justify-end bg-black bg-opacity-30">
+                    <div className="w-[800px] h-full bg-white shadow-2xl p-6 overflow-y-auto animate-fade-in-right">
+                        <div className="flex justify-between items-center mb-6 border-b pb-4">
+                            <h2 className="text-xl font-bold text-gray-800">规则管理 - {showRulePanelFor.name}</h2>
+                            <button onClick={() => setShowRulePanelFor(null)} className="text-gray-500 hover:text-gray-800 font-medium text-lg">
+                                ✕
+                            </button>
+                        </div>
+                        <div className="h-[calc(100vh-120px)]">
+                            <RuleManagementPanel
+                                targetType="CATEGORY"
+                                targetId={showRulePanelFor.id}
+                                targetName={showRulePanelFor.name}
+                                onClose={() => setShowRulePanelFor(null)}
+                            />
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );

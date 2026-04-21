@@ -15,6 +15,12 @@ export default function Accounts() {
     const [calibratingAccount, setCalibratingAccount] = useState<any>(null);
     const [calibrateAmount, setCalibrateAmount] = useState<string>('');
 
+    // 删除账户相关状态
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deletingAccount, setDeletingAccount] = useState<any>(null);
+    const [transactionCount, setTransactionCount] = useState(0);
+    const [isDeleting, setIsDeleting] = useState(false);
+
     // 规则绑定相关状态
     const [showRuleSelector, setShowRuleSelector] = useState(false);
     const [bindingItem, setBindingItem] = useState<any>(null);
@@ -62,14 +68,39 @@ export default function Accounts() {
     };
 
     const handleDelete = async (id: number) => {
-        if (window.confirm('确认删除该账户吗？')) {
-            try {
-                await axios.delete(`/api/finance/accounts/${id}`);
-                await fetchAccounts();
-            } catch (e) {
-                console.error(e);
+        if (!window.confirm('确认删除该账户吗？')) {
+            return;
+        }
+        try {
+            // 先查询关联流水数量
+            const res = await axios.get(`/api/finance/accounts/${id}/transaction-count`);
+            const count = res.data.data || 0;
+            setTransactionCount(count);
+            const account = accounts.find((a: any) => a.id === id);
+            setDeletingAccount(account);
+            setShowDeleteModal(true);
+        } catch (e: any) {
+            // 如果查询失败（比如账户不存在），直接提示
+            if (e.response?.status === 404) {
+                alert('账户不存在');
+            } else {
                 alert('删除失败');
             }
+        }
+    };
+
+    const confirmDelete = async (cascade: boolean) => {
+        if (!deletingAccount) return;
+        setIsDeleting(true);
+        try {
+            await axios.delete(`/api/finance/accounts/${deletingAccount.id}?cascade=${cascade}`);
+            setShowDeleteModal(false);
+            setDeletingAccount(null);
+            await fetchAccounts();
+        } catch (e: any) {
+            alert('删除失败: ' + (e.response?.data?.message || e.message));
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -382,6 +413,94 @@ export default function Accounts() {
                     initialSelectedIds={boundRuleIds}
                     targetType="ACCOUNT"
                 />
+            )}
+
+            {/* 删除账户确认弹窗 */}
+            {showDeleteModal && deletingAccount && (
+                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-6 w-full max-w-lg">
+                        {/* 警告标题 */}
+                        <div className="flex items-center mb-4">
+                            <div className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mr-4">
+                                <span className="text-3xl">⚠️</span>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900">删除账户</h3>
+                                <p className="text-sm text-gray-500">此操作不可撤销</p>
+                            </div>
+                        </div>
+
+                        {/* 账户信息 */}
+                        <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                            <p className="font-medium text-gray-800">{deletingAccount.accountName}</p>
+                            <p className="text-sm text-gray-500">
+                                {deletingAccount.bankName || '无机构'} {deletingAccount.cardNumber ? `- ${deletingAccount.cardNumber}` : ''}
+                            </p>
+                        </div>
+
+                        {/* 关联流水警告 */}
+                        {transactionCount > 0 ? (
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                                <p className="text-amber-800 font-medium mb-2">
+                                    ⚠️ 该账户下有 <span className="text-xl font-bold">{transactionCount}</span> 条关联流水
+                                </p>
+                                <p className="text-amber-700 text-sm">
+                                    请选择删除方式：
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                                <p className="text-green-800 text-sm">
+                                    ✓ 该账户下暂无关联流水，可以安全删除
+                                </p>
+                            </div>
+                        )}
+
+                        {/* 操作按钮 */}
+                        <div className="space-y-3">
+                            {transactionCount > 0 ? (
+                                <>
+                                    <button
+                                        onClick={() => confirmDelete(false)}
+                                        disabled={isDeleting}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                                    >
+                                        仅删除账户（流水将保留但失去账户归属）
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            if (window.confirm('⚠️ 确认要同时删除账户和所有关联流水吗？此操作不可恢复！')) {
+                                                confirmDelete(true);
+                                            }
+                                        }}
+                                        disabled={isDeleting}
+                                        className="w-full px-4 py-3 bg-red-600 text-white rounded-md text-sm hover:bg-red-700 disabled:opacity-50"
+                                    >
+                                        同时删除账户和所有关联流水（危险）
+                                    </button>
+                                </>
+                            ) : (
+                                <button
+                                    onClick={() => confirmDelete(false)}
+                                    disabled={isDeleting}
+                                    className="w-full px-4 py-3 bg-red-600 text-white rounded-md text-sm hover:bg-red-700 disabled:opacity-50"
+                                >
+                                    {isDeleting ? '删除中...' : '确认删除'}
+                                </button>
+                            )}
+                            <button
+                                onClick={() => {
+                                    setShowDeleteModal(false);
+                                    setDeletingAccount(null);
+                                }}
+                                disabled={isDeleting}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                            >
+                                取消
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );
