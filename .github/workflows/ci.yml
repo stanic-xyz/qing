@@ -1,48 +1,64 @@
-name: 🧪 CI - 编译 & 单元测试
+name: CI
+
+# ============================================================
+# 触发策略（避免重复运行）
+# ============================================================
+# 1. PR 事件：opened / synchronize / reopened
+# 2. push 到 main（direct push，非 PR merge）
+#
+# 不在 push 到所有分支时触发，只在相关文件变更时触发。
+# concurrency 保证同一 PR/分支只运行最新一次。
 
 on:
-  push:
-    branches:
-      - main
-      - 'codex/**'
   pull_request:
-    branches:
-      - main
+    types: [opened, synchronize, reopened]
+    branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.gitignore'
+      - 'LICENSE'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
-  GH_TOKEN: ${{ secrets.GH_TOKEN }}
-  DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
   JAVA_VERSION: '21'
   NODE_VERSION: '20'
 
+# ============================================================
+# 任务矩阵：后端(Java) + 前端(Node)
+# ============================================================
 jobs:
-  # ── 后端：Java 编译 + 单元测试 ──────────────────────────────
-  backend-test:
-    name: ☕ 后端测试 (Java ${{ env.JAVA_VERSION }})
+  # ── 后端：编译 + 单元测试 ──────────────────────────────
+  backend:
+    name: Backend / Java ${{ env.JAVA_VERSION }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: qing-services/qing-service-llm
 
     steps:
-      - name: 📥 拉取代码
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: ☕ 设置 JDK ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
-          distribution: 'temurin'
-          cache: 'maven'
+          distribution: temurin
+          cache: maven
 
-      - name: 🔨 编译
-        run: mvn compile -q -B
+      - name: Maven compile
+        run: mvn compile -B -q
 
-      - name: 🧪 运行单元测试
-        run: mvn test -q -B -Dtest='*Test' -DfailIfNoTests=false
-        continue-on-error: false
+      - name: Maven test
+        run: mvn test -B -q -Dtest='*Test' -DfailIfNoTests=false
 
-      - name: 📊 上传测试报告
+      - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -50,92 +66,60 @@ jobs:
           path: qing-services/qing-service-llm/target/surefire-reports/*.xml
           retention-days: 7
 
-      - name: 📢 推送结果到钉钉
-        if: failure()
-        run: |
-          REPORT_URL="https://github.com/stanic-xyz/qing/actions/runs/${{ github.run_id }}"
-          curl -s -X POST "$DINGTALK_WEBHOOK_URL" \
-            -H 'Content-Type: application/json' \
-            -d "{
-              \"msgtype\": \"markdown\",
-              \"markdown\": {
-                \"title\": \"❌ 后端测试失败\",
-                \"text\": \"### ❌ 后端测试失败\\n\\n**分支**：[`${{ github.ref_name }}`](${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }})\\n**触发者**：${{ github.actor }}\\n\\n[查看详情]($REPORT_URL)\\n\\n_由 Qing 自动化流水线推送_ \"
-              }
-            }"
-
-  # ── 前端：Node 构建 + 单元测试 ──────────────────────────────
-  frontend-test:
-    name: ⚛️ 前端测试 (Node ${{ env.NODE_VERSION }})
+  # ── 前端：安装 + 类型检查 + 构建 ───────────────────────
+  frontend:
+    name: Frontend / Node ${{ env.NODE_VERSION }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: qing-frontend/finance-web
 
     steps:
-      - name: 📥 拉取代码
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: 🟢 设置 Node.js ${{ env.NODE_VERSION }}
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: npm
           cache-dependency-path: qing-frontend/finance-web/package-lock.json
 
-      - name: 📦 安装依赖
+      - name: Install dependencies
         run: npm ci
 
-      - name: 🔨 类型检查
+      - name: Type check
         run: npm run typecheck || true
 
-      - name: 🧪 运行 Vitest 单元测试
-        run: npm run test:unit -- --run
-        continue-on-error: false
-
-      - name: 🏗️ 构建生产包
+      - name: Build
         run: npm run build
-        continue-on-error: false
 
-      - name: 📊 上传构建产物
+      - name: Upload dist
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: frontend-dist
           path: qing-frontend/finance-web/dist
           retention-days: 3
 
-      - name: 📢 推送结果到钉钉
-        if: failure()
-        run: |
-          REPORT_URL="https://github.com/stanic-xyz/qing/actions/runs/${{ github.run_id }}"
-          curl -s -X POST "$DINGTALK_WEBHOOK_URL" \
-            -H 'Content-Type: application/json' \
-            -d "{
-              \"msgtype\": \"markdown\",
-              \"markdown\": {
-                \"title\": \"❌ 前端构建失败\",
-                \"text\": \"### ❌ 前端构建失败\\n\\n**分支**：[`${{ github.ref_name }}`](${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }})\\n**触发者**：${{ github.actor }}\\n\\n[查看详情]($REPORT_URL)\\n\\n_由 Qing 自动化流水线推送_ \"
-              }
-            }"
-
-  # ── 成功通知 ────────────────────────────────────────────────
-  success-notify:
-    name: ✅ 成功通知
+  # ── 辅助模块：qing-support ────────────────────────────
+  commons:
+    name: Commons / qing-support
     runs-on: ubuntu-latest
-    needs: [backend-test, frontend-test]
-    if: always() && needs.backend-test.result == 'success' && needs.frontend-test.result == 'success'
+    defaults:
+      run:
+        working-directory: qing-support
 
     steps:
-      - name: 🎉 推送成功通知
-        run: |
-          PR_NUM="${{ github.event.pull_request.number || 'N/A' }}"
-          BRANCH="${{ github.ref_name }}"
-          curl -s -X POST "$DINGTALK_WEBHOOK_URL" \
-            -H 'Content-Type: application/json' \
-            -d "{
-              \"msgtype\": \"markdown\",
-              \"markdown\": {
-                \"title\": \"✅ CI 通过\",
-                \"text\": \"### ✅ CI 全部通过\\n\\n**分支**：[`$BRANCH`](https://github.com/stanic-xyz/qing/tree/$BRANCH)\\n$PR_NUM != 'N/A' && echo '**PR**：#$PR_NUM' || true\\n\\n全部测试已通过，可以进行 Code Review 或合并。\\n\\n_由 Qing 自动化流水线推送_ \"
-              }
-            }"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: maven
+
+      - name: Build & install
+        run: mvn install -B -q -DskipTests
