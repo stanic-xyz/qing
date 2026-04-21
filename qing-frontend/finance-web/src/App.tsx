@@ -6,7 +6,6 @@ import Transactions from './pages/Transactions';
 import Accounts from './pages/Accounts';
 import ChannelAccountManager from './pages/ChannelAccountManager';
 import FundsFlowChart from './pages/FundsFlowChart';
-import TransactionTrace from './pages/TransactionTrace.tsx';
 import Categories from './pages/Categories';
 import Matchers from './pages/Matchers';
 import Counterparties from './pages/Counterparties';
@@ -19,7 +18,6 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="import" element={<Import />} />
           <Route path="transactions" element={<Transactions />} />
-          <Route path="transaction-compare" element={<TransactionTrace />} />
           <Route path="accounts" element={<Accounts />} />
           <Route path="channel-accounts" element={<ChannelAccountManager />} />
           <Route path="funds-flow" element={<FundsFlowChart />} />
