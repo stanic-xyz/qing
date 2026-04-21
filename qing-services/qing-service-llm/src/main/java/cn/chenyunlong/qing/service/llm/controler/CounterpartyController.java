@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
 import cn.chenyunlong.qing.service.llm.dto.Result;
+import cn.chenyunlong.qing.service.llm.dto.counterparty.CounterpartyResponseDto;
 import cn.chenyunlong.qing.service.llm.dto.counterpayty.CounterpartyCreateDto;
 import cn.chenyunlong.qing.service.llm.dto.counterpayty.CounterpartyUpdateDto;
 import cn.chenyunlong.qing.service.llm.entity.Category;
@@ -34,13 +35,35 @@ public class CounterpartyController {
     private CategoryRepository categoryRepository;
 
     @GetMapping
-    public Result<List<Counterparty>> getAll() {
-        return Result.success(counterpartyRepository.findAll());
+    public Result<List<CounterpartyResponseDto>> getAll() {
+        List<Counterparty> all = counterpartyRepository.findAll();
+        List<CounterpartyResponseDto> dtos = all.stream().map(cp -> {
+            CounterpartyResponseDto dto = new CounterpartyResponseDto();
+            dto.setId(cp.getId());
+            dto.setName(cp.getName());
+            dto.setType(cp.getType() != null ? cp.getType().name() : null);
+            dto.setDefaultCategoryName(cp.getDefaultCategory() != null ? cp.getDefaultCategory().getName() : null);
+            dto.setRemark(cp.getRemark());
+            dto.setIsActive(cp.getIsActive());
+            return dto;
+        }).toList();
+        return Result.success(dtos);
     }
 
     @GetMapping("/active")
-    public Result<List<Counterparty>> getActive() {
-        return Result.success(counterpartyRepository.findByIsActiveTrue());
+    public Result<List<CounterpartyResponseDto>> getActive() {
+        List<Counterparty> active = counterpartyRepository.findByIsActiveTrue();
+        List<CounterpartyResponseDto> dtos = active.stream().map(cp -> {
+            CounterpartyResponseDto dto = new CounterpartyResponseDto();
+            dto.setId(cp.getId());
+            dto.setName(cp.getName());
+            dto.setType(cp.getType() != null ? cp.getType().name() : null);
+            dto.setDefaultCategoryName(cp.getDefaultCategory() != null ? cp.getDefaultCategory().getName() : null);
+            dto.setRemark(cp.getRemark());
+            dto.setIsActive(cp.getIsActive());
+            return dto;
+        }).toList();
+        return Result.success(dtos);
     }
 
     @GetMapping("/search")

@@ -1,158 +1,138 @@
-import { useState, useEffect } from 'react';
+// 重新组织的 Import 主页面
+// 简化后：组件只负责 UI，数据通过 props 传入，状态通过 Zustand 管理
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { UploadCloud, FileText, Settings } from 'lucide-react';
+
 import UploadView from './components/UploadView';
 import ImportRecordList from './components/ImportRecordList';
 import RulesPanel from './components/RulesPanel';
 import ParserConfigDrawer from './components/ParserConfigDrawer';
-import type { Account, ActiveRule, PreviewRecord } from './types';
+import type { Account, ActiveRule } from './types';
 
-export default function Import() {
+export default function ImportPage() {
+  // ===== 基础数据 =====
   const [records, setRecords] = useState<any[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [activeRules, setActiveRules] = useState<ActiveRule[]>([]);
-  const [selectedRuleIds, setSelectedRuleIds] = useState<Set<number>>(new Set());
 
-  // 视图控制
+  // ===== 视图控制 =====
   const [isUploadView, setIsUploadView] = useState(false);
   const [showRulesPanel, setShowRulesPanel] = useState(false);
   const [showParserConfig, setShowParserConfig] = useState(false);
+
+  // ===== 展开状态 =====
   const [expandedUploadId, setExpandedUploadId] = useState<string | null>(null);
 
-  // 处理阶段共享状态
-  const [processPreview, setProcessPreview] = useState<{ uploadId: string; previewRecords: PreviewRecord[] } | null>(null);
-  const [isMatching, setIsMatching] = useState(false);
-  const [isImporting, setIsImporting] = useState(false);
-  const [modifiedRecords, setModifiedRecords] = useState<Record<string, any>>({});
-  const [lockedTempIds, setLockedTempIds] = useState<Set<string>>(new Set());
-  const [processStep, setProcessStep] = useState(1);
+  // ===== 选中规则 =====
+  const [selectedRuleIds, setSelectedRuleIds] = useState<Set<number>>(new Set());
 
-  useEffect(() => {
-    fetchUploads();
-    fetchAccounts();
-    fetchActiveRules();
+  // ===== 加载初始数据 =====
+  const fetchAll = useCallback(async () => {
+    const [uploadsRes, accountsRes, rulesRes] = await Promise.allSettled([
+      axios.get('/api/finance/uploads'),
+      axios.get('/api/finance/accounts'),
+      axios.get('/api/finance/matchers/active'),
+    ]);
+
+    if (uploadsRes.status === 'fulfilled') {
+      setRecords(uploadsRes.value.data?.data?.content || []);
+    }
+    if (accountsRes.status === 'fulfilled' && accountsRes.value.data?.code === 200) {
+      setAccounts(accountsRes.value.data?.data || []);
+    }
+    if (rulesRes.status === 'fulfilled' && rulesRes.value.data?.code === 200) {
+      setActiveRules(rulesRes.value.data?.data || []);
+    }
   }, []);
 
-  const fetchUploads = async () => {
+  useEffect(() => { fetchAll(); }, [fetchAll]);
+
+  // ===== 展开 =====
+  const handleToggleExpand = useCallback((uploadId: string) => {
+    setExpandedUploadId(prev => prev === uploadId ? null : uploadId);
+  }, []);
+
+  // ===== 删除 =====
+  const handleDeleteUpload = useCallback(async (id: number) => {
+    if (!window.confirm('确认删除该批次吗？此操作不可恢复。')) return;
     try {
-      const res = await axios.get('/api/finance/uploads');
-      setRecords(res.data.data.content || []);
-    } catch (e) {
-      console.error(e);
+      await axios.delete(`/api/finance/uploads/${id}?softDelete=false`);
+      setRecords(prev => prev.filter(r => r.id !== id));
+      if (expandedUploadId === String(id)) setExpandedUploadId(null);
+    } catch {
+      alert('删除失败');
     }
-  };
+  }, [expandedUploadId]);
 
-  const fetchAccounts = async () => {
-    try {
-      const res = await axios.get('/api/finance/accounts');
-      if (res.data.code === 200) {
-        setAccounts(res.data.data || []);
-      }
-    } catch (error) {
-      console.error('获取账户列表失败');
-    }
-  };
-
-  const fetchActiveRules = async () => {
-    try {
-      const res = await axios.get('/api/finance/matchers/active');
-      if (res.data.code === 200) {
-        setActiveRules(res.data.data || []);
-      }
-    } catch (error) {
-      console.error('获取规则失败');
-    }
-  };
-
-  const handleDeleteUpload = async (id: number) => {
-    if (window.confirm('确认撤销/删除该批次导入吗？该操作会将所有关联交易记录标记为删除。')) {
-      try {
-        await axios.delete(`/api/finance/uploads/${id}?softDelete=false`);
-        fetchUploads();
-        if (expandedUploadId === String(id)) {
-          setExpandedUploadId(null);
-        }
-      } catch (e) {
-        alert('删除失败');
-      }
-    }
-  };
-
-  const handleToggleExpand = async (uploadId: string) => {
-    if (expandedUploadId === uploadId) {
-      setExpandedUploadId(null);
-      return;
-    }
-
-    setExpandedUploadId(uploadId);
-    setProcessStep(1);
-    setModifiedRecords({});
-    setLockedTempIds(new Set());
-    setProcessPreview(null);
-
-    try {
-      const res = await axios.get(`/api/bills/preview/${uploadId}`);
-      setProcessPreview(res.data.data);
-    } catch (e) {
-      alert('获取预览数据失败');
-    }
-  };
-
-  const handleToggleRule = (id: number) => {
+  // ===== 规则切换 =====
+  const handleToggleRule = useCallback((id: number) => {
     setSelectedRuleIds(prev => {
       const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
+      next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
-  };
+  }, []);
 
+  // ===== 导入成功回调 =====
+  const handleImportSuccess = useCallback(() => {
+    setExpandedUploadId(null);
+    fetchAll();
+  }, [fetchAll]);
+
+  // ===== 渲染 =====
   return (
     <div className="flex flex-col h-full gap-6 pb-12 relative">
+
+      {/* 标题栏 */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">账单导入</h1>
-          <p className="mt-1 text-sm text-gray-500">支持多文件批量上传解析，并可随时断点续传执行智能匹配与入库</p>
+          <p className="mt-1 text-sm text-gray-500">
+            多文件批量上传解析，断点续传，智能匹配与入库
+          </p>
         </div>
+
         <div className="flex space-x-3">
           <button
             onClick={() => setShowParserConfig(true)}
-            className="flex items-center px-4 py-2 bg-white text-gray-700 rounded-md hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+            className="flex items-center px-4 py-2 bg-white text-gray-700 rounded-md border border-gray-200 hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
           >
             <Settings size={18} className="mr-2" />
             解析器配置
           </button>
+
           <button
-            onClick={() => setShowRulesPanel(!showRulesPanel)}
-            className={`flex items-center px-4 py-2 rounded-md shadow-sm cursor-pointer transition-colors border ${showRulesPanel ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'}`}
+            onClick={() => setShowRulesPanel(v => !v)}
+            className={`flex items-center px-4 py-2 rounded-md border shadow-sm cursor-pointer transition-colors ${
+              showRulesPanel
+                ? 'bg-blue-50 border-blue-200 text-blue-700'
+                : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+            }`}
           >
             <FileText size={18} className="mr-2" />
-            生效匹配规则 ({activeRules.length})
+            生效规则 ({activeRules.length})
           </button>
+
           {!isUploadView && (
             <button
               onClick={() => setIsUploadView(true)}
               className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 shadow-sm transition-colors cursor-pointer"
             >
-              <UploadCloud size={18} className="mr-2 cursor-pointer" />
+              <UploadCloud size={18} className="mr-2" />
               上传账单
             </button>
           )}
         </div>
       </div>
 
+      {/* 主内容 */}
       <div className="flex gap-6 items-start">
         <div className={`flex-1 transition-all ${showRulesPanel ? 'w-2/3' : 'w-full'}`}>
           {isUploadView ? (
             <UploadView
               accounts={accounts}
-              onClose={() => {
-                setIsUploadView(false);
-                fetchUploads();
-              }}
+              onClose={() => { setIsUploadView(false); fetchAll(); }}
             />
           ) : (
             <ImportRecordList
@@ -160,24 +140,9 @@ export default function Import() {
               expandedUploadId={expandedUploadId}
               onToggleExpand={handleToggleExpand}
               onDeleteUpload={handleDeleteUpload}
-              processPreview={processPreview}
-              setProcessPreview={setProcessPreview}
               accounts={accounts}
               selectedRuleIds={selectedRuleIds}
-              processStep={processStep}
-              setProcessStep={setProcessStep}
-              modifiedRecords={modifiedRecords}
-              setModifiedRecords={setModifiedRecords}
-              lockedTempIds={lockedTempIds}
-              setLockedTempIds={setLockedTempIds}
-              isMatching={isMatching}
-              setIsMatching={setIsMatching}
-              isImporting={isImporting}
-              setIsImporting={setIsImporting}
-              onImportSuccess={() => {
-                setExpandedUploadId(null);
-                fetchUploads();
-              }}
+              onImportSuccess={handleImportSuccess}
             />
           )}
         </div>
@@ -193,7 +158,10 @@ export default function Import() {
       </div>
 
       {showParserConfig && (
-        <ParserConfigDrawer isOpen={showParserConfig} onClose={() => setShowParserConfig(false)} />
+        <ParserConfigDrawer
+          isOpen={showParserConfig}
+          onClose={() => setShowParserConfig(false)}
+        />
       )}
     </div>
   );
