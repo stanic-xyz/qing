@@ -25,27 +25,24 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  JAVA_VERSION: '21'
-  NODE_VERSION: '20'
-
 # ============================================================
 # 任务矩阵：后端(Java) + 前端(Node)
 # ============================================================
 jobs:
   # ── 后端：编译 + 单元测试 ──────────────────────────────
   backend:
-    name: Backend / Java ${{ env.JAVA_VERSION }}
+    name: Backend / Java 21
+    needs: commons
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK ${{ env.JAVA_VERSION }}
+      - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
-          java-version: ${{ env.JAVA_VERSION }}
+          java-version: 21
           distribution: temurin
           cache: maven
 
@@ -68,7 +65,7 @@ jobs:
 
   # ── 前端：安装 + 类型检查 + 构建 ───────────────────────
   frontend:
-    name: Frontend / Node ${{ env.NODE_VERSION }}
+    name: Frontend / Node 22
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -78,10 +75,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js ${{ env.NODE_VERSION }}
+      - name: Set up Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 22
           cache: npm
           cache-dependency-path: qing-frontend/finance-web/package-lock.json
 
@@ -114,10 +111,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK ${{ env.JAVA_VERSION }}
+      - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
-          java-version: ${{ env.JAVA_VERSION }}
+          java-version: 21
           distribution: temurin
           cache: maven
 
