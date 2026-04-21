@@ -1,4 +1,13 @@
+import {useEffect, useState} from 'react';
+import axios from 'axios';
 import { Plus, Trash2 } from 'lucide-react';
+
+interface CategoryOption {
+  id: number;
+  name: string;
+  parentId: number | null;
+  level: number;
+}
 
 interface ConditionNode {
   operator?: 'AND' | 'OR' | string;
@@ -49,6 +58,18 @@ const ACTION_TYPES = [
 ];
 
 export default function RuleBuilder({ conditionNode, onChangeCondition, actionNode, onChangeAction }: RuleBuilderProps) {
+
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
+
+  useEffect(() => {
+    axios.get('/api/categories')
+      .then(res => {
+        if (res.data.code === 200) {
+          setCategories(res.data.data || []);
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   const renderConditionNode = (node: ConditionNode, path: number[]) => {
     if (node.operator === 'AND' || node.operator === 'OR') {
@@ -158,7 +179,7 @@ export default function RuleBuilder({ conditionNode, onChangeCondition, actionNo
   };
 
   const handleAddAction = () => {
-    onChangeAction([...actionNode, { actionType: 'SET_CATEGORY', value: '' }]);
+    onChangeAction([...actionNode, { actionType: 'SET_CATEGORY', value: null }]);
   };
 
   const handleUpdateAction = (index: number, action: ActionNode) => {
@@ -171,6 +192,51 @@ export default function RuleBuilder({ conditionNode, onChangeCondition, actionNo
     const newActions = [...actionNode];
     newActions.splice(index, 1);
     onChangeAction(newActions);
+  };
+
+  const renderActionValue = (action: ActionNode, index: number) => {
+    if (action.actionType === 'SET_CATEGORY') {
+      return (
+        <select
+          value={action.value ?? ''}
+          onChange={(e) => handleUpdateAction(index, {
+            ...action,
+            value: e.target.value ? Number(e.target.value) : null
+          })}
+          className="border border-gray-300 rounded px-2 py-1 text-sm flex-1"
+        >
+          <option value="">— 选择分类 —</option>
+          {categories.map(cat => (
+            <option key={cat.id} value={cat.id}>
+              {cat.level > 0 ? '\u00A0\u00A0└ ' : ''}{cat.name}
+            </option>
+          ))}
+        </select>
+      );
+    }
+    if (action.actionType === 'SET_TYPE') {
+      return (
+        <select
+          value={action.value || ''}
+          onChange={(e) => handleUpdateAction(index, { ...action, value: e.target.value })}
+          className="border border-gray-300 rounded px-2 py-1 text-sm flex-1"
+        >
+          <option value="">— 选择类型 —</option>
+          <option value="INCOME">收入 (INCOME)</option>
+          <option value="EXPENSE">支出 (EXPENSE)</option>
+          <option value="TRANSFER">转账 (TRANSFER)</option>
+        </select>
+      );
+    }
+    return (
+      <input
+        type="text"
+        value={action.value ?? ''}
+        onChange={(e) => handleUpdateAction(index, { ...action, value: e.target.value })}
+        placeholder="动作值 (如：餐饮美食 / 1)"
+        className="border border-gray-300 rounded px-2 py-1 text-sm flex-1"
+      />
+    );
   };
 
   return (
@@ -191,13 +257,7 @@ export default function RuleBuilder({ conditionNode, onChangeCondition, actionNo
             >
               {ACTION_TYPES.map(a => <option key={a.value} value={a.value}>{a.label}</option>)}
             </select>
-            <input
-              type="text"
-              value={action.value || ''}
-              onChange={(e) => handleUpdateAction(index, { ...action, value: e.target.value })}
-              placeholder="动作值 (如：餐饮美食 / TRANSFER / 1)"
-              className="border border-gray-300 rounded px-2 py-1 text-sm flex-1"
-            />
+            {renderActionValue(action, index)}
             <button onClick={() => handleRemoveAction(index)} className="text-red-500 hover:text-red-700">
               <Trash2 className="w-4 h-4" />
             </button>
