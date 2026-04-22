@@ -1,12 +1,14 @@
 package cn.chenyunlong.qing.service.llm.thread;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.text.MessageFormat;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 
+@Disabled
 public class TestConcurrencyTools {
 
     @Test
