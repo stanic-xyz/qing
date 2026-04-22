@@ -22,7 +22,7 @@ public class AlipayParserTest extends BaseParserTest {
     public void testParse() throws Exception {
         ClassPathResource pathResource = new ClassPathResource("mock/alipay/alipay_test.csv");
 
-        if (!pathResource.exists() && pathResource.isReadable()) {
+        if (!pathResource.exists() || !pathResource.isReadable()) {
             System.out.println("找不到指定的支付宝测试文件");
             return;
         }
