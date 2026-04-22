@@ -1,38 +1,38 @@
-package cn.chenyunlong.qing.service.llm.service.parser;
+﻿package cn.chenyunlong.qing.service.llm.service.parser;
 
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
-import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class QianjiParserTest extends BaseParserTest {
+public class CcbParserTest extends BaseParserTest {
 
     @Test
-    public void testParse() throws Exception {
-        if (!resourceExists("qianji/qianji_test.csv")) {
-            System.out.println("⚠️ 找不到钱迹测试文件: mock/qianji/qianji_test.csv");
-            System.out.println("  请将匿名化后的钱迹账单 CSV 文件放入 src/test/resources/mock/qianji/qianji_test.csv");
+    public void testParseExcel() throws Exception {
+        if (!resourceExists("ccb/excel/ccb_test.xls")) {
+            System.out.println("找不到建设银行测试文件: mock/ccb/excel/ccb_test.xls");
+            System.out.println("请将匿名化后的建设银行交易明细 XLS 文件放入 src/test/resources/mock/ccb/excel/ccb_test.xls");
             return;
         }
 
-        try (InputStream is = getResourceAsStream("qianji/qianji_test.csv")) {
-            QianjiParser parser = new QianjiParser();
-            ParseResult result = parser.parse(is, "qianji_test.csv");
+        try (InputStream is = getResourceAsStream("ccb/excel/ccb_test.xls")) {
+            CcbParser parser = new CcbParser();
+            ParseResult result = parser.parse(is, "ccb_test.xls");
             List<TransactionRecord> records = result.getRecords();
 
-            System.out.println("钱迹解析条数: " + records.size());
+            System.out.println("建设银行解析条数: " + records.size());
             assertFalse(records.isEmpty(), "解析结果不应为空");
             records.stream().limit(5).forEach(System.out::println);
 
-            TransactionRecord first = records.get(0);
+            TransactionRecord first = records.getFirst();
             assertNotNull(first.getTransactionTime(), "交易时间不应为空");
             assertNotNull(first.getAmount(), "金额不应为空");
             assertNotNull(first.getType(), "收支类型不应为空");
-            assertEquals("QIANJI", parser.channelCode());
+            assertEquals("CCB", parser.channelCode());
 
             long income = records.stream().filter(r -> "INCOME".equals(r.getType().name())).count();
             long expense = records.stream().filter(r -> "EXPENSE".equals(r.getType().name())).count();
