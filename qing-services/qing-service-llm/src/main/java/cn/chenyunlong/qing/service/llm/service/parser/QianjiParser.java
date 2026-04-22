@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 
@@ -56,18 +57,15 @@ public class QianjiParser extends BaseFileParser {
 
                     // 二级分类（对应 category）
                     String subCategory = line[3].trim();
-                    record.setCategory(subCategory);
+                    //record.setCategory(subCategory);
 
                     // 类型：支出/收入/转账
                     String typeStr = line[4].trim();
-                    if ("支出".equals(typeStr)) {
-                        record.setType(TrasactionType.EXPENSE);
-                    } else if ("收入".equals(typeStr)) {
-                        record.setType(TrasactionType.INCOME);
-                    } else if ("转账".equals(typeStr)) {
-                        record.setType(TrasactionType.TRANSFER);
-                    } else {
-                        record.setType(TrasactionType.OTHER);
+                    switch (typeStr) {
+                        case "支出" -> record.setType(TrasactionType.EXPENSE);
+                        case "收入" -> record.setType(TrasactionType.INCOME);
+                        case "转账" -> record.setType(TrasactionType.TRANSFER);
+                        default -> record.setType(TrasactionType.OTHER);
                     }
 
                     // 金额

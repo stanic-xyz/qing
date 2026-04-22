@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.service.llm.service.parser;
 import cn.chenyunlong.qing.service.llm.entity.Counterparty;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.FundTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
@@ -186,13 +187,13 @@ public class WechatParser extends BaseFileParser {
         return RecordRoleEnum.PRIMARY;
     }
 
-    private cn.chenyunlong.qing.service.llm.enums.FundTypeEnum deduceFundType(String paymentMethod) {
-        if (paymentMethod == null || paymentMethod.isEmpty()) return cn.chenyunlong.qing.service.llm.enums.FundTypeEnum.EXTERNAL;
+    protected FundTypeEnum deduceFundType(String paymentMethod) {
+        if (paymentMethod == null || paymentMethod.isEmpty()) return FundTypeEnum.EXTERNAL;
         String lower = paymentMethod.toLowerCase();
         if (lower.contains("零钱") || lower.contains("零钱通")) {
-            return cn.chenyunlong.qing.service.llm.enums.FundTypeEnum.INTERNAL;
+            return FundTypeEnum.INTERNAL;
         }
-        return cn.chenyunlong.qing.service.llm.enums.FundTypeEnum.EXTERNAL;
+        return FundTypeEnum.EXTERNAL;
     }
 
     private String mapCategory(String counterparty, String merchant, String direction) {

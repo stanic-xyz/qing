@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.service.llm.service.parser;
 import cn.chenyunlong.qing.service.llm.entity.Counterparty;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.FundTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -166,13 +168,13 @@ public class AlipayParser extends BaseFileParser {
         return RecordRoleEnum.PRIMARY;
     }
 
-    private cn.chenyunlong.qing.service.llm.enums.FundTypeEnum deduceFundType(String paymentMethod) {
-        if (paymentMethod == null || paymentMethod.isEmpty()) return cn.chenyunlong.qing.service.llm.enums.FundTypeEnum.EXTERNAL;
+    public FundTypeEnum deduceFundType(String paymentMethod) {
+        if (paymentMethod == null || paymentMethod.isEmpty()) return FundTypeEnum.EXTERNAL;
         String lower = paymentMethod.toLowerCase();
         if (lower.contains("余额") || lower.contains("零钱") || lower.contains("花呗")) {
-            return cn.chenyunlong.qing.service.llm.enums.FundTypeEnum.INTERNAL;
+            return FundTypeEnum.INTERNAL;
         }
-        return cn.chenyunlong.qing.service.llm.enums.FundTypeEnum.EXTERNAL;
+        return FundTypeEnum.EXTERNAL;
     }
 
     private String mapCategory(String merchant, String counterparty, String paymentMethod, String incomeExpense) {
