@@ -24,6 +24,9 @@ export const importApi = {
   startMatching: (uploadId: string, lockedTempIds?: string[]) =>
     api.post(`/uploads/${uploadId}/match`, { lockedTempIds }),
 
+  // 获取匹配状态
+  getMatchStatus: (uploadId: string) => api.get(`/uploads/${uploadId}/match/status`),
+
   // 确认导入
   confirmImport: (uploadId: string, confirmedTempIds?: string[], modifications?: any[]) =>
     api.post(`/uploads/${uploadId}/import`, { uploadId, confirmedTempIds, modifications }),

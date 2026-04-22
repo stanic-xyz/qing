@@ -1,7 +1,7 @@
 // store/importStore.ts
 // Zustand store 管理导入流程的全局状态
 import { create } from 'zustand';
-import type { PreviewRecord, UploadBatchOverviewResponse } from '@/pages/Import/types';
+import type { PreviewRecord, UploadBatchOverview } from '@/pages/Import/types';
 
 interface ImportFlowState {
   // 当前展开的 uploadId
@@ -9,7 +9,7 @@ interface ImportFlowState {
 
   // 各展开行的预览数据 (uploadId -> data)
   previewMap: Record<string, {
-    overview: UploadBatchOverviewResponse | null;
+    overview: UploadBatchOverview | null;
     previewRecords: PreviewRecord[];
     totalCount: number;
     hasMore: boolean;
@@ -28,7 +28,7 @@ interface ImportFlowState {
   // Actions
   setExpanded: (uploadId: string | null) => void;
   setPreview: (uploadId: string, data: {
-    overview: UploadBatchOverviewResponse | null;
+    overview: UploadBatchOverview | null;
     previewRecords: PreviewRecord[];
     totalCount: number;
     hasMore: boolean;

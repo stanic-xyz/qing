@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
 import {Loader2, UploadCloud, X} from 'lucide-react';
-import type {Account, ParserItem, UploadBatchPreviewResponse} from '../types';
+import type {Account, ParserItem, UploadBatchPreviewResponse, UploadBatchOverview} from '../types';
 
 interface UploadViewProps {
     accounts: Account[];
@@ -18,7 +18,15 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
 
     const [isUploading, setIsUploading] = useState(false);
     const [batchPreviews, setBatchPreviews] = useState<UploadBatchPreviewResponse[]>([]);
+    const [batchOverviews, setBatchOverviews] = useState<Map<string, UploadBatchOverview>>(new Map());
     const [activePreviewTab, setActivePreviewTab] = useState(0);
+
+    // Memoized current preview to avoid re-computation on each render
+    const currentPreview = useMemo(() => {
+        return batchPreviews.length > 0 && batchPreviews[activePreviewTab]
+            ? batchPreviews[activePreviewTab]
+            : null;
+    }, [batchPreviews, activePreviewTab]);
 
     useEffect(() => {
         (async () => {
@@ -47,9 +55,9 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
 
     useEffect(() => {
         const selectedAccount = accounts.find(a => a.id === accountId);
-        const activeChannelCode = selectedAccount?.channelDto?.code;
+        const activeChannelId = selectedAccount?.channelDto?.id;
 
-        let next = activeChannelCode ? parsers.filter(parserItem => parserItem.channel?.code === activeChannelCode) : [];
+        let next = activeChannelId ? parsers.filter(p => p.channel?.id === activeChannelId) : [];
 
         if (selectedFileTypes.size === 1) {
             const onlyType = Array.from(selectedFileTypes)[0];
@@ -96,8 +104,23 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
             const res = await axios.post('/api/bills/upload-batch', formData, {
                 headers: {'Content-Type': 'multipart/form-data'}
             });
-            setBatchPreviews(res.data.data || []);
+            const previews = res.data.data || [];
+            setBatchPreviews(previews);
             setActivePreviewTab(0);
+
+            // Fetch overview data for each uploaded file
+            const overviews = new Map<string, UploadBatchOverview>();
+            for (const preview of previews) {
+                try {
+                    const overviewRes = await axios.get(`/api/bills/batch/overview/${preview.uploadId}`);
+                    if (overviewRes.data?.data) {
+                        overviews.set(preview.uploadId, overviewRes.data.data);
+                    }
+                } catch (e) {
+                    console.error('Failed to fetch overview for', preview.uploadId, e);
+                }
+            }
+            setBatchOverviews(overviews);
         } catch (e: any) {
             console.error(e);
             alert('上传解析失败: ' + (e.response?.data?.message || e.message));
@@ -113,6 +136,10 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
             const next = [...batchPreviews];
             next.splice(index, 1);
             setBatchPreviews(next);
+            // Also remove from overviews map
+            const newOverviews = new Map(batchOverviews);
+            newOverviews.delete(uploadId);
+            setBatchOverviews(newOverviews);
             if (activePreviewTab >= next.length) setActivePreviewTab(Math.max(0, next.length - 1));
         } catch (e) {
             alert('舍弃失败');
@@ -154,9 +181,9 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
                                 className="w-full border-gray-300 rounded-md shadow-sm p-2.5 border focus:ring-blue-500 focus:border-blue-500"
                                 disabled={!accountId || filteredParsers.length === 0}
                             >
-                                {filteredParsers.map(parserItem => (
-                                    <option key={parserItem.id} value={parserItem.id}>
-                                        {parserItem.name} ({(parserItem.fileType || '').toUpperCase()}) {parserItem.isBuiltIn ? '(内置)' : '(自定义)'}
+                                {filteredParsers.map(p => (
+                                    <option key={p.id} value={p.id}>
+                                        {p.name} ({(p.fileType || '').toUpperCase()}) {p.isBuiltIn ? '(内置)' : '(自定义)'}
                                     </option>
                                 ))}
                             </select>
@@ -239,48 +266,77 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
                         </div>
                     </div>
 
-                    {batchPreviews.length > 0 && batchPreviews[activePreviewTab] && (
-                        <div className="overflow-auto border rounded-lg max-h-[500px]">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50 sticky top-0 z-10">
-                                <tr>
-                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">时间</th>
-                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">说明/对方</th>
-                                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">收支</th>
-                                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500">金额</th>
-                                </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-100">
-                                {batchPreviews[activePreviewTab].previewRecords.slice(0, 100).map(r => (
-                                    <tr key={r.tempId}>
-                                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600">{r.transactionTime}</td>
-                                        <td className="px-4 py-2 text-sm text-gray-900 truncate max-w-[200px]">{r.counterparty}</td>
-                                        <td className="px-4 py-2 whitespace-nowrap text-sm">{r.type}</td>
-                                        <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-medium">{r.amount}</td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
+                    {currentPreview && (
+                        <div className="border rounded-lg p-6 bg-gray-50">
+                            <div className="flex items-start mb-4">
+                                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mr-4">
+                                    <span className="text-green-600 text-xl">✓</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-medium text-gray-900">解析完成</h3>
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        文件：{batchOverviews.get(currentPreview.uploadId)?.fileName || currentPreview.fileName}
+                                        {batchOverviews.get(currentPreview.uploadId)?.fileSize && (
+                                            <span> | 大小：{(batchOverviews.get(currentPreview.uploadId)!.fileSize / 1024 / 1024).toFixed(2)} MB</span>
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="border-t border-gray-200 my-4 pt-4">
+                                <h4 className="text-sm font-medium text-gray-700 mb-3">解析统计</h4>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="bg-white rounded-lg p-4 border">
+                                        <p className="text-xs text-gray-500 mb-1">总收入</p>
+                                        <p className="text-lg font-semibold text-green-600">
+                                            +{batchOverviews.get(currentPreview.uploadId)?.totalIncome?.toLocaleString() || '0'}
+                                        </p>
+                                        <p className="text-xs text-gray-400 mt-1">
+                                            {batchOverviews.get(currentPreview.uploadId)?.incomeCount || 0} 笔
+                                        </p>
+                                    </div>
+                                    <div className="bg-white rounded-lg p-4 border">
+                                        <p className="text-xs text-gray-500 mb-1">总支出</p>
+                                        <p className="text-lg font-semibold text-red-600">
+                                            -{batchOverviews.get(currentPreview.uploadId)?.totalExpense?.toLocaleString() || '0'}
+                                        </p>
+                                        <p className="text-xs text-gray-400 mt-1">
+                                            {batchOverviews.get(currentPreview.uploadId)?.expenseCount || 0} 笔
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="mt-3 flex items-center text-sm text-gray-500">
+                                    <span className="mr-4">总交易笔数：{currentPreview.parsedCount} 条</span>
+                                    <span className="mr-4">转账：{batchOverviews.get(currentPreview.uploadId)?.transferCount || 0} 笔</span>
+                                    <span>账户：{batchOverviews.get(currentPreview.uploadId)?.accountName || '-'}</span>
+                                </div>
+                            </div>
+
+                            <div className="border-t border-gray-200 my-4 pt-4">
+                                <div className="flex items-center text-sm text-gray-500">
+                                    <span className="mr-6">批次信息：{batchOverviews.get(currentPreview.uploadId)?.batchCount || 0} 个批次</span>
+                                    {batchOverviews.get(currentPreview.uploadId)?.transactionStartTime && (
+                                        <span>时间范围：{new Date(batchOverviews.get(currentPreview.uploadId)!.transactionStartTime).toLocaleDateString()} ~ {new Date(batchOverviews.get(currentPreview.uploadId)!.transactionEndTime!).toLocaleDateString()}</span>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="mt-6 flex justify-end space-x-3">
+                                {currentPreview && (
+                                    <button
+                                        onClick={() => handleDiscardFile(currentPreview.uploadId, activePreviewTab)}
+                                        className="px-4 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50 text-sm"
+                                    >
+                                        舍弃此文件（解析错误）
+                                    </button>
+                                )}
+                                <button onClick={onClose}
+                                        className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
+                                    前往处理
+                                </button>
+                            </div>
                         </div>
                     )}
-
-                    <div className="mt-4 flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                        <span className="text-sm text-gray-500">仅展示前 100 条预览。如解析结果混乱，可舍弃该文件。</span>
-                        <div className="space-x-3">
-                            {batchPreviews.length > 0 && batchPreviews[activePreviewTab] && (
-                                <button
-                                    onClick={() => handleDiscardFile(batchPreviews[activePreviewTab].uploadId, activePreviewTab)}
-                                    className="px-4 py-2 border border-red-300 text-red-600 rounded-md hover:bg-red-50 text-sm"
-                                >
-                                    舍弃此文件（解析错误）
-                                </button>
-                            )}
-                            <button onClick={onClose}
-                                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
-                                保留结果并完成
-                            </button>
-                        </div>
-                    </div>
                 </div>
             )}
         </div>

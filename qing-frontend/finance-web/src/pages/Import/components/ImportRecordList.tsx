@@ -3,9 +3,8 @@ import React, { useEffect } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import axios from 'axios';
 import { getEnumText } from '../../../utils/enumMap';
-import { useImportStore } from '../../../store/importStore';
+import { useImportStore } from '../../../store/importstore';
 import ProcessTable from './ProcessTable';
-import type { PreviewRecord } from '../types';
 
 interface ImportRecordListProps {
   records: any[];
@@ -21,7 +20,7 @@ export default function ImportRecordList({
   records, expandedUploadId, onToggleExpand, onDeleteUpload,
   accounts, selectedRuleIds, onImportSuccess,
 }: ImportRecordListProps) {
-  const { setExpanded, previewMap, setPreview, rowStates, setRowState, resetRow } = useImportStore();
+  const { previewMap, setPreview, rowStates, setRowState, resetRow } = useImportStore();
 
   // 展开时加载预览
   useEffect(() => {

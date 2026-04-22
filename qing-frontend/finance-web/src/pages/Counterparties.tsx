@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Plus, Edit2, Trash2, Power, PowerOff, Link } from 'lucide-react';
+import { Plus, Edit2, Trash2, Power, PowerOff, Link, Settings } from 'lucide-react';
 import RuleSelector from '../components/RuleSelector';
+import RuleManagementPanel from '../components/RuleManagementPanel';
+import CategorySelect from '../components/CategorySelect';
 
 interface Counterparty {
   id: number;
   name: string;
   type: string;
-  defaultCategory: string;
+  defaultCategory: { id: number; name: string } | null;
   remark: string;
   isActive: boolean;
 }
@@ -21,6 +23,8 @@ export default function Counterparties() {
   const [showRuleSelector, setShowRuleSelector] = useState(false);
   const [bindingItem, setBindingItem] = useState<Counterparty | null>(null);
   const [boundRuleIds, setBoundRuleIds] = useState<number[]>([]);
+
+  const [showRulePanelFor, setShowRulePanelFor] = useState<Counterparty | null>(null);
 
   useEffect(() => {
     fetchCounterparties();
@@ -43,13 +47,16 @@ export default function Counterparties() {
       return;
     }
     try {
+      const payload = {
+        name: editingItem.name,
+        type: editingItem.type,
+        defaultCategoryId: editingItem.defaultCategory?.id || null,
+        remark: editingItem.remark || null
+      };
       if (editingItem.id) {
-        await axios.put(`/api/finance/counterparties/${editingItem.id}`, editingItem);
+        await axios.put(`/api/finance/counterparties/${editingItem.id}`, { ...payload, id: editingItem.id, isActive: editingItem.isActive });
       } else {
-        await axios.post('/api/finance/counterparties', {
-          ...editingItem,
-          isActive: true
-        });
+        await axios.post('/api/finance/counterparties', { ...payload, isActive: true });
       }
       setShowModal(false);
       fetchCounterparties();
@@ -86,9 +93,12 @@ export default function Counterparties() {
 
   const openModal = (item?: Counterparty) => {
     if (item) {
-      setEditingItem(item);
+      setEditingItem({
+        ...item,
+        defaultCategory: item.defaultCategory ? { id: item.defaultCategory.id, name: item.defaultCategory.name } : null
+      });
     } else {
-      setEditingItem({ type: 'MERCHANT' });
+      setEditingItem({ type: 'MERCHANT', defaultCategory: null });
     }
     setShowModal(true);
   };
@@ -115,7 +125,7 @@ export default function Counterparties() {
       const res = await axios.get('/api/finance/matchers');
       if (res.data.code === 200) {
         const allMatchers = res.data.data || [];
-        
+
         const toUnbind = allMatchers.filter((m: any) => m.targetType === 'COUNTERPARTY' && m.targetId === bindingItem.id && !ruleIds.includes(m.id));
         const toBind = allMatchers.filter((m: any) => ruleIds.includes(m.id) && !(m.targetType === 'COUNTERPARTY' && m.targetId === bindingItem.id));
 
@@ -175,10 +185,11 @@ export default function Counterparties() {
                 </td>
                 <td className="px-6 py-4 font-medium text-gray-900">{m.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{m.type === 'MERCHANT' ? '商户' : m.type === 'INDIVIDUAL' ? '个人' : m.type === 'CORPORATE' ? '企业' : m.type}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{m.defaultCategory || '-'}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{m.defaultCategory?.name || '-'}</td>
                 <td className="px-6 py-4 text-gray-500">{m.remark || '-'}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex space-x-3">
+                    <button onClick={() => setShowRulePanelFor(m)} className="text-teal-600 hover:text-teal-900" title="规则管理"><Settings className="w-4 h-4" /></button>
                     <button onClick={() => handleBindRules(m)} className="text-purple-600 hover:text-purple-900" title="绑定规则"><Link className="w-4 h-4" /></button>
                     <button onClick={() => openModal(m)} className="text-blue-600 hover:text-blue-900"><Edit2 className="w-4 h-4" /></button>
                     <button onClick={() => handleToggleStatus(m)} className="text-yellow-600 hover:text-yellow-900">
@@ -226,13 +237,13 @@ export default function Counterparties() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">默认分类</label>
-                <input
-                  type="text"
-                  value={editingItem?.defaultCategory || ''}
-                  onChange={(e) => setEditingItem({ ...editingItem, defaultCategory: e.target.value })}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
-                  placeholder="例如: 餐饮美食"
+                <label className="block text-sm font-medium text-gray-700 mb-1">默认分类</label>
+                <CategorySelect
+                  value={editingItem?.defaultCategory?.id?.toString() || ''}
+                  onChange={(value) => setEditingItem({
+                    ...editingItem,
+                    defaultCategory: value ? { id: Number(value), name: '' } : null
+                  })}
                 />
               </div>
               <div>
@@ -271,6 +282,27 @@ export default function Counterparties() {
           initialSelectedIds={boundRuleIds}
           targetType="COUNTERPARTY"
         />
+      )}
+
+      {showRulePanelFor && (
+        <div className="fixed inset-0 z-40 flex justify-end bg-black bg-opacity-30">
+          <div className="w-[800px] h-full bg-white shadow-2xl p-6 overflow-y-auto animate-fade-in-right">
+            <div className="flex justify-between items-center mb-6 border-b pb-4">
+              <h2 className="text-xl font-bold text-gray-800">规则管理 - {showRulePanelFor.name}</h2>
+              <button onClick={() => setShowRulePanelFor(null)} className="text-gray-500 hover:text-gray-800 font-medium text-lg">
+                ✕
+              </button>
+            </div>
+            <div className="h-[calc(100vh-120px)]">
+              <RuleManagementPanel
+                targetType="COUNTERPARTY"
+                targetId={showRulePanelFor.id}
+                targetName={showRulePanelFor.name}
+                onClose={() => setShowRulePanelFor(null)}
+              />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

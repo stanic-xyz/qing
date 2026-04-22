@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 import {getEnumText} from '../utils/enumMap';
 import ChannelAccountCascader from '../components/ChannelAccountCascader';
@@ -35,6 +35,9 @@ export default function Transactions() {
     // 编辑弹窗状态
     const [editingRecord, setEditingRecord] = useState<any>(null);
 
+    // 表格容器 ref，用于分页后滚动到表格顶部
+    const tableRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         fetchTransactions();
     }, [page, size, sortField, sortDirection]); // 分页和排序改变时自动请求
@@ -61,6 +64,9 @@ export default function Transactions() {
             setTransactions(res.data.data.content || []);
             setTotalElements(res.data.data.page.totalElements || 0);
             setTotalPages(res.data.data.page.totalPages || 0);
+
+            // 滚动到表格顶部
+            tableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } catch (e) {
             console.error(e);
         }
@@ -107,9 +113,7 @@ export default function Transactions() {
         setPage(0);
         setSortField('transactionTime');
         setSortDirection('DESC');
-        setTimeout(() => {
-            fetchTransactions();
-        }, 0);
+        // useEffect 会自动在 page/sortField/sortDirection 变化时触发查询
     };
 
     const handleSort = (field: string) => {
@@ -268,7 +272,7 @@ export default function Transactions() {
 
             {/* 数据表格 */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 flex-1 flex flex-col overflow-hidden">
-                <div className="overflow-x-auto flex-1">
+                <div ref={tableRef} className="overflow-x-auto flex-1">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50 sticky top-0">
                         <tr>
@@ -278,8 +282,6 @@ export default function Transactions() {
                             >
                                 时间 {renderSortIcon('transactionTime')}
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">渠道</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">账户</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">类型</th>
                             <th
                                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
@@ -287,10 +289,11 @@ export default function Transactions() {
                             >
                                 金额 {renderSortIcon('amount')}
                             </th>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">账户</th>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">渠道</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">对方</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品/说明</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">备注</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">匹配状态</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
                         </tr>
@@ -300,46 +303,58 @@ export default function Transactions() {
                             <React.Fragment key={t.id}>
                             <tr className="hover:bg-gray-50">
                                 <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{t.transactionTime}</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{getEnumText('channel', t.channel?.name)}</td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{t.accountName || '-'}</td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm">
-                    <span
-                        className={t.type === 'INCOME' ? 'text-green-600 font-medium' : t.type === 'EXPENSE' ? 'text-red-600 font-medium' : 'text-gray-600'}>
-                      {getEnumText('type', t.type)}
-                    </span>
+                                    <span
+                                        className={t.type === 'INCOME' ? 'text-green-600 font-medium' : t.type === 'EXPENSE' ? 'text-red-600 font-medium' : 'text-gray-600'}>
+                                      {getEnumText('type', t.type)}
+                                    </span>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900">
                                     {t.amount}
                                 </td>
-                                <td className="px-4 py-3 text-sm text-gray-500 max-w-37.5 truncate"
-                                    title={t.counterparty?.remark}>
-                                    [{getEnumText('counterParty', t.counterparty?.type)}]{t.counterparty?.name || '-'}
+                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{t.accountName || '-'}</td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{getEnumText('channel', t.channel?.name)}</td>
+                                <td className="px-4 py-3 text-sm text-gray-500 max-w-xs truncate relative group">
+                                    {t.counterparty ? (
+                                        <>
+                                            <span className="cursor-help">{t.counterparty?.type ? `[${getEnumText('counterParty', t.counterparty?.type)}]` : ''}{t.counterparty?.name || ''}</span>
+                                            <div className="absolute left-0 top-full mt-1 p-2 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 min-w-48 text-xs">
+                                                <div className="font-medium text-gray-700 mb-1">{t.counterparty?.name || '-'}</div>
+                                                <div className="text-gray-500">类型：{getEnumText('counterParty', t.counterparty?.type) || '-'}</div>
+                                                {t.counterparty?.remark && <div className="text-gray-500 mt-1">备注：{t.counterparty.remark}</div>}
+                                            </div>
+                                        </>
+                                    ) : '-'}
                                 </td>
-                                <td className="px-4 py-3 text-sm text-gray-500 max-w-37.5 truncate" title={t.merchant}>
+                                <td className="px-4 py-3 text-sm text-gray-500 max-w-xs truncate" title={t.merchant}>
                                     {t.merchant || '-'}
                                 </td>
-                                <td className="px-4 py-3 text-sm text-gray-500 max-w-37.5 truncate" title={t.remark}>
+                                <td className="px-4 py-3 text-sm text-gray-500 max-w-xs truncate" title={t.remark}>
                                     {t.remark || '-'}
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        t.status === 'SUCCESS' ? 'bg-green-100 text-green-800' :
-                            t.status === 'FAILED' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {getEnumText('status', t.status)}
-                    </span>
-                                </td>
-                                <td className="px-4 py-3 whitespace-nowrap text-sm">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        t.status === 'ORIGINAL' ? 'bg-green-100 text-green-800' :
-                            t.status === 'AUTO_MATCHED' ? 'bg-green-500 text-red-800' : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {getEnumText('matchStatus', t.matchStatus)}
-                    </span>
+                                    <span className={`px-2 inline-flex items-center gap-1 text-xs leading-5 font-semibold rounded-full ${
+                                        t.matchStatus === 'ORIGINAL' ? 'bg-gray-100 text-gray-700' :
+                                        t.matchStatus === 'AUTO_MATCHED' ? 'bg-green-100 text-green-700' :
+                                        t.matchStatus === 'INTERNAL_TRANSFER' ? 'bg-blue-100 text-blue-700' :
+                                        t.matchStatus === 'MANUAL_EDITED' ? 'bg-yellow-100 text-yellow-700' :
+                                        t.matchStatus === 'SUSPICIOUS' ? 'bg-orange-100 text-orange-700' :
+                                        'bg-gray-100 text-gray-700'
+                                    }`}>
+                                        {t.matchStatus === 'ORIGINAL' && '●'}
+                                        {t.matchStatus === 'AUTO_MATCHED' && '✓'}
+                                        {t.matchStatus === 'INTERNAL_TRANSFER' && '↔'}
+                                        {t.matchStatus === 'MANUAL_EDITED' && '✎'}
+                                        {t.matchStatus === 'SUSPICIOUS' && '⚠'}
+                                        {getEnumText('matchStatus', t.matchStatus)}
+                                    </span>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
                                     <button onClick={() => handleExpandTrace(t)}
-                                            className="text-indigo-600 hover:text-indigo-900 mr-3">展开轨迹
+                                            className="text-indigo-600 hover:text-indigo-900 mr-3">
+                                        {
+                                            expandedTraceId === t.id ? '关闭轨迹' : '展开轨迹'
+                                        }
                                     </button>
                                     <button onClick={() => setEditingRecord({...t})}
                                             className="text-blue-600 hover:text-blue-900 mr-3">编辑
@@ -351,7 +366,7 @@ export default function Transactions() {
                             </tr>
                             {expandedTraceId === t.id && (
                                 <tr className="bg-indigo-50 border-t border-b border-indigo-100">
-                                    <td colSpan={11} className="px-6 py-4">
+                                    <td colSpan={10} className="px-6 py-4">
                                         <div className="mb-4">
                                             <h4 className="text-sm font-bold text-indigo-800 mb-2">资金流动与关联溯源流水</h4>
                                             {loadingTrace ? (
