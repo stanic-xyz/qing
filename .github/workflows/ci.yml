@@ -12,9 +12,9 @@ name: CI
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [main]
+    branches: [main,actions]
   push:
-    branches: [main]
+    branches: [main,actions]
     paths-ignore:
       - '**.md'
       - 'docs/**'
@@ -51,7 +51,7 @@ jobs:
 
       - name: Maven test
         run: |
-          mvn test -B -q -Dtest='*Test' -DfailIfNoTests=false \
+          mvn test -B -q -DfailIfNoTests=false \
             -pl qing-services/qing-service-llm -am
 
       - name: Upload test results

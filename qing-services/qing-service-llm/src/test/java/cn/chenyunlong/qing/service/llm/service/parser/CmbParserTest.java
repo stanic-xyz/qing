@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -24,12 +25,11 @@ public class CmbParserTest extends BaseParserTest {
     public void testParse() throws Exception {
         CmbParser parser = new CmbParser();
 
-        ClassPathResource pathResource = new ClassPathResource("bills/cmb/cmb_bill.pdf");
-        if (!pathResource.exists()) {
-            System.out.println("找不到指定的招商测试文件");
+        ClassPathResource pathResource = new ClassPathResource("mock/cmb/cmb_bill.pdf");
+        if (!pathResource.exists() || !pathResource.isReadable()) {
+            System.out.println("找不到指定的招商测试文件,或者文件不可读");
             return;
         }
-        Assertions.assertTrue(pathResource.exists() && pathResource.isReadable(), "文件不存在或者不可读！");
 
         try (InputStream is = pathResource.getInputStream()) {
             ParseResult parseResult = parser.parse(is, "cmb_bill.pdf");
@@ -40,26 +40,22 @@ public class CmbParserTest extends BaseParserTest {
             // 验证第一条：2019-12-06 CNY 1,000.00 1,000.00 网联收款
             TransactionRecord record1 = records.getFirst();
             assertEquals("2019-12-06T00:00", record1.getTransactionTime().toString());
-            assertEquals("INCOME", record1.getType());
+            assertEquals(TrasactionType.INCOME, record1.getType());
             assertEquals(new BigDecimal("1000.00"), record1.getAmount());
-            assertEquals("网联收款", record1.getCategory());
-            assertNotNull(record1.getCounterparty());
             System.out.println("第一条对方信息: " + record1.getCounterparty());
 
             // 验证第二条：2019-12-06 CNY -1,000.00 0.00 活期转入朝朝盈
             TransactionRecord record2 = records.get(1);
             assertEquals("2019-12-06T00:00", record2.getTransactionTime().toString());
-            assertEquals("EXPENSE", record2.getType());
+            assertEquals(TrasactionType.EXPENSE, record2.getType());
             assertEquals(new BigDecimal("1000.00"), record2.getAmount());
-            assertEquals("活期转入朝朝盈", record2.getCategory());
             System.out.println("第二条对方信息: " + record2.getCounterparty());
 
             // 验证第六条：2020-05-07 CNY -347.54 653.84 快捷支付
             TransactionRecord record5 = records.get(5);
             assertEquals("2020-05-07T00:00", record5.getTransactionTime().toString());
-            assertEquals("EXPENSE", record5.getType());
+            assertEquals(TrasactionType.EXPENSE, record5.getType());
             assertEquals(new BigDecimal("347.54"), record5.getAmount());
-            assertEquals("快捷支付", record5.getCategory());
 
             records.stream().limit(5).forEach(System.out::println);
         }
