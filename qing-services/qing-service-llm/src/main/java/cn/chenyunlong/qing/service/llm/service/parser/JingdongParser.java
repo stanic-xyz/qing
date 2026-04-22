@@ -1,8 +1,10 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
+import cn.chenyunlong.qing.service.llm.entity.Counterparty;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import com.opencsv.CSVReader;
@@ -18,17 +20,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
-import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
-
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 
 @Slf4j
 @Component("JINGDONG")
 public class JingdongParser extends BaseFileParser {
+
     private static final DateTimeFormatter JD_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final Pattern AMOUNT_PATTERN = Pattern.compile("([\\d.]+)");
 
@@ -47,24 +47,36 @@ public class JingdongParser extends BaseFileParser {
 
                 // 去除隐藏字符和制表符
                 String timeStr = line[0].replaceAll("[^\\d\\- :]", "").trim();
-                // 过滤表头及空行
-                if (!timeStr.startsWith("20")) {
-                    continue;
-                }
+                if (!timeStr.startsWith("20")) continue;
 
                 try {
                     TransactionRecord record = new TransactionRecord();
                     record.setTransactionTime(LocalDateTime.parse(timeStr, JD_FORMAT));
-                    // 真实京东账单列：交易时间,商户名称,交易说明,金额,收/付款方式,交易状态,收/支,交易分类,交易订单号,商家订单号,备注
-                    record.setCounterparty(null);
-                    record.setMerchant(line[2].trim()); // 交易说明
 
-                    String typeStr = line[6].trim(); // 收/支
-                    if ("支出".equals(typeStr)) record.setType(TrasactionType.EXPENSE);
-                    else if ("收入".equals(typeStr)) record.setType(TrasactionType.INCOME);
-                    else record.setType(TrasactionType.OTHER);
+                    // 交易说明/商户
+                    String description = line.length > 2 ? line[2].trim() : "";
+                    record.setMerchant(description);
 
-                    String rawAmountStr = line[3].trim().replace("¥", "").replace(",", "");
+                    // 对手方（京东的交易说明字段包含商户信息）
+                    if (!description.isEmpty()) {
+                        Counterparty cp = new Counterparty();
+                        cp.setName(description);
+                        record.setCounterparty(cp);
+                    }
+
+                    // 收/支
+                    String typeStr = line.length > 6 ? line[6].trim() : "";
+                    if ("支出".equals(typeStr)) {
+                        record.setType(TrasactionType.EXPENSE);
+                    } else if ("收入".equals(typeStr)) {
+                        record.setType(TrasactionType.INCOME);
+                    } else {
+                        record.setType(TrasactionType.OTHER);
+                    }
+
+                    // 金额（列3）
+                    String rawAmountStr = line.length > 3 ? line[3].trim().replace("¥", "").replace(",", "") : "0";
+                    // 处理 "999.00(已全额退款)" 格式
                     Matcher matcher = AMOUNT_PATTERN.matcher(rawAmountStr);
                     if (matcher.find()) {
                         record.setAmount(new BigDecimal(matcher.group(1)));
@@ -72,14 +84,33 @@ public class JingdongParser extends BaseFileParser {
                         record.setAmount(BigDecimal.ZERO);
                     }
 
-                    record.setStatus(null); // 交易状态
-                    record.setRemark(line.length > 10 ? line[10].trim() : "");
+                    // 交易状态（列5）
+                    String statusStr = line.length > 5 ? line[5].trim() : "";
+                    record.setStatus(mapStatus(statusStr));
+
+                    // 分类（从交易分类列8）
+                    String category = "";
+                    if (line.length > 7) {
+                        category = line[7].trim();
+                        record.setSubCategory(category);
+                    }
+
+                    // 备注（列10）
+                    String remark = line.length > 10 ? line[10].trim() : "";
+                    record.setRemark(remark);
+
+                    // 原始ID（订单号，列8）
+                    if (line.length > 8 && !line[8].trim().isEmpty()) {
+                        record.setOriginalId(line[8].trim().replace("\t", ""));
+                    }
 
                     record.setAccountName("京东");
                     record.setAccountType(AccountType.WALLET);
+                    record.setRecordRole(RecordRoleEnum.PRIMARY);
+                    record.setFundSource("京东");
                     record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                     record.setConfirmed(false);
-                    record.setRecordRole(RecordRoleEnum.TRACE);
+
                     records.add(record);
                 } catch (Exception e) {
                     log.warn("解析京东账单行失败: {}, 错误: {}", Arrays.toString(line), e.getMessage());
@@ -89,9 +120,10 @@ public class JingdongParser extends BaseFileParser {
         return wrapResult(records);
     }
 
-    private String mapStatus(String status) {
-        if (status.contains("成功") || status.contains("已完成")) return "SUCCESS";
-        if (status.contains("失败") || status.contains("关闭")) return "FAILED";
-        return "PENDING";
+    private TransactionStatusEnum mapStatus(String status) {
+        if (status == null || status.isEmpty()) return TransactionStatusEnum.PENDING;
+        if (status.contains("成功") || status.contains("已完成")) return TransactionStatusEnum.SUCCESS;
+        if (status.contains("失败") || status.contains("关闭") || status.contains("取消")) return TransactionStatusEnum.FAILED;
+        return TransactionStatusEnum.PENDING;
     }
 }
