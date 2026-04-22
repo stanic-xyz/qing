@@ -5,11 +5,6 @@ name: Release
 # ============================================================
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'charts/**'
-      - '.github/workflows/release.yml'
   workflow_dispatch:
     inputs:
       action:
@@ -21,102 +16,98 @@ on:
           - charts       # 仅发布 Helm Charts
           - full-build   # 全量构建（后端 + 前端）
 
-env:
-  JAVA_VERSION: '21'
-  NODE_VERSION: '20'
-
 concurrency:
   group: chart-release
   cancel-in-progress: false
 
-# ============================================================
-# 任务 1：Helm Chart 发布
-# ============================================================
-charts:
-  name: Helm Chart Release
-  runs-on: ubuntu-latest
-  if: github.event_name == 'push' || github.event.inputs.action == 'charts'
-  permissions:
-    contents: write
+jobs:
+  # ============================================================
+  # 任务 1：Helm Chart 发布
+  # ============================================================
+  charts:
+    name: Helm Chart Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Configure Git
-      run: |
-        git config user.name "$GITHUB_ACTOR"
-        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-    - name: Install Helm
-      uses: azure/setup-helm@v4
-      with:
-        version: v3.15.4
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.15.4
 
-    - name: Helm dependencies cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cache/helm
-          ~/.local/share/helm
-        key: ${{ runner.os }}-helm-${{ hashFiles('charts/**/Chart.yaml') }}
+      - name: Helm dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/helm
+            ~/.local/share/helm
+          key: ${{ runner.os }}-helm-${{ hashFiles('charts/**/Chart.yaml') }}
 
-    - name: Release Charts
-      uses: helm/chart-releaser-action@v1.6.0
-      with:
-        charts_dir: charts
-        config: .github/cr.yaml
-      env:
-        CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        CR_SKIP_EXISTING: true
+      - name: Release Charts
+        uses: helm/chart-releaser-action@v1.6.0
+        with:
+          charts_dir: charts
+          config: .github/cr.yaml
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_SKIP_EXISTING: true
 
-# ============================================================
-# 任务 2：手动全量构建（可选）
-# ============================================================
-full-build:
-  name: Full Build
-  runs-on: ubuntu-latest
-  if: github.event.inputs.action == 'full-build'
-  timeout-minutes: 20
+  # ============================================================
+  # 任务 2：手动全量构建（可选）
+  # ============================================================
+  full-build:
+    name: Full Build
+    runs-on: ubuntu-latest
+    if: github.event.inputs.action == 'full-build'
+    timeout-minutes: 20
 
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Set up JDK ${{ env.JAVA_VERSION }}
-      uses: actions/setup-java@v5
-      with:
-        java-version: ${{ env.JAVA_VERSION }}
-        distribution: temurin
-        cache: maven
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: temurin
+          cache: maven
 
-    - name: Set up Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: npm
-        cache-dependency-path: qing-frontend/finance-web/package-lock.json
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: qing-frontend/finance-web/package-lock.json
 
-    - name: Backend build
-      run: mvn package -B -q -DskipTests
-      working-directory: qing-services/qing-service-llm
+      - name: Backend build
+        run: mvn package -B -q -pl qing-services/qing-service-llm -am
+        working-directory: qing-services/qing-service-llm
 
-    - name: Frontend build
-      run: npm ci && npm run build
-      working-directory: qing-frontend/finance-web
+      - name: Frontend build
+        run: npm ci && npm run build
+        working-directory: qing-frontend/finance-web
 
-    - name: Upload backend JAR
-      uses: actions/upload-artifact@v4
-      with:
-        name: backend-jar
-        path: qing-services/qing-service-llm/target/*.jar
-        retention-days: 1
+      - name: Upload backend JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jar
+          path: qing-services/qing-service-llm/target/*.jar
+          retention-days: 1
 
-    - name: Upload frontend dist
-      uses: actions/upload-artifact@v4
-      with:
-        name: frontend-dist
-        path: qing-frontend/finance-web/dist
-        retention-days: 1
+      - name: Upload frontend dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: qing-frontend/finance-web/dist
+          retention-days: 1
