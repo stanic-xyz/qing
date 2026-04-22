@@ -51,7 +51,7 @@ jobs:
 
       - name: Maven test
         run: |
-          mvn test -B -q -Dtest='*Test' -DfailIfNoTests=false \
+          mvn test -B -q -DfailIfNoTests=false \
             -pl qing-services/qing-service-llm -am
 
       - name: Upload test results
