@@ -26,8 +26,10 @@ spring:
 
 baseEnum:
   basePackage: cn.chenyunlong.qing.service.llm.enums
-minimax:
-  api-key: your-minimax-api-key
-  model: MiniMax-Text-01
-  temperature: 0.1
-  timeout: 120
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: 123123123
+      model-name: gpt-4o
+      log-requests: true
+      log-responses: true

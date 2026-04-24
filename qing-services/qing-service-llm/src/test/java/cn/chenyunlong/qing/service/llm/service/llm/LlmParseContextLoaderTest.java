@@ -4,6 +4,9 @@ import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.Counterparty;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
+import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
+import cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,18 +26,18 @@ import static org.mockito.Mockito.when;
 class LlmParseContextLoaderTest {
 
     @Mock
-    private cn.chenyunlong.qing.service.llm.repository.CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
     @Mock
-    private cn.chenyunlong.qing.service.llm.repository.AccountRepository accountRepository;
+    private AccountRepository accountRepository;
     @Mock
-    private cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository counterpartyRepository;
+    private CounterpartyRepository counterpartyRepository;
 
     private LlmParseContextLoader loader;
 
     @BeforeEach
     void setUp() {
         // 使用仅核心数据的构造函数（不含 matcherRepository）
-        loader = new LlmParseContextLoader(categoryRepository, accountRepository, counterpartyRepository);
+        loader = new LlmParseContextLoader(categoryRepository, accountRepository, counterpartyRepository, null);
     }
 
     @Test

@@ -8,6 +8,7 @@ import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.Nullable;
@@ -24,6 +25,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@AllArgsConstructor
 public class LlmParseContextLoader {
 
     private final CategoryRepository categoryRepository;
@@ -31,27 +33,6 @@ public class LlmParseContextLoader {
     private final CounterpartyRepository counterpartyRepository;
     private final TransactionMatcherRepository matcherRepository;
 
-    /**
-     * 完整构造函数（生产使用）
-     */
-    public LlmParseContextLoader(CategoryRepository categoryRepository,
-                                  AccountRepository accountRepository,
-                                  CounterpartyRepository counterpartyRepository,
-                                  @Nullable TransactionMatcherRepository matcherRepository) {
-        this.categoryRepository = categoryRepository;
-        this.accountRepository = accountRepository;
-        this.counterpartyRepository = counterpartyRepository;
-        this.matcherRepository = matcherRepository;
-    }
-
-    /**
-     * 最小构造函数（仅核心数据，用于测试）
-     */
-    public LlmParseContextLoader(CategoryRepository categoryRepository,
-                                  AccountRepository accountRepository,
-                                  CounterpartyRepository counterpartyRepository) {
-        this(categoryRepository, accountRepository, counterpartyRepository, null);
-    }
 
     /**
      * 加载完整系统上下文（带缓存，30分钟）

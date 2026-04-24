@@ -141,6 +141,9 @@ public class LlmBillParserFacade {
             String prompt = promptBuilder.buildPrompt(rawText, context, strategy);
 
             // 6. 调用 LLM（接口，具体实现由注入决定）
+            if (llmParser == null) {
+                return LlmParseResponse.error("未配置 LLM 解析服务，请检查 minimax.api-key 配置或添加 LLM 实现类");
+            }
             String llmResponse = llmParser.parse(prompt, strategy);
 
             // 7. 解析 LLM 响应

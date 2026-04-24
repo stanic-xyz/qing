@@ -2,7 +2,9 @@ package cn.chenyunlong.qing.service.llm.service.llm;
 
 import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
 import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.ollama.OllamaChatModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Service;
  * 使用方式：
  * <ol>
  *   <li>在 application.yml 中启用 minimax profile 或配置 minimax.api-key</li>
- *   <li>确保 {@link cn.chenyunlong.qing.service.llm.config.MinimaxChatModelConfig} 被加载</li>
+ *   <li>确保 {@link OllamaChatModel} 被加载</li>
  *   <li>系统会自动注入 {@link ChatModel} Bean</li>
  * </ol>
  *
@@ -31,19 +33,18 @@ import org.springframework.stereotype.Service;
  *   timeout: 120
  * </pre>
  */
-@Service
-@Profile("minimax")
 @Slf4j
+@Service
 public class MinimaxLlmParserService implements LlmParserService {
 
     /**
-     * ChatModel 由 {@link cn.chenyunlong.qing.service.llm.config.MinimaxChatModelConfig} 提供
+     * ChatModel 由 {@link OllamaChatModel} 提供
      * 仅在 minimax profile 激活时注入
      */
     @Nullable
-    private final ChatModel chatLanguageModel;
+    private final OllamaChatModel chatLanguageModel;
 
-    public MinimaxLlmParserService(@Nullable ChatModel chatLanguageModel) {
+    public MinimaxLlmParserService(@Nullable OllamaChatModel chatLanguageModel) {
         this.chatLanguageModel = chatLanguageModel;
     }
 
