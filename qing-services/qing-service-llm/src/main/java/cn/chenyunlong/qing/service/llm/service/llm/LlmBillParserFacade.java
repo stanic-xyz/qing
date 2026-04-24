@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  *
  * <p>依赖 {@link LlmParserService} 接口：
  * <ul>
- *   <li>生产环境：注入 {@link RealLlmParserService}，调用真实 LLM API</li>
+ *   <li>生产环境：注入 {@link LlmParserService} 实现（如 {@code OllamaLlmParserService}），调用真实 LLM API</li>
  *   <li>测试环境：使用 Mockito Mock {@link LlmParserService}</li>
  * </ul>
  * </p>

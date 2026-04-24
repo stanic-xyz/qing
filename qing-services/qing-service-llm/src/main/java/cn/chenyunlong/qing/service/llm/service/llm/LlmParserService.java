@@ -5,7 +5,7 @@ import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
 /**
  * LLM 解析服务接口
  * 定义 LLM 解析的契约，具体实现可以是：
- * - {@link RealLlmParserService}: 调用真实 LLM API
+ * - 生产实现（如 {@code MinimaxLlmParserService}）：调用真实 LLM API
  * - Mock 方式: 测试时使用 Mockito Mock
  */
 public interface LlmParserService {
