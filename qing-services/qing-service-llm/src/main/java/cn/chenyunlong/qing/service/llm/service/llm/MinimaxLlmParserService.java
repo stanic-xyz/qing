@@ -1,7 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service.llm;
 
 import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.lang.Nullable;
@@ -41,9 +41,9 @@ public class MinimaxLlmParserService implements LlmParserService {
      * 仅在 minimax profile 激活时注入
      */
     @Nullable
-    private final ChatLanguageModel chatLanguageModel;
+    private final ChatModel chatLanguageModel;
 
-    public MinimaxLlmParserService(@Nullable ChatLanguageModel chatLanguageModel) {
+    public MinimaxLlmParserService(@Nullable ChatModel chatLanguageModel) {
         this.chatLanguageModel = chatLanguageModel;
     }
 

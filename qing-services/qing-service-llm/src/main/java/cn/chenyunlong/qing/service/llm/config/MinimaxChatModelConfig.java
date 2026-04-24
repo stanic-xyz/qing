@@ -1,6 +1,6 @@
 package cn.chenyunlong.qing.service.llm.config;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +48,8 @@ public class MinimaxChatModelConfig {
      * <p>注入到 {@link cn.chenyunlong.qing.service.llm.service.llm.MinimaxLlmParserService} 中使用。</p>
      */
     @Bean
-    public ChatLanguageModel minimaxChatLanguageModel(MinimaxProperties properties) {
-        log.info("Initializing MiniMax ChatLanguageModel: baseUrl={}, model={}",
+    public ChatModel minimaxChatLanguageModel(MinimaxProperties properties) {
+        log.info("Initializing MiniMax ChatModel: baseUrl={}, model={}",
                 properties.getBaseUrl(), properties.getModel());
 
         OpenAiChatModel model = OpenAiChatModel.builder()
@@ -62,7 +62,7 @@ public class MinimaxChatModelConfig {
                 .logResponses(properties.isLogResponses())
                 .build();
 
-        log.info("MiniMax ChatLanguageModel initialized successfully");
+        log.info("MiniMax ChatModel initialized successfully");
         return model;
     }
 
