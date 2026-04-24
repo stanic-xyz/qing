@@ -57,7 +57,7 @@ public class MinimaxLlmParserService implements LlmParserService {
 
         try {
             long startTime = System.currentTimeMillis();
-            String response = chatLanguageModel.generate(prompt);
+            String response = chatLanguageModel.chat(prompt);
             long elapsed = System.currentTimeMillis() - startTime;
 
             log.info("MiniMax LLM call completed, elapsed: {}ms, response length: {}",
