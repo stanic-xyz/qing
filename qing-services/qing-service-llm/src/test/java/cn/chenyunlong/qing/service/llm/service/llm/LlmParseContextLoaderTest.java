@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.service.llm.service.llm;
 import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.Counterparty;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,7 +50,7 @@ class LlmParseContextLoaderTest {
         Account acc1 = new Account();
         acc1.setId(1L);
         acc1.setAccountName("招商银行储蓄卡");
-        acc1.setAccountType("DEBIT");
+        acc1.setAccountType(AccountType.DEBIT);
 
         Counterparty cp1 = new Counterparty();
         cp1.setId(1L);

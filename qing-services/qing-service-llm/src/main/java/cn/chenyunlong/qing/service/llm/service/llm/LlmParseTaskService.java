@@ -74,6 +74,9 @@ public class LlmParseTaskService {
         if (status == null) {
             return null;
         }
+        if ("FAILED".equals(status.getStatus())) {
+            return TaskStatusResponse.failed(status.getTaskId(), status.getErrorMessage());
+        }
         return new TaskStatusResponse(status.getTaskId(), status.getStatus(), status.getProgress());
     }
 
