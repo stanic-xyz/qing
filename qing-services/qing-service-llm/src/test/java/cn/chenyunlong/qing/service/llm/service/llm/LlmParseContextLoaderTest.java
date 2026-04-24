@@ -3,7 +3,6 @@ package cn.chenyunlong.qing.service.llm.service.llm;
 import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.Counterparty;
-import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 /**
  * LLM 上下文加载器测试
@@ -38,19 +38,29 @@ class LlmParseContextLoaderTest {
 
     @Test
     void testLoadCoreReturnsValidContext() {
+        Category cat1 = new Category();
+        cat1.setId(1L);
+        cat1.setName("餐饮美食");
+
+        Category cat2 = new Category();
+        cat2.setId(2L);
+        cat2.setName("购物");
+
+        Account acc1 = new Account();
+        acc1.setId(1L);
+        acc1.setAccountName("招商银行储蓄卡");
+        acc1.setAccountType("DEBIT");
+
+        Counterparty cp1 = new Counterparty();
+        cp1.setId(1L);
+        cp1.setName("美团");
+
         when(categoryRepository.findByIsDeletedFalse())
-                .thenReturn(Arrays.asList(
-                        new Category(1L, "餐饮美食", null, null, null),
-                        new Category(2L, "购物", null, null, null)
-                ));
+                .thenReturn(Arrays.asList(cat1, cat2));
         when(accountRepository.findAll())
-                .thenReturn(Arrays.asList(
-                        new Account(1L, "招商银行储蓄卡", "DEBIT", null, null)
-                ));
+                .thenReturn(Collections.singletonList(acc1));
         when(counterpartyRepository.findAll())
-                .thenReturn(Collections.singletonList(
-                        new Counterparty(1L, "美团", null, null)
-                ));
+                .thenReturn(Collections.singletonList(cp1));
 
         LlmParseContextLoader.SystemContext context = loader.loadCore();
 

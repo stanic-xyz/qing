@@ -1,12 +1,11 @@
 package cn.chenyunlong.qing.service.llm.service.llm;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.LlmParseResponse;
-import cn.chenyunlong.qing.service.llm.dto.parser.ParseSummary;
+import cn.chenyunlong.qing.service.llm.dto.parser.TaskStatusResponse;
 import cn.chenyunlong.qing.service.llm.dto.parser.CommonBillRecord;
 import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.Counterparty;
-import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
 import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository;
@@ -352,7 +351,7 @@ class LlmBillParserFacadeTest {
 
         var status = taskService.getStatus(taskId);
         assertEquals("FAILED", status.getStatus());
-        assertEquals("Test error", status.getErrorMsg());
+        assertEquals("Test error", status.getErrorMessage());
     }
 
     @Test
