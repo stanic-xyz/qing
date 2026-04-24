@@ -4,7 +4,7 @@ name: CI
 # 触发策略（避免重复运行）
 # ============================================================
 # 1. PR 事件：opened / synchronize / reopened
-# 2. push 到 main（direct push，非 PR merge）
+# 2. push 到 main / actions / feature 分支
 #
 # 不在 push 到所有分支时触发，只在相关文件变更时触发。
 # concurrency 保证同一 PR/分支只运行最新一次。
@@ -12,9 +12,9 @@ name: CI
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [main,actions]
+    branches: [main, actions]
   push:
-    branches: [main,actions]
+    branches: [main, actions, feature/**]
     paths-ignore:
       - '**.md'
       - 'docs/**'

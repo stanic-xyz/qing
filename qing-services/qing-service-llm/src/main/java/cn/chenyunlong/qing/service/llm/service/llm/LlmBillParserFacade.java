@@ -23,6 +23,13 @@ import java.util.stream.Collectors;
 
 /**
  * LLM 账单解析Facade - 统一入口，编排解析流程
+ *
+ * <p>依赖 {@link LlmParserService} 接口：
+ * <ul>
+ *   <li>生产环境：注入 {@link RealLlmParserService}，调用真实 LLM API</li>
+ *   <li>测试环境：使用 Mockito Mock {@link LlmParserService}</li>
+ * </ul>
+ * </p>
  */
 @Service
 @Slf4j
@@ -33,7 +40,7 @@ public class LlmBillParserFacade {
     private final LlmParseContextLoader contextLoader;
     private final LlmParseResultCache resultCache;
     private final LlmParseTaskService taskService;
-    private final MockLlmParser mockLlmParser;
+    private final LlmParserService llmParser;  // 接口，运行时注入真实实现
     private final LlmPromptBuilder promptBuilder;
     private final LlmParseRecordRepository parseRecordRepository;
     private final LlmParseDetailRepository detailRepository;
@@ -69,7 +76,6 @@ public class LlmBillParserFacade {
                 LlmParseResponse response = doParse(file, strategy, true);
                 taskService.updateProgress(taskId, 90);
 
-                // 保存解析记录
                 saveParseRecord(taskId, response);
 
                 taskService.complete(taskId);
@@ -82,16 +88,10 @@ public class LlmBillParserFacade {
         return taskId;
     }
 
-    /**
-     * 查询任务状态
-     */
     public TaskStatusResponse getTaskStatus(String taskId) {
         return taskService.getStatus(taskId);
     }
 
-    /**
-     * 获取解析结果
-     */
     public List<LlmParseDetailDTO> getParseResult(Long parseRecordId) {
         List<LlmParseDetail> details = detailRepository.findByParseRecordId(parseRecordId);
         return details.stream()
@@ -99,23 +99,14 @@ public class LlmBillParserFacade {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 获取解析记录
-     */
     public Optional<LlmParseRecord> getParseRecord(Long id) {
         return parseRecordRepository.findById(id);
     }
 
-    /**
-     * 获取解析记录 by taskId
-     */
     public Optional<LlmParseRecord> getParseRecordByTaskId(String taskId) {
         return parseRecordRepository.findByTaskId(taskId);
     }
 
-    /**
-     * 核心解析逻辑
-     */
     private LlmParseResponse doParse(MultipartFile file, CategoryStrategy strategy, boolean isAsync) {
         try {
             // 1. 计算文件 hash
@@ -140,14 +131,17 @@ public class LlmBillParserFacade {
                 return LlmParseResponse.error("无法从文件中提取文本内容");
             }
 
+            log.debug("Extracted text length: {}, preview: {}", rawText.length(),
+                    rawText.substring(0, Math.min(100, rawText.length())));
+
             // 4. 加载系统上下文
             LlmParseContextLoader.SystemContext context = contextLoader.load();
 
             // 5. 构建 Prompt
             String prompt = promptBuilder.buildPrompt(rawText, context, strategy);
 
-            // 6. 调用 Mock LLM 解析器
-            String llmResponse = mockLlmParser.parse(prompt, strategy);
+            // 6. 调用 LLM（接口，具体实现由注入决定）
+            String llmResponse = llmParser.parse(prompt, strategy);
 
             // 7. 解析 LLM 响应
             LlmParseResponse response = parseLlmResponse(llmResponse);
@@ -166,9 +160,6 @@ public class LlmBillParserFacade {
         }
     }
 
-    /**
-     * 解析 LLM 返回的 JSON 响应
-     */
     private LlmParseResponse parseLlmResponse(String jsonResponse) {
         try {
             return objectMapper.readValue(jsonResponse, LlmParseResponse.class);
@@ -181,9 +172,6 @@ public class LlmBillParserFacade {
         }
     }
 
-    /**
-     * 保存解析记录
-     */
     @Transactional
     public void saveParseRecord(String taskId, LlmParseResponse response) {
         LlmParseRecord record = new LlmParseRecord();
@@ -207,7 +195,6 @@ public class LlmBillParserFacade {
 
         LlmParseRecord saved = parseRecordRepository.save(record);
 
-        // 保存详情
         if (response.getRecords() != null) {
             for (CommonBillRecord billRecord : response.getRecords()) {
                 LlmParseDetail detail = new LlmParseDetail();
@@ -240,9 +227,6 @@ public class LlmBillParserFacade {
                 response.getRecords() != null ? response.getRecords().size() : 0);
     }
 
-    /**
-     * 转换为 DTO
-     */
     private LlmParseDetailDTO toDTO(LlmParseDetail detail) {
         LlmParseDetailDTO dto = new LlmParseDetailDTO();
         dto.setId(detail.getId());
