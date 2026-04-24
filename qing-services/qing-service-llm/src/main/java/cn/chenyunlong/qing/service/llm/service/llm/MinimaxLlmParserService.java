@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * <ol>
  *   <li>在 application.yml 中启用 minimax profile 或配置 minimax.api-key</li>
  *   <li>确保 {@link cn.chenyunlong.qing.service.llm.config.MinimaxChatModelConfig} 被加载</li>
- *   <li>系统会自动注入 {@link ChatLanguageModel} Bean</li>
+ *   <li>系统会自动注入 {@link ChatModel} Bean</li>
  * </ol>
  *
  * <p>示例 application.yml 配置：
@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
 public class MinimaxLlmParserService implements LlmParserService {
 
     /**
-     * ChatLanguageModel 由 {@link cn.chenyunlong.qing.service.llm.config.MinimaxChatModelConfig} 提供
+     * ChatModel 由 {@link cn.chenyunlong.qing.service.llm.config.MinimaxChatModelConfig} 提供
      * 仅在 minimax profile 激活时注入
      */
     @Nullable
@@ -52,7 +52,7 @@ public class MinimaxLlmParserService implements LlmParserService {
         log.info("Calling MiniMax LLM with strategy: {}", strategy);
 
         if (chatLanguageModel == null) {
-            throw new RuntimeException("MiniMax ChatLanguageModel 未注入，请确保启用了 minimax profile");
+            throw new RuntimeException("MiniMax ChatModel 未注入，请确保启用了 minimax profile");
         }
 
         try {
