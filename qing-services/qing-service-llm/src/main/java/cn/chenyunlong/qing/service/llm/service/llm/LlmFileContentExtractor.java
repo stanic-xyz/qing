@@ -204,7 +204,7 @@ public class LlmFileContentExtractor {
 
         // 5. 兜底：使用 GBK（中文环境最常见）
         log.warn("Could not detect encoding confidently, falling back to GBK");
-        return new String(content, "GBK");
+        return new String(content, StandardCharsets.UTF_8);
     }
 
     /**
