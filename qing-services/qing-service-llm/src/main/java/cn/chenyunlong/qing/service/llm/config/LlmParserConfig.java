@@ -6,6 +6,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,38 +17,38 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LlmParserConfig {
 
+    public static final String CACHE_NAME_PARSE_CONTEXT = "llm-parse-context";
+    public static final String CACHE_NAME_PARSE_RESULT = "llm-parse-result";
+
     /**
      * 配置 Caffeine 缓存管理器
      */
     @Bean
-    public CacheManager caffeineCacheManager() {
+    @Primary
+    public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-
-        // 系统上下文缓存 - 30分钟
-        cacheManager.registerCache("llm-parse-context",
-                Caffeine.newBuilder()
-                        .expireAfterWrite(30, TimeUnit.MINUTES)
-                        .maximumSize(100)
-                        .recordStats()
-                        .build());
-
-        // 解析结果缓存 - 7天
-        cacheManager.registerCache("llm-parse-result",
-                Caffeine.newBuilder()
-                        .expireAfterWrite(7, TimeUnit.DAYS)
-                        .maximumSize(1000)
-                        .recordStats()
-                        .build());
-
+        cacheManager.setCacheNames(java.util.Arrays.asList(
+                CACHE_NAME_PARSE_CONTEXT,
+                CACHE_NAME_PARSE_RESULT
+        ));
+        cacheManager.setCaffeine(Caffeine.newBuilder()
+                .expireAfterWrite(30, TimeUnit.MINUTES)
+                .maximumSize(100)
+                .recordStats());
         log.info("Initialized Caffeine cache manager for LLM parser");
         return cacheManager;
     }
 
     /**
-     * 配置默认缓存管理器别名
+     * 解析结果缓存管理器（7天TTL）
      */
-    @Bean
-    public CaffeineCacheManager cacheManager() {
-        return new CaffeineCacheManager();
+    @Bean("resultCacheManager")
+    public CacheManager resultCacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager(CACHE_NAME_PARSE_RESULT);
+        cacheManager.setCaffeine(Caffeine.newBuilder()
+                .expireAfterWrite(7, TimeUnit.DAYS)
+                .maximumSize(1000)
+                .recordStats());
+        return cacheManager;
     }
 }

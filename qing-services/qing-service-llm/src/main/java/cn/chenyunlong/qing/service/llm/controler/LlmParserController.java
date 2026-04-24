@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
+import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.dto.parser.*;
 import cn.chenyunlong.qing.service.llm.entity.LlmParseRecord;
 import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
@@ -38,11 +39,11 @@ public class LlmParserController {
             if (response.isSuccess()) {
                 return ResponseEntity.ok(Result.success(response));
             } else {
-                return ResponseEntity.badRequest().body(Result.error(response.getErrorMessage()));
+                return ResponseEntity.badRequest().body(Result.error(400, response.getErrorMessage()));
             }
         } catch (Exception e) {
             log.error("Preview parse failed", e);
-            return ResponseEntity.badRequest().body(Result.error(e.getMessage()));
+            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
         }
     }
 
@@ -61,7 +62,7 @@ public class LlmParserController {
             return ResponseEntity.accepted().body(Result.success(statusResponse));
         } catch (Exception e) {
             log.error("Async parse request failed", e);
-            return ResponseEntity.badRequest().body(Result.error(e.getMessage()));
+            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
         }
     }
 

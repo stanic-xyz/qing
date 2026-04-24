@@ -9,4 +9,8 @@ public class FileHashUtil {
     public static String calcMD5(InputStream inputStream) throws IOException {
         return DigestUtils.md5DigestAsHex(inputStream);
     }
+
+    public static String calculateMD5(byte[] data) {
+        return DigestUtils.md5DigestAsHex(data);
+    }
 }

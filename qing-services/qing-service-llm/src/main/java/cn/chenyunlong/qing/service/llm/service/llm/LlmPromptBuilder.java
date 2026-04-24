@@ -25,8 +25,10 @@ public class LlmPromptBuilder {
         prompt.append("\n");
 
         prompt.append("【分类策略】\n");
-        prompt.append(strategy.getDescription()).append("\n");
-        prompt.append(getStrategyDescription(strategy)).append("\n");
+        prompt.append("策略名称: ").append(strategy.getCode()).append("\n");
+        prompt.append("策略说明: ").append(strategy.getDescription()).append("\n");
+        prompt.append("\n");
+        prompt.append(getStrategyDetail(strategy)).append("\n");
         prompt.append("\n");
 
         prompt.append("【原始账单文本】\n");
@@ -73,7 +75,7 @@ public class LlmPromptBuilder {
     /**
      * 获取策略详细说明
      */
-    private String getStrategyDescription(CategoryStrategy strategy) {
+    private String getStrategyDetail(CategoryStrategy strategy) {
         return switch (strategy) {
             case BY_CONSUMPTION_TYPE -> """
                 分类逻辑：
@@ -112,6 +114,10 @@ public class LlmPromptBuilder {
         return """
             【任务说明】
             这是一个测试任务。
+
+            【分类策略】
+            策略名称: BY_CONSUMPTION_TYPE
+            策略说明: 按消费类型分类
 
             【原始账单文本】
             2024-01-01 京东 购买商品 123.45元

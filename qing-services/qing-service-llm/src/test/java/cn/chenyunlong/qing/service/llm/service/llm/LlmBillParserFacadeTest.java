@@ -104,17 +104,38 @@ class LlmBillParserFacadeTest {
 
     @Test
     void testParseWithMockParser() throws Exception {
-        when(categoryRepository.findByIsDeletedFalse()).thenReturn(Collections.emptyList());
-        when(accountRepository.findAll()).thenReturn(Collections.emptyList());
-        when(counterpartyRepository.findAll()).thenReturn(Collections.emptyList());
-
-        // 验证 mock parser 能处理真实 prompt
-        String prompt = "【原始账单文本】\n2024-01-01 京东 123.45元\n【系统上下文】\n分类列表";
+        // 验证 mock parser 能处理真实 prompt 并返回有效 JSON
+        String prompt = "【原始账单文本】\n2024-01-01 京东购物 123.45元\n【系统上下文】\n分类列表";
 
         String result = mockLlmParser.parse(prompt, CategoryStrategy.BY_CONSUMPTION_TYPE);
 
         assertNotNull(result);
         assertTrue(result.contains("success"));
+        assertTrue(result.contains("\"records\""));
+        assertTrue(result.contains("\"summary\""));
+    }
+
+    @Test
+    void testParseWithByPlatformStrategy() throws Exception {
+        String prompt = "【原始账单文本】\n2024-01-01 京东购物 123.45元\n【系统上下文】";
+
+        String result = mockLlmParser.parse(prompt, CategoryStrategy.BY_PLATFORM);
+
+        assertNotNull(result);
+        assertTrue(result.contains("success"));
+        assertTrue(result.contains("\"records\""));
+        assertTrue(result.contains("京东"));
+    }
+
+    @Test
+    void testParseWithHybridStrategy() throws Exception {
+        String prompt = "【原始账单文本】\n2024-01-01 京东购物 123.45元\n【系统上下文】";
+
+        String result = mockLlmParser.parse(prompt, CategoryStrategy.HYBRID);
+
+        assertNotNull(result);
+        assertTrue(result.contains("success"));
+        assertTrue(result.contains("\"records\""));
     }
 
     @Test
@@ -157,5 +178,17 @@ class LlmBillParserFacadeTest {
         assertTrue(cancelled);
         var status = taskService.getStatus(taskId);
         assertEquals("CANCELLED", status.getStatus());
+    }
+
+    @Test
+    void testMockParserWithEmptyText() throws Exception {
+        String prompt = "【原始账单文本】\n\n【系统上下文】";
+
+        String result = mockLlmParser.parse(prompt, CategoryStrategy.BY_CONSUMPTION_TYPE);
+
+        assertNotNull(result);
+        assertTrue(result.contains("success"));
+        // 空文本仍应返回有效 JSON 结构
+        assertTrue(result.contains("\"records\""));
     }
 }

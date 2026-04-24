@@ -16,7 +16,7 @@ public class CommonBillRecord {
     private String counterparty;
     private String description;
     private String paymentMethod;
-    private String accountId;
+    private Long accountId;
     private String accountName;
     private String status;
     private String transactionNo;
@@ -27,4 +27,5 @@ public class CommonBillRecord {
     private BigDecimal confidence;
     private String matchNote;
     private boolean needNewCategory;
+    private String tags;  // JSON字符串，如 "[\"京东\",\"电商\"]"
 }

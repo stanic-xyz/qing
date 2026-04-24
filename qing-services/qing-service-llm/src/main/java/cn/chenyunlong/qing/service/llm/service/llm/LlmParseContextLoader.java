@@ -8,7 +8,6 @@ import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -55,7 +54,7 @@ public class LlmParseContextLoader {
     /**
      * 生成分类上下文字符串（Prompt 友好）
      */
-    public String toCategoryContext(List<Category> categories) {
+    public static String buildCategoryContext(List<Category> categories) {
         if (categories == null || categories.isEmpty()) {
             return "无分类信息";
         }
@@ -86,7 +85,7 @@ public class LlmParseContextLoader {
     /**
      * 生成账户上下文字符串（Prompt 友好）
      */
-    public String toAccountContext(List<Account> accounts) {
+    public static String buildAccountContext(List<Account> accounts) {
         if (accounts == null || accounts.isEmpty()) {
             return "无账户信息";
         }
@@ -107,7 +106,7 @@ public class LlmParseContextLoader {
     /**
      * 生成对手方上下文字符串（Prompt 友好）
      */
-    public String toCounterpartyContext(List<Counterparty> counterparties) {
+    public static String buildCounterpartyContext(List<Counterparty> counterparties) {
         if (counterparties == null || counterparties.isEmpty()) {
             return "无对手方信息";
         }
@@ -125,7 +124,7 @@ public class LlmParseContextLoader {
     /**
      * 生成匹配器上下文字符串（Prompt 友好）
      */
-    public String toMatcherContext(List<TransactionMatcher> matchers) {
+    public static String buildMatcherContext(List<TransactionMatcher> matchers) {
         if (matchers == null || matchers.isEmpty()) {
             return "无匹配器信息";
         }
@@ -146,7 +145,7 @@ public class LlmParseContextLoader {
     /**
      * 系统上下文数据类
      */
-    @Data
+    @lombok.Data
     public static class SystemContext {
         private List<Category> categories;
         private List<Account> accounts;
@@ -162,19 +161,19 @@ public class LlmParseContextLoader {
         }
 
         public String toCategoryContext() {
-            return LlmParseContextLoader.this.toCategoryContext(categories);
+            return buildCategoryContext(categories);
         }
 
         public String toAccountContext() {
-            return LlmParseContextLoader.this.toAccountContext(accounts);
+            return buildAccountContext(accounts);
         }
 
         public String toCounterpartyContext() {
-            return LlmParseContextLoader.this.toCounterpartyContext(counterparties);
+            return buildCounterpartyContext(counterparties);
         }
 
         public String toMatcherContext() {
-            return LlmParseContextLoader.this.toMatcherContext(existingMatchers);
+            return buildMatcherContext(existingMatchers);
         }
     }
 }

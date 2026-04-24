@@ -29,7 +29,10 @@ public class LlmParseDetailDTO {
     private String matchNote;
     private String platformSource;
     private String consumptionType;
-    private String[] tags;
+    /**
+     * 标签列表（JSON字符串）
+     */
+    private String tags;
     private String parseStatus;
     private String importStatus;
     private Boolean needReview;

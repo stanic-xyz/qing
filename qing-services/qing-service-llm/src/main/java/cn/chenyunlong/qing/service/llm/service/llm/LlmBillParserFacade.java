@@ -219,11 +219,7 @@ public class LlmBillParserFacade {
                 detail.setDescription(billRecord.getDescription());
                 detail.setPaymentMethod(billRecord.getPaymentMethod());
                 if (billRecord.getAccountId() != null) {
-                    try {
-                        detail.setAccountId(Long.parseLong(billRecord.getAccountId()));
-                    } catch (NumberFormatException e) {
-                        detail.setAccountId(null);
-                    }
+                    detail.setAccountId(billRecord.getAccountId());
                 }
                 detail.setAccountName(billRecord.getAccountName());
                 detail.setTransactionNo(billRecord.getTransactionNo());
@@ -268,6 +264,7 @@ public class LlmBillParserFacade {
         dto.setMatchNote(detail.getMatchNote());
         dto.setPlatformSource(detail.getPlatformSource());
         dto.setConsumptionType(detail.getConsumptionType());
+        dto.setTags(detail.getTags());
         dto.setParseStatus(detail.getParseStatus());
         dto.setImportStatus(detail.getImportStatus());
         dto.setNeedReview(detail.getNeedReview());

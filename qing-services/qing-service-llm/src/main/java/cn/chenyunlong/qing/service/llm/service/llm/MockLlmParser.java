@@ -7,6 +7,8 @@ import cn.chenyunlong.qing.service.llm.dto.parser.SuggestedCategory;
 import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -53,7 +55,7 @@ public class MockLlmParser {
 
         try {
             // 模拟网络延迟
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             // 从 Prompt 中提取原始账单文本
             String rawText = extractRawTextFromPrompt(prompt);
@@ -93,7 +95,7 @@ public class MockLlmParser {
      * 从 Prompt 中提取原始账单文本
      */
     private String extractRawTextFromPrompt(String prompt) {
-        // 简单地提取【原始账单文本】和【系统上下文】之间的内容
+        // 提取【原始账单文本】之后、【系统上下文】之前的内容
         int startIndex = prompt.indexOf("【原始账单文本】");
         int endIndex = prompt.indexOf("【系统上下文】");
 
@@ -101,7 +103,12 @@ public class MockLlmParser {
             return prompt.substring(startIndex + 8, endIndex).trim();
         }
 
-        // 如果没有标记，直接返回原始 prompt
+        // 备用：提取【分类策略】之后的内容
+        startIndex = prompt.indexOf("【分类策略】");
+        if (startIndex >= 0) {
+            return prompt.substring(startIndex + 6).trim();
+        }
+
         return prompt;
     }
 
@@ -112,11 +119,11 @@ public class MockLlmParser {
         List<CommonBillRecord> records = new ArrayList<>();
         String[] lines = text.split("\n");
 
-        Pattern amountPattern = Pattern.compile("(\\d+\\.\\d{1,2})");
+        Pattern amountPattern = Pattern.compile("(-?\\d+\\.\\d{1,2})");
         Pattern datePattern = Pattern.compile("(\\d{4}[-/]\\d{1,2}[-/]\\d{1,2})");
 
-        for (int i = 0; i < lines.length; i++) {
-            String line = lines[i].trim();
+        for (String line : lines) {
+            line = line.trim();
             if (line.isEmpty()) continue;
 
             CommonBillRecord record = new CommonBillRecord();
@@ -125,7 +132,13 @@ public class MockLlmParser {
             Matcher amountMatcher = amountPattern.matcher(line);
             if (amountMatcher.find()) {
                 try {
-                    record.setAmount(new BigDecimal(amountMatcher.group(1)));
+                    String amountStr = amountMatcher.group(1);
+                    // 如果是支出（描述中包含"元"且没有负号），转为负数
+                    if (line.contains("元") && !amountStr.startsWith("-")) {
+                        record.setAmount(new BigDecimal("-" + amountStr));
+                    } else {
+                        record.setAmount(new BigDecimal(amountStr));
+                    }
                 } catch (NumberFormatException e) {
                     record.setAmount(BigDecimal.ZERO);
                 }
@@ -136,25 +149,23 @@ public class MockLlmParser {
             if (dateMatcher.find()) {
                 try {
                     String dateStr = dateMatcher.group(1).replace("/", "-");
-                    record.setTransactionTime(LocalDateTime.parse(dateStr + " 00:00"));
+                    record.setTransactionTime(LocalDateTime.parse(dateStr + "T00:00:00"));
                 } catch (Exception e) {
                     record.setTransactionTime(LocalDateTime.now());
                 }
             }
 
-            // 根据关键词识别
+            // 根据关键词识别消费类型和平台来源
             String lowerLine = line.toLowerCase();
 
             if (lowerLine.contains("京东") || lowerLine.contains("jd.com") || lowerLine.contains("jingdong")) {
-                // 京东 -> 数码电子
                 record.setPlatformSource("京东");
                 record.setConsumptionType("数码电子");
                 record.setCategoryId(CATEGORY_DIGITAL);
                 record.setCategoryName("数码电子");
                 record.setConfidence(BigDecimal.valueOf(generateConfidence()));
             } else if (lowerLine.contains("美团") || lowerLine.contains("meituan") ||
-                       lowerLine.contains("外卖") || lowerLine.contains("饿了么")) {
-                // 美团外卖 -> 餐饮美食
+                       lowerLine.contains("外卖")) {
                 record.setPlatformSource("美团");
                 record.setConsumptionType("餐饮美食");
                 record.setCategoryId(CATEGORY_FOOD);
@@ -162,7 +173,6 @@ public class MockLlmParser {
                 record.setConfidence(BigDecimal.valueOf(generateConfidence()));
             } else if (lowerLine.contains("抖音") || lowerLine.contains("douyin") ||
                        lowerLine.contains("直播") || lowerLine.contains("充值")) {
-                // 抖音直播充值 -> 娱乐
                 record.setPlatformSource("抖音");
                 record.setConsumptionType("娱乐");
                 record.setCategoryId(CATEGORY_ENTERTAINMENT);
@@ -171,22 +181,19 @@ public class MockLlmParser {
                 record.setNeedNewCategory(true);
             } else if (lowerLine.contains("地铁") || lowerLine.contains("公交") ||
                        lowerLine.contains("打车") || lowerLine.contains("滴滴")) {
-                // 交通出行
-                record.setPlatformSource("交通");
+                record.setPlatformSource("出行平台");
                 record.setConsumptionType("交通出行");
                 record.setCategoryId(CATEGORY_TRANSPORT);
                 record.setCategoryName("交通出行");
                 record.setConfidence(BigDecimal.valueOf(generateConfidence()));
             } else if (lowerLine.contains("淘宝") || lowerLine.contains("天猫") ||
-                       lowerLine.contains("拼多多")) {
-                // 购物
-                record.setPlatformSource("电商");
+                       lowerLine.contains("拼多多") || lowerLine.contains("购物")) {
+                record.setPlatformSource("电商平台");
                 record.setConsumptionType("购物");
                 record.setCategoryId(CATEGORY_SHOPPING);
                 record.setCategoryName("购物");
                 record.setConfidence(BigDecimal.valueOf(generateConfidence()));
             } else {
-                // 默认分类
                 record.setPlatformSource("未知");
                 record.setConsumptionType("其他");
                 record.setConfidence(BigDecimal.valueOf(generateConfidence()));
@@ -215,19 +222,16 @@ public class MockLlmParser {
      * 提取对手方
      */
     private String extractCounterparty(String line) {
-        // 简单实现：提取第一个括号内的内容或第一个空格前的词
         int bracketStart = line.indexOf('（');
         int bracketEnd = line.indexOf('）');
         if (bracketStart >= 0 && bracketEnd > bracketStart) {
             return line.substring(bracketStart + 1, bracketEnd);
         }
-
         bracketStart = line.indexOf('(');
         bracketEnd = line.indexOf(')');
         if (bracketStart >= 0 && bracketEnd > bracketStart) {
             return line.substring(bracketStart + 1, bracketEnd);
         }
-
         String[] parts = line.split("\\s+");
         return parts.length > 0 ? parts[0] : "未知";
     }
@@ -247,13 +251,14 @@ public class MockLlmParser {
                 .average()
                 .orElse(0.0);
 
-        summary.setAvgConfidence(Math.round(avgConfidence * 100) / 100.0);
-        summary.setNeedReviewCount((int) records.stream().filter(r -> r.getConfidence() != null && r.getConfidence().doubleValue() < 0.9).count());
+        summary.setAvgConfidence(Math.round(avgConfidence * 100.0) / 100.0);
+        summary.setNeedReviewCount((int) records.stream()
+                .filter(r -> r.getConfidence() != null && r.getConfidence().doubleValue() < 0.9)
+                .count());
         summary.setInputTokens(records.size() * 50);
         summary.setOutputTokens(records.size() * 30);
         summary.setEstimatedCost(0.001 * records.size());
 
-        // 统计平台来源和消费类型
         summary.setPlatformSources(records.stream()
                 .map(CommonBillRecord::getPlatformSource)
                 .filter(Objects::nonNull)
@@ -271,22 +276,22 @@ public class MockLlmParser {
     /**
      * 生成建议分类（针对需要新建分类的情况）
      */
-    private List<SuggestedCategory> generateSuggestedCategories(List<CommonBillRecord> records, CategoryStrategy strategy) {
+    private List<SuggestedCategory> generateSuggestedCategories(List<CommonBillRecord> records,
+                                                                CategoryStrategy strategy) {
         List<SuggestedCategory> suggestions = new ArrayList<>();
 
-        // 检查 BY_CONSUMPTION_TYPE 策略下是否有需要新建分类的记录
-        if (strategy == CategoryStrategy.BY_CONSUMPTION_TYPE) {
-            boolean hasEntertainment = records.stream()
-                    .anyMatch(r -> "娱乐".equals(r.getConsumptionType()));
+        boolean hasEntertainment = records.stream()
+                .anyMatch(r -> "娱乐".equals(r.getConsumptionType()) && r.isNeedNewCategory());
 
-            if (hasEntertainment) {
-                SuggestedCategory suggestion = new SuggestedCategory();
-                suggestion.setSuggestedName("直播娱乐");
-                suggestion.setReason("检测到抖音直播充值等娱乐消费，建议新建分类");
-                suggestion.setSourceStrategy(strategy.getCode());
-                suggestion.setSampleDescriptions(new String[]{"抖音直播充值", "抖音打赏", "直播付费"});
-                suggestions.add(suggestion);
-            }
+        if (hasEntertainment) {
+            SuggestedCategory suggestion = new SuggestedCategory();
+            suggestion.setName("直播娱乐");
+            suggestion.setParentId(null);
+            suggestion.setReason("检测到抖音直播充值等娱乐消费，建议新建分类");
+            suggestion.setType("entertainment");
+            suggestion.setSourceStrategy(strategy.getCode());
+            suggestion.setSampleDescriptions("[\"抖音直播充值\",\"抖音打赏\",\"直播付费\"]");
+            suggestions.add(suggestion);
         }
 
         return suggestions;
