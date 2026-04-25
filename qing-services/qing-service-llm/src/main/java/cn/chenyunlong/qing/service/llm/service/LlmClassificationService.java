@@ -4,6 +4,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.ollama.OllamaChatModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class LlmClassificationService {
 
-    private final ChatModel chatModel;
+    private final OllamaChatModel chatModel;
     private final CategoryRepository categoryRepository;
     private final ObjectMapper objectMapper;
 
