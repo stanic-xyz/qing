@@ -1,35 +1,47 @@
-package cn.chenyunlong.qing.leave.service;
+package cn.chenyunlong.qing.workflow.service;
 
-import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.runtime.Execution;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.task.Task;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.flowable.engine.IdentityService;
+import org.flowable.engine.RuntimeService;
+import org.flowable.engine.TaskService;
+import org.flowable.engine.runtime.Execution;
+import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.task.api.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class LeaveProcessService {
 
-    public static final String PROCESS_DEFINITION_KEY = "leaveApprovalProcess";
-    public static final String SIGNAL_WITHDRAW = "Signal_WithdrawLeave";
+    public static final String PROCESS_DEFINITION_KEY = "Signal_WithdrawLeave";
 
     private final RuntimeService runtimeService;
     private final TaskService taskService;
+    private final IdentityService identityService;
 
-    public LeaveProcessService(RuntimeService runtimeService, TaskService taskService) {
-        this.runtimeService = runtimeService;
-        this.taskService = taskService;
-    }
 
-    public ProcessInstance startLeaveProcess(String applicant, int leaveDays, String reason) {
+    public ProcessInstance startLeaveProcess(String applicant, int leaveDays, String reason, String directSupervisor) {
+        String businessKey = "LeaveProcessServiceTest_00001";
+
         Map<String, Object> variables = new HashMap<>();
         variables.put("applicant", applicant);
         variables.put("leaveDays", leaveDays);
         variables.put("reason", reason);
-        return runtimeService.startProcessInstanceByKey(PROCESS_DEFINITION_KEY, variables);
+        variables.put("businessType", "业务类型");
+        variables.put("directSupervisor", directSupervisor);
+
+        identityService.setAuthenticatedUserId(applicant);
+
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(PROCESS_DEFINITION_KEY, businessKey, variables);
+        log.info("流程实例id-{}", processInstance.getId());
+        identityService.setAuthenticatedUserId(null);
+
+        return processInstance;
     }
 
     public Task querySingleTask(String processInstanceId) {
@@ -65,10 +77,10 @@ public class LeaveProcessService {
     public void withdraw(String processInstanceId) {
         Execution execution = runtimeService.createExecutionQuery()
                 .processInstanceId(processInstanceId)
-                .signalEventSubscriptionName(SIGNAL_WITHDRAW)
+                .signalEventSubscriptionName("Signal_WithdrawLeave")
                 .singleResult();
         if (execution != null) {
-            runtimeService.signalEventReceived(SIGNAL_WITHDRAW, execution.getId());
+            runtimeService.signalEventReceived("Signal_WithdrawLeave", execution.getId());
         }
     }
 }

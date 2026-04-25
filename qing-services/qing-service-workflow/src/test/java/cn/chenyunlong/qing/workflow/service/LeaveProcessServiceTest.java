@@ -1,23 +1,23 @@
-package cn.chenyunlong.qing.leave.service;
+package cn.chenyunlong.qing.workflow.service;
 
-import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.ProcessEngineConfiguration;
-import org.camunda.bpm.engine.RepositoryService;
-import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.task.Task;
+import cn.chenyunlong.qing.workflow.flowable.config.MyIdmIdentityService;
+import org.flowable.common.engine.impl.history.HistoryLevel;
+import org.flowable.engine.*;
+import org.flowable.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
+import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.task.api.Task;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class LeaveProcessServiceTest {
 
     private ProcessEngine processEngine;
     private LeaveProcessService leaveProcessService;
     private RuntimeService runtimeService;
+    private IdentityService identityService;
 
     @BeforeEach
     void setUp() {
@@ -27,7 +27,9 @@ class LeaveProcessServiceTest {
         config.setJdbcUsername("sa");
         config.setJdbcPassword("");
         config.setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
-        config.setEnforceHistoryTimeToLive(false);
+        config.setHistoryLevel(HistoryLevel.FULL);
+        MyIdmIdentityService myIdmIdentityService = new MyIdmIdentityService();
+        config.setIdentityService(myIdmIdentityService);
         processEngine = config.buildProcessEngine();
 
         RepositoryService repositoryService = processEngine.getRepositoryService();
@@ -38,7 +40,8 @@ class LeaveProcessServiceTest {
 
         TaskService taskService = processEngine.getTaskService();
         runtimeService = processEngine.getRuntimeService();
-        leaveProcessService = new LeaveProcessService(runtimeService, taskService);
+        identityService = processEngine.getIdentityService();
+        leaveProcessService = new LeaveProcessService(runtimeService, taskService, identityService);
     }
 
     @AfterEach
@@ -105,7 +108,7 @@ class LeaveProcessServiceTest {
     }
 
     private ProcessInstance startAndSubmit() {
-        ProcessInstance processInstance = leaveProcessService.startLeaveProcess("zhangsan", 3, "家庭事务");
+        ProcessInstance processInstance = leaveProcessService.startLeaveProcess("zhangsan", 3, "家庭事务", "lisi");
         Task submitTask = leaveProcessService.querySingleTask(processInstance.getProcessInstanceId());
         Assertions.assertNotNull(submitTask);
         Assertions.assertEquals("Task_SubmitRequest", submitTask.getTaskDefinitionKey());

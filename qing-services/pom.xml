@@ -37,5 +37,6 @@
         <module>qing-service-leave</module>
         <module>qing-service-llm</module>
         <module>qing-service-minimall</module>
+        <module>qing-service-workflow</module>
     </modules>
 </project>
