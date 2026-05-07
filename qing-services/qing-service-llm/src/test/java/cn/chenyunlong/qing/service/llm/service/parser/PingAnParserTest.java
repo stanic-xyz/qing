@@ -4,7 +4,9 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +30,7 @@ public class PingAnParserTest extends BaseParserTest {
             assertFalse(records.isEmpty(), "解析结果不应为空");
             records.stream().limit(5).forEach(System.out::println);
 
-            TransactionRecord first = records.get(0);
+            TransactionRecord first = records.getFirst();
             assertNotNull(first.getTransactionTime(), "交易时间不应为空");
             assertNotNull(first.getAmount(), "金额不应为空");
             assertNotNull(first.getType(), "收支类型不应为空");

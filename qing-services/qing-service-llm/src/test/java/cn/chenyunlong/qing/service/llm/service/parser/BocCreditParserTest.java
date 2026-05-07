@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -29,7 +30,7 @@ public class BocCreditParserTest extends BaseParserTest {
             assertFalse(records.isEmpty(), "解析结果不应为空");
             records.stream().limit(5).forEach(System.out::println);
 
-            TransactionRecord first = records.get(0);
+            TransactionRecord first = records.getFirst();
             assertNotNull(first.getTransactionTime(), "交易时间不应为空");
             assertNotNull(first.getAmount(), "金额不应为空");
             assertNotNull(first.getType(), "收支类型不应为空");
@@ -50,6 +51,7 @@ public class BocCreditParserTest extends BaseParserTest {
             long income = records.stream().filter(r -> "INCOME".equals(r.getType().name())).count();
             long expense = records.stream().filter(r -> "EXPENSE".equals(r.getType().name())).count();
             System.out.println("收入: " + income + " 笔, 支出: " + expense + " 笔");
+            Assertions.assertEquals(15, records.size(), "解析结果条数应为15条");
         }
     }
 }

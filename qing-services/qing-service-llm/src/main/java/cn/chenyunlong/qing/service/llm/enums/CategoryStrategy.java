@@ -1,8 +1,11 @@
 package cn.chenyunlong.qing.service.llm.enums;
 
+import lombok.Getter;
+
 /**
  * LLM 分类策略枚举
  */
+@Getter
 public enum CategoryStrategy {
     /**
      * 按消费类型分类（餐饮/购物/娱乐等）
@@ -25,14 +28,6 @@ public enum CategoryStrategy {
     CategoryStrategy(String code, String description) {
         this.code = code;
         this.description = description;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public static CategoryStrategy fromCode(String code) {

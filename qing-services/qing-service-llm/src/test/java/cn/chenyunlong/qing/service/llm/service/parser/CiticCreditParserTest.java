@@ -4,7 +4,9 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
+
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

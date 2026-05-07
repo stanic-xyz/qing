@@ -23,6 +23,7 @@ import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftRecordRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -165,9 +166,9 @@ class LlmBillParserFacadeTest {
         facade.init();
 
         // Mock Repository 默认返回值
-        when(categoryRepository.findByIsDeletedFalse()).thenReturn(Collections.emptyList());
-        when(accountRepository.findAll()).thenReturn(Collections.emptyList());
-        when(counterpartyRepository.findAll()).thenReturn(Collections.emptyList());
+//        when(categoryRepository.findByIsDeletedFalse()).thenReturn(Collections.emptyList());
+//        when(accountRepository.findAll()).thenReturn(Collections.emptyList());
+//        when(counterpartyRepository.findAll()).thenReturn(Collections.emptyList());
     }
 
     // ============================================================
@@ -294,8 +295,8 @@ class LlmBillParserFacadeTest {
 
     @Test
     void testAsyncParseReturnsTaskId() throws Exception {
-        when(mockLlmParser.parse(anyString(), any(CategoryStrategy.class)))
-                .thenReturn(MOCK_RESPONSE_JSON);
+//        when(mockLlmParser.parse(anyString(), any(CategoryStrategy.class)))
+//                .thenReturn(MOCK_RESPONSE_JSON);
 
         MockMultipartFile file = new MockMultipartFile(
                 "file", "test.csv", "text/csv", SAMPLE_BILL.getBytes(StandardCharsets.UTF_8));
