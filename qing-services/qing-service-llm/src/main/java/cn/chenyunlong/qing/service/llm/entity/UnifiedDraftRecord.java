@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
+import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -30,7 +31,8 @@ public class UnifiedDraftRecord {
 
     private String merchant;
 
-    private String matchStatus;
+    @Enumerated(EnumType.STRING)
+    private DraftMatchStatusEnum matchStatus;
 
     @Column(columnDefinition = "TEXT")
     private String rawPayload;

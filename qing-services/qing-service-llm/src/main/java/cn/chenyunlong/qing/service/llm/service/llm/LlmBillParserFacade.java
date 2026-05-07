@@ -7,6 +7,7 @@ import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
 import cn.chenyunlong.qing.service.llm.enums.AdapterTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
 import cn.chenyunlong.qing.service.llm.repository.*;
 import cn.chenyunlong.qing.service.llm.util.FileHashUtil;
@@ -249,7 +250,7 @@ public class LlmBillParserFacade {
                 draftRecord.setAmount(billRecord.getAmount());
                 draftRecord.setCounterparty(billRecord.getCounterparty());
                 draftRecord.setMerchant(billRecord.getDescription());
-                draftRecord.setMatchStatus(detail.getNeedReview() ? "REVIEW_REQUIRED" : "MATCHED");
+                draftRecord.setMatchStatus(detail.getNeedReview() ? DraftMatchStatusEnum.REVIEW_REQUIRED : DraftMatchStatusEnum.MATCHED);
                 draftRecord.setRawPayload(toJsonQuietly(billRecord));
                 unifiedDraftRecordRepository.save(draftRecord);
             }

@@ -5,6 +5,7 @@ import cn.chenyunlong.qing.service.llm.dto.draft.DraftBatchResponse;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
 import cn.chenyunlong.qing.service.llm.enums.AdapterTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.service.DraftBatchService;
 import cn.chenyunlong.qing.service.llm.service.DraftRecordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -109,7 +110,7 @@ class DraftImportControllerTest {
         record.setBatchId(1L);
         record.setMatchStatus("MATCHED");
         Page<UnifiedDraftRecord> page = new PageImpl<>(List.of(record), PageRequest.of(0, 20), 1);
-        when(draftRecordService.pageByBatchId(1L, 0, 20, "MATCHED")).thenReturn(page);
+        when(draftRecordService.pageByBatchId(1L, 0, 20, DraftMatchStatusEnum.MATCHED)).thenReturn(page);
 
         mockMvc.perform(get("/api/import/draft/batches/1/records?page=0&size=20&matchStatus=MATCHED"))
                 .andExpect(status().isOk())

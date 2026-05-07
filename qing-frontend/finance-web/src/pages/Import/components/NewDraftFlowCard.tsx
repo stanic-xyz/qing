@@ -20,6 +20,12 @@ const actionLabel: Record<string, string> = {
   VIEW_RESULT: '查看结果',
 };
 
+const matchStatusUi: Record<string, { label: string; className: string }> = {
+  MATCHED: { label: '已匹配', className: 'bg-emerald-100 text-emerald-700' },
+  REVIEW_REQUIRED: { label: '待复核', className: 'bg-amber-100 text-amber-700' },
+  UNMATCHED: { label: '未匹配', className: 'bg-slate-100 text-slate-700' },
+};
+
 export default function NewDraftFlowCard() {
   const [batch, setBatch] = useState<DraftBatch | null>(null);
   const [loading, setLoading] = useState(false);
@@ -152,6 +158,14 @@ export default function NewDraftFlowCard() {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
   };
 
+  const renderMatchStatus = (status?: string) => {
+    if (!status) {
+      return <span className="inline-flex px-2 py-0.5 rounded bg-gray-100 text-gray-700">-</span>;
+    }
+    const ui = matchStatusUi[status] || { label: status, className: 'bg-gray-100 text-gray-700' };
+    return <span className={`inline-flex px-2 py-0.5 rounded ${ui.className}`}>{ui.label}</span>;
+  };
+
   return (
     <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
       <div className="flex items-start justify-between gap-3">
@@ -203,9 +217,9 @@ export default function NewDraftFlowCard() {
                   className="px-2 py-1 text-xs border border-gray-200 rounded-md bg-white"
                 >
                   <option value="">全部状态</option>
-                  <option value="MATCHED">MATCHED</option>
-                  <option value="REVIEW_REQUIRED">REVIEW_REQUIRED</option>
-                  <option value="UNMATCHED">UNMATCHED</option>
+                  <option value="MATCHED">已匹配</option>
+                  <option value="REVIEW_REQUIRED">待复核</option>
+                  <option value="UNMATCHED">未匹配</option>
                 </select>
                 <button
                   onClick={() => fetchRecords(0, matchStatusFilter)}
@@ -241,7 +255,7 @@ export default function NewDraftFlowCard() {
                         <td className="px-3 py-2 text-right whitespace-nowrap">{r.amount ?? '-'}</td>
                         <td className="px-3 py-2">{r.counterparty || '-'}</td>
                         <td className="px-3 py-2">
-                          <span className="inline-flex px-2 py-0.5 rounded bg-gray-100 text-gray-700">{r.matchStatus || '-'}</span>
+                          {renderMatchStatus(r.matchStatus)}
                         </td>
                       </tr>
                     ))}

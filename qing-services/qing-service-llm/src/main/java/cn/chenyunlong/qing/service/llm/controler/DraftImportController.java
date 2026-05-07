@@ -5,6 +5,7 @@ import cn.chenyunlong.qing.service.llm.dto.draft.ChangeDraftBatchStatusRequest;
 import cn.chenyunlong.qing.service.llm.dto.draft.CreateDraftBatchRequest;
 import cn.chenyunlong.qing.service.llm.dto.draft.DraftBatchResponse;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
+import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.service.DraftBatchService;
 import cn.chenyunlong.qing.service.llm.service.DraftRecordService;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class DraftImportController {
     public ResponseEntity<Result<Page<UnifiedDraftRecord>>> pageRecords(@PathVariable Long id,
                                                                          @RequestParam(value = "page", defaultValue = "0") int page,
                                                                          @RequestParam(value = "size", defaultValue = "20") int size,
-                                                                         @RequestParam(value = "matchStatus", required = false) String matchStatus) {
+                                                                         @RequestParam(value = "matchStatus", required = false) DraftMatchStatusEnum matchStatus) {
         return ResponseEntity.ok(Result.success(draftRecordService.pageByBatchId(id, page, size, matchStatus)));
     }
 }

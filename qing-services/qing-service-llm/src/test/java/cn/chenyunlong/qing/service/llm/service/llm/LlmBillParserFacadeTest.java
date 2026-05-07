@@ -11,6 +11,7 @@ import cn.chenyunlong.qing.service.llm.entity.LlmParseRecord;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
 import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
 import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
@@ -435,7 +436,7 @@ class LlmBillParserFacadeTest {
                 Long.valueOf(200L).equals(r.getBatchId())
                         && "EXPENSE".equals(r.getDirection())
                         && new BigDecimal("88.80").compareTo(r.getAmount()) == 0
-                        && "MATCHED".equals(r.getMatchStatus())
+                        && DraftMatchStatusEnum.MATCHED == r.getMatchStatus()
                         && r.getRawPayload() != null
                         && r.getRawPayload().contains("TXN-001")
         ));
