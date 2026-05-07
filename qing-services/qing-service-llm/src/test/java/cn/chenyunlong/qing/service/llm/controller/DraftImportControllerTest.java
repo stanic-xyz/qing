@@ -108,7 +108,7 @@ class DraftImportControllerTest {
         UnifiedDraftRecord record = new UnifiedDraftRecord();
         record.setId(22L);
         record.setBatchId(1L);
-        record.setMatchStatus("MATCHED");
+        record.setMatchStatus(DraftMatchStatusEnum.MATCHED);
         Page<UnifiedDraftRecord> page = new PageImpl<>(List.of(record), PageRequest.of(0, 20), 1);
         when(draftRecordService.pageByBatchId(1L, 0, 20, DraftMatchStatusEnum.MATCHED)).thenReturn(page);
 
