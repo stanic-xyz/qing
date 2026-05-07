@@ -29,6 +29,7 @@ export default function NewDraftFlowCard() {
   const [recordsSize] = useState(10);
   const [recordsTotal, setRecordsTotal] = useState(0);
   const [recordsLoading, setRecordsLoading] = useState(false);
+  const [hasLoadedRecords, setHasLoadedRecords] = useState(false);
 
   const canPoll = useMemo(() => {
     if (!batch) return false;
@@ -98,7 +99,14 @@ export default function NewDraftFlowCard() {
       const res = await axios.post(`/api/import/draft/batches/${batch.id}/actions`, {
         targetStatus: effectiveTarget,
       });
-      setBatch(res.data?.data || null);
+      const nextBatch = res.data?.data || null;
+      setBatch(nextBatch);
+      if (action === 'IMPORT' || action === 'CONFIRM' || action === 'START_MATCH' || action === 'RETRY') {
+        await refreshBatch(true);
+      }
+      if (hasLoadedRecords) {
+        await fetchRecords(recordsPage);
+      }
     } catch (e: any) {
       setError(e?.response?.data?.message || `执行动作失败: ${action}`);
     } finally {
@@ -124,11 +132,19 @@ export default function NewDraftFlowCard() {
       setRecords(data?.content || []);
       setRecordsTotal(data?.totalElements || 0);
       setRecordsPage(data?.number ?? page);
+      setHasLoadedRecords(true);
     } catch (e: any) {
       setError(e?.response?.data?.message || '加载草稿记录失败');
     } finally {
       setRecordsLoading(false);
     }
+  };
+
+  const formatDateTime = (value?: string) => {
+    if (!value) return '-';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return value;
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
   };
 
   return (
@@ -185,13 +201,31 @@ export default function NewDraftFlowCard() {
             ) : records.length === 0 ? (
               <div className="text-sm text-gray-500">暂无草稿记录</div>
             ) : (
-              <div className="space-y-2">
-                {records.map((r) => (
-                  <div key={r.id} className="text-xs bg-gray-50 border border-gray-100 rounded p-2">
-                    <div className="text-gray-700">#{r.id} {r.direction || '-'} {r.amount ?? '-'}</div>
-                    <div className="text-gray-500 mt-1">对手方: {r.counterparty || '-'} | 匹配: {r.matchStatus || '-'}</div>
-                  </div>
-                ))}
+              <div className="overflow-x-auto border border-gray-100 rounded-lg">
+                <table className="min-w-full text-xs">
+                  <thead className="bg-gray-50 text-gray-600">
+                    <tr>
+                      <th className="px-3 py-2 text-left">时间</th>
+                      <th className="px-3 py-2 text-left">方向</th>
+                      <th className="px-3 py-2 text-right">金额</th>
+                      <th className="px-3 py-2 text-left">对手方</th>
+                      <th className="px-3 py-2 text-left">匹配状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {records.map((r) => (
+                      <tr key={r.id} className="border-t border-gray-100 text-gray-700">
+                        <td className="px-3 py-2 whitespace-nowrap">{formatDateTime(r.transactionTime)}</td>
+                        <td className="px-3 py-2 whitespace-nowrap">{r.direction || '-'}</td>
+                        <td className="px-3 py-2 text-right whitespace-nowrap">{r.amount ?? '-'}</td>
+                        <td className="px-3 py-2">{r.counterparty || '-'}</td>
+                        <td className="px-3 py-2">
+                          <span className="inline-flex px-2 py-0.5 rounded bg-gray-100 text-gray-700">{r.matchStatus || '-'}</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
 
