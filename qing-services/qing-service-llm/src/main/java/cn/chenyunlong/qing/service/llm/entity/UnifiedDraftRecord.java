@@ -42,6 +42,9 @@ public class UnifiedDraftRecord {
     @Column(columnDefinition = "TEXT")
     private String rawPayload;
 
+    @Column(columnDefinition = "TEXT")
+    private String lockedFields;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

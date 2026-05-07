@@ -115,6 +115,17 @@ public class DraftCommitService {
     }
 
     private Account inferAccount(List<UnifiedDraftRecord> records) {
-        return null;
+        if (records == null || records.isEmpty()) {
+            return null;
+        }
+        Long batchId = records.get(0).getBatchId();
+        if (batchId == null) {
+            return null;
+        }
+        UnifiedDraftBatch batch = batchRepository.findById(batchId).orElse(null);
+        if (batch == null || batch.getAccountId() == null) {
+            return null;
+        }
+        return accountRepository.findById(batch.getAccountId()).orElse(null);
     }
 }

@@ -177,10 +177,11 @@ public class UploadService {
             String fileHash = FileHashUtil.calcMD5(file.getInputStream());
             long fileSize = file.getSize();
 
-            // 检查是否已处理
+            // 检查是否已处理过同文件（提示用户，但不阻止）
             Optional<UploadFileRecord> existing = uploadFileRepo.findByFileHash(fileHash);
             if (existing.isPresent()) {
-                throw new RuntimeException("文件已上传过，请勿重复上传: " + originalFilename);
+                log.warn("检测到重复文件上传: fileName={}, hash={}, existingUploadId={}",
+                        originalFilename, fileHash, existing.get().getId());
             }
 
             ParseResult parseResult = parser.parse(file.getInputStream(), originalFilename);
@@ -283,9 +284,6 @@ public class UploadService {
                 batchIndex++;
             }
 
-            // 直接保存到数据库
-            transactionRepo.saveAll(records);
-
             // 并行写入统一草稿模型（新链路）
             UnifiedDraftBatch draftBatch = new UnifiedDraftBatch();
             draftBatch.setBatchNo("parser-" + finalUploadId + "-" + System.currentTimeMillis());
@@ -293,6 +291,7 @@ public class UploadService {
             draftBatch.setStatus(DraftBatchStatusEnum.MATCHED);
             draftBatch.setProgress(60);
             draftBatch.setTotalRecords(records.size());
+            draftBatch.setAccountId(targetAccount.getId());
             draftBatch = unifiedDraftBatchRepository.save(draftBatch);
 
             for (TransactionRecord tr : records) {

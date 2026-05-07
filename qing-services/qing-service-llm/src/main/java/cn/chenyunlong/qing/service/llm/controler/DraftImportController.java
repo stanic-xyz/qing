@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -61,6 +62,27 @@ public class DraftImportController {
             return ResponseEntity.badRequest().body(Result.error(404, e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Result.error(500, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/records/{id}/lock")
+    public ResponseEntity<Result<UnifiedDraftRecord>> lockRecordFields(@PathVariable Long id,
+                                                                      @RequestBody List<String> fields) {
+        try {
+            UnifiedDraftRecord record = draftRecordService.lockFields(id, fields);
+            return ResponseEntity.ok(Result.success(record));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/records/{id}/unlock")
+    public ResponseEntity<Result<UnifiedDraftRecord>> unlockRecordFields(@PathVariable Long id) {
+        try {
+            UnifiedDraftRecord record = draftRecordService.unlockFields(id);
+            return ResponseEntity.ok(Result.success(record));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
         }
     }
 }

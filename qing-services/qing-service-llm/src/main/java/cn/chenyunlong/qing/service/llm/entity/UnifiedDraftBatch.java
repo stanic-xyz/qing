@@ -31,6 +31,8 @@ public class UnifiedDraftBatch {
 
     private Integer totalRecords = 0;
 
+    private Long accountId;
+
     @Column(columnDefinition = "TEXT")
     private String errorMessage;
 
