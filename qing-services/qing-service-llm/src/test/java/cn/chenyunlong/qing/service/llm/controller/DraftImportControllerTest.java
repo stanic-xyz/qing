@@ -93,12 +93,28 @@ class DraftImportControllerTest {
         record.setId(11L);
         record.setBatchId(1L);
         Page<UnifiedDraftRecord> page = new PageImpl<>(List.of(record), PageRequest.of(0, 20), 1);
-        when(draftRecordService.pageByBatchId(1L, 0, 20)).thenReturn(page);
+        when(draftRecordService.pageByBatchId(1L, 0, 20, null)).thenReturn(page);
 
         mockMvc.perform(get("/api/import/draft/batches/1/records?page=0&size=20"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.data.content[0].id").value(11))
                 .andExpect(jsonPath("$.data.totalElements").value(1));
+    }
+
+    @Test
+    void pageRecords_shouldSupportMatchStatusFilter() throws Exception {
+        UnifiedDraftRecord record = new UnifiedDraftRecord();
+        record.setId(22L);
+        record.setBatchId(1L);
+        record.setMatchStatus("MATCHED");
+        Page<UnifiedDraftRecord> page = new PageImpl<>(List.of(record), PageRequest.of(0, 20), 1);
+        when(draftRecordService.pageByBatchId(1L, 0, 20, "MATCHED")).thenReturn(page);
+
+        mockMvc.perform(get("/api/import/draft/batches/1/records?page=0&size=20&matchStatus=MATCHED"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.data.content[0].id").value(22))
+                .andExpect(jsonPath("$.data.content[0].matchStatus").value("MATCHED"));
     }
 }

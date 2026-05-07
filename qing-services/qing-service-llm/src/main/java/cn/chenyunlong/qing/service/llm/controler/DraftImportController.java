@@ -40,7 +40,8 @@ public class DraftImportController {
     @GetMapping("/batches/{id}/records")
     public ResponseEntity<Result<Page<UnifiedDraftRecord>>> pageRecords(@PathVariable Long id,
                                                                          @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                         @RequestParam(value = "size", defaultValue = "20") int size) {
-        return ResponseEntity.ok(Result.success(draftRecordService.pageByBatchId(id, page, size)));
+                                                                         @RequestParam(value = "size", defaultValue = "20") int size,
+                                                                         @RequestParam(value = "matchStatus", required = false) String matchStatus) {
+        return ResponseEntity.ok(Result.success(draftRecordService.pageByBatchId(id, page, size, matchStatus)));
     }
 }

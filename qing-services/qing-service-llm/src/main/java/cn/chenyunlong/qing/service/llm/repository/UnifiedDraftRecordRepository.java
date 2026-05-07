@@ -11,5 +11,7 @@ public interface UnifiedDraftRecordRepository extends JpaRepository<UnifiedDraft
 
     Page<UnifiedDraftRecord> findByBatchId(Long batchId, Pageable pageable);
 
+    Page<UnifiedDraftRecord> findByBatchIdAndMatchStatus(Long batchId, String matchStatus, Pageable pageable);
+
     long countByBatchId(Long batchId);
 }

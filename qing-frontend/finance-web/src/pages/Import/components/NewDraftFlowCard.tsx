@@ -30,6 +30,7 @@ export default function NewDraftFlowCard() {
   const [recordsTotal, setRecordsTotal] = useState(0);
   const [recordsLoading, setRecordsLoading] = useState(false);
   const [hasLoadedRecords, setHasLoadedRecords] = useState(false);
+  const [matchStatusFilter, setMatchStatusFilter] = useState('');
 
   const canPoll = useMemo(() => {
     if (!batch) return false;
@@ -122,12 +123,16 @@ export default function NewDraftFlowCard() {
     return () => window.clearInterval(timer);
   }, [canPoll, batch?.id]);
 
-  const fetchRecords = async (page = recordsPage) => {
+  const fetchRecords = async (page = recordsPage, status = matchStatusFilter) => {
     if (!batch) return;
     setRecordsLoading(true);
     setError(null);
     try {
-      const res = await axios.get(`/api/import/draft/batches/${batch.id}/records?page=${page}&size=${recordsSize}`);
+      const query = new URLSearchParams();
+      query.set('page', String(page));
+      query.set('size', String(recordsSize));
+      if (status) query.set('matchStatus', status);
+      const res = await axios.get(`/api/import/draft/batches/${batch.id}/records?${query.toString()}`);
       const data = res.data?.data;
       setRecords(data?.content || []);
       setRecordsTotal(data?.totalElements || 0);
@@ -187,13 +192,29 @@ export default function NewDraftFlowCard() {
           <div className="mt-4 border-t pt-3">
             <div className="flex items-center justify-between mb-2">
               <div className="text-sm font-medium text-gray-800">草稿记录（灰度）</div>
-              <button
-                onClick={() => fetchRecords(0)}
-                disabled={recordsLoading}
-                className="px-2.5 py-1 text-xs bg-white border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-60"
-              >
-                刷新记录
-              </button>
+              <div className="flex items-center gap-2">
+                <select
+                  value={matchStatusFilter}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    setMatchStatusFilter(v);
+                    fetchRecords(0, v);
+                  }}
+                  className="px-2 py-1 text-xs border border-gray-200 rounded-md bg-white"
+                >
+                  <option value="">全部状态</option>
+                  <option value="MATCHED">MATCHED</option>
+                  <option value="REVIEW_REQUIRED">REVIEW_REQUIRED</option>
+                  <option value="UNMATCHED">UNMATCHED</option>
+                </select>
+                <button
+                  onClick={() => fetchRecords(0, matchStatusFilter)}
+                  disabled={recordsLoading}
+                  className="px-2.5 py-1 text-xs bg-white border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-60"
+                >
+                  刷新记录
+                </button>
+              </div>
             </div>
 
             {recordsLoading ? (
