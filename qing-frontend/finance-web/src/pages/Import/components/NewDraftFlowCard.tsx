@@ -24,6 +24,11 @@ export default function NewDraftFlowCard() {
   const [batch, setBatch] = useState<DraftBatch | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [records, setRecords] = useState<any[]>([]);
+  const [recordsPage, setRecordsPage] = useState(0);
+  const [recordsSize] = useState(10);
+  const [recordsTotal, setRecordsTotal] = useState(0);
+  const [recordsLoading, setRecordsLoading] = useState(false);
 
   const canPoll = useMemo(() => {
     if (!batch) return false;
@@ -73,24 +78,25 @@ export default function NewDraftFlowCard() {
 
   const runAction = async (action: string) => {
     if (!batch) return;
-    if (action === 'REFRESH_STATUS' || action === 'VIEW_RESULT') {
+    if (action === 'REFRESH_STATUS') {
       await refreshBatch(false);
       return;
     }
 
-    if (action === 'RETRY') {
-      setError('当前版本后端尚未开放 RETRY 的状态迁移，可先新建批次重跑。');
+    if (action === 'VIEW_RESULT') {
+      await fetchRecords(0);
       return;
     }
 
     const target = actionToStatus[action];
-    if (!target) return;
+    if (!target && action !== 'RETRY') return;
+    const effectiveTarget = action === 'RETRY' ? 'MATCHING' : target;
 
     setLoading(true);
     setError(null);
     try {
       const res = await axios.post(`/api/import/draft/batches/${batch.id}/actions`, {
-        targetStatus: target,
+        targetStatus: effectiveTarget,
       });
       setBatch(res.data?.data || null);
     } catch (e: any) {
@@ -107,6 +113,23 @@ export default function NewDraftFlowCard() {
     }, 3000);
     return () => window.clearInterval(timer);
   }, [canPoll, batch?.id]);
+
+  const fetchRecords = async (page = recordsPage) => {
+    if (!batch) return;
+    setRecordsLoading(true);
+    setError(null);
+    try {
+      const res = await axios.get(`/api/import/draft/batches/${batch.id}/records?page=${page}&size=${recordsSize}`);
+      const data = res.data?.data;
+      setRecords(data?.content || []);
+      setRecordsTotal(data?.totalElements || 0);
+      setRecordsPage(data?.number ?? page);
+    } catch (e: any) {
+      setError(e?.response?.data?.message || '加载草稿记录失败');
+    } finally {
+      setRecordsLoading(false);
+    }
+  };
 
   return (
     <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
@@ -143,6 +166,53 @@ export default function NewDraftFlowCard() {
                 {actionLabel[action] || action}
               </button>
             ))}
+          </div>
+
+          <div className="mt-4 border-t pt-3">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-sm font-medium text-gray-800">草稿记录（灰度）</div>
+              <button
+                onClick={() => fetchRecords(0)}
+                disabled={recordsLoading}
+                className="px-2.5 py-1 text-xs bg-white border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-60"
+              >
+                刷新记录
+              </button>
+            </div>
+
+            {recordsLoading ? (
+              <div className="text-sm text-gray-500">加载中...</div>
+            ) : records.length === 0 ? (
+              <div className="text-sm text-gray-500">暂无草稿记录</div>
+            ) : (
+              <div className="space-y-2">
+                {records.map((r) => (
+                  <div key={r.id} className="text-xs bg-gray-50 border border-gray-100 rounded p-2">
+                    <div className="text-gray-700">#{r.id} {r.direction || '-'} {r.amount ?? '-'}</div>
+                    <div className="text-gray-500 mt-1">对手方: {r.counterparty || '-'} | 匹配: {r.matchStatus || '-'}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {recordsTotal > recordsSize && (
+              <div className="mt-2 flex gap-2">
+                <button
+                  onClick={() => fetchRecords(Math.max(0, recordsPage - 1))}
+                  disabled={recordsLoading || recordsPage <= 0}
+                  className="px-2.5 py-1 text-xs bg-white border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-60"
+                >
+                  上一页
+                </button>
+                <button
+                  onClick={() => fetchRecords(recordsPage + 1)}
+                  disabled={recordsLoading || (recordsPage + 1) * recordsSize >= recordsTotal}
+                  className="px-2.5 py-1 text-xs bg-white border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-60"
+                >
+                  下一页
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

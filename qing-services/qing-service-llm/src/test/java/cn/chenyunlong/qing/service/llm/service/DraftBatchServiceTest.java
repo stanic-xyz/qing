@@ -88,4 +88,18 @@ class DraftBatchServiceTest {
 
         assertTrue(ex.getMessage().contains("invalid status transition"));
     }
+
+    @Test
+    void changeStatus_shouldAllowRetryFromFailedToMatching() {
+        batch.setStatus(DraftBatchStatusEnum.FAILED);
+        batch.setProgress(0);
+        when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
+        when(batchRepository.save(any(UnifiedDraftBatch.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        DraftBatchResponse retried = draftBatchService.changeStatus(1L, DraftBatchStatusEnum.MATCHING);
+
+        assertEquals(DraftBatchStatusEnum.MATCHING, retried.getStatus());
+        assertTrue(retried.getProgress() >= 20);
+        assertTrue(retried.getAllowedActions().contains("REFRESH_STATUS"));
+    }
 }

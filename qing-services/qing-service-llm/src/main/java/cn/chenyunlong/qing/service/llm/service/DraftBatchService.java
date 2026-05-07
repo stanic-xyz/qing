@@ -76,7 +76,8 @@ public class DraftBatchService {
             case MATCHING -> target == DraftBatchStatusEnum.MATCHED || target == DraftBatchStatusEnum.FAILED;
             case MATCHED -> target == DraftBatchStatusEnum.CONFIRMING || target == DraftBatchStatusEnum.FAILED;
             case CONFIRMING -> target == DraftBatchStatusEnum.IMPORTED || target == DraftBatchStatusEnum.FAILED;
-            case IMPORTED, FAILED -> false;
+            case IMPORTED -> false;
+            case FAILED -> target == DraftBatchStatusEnum.MATCHING;
         };
         if (!ok) {
             throw new IllegalStateException("invalid status transition: " + current + " -> " + target);
