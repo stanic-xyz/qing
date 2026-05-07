@@ -125,6 +125,9 @@ public class CcbExcelParser extends BaseFileParser {
         Cell summaryCell = row.getCell(1);
         String summary = summaryCell != null ? summaryCell.getStringCellValue().trim() : "";
 
+        StringBuilder remarkBuilder = new StringBuilder();
+        remarkBuilder.append(summary);
+
         // 从第5列读取交易金额
         Cell amountCell = row.getCell(5);
         if (amountCell != null) {
@@ -154,7 +157,6 @@ public class CcbExcelParser extends BaseFileParser {
         // 从第7列读取交易地点/附言(渠道）
         Cell locationCell = row.getCell(7);
 
-        StringBuilder remarkBuilder = new StringBuilder();
         if (locationCell != null) {
             String location = locationCell.getStringCellValue().trim();
             if (!location.isEmpty()) {
@@ -179,7 +181,7 @@ public class CcbExcelParser extends BaseFileParser {
                 }
             }
         }
-
+        record.setRemark(remarkBuilder.toString().trim());
         // 设置默认值
         record.setAccountName("建设银行");
         record.setAccountType(AccountType.DEBIT);

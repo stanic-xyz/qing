@@ -1,9 +1,6 @@
 package cn.chenyunlong.qing.service.llm.service;
 
-import cn.chenyunlong.qing.service.llm.entity.Account;
-import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
-import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
-import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
+import cn.chenyunlong.qing.service.llm.entity.*;
 import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
@@ -14,11 +11,11 @@ import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftBatchRepository;
 import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -31,24 +28,7 @@ public class DraftCommitService {
     private final TransactionRecordRepository transactionRepo;
     private final AccountRepository accountRepository;
 
-    public static class CommitResult {
-        private final int importedCount;
-        private final int duplicateCount;
-        private final int skippedCount;
-        private final String message;
-
-        public CommitResult(int importedCount, int duplicateCount, int skippedCount, String message) {
-            this.importedCount = importedCount;
-            this.duplicateCount = duplicateCount;
-            this.skippedCount = skippedCount;
-            this.message = message;
-        }
-
-        public int getImportedCount() { return importedCount; }
-        public int getDuplicateCount() { return duplicateCount; }
-        public int getSkippedCount() { return skippedCount; }
-        public String getMessage() { return message; }
-    }
+    public record CommitResult(int importedCount, int duplicateCount, int skippedCount, String message) {}
 
     @Transactional
     public CommitResult commit(Long batchId) {
@@ -59,8 +39,7 @@ public class DraftCommitService {
             throw new IllegalStateException("批次已入账，不得重复提交");
         }
 
-        List<UnifiedDraftRecord> draftRecords = recordRepository.findByBatchId(batchId,
-                org.springframework.data.domain.Pageable.unpaged()).getContent();
+        List<UnifiedDraftRecord> draftRecords = recordRepository.findByBatchId(batchId, Pageable.unpaged()).getContent();
 
         if (draftRecords.isEmpty()) {
             throw new IllegalStateException("草稿记录为空，无法入账");
@@ -89,7 +68,12 @@ public class DraftCommitService {
             tr.setTransactionTime(dr.getTransactionTime());
             tr.setType(TrasactionType.valueOf(dr.getDirection() != null ? dr.getDirection() : "EXPENSE"));
             tr.setAmount(dr.getAmount());
-            tr.setCounterparty(dr.getCounterparty());
+
+            // 执行商户信息
+            Counterparty finalCounterparty = dr.getFinalCounterparty();
+            if (finalCounterparty != null) {
+                tr.setCounterparty(finalCounterparty);
+            }
             tr.setMerchant(dr.getMerchant());
             tr.setUploadId(String.valueOf(batchId));
             tr.setBatchNo(batch.getBatchNo());

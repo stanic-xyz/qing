@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
 import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,6 +29,10 @@ public class UnifiedDraftRecord {
     private BigDecimal amount;
 
     private String counterparty;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Counterparty finalCounterparty;
 
     private String merchant;
 

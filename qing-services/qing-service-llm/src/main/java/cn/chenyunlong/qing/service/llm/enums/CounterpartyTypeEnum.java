@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * MERCHANT (商户), INDIVIDUAL (个人), CORPORATE (企业)
  */
+@Getter
 @RequiredArgsConstructor
 public enum CounterpartyTypeEnum implements CommonEnum {
     MERCHANT(1, "商户"),
@@ -15,7 +16,6 @@ public enum CounterpartyTypeEnum implements CommonEnum {
 
     private final int code;
 
-    @Getter
     private final String description;
 
     @Override

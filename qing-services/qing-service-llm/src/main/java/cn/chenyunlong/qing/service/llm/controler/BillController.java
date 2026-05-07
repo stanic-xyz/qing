@@ -1,10 +1,6 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
-import cn.chenyunlong.qing.service.llm.dto.ImportRequest;
-import cn.chenyunlong.qing.service.llm.dto.Result;
-import cn.chenyunlong.qing.service.llm.dto.UploadBatchOverviewResponse;
-import cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse;
-import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
+import cn.chenyunlong.qing.service.llm.dto.*;
 import cn.chenyunlong.qing.service.llm.service.UploadService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +40,8 @@ public class BillController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "100") int size) {
         try {
-            return ResponseEntity.ok(Result.success(uploadService.getPreviewData(uploadId, page, size)));
+            UploadPreview previewData = uploadService.getPreviewData(uploadId, page, size);
+            return ResponseEntity.ok(Result.success(previewData));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
         }
@@ -57,7 +54,7 @@ public class BillController {
     }
 
     @PostMapping("/match/{uploadId}")
-    public ResponseEntity<Result> startMatching(@PathVariable("uploadId") String uploadId, @RequestBody(required = false) List<String> lockedTempIds) {
+    public ResponseEntity<Result<Void>> startMatching(@PathVariable("uploadId") String uploadId, @RequestBody(required = false) List<String> lockedTempIds) {
         try {
             uploadService.startMatchingAsync(uploadId, lockedTempIds);
             return ResponseEntity.ok(Result.success(null));
@@ -68,9 +65,10 @@ public class BillController {
     }
 
     @PostMapping("/match-single/{recordId}")
-    public ResponseEntity<Result> matchSingleRecord(@PathVariable("recordId") String recordId, @RequestBody(required = false) List<Long> ruleIds) {
+    public ResponseEntity<Result<PreviewRecordDTO>> matchSingleRecord(@PathVariable("recordId") String recordId, @RequestBody(required = false) List<Long> ruleIds) {
         try {
-            return ResponseEntity.ok(Result.success(uploadService.matchSingleRecord(recordId, ruleIds)));
+            PreviewRecordDTO recordDTO = uploadService.matchSingleRecord(recordId, ruleIds);
+            return ResponseEntity.ok(Result.success(recordDTO));
         } catch (Exception e) {
             log.error("单条匹配失败", e);
             return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
@@ -78,9 +76,10 @@ public class BillController {
     }
 
     @GetMapping("/match/status/{uploadId}")
-    public ResponseEntity<Result> getMatchStatus(@PathVariable("uploadId") String uploadId) {
+    public ResponseEntity<Result<MatchStatusResponse>> getMatchStatus(@PathVariable("uploadId") String uploadId) {
         try {
-            return ResponseEntity.ok(Result.success(uploadService.getMatchStatus(uploadId)));
+            MatchStatusResponse matchStatus = uploadService.getMatchStatus(uploadId);
+            return ResponseEntity.ok(Result.success(matchStatus));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
         }

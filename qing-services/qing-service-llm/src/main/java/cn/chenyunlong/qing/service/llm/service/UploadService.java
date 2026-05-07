@@ -8,7 +8,7 @@ import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
 import cn.chenyunlong.qing.service.llm.dto.UploadBatchOverviewResponse;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.UploadBatch;
-import cn.chenyunlong.qing.service.llm.enums.BatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +16,6 @@ import org.springframework.data.domain.Sort;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.entity.UploadFileRecord;
 import cn.chenyunlong.qing.service.llm.entity.Account;
-import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
@@ -26,9 +24,6 @@ import cn.chenyunlong.qing.service.llm.repository.UploadBatchRepository;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
-import cn.chenyunlong.qing.service.llm.enums.AdapterTypeEnum;
-import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.repository.ParserConfigRepository;
 import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftBatchRepository;
 import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftRecordRepository;
@@ -205,12 +200,11 @@ public class UploadService {
                 }
             }
 
-
             UploadFileRecord fileRecord = new UploadFileRecord();
             fileRecord.setFileName(originalFilename);
             fileRecord.setFileHash(fileHash);
             fileRecord.setFileSize(fileSize);
-            fileRecord.setStatus("UPLOADED");
+            fileRecord.setStatus(FileUploadStatusEnum.UPLOADED);
             fileRecord.setParsedCount(records.size());
             fileRecord.setStartTime(minTime);
             fileRecord.setEndTime(maxTime);
@@ -228,18 +222,22 @@ public class UploadService {
             BigDecimal totalExpense = BigDecimal.ZERO;
 
             for (TransactionRecord record : records) {
-                if (record.getType() == TrasactionType.INCOME) {
-                    incomeCount++;
-                    if (record.getAmount() != null) {
-                        totalIncome = totalIncome.add(record.getAmount());
+                switch (record.getType()) {
+                    case INCOME -> {
+                        incomeCount++;
+                        if (record.getAmount() != null) {
+                            totalIncome = totalIncome.add(record.getAmount());
+                        }
                     }
-                } else if (record.getType() == TrasactionType.EXPENSE) {
-                    expenseCount++;
-                    if (record.getAmount() != null) {
-                        totalExpense = totalExpense.add(record.getAmount());
+                    case EXPENSE -> {
+                        expenseCount++;
+                        if (record.getAmount() != null) {
+                            totalExpense = totalExpense.add(record.getAmount());
+                        }
                     }
-                } else if (record.getType() == TrasactionType.TRANSFER) {
-                    transferCount++;
+                    case TRANSFER -> transferCount++;
+                    case null, default -> {
+                    }
                 }
             }
 
@@ -304,7 +302,9 @@ public class UploadService {
                 dr.setTransactionTime(tr.getTransactionTime());
                 dr.setDirection(tr.getType() != null ? tr.getType().name() : null);
                 dr.setAmount(tr.getAmount());
-                dr.setCounterparty(tr.getCounterparty());
+                if (tr.getCounterparty() != null) {
+                    dr.setFinalCounterparty(tr.getCounterparty());
+                }
                 dr.setMerchant(tr.getMerchant());
                 dr.setMatchStatus(tr.getMatchStatus() != null && tr.getMatchStatus() == MatchStatusEnum.AUTO_MATCHED
                         ? DraftMatchStatusEnum.MATCHED : DraftMatchStatusEnum.REVIEW_REQUIRED);
@@ -335,7 +335,7 @@ public class UploadService {
 
         // 获取上传文件记录的状态
         UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
-        String status = fileRecord != null ? fileRecord.getStatus() : null;
+        FileUploadStatusEnum status = fileRecord != null ? fileRecord.getStatus() : null;
 
         List<PreviewRecordDTO> previewList = recordPage.getContent().stream()
                 .map(r -> PreviewRecordDTO.fromEntity(r, String.valueOf(r.getId())))
@@ -444,7 +444,7 @@ public class UploadService {
                 // 更新批次状态
                 UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
                 if (fileRecord != null) {
-                    fileRecord.setStatus("MATCHING"); // 或 MATCHED
+                    fileRecord.setStatus(FileUploadStatusEnum.MATCHING); // 或 MATCHED
                     uploadFileRepo.save(fileRecord);
                 }
 
@@ -613,7 +613,7 @@ public class UploadService {
         // 更新上传批次记录状态
         UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
         if (fileRecord != null) {
-            fileRecord.setStatus("IMPORTED");
+            fileRecord.setStatus(FileUploadStatusEnum.IMPORTED);
             fileRecord.setImportedCount(saved.size());
             fileRecord.setImportedAt(LocalDateTime.now());
             uploadFileRepo.save(fileRecord);

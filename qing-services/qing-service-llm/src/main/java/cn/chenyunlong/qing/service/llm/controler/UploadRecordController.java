@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.service.llm.controler;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.entity.UploadFileRecord;
+import cn.chenyunlong.qing.service.llm.enums.FileUploadStatusEnum;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.UploadFileRecordRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +64,7 @@ public class UploadRecordController {
         if (softDelete) {
             transactions.forEach(t -> t.setIsDeleted(true));
             transactionRepo.saveAll(transactions);
-            record.setStatus("DELETED");
+            record.setStatus(FileUploadStatusEnum.DELETED);
         } else {
             transactionRepo.deleteAll(transactions);
             uploadFileRepo.delete(record);

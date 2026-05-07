@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
+import cn.chenyunlong.qing.service.llm.enums.FileUploadStatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,8 +17,10 @@ public class UploadFileRecord {
     private String fileName;
     private String fileHash;
     private String channel;
-    
-    private String status; // UPLOADED, IMPORTED, FAILED
+
+    @Enumerated(EnumType.STRING)
+    private FileUploadStatusEnum status; // UPLOADED, IMPORTED, FAILED
+
     private Integer parsedCount;
     private Integer importedCount;
 
@@ -25,7 +28,7 @@ public class UploadFileRecord {
     private LocalDateTime endTime;
     private Long fileSize;
     private String templateVersion;
-    
+
     private LocalDateTime importedAt;
 
     private LocalDateTime createdAt;

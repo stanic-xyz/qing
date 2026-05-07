@@ -17,8 +17,6 @@ public class TransactionRecord {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private LocalDateTime transactionTime;
-
     @ManyToOne
     @JoinColumn(name = "channel_id")
     private Channel channel;
@@ -26,6 +24,25 @@ public class TransactionRecord {
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+
+    // 交易时间
+    private LocalDateTime transactionTime;
+
+    // 交易金额
+    @Column(precision = 19, scale = 2, nullable = false)
+    private BigDecimal amount;
+
+    // 出入账类型
+    private TransactionDirectionTypeEnum directionType;
+
+    // 交易余额
+    @Column(precision = 19, scale = 2, nullable = false)
+    private BigDecimal balance;
+
+    private String summary;
+
+    // 交易备注
+    private String remark;
 
     // 账户信息冗余
     private String accountName; // 冗余
@@ -38,31 +55,31 @@ public class TransactionRecord {
     @Enumerated(EnumType.STRING)
     private TrasactionType type; // INCOME/EXPENSE/TRANSFER
 
-    // 交易金额
-    @Column(precision = 19, scale = 2, nullable = false)
-    private BigDecimal amount;
-
-    // 交易余额
-    @Column(precision = 19, scale = 2, nullable = false)
-    private BigDecimal balance;
+    // 内部转账时，目标账户的ID
+    private Long targetAccountId;
 
     // 对手方信息
     @ManyToOne
     private Counterparty counterparty;
 
-    // 商家信息
+    // 商家信息,必须
     private String merchant;
+
     // 交易类别
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    // 交易子类别
+
+    // 交易子类别,冗余字段
     private String subCategory;
+
     // 交易状态
     @Enumerated(EnumType.STRING)
     private TransactionStatusEnum status;
+
     // 交易费用
     private BigDecimal fee;
+
     // 原始交易ID
     private String originalId;
     // 原始文件名
@@ -72,8 +89,6 @@ public class TransactionRecord {
     @JoinColumn(name = "detail_id")
     private RecordDetail detail;
 
-    // 交易备注
-    private String remark;
     // 交易标签
     private String tags; // JSON
 
@@ -110,7 +125,6 @@ public class TransactionRecord {
     @Enumerated(EnumType.STRING)
     private MatchStatusEnum matchStatus = MatchStatusEnum.ORIGINAL;
 
-    private Long targetAccountId; // 内部转账时，目标账户的ID
     private String matchRuleName; // 触发此状态的规则名称
 
     // 资金类型：INTERNAL(内部如余额宝), EXTERNAL(外部如银行卡), SPLIT(混合支付)

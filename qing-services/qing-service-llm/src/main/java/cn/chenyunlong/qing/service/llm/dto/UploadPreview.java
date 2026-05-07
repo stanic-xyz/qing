@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.dto;
 
+import cn.chenyunlong.qing.service.llm.enums.FileUploadStatusEnum;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,5 +13,5 @@ public class UploadPreview {
     private List<PreviewRecordDTO> previewRecords;
     private long totalCount;
     private boolean hasMore;
-    private String status; // UPLOADED, MATCHING, IMPORTED
+    private FileUploadStatusEnum status; // UPLOADED, MATCHING, IMPORTED
 }
