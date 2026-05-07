@@ -2,6 +2,8 @@ package cn.chenyunlong.qing.service.llm.entity;
 
 import cn.chenyunlong.qing.service.llm.enums.AdapterTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
+import cn.hutool.core.net.multipart.UploadFile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,11 +29,17 @@ public class UnifiedDraftBatch {
     @Column(nullable = false)
     private DraftBatchStatusEnum status = DraftBatchStatusEnum.DRAFTED;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UploadFileRecord uploadFile;
+
     private Integer progress = 0;
 
     private Integer totalRecords = 0;
 
-    private Long accountId;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Account account;
 
     @Column(columnDefinition = "TEXT")
     private String errorMessage;

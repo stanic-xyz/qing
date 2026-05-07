@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.service.llm.service.parser.ccb;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.enums.TransactionDirectionTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,21 +61,23 @@ class CcbExcelParserTest {
 
             // 验证第一条记录
             // 1 转账存入 20150904 20.00 20.00 四川省分行营管部 6217003810043311771/张婷
-            TransactionRecord record1 = records.getFirst();
-            assertNotNull(record1.getTransactionTime(), "交易时间不应为空");
-            assertEquals("2015-09-04T00:00", record1.getTransactionTime().toString());
-            assertEquals(TrasactionType.INCOME, record1.getType(), "转账存入应为收入");
-            assertEquals(new BigDecimal("20.00"), record1.getAmount(), "金额应为20.00");
-            assertEquals("四川省分行营管部", record1.getMerchant(), "商户应为四川省分行营管部");
-            assertEquals("建设银行", record1.getAccountName(), "账户名称应为建设银行");
-            assertEquals(new BigDecimal("20.00"), record1.getBalance(), "余额应为20.00");
+            TransactionRecord transactionRecord = records.getFirst();
+
+            assertNotNull(transactionRecord.getTransactionTime(), "交易时间不应为空");
+            assertEquals("2015-09-04T00:00", transactionRecord.getTransactionTime().toString());
+            assertEquals(TransactionDirectionTypeEnum.IN, transactionRecord.getDirectionType(), "转账存入应为收入");
+            assertEquals(new BigDecimal("20.00"), transactionRecord.getAmount(), "金额应为20.00");
+            assertEquals("6217003810043311771/张婷", transactionRecord.getMerchant(), "商户应为四川省分行营管部");
+            assertEquals("转账存入-->四川省分行营管部(6217003810043311771/张婷)", transactionRecord.getRemark(), "商户应为四川省分行营管部");
+            assertEquals("建设银行", transactionRecord.getAccountName(), "账户名称应为建设银行");
+            assertEquals(new BigDecimal("20.00"), transactionRecord.getBalance(), "余额应为20.00");
 
             System.out.println("✅ 第一条记录验证通过:");
-            System.out.println("  - 时间: " + record1.getTransactionTime());
-            System.out.println("  - 类型: " + record1.getType());
-            System.out.println("  - 金额: " + record1.getAmount());
-            System.out.println("  - 商户: " + record1.getMerchant());
-            System.out.println("  - 余额: " + record1.getBalance());
+            System.out.println("  - 时间: " + transactionRecord.getTransactionTime());
+            System.out.println("  - 方向: " + transactionRecord.getDirectionType());
+            System.out.println("  - 金额: " + transactionRecord.getAmount());
+            System.out.println("  - 商户: " + transactionRecord.getMerchant());
+            System.out.println("  - 余额: " + transactionRecord.getBalance());
 
             // 打印前5条记录
             System.out.println("\n📋 前5条记录:");
@@ -106,13 +109,13 @@ class CcbExcelParserTest {
                 TransactionRecord record14 = records.get(13);
                 assertNotNull(record14.getTransactionTime(), "交易时间不应为空");
                 assertEquals("2015-09-07T00:00", record14.getTransactionTime().toString());
-                assertEquals(TrasactionType.EXPENSE, record14.getType(), "代扣学杂应为支出");
-                assertEquals(new BigDecimal("7050.00"), record14.getAmount(), "金额应为7050.00");
+                assertEquals(TransactionDirectionTypeEnum.OUT, record14.getDirectionType(), "代扣学杂应为支出");
+                assertEquals(new BigDecimal("-7050.00"), record14.getAmount(), "金额应为7050.00");
                 assertEquals(new BigDecimal("154.00"), record14.getBalance(), "余额应为154.00");
 
                 System.out.println("✅ 第14条记录验证通过:");
                 System.out.println("  - 时间: " + record14.getTransactionTime());
-                System.out.println("  - 类型: " + record14.getType());
+                System.out.println("  - 类型: " + record14.getDirectionType());
                 System.out.println("  - 金额: " + record14.getAmount());
                 System.out.println("  - 余额: " + record14.getBalance());
                 System.out.println("  - 商户: " + record14.getMerchant());
@@ -138,15 +141,15 @@ class CcbExcelParserTest {
             for (TransactionRecord record : records) {
                 assertNotNull(record.getTransactionTime(), "交易时间不应为空");
                 assertNotNull(record.getAmount(), "交易金额不应为空");
-                assertNotNull(record.getType(), "交易类型不应为空");
+                assertNotNull(record.getDirectionType(), "交易类型不应为空");
                 assertEquals("建设银行", record.getAccountName(), "账户名称应为建设银行");
                 assertNotNull(record.getAccountType(), "账户类型不应为空");
                 assertNotNull(record.getReconciliationStatus(), "对账状态不应为空");
                 assertNotNull(record.getStatus(), "交易状态不应为空");
 
                 // 验证金额不为负数（已取绝对值）
-                assertTrue(record.getAmount().compareTo(BigDecimal.ZERO) >= 0,
-                        "金额应为非负数: " + record.getAmount());
+                assertTrue(record.getAmount().compareTo(BigDecimal.ZERO) >= 0 ? record.getDirectionType() == TransactionDirectionTypeEnum.IN : record.getDirectionType() == TransactionDirectionTypeEnum.OUT,
+                        "出入方向对应正负: " + record.getAmount());
             }
 
             System.out.println("✅ 数据完整性验证通过，共验证 " + records.size() + " 条记录");

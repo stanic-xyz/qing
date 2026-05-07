@@ -1,6 +1,8 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
 import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionDirectionTypeEnum;
+import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,7 +26,10 @@ public class UnifiedDraftRecord {
 
     private LocalDateTime transactionTime;
 
-    private String direction;
+    @Enumerated(EnumType.STRING)
+    private TransactionDirectionTypeEnum direction;
+
+    private TrasactionType trasactionType;
 
     private BigDecimal amount;
 

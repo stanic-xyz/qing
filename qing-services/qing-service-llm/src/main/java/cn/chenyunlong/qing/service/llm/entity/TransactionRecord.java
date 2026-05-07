@@ -28,7 +28,7 @@ public class TransactionRecord {
     // 交易时间
     private LocalDateTime transactionTime;
 
-    // 交易金额
+    // 交易金额,带正负
     @Column(precision = 19, scale = 2, nullable = false)
     private BigDecimal amount;
 
@@ -36,7 +36,7 @@ public class TransactionRecord {
     private TransactionDirectionTypeEnum directionType;
 
     // 交易余额
-    @Column(precision = 19, scale = 2, nullable = false)
+    @Column(precision = 19, scale = 2)
     private BigDecimal balance;
 
     private String summary;

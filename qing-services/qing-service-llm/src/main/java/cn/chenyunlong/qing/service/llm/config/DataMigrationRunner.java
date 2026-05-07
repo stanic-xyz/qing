@@ -89,11 +89,5 @@ public class DataMigrationRunner implements ApplicationRunner {
             //            }
         }
         log.info("Data migration completed.");
-
-        Integer integer = taskExecutor.submit(() -> {
-            log.info("Starting background task...");
-            return 1;
-        }).get();
-        log.info("integer = {}", integer);
     }
 }

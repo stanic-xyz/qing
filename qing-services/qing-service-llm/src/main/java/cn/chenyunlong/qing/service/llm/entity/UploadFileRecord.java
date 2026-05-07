@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
 import cn.chenyunlong.qing.service.llm.enums.FileUploadStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,6 +18,10 @@ public class UploadFileRecord {
     private String fileName;
     private String fileHash;
     private String channel;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Account account;
 
     @Enumerated(EnumType.STRING)
     private FileUploadStatusEnum status; // UPLOADED, IMPORTED, FAILED

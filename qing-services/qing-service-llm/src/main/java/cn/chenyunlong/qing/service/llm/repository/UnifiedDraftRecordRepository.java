@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UnifiedDraftRecordRepository extends JpaRepository<UnifiedDraftRecord, Long> {
 
@@ -15,4 +17,6 @@ public interface UnifiedDraftRecordRepository extends JpaRepository<UnifiedDraft
     Page<UnifiedDraftRecord> findByBatchIdAndMatchStatus(Long batchId, DraftMatchStatusEnum matchStatus, Pageable pageable);
 
     long countByBatchId(Long batchId);
+
+    List<UnifiedDraftRecord> findAllByBatchId(Long batchId);
 }

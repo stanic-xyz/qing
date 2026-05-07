@@ -36,7 +36,7 @@ public class BillController {
 
     @GetMapping("/preview/{uploadId}")
     public ResponseEntity<Result<UploadPreview>> getPreview(
-            @PathVariable("uploadId") String uploadId,
+            @PathVariable("uploadId") Long uploadId,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "100") int size) {
         try {
@@ -54,7 +54,7 @@ public class BillController {
     }
 
     @PostMapping("/match/{uploadId}")
-    public ResponseEntity<Result<Void>> startMatching(@PathVariable("uploadId") String uploadId, @RequestBody(required = false) List<String> lockedTempIds) {
+    public ResponseEntity<Result<Void>> startMatching(@PathVariable("uploadId") Long uploadId, @RequestBody(required = false) List<String> lockedTempIds) {
         try {
             uploadService.startMatchingAsync(uploadId, lockedTempIds);
             return ResponseEntity.ok(Result.success(null));
@@ -76,7 +76,7 @@ public class BillController {
     }
 
     @GetMapping("/match/status/{uploadId}")
-    public ResponseEntity<Result<MatchStatusResponse>> getMatchStatus(@PathVariable("uploadId") String uploadId) {
+    public ResponseEntity<Result<MatchStatusResponse>> getMatchStatus(@PathVariable("uploadId") Long uploadId) {
         try {
             MatchStatusResponse matchStatus = uploadService.getMatchStatus(uploadId);
             return ResponseEntity.ok(Result.success(matchStatus));
@@ -86,9 +86,10 @@ public class BillController {
     }
 
     @GetMapping("/batch/overview/{uploadId}")
-    public ResponseEntity<Result<UploadBatchOverviewResponse>> getBatchOverview(@PathVariable("uploadId") String uploadId) {
+    public ResponseEntity<Result<UploadBatchOverviewResponse>> getBatchOverview(@PathVariable("uploadId") Long uploadId) {
         try {
-            return ResponseEntity.ok(Result.success(uploadService.getBatchOverview(uploadId)));
+            UploadBatchOverviewResponse batchOverview = uploadService.getBatchOverview(uploadId);
+            return ResponseEntity.ok(Result.success(batchOverview));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
         }

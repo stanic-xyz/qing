@@ -2,10 +2,7 @@ package cn.chenyunlong.qing.service.llm.service.parser.ccb;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
-import cn.chenyunlong.qing.service.llm.enums.AccountType;
-import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.*;
 import cn.chenyunlong.qing.service.llm.service.parser.BaseFileParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -125,8 +122,6 @@ public class CcbExcelParser extends BaseFileParser {
         Cell summaryCell = row.getCell(1);
         String summary = summaryCell != null ? summaryCell.getStringCellValue().trim() : "";
 
-        StringBuilder remarkBuilder = new StringBuilder();
-        remarkBuilder.append(summary);
 
         // 从第5列读取交易金额
         Cell amountCell = row.getCell(5);
@@ -134,13 +129,12 @@ public class CcbExcelParser extends BaseFileParser {
             String amountStr = extractCellStringValue(amountCell);
             if (amountStr != null && !amountStr.isEmpty()) {
                 BigDecimal amount = new BigDecimal(amountStr.replace(",", ""));
-                record.setAmount(amount.abs());
-
+                record.setAmount(amount);
                 // 根据金额正负判断交易类型
                 if (amount.compareTo(BigDecimal.ZERO) < 0) {
-                    record.setType(TrasactionType.EXPENSE);
+                    record.setDirectionType(TransactionDirectionTypeEnum.OUT);
                 } else {
-                    record.setType(TrasactionType.INCOME);
+                    record.setDirectionType(TransactionDirectionTypeEnum.IN);
                 }
             }
         }
@@ -156,32 +150,33 @@ public class CcbExcelParser extends BaseFileParser {
 
         // 从第7列读取交易地点/附言(渠道）
         Cell locationCell = row.getCell(7);
-
+        String location;
         if (locationCell != null) {
-            String location = locationCell.getStringCellValue().trim();
-            if (!location.isEmpty()) {
-                record.setMerchant(location);
-                remarkBuilder.append(location);
-            } else {
-                remarkBuilder.append(" ");
+            location = locationCell.getStringCellValue().trim();
+            if (location.isEmpty()) {
+                location = "-";
             }
+        } else {
+            location = "-";
         }
 
         // 从第8列读取对方账号与户名
         Cell counterpartyCell = row.getCell(8);
+
+        String counterparty;
+
         if (counterpartyCell != null) {
-            String counterparty = counterpartyCell.getStringCellValue().trim();
+            counterparty = counterpartyCell.getStringCellValue().trim();
             if (!counterparty.isEmpty()) {
                 // 格式可能是: 6217003810043311771/张婷
-                if (counterparty.contains("/")) {
-                    String[] parts = counterparty.split("/", 2);
-                    record.setRemark(parts.length > 1 ? parts[1] : counterparty);
-                } else {
-                    record.setRemark(counterparty);
-                }
+                record.setMerchant(counterparty);
+            } else {
+                counterparty = "-";
             }
+        } else {
+            counterparty = "-";
         }
-        record.setRemark(remarkBuilder.toString().trim());
+        record.setRemark(("%s-->%s(%s)".formatted(summary, location, counterparty)).trim());
         // 设置默认值
         record.setAccountName("建设银行");
         record.setAccountType(AccountType.DEBIT);

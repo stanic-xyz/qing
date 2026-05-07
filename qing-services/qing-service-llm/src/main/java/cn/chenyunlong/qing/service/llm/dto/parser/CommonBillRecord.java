@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.dto.parser;
 
+import cn.chenyunlong.qing.service.llm.enums.TransactionDirectionTypeEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ public class CommonBillRecord {
     private BigDecimal amount;
     private String transactionType;
     private LocalDateTime transactionTime;
+    private TransactionDirectionTypeEnum direction;
     private String counterparty;
     private String description;
     private String paymentMethod;

@@ -246,7 +246,7 @@ public class LlmBillParserFacade {
                 draftRecord.setBatchId(draftBatch.getId());
                 draftRecord.setSourceRecordId(saved.getId() + ":" + (billRecord.getTransactionNo() == null ? "N/A" : billRecord.getTransactionNo()));
                 draftRecord.setTransactionTime(billRecord.getTransactionTime());
-                draftRecord.setDirection(billRecord.getTransactionType());
+                draftRecord.setDirection(billRecord.getDirection());
                 draftRecord.setAmount(billRecord.getAmount());
                 draftRecord.setCounterparty(billRecord.getCounterparty());
                 draftRecord.setMerchant(billRecord.getDescription());
