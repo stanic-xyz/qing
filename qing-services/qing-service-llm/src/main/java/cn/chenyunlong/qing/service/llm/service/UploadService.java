@@ -24,7 +24,14 @@ import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.UploadFileRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.UploadBatchRepository;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
+import cn.chenyunlong.qing.service.llm.enums.AdapterTypeEnum;
+import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.repository.ParserConfigRepository;
+import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftBatchRepository;
+import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftRecordRepository;
 import cn.chenyunlong.qing.service.llm.service.parser.DynamicFileParser;
 import cn.chenyunlong.qing.service.llm.service.parser.FileParser;
 import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
@@ -69,6 +76,12 @@ public class UploadService {
 
     @Resource
     private UploadBatchRepository uploadBatchRepo;
+
+    @Resource
+    private UnifiedDraftBatchRepository unifiedDraftBatchRepository;
+
+    @Resource
+    private UnifiedDraftRecordRepository unifiedDraftRecordRepository;
 
     @Resource
     private ScriptExecutorFactory scriptExecutorFactory;
@@ -274,6 +287,35 @@ public class UploadService {
 
             // 直接保存到数据库
             transactionRepo.saveAll(records);
+
+            // 并行写入统一草稿模型（新链路）
+            UnifiedDraftBatch draftBatch = new UnifiedDraftBatch();
+            draftBatch.setBatchNo("parser-" + finalUploadId + "-" + System.currentTimeMillis());
+            draftBatch.setAdapterType(AdapterTypeEnum.PARSER);
+            draftBatch.setStatus(DraftBatchStatusEnum.MATCHED);
+            draftBatch.setProgress(60);
+            draftBatch.setTotalRecords(records.size());
+            draftBatch = unifiedDraftBatchRepository.save(draftBatch);
+
+            for (TransactionRecord tr : records) {
+                UnifiedDraftRecord dr = new UnifiedDraftRecord();
+                dr.setBatchId(draftBatch.getId());
+                dr.setSourceRecordId(String.valueOf(tr.getId()));
+                dr.setTransactionTime(tr.getTransactionTime());
+                dr.setDirection(tr.getType() != null ? tr.getType().name() : null);
+                dr.setAmount(tr.getAmount());
+                dr.setCounterparty(tr.getCounterparty());
+                dr.setMerchant(tr.getMerchant());
+                dr.setMatchStatus(tr.getMatchStatus() != null && tr.getMatchStatus() == MatchStatusEnum.AUTO_MATCHED
+                        ? DraftMatchStatusEnum.MATCHED : DraftMatchStatusEnum.REVIEW_REQUIRED);
+                try {
+                    dr.setRawPayload(objectMapper.writeValueAsString(tr));
+                } catch (Exception e) {
+                    dr.setRawPayload(null);
+                }
+                unifiedDraftRecordRepository.save(dr);
+            }
+            log.info("同步写入统一草稿批次 draftBatchId={}, records={}", draftBatch.getId(), records.size());
 
             int batchCount = (records.size() + BATCH_SIZE - 1) / BATCH_SIZE;
 

@@ -86,7 +86,7 @@ export default function NewDraftFlowCard() {
     }
   };
 
-  const runAction = async (action: string) => {
+    const runAction = async (action: string) => {
     if (!batch) return;
     if (action === 'REFRESH_STATUS') {
       await refreshBatch(false);
@@ -95,6 +95,27 @@ export default function NewDraftFlowCard() {
 
     if (action === 'VIEW_RESULT') {
       await fetchRecords(0);
+      return;
+    }
+
+    if (action === 'IMPORT') {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await axios.post(`/api/import/draft/batches/${batch.id}/commit`);
+        const result = res.data?.data;
+        const nextBatch = res.data?.data?.batch || res.data?.data;
+        if (nextBatch) setBatch(nextBatch);
+        await refreshBatch(true);
+        if (hasLoadedRecords) await fetchRecords(recordsPage);
+        if (result?.message) {
+          alert(result.message);
+        }
+      } catch (e: any) {
+        setError(e?.response?.data?.message || '执行入账失败');
+      } finally {
+        setLoading(false);
+      }
       return;
     }
 
@@ -110,7 +131,7 @@ export default function NewDraftFlowCard() {
       });
       const nextBatch = res.data?.data || null;
       setBatch(nextBatch);
-      if (action === 'IMPORT' || action === 'CONFIRM' || action === 'START_MATCH' || action === 'RETRY') {
+      if (action === 'CONFIRM' || action === 'START_MATCH' || action === 'RETRY') {
         await refreshBatch(true);
       }
       if (hasLoadedRecords) {
