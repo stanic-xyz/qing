@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { DraftBatch, DraftBatchStatus } from '../types';
 
 const actionToStatus: Record<string, DraftBatchStatus | null> = {
@@ -27,6 +28,7 @@ const matchStatusUi: Record<string, { label: string; className: string }> = {
 };
 
 export default function NewDraftFlowCard() {
+  const navigate = useNavigate();
   const [batch, setBatch] = useState<DraftBatch | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -201,6 +203,14 @@ export default function NewDraftFlowCard() {
                 {actionLabel[action] || action}
               </button>
             ))}
+            {batch.status === 'IMPORTED' && (
+              <button
+                onClick={() => navigate(`/import?highlightBatchNo=${encodeURIComponent(batch.batchNo)}`)}
+                className="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+              >
+                跳转旧版记录
+              </button>
+            )}
           </div>
 
           <div className="mt-4 border-t pt-3">
