@@ -8,6 +8,7 @@ import UploadView from './components/UploadView';
 import ImportRecordList from './components/ImportRecordList';
 import RulesPanel from './components/RulesPanel';
 import ParserConfigDrawer from './components/ParserConfigDrawer';
+import NewDraftFlowCard from './components/NewDraftFlowCard';
 import type { Account, ActiveRule } from './types';
 
 export default function ImportPage() {
@@ -127,6 +128,8 @@ export default function ImportPage() {
       </div>
 
       {/* 主内容 */}
+      <NewDraftFlowCard />
+
       <div className="flex gap-6 items-start">
         <div className={`flex-1 transition-all ${showRulesPanel ? 'w-2/3' : 'w-full'}`}>
           {isUploadView ? (

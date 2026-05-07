@@ -1,0 +1,151 @@
+import axios from 'axios';
+import { useEffect, useMemo, useState } from 'react';
+import type { DraftBatch, DraftBatchStatus } from '../types';
+
+const actionToStatus: Record<string, DraftBatchStatus | null> = {
+  START_MATCH: 'MATCHING',
+  CONFIRM: 'CONFIRMING',
+  IMPORT: 'IMPORTED',
+  RETRY: null,
+  REFRESH_STATUS: null,
+  VIEW_RESULT: null,
+};
+
+const actionLabel: Record<string, string> = {
+  START_MATCH: '开始匹配',
+  CONFIRM: '确认批次',
+  IMPORT: '执行入账',
+  RETRY: '重试',
+  REFRESH_STATUS: '刷新状态',
+  VIEW_RESULT: '查看结果',
+};
+
+export default function NewDraftFlowCard() {
+  const [batch, setBatch] = useState<DraftBatch | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const canPoll = useMemo(() => {
+    if (!batch) return false;
+    return batch.allowedActions?.includes('REFRESH_STATUS') || batch.status === 'MATCHING';
+  }, [batch]);
+
+  const createBatch = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await axios.post('/api/import/draft/batches', {
+        adapterType: 'PARSER',
+        totalRecords: 0,
+      });
+      setBatch(res.data?.data || null);
+    } catch (e: any) {
+      setError(e?.response?.data?.message || '创建批次失败');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const refreshBatch = async (silent = false) => {
+    if (!batch) return null;
+    if (!silent) {
+      setLoading(true);
+    }
+    if (!silent) {
+      setError(null);
+    }
+    try {
+      const res = await axios.get(`/api/import/draft/batches/${batch.id}`);
+      const next = res.data?.data || null;
+      setBatch(next);
+      return next;
+    } catch (e: any) {
+      if (!silent) {
+        setError(e?.response?.data?.message || '刷新批次失败');
+      }
+      return null;
+    } finally {
+      if (!silent) {
+        setLoading(false);
+      }
+    }
+  };
+
+  const runAction = async (action: string) => {
+    if (!batch) return;
+    if (action === 'REFRESH_STATUS' || action === 'VIEW_RESULT') {
+      await refreshBatch(false);
+      return;
+    }
+
+    if (action === 'RETRY') {
+      setError('当前版本后端尚未开放 RETRY 的状态迁移，可先新建批次重跑。');
+      return;
+    }
+
+    const target = actionToStatus[action];
+    if (!target) return;
+
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await axios.post(`/api/import/draft/batches/${batch.id}/actions`, {
+        targetStatus: target,
+      });
+      setBatch(res.data?.data || null);
+    } catch (e: any) {
+      setError(e?.response?.data?.message || `执行动作失败: ${action}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!canPoll || !batch) return;
+    const timer = window.setInterval(() => {
+      refreshBatch(true);
+    }, 3000);
+    return () => window.clearInterval(timer);
+  }, [canPoll, batch?.id]);
+
+  return (
+    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-base font-semibold text-blue-900">新导入流程（灰度）</h3>
+          <p className="text-sm text-blue-700 mt-1">先走统一草稿批次状态机，旧导入流程保持不变。</p>
+        </div>
+        <button
+          onClick={createBatch}
+          disabled={loading}
+          className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-60"
+        >
+          新建批次
+        </button>
+      </div>
+
+      {batch && (
+        <div className="mt-4 p-3 bg-white border border-blue-100 rounded-lg">
+          <div className="text-sm text-gray-700">批次号: <span className="font-mono">{batch.batchNo}</span></div>
+          <div className="text-sm text-gray-700 mt-1">状态: <span className="font-medium">{batch.status}</span></div>
+          <div className="text-sm text-gray-700 mt-1">进度: <span className="font-medium">{batch.progress}%</span></div>
+          <div className="text-sm text-gray-700 mt-1">允许动作: {batch.allowedActions?.join(', ') || '-'}</div>
+          {error && <div className="text-sm text-red-600 mt-2">{error}</div>}
+
+          <div className="mt-3 flex gap-2 flex-wrap">
+            {batch.allowedActions?.map((action) => (
+              <button
+                key={action}
+                onClick={() => runAction(action)}
+                disabled={loading}
+                className="px-3 py-1.5 text-sm bg-white border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-60"
+              >
+                {actionLabel[action] || action}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

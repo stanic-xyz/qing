@@ -3,6 +3,10 @@ package cn.chenyunlong.qing.service.llm.service.llm;
 import cn.chenyunlong.qing.service.llm.dto.parser.*;
 import cn.chenyunlong.qing.service.llm.entity.LlmParseDetail;
 import cn.chenyunlong.qing.service.llm.entity.LlmParseRecord;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
+import cn.chenyunlong.qing.service.llm.enums.AdapterTypeEnum;
+import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
 import cn.chenyunlong.qing.service.llm.repository.*;
 import cn.chenyunlong.qing.service.llm.util.FileHashUtil;
@@ -47,6 +51,8 @@ public class LlmBillParserFacade {
     private final CategoryRepository categoryRepository;
     private final AccountRepository accountRepository;
     private final CounterpartyRepository counterpartyRepository;
+    private final UnifiedDraftBatchRepository unifiedDraftBatchRepository;
+    private final UnifiedDraftRecordRepository unifiedDraftRecordRepository;
 
     private ObjectMapper objectMapper;
 
@@ -198,6 +204,17 @@ public class LlmBillParserFacade {
 
         LlmParseRecord saved = parseRecordRepository.save(record);
 
+        UnifiedDraftBatch draftBatch = new UnifiedDraftBatch();
+        draftBatch.setBatchNo("llm-" + taskId);
+        draftBatch.setAdapterType(AdapterTypeEnum.LLM);
+        draftBatch.setStatus(response.isSuccess() ? DraftBatchStatusEnum.MATCHED : DraftBatchStatusEnum.FAILED);
+        draftBatch.setProgress(response.isSuccess() ? 60 : 100);
+        draftBatch.setTotalRecords(response.getSummary() != null ? response.getSummary().getTotalRecords() : 0);
+        if (!response.isSuccess()) {
+            draftBatch.setErrorMessage(response.getErrorMessage());
+        }
+        draftBatch = unifiedDraftBatchRepository.save(draftBatch);
+
         if (response.getRecords() != null) {
             for (CommonBillRecord billRecord : response.getRecords()) {
                 LlmParseDetail detail = new LlmParseDetail();
@@ -223,11 +240,31 @@ public class LlmBillParserFacade {
                         billRecord.getConfidence().compareTo(BigDecimal.valueOf(0.9)) < 0);
 
                 detailRepository.save(detail);
+
+                UnifiedDraftRecord draftRecord = new UnifiedDraftRecord();
+                draftRecord.setBatchId(draftBatch.getId());
+                draftRecord.setSourceRecordId(saved.getId() + ":" + (billRecord.getTransactionNo() == null ? "N/A" : billRecord.getTransactionNo()));
+                draftRecord.setTransactionTime(billRecord.getTransactionTime());
+                draftRecord.setDirection(billRecord.getTransactionType());
+                draftRecord.setAmount(billRecord.getAmount());
+                draftRecord.setCounterparty(billRecord.getCounterparty());
+                draftRecord.setMerchant(billRecord.getDescription());
+                draftRecord.setMatchStatus(detail.getNeedReview() ? "REVIEW_REQUIRED" : "MATCHED");
+                draftRecord.setRawPayload(toJsonQuietly(billRecord));
+                unifiedDraftRecordRepository.save(draftRecord);
             }
         }
 
         log.info("Saved parse record: {} with {} details", saved.getId(),
                 response.getRecords() != null ? response.getRecords().size() : 0);
+    }
+
+    private String toJsonQuietly(Object obj) {
+        try {
+            return objectMapper.writeValueAsString(obj);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private LlmParseDetailDTO toDTO(LlmParseDetail detail) {

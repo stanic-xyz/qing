@@ -1,17 +1,24 @@
 package cn.chenyunlong.qing.service.llm.service.llm;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.LlmParseResponse;
+import cn.chenyunlong.qing.service.llm.dto.parser.ParseSummary;
 import cn.chenyunlong.qing.service.llm.dto.parser.TaskStatusResponse;
 import cn.chenyunlong.qing.service.llm.dto.parser.CommonBillRecord;
 import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.Counterparty;
+import cn.chenyunlong.qing.service.llm.entity.LlmParseRecord;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
+import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.CategoryStrategy;
 import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository;
 import cn.chenyunlong.qing.service.llm.repository.LlmParseRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.LlmParseDetailRepository;
+import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftBatchRepository;
+import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftRecordRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,10 +29,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -55,6 +65,10 @@ class LlmBillParserFacadeTest {
     private LlmParseDetailRepository detailRepository;
     @Mock
     private LlmParserService mockLlmParser;  // Mock 接口，而非具体类
+    @Mock
+    private UnifiedDraftBatchRepository unifiedDraftBatchRepository;
+    @Mock
+    private UnifiedDraftRecordRepository unifiedDraftRecordRepository;
 
     // ============================================================
     // 真实组件
@@ -144,7 +158,8 @@ class LlmBillParserFacadeTest {
                 fileContentExtractor, contextLoader, resultCache,
                 taskService, mockLlmParser, promptBuilder,
                 parseRecordRepository, detailRepository,
-                categoryRepository, accountRepository, counterpartyRepository
+                categoryRepository, accountRepository, counterpartyRepository,
+                unifiedDraftBatchRepository, unifiedDraftRecordRepository
         );
         facade.init();
 
@@ -369,5 +384,93 @@ class LlmBillParserFacadeTest {
     void testTaskServiceCancelUnknownTask() {
         boolean cancelled = taskService.cancel("nonexistent");
         assertFalse(cancelled);
+    }
+
+    @Test
+    void testSaveParseRecord_shouldWriteUnifiedDraftDataOnSuccess() {
+        LlmParseResponse response = new LlmParseResponse();
+        response.setSuccess(true);
+
+        ParseSummary summary = new ParseSummary();
+        summary.setTotalRecords(1);
+        summary.setSuccessCount(1);
+        summary.setFailedCount(0);
+        summary.setNeedReviewCount(0);
+        summary.setInputTokens(10);
+        summary.setOutputTokens(8);
+        summary.setEstimatedCost(0.001);
+        response.setSummary(summary);
+
+        CommonBillRecord billRecord = new CommonBillRecord();
+        billRecord.setAmount(new BigDecimal("88.80"));
+        billRecord.setTransactionType("EXPENSE");
+        billRecord.setTransactionTime(LocalDateTime.of(2026, 5, 7, 12, 0));
+        billRecord.setCounterparty("测试商户");
+        billRecord.setDescription("午餐");
+        billRecord.setTransactionNo("TXN-001");
+        billRecord.setConfidence(new BigDecimal("0.95"));
+        response.setRecords(List.of(billRecord));
+
+        when(parseRecordRepository.save(any(LlmParseRecord.class))).thenAnswer(invocation -> {
+            LlmParseRecord r = invocation.getArgument(0);
+            r.setId(100L);
+            return r;
+        });
+        when(unifiedDraftBatchRepository.save(any(UnifiedDraftBatch.class))).thenAnswer(invocation -> {
+            UnifiedDraftBatch b = invocation.getArgument(0);
+            b.setId(200L);
+            return b;
+        });
+
+        facade.saveParseRecord("task-success", response);
+
+        verify(unifiedDraftBatchRepository, times(1)).save(argThat(b ->
+                "llm-task-success".equals(b.getBatchNo())
+                        && b.getStatus() == DraftBatchStatusEnum.MATCHED
+                        && Integer.valueOf(60).equals(b.getProgress())
+                        && Integer.valueOf(1).equals(b.getTotalRecords())
+        ));
+
+        verify(unifiedDraftRecordRepository, times(1)).save(argThat(r ->
+                Long.valueOf(200L).equals(r.getBatchId())
+                        && "EXPENSE".equals(r.getDirection())
+                        && new BigDecimal("88.80").compareTo(r.getAmount()) == 0
+                        && "MATCHED".equals(r.getMatchStatus())
+                        && r.getRawPayload() != null
+                        && r.getRawPayload().contains("TXN-001")
+        ));
+    }
+
+    @Test
+    void testSaveParseRecord_shouldWriteFailedDraftBatchOnError() {
+        LlmParseResponse response = new LlmParseResponse();
+        response.setSuccess(false);
+        response.setErrorMessage("llm parse failed");
+
+        ParseSummary summary = new ParseSummary();
+        summary.setTotalRecords(0);
+        summary.setSuccessCount(0);
+        summary.setFailedCount(0);
+        summary.setNeedReviewCount(0);
+        summary.setEstimatedCost(0.0);
+        response.setSummary(summary);
+
+        when(parseRecordRepository.save(any(LlmParseRecord.class))).thenAnswer(invocation -> {
+            LlmParseRecord r = invocation.getArgument(0);
+            r.setId(101L);
+            return r;
+        });
+        when(unifiedDraftBatchRepository.save(any(UnifiedDraftBatch.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        facade.saveParseRecord("task-failed", response);
+
+        verify(unifiedDraftBatchRepository, times(1)).save(argThat(b ->
+                "llm-task-failed".equals(b.getBatchNo())
+                        && b.getStatus() == DraftBatchStatusEnum.FAILED
+                        && Integer.valueOf(100).equals(b.getProgress())
+                        && "llm parse failed".equals(b.getErrorMessage())
+        ));
+
+        verify(unifiedDraftRecordRepository, never()).save(any(UnifiedDraftRecord.class));
     }
 }

@@ -109,3 +109,19 @@ export interface ParserConfig extends ParserItem {
     postScriptEnabled?: boolean;
     status?: string;
 }
+
+export type AdapterType = 'PARSER' | 'SCRIPT' | 'LLM';
+export type DraftBatchStatus = 'DRAFTED' | 'MATCHING' | 'MATCHED' | 'CONFIRMING' | 'IMPORTED' | 'FAILED';
+
+export interface DraftBatch {
+    id: number;
+    batchNo: string;
+    adapterType: AdapterType;
+    status: DraftBatchStatus;
+    progress: number;
+    totalRecords: number;
+    errorMessage?: string;
+    allowedActions: string[];
+    createdAt: string;
+    updatedAt: string;
+}
