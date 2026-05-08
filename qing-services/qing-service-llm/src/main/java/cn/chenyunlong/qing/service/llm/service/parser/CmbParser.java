@@ -83,10 +83,10 @@ public class CmbParser extends BaseFileParser {
                             record.setTransactionTime(LocalDateTime.parse(dateStr, CMB_FORMAT));
 
                             if (amount.compareTo(BigDecimal.ZERO) < 0) {
-                                record.setType(TrasactionType.EXPENSE);
+                                record.setTrasactionType(TrasactionType.EXPENSE);
                                 record.setAmount(amount.abs());
                             } else {
-                                record.setType(TrasactionType.INCOME);
+                                record.setTrasactionType(TrasactionType.INCOME);
                                 record.setAmount(amount);
                             }
 

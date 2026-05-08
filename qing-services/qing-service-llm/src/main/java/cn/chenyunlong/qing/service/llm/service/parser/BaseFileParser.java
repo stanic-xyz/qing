@@ -3,17 +3,17 @@ package cn.chenyunlong.qing.service.llm.service.parser;
 import cn.chenyunlong.qing.service.llm.dto.parser.FileMetadata;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
-import cn.chenyunlong.qing.service.llm.enums.FundTypeEnum;
-import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
-import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
-import lombok.extern.slf4j.Slf4j;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
+import cn.chenyunlong.qing.service.llm.enums.*;
+import cn.hutool.core.collection.CollUtil;
+import org.jspecify.annotations.NonNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseFileParser implements FileParser {
@@ -50,18 +50,24 @@ public abstract class BaseFileParser implements FileParser {
     }
 
     protected ParseResult wrapResult(List<TransactionRecord> records) {
+
+        List<UnifiedDraftRecord> draftRecordList = new ArrayList<>(records.size());
+
         LocalDateTime minTime = null;
         LocalDateTime maxTime = null;
-
         for (TransactionRecord record : records) {
             // 自动推算资金类型 (fundType)
             if (record.getFundType() == null && record.getFundSource() != null) {
                 record.setFundType(deduceFundType(record.getFundSource()));
             }
 
+            // 添加流水记录类型
+            MetaData metaData = getMetaData();
             if (record.getRecordRole() == null) {
-                record.setRecordRole(RecordRoleEnum.PRIMARY);
+                record.setRecordRole(metaData.getRecordRole());
             }
+
+            record.setRecordRole(metaData.getRecordRole());
 
             if (record.getTransactionTime() != null) {
                 if (minTime == null || record.getTransactionTime().isBefore(minTime)) {
@@ -71,6 +77,7 @@ public abstract class BaseFileParser implements FileParser {
                     maxTime = record.getTransactionTime();
                 }
             }
+            draftRecordList.add(convertToDraft(record));
         }
 
         FileMetadata metadata = FileMetadata.builder()
@@ -78,8 +85,7 @@ public abstract class BaseFileParser implements FileParser {
                 .endTime(maxTime)
                 .recordCount(records.size())
                 .build();
-
-        return new ParseResult(metadata, records);
+        return new ParseResult(metadata, draftRecordList);
     }
 
     /**
@@ -100,4 +106,16 @@ public abstract class BaseFileParser implements FileParser {
         }
         return FundTypeEnum.EXTERNAL;
     }
+
+
+    private static @NonNull UnifiedDraftRecord convertToDraft(TransactionRecord record) {
+        UnifiedDraftRecord dr = new UnifiedDraftRecord();
+        dr.setTransactionTime(record.getTransactionTime());
+        dr.setDirection(record.getDirectionType());
+        dr.setAmount(record.getAmount());
+        dr.setMerchant(record.getMerchant());
+        dr.setMatchStatus(DraftMatchStatusEnum.UNMATCHED);
+        return dr;
+    }
+
 }

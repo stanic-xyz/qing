@@ -9,6 +9,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "finance_unified_draft_record")
@@ -19,30 +20,50 @@ public class UnifiedDraftRecord {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(nullable = false)
-    private Long batchId;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UploadFileRecord fileRecord;
 
-    private String sourceRecordId;
+    @JsonIgnore
+    @ManyToOne
+    private UnifiedDraftBatch batch;
 
     private LocalDateTime transactionTime;
 
     @Enumerated(EnumType.STRING)
     private TransactionDirectionTypeEnum direction;
 
+    @Enumerated(EnumType.STRING)
     private TrasactionType trasactionType;
 
     private BigDecimal amount;
 
-    private String counterparty;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Counterparty counterparty;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Counterparty finalCounterparty;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Account targetAccount;
+
     private String merchant;
 
     @Enumerated(EnumType.STRING)
     private DraftMatchStatusEnum matchStatus;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<TransactionMatcher> matchRules;
+
+    private Boolean isModified;
 
     @Column(columnDefinition = "TEXT")
     private String rawPayload;
@@ -52,6 +73,9 @@ public class UnifiedDraftRecord {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    // 软删除标记
+    private Boolean isDeleted = false;
 
     @PrePersist
     protected void onCreate() {

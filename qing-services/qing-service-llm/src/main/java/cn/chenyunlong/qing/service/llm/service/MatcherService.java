@@ -8,11 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -26,96 +24,45 @@ public class MatcherService {
     private final TransactionMatcherRepository matcherRepository;
     private final AccountRepository accountRepository;
     private final CounterpartyRepository counterpartyRepository;
-    private final TransactionRecordRepository transactionRecordRepository;
     private final CategoryRepository categoryRepository;
 
     /**
      * 应用所有启用的匹配器规则对单条记录进行增强
      */
-    public void applyMatchers(TransactionRecord record) {
+    public void applyMatchers(UnifiedDraftRecord record) {
         List<TransactionMatcher> rules = matcherRepository.findByIsActiveTrueOrderByPriorityDesc();
         applyMatchers(record, rules);
-        // 执行跨账单撮合对账
+        // 执行跨账单撮合（精简模式）
         applyCrossBillMatch(record);
     }
 
     /**
-     * 跨账单撮合（外部资金对账）
+     * 跨账单撮合（精简模式）
+     * 当前 UnifiedDraftRecord 模型不包含 fundType/fundSource 等完整字段，
+     * 为避免伪造语义，此阶段仅保留方法占位，保证调用链稳定。
      */
-    private void applyCrossBillMatch(TransactionRecord record) {
-        if (record.getTransactionTime() == null || record.getAmount() == null) {
+    private void applyCrossBillMatch(UnifiedDraftRecord record) {
+        if (record == null || record.getTransactionTime() == null || record.getAmount() == null) {
             return;
         }
-
-        // 查找前后24小时内金额相同的记录
-        LocalDateTime start = record.getTransactionTime().minusHours(24);
-        LocalDateTime end = record.getTransactionTime().plusHours(24);
-        List<TransactionRecord> candidates = transactionRecordRepository.findByAmountAndTransactionTimeBetweenAndIsImportedTrue(record.getAmount(), start, end);
-
-        for (TransactionRecord candidate : candidates) {
-            // 不能和自己匹配，且金额必须完全相等
-            if (candidate.getId() != null && candidate.getId().equals(record.getId())) continue;
-            if (candidate.getAmount().compareTo(record.getAmount()) != 0) continue;
-
-            // 判断是否一个是 EXTERNAL 钱包流水，一个是银行卡流水
-            TransactionRecord walletRecord = null;
-            TransactionRecord bankRecord = null;
-
-            // 判断是否一个是 EXTERNAL 钱包流水，一个是银行卡流水
-            if (record.getFundType() != null && FundTypeEnum.EXTERNAL == record.getFundType() && isWallet(record.getAccount()) && !isWallet(candidate.getAccount())) {
-                walletRecord = record;
-                bankRecord = candidate;
-            } else if (candidate.getFundType() != null && FundTypeEnum.EXTERNAL == candidate.getFundType() && isWallet(candidate.getAccount()) && !isWallet(record.getAccount())) {
-                walletRecord = candidate;
-                bankRecord = record;
-            }
-
-            if (walletRecord != null && bankRecord != null) {
-                // 找到匹配！
-                // 将银行卡记录改为 TRANSFER
-                bankRecord.setType(TrasactionType.TRANSFER);
-                if (walletRecord.getAccount() != null) {
-                    bankRecord.setTargetAccountId(walletRecord.getAccount().getId());
-                }
-                bankRecord.setMatchStatus(MatchStatusEnum.INTERNAL_TRANSFER);
-                bankRecord.setMatchRuleName("跨账单资金撮合");
-
-                // 设置钱包记录的资金来源为银行卡账户
-                if (bankRecord.getAccount() != null) {
-                    walletRecord.setFundSourceAccountId(bankRecord.getAccount().getId());
-                }
-                walletRecord.setReconciliationStatus(ReconciliationStatusEnum.MATCHED_FUNDING);
-
-                // 由于 candidate 是已在库里的记录，需要 save；而 record 会在后续由 UploadService save
-                if (candidate.getId() != null) {
-                    transactionRecordRepository.save(candidate);
-                }
-
-                log.info("成功撮合跨账单流水：钱包记录={}, 银行记录={}", walletRecord.getOriginalId(), bankRecord.getOriginalId());
-                break; // 只撮合一条
-            }
-        }
-    }
-
-    private boolean isWallet(Account account) {
-        if (account == null) return false;
-        return account.getAccountType() == AccountType.WALLET;
+        log.debug("跳过跨账单撮合（精简模式），recordId={}", record.getId());
     }
 
     /**
      * 应用指定的匹配器规则列表对单条记录进行增强
      */
-    public void applyMatchers(TransactionRecord record, List<TransactionMatcher> rules) {
+    public void applyMatchers(UnifiedDraftRecord record, List<TransactionMatcher> rules) {
         for (TransactionMatcher rule : rules) {
             try {
                 if (evaluateCondition(rule.getConditionNode(), record)) {
-                    log.debug("Record {} matched rule: {}", record.getOriginalData(), rule.getName());
+                    log.debug("Record {} matched rule: {}", record.getId(), rule.getName());
 
                     boolean modified = executeActions(rule.getActionNode(), record);
 
                     if (modified) {
-                        record.setMatchStatus(MatchStatusEnum.AUTO_MATCHED);
-                        record.setMatchRuleName(rule.getName());
+                        if (record.getMatchStatus() == null) {
+                            record.setMatchStatus(DraftMatchStatusEnum.MATCHED);
+                        }
                     }
 
                     if (Boolean.TRUE.equals(rule.getStopOnMatch())) {
@@ -132,7 +79,7 @@ public class MatcherService {
     /**
      * 递归计算条件 AST
      */
-    private boolean evaluateCondition(JsonNode node, TransactionRecord record) {
+    private boolean evaluateCondition(JsonNode node, UnifiedDraftRecord record) {
         if (node == null || node.isNull() || node.isMissingNode()) {
             return true; // 空条件视为全量匹配
         }
@@ -207,14 +154,23 @@ public class MatcherService {
             case "LT":
             case "GTE":
             case "LTE":
-                if (actual instanceof BigDecimal && expectedNode != null && expectedNode.isNumber()) {
-                    BigDecimal actualNum = (BigDecimal) actual;
+                if (actual instanceof BigDecimal actualNum && expectedNode != null && expectedNode.isNumber()) {
                     BigDecimal expectedNum = new BigDecimal(expectedNode.asText());
                     int cmp = actualNum.compareTo(expectedNum);
-                    if ("GT".equals(op)) return cmp > 0;
-                    if ("LT".equals(op)) return cmp < 0;
-                    if ("GTE".equals(op)) return cmp >= 0;
-                    if ("LTE".equals(op)) return cmp <= 0;
+                    switch (op) {
+                        case "GT" -> {
+                            return cmp > 0;
+                        }
+                        case "LT" -> {
+                            return cmp < 0;
+                        }
+                        case "GTE" -> {
+                            return cmp >= 0;
+                        }
+                        case "LTE" -> {
+                            return cmp <= 0;
+                        }
+                    }
                 }
                 return false;
             default:
@@ -225,7 +181,7 @@ public class MatcherService {
     /**
      * 执行动作节点列表
      */
-    private boolean executeActions(JsonNode actionNode, TransactionRecord record) {
+    private boolean executeActions(JsonNode actionNode, UnifiedDraftRecord record) {
         if (actionNode == null || !actionNode.isArray() || actionNode.isEmpty()) {
             return false;
         }
@@ -239,8 +195,12 @@ public class MatcherService {
             switch (type) {
                 case "SET_TYPE":
                     if (valueNode != null) {
-                        record.setType(TrasactionType.valueOf(valueNode.asText().toUpperCase()));
-                        modified.set(true);
+                        try {
+                            record.setTrasactionType(TrasactionType.valueOf(valueNode.asText().toUpperCase()));
+                            modified.set(true);
+                        } catch (IllegalArgumentException ex) {
+                            log.warn("无效的交易类型: {}", valueNode.asText());
+                        }
                     }
                     break;
                 case "SET_CATEGORY":
@@ -259,8 +219,8 @@ public class MatcherService {
                             if (counterparty.getDefaultCategory() != null) {
                                 record.setCategory(counterparty.getDefaultCategory());
                             }
+                            modified.set(true);
                         });
-                        modified.set(true);
                     } else if (valueNode != null) {
                         record.setCounterparty(null);
                         modified.set(true);
@@ -268,15 +228,18 @@ public class MatcherService {
                     break;
                 case "SET_TARGET_ACCOUNT":
                     if (valueNode != null && valueNode.isNumber()) {
-                        record.setTargetAccountId(valueNode.asLong());
-                        record.setType(TrasactionType.TRANSFER);
-                        record.setMatchStatus(MatchStatusEnum.INTERNAL_TRANSFER);
-                        modified.set(true);
+                        accountRepository.findById(valueNode.asLong()).ifPresent(account -> {
+                            record.setTargetAccount(account);
+                            record.setTrasactionType(TrasactionType.TRANSFER);
+                            record.setMatchStatus(DraftMatchStatusEnum.INTERNAL_TRANSFER);
+                            modified.set(true);
+                        });
                     }
                     break;
+                // 关联资金源账户
                 case "SET_FUND_SOURCE_ACCOUNT":
                     if (valueNode != null && valueNode.isNumber()) {
-                        record.setFundSourceAccountId(valueNode.asLong());
+                        // UnifiedDraftRecord 当前不落资金来源账户字段，保留动作兼容但不写入。
                         modified.set(true);
                     }
                     break;

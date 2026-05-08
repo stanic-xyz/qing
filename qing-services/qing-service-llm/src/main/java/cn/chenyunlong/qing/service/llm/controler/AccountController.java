@@ -18,13 +18,11 @@ import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import cn.chenyunlong.qing.service.llm.service.AccountImportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -199,7 +197,7 @@ public class AccountController {
             record.setAccountType(account.getAccountType());
             record.setChannel(account.getChannel());
             record.setTransactionTime(LocalDateTime.now());
-            record.setType(diff.compareTo(BigDecimal.ZERO) > 0 ? TrasactionType.INCOME : TrasactionType.EXPENSE);
+            record.setTrasactionType(diff.compareTo(BigDecimal.ZERO) > 0 ? TrasactionType.INCOME : TrasactionType.EXPENSE);
             record.setAmount(diff.abs());
             record.setSubCategory("余额平账");
             record.setRemark("手动余额校准");

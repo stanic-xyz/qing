@@ -142,7 +142,7 @@ public class BocCreditParser extends BaseFileParser {
                             TransactionRecord record = new TransactionRecord();
                             record.setTransactionTime(LocalDateTime.parse(txTimeStr, BOC_DATE_FORMAT));
                             record.setAmount(amount.abs());
-                            record.setType(txType);
+                            record.setTrasactionType(txType);
                             record.setStatus(TransactionStatusEnum.SUCCESS);
                             record.setAccountName("中国银行信用卡(" + cardNum + ")");
                             record.setAccountType(AccountType.CREDIT);

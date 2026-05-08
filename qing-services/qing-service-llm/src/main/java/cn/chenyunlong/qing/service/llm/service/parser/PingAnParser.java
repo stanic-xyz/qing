@@ -136,9 +136,9 @@ public class PingAnParser extends BaseFileParser {
                     record.setAmount(absAmount);
 
                     if (isExpense) {
-                        record.setType(TrasactionType.EXPENSE);
+                        record.setTrasactionType(TrasactionType.EXPENSE);
                     } else {
-                        record.setType(TrasactionType.INCOME);
+                        record.setTrasactionType(TrasactionType.INCOME);
                     }
 
                     // 构建对手方

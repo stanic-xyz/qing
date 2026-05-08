@@ -68,11 +68,11 @@ public class JingdongParser extends BaseFileParser {
                     // 收/支
                     String typeStr = line.length > 6 ? line[6].trim() : "";
                     if ("支出".equals(typeStr)) {
-                        record.setType(TrasactionType.EXPENSE);
+                        record.setTrasactionType(TrasactionType.EXPENSE);
                     } else if ("收入".equals(typeStr)) {
-                        record.setType(TrasactionType.INCOME);
+                        record.setTrasactionType(TrasactionType.INCOME);
                     } else {
-                        record.setType(TrasactionType.OTHER);
+                        record.setTrasactionType(TrasactionType.OTHER);
                     }
 
                     // 金额（列3）

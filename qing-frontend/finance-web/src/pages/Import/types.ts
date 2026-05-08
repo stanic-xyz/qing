@@ -17,8 +17,9 @@ export interface Account {
 }
 
 export interface PreviewRecord {
-    tempId: string;
+    id: string;
     transactionTime: string;
+    directionType: 'IN' | 'OUT';
     channel: string;
     type: string;
     account: Account;

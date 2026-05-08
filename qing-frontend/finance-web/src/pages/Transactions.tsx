@@ -305,8 +305,8 @@ export default function Transactions() {
                                 <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{t.transactionTime}</td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm">
                                     <span
-                                        className={t.type === 'INCOME' ? 'text-green-600 font-medium' : t.type === 'EXPENSE' ? 'text-red-600 font-medium' : 'text-gray-600'}>
-                                      {getEnumText('type', t.type)}
+                                        className={t.directionType === 'IN' ? 'text-green-600 font-medium' : t.directionType === 'OUT' ? 'text-red-600 font-medium' : 'text-gray-600'}>
+                                      {getEnumText('type', t.directionType)}
                                     </span>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900">

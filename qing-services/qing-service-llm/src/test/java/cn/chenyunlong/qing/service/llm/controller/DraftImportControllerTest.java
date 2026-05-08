@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.service.llm.controller;
 
 import cn.chenyunlong.qing.service.llm.controler.DraftImportController;
 import cn.chenyunlong.qing.service.llm.dto.draft.DraftBatchResponse;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
 import cn.chenyunlong.qing.service.llm.enums.AdapterTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
@@ -11,13 +12,17 @@ import cn.chenyunlong.qing.service.llm.service.DraftRecordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,7 +34,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(DraftImportController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@AutoConfigureMockMvc
+@Transactional
+//@WebMvcTest(DraftImportController.class)
 class DraftImportControllerTest {
 
     @Autowired
@@ -91,8 +100,10 @@ class DraftImportControllerTest {
     @Test
     void pageRecords_shouldReturnPagePayload() throws Exception {
         UnifiedDraftRecord record = new UnifiedDraftRecord();
+        UnifiedDraftBatch batch = new UnifiedDraftBatch();
+        batch.setId(1L);
         record.setId(11L);
-        record.setBatchId(1L);
+        record.setBatch(batch);
         Page<UnifiedDraftRecord> page = new PageImpl<>(List.of(record), PageRequest.of(0, 20), 1);
         when(draftRecordService.pageByBatchId(1L, 0, 20, null)).thenReturn(page);
 
@@ -105,8 +116,10 @@ class DraftImportControllerTest {
     @Test
     void pageRecords_shouldSupportMatchStatusFilter() throws Exception {
         UnifiedDraftRecord record = new UnifiedDraftRecord();
+        UnifiedDraftBatch batch = new UnifiedDraftBatch();
+        batch.setId(1L);
         record.setId(22L);
-        record.setBatchId(1L);
+        record.setBatch(batch);
         record.setMatchStatus(DraftMatchStatusEnum.MATCHED);
         Page<UnifiedDraftRecord> page = new PageImpl<>(List.of(record), PageRequest.of(0, 20), 1);
         when(draftRecordService.pageByBatchId(1L, 0, 20, DraftMatchStatusEnum.MATCHED)).thenReturn(page);

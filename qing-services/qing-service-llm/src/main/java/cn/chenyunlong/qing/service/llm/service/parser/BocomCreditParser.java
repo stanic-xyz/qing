@@ -119,10 +119,10 @@ public class BocomCreditParser extends BaseFileParser {
 
                         // 交通银行：正数=支出（消费），负数=收入（还款/退款）
                         if (amount.compareTo(BigDecimal.ZERO) < 0) {
-                            record.setType(TrasactionType.INCOME);
+                            record.setTrasactionType(TrasactionType.INCOME);
                             record.setAmount(amount.abs());
                         } else {
-                            record.setType(TrasactionType.EXPENSE);
+                            record.setTrasactionType(TrasactionType.EXPENSE);
                             record.setAmount(amount);
                         }
 

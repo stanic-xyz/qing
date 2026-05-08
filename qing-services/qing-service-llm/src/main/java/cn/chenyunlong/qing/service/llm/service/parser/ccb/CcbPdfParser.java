@@ -153,10 +153,10 @@ public class CcbPdfParser extends BaseFileParser {
         String amountStr = group3.replace(",", "");
         BigDecimal amount = new BigDecimal(amountStr);
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            record.setType(TrasactionType.EXPENSE);
+            record.setTrasactionType(TrasactionType.EXPENSE);
             record.setAmount(amount.abs());
         } else {
-            record.setType(TrasactionType.INCOME);
+            record.setTrasactionType(TrasactionType.INCOME);
             record.setAmount(amount);
         }
 

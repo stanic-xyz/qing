@@ -5,6 +5,8 @@ import cn.chenyunlong.qing.service.llm.entity.*;
 import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,12 +15,15 @@ import java.util.Map;
 
 @Slf4j
 @Data
-@SuppressWarnings({"unused", "unchecked"})
+@SuppressWarnings({"unused"})
 public class PreviewRecordDTO {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private AccountDTO account;
-    private String tempId;
+
+    @JsonSerialize(using = StringSerializer.class)
+    private Long id;
+
     private String transactionTime;
     private String channel;
     private String type;
@@ -37,12 +42,11 @@ public class PreviewRecordDTO {
 
     public static PreviewRecordDTO fromEntity(TransactionRecord record, String tempId) {
         PreviewRecordDTO dto = new PreviewRecordDTO();
-        dto.setTempId(tempId);
         dto.setAccount(record.getAccount() != null ? AccountDTO.of(record.getAccount()) : null);
         dto.setTransactionTime(record.getTransactionTime() != null ? record.getTransactionTime().toString() : "");
         Channel recordChannel = record.getChannel();
         dto.setChannel(recordChannel != null ? recordChannel.getName() : null);
-        TrasactionType trasactionType = record.getType();
+        TrasactionType trasactionType = record.getTrasactionType();
         if (trasactionType != null) {
             dto.setType(trasactionType.name());
         }
@@ -63,9 +67,13 @@ public class PreviewRecordDTO {
         return dto;
     }
 
-    public static PreviewRecordDTO fromEntity(UnifiedDraftRecord record, String tempId, UnifiedDraftBatch unifiedDraftBatch) {
+    public static PreviewRecordDTO fromEntity(UnifiedDraftRecord record) {
+
+        UnifiedDraftBatch unifiedDraftBatch = record.getBatch();
+
         PreviewRecordDTO dto = new PreviewRecordDTO();
-        dto.setTempId(tempId);
+
+        dto.setId(record.getId());
         Account batchAccount = unifiedDraftBatch.getAccount();
         assert batchAccount != null;
 
@@ -75,7 +83,7 @@ public class PreviewRecordDTO {
         dto.setChannel(recordChannel != null ? recordChannel.getName() : null);
         dto.setType(record.getDirection().name());
         dto.setAmount(record.getAmount());
-        dto.setCounterparty(record.getCounterparty());
+        dto.setCounterparty(record.getCounterparty() != null ? record.getCounterparty().getName() : null);
         dto.setMerchant(record.getMerchant());
         // todo 这里暂时不写匹配规则了
         dto.setMatchStatus(MatchStatusEnum.AUTO_MATCHED);

@@ -18,7 +18,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/finance/compare")
@@ -78,7 +77,7 @@ public class TransactionCompareController {
         Map<String, List<TransactionRecord>> grouped = new HashMap<>();
         for (TransactionRecord r : allRecords) {
             if (r.getTransactionTime() == null || r.getAmount() == null) continue;
-            String key = r.getAmount().toPlainString() + "_" + r.getType() + "_" + r.getTransactionTime().toLocalDate().toString();
+            String key = r.getAmount().toPlainString() + "_" + r.getTrasactionType() + "_" + r.getTransactionTime().toLocalDate().toString();
             grouped.computeIfAbsent(key, k -> new ArrayList<>()).add(r);
         }
 
@@ -116,7 +115,7 @@ public class TransactionCompareController {
             CompareGroupDTO dto = new CompareGroupDTO();
             dto.setGroupId(entry.getKey());
             dto.setMainAmount(groupRecords.get(0).getAmount());
-            dto.setMainType(groupRecords.get(0).getType().name());
+            dto.setMainType(groupRecords.get(0).getTrasactionType().name());
             dto.setMainDate(groupRecords.get(0).getTransactionTime().toLocalDate().toString());
 
             // 将不同渠道的数据放进去

@@ -8,7 +8,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "upload_file_record")
+@Table(name = "finance_upload_file_record")
 @Data
 public class UploadFileRecord {
     @Id

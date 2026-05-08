@@ -4,7 +4,6 @@ import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,7 @@ import org.springframework.context.annotation.Profile;
  * MiniMax LLM 配置
  *
  * <p>通过 OpenAI 兼容接口接入 MiniMax LLM。
- * MiniMax API Base URL: https://api.minimax.chat/v1</p>
+ * MiniMax API Base URL: <a href="https://api.minimax.chat/v1">...</a></p>
  *
  * <p>使用方式：在 application.yml 中配置 minimax.api-key 和 minimax.model</p>
  *
@@ -23,7 +22,7 @@ import org.springframework.context.annotation.Profile;
  * minimax:
  *   api-key: your-api-key
  *   model: MiniMax-Text-01
- *   base-url: https://api.minimax.chat/v1
+ *   base-url: <a href="https://api.minimax.chat/v1">...</a>
  *   temperature: 0.1
  *   timeout: 120
  * </pre>

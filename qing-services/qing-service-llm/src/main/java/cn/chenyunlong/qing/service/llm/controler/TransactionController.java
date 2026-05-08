@@ -129,7 +129,7 @@ public class TransactionController {
         Specification<TransactionRecord> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("amount"), record.getAmount()));
-            predicates.add(cb.equal(root.get("type"), record.getType()));
+            predicates.add(cb.equal(root.get("type"), record.getTrasactionType()));
             predicates.add(cb.between(root.get("transactionTime"), start, end));
             predicates.add(cb.equal(root.get("isDeleted"), false));
             predicates.add(cb.or(
@@ -155,7 +155,7 @@ public class TransactionController {
         if (updateData.getAmount() != null) record.setAmount(updateData.getAmount());
         if (updateData.getCounterparty() != null) record.setCounterparty(updateData.getCounterparty());
         if (updateData.getMerchant() != null) record.setMerchant(updateData.getMerchant());
-        if (updateData.getType() != null) record.setType(updateData.getType());
+        if (updateData.getTrasactionType() != null) record.setTrasactionType(updateData.getTrasactionType());
 
         record.setIsModified(true);
         transactionRepo.save(record);

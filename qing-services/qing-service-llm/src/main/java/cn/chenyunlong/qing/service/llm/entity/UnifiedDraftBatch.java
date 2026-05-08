@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,16 +31,25 @@ public class UnifiedDraftBatch {
     private DraftBatchStatusEnum status = DraftBatchStatusEnum.DRAFTED;
 
     @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Account account;
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private UploadFileRecord uploadFile;
 
     private Integer progress = 0;
 
     private Integer totalRecords = 0;
+    private Integer matchedRecords = 0;    // 已匹配数
+    private Integer unmatchedRecords = 0;   // 未匹配数
+    private Integer suspiciousRecords = 0;  // 存疑数
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Account account;
+    private BigDecimal totalIncome = BigDecimal.ZERO;   // 总收入
+    private BigDecimal totalExpense = BigDecimal.ZERO;  // 总支出
+
+    private LocalDateTime transactionStartTime; // 最早交易时间
+    private LocalDateTime transactionEndTime;   // 最晚交易时间
 
     @Column(columnDefinition = "TEXT")
     private String errorMessage;

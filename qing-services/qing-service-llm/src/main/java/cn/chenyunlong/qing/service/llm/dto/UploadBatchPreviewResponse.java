@@ -8,8 +8,8 @@ import java.util.List;
 @Data
 @Builder
 public class UploadBatchPreviewResponse {
-    private String uploadId;
+    private Long uploadId;
     private String fileName;
-    private int parsedCount;
+    private Integer parsedCount;
     private List<PreviewRecordDTO> previewRecords;
 }

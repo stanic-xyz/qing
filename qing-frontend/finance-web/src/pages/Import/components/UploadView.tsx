@@ -298,7 +298,7 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
                                     <div className="bg-white rounded-lg p-4 border">
                                         <p className="text-xs text-gray-500 mb-1">总支出</p>
                                         <p className="text-lg font-semibold text-red-600">
-                                            -{batchOverviews.get(currentPreview.uploadId)?.totalExpense?.toLocaleString() || '0'}
+                                            {batchOverviews.get(currentPreview.uploadId)?.totalExpense?.toLocaleString() || '0'}
                                         </p>
                                         <p className="text-xs text-gray-400 mt-1">
                                             {batchOverviews.get(currentPreview.uploadId)?.expenseCount || 0} 笔

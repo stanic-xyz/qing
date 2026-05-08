@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.qing.service.llm.entity.Account;
-import cn.chenyunlong.qing.service.llm.entity.Category;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.dto.DashboardStatsDto;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
@@ -16,7 +15,6 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,10 +55,10 @@ public class DashboardService {
 
         for (TransactionRecord r : records) {
             if (r.getAmount() == null) continue;
-            if (r.getType() != null && "INCOME".equals(r.getType().name())) {
+            if (r.getTrasactionType() != null && "INCOME".equals(r.getTrasactionType().name())) {
                 income = income.add(r.getAmount());
                 incomeCount++;
-            } else if (r.getType() != null && "EXPENSE".equals(r.getType().name())) {
+            } else if (r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name())) {
                 expense = expense.add(r.getAmount());
                 expenseCount++;
             }
@@ -103,9 +101,9 @@ public class DashboardService {
 
             for (TransactionRecord r : records) {
                 if (r.getAmount() == null) continue;
-                if (r.getType() != null && "INCOME".equals(r.getType().name())) {
+                if (r.getTrasactionType() != null && "INCOME".equals(r.getTrasactionType().name())) {
                     income = income.add(r.getAmount());
-                } else if (r.getType() != null && "EXPENSE".equals(r.getType().name())) {
+                } else if (r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name())) {
                     expense = expense.add(r.getAmount());
                 }
             }
@@ -133,7 +131,7 @@ public class DashboardService {
                 .filter(r -> r.getIsImported() != null && r.getIsImported())
                 .filter(r -> r.getIsDeleted() == null || !r.getIsDeleted())
                 .filter(r -> r.getTransactionTime() != null)
-                .filter(r -> "EXPENSE".equals(r.getType() != null ? r.getType().name() : null))
+                .filter(r -> "EXPENSE".equals(r.getTrasactionType() != null ? r.getTrasactionType().name() : null))
                 .filter(r -> {
                     String ts = r.getTransactionTime().format(DateTimeFormatter.ofPattern("yyyy-MM"));
                     return ts.equals(prefix);
@@ -236,9 +234,9 @@ public class DashboardService {
 
             for (TransactionRecord r : records) {
                 if (r.getAmount() == null) continue;
-                if (r.getType() != null && "INCOME".equals(r.getType().name())) {
+                if (r.getTrasactionType() != null && "INCOME".equals(r.getTrasactionType().name())) {
                     income = income.add(r.getAmount());
-                } else if (r.getType() != null && "EXPENSE".equals(r.getType().name())) {
+                } else if (r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name())) {
                     expense = expense.add(r.getAmount());
                 }
             }
@@ -322,7 +320,7 @@ public class DashboardService {
         // 可疑: amount > 0 但 type=EXPENSE
         Set<Long> suspiciousIds = records.stream()
                 .filter(r -> r.getAmount() != null && r.getAmount().compareTo(BigDecimal.ZERO) > 0)
-                .filter(r -> r.getType() != null && "EXPENSE".equals(r.getType().name()))
+                .filter(r -> r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name()))
                 .map(TransactionRecord::getId)
                 .collect(Collectors.toSet());
 
@@ -419,9 +417,9 @@ public class DashboardService {
             BigDecimal expense = BigDecimal.ZERO;
             for (TransactionRecord r : dayRecords) {
                 if (r.getAmount() == null) continue;
-                if (r.getType() != null && "INCOME".equals(r.getType().name())) {
+                if (r.getTrasactionType() != null && "INCOME".equals(r.getTrasactionType().name())) {
                     income = income.add(r.getAmount());
-                } else if (r.getType() != null && "EXPENSE".equals(r.getType().name())) {
+                } else if (r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name())) {
                     expense = expense.add(r.getAmount());
                 }
             }
@@ -448,7 +446,7 @@ public class DashboardService {
                 .filter(r -> r.getIsImported() != null && r.getIsImported())
                 .filter(r -> r.getIsDeleted() == null || !r.getIsDeleted())
                 .filter(r -> r.getTransactionTime() != null)
-                .filter(r -> r.getType() != null && "EXPENSE".equals(r.getType().name()))
+                .filter(r -> r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name()))
                 .filter(r -> {
                     LocalDateTime t = r.getTransactionTime();
                     return !t.isBefore(start) && t.isBefore(end);

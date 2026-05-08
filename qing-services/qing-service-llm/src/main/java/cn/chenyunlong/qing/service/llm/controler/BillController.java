@@ -54,7 +54,7 @@ public class BillController {
     }
 
     @PostMapping("/match/{uploadId}")
-    public ResponseEntity<Result<Void>> startMatching(@PathVariable("uploadId") Long uploadId, @RequestBody(required = false) List<String> lockedTempIds) {
+    public ResponseEntity<Result<Void>> startMatching(@PathVariable("uploadId") Long uploadId, @RequestBody(required = false) List<Long> lockedTempIds) {
         try {
             uploadService.startMatchingAsync(uploadId, lockedTempIds);
             return ResponseEntity.ok(Result.success(null));

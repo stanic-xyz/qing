@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.controller;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionMatcher;
+import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,6 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -169,5 +173,71 @@ public class MatcherControllerTest {
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.data[0].name").value("高优先级规则"))
                 .andExpect(jsonPath("$.data[0].priority").value(500));
+    }
+
+    @Test
+    public void testMatcherTestEndpoint_Matched() throws Exception {
+        TransactionRecord record = new TransactionRecord();
+        record.setTransactionTime(LocalDateTime.now());
+        record.setAmount(new BigDecimal("66.00"));
+        record.setMerchant("测试商户");
+        record = transactionRecordRepository.save(record);
+
+        TransactionMatcher matcher = new TransactionMatcher();
+        matcher.setName("测试命中");
+        matcher.setConditionNode(objectMapper.readTree("{\"field\":\"merchant\",\"operator\":\"CONTAINS\",\"value\":\"测试\"}"));
+        matcher.setActionNode(objectMapper.readTree("[{\"actionType\":\"SET_TYPE\",\"value\":\"EXPENSE\"}]"));
+
+        String body = objectMapper.writeValueAsString(new TestRequest(record.getId(), matcher));
+
+        mockMvc.perform(post("/api/finance/matchers/test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.data.matched").value(true))
+                .andExpect(jsonPath("$.data.modifiedRecord.trasactionType").value("EXPENSE"));
+    }
+
+    @Test
+    public void testMatcherTestEndpoint_NotMatched() throws Exception {
+        TransactionRecord record = new TransactionRecord();
+        record.setTransactionTime(LocalDateTime.now());
+        record.setAmount(new BigDecimal("66.00"));
+        record.setMerchant("京东");
+        record = transactionRecordRepository.save(record);
+
+        TransactionMatcher matcher = new TransactionMatcher();
+        matcher.setName("测试不命中");
+        matcher.setConditionNode(objectMapper.readTree("{\"field\":\"merchant\",\"operator\":\"CONTAINS\",\"value\":\"淘宝\"}"));
+        matcher.setActionNode(objectMapper.readTree("[{\"actionType\":\"SET_TYPE\",\"value\":\"EXPENSE\"}]"));
+
+        String body = objectMapper.writeValueAsString(new TestRequest(record.getId(), matcher));
+
+        mockMvc.perform(post("/api/finance/matchers/test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.data.matched").value(false));
+    }
+
+    @Test
+    public void testMatcherTestEndpoint_NotFound() throws Exception {
+        TransactionMatcher matcher = new TransactionMatcher();
+        matcher.setName("不存在记录");
+        matcher.setConditionNode(objectMapper.readTree("{\"field\":\"merchant\",\"operator\":\"CONTAINS\",\"value\":\"测试\"}"));
+        matcher.setActionNode(objectMapper.readTree("[{\"actionType\":\"SET_TYPE\",\"value\":\"EXPENSE\"}]"));
+
+        String body = objectMapper.writeValueAsString(new TestRequest(999999L, matcher));
+
+        mockMvc.perform(post("/api/finance/matchers/test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(404));
+    }
+
+    private record TestRequest(Long transactionId, TransactionMatcher matcher) {
     }
 }

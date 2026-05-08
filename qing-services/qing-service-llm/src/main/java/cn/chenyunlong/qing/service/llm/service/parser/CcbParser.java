@@ -119,7 +119,7 @@ public class CcbParser extends BaseFileParser {
                     TransactionRecord record = new TransactionRecord();
                     record.setTransactionTime(txTime);
                     record.setAmount(absAmount);
-                    record.setType(isInternal ? TrasactionType.TRANSFER
+                    record.setTrasactionType(isInternal ? TrasactionType.TRANSFER
                             : (isExpense ? TrasactionType.EXPENSE : TrasactionType.INCOME));
                     record.setSubCategory(classifySummary(summary));
                     if (!cpName.isEmpty()) {

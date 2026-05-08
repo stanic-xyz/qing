@@ -109,7 +109,7 @@ export default function ImportDetail({
                 const newRecord = res.data.data;
                 setProcessPreview(prev => {
                     if (!prev) return prev;
-                    const newRecords = prev.previewRecords.map(r => r.tempId === tempId ? newRecord : r);
+                    const newRecords = prev.previewRecords.map(r => r.id === tempId ? newRecord : r);
                     return { ...prev, previewRecords: newRecords };
                 });
                 setModifiedRecords(prev => {
@@ -138,9 +138,9 @@ export default function ImportDetail({
                 const mod = modifiedRecords[tempId];
                 return {
                     tempId,
-                    type: mod.type || processPreview.previewRecords.find(r => r.tempId === tempId)?.type,
-                    merchant: mod.merchant || processPreview.previewRecords.find(r => r.tempId === tempId)?.merchant,
-                    targetAccountId: mod.targetAccountId || processPreview.previewRecords.find(r => r.tempId === tempId)?.targetAccountId,
+                    type: mod.type || processPreview.previewRecords.find(r => r.id === tempId)?.type,
+                    merchant: mod.merchant || processPreview.previewRecords.find(r => r.id === tempId)?.merchant,
+                    targetAccountId: mod.targetAccountId || processPreview.previewRecords.find(r => r.id === tempId)?.targetAccountId,
                 };
             }).filter(m => Object.keys(modifiedRecords[m.tempId]).length > 0);
 
@@ -429,15 +429,15 @@ export default function ImportDetail({
                             </thead>
                             <tbody className="divide-y divide-gray-100 bg-white">
                                 {filteredRecords.map((record) => {
-                                    const mod = modifiedRecords[record.tempId] || {};
+                                    const mod = modifiedRecords[record.id] || {};
                                     const currentType = mod.type || record.type;
                                     const currentMerchant = mod.merchant !== undefined ? mod.merchant : record.merchant;
                                     const currentTargetAccount = mod.targetAccountId !== undefined ? mod.targetAccountId : record.targetAccountId;
                                     const isModified = Object.keys(mod).length > 0;
-                                    const isLocked = lockedTempIds.has(record.tempId);
+                                    const isLocked = lockedTempIds.has(record.id);
 
                                     return (
-                                        <tr key={record.tempId} className={`hover:bg-blue-50/20 ${isModified ? 'bg-yellow-50/20' : ''} ${isLocked ? 'bg-gray-50 opacity-80' : ''}`}>
+                                        <tr key={record.id} className={`hover:bg-blue-50/20 ${isModified ? 'bg-yellow-50/20' : ''} ${isLocked ? 'bg-gray-50 opacity-80' : ''}`}>
                                             <td className="px-4 py-2 whitespace-nowrap truncate" title={record.matchRuleName || record.matchStatus}>
                                                 {renderMatchStatus(processStep === 1 ? (record.matchStatus || 'ORIGINAL') : (isModified ? 'MANUAL_EDITED' : record.matchStatus), record.matchRuleName)}
                                             </td>
@@ -455,7 +455,7 @@ export default function ImportDetail({
                                                     <input
                                                         type="text"
                                                         value={currentMerchant || ''}
-                                                        onChange={e => handleRecordChange(record.tempId, 'merchant', e.target.value)}
+                                                        onChange={e => handleRecordChange(record.id, 'merchant', e.target.value)}
                                                         className="text-sm border-gray-300 rounded px-2 py-1 w-full border focus:ring-blue-500"
                                                         placeholder="未提取"
                                                     />
@@ -468,7 +468,7 @@ export default function ImportDetail({
                                                 {processStep === 2 ? (
                                                     <select
                                                         value={currentType}
-                                                        onChange={e => handleRecordChange(record.tempId, 'type', e.target.value)}
+                                                        onChange={e => handleRecordChange(record.id, 'type', e.target.value)}
                                                         className={`text-sm border-gray-300 rounded px-2 py-1 border focus:ring-blue-500 w-full ${currentType === 'INCOME' ? 'text-green-600' : currentType === 'EXPENSE' ? 'text-red-600' : 'text-blue-600'}`}
                                                     >
                                                         <option value="EXPENSE">支出</option>
@@ -484,7 +484,7 @@ export default function ImportDetail({
                                                 {processStep === 2 && currentType === 'TRANSFER' ? (
                                                     <select
                                                         value={currentTargetAccount || ''}
-                                                        onChange={e => handleRecordChange(record.tempId, 'targetAccountId', e.target.value ? Number(e.target.value) : undefined)}
+                                                        onChange={e => handleRecordChange(record.id, 'targetAccountId', e.target.value ? Number(e.target.value) : undefined)}
                                                         className="text-sm border-gray-300 rounded px-2 py-1 w-full border focus:ring-blue-500"
                                                     >
                                                         <option value="">选择目标</option>
@@ -498,10 +498,10 @@ export default function ImportDetail({
                                             <td className="px-4 py-2 whitespace-nowrap text-right space-x-2 sticky right-0 bg-inherit shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.1)]">
                                                 {processStep === 1 && (
                                                     <>
-                                                        <button onClick={() => handleTestSingleMatch(record.tempId)} className="text-blue-600 hover:text-blue-800 text-xs flex items-center inline-flex" title="单条测试">
+                                                        <button onClick={() => handleTestSingleMatch(record.id)} className="text-blue-600 hover:text-blue-800 text-xs flex items-center inline-flex" title="单条测试">
                                                             <FlaskConical size={14} className="mr-0.5"/>测试
                                                         </button>
-                                                        <button onClick={() => toggleLock(record.tempId)} className={`${isLocked ? 'text-orange-500' : 'text-gray-400 hover:text-gray-600'} text-xs flex items-center inline-flex`} title="固定后全局重匹将忽略此条">
+                                                        <button onClick={() => toggleLock(record.id)} className={`${isLocked ? 'text-orange-500' : 'text-gray-400 hover:text-gray-600'} text-xs flex items-center inline-flex`} title="固定后全局重匹将忽略此条">
                                                             <Pin size={14} className="mr-0.5" fill={isLocked ? 'currentColor' : 'none'}/> {isLocked ? '已固定' : '固定'}
                                                         </button>
                                                     </>

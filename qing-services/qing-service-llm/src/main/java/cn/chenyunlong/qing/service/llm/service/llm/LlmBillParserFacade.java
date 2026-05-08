@@ -243,12 +243,9 @@ public class LlmBillParserFacade {
                 detailRepository.save(detail);
 
                 UnifiedDraftRecord draftRecord = new UnifiedDraftRecord();
-                draftRecord.setBatchId(draftBatch.getId());
-                draftRecord.setSourceRecordId(saved.getId() + ":" + (billRecord.getTransactionNo() == null ? "N/A" : billRecord.getTransactionNo()));
                 draftRecord.setTransactionTime(billRecord.getTransactionTime());
                 draftRecord.setDirection(billRecord.getDirection());
                 draftRecord.setAmount(billRecord.getAmount());
-                draftRecord.setCounterparty(billRecord.getCounterparty());
                 draftRecord.setMerchant(billRecord.getDescription());
                 draftRecord.setMatchStatus(detail.getNeedReview() ? DraftMatchStatusEnum.REVIEW_REQUIRED : DraftMatchStatusEnum.MATCHED);
                 draftRecord.setRawPayload(toJsonQuietly(billRecord));

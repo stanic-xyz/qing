@@ -1,7 +1,6 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
 import cn.chenyunlong.qing.service.llm.enums.*;
-import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,6 +32,7 @@ public class TransactionRecord {
     private BigDecimal amount;
 
     // 出入账类型
+    @Enumerated(EnumType.STRING)
     private TransactionDirectionTypeEnum directionType;
 
     // 交易余额
@@ -53,7 +53,7 @@ public class TransactionRecord {
 
     // 交易类型冗余
     @Enumerated(EnumType.STRING)
-    private TrasactionType type; // INCOME/EXPENSE/TRANSFER
+    private TrasactionType trasactionType; // INCOME/EXPENSE/TRANSFER
 
     // 内部转账时，目标账户的ID
     private Long targetAccountId;
