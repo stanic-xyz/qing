@@ -27,6 +27,9 @@ public class TransactionRecord {
     // 交易时间
     private LocalDateTime transactionTime;
 
+    // 账单顺序
+    private Integer orderNo;
+
     // 交易金额,带正负
     @Column(precision = 19, scale = 2, nullable = false)
     private BigDecimal amount;
@@ -42,7 +45,7 @@ public class TransactionRecord {
     private String summary;
 
     // 交易备注
-    private String remark;
+    private String detail;
 
     // 账户信息冗余
     private String accountName; // 冗余
@@ -61,6 +64,8 @@ public class TransactionRecord {
     // 对手方信息
     @ManyToOne
     private Counterparty counterparty;
+
+    private String counterpartyStr;
 
     // 商家信息,必须
     private String merchant;
@@ -86,8 +91,8 @@ public class TransactionRecord {
     private String sourceFile;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "detail_id")
-    private RecordDetail detail;
+    @JoinColumn(name = "original_detail_id")
+    private RecordDetail originalDetail;
 
     // 交易标签
     private String tags; // JSON

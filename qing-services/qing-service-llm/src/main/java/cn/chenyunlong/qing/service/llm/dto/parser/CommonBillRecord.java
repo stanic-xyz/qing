@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class CommonBillRecord {
     private BigDecimal amount;
+    private BigDecimal balance;
     private String transactionType;
     private LocalDateTime transactionTime;
     private TransactionDirectionTypeEnum direction;

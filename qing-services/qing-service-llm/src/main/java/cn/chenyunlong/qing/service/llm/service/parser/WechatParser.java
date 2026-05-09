@@ -156,7 +156,7 @@ public class WechatParser extends BaseFileParser {
 
                     // 备注
                     String remark = getCellValueAsString(row.getCell(colMap[10])).trim();
-                    record.setRemark(remark);
+                    record.setDetail(remark);
 
                     // 原始ID
                     String orderId = getCellValueAsString(row.getCell(colMap[8])).trim();

@@ -105,7 +105,7 @@ public class MatcherController {
         clone.setFee(r.getFee());
         clone.setOriginalId(r.getOriginalId());
         clone.setSourceFile(r.getSourceFile());
-        clone.setRemark(r.getRemark());
+        clone.setDetail(r.getDetail());
         clone.setTags(r.getTags());
         clone.setFundType(r.getFundType());
         clone.setFundSource(r.getFundSource());

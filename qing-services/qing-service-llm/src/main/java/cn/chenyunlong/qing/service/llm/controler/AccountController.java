@@ -200,7 +200,7 @@ public class AccountController {
             record.setTrasactionType(diff.compareTo(BigDecimal.ZERO) > 0 ? TrasactionType.INCOME : TrasactionType.EXPENSE);
             record.setAmount(diff.abs());
             record.setSubCategory("余额平账");
-            record.setRemark("手动余额校准");
+            record.setDetail("手动余额校准");
             record.setStatus(TransactionStatusEnum.SUCCESS);
             record.setConfirmed(true);
             record.setReconciliationStatus(ReconciliationStatusEnum.MATCHED);

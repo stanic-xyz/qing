@@ -4,8 +4,8 @@ import cn.chenyunlong.qing.service.llm.dto.parser.FileMetadata;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
-import cn.chenyunlong.qing.service.llm.enums.*;
-import cn.hutool.core.collection.CollUtil;
+import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.FundTypeEnum;
 import org.jspecify.annotations.NonNull;
 
 import java.math.BigDecimal;
@@ -107,7 +107,6 @@ public abstract class BaseFileParser implements FileParser {
         return FundTypeEnum.EXTERNAL;
     }
 
-
     private static @NonNull UnifiedDraftRecord convertToDraft(TransactionRecord record) {
         UnifiedDraftRecord dr = new UnifiedDraftRecord();
         dr.setTransactionTime(record.getTransactionTime());
@@ -115,7 +114,11 @@ public abstract class BaseFileParser implements FileParser {
         dr.setAmount(record.getAmount());
         dr.setMerchant(record.getMerchant());
         dr.setMatchStatus(DraftMatchStatusEnum.UNMATCHED);
+        dr.setSummary(record.getSummary());
+        dr.setBalance(record.getBalance());
+        dr.setCounterpartyStr(record.getCounterpartyStr());
+        dr.setOrderNo(record.getOrderNo());
+        dr.setDetail(record.getDetail());
         return dr;
     }
-
 }

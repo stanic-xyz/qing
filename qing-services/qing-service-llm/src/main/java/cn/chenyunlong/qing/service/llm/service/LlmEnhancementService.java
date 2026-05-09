@@ -25,8 +25,8 @@ public class LlmEnhancementService {
         if (records == null || records.isEmpty()) return;
 
         List<TransactionRecord> needEnhancement = records.stream()
-            .filter(r -> r.getCategory() == null 
-                        && (r.getMerchant() != null || r.getRemark() != null || r.getCounterparty() != null))
+            .filter(r -> r.getCategory() == null
+                        && (r.getMerchant() != null || r.getDetail() != null || r.getCounterparty() != null))
             .toList();
 
         if (needEnhancement.isEmpty()) return;
@@ -49,7 +49,7 @@ public class LlmEnhancementService {
         // 简单的规则判断，不需要 LLM
         StringBuilder sb = new StringBuilder();
         sb.append("对账分析: ");
-        
+
         if (record.getReconciliationStatus() != null) {
             sb.append("状态=").append(record.getReconciliationStatus()).append("; ");
         }
@@ -59,7 +59,7 @@ public class LlmEnhancementService {
         if (record.getAmount() != null) {
             sb.append("金额=").append(record.getAmount().toPlainString()).append("; ");
         }
-        
+
         return sb.toString();
     }
 }

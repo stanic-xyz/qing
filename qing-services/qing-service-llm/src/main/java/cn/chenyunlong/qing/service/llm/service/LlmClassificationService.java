@@ -3,16 +3,13 @@ package cn.chenyunlong.qing.service.llm.service;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * LLM 增强分类服务
@@ -86,7 +83,7 @@ public class LlmClassificationService {
         // 过滤掉已有分类或描述为空且对手方为空的记录
         List<TransactionRecord> toClassify = records.stream()
                 .filter(r -> r.getCategory() == null &&
-                        (r.getMerchant() != null || r.getRemark() != null || r.getCounterparty() != null))
+                        (r.getMerchant() != null || r.getDetail() != null || r.getCounterparty() != null))
             .toList();
 
         if (toClassify.isEmpty()) {
@@ -135,8 +132,8 @@ public class LlmClassificationService {
         if (record.getMerchant() != null && !record.getMerchant().isBlank()) {
             sb.append("商家: ").append(record.getMerchant()).append("; ");
         }
-        if (record.getRemark() != null && !record.getRemark().isBlank()) {
-            sb.append("备注: ").append(record.getRemark()).append("; ");
+        if (record.getDetail() != null && !record.getDetail().isBlank()) {
+            sb.append("备注: ").append(record.getDetail()).append("; ");
         }
         if (record.getCounterparty() != null) {
             sb.append("对手: ").append(record.getCounterparty().getName()).append("; ");

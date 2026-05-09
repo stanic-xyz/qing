@@ -109,7 +109,7 @@ public class BocCreditParser extends BaseFileParser {
                         if (pendingDesc.length() > 0) {
                             String fullDesc = pendingDesc.toString().trim();
                             if (!fullDesc.isEmpty()) {
-                                records.get(records.size() - 1).setRemark(fullDesc);
+                                records.get(records.size() - 1).setDetail(fullDesc);
                             }
                         }
                         pendingDesc.setLength(0);
@@ -184,7 +184,7 @@ public class BocCreditParser extends BaseFileParser {
                 if (pendingDesc.length() > 0 && !records.isEmpty()) {
                     String finalDesc = pendingDesc.toString().trim();
                     if (!finalDesc.isEmpty()) {
-                        records.get(records.size() - 1).setRemark(finalDesc);
+                        records.get(records.size() - 1).setDetail(finalDesc);
                     }
                 }
             }

@@ -46,8 +46,8 @@ public class DraftCommitService {
         UploadFileRecord uploadFileRecord = uploadFileRecordRepository.findById(uploadId)
                 .orElseThrow(() -> new NoSuchElementException("上传文件记录不存在: " + uploadId));
 
-        if (uploadFileRecord.getStatus() == FileUploadStatusEnum.IMPORTED) {
-            throw new IllegalStateException("该文件已全部入账，不得重复提交");
+        if (uploadFileRecord.getStatus() != FileUploadStatusEnum.MATCHED) {
+            throw new IllegalStateException("该批次未匹配完毕，无法提交！");
         }
         // 可选：检查是否有批次可提交，若无则直接返回
 
@@ -64,6 +64,7 @@ public class DraftCommitService {
         for (UnifiedDraftBatch batch : batches) {
             try {
                 CommitResult batchResult = commitBatch(batch.getId());
+
                 totalImported += batchResult.importedCount();
                 totalDuplicate += batchResult.duplicateCount();
                 totalSkipped += batchResult.skippedCount();
@@ -132,7 +133,11 @@ public class DraftCommitService {
                 skipped++;
                 continue;
             }
-            toImport.add(convert(dr));  // 使用已有的 convert 方法
+
+            // 转换对象
+            TransactionRecord transactionRecord = convert(dr);
+
+            toImport.add(transactionRecord);  // 使用已有的 convert 方法
         }
 
         if (toImport.isEmpty()) {
@@ -148,11 +153,11 @@ public class DraftCommitService {
         List<TransactionRecord> recordsToSave = new ArrayList<>();
         int duplicateCount = 0;
         for (TransactionRecord tr : toImport) {
-            String key = buildDuplicateKey(tr.getTransactionTime(), tr.getAmount(), tr.getMerchant());
+            String key = buildDuplicateKey(tr.getTransactionTime(), tr.getAmount(), tr.getMerchant(), tr.getDetail());
             if (existingKeys.contains(key)) {
                 duplicateCount++;
-                log.warn("检测到重复记录，跳过入账: accountId={}, time={}, amount={}, merchant={}",
-                        lockedAccount.getId(), tr.getTransactionTime(), tr.getAmount(), tr.getMerchant());
+                log.warn("检测到重复记录，跳过入账: accountId={}, time={}, amount={}, merchant={}, detail={}",
+                        lockedAccount.getId(), tr.getTransactionTime(), tr.getAmount(), tr.getMerchant(), tr.getDetail());
             } else {
                 recordsToSave.add(tr);
             }
@@ -184,11 +189,11 @@ public class DraftCommitService {
 
     // ---------- 以下是辅助方法和转换逻辑 ----------
 
-    private String buildDuplicateKey(LocalDateTime transactionTime, BigDecimal amount, String merchant) {
+    private String buildDuplicateKey(LocalDateTime transactionTime, BigDecimal amount, String merchant, String detail) {
         String date = transactionTime.toLocalDate().toString();
         String amountStr = amount.stripTrailingZeros().toString();
         String merchantStr = merchant == null ? "" : merchant;
-        return date + "|" + amountStr + "|" + merchantStr;
+        return date + "|" + amountStr + "|" + merchantStr + "|" + detail;
     }
 
     private Set<String> findExistingKeysForAccount(Long accountId, List<TransactionRecord> toImport) {
@@ -205,7 +210,7 @@ public class DraftCommitService {
         List<TransactionRecord> existing = transactionRepo.findAllByAccountIdAndTransactionTimeBetween(accountId, minTime, maxTime);
 
         return existing.stream()
-                .map(tr -> buildDuplicateKey(tr.getTransactionTime(), tr.getAmount(), tr.getMerchant()))
+                .map(tr -> buildDuplicateKey(tr.getTransactionTime(), tr.getAmount(), tr.getMerchant(), tr.getDetail()))
                 .collect(Collectors.toSet());
     }
 
@@ -226,6 +231,11 @@ public class DraftCommitService {
         tr.setTransactionTime(dr.getTransactionTime());
         tr.setDirectionType(dr.getDirection());
         tr.setAmount(dr.getAmount());
+        tr.setCounterpartyStr(dr.getCounterpartyStr());
+        tr.setSummary(dr.getSummary());
+        tr.setBalance(dr.getBalance());
+        tr.setOrderNo(dr.getOrderNo());
+        tr.setDetail(dr.getDetail());
 
         Counterparty finalCounterparty = dr.getFinalCounterparty();
         if (finalCounterparty != null) {

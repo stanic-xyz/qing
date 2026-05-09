@@ -207,6 +207,6 @@ public class CmbParser extends BaseFileParser {
         if (remark.length() > 255) {
             remark = remark.substring(0, 255);
         }
-        record.setRemark(remark);
+        record.setDetail(remark);
     }
 }

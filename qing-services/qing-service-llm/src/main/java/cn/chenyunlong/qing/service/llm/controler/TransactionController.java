@@ -129,7 +129,7 @@ public class TransactionController {
         Specification<TransactionRecord> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("amount"), record.getAmount()));
-            predicates.add(cb.equal(root.get("type"), record.getTrasactionType()));
+            predicates.add(cb.equal(root.get("trasactionType"), record.getTrasactionType()));
             predicates.add(cb.between(root.get("transactionTime"), start, end));
             predicates.add(cb.equal(root.get("isDeleted"), false));
             predicates.add(cb.or(

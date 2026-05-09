@@ -98,7 +98,7 @@ public class JingdongParser extends BaseFileParser {
 
                     // 备注（列10）
                     String remark = line.length > 10 ? line[10].trim() : "";
-                    record.setRemark(remark);
+                    record.setDetail(remark);
 
                     // 原始ID（订单号，列8）
                     if (line.length > 8 && !line[8].trim().isEmpty()) {

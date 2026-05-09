@@ -129,7 +129,7 @@ public class AlipayParser extends BaseFileParser {
                     if (finalRemark.endsWith(";")) {
                         finalRemark = finalRemark.substring(0, finalRemark.length() - 1);
                     }
-                    record.setRemark(finalRemark);
+                    record.setDetail(finalRemark);
 
                     // 原始数据 JSON
                     java.util.Map<String, String> rawMap = new java.util.HashMap<>();

@@ -2,7 +2,10 @@ package cn.chenyunlong.qing.service.llm.service.parser.ccb;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
-import cn.chenyunlong.qing.service.llm.enums.*;
+import cn.chenyunlong.qing.service.llm.enums.AccountType;
+import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionDirectionTypeEnum;
+import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
 import cn.chenyunlong.qing.service.llm.service.parser.BaseFileParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -118,10 +121,15 @@ public class CcbExcelParser extends BaseFileParser {
         TransactionRecord record = new TransactionRecord();
         record.setTransactionTime(transactionTime);
 
+        Cell orderCell = row.getCell(0);
+        Integer orderValue = orderCell != null ? Integer.parseInt(orderCell.getStringCellValue()) : 0;
+        record.setOrderNo(orderValue);
+
         // 从第1列读取摘要（交易类型描述）
         Cell summaryCell = row.getCell(1);
         String summary = summaryCell != null ? summaryCell.getStringCellValue().trim() : "";
 
+        record.setSummary(summary);
 
         // 从第5列读取交易金额
         Cell amountCell = row.getCell(5);
@@ -132,9 +140,9 @@ public class CcbExcelParser extends BaseFileParser {
                 record.setAmount(amount);
                 // 根据金额正负判断交易类型
                 if (amount.compareTo(BigDecimal.ZERO) < 0) {
-                    record.setDirectionType(TransactionDirectionTypeEnum.OUT);
+                    record.setDirectionType(TransactionDirectionTypeEnum.EXPENSE);
                 } else {
-                    record.setDirectionType(TransactionDirectionTypeEnum.IN);
+                    record.setDirectionType(TransactionDirectionTypeEnum.INCOME);
                 }
             }
         }
@@ -176,7 +184,8 @@ public class CcbExcelParser extends BaseFileParser {
         } else {
             counterparty = "-";
         }
-        record.setRemark(("%s-->%s(%s)".formatted(summary, location, counterparty)).trim());
+        record.setCounterpartyStr(location);
+        record.setDetail(("%s-->%s(%s)".formatted(summary, location, counterparty)).trim());
         // 设置默认值
         record.setAccountName("建设银行");
         record.setAccountType(AccountType.DEBIT);

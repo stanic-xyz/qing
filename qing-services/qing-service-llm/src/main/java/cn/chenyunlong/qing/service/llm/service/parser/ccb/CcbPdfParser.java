@@ -187,7 +187,7 @@ public class CcbPdfParser extends BaseFileParser {
         if (parts.length >= 2) {
             record.setMerchant(parts[0]);
             if (parts.length > 2) {
-                record.setRemark(remark.substring(parts[0].length() + parts[1].length() + 2));
+                record.setDetail(remark.substring(parts[0].length() + parts[1].length() + 2));
             }
         } else {
             record.setMerchant(remark);

@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -74,6 +73,8 @@ public class UploadService {
     private final BatchLockService batchLockService;
     private final LockFactory lockFactory;
     private final Executor matchThreadPool;
+
+    private final DraftCommitService commitService;
 
 
     // 缓存：解析器配置ID -> FileParser实例
@@ -190,11 +191,11 @@ public class UploadService {
                 // 金额不可能为空
                 assert record.getAmount() != null;
                 switch (record.getDirection()) {
-                    case IN -> {
+                    case INCOME -> {
                         incomeCount++;
                         totalIncome = totalIncome.add(record.getAmount());
                     }
-                    case OUT -> {
+                    case EXPENSE -> {
                         expenseCount++;
                         totalExpense = totalExpense.add(record.getAmount());
                     }
@@ -231,11 +232,11 @@ public class UploadService {
                 for (UnifiedDraftRecord record : batchRecords) {
                     // 金额不可能为空
                     switch (record.getDirection()) {
-                        case IN -> {
+                        case INCOME -> {
                             incomeCount++;
                             totalIncome = totalIncome.add(record.getAmount());
                         }
-                        case OUT -> {
+                        case EXPENSE -> {
                             expenseCount++;
                             totalExpense = totalExpense.add(record.getAmount());
                         }
@@ -319,17 +320,14 @@ public class UploadService {
     }
 
     public UploadBatchOverviewResponse getBatchOverview(Long uploadId) {
-        UnifiedDraftBatch unifiedDraftBatch = draftBatchRepository.findById(uploadId)
-                .orElseThrow(() -> new RuntimeException("上传记录不存在"));
 
-        UploadFileRecord uploadFile = unifiedDraftBatch.getUploadFile();
+        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId).orElseThrow(() -> new RuntimeException("上传记录不存在"));
 
-        Account batchAccount = unifiedDraftBatch.getAccount();
+        Account account = fileRecord.getAccount();
+        assert account != null;
 
-        Page<UnifiedDraftRecord> draftRecords = draftRecordRepository.findByBatchId(unifiedDraftBatch.getId(), Pageable.unpaged());
-        List<UnifiedDraftRecord> draftRecordList = draftRecords.getContent();
-
-        List<UnifiedDraftBatch> batches = draftBatchRepository.findAllByUploadFile(uploadFile);
+        List<UnifiedDraftRecord> draftRecordList = draftRecordRepository.findAllByFileRecord(fileRecord);
+        List<UnifiedDraftBatch> batches = draftBatchRepository.findAllByUploadFile(fileRecord);
 
         int incomeCount = 0;
         int expenseCount = 0;
@@ -341,7 +339,7 @@ public class UploadService {
         LocalDateTime maxTime = null;
 
         for (UnifiedDraftRecord record : draftRecordList) {
-            if (record.getDirection() == TransactionDirectionTypeEnum.IN) {
+            if (record.getDirection() == TransactionDirectionTypeEnum.INCOME) {
                 incomeCount++;
                 if (record.getAmount() != null) {
                     totalIncome = totalIncome.add(record.getAmount());
@@ -366,9 +364,9 @@ public class UploadService {
 
         return UploadBatchOverviewResponse.builder()
                 .uploadId(String.valueOf(uploadId))
-                .fileName(uploadFile != null ? uploadFile.getFileName() : "未知文件")
-                .fileSize(uploadFile != null ? uploadFile.getFileSize() : 0)
-                .totalRecords(Math.toIntExact(draftRecords.getTotalElements()))
+                .fileName(fileRecord.getFileName())
+                .fileSize(fileRecord.getFileSize())
+                .totalRecords(draftRecordList.size())
                 .incomeCount(incomeCount)
                 .expenseCount(expenseCount)
                 .transferCount(transferCount)
@@ -377,15 +375,14 @@ public class UploadService {
                 .transactionStartTime(minTime)
                 .transactionEndTime(maxTime)
                 .batchCount(batches.size())
-                .accountName(batchAccount.getAccountName())
+                .accountName(account.getAccountName())
                 .build();
     }
 
     public void startMatchingAsync(Long uploadId, List<Long> lockedTempIds) {
 
         // 1. 基础校验
-        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId)
-                .orElseThrow(() -> new RuntimeException("上传记录不存在"));
+        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId).orElseThrow(() -> new RuntimeException("上传记录不存在"));
         if (fileRecord.getStatus() != FileUploadStatusEnum.UPLOADED) {
             throw new RuntimeException("状态错误，当前状态不可匹配: " + fileRecord.getStatus());
         }
@@ -449,43 +446,43 @@ public class UploadService {
             }, matchThreadPool);
 
             futures.add(future);
-
-            // 4. 等待所有批次完成后，更新整体状态
-            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                    .thenRun(() -> {
-                        // 检查是否所有批次都已结束（成功或失败）
-                        List<UnifiedDraftBatch> finalBatches = draftBatchRepository.findAllByUploadFile(fileRecord);
-                        boolean allFinished = finalBatches.stream()
-                                .allMatch(draftBatch -> draftBatch.getStatus() == DraftBatchStatusEnum.MATCHED
-                                        || draftBatch.getStatus() == DraftBatchStatusEnum.FAILED);
-                        if (allFinished) {
-                            // 如果有失败的批次，整体状态标记为 PARTIAL_MATCHED，否则 MATCHED
-                            boolean hasFailed = finalBatches.stream()
-                                    .anyMatch(b -> b.getStatus() == DraftBatchStatusEnum.FAILED);
-                            fileRecord.setStatus(hasFailed ? FileUploadStatusEnum.PARTIAL_MATCHED
-                                    : FileUploadStatusEnum.MATCHED);
-                            uploadFileRepo.save(fileRecord);
-
-                            response.setStatus("COMPLETED");
-                            response.setPreview(getPreviewData(uploadId, 0, 100));
-                            log.info("上传记录 {} 匹配完成，成功批次: {}, 失败批次: {}",
-                                    uploadId,
-                                    finalBatches.stream().filter(b -> b.getStatus() == DraftBatchStatusEnum.MATCHED).count(),
-                                    finalBatches.stream().filter(b -> b.getStatus() == DraftBatchStatusEnum.FAILED).count());
-                        } else {
-                            // 理论上 allOf 完成后所有任务都已结束，不应走到这里，但保留兜底
-                            response.setStatus("COMPLETED");
-                        }
-                    })
-                    .exceptionally(ex -> {
-                        log.error("整体匹配过程发生异常", ex);
-                        response.setStatus("FAILED");
-                        response.setErrorMsg(ex.getMessage());
-                        fileRecord.setStatus(FileUploadStatusEnum.MATCH_FAILED);
-                        uploadFileRepo.save(fileRecord);
-                        return null;
-                    });
         }
+
+        // 4. 等待所有批次完成后，更新整体状态
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenRun(() -> {
+                    // 检查是否所有批次都已结束（成功或失败）
+                    List<UnifiedDraftBatch> finalBatches = draftBatchRepository.findAllByUploadFile(fileRecord);
+                    boolean allFinished = finalBatches.stream()
+                            .allMatch(draftBatch -> draftBatch.getStatus() == DraftBatchStatusEnum.MATCHED
+                                    || draftBatch.getStatus() == DraftBatchStatusEnum.FAILED);
+                    if (allFinished) {
+                        // 如果有失败的批次，整体状态标记为 PARTIAL_MATCHED，否则 MATCHED
+                        boolean hasFailed = finalBatches.stream()
+                                .anyMatch(draftBatch -> draftBatch.getStatus() == DraftBatchStatusEnum.FAILED);
+                        fileRecord.setStatus(hasFailed ? FileUploadStatusEnum.PARTIAL_MATCHED
+                                : FileUploadStatusEnum.MATCHED);
+                        uploadFileRepo.save(fileRecord);
+
+                        response.setStatus("COMPLETED");
+                        response.setPreview(getPreviewData(uploadId, 0, 100));
+                        log.info("上传记录 {} 匹配完成，成功批次: {}, 失败批次: {}",
+                                uploadId,
+                                finalBatches.stream().filter(b -> b.getStatus() == DraftBatchStatusEnum.MATCHED).count(),
+                                finalBatches.stream().filter(b -> b.getStatus() == DraftBatchStatusEnum.FAILED).count());
+                    } else {
+                        // 理论上 allOf 完成后所有任务都已结束，不应走到这里，但保留兜底
+                        response.setStatus("COMPLETED");
+                    }
+                })
+                .exceptionally(ex -> {
+                    log.error("整体匹配过程发生异常", ex);
+                    response.setStatus("FAILED");
+                    response.setErrorMsg(ex.getMessage());
+                    fileRecord.setStatus(FileUploadStatusEnum.MATCH_FAILED);
+                    uploadFileRepo.save(fileRecord);
+                    return null;
+                });
     }
 
     public MatchStatusResponse getMatchStatus(Long uploadId) {
@@ -519,131 +516,130 @@ public class UploadService {
     }
 
     public int importConfirmed(ImportRequest request) {
-        String uploadId = request.getUploadId();
-        List<TransactionRecord> allRecords = transactionRepo.findByUploadId(uploadId);
-        if (allRecords.isEmpty()) {
-            throw new RuntimeException("上传记录为空或已删除");
-        }
+        Long uploadId = request.getUploadId();
+        DraftCommitService.CommitResult commit = commitService.commit(uploadId);
 
-        // 过滤用户确认的记录
-        List<TransactionRecord> toImport = new ArrayList<>();
-        if (request.getConfirmedTempIds() != null && !request.getConfirmedTempIds().isEmpty()) {
-            for (String tempIdStr : request.getConfirmedTempIds()) {
-                try {
-                    Long recordId = Long.parseLong(tempIdStr);
-                    allRecords.stream()
-                            .filter(r -> r.getId().equals(recordId))
-                            .findFirst()
-                            .ifPresent(toImport::add);
-                } catch (NumberFormatException e) {
-                    // ignore invalid ID
-                }
-            }
-        } else {
-            toImport.addAll(allRecords); // 兼容旧逻辑
-        }
-
-        // 应用用户修改
-        if (request.getModifications() != null && !request.getModifications().isEmpty()) {
-            Map<String, ImportRequest.ModifiedRecord> mods = request.getModifications().stream()
-                    .collect(Collectors.toMap(ImportRequest.ModifiedRecord::getTempId, m -> m));
-            for (TransactionRecord record : toImport) {
-                ImportRequest.ModifiedRecord mod = mods.get(String.valueOf(record.getId()));
-                if (mod != null) {
-                    if (mod.getType() != null) {
-                        record.setTrasactionType(TrasactionType.valueOf(mod.getType().toUpperCase()));
-                    }
-                    record.setMerchant(mod.getMerchant());
-                    record.setTargetAccountId(mod.getTargetAccountId());
-                    if (mod.getTargetAccountId() != null) {
-                        record.setTrasactionType(TrasactionType.TRANSFER); // 强制为转账
-                    }
-                    record.setMatchStatus(MatchStatusEnum.MANUAL_EDITED);
-                    record.setIsModified(true);
-                }
-            }
-        }
-
-        // 标记为已正式导入并统计规则正确率
-        Map<String, TransactionMatcher> matchersMap = matcherRepository.findAll().stream()
-                .collect(Collectors.toMap(TransactionMatcher::getName, m -> m));
-
-        Map<Long, Account> accountsToUpdate = new HashMap<>();
-
-        for (TransactionRecord record : toImport) {
-            record.setIsImported(true);
-
-            // 统计正确率
-            if (record.getMatchRuleName() != null && !record.getMatchRuleName().isEmpty()) {
-                TransactionMatcher matcher = matchersMap.get(record.getMatchRuleName());
-                if (matcher != null) {
-                    matcher.setMatchCount(matcher.getMatchCount() == null ? 1 : matcher.getMatchCount() + 1);
-                    if (record.getIsModified() == null || !record.getIsModified()) {
-                        matcher.setSuccessCount(matcher.getSuccessCount() == null ? 1 : matcher.getSuccessCount() + 1);
-                    }
-                }
-            }
-
-            // 账户余额联动
-            Account srcAccount = record.getAccount();
-            if (srcAccount != null && record.getAmount() != null) {
-                if (!accountsToUpdate.containsKey(srcAccount.getId())) {
-                    accountsToUpdate.put(srcAccount.getId(), srcAccount);
-                }
-                Account acc = accountsToUpdate.get(srcAccount.getId());
-                BigDecimal current = acc.getCurrentBalance() != null ? acc.getCurrentBalance() : BigDecimal.ZERO;
-
-                if (TrasactionType.INCOME == record.getTrasactionType()) {
-                    acc.setCurrentBalance(current.add(record.getAmount()));
-                } else if (TrasactionType.EXPENSE == record.getTrasactionType()) {
-                    acc.setCurrentBalance(current.subtract(record.getAmount()));
-                } else if (TrasactionType.TRANSFER == record.getTrasactionType()) {
-                    acc.setCurrentBalance(current.subtract(record.getAmount())); // 源账户减去金额
-                }
-
-                // 处理转账的目标账户增加金额
-                if (Objects.equals(TrasactionType.TRANSFER, record.getTrasactionType()) && record.getTargetAccountId() != null) {
-                    Account targetAcc = accountsToUpdate.get(record.getTargetAccountId());
-                    if (targetAcc == null) {
-                        targetAcc = accountRepository.findById(record.getTargetAccountId()).orElse(null);
-                        if (targetAcc != null) {
-                            accountsToUpdate.put(targetAcc.getId(), targetAcc);
-                        }
-                    }
-                    if (targetAcc != null) {
-                        BigDecimal targetCurrent = targetAcc.getCurrentBalance() != null ? targetAcc.getCurrentBalance() : BigDecimal.ZERO;
-                        targetAcc.setCurrentBalance(targetCurrent.add(record.getAmount()));
-                    }
-                }
-            }
-        }
-        matcherRepository.saveAll(matchersMap.values());
-        if (!accountsToUpdate.isEmpty()) {
-            accountRepository.saveAll(accountsToUpdate.values());
-        }
-
-        // 批量保存
-        List<TransactionRecord> saved = transactionRepo.saveAll(toImport);
-
-        // 删除未确认（被舍弃）的记录
-        List<TransactionRecord> toDelete = new ArrayList<>(allRecords);
-        toDelete.removeAll(toImport);
-        if (!toDelete.isEmpty()) {
-            transactionRepo.deleteAll(toDelete);
-        }
-
-        // 更新上传批次记录状态
-        UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
-        if (fileRecord != null) {
-            fileRecord.setStatus(FileUploadStatusEnum.IMPORTED);
-            fileRecord.setImportedCount(saved.size());
-            fileRecord.setImportedAt(LocalDateTime.now());
-            uploadFileRepo.save(fileRecord);
-        }
-
-        // 触发异步对账（可选）
-        reconciliationService.autoReconcileForRecords(saved);
-
-        return saved.size();
+        //
+        //        List<TransactionRecord> allRecords = transactionRepo.findByUploadId(uploadId);
+        //        if (allRecords.isEmpty()) {
+        //            throw new RuntimeException("上传记录为空或已删除");
+        //        }
+        //
+        //        // 过滤用户确认的记录
+        //        List<TransactionRecord> toImport = new ArrayList<>();
+        //        if (request.getConfirmedTempIds() != null && !request.getConfirmedTempIds().isEmpty()) {
+        //            for (String tempIdStr : request.getConfirmedTempIds()) {
+        //                try {
+        //                    Long recordId = Long.parseLong(tempIdStr);
+        //                    allRecords.stream()
+        //                            .filter(r -> r.getId().equals(recordId))
+        //                            .findFirst()
+        //                            .ifPresent(toImport::add);
+        //                } catch (NumberFormatException e) {
+        //                    // ignore invalid ID
+        //                }
+        //            }
+        //        } else {
+        //            toImport.addAll(allRecords); // 兼容旧逻辑
+        //        }
+        //
+        //        // 应用用户修改
+        //        if (request.getModifications() != null && !request.getModifications().isEmpty()) {
+        //            Map<String, ImportRequest.ModifiedRecord> mods = request.getModifications().stream()
+        //                    .collect(Collectors.toMap(ImportRequest.ModifiedRecord::getTempId, m -> m));
+        //            for (TransactionRecord record : toImport) {
+        //                ImportRequest.ModifiedRecord mod = mods.get(String.valueOf(record.getId()));
+        //                if (mod != null) {
+        //                    if (mod.getType() != null) {
+        //                        record.setTrasactionType(TrasactionType.valueOf(mod.getType().toUpperCase()));
+        //                    }
+        //                    record.setMerchant(mod.getMerchant());
+        //                    record.setTargetAccountId(mod.getTargetAccountId());
+        //                    if (mod.getTargetAccountId() != null) {
+        //                        record.setTrasactionType(TrasactionType.TRANSFER); // 强制为转账
+        //                    }
+        //                    record.setMatchStatus(MatchStatusEnum.MANUAL_EDITED);
+        //                    record.setIsModified(true);
+        //                }
+        //            }
+        //        }
+        //
+        //        // 标记为已正式导入并统计规则正确率
+        //        Map<String, TransactionMatcher> matchersMap = matcherRepository.findAll().stream()
+        //                .collect(Collectors.toMap(TransactionMatcher::getName, m -> m));
+        //
+        //        Map<Long, Account> accountsToUpdate = new HashMap<>();
+        //
+        //        for (TransactionRecord record : toImport) {
+        //            record.setIsImported(true);
+        //
+        //            // 统计正确率
+        //            if (record.getMatchRuleName() != null && !record.getMatchRuleName().isEmpty()) {
+        //                TransactionMatcher matcher = matchersMap.get(record.getMatchRuleName());
+        //                if (matcher != null) {
+        //                    matcher.setMatchCount(matcher.getMatchCount() == null ? 1 : matcher.getMatchCount() + 1);
+        //                    if (record.getIsModified() == null || !record.getIsModified()) {
+        //                        matcher.setSuccessCount(matcher.getSuccessCount() == null ? 1 : matcher.getSuccessCount() + 1);
+        //                    }
+        //                }
+        //            }
+        //
+        //            // 账户余额联动
+        //            Account srcAccount = record.getAccount();
+        //            if (srcAccount != null && record.getAmount() != null) {
+        //                if (!accountsToUpdate.containsKey(srcAccount.getId())) {
+        //                    accountsToUpdate.put(srcAccount.getId(), srcAccount);
+        //                }
+        //                Account acc = accountsToUpdate.get(srcAccount.getId());
+        //                BigDecimal current = acc.getCurrentBalance() != null ? acc.getCurrentBalance() : BigDecimal.ZERO;
+        //
+        //                if (TrasactionType.INCOME == record.getTrasactionType()) {
+        //                    acc.setCurrentBalance(current.add(record.getAmount()));
+        //                } else if (TrasactionType.EXPENSE == record.getTrasactionType()) {
+        //                    acc.setCurrentBalance(current.subtract(record.getAmount()));
+        //                } else if (TrasactionType.TRANSFER == record.getTrasactionType()) {
+        //                    acc.setCurrentBalance(current.subtract(record.getAmount())); // 源账户减去金额
+        //                }
+        //
+        //                // 处理转账的目标账户增加金额
+        //                if (Objects.equals(TrasactionType.TRANSFER, record.getTrasactionType()) && record.getTargetAccountId() != null) {
+        //                    Account targetAcc = accountsToUpdate.get(record.getTargetAccountId());
+        //                    if (targetAcc == null) {
+        //                        targetAcc = accountRepository.findById(record.getTargetAccountId()).orElse(null);
+        //                        if (targetAcc != null) {
+        //                            accountsToUpdate.put(targetAcc.getId(), targetAcc);
+        //                        }
+        //                    }
+        //                    if (targetAcc != null) {
+        //                        BigDecimal targetCurrent = targetAcc.getCurrentBalance() != null ? targetAcc.getCurrentBalance() : BigDecimal.ZERO;
+        //                        targetAcc.setCurrentBalance(targetCurrent.add(record.getAmount()));
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        matcherRepository.saveAll(matchersMap.values());
+        //        if (!accountsToUpdate.isEmpty()) {
+        //            accountRepository.saveAll(accountsToUpdate.values());
+        //        }
+        //
+        //        // 批量保存
+        //        List<TransactionRecord> saved = transactionRepo.saveAll(toImport);
+        //
+        //        // 删除未确认（被舍弃）的记录
+        //        List<TransactionRecord> toDelete = new ArrayList<>(allRecords);
+        //        toDelete.removeAll(toImport);
+        //        if (!toDelete.isEmpty()) {
+        //            transactionRepo.deleteAll(toDelete);
+        //        }
+        //
+        //        // 更新上传批次记录状态
+        //        UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
+        //        if (fileRecord != null) {
+        //            fileRecord.setStatus(FileUploadStatusEnum.IMPORTED);
+        //            fileRecord.setImportedCount(saved.size());
+        //            fileRecord.setImportedAt(LocalDateTime.now());
+        //            uploadFileRepo.save(fileRecord);
+        //        }
+        return commit.importedCount();
     }
 }

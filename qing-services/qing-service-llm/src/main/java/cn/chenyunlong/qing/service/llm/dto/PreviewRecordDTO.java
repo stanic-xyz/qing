@@ -5,8 +5,6 @@ import cn.chenyunlong.qing.service.llm.entity.*;
 import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +19,6 @@ public class PreviewRecordDTO {
 
     private AccountDTO account;
 
-    @JsonSerialize(using = StringSerializer.class)
     private Long id;
 
     private String transactionTime;

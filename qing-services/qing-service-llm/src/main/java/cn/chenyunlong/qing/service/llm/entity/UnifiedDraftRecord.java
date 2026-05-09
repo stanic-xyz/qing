@@ -28,19 +28,35 @@ public class UnifiedDraftRecord {
     @ManyToOne
     private UnifiedDraftBatch batch;
 
+    // 账单顺序
+    private Integer orderNo;
+
     private LocalDateTime transactionTime;
 
     @Enumerated(EnumType.STRING)
     private TransactionDirectionTypeEnum direction;
 
+    private String summary;
+
     @Enumerated(EnumType.STRING)
     private TrasactionType trasactionType;
 
+    // 交易金额
+    @Column(precision = 19, scale = 2)
     private BigDecimal amount;
+
+    // 交易余额
+    @Column(precision = 19, scale = 2)
+    private BigDecimal balance;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Counterparty counterparty;
+
+    private String counterpartyStr;
+
+    // 交易备注
+    private String detail;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

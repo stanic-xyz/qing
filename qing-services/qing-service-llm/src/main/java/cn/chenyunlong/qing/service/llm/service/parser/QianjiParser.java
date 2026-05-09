@@ -85,7 +85,7 @@ public class QianjiParser extends BaseFileParser {
 
                     // 备注
                     String remark = line.length > 9 ? line[9].trim() : "";
-                    record.setRemark(remark);
+                    record.setDetail(remark);
 
                     // 原始ID
                     if (line.length > 0 && !line[0].trim().isEmpty()) {

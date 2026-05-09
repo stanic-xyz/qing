@@ -274,8 +274,7 @@ public class DynamicFileParser extends BaseFileParser {
         Map<String, Object> context = new HashMap<>(rowContext);
         context.put("value", value);
         context.put("targetField", rule.getTargetField());
-        Object result = scriptExecutorFactory.execute(language, rule.getScriptRule(), context);
-        return result;
+        return scriptExecutorFactory.execute(language, rule.getScriptRule(), context);
     }
 
     private void applyPostScriptIfEnabled(TransactionRecord record, Map<String, Object> rowContext, Map<String, Object> extData) {
