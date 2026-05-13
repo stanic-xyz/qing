@@ -153,10 +153,10 @@ public class CcbPdfParser extends BaseFileParser {
         String amountStr = group3.replace(",", "");
         BigDecimal amount = new BigDecimal(amountStr);
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            record.setType(TrasactionType.EXPENSE);
+            record.setTrasactionType(TrasactionType.EXPENSE);
             record.setAmount(amount.abs());
         } else {
-            record.setType(TrasactionType.INCOME);
+            record.setTrasactionType(TrasactionType.INCOME);
             record.setAmount(amount);
         }
 
@@ -187,7 +187,7 @@ public class CcbPdfParser extends BaseFileParser {
         if (parts.length >= 2) {
             record.setMerchant(parts[0]);
             if (parts.length > 2) {
-                record.setRemark(remark.substring(parts[0].length() + parts[1].length() + 2));
+                record.setDetail(remark.substring(parts[0].length() + parts[1].length() + 2));
             }
         } else {
             record.setMerchant(remark);

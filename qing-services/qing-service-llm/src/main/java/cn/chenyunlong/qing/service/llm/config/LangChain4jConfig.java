@@ -14,7 +14,7 @@ public class LangChain4jConfig {
         // 使用本地模型，如 all-MiniLM-L6-v2
         return OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434")
-                .modelName("deepseek-r1:1.5b")
+                .modelName("MiniMax M2.7")
                 .temperature(0.0)
                 .build();
     }

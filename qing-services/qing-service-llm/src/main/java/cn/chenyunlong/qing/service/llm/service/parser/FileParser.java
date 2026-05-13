@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
+import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import cn.hutool.core.collection.CollUtil;
 
 import java.io.InputStream;
@@ -25,6 +26,8 @@ public interface FileParser {
                 .channelCode(channelCode())
                 .parserName(this.getClass().getSimpleName())
                 .supportedFileExtension(CollUtil.isEmpty(supportedFileExtension) ? CollUtil.newArrayList() : supportedFileExtension.stream().map(String::toUpperCase).collect(Collectors.toList()))
+                // 默认为主流水
+                .recordRole(RecordRoleEnum.PRIMARY)
                 .build();
     }
 

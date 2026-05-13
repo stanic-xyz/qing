@@ -31,4 +31,6 @@ public interface TransactionRecordRepository extends JpaRepository<TransactionRe
     List<TransactionRecord> findAllByAccount(Account account);
 
     long countByAccount(Account account);
+
+    List<TransactionRecord> findAllByAccountIdAndTransactionTimeBetween(Long accountId, LocalDateTime transactionTimeAfter, LocalDateTime transactionTimeBefore);
 }

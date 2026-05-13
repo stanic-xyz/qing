@@ -1,30 +1,14 @@
 package cn.chenyunlong.qing.service.llm.service;
 
-import cn.chenyunlong.qing.service.llm.dto.ImportRequest;
-import cn.chenyunlong.qing.service.llm.dto.MatchStatusResponse;
-import cn.chenyunlong.qing.service.llm.dto.PreviewRecordDTO;
-import cn.chenyunlong.qing.service.llm.dto.UploadBatchPreviewResponse;
-import cn.chenyunlong.qing.service.llm.dto.UploadPreview;
-import cn.chenyunlong.qing.service.llm.dto.UploadBatchOverviewResponse;
+import cn.chenyunlong.qing.service.llm.dto.*;
+import cn.chenyunlong.qing.service.llm.dto.parser.FileMetadata;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
-import cn.chenyunlong.qing.service.llm.entity.UploadBatch;
-import cn.chenyunlong.qing.service.llm.enums.BatchStatusEnum;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
-import cn.chenyunlong.qing.service.llm.entity.UploadFileRecord;
-import cn.chenyunlong.qing.service.llm.entity.Account;
-import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
-import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
-import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
-import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
-import cn.chenyunlong.qing.service.llm.repository.UploadFileRecordRepository;
-import cn.chenyunlong.qing.service.llm.repository.UploadBatchRepository;
-import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
-import cn.chenyunlong.qing.service.llm.repository.ParserConfigRepository;
+import cn.chenyunlong.qing.service.llm.entity.*;
+import cn.chenyunlong.qing.service.llm.enums.*;
+import cn.chenyunlong.qing.service.llm.repository.*;
+import cn.chenyunlong.qing.service.llm.service.lock.BatchLockService;
+import cn.chenyunlong.qing.service.llm.service.lock.Lock;
+import cn.chenyunlong.qing.service.llm.service.lock.LockFactory;
 import cn.chenyunlong.qing.service.llm.service.parser.DynamicFileParser;
 import cn.chenyunlong.qing.service.llm.service.parser.FileParser;
 import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
@@ -34,9 +18,14 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -44,46 +33,49 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UploadService {
 
-    @Resource
-    private List<FileParser> parserList; // 渠道名 -> 解析器 Bean
+    private final List<FileParser> parserList; // 渠道名 -> 解析器 Bean
 
-    @Resource
-    private ParserConfigRepository parserConfigRepository;
+    private final ParserConfigRepository parserConfigRepository;
 
-    @Resource
-    private TransactionRecordRepository transactionRepo;
+    private final TransactionRecordRepository transactionRepo;
 
-    @Resource
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-    @Resource
-    private UploadFileRecordRepository uploadFileRepo;
+    private final UploadFileRecordRepository uploadFileRepo;
 
-    @Resource
-    private UploadBatchRepository uploadBatchRepo;
+    private final UnifiedDraftBatchRepository unifiedDraftBatchRepository;
 
-    @Resource
-    private ScriptExecutorFactory scriptExecutorFactory;
+    private final UnifiedDraftRecordRepository unifiedDraftRecordRepository;
 
-    @Resource
-    private ReconciliationService reconciliationService;
+    private final ScriptExecutorFactory scriptExecutorFactory;
 
-    @Resource
-    private RuleEngineService ruleEngineService;
+    private final ReconciliationService reconciliationService;
 
-    @Resource
-    private MatcherService matcherService;
+    private final MatcherService matcherService;
 
-    @Resource
-    private TransactionMatcherRepository matcherRepository;
+    private final TransactionMatcherRepository matcherRepository;
+
+    private final UnifiedDraftRecordRepository draftRecordRepository;
+
+    private final UnifiedDraftBatchRepository draftBatchRepository;
+
+    private final TransactionTemplate transactionTemplate;
+
+    private final BatchLockService batchLockService;
+    private final LockFactory lockFactory;
+    private final Executor matchThreadPool;
+
+    private final DraftCommitService commitService;
+
 
     // 缓存：解析器配置ID -> FileParser实例
     private final Map<String, FileParser> parserCache = new ConcurrentHashMap<>();
@@ -92,7 +84,8 @@ public class UploadService {
     private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     // 临时存储异步匹配任务状态
-    private final Map<String, MatchStatusResponse> matchStatusMap = new ConcurrentHashMap<>();
+    private final Map<Long, MatchStatusResponse> matchStatusMap = new ConcurrentHashMap<>();
+    private final BatchMatchService batchMatchService;
 
     /**
      * 根据解析器配置和文件名找到对应的内置解析器Bean
@@ -144,7 +137,7 @@ public class UploadService {
         Account targetAccount = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("指定的账户不存在"));
 
-        List<UploadBatchPreviewResponse> responses = new java.util.ArrayList<>();
+        List<UploadBatchPreviewResponse> responses = new ArrayList<>();
 
         // 解析 parserId: "builtin:123" 或 "custom:456" 或 "ALIPAY" (兼容旧的)
 
@@ -169,64 +162,43 @@ public class UploadService {
             String fileHash = FileHashUtil.calcMD5(file.getInputStream());
             long fileSize = file.getSize();
 
-            // 检查是否已处理
-            Optional<UploadFileRecord> existing = uploadFileRepo.findByFileHash(fileHash);
-            if (existing.isPresent()) {
-                throw new RuntimeException("文件已上传过，请勿重复上传: " + originalFilename);
-            }
-
             ParseResult parseResult = parser.parse(file.getInputStream(), originalFilename);
-            List<TransactionRecord> records = parseResult.getRecords();
-
-            LocalDateTime minTime = null;
-            LocalDateTime maxTime = null;
-
-            for (TransactionRecord record : records) {
-                if (record.getTransactionTime() != null) {
-                    if (minTime == null || record.getTransactionTime().isBefore(minTime)) {
-                        minTime = record.getTransactionTime();
-                    }
-                    if (maxTime == null || record.getTransactionTime().isAfter(maxTime)) {
-                        maxTime = record.getTransactionTime();
-                    }
-                }
-            }
-
+            List<UnifiedDraftRecord> records = parseResult.getRecords();
 
             UploadFileRecord fileRecord = new UploadFileRecord();
+            fileRecord.setAccount(targetAccount);
             fileRecord.setFileName(originalFilename);
             fileRecord.setFileHash(fileHash);
             fileRecord.setFileSize(fileSize);
-            fileRecord.setStatus("UPLOADED");
+            fileRecord.setStatus(FileUploadStatusEnum.UPLOADED);
             fileRecord.setParsedCount(records.size());
-            fileRecord.setStartTime(minTime);
-            fileRecord.setEndTime(maxTime);
+            FileMetadata metadata = parseResult.getMetadata();
+            fileRecord.setStartTime(metadata.getStartTime());
+            fileRecord.setEndTime(metadata.getEndTime());
             fileRecord.setTemplateVersion("v1");
             fileRecord.setChannel(targetAccount.getChannel() != null ? targetAccount.getChannel().getCode() : null);
+            UploadFileRecord savedFileRecord = uploadFileRepo.save(fileRecord);
 
-            UploadFileRecord savedRecord = uploadFileRepo.save(fileRecord);
-            String finalUploadId = String.valueOf(savedRecord.getId());
+            String finalUploadId = String.valueOf(savedFileRecord.getId());
 
             // 统计收入/支出/转账数量
             int incomeCount = 0;
             int expenseCount = 0;
-            int transferCount = 0;
             BigDecimal totalIncome = BigDecimal.ZERO;
             BigDecimal totalExpense = BigDecimal.ZERO;
 
-            for (TransactionRecord record : records) {
-                if (record.getType() == TrasactionType.INCOME) {
-                    incomeCount++;
-                    if (record.getAmount() != null) {
+            for (UnifiedDraftRecord record : records) {
+                // 金额不可能为空
+                assert record.getAmount() != null;
+                switch (record.getDirection()) {
+                    case INCOME -> {
+                        incomeCount++;
                         totalIncome = totalIncome.add(record.getAmount());
                     }
-                } else if (record.getType() == TrasactionType.EXPENSE) {
-                    expenseCount++;
-                    if (record.getAmount() != null) {
+                    case EXPENSE -> {
+                        expenseCount++;
                         totalExpense = totalExpense.add(record.getAmount());
                     }
-                } else if (record.getType() == TrasactionType.TRANSFER) {
-                    transferCount++;
                 }
             }
 
@@ -235,50 +207,85 @@ public class UploadService {
             int batchIndex = 0;
 
             // 按交易时间从远到近排序
-            records.sort(Comparator.comparing(
-                    r -> r.getTransactionTime() != null ? r.getTransactionTime() : LocalDateTime.MAX));
+            records.sort(Comparator.comparing(UnifiedDraftRecord::getTransactionTime));
 
             for (int i = 0; i < records.size(); i += BATCH_SIZE) {
                 int end = Math.min(i + BATCH_SIZE, records.size());
-                List<TransactionRecord> batchRecords = records.subList(i, end);
+                List<UnifiedDraftRecord> batchRecords = records.subList(i, end);
 
                 // 创建批次记录
-                UploadBatch batch = new UploadBatch();
-                batch.setUploadId(finalUploadId);
+                UnifiedDraftBatch batch = new UnifiedDraftBatch();
+                batch.setAccount(targetAccount);
+                batch.setAdapterType(AdapterTypeEnum.PARSER);
                 batch.setBatchNo(String.format("%s_batch_%d", finalUploadId, batchIndex));
-                batch.setStatus(BatchStatusEnum.PENDING);
+                batch.setUploadFile(fileRecord);
+                batch.setStatus(DraftBatchStatusEnum.DRAFTED);
                 batch.setTotalRecords(batchRecords.size());
                 batch.setMatchedRecords(0);
                 batch.setUnmatchedRecords(batchRecords.size());
                 batch.setSuspiciousRecords(0);
-                batch.setTransactionStartTime(batchRecords.get(0).getTransactionTime());
-                batch.setTransactionEndTime(batchRecords.get(batchRecords.size() - 1).getTransactionTime());
-                UploadBatch savedBatch = uploadBatchRepo.save(batch);
-                uploadBatchRepo.flush(); // 立即刷新到数据库
+
+                LocalDateTime minTime = null;
+                LocalDateTime maxTime = null;
+
+                // 获取当前批次的总金额和开始结束时间
+                for (UnifiedDraftRecord record : batchRecords) {
+                    // 金额不可能为空
+                    switch (record.getDirection()) {
+                        case INCOME -> {
+                            incomeCount++;
+                            totalIncome = totalIncome.add(record.getAmount());
+                        }
+                        case EXPENSE -> {
+                            expenseCount++;
+                            totalExpense = totalExpense.add(record.getAmount());
+                        }
+                    }
+
+                    if (record.getTransactionTime() != null) {
+                        if (minTime == null || record.getTransactionTime().isBefore(minTime)) {
+                            minTime = record.getTransactionTime();
+                        }
+                        if (maxTime == null || record.getTransactionTime().isAfter(maxTime)) {
+                            maxTime = record.getTransactionTime();
+                        }
+                    }
+                }
+                batch.setTransactionStartTime(minTime);
+                batch.setTransactionEndTime(maxTime);
+
+                UnifiedDraftBatch savedBatch = draftBatchRepository.save(batch);
+
+                // 立即刷新到数据库，确保ID生成并可用于后续关联
                 log.info("Created batch: uploadId={}, batchNo={}, totalRecords={}", finalUploadId, savedBatch.getBatchNo(), savedBatch.getTotalRecords());
 
                 // 设置每条记录的批次号
-                for (TransactionRecord record : batchRecords) {
-                    record.setSourceFile(originalFilename);
-                    record.setUploadId(finalUploadId);
-                    record.setBatchNo(batch.getBatchNo());
-                    record.setAccount(targetAccount);
-                    record.setChannel(targetAccount.getChannel());
-                    record.setAccountName(targetAccount.getAccountName());
-                    record.setAccountType(targetAccount.getAccountType());
-                    record.setOriginalData(objectMapper.writeValueAsString(record));
-                    record.setIsImported(false);
+                for (UnifiedDraftRecord record : batchRecords) {
+                    record.setMatchStatus(DraftMatchStatusEnum.UNMATCHED);
+                    record.setBatch(savedBatch);
+                    record.setFileRecord(savedFileRecord);
                 }
                 batchIndex++;
             }
 
-            // 直接保存到数据库
-            transactionRepo.saveAll(records);
+            // 并行写入统一草稿模型（新链路）
+            UnifiedDraftBatch draftBatch = new UnifiedDraftBatch();
+            draftBatch.setAccount(targetAccount);
+            draftBatch.setBatchNo("parser-" + finalUploadId + "-" + System.currentTimeMillis());
+            draftBatch.setAdapterType(AdapterTypeEnum.PARSER);
+            draftBatch.setStatus(DraftBatchStatusEnum.DRAFTED);
+            draftBatch.setProgress(60);
+            draftBatch.setTotalRecords(records.size());
+            draftBatch = unifiedDraftBatchRepository.save(draftBatch);
+            unifiedDraftBatchRepository.flush();
 
+
+            log.info("同步写入统一草稿批次 draftBatchId={}, records={}", draftBatch.getId(), records.size());
             int batchCount = (records.size() + BATCH_SIZE - 1) / BATCH_SIZE;
+            unifiedDraftRecordRepository.saveAll(records);
 
             responses.add(UploadBatchPreviewResponse.builder()
-                    .uploadId(finalUploadId)
+                    .uploadId(fileRecord.getId())
                     .fileName(originalFilename)
                     .parsedCount(records.size())
                     .previewRecords(null)  // 不再返回明细，前端显示概览
@@ -287,55 +294,61 @@ public class UploadService {
         return responses;
     }
 
-    public UploadPreview getPreviewData(String uploadId, int page, int size) {
+    public UploadPreview getPreviewData(Long uploadId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "transactionTime"));
-        Page<TransactionRecord> recordPage = transactionRepo.findByUploadId(uploadId, pageable);
+
+        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId).orElseThrow(() -> new RuntimeException("上传记录不存在"));
+
+        List<UnifiedDraftRecord> draftRecordList = draftRecordRepository.findAllByFileRecord(fileRecord);
 
         // 获取上传文件记录的状态
-        UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
-        String status = fileRecord != null ? fileRecord.getStatus() : null;
-
-        List<PreviewRecordDTO> previewList = recordPage.getContent().stream()
-                .map(r -> PreviewRecordDTO.fromEntity(r, String.valueOf(r.getId())))
+        List<PreviewRecordDTO> previewList = draftRecordList.stream()
+                .map(draftRecord -> {
+                    // 匹配批次信息
+                    UnifiedDraftBatch batch = draftRecord.getBatch();
+                    return PreviewRecordDTO.fromEntity(draftRecord);
+                })
                 .collect(Collectors.toList());
 
         return UploadPreview.builder()
-                .uploadId(uploadId)
+                .uploadId(String.valueOf(uploadId))
                 .previewRecords(previewList)
-                .totalCount(recordPage.getTotalElements())
-                .hasMore(recordPage.hasNext())
-                .status(status)
+                .totalCount(previewList.size())
+                .hasMore(false)
+                .status(fileRecord.getStatus())
                 .build();
     }
 
-    public UploadBatchOverviewResponse getBatchOverview(String uploadId) {
-        UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId))
-                .orElseThrow(() -> new RuntimeException("上传记录不存在"));
+    public UploadBatchOverviewResponse getBatchOverview(Long uploadId) {
 
-        List<TransactionRecord> records = transactionRepo.findByUploadId(uploadId);
-        List<UploadBatch> batches = uploadBatchRepo.findByUploadIdOrderByBatchNoAsc(uploadId);
+        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId).orElseThrow(() -> new RuntimeException("上传记录不存在"));
+
+        Account account = fileRecord.getAccount();
+        assert account != null;
+
+        List<UnifiedDraftRecord> draftRecordList = draftRecordRepository.findAllByFileRecord(fileRecord);
+        List<UnifiedDraftBatch> batches = draftBatchRepository.findAllByUploadFile(fileRecord);
 
         int incomeCount = 0;
         int expenseCount = 0;
         int transferCount = 0;
+
         BigDecimal totalIncome = BigDecimal.ZERO;
         BigDecimal totalExpense = BigDecimal.ZERO;
         LocalDateTime minTime = null;
         LocalDateTime maxTime = null;
 
-        for (TransactionRecord record : records) {
-            if (record.getType() == TrasactionType.INCOME) {
+        for (UnifiedDraftRecord record : draftRecordList) {
+            if (record.getDirection() == TransactionDirectionTypeEnum.INCOME) {
                 incomeCount++;
                 if (record.getAmount() != null) {
                     totalIncome = totalIncome.add(record.getAmount());
                 }
-            } else if (record.getType() == TrasactionType.EXPENSE) {
+            } else {
                 expenseCount++;
                 if (record.getAmount() != null) {
                     totalExpense = totalExpense.add(record.getAmount());
                 }
-            } else if (record.getType() == TrasactionType.TRANSFER) {
-                transferCount++;
             }
 
             if (record.getTransactionTime() != null) {
@@ -348,14 +361,12 @@ public class UploadService {
             }
         }
 
-        Account account = records.isEmpty() ? null : records.get(0).getAccount();
-        String accountName = account != null ? account.getAccountName() : "未知账户";
 
         return UploadBatchOverviewResponse.builder()
-                .uploadId(uploadId)
+                .uploadId(String.valueOf(uploadId))
                 .fileName(fileRecord.getFileName())
                 .fileSize(fileRecord.getFileSize())
-                .totalRecords(records.size())
+                .totalRecords(draftRecordList.size())
                 .incomeCount(incomeCount)
                 .expenseCount(expenseCount)
                 .transferCount(transferCount)
@@ -364,68 +375,117 @@ public class UploadService {
                 .transactionStartTime(minTime)
                 .transactionEndTime(maxTime)
                 .batchCount(batches.size())
-                .accountName(accountName)
+                .accountName(account.getAccountName())
                 .build();
     }
 
-    public void startMatchingAsync(String uploadId, List<String> lockedTempIds) {
-        List<TransactionRecord> records = transactionRepo.findByUploadId(uploadId);
-        if (records.isEmpty()) {
-            throw new RuntimeException("上传记录为空或已删除");
+    public void startMatchingAsync(Long uploadId, List<Long> lockedTempIds) {
+
+        // 1. 基础校验
+        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId).orElseThrow(() -> new RuntimeException("上传记录不存在"));
+        if (fileRecord.getStatus() != FileUploadStatusEnum.UPLOADED) {
+            throw new RuntimeException("状态错误，当前状态不可匹配: " + fileRecord.getStatus());
         }
 
-        MatchStatusResponse status = new MatchStatusResponse();
-        status.setStatus("PROCESSING");
-        matchStatusMap.put(uploadId, status);
+        // 更新整体状态为匹配中
+        fileRecord.setStatus(FileUploadStatusEnum.MATCHING);
+        uploadFileRepo.save(fileRecord);
 
-        CompletableFuture.runAsync(() -> {
-            try {
-                // 1. 应用规则引擎（老规则：基础映射）
-                ruleEngineService.applyRules(records);
+        // 初始化响应状态对象
+        MatchStatusResponse response = new MatchStatusResponse();
+        response.setStatus("PROCESSING");
+        matchStatusMap.put(uploadId, response);
 
-                // 2. 应用全新的高级匹配器引擎 (发现商户、平台、内部转账等)
-                for (TransactionRecord record : records) {
-                    if (lockedTempIds != null && lockedTempIds.contains(String.valueOf(record.getId()))) {
-                        continue; // 跳过被锁定的记录
+        // 2. 准备外部数据：查询所有批次 + 历史记录快照（不可变）
+        List<UnifiedDraftBatch> batches = unifiedDraftBatchRepository.findAllByUploadFile(fileRecord);
+        if (batches.isEmpty()) {
+            response.setStatus("COMPLETED");
+            response.setPreview(getPreviewData(uploadId, 0, 100));
+            fileRecord.setStatus(FileUploadStatusEnum.MATCHED);
+            uploadFileRepo.save(fileRecord);
+            return;
+        }
+
+        List<TransactionMatcher> rules = matcherRepository.findByIsActiveTrueOrderByPriorityDesc();
+
+        // 历史记录快照（只读，用于匹配规则）
+        List<TransactionRecord> historyRecords = transactionRepo.findAllByAccount(fileRecord.getAccount());
+        // 转为不可变列表防止误修改
+        List<TransactionRecord> immutableHistory = Collections.unmodifiableList(historyRecords);
+
+        // 转变为不可变列表防止无修改
+        List<TransactionMatcher> immutableRules = Collections.unmodifiableList(rules);
+
+
+        // 3. 为每个批次提交异步任务
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        for (UnifiedDraftBatch batch : batches) {
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                // 获取分布式锁（基于批次ID）
+                Lock lock = lockFactory.getLock("batch_match_lock_" + batch.getId());
+                boolean locked = false;
+                try {
+                    // 尝试获取锁，最多等待3秒
+                    locked = lock.tryLock(3, TimeUnit.SECONDS);
+                    if (!locked) {
+                        log.warn("获取批次锁失败，跳过当前批次: batchId={}", batch.getId());
+                        return;
                     }
-                    // 重置状态
-                    record.setMatchStatus(MatchStatusEnum.ORIGINAL);
-                    record.setMatchRuleName(null);
-                    record.setIsModified(false);
-
-                    matcherService.applyMatchers(record);
+                    // 调用批次匹配服务（内部独立事务）
+                    batchMatchService.matchSingleBatch(batch.getId(), fileRecord.getAccount(), immutableHistory, lockedTempIds, immutableRules);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    log.error("批次匹配被中断: {}", batch.getId(), e);
+                } catch (Exception e) {
+                    log.error("批次匹配异常: {}", batch.getId(), e);
+                } finally {
+                    if (locked) {
+                        lock.unlock();
+                    }
                 }
+            }, matchThreadPool);
 
-                // 3. 更新数据库
-                transactionRepo.saveAll(records);
+            futures.add(future);
+        }
 
-                // 更新批次状态
-                UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
-                if (fileRecord != null) {
-                    fileRecord.setStatus("MATCHING"); // 或 MATCHED
+        // 4. 等待所有批次完成后，更新整体状态
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenRun(() -> {
+                    // 检查是否所有批次都已结束（成功或失败）
+                    List<UnifiedDraftBatch> finalBatches = draftBatchRepository.findAllByUploadFile(fileRecord);
+                    boolean allFinished = finalBatches.stream()
+                            .allMatch(draftBatch -> draftBatch.getStatus() == DraftBatchStatusEnum.MATCHED
+                                    || draftBatch.getStatus() == DraftBatchStatusEnum.FAILED);
+                    if (allFinished) {
+                        // 如果有失败的批次，整体状态标记为 PARTIAL_MATCHED，否则 MATCHED
+                        boolean hasFailed = finalBatches.stream()
+                                .anyMatch(draftBatch -> draftBatch.getStatus() == DraftBatchStatusEnum.FAILED);
+                        fileRecord.setStatus(hasFailed ? FileUploadStatusEnum.PARTIAL_MATCHED
+                                : FileUploadStatusEnum.MATCHED);
+                        uploadFileRepo.save(fileRecord);
+
+                        response.setStatus("COMPLETED");
+                        response.setPreview(getPreviewData(uploadId, 0, 100));
+                        log.info("上传记录 {} 匹配完成，成功批次: {}, 失败批次: {}",
+                                uploadId,
+                                finalBatches.stream().filter(b -> b.getStatus() == DraftBatchStatusEnum.MATCHED).count(),
+                                finalBatches.stream().filter(b -> b.getStatus() == DraftBatchStatusEnum.FAILED).count());
+                    } else {
+                        // 理论上 allOf 完成后所有任务都已结束，不应走到这里，但保留兜底
+                        response.setStatus("COMPLETED");
+                    }
+                })
+                .exceptionally(ex -> {
+                    log.error("整体匹配过程发生异常", ex);
+                    response.setStatus("FAILED");
+                    response.setErrorMsg(ex.getMessage());
+                    fileRecord.setStatus(FileUploadStatusEnum.MATCH_FAILED);
                     uploadFileRepo.save(fileRecord);
-                }
-
-                // 4. 构建最新的预览DTO
-                List<PreviewRecordDTO> previewList = records.stream()
-                        .map(r -> PreviewRecordDTO.fromEntity(r, String.valueOf(r.getId())))
-                        .collect(Collectors.toList());
-
-                UploadPreview preview = UploadPreview.builder()
-                        .uploadId(uploadId)
-                        .previewRecords(previewList)
-                        .build();
-
-                status.setStatus("COMPLETED");
-                status.setPreview(preview);
-            } catch (Exception e) {
-                status.setStatus("FAILED");
-                status.setErrorMsg(e.getMessage());
-            }
-        });
+                    return null;
+                });
     }
 
-    public MatchStatusResponse getMatchStatus(String uploadId) {
+    public MatchStatusResponse getMatchStatus(Long uploadId) {
         MatchStatusResponse status = matchStatusMap.get(uploadId);
         if (status == null) {
             throw new RuntimeException("任务不存在或已过期");
@@ -434,152 +494,152 @@ public class UploadService {
     }
 
     public PreviewRecordDTO matchSingleRecord(String recordId, List<Long> ruleIds) {
-        TransactionRecord record = transactionRepo.findById(Long.parseLong(recordId))
+        UnifiedDraftRecord record = draftRecordRepository.findById(Long.parseLong(recordId))
                 .orElseThrow(() -> new RuntimeException("未找到该记录"));
 
         // 重置为初始状态（如果是重新匹配）
-        record.setMatchStatus(MatchStatusEnum.ORIGINAL);
-        record.setMatchRuleName(null);
+        record.setMatchStatus(DraftMatchStatusEnum.UNMATCHED);
+        // 命中的匹配规则
+        // record.setMatchRuleName(null);
         record.setIsModified(false);
 
         if (ruleIds != null && !ruleIds.isEmpty()) {
-            List<cn.chenyunlong.qing.service.llm.entity.TransactionMatcher> rules = matcherRepository.findAllById(ruleIds);
-            rules.sort(Comparator.comparing(cn.chenyunlong.qing.service.llm.entity.TransactionMatcher::getPriority).reversed());
+            List<TransactionMatcher> rules = matcherRepository.findAllById(ruleIds);
+            rules.sort(Comparator.comparing(TransactionMatcher::getPriority).reversed());
             matcherService.applyMatchers(record, rules);
         } else {
             matcherService.applyMatchers(record);
         }
 
         // 这里只是预览，并不保存到数据库
-        return PreviewRecordDTO.fromEntity(record, String.valueOf(record.getId()));
+        return PreviewRecordDTO.fromEntity(record);
     }
 
     public int importConfirmed(ImportRequest request) {
-        String uploadId = request.getUploadId();
-        List<TransactionRecord> allRecords = transactionRepo.findByUploadId(uploadId);
-        if (allRecords.isEmpty()) {
-            throw new RuntimeException("上传记录为空或已删除");
-        }
+        Long uploadId = request.getUploadId();
+        DraftCommitService.CommitResult commit = commitService.commit(uploadId);
 
-        // 过滤用户确认的记录
-        List<TransactionRecord> toImport = new java.util.ArrayList<>();
-        if (request.getConfirmedTempIds() != null && !request.getConfirmedTempIds().isEmpty()) {
-            for (String tempIdStr : request.getConfirmedTempIds()) {
-                try {
-                    Long recordId = Long.parseLong(tempIdStr);
-                    allRecords.stream()
-                            .filter(r -> r.getId().equals(recordId))
-                            .findFirst()
-                            .ifPresent(toImport::add);
-                } catch (NumberFormatException e) {
-                    // ignore invalid ID
-                }
-            }
-        } else {
-            toImport.addAll(allRecords); // 兼容旧逻辑
-        }
-
-        // 应用用户修改
-        if (request.getModifications() != null && !request.getModifications().isEmpty()) {
-            Map<String, ImportRequest.ModifiedRecord> mods = request.getModifications().stream()
-                    .collect(Collectors.toMap(ImportRequest.ModifiedRecord::getTempId, m -> m));
-            for (TransactionRecord record : toImport) {
-                ImportRequest.ModifiedRecord mod = mods.get(String.valueOf(record.getId()));
-                if (mod != null) {
-                    if (mod.getType() != null) {
-                        record.setType(TrasactionType.valueOf(mod.getType().toUpperCase()));
-                    }
-                    record.setMerchant(mod.getMerchant());
-                    record.setTargetAccountId(mod.getTargetAccountId());
-                    if (mod.getTargetAccountId() != null) {
-                        record.setType(TrasactionType.TRANSFER); // 强制为转账
-                    }
-                    record.setMatchStatus(MatchStatusEnum.MANUAL_EDITED);
-                    record.setIsModified(true);
-                }
-            }
-        }
-
-        // 标记为已正式导入并统计规则正确率
-        Map<String, cn.chenyunlong.qing.service.llm.entity.TransactionMatcher> matchersMap = matcherRepository.findAll().stream()
-                .collect(Collectors.toMap(cn.chenyunlong.qing.service.llm.entity.TransactionMatcher::getName, m -> m));
-
-        Map<Long, Account> accountsToUpdate = new java.util.HashMap<>();
-
-        for (TransactionRecord record : toImport) {
-            record.setIsImported(true);
-
-            // 统计正确率
-            if (record.getMatchRuleName() != null && !record.getMatchRuleName().isEmpty()) {
-                cn.chenyunlong.qing.service.llm.entity.TransactionMatcher matcher = matchersMap.get(record.getMatchRuleName());
-                if (matcher != null) {
-                    matcher.setMatchCount(matcher.getMatchCount() == null ? 1 : matcher.getMatchCount() + 1);
-                    if (record.getIsModified() == null || !record.getIsModified()) {
-                        matcher.setSuccessCount(matcher.getSuccessCount() == null ? 1 : matcher.getSuccessCount() + 1);
-                    }
-                }
-            }
-
-            // 账户余额联动
-            Account srcAccount = record.getAccount();
-            if (srcAccount != null && record.getAmount() != null) {
-                if (!accountsToUpdate.containsKey(srcAccount.getId())) {
-                    accountsToUpdate.put(srcAccount.getId(), srcAccount);
-                }
-                Account acc = accountsToUpdate.get(srcAccount.getId());
-                java.math.BigDecimal current = acc.getCurrentBalance() != null ? acc.getCurrentBalance() : java.math.BigDecimal.ZERO;
-
-                if (TrasactionType.INCOME == record.getType()) {
-                    acc.setCurrentBalance(current.add(record.getAmount()));
-                } else if (TrasactionType.EXPENSE == record.getType()) {
-                    acc.setCurrentBalance(current.subtract(record.getAmount()));
-                } else if (TrasactionType.TRANSFER == record.getType()) {
-                    acc.setCurrentBalance(current.subtract(record.getAmount())); // 源账户减去金额
-                }
-
-                // 处理转账的目标账户增加金额
-                if (Objects.equals(TrasactionType.TRANSFER, record.getType()) && record.getTargetAccountId() != null) {
-                    Account targetAcc = accountsToUpdate.get(record.getTargetAccountId());
-                    if (targetAcc == null) {
-                        targetAcc = accountRepository.findById(record.getTargetAccountId()).orElse(null);
-                        if (targetAcc != null) {
-                            accountsToUpdate.put(targetAcc.getId(), targetAcc);
-                        }
-                    }
-                    if (targetAcc != null) {
-                        java.math.BigDecimal targetCurrent = targetAcc.getCurrentBalance() != null ? targetAcc.getCurrentBalance() : java.math.BigDecimal.ZERO;
-                        targetAcc.setCurrentBalance(targetCurrent.add(record.getAmount()));
-                    }
-                }
-            }
-        }
-        matcherRepository.saveAll(matchersMap.values());
-        if (!accountsToUpdate.isEmpty()) {
-            accountRepository.saveAll(accountsToUpdate.values());
-        }
-
-        // 批量保存
-        List<TransactionRecord> saved = transactionRepo.saveAll(toImport);
-
-        // 删除未确认（被舍弃）的记录
-        List<TransactionRecord> toDelete = new java.util.ArrayList<>(allRecords);
-        toDelete.removeAll(toImport);
-        if (!toDelete.isEmpty()) {
-            transactionRepo.deleteAll(toDelete);
-        }
-
-        // 更新上传批次记录状态
-        UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
-        if (fileRecord != null) {
-            fileRecord.setStatus("IMPORTED");
-            fileRecord.setImportedCount(saved.size());
-            fileRecord.setImportedAt(LocalDateTime.now());
-            uploadFileRepo.save(fileRecord);
-        }
-
-        // 触发异步对账（可选）
-        reconciliationService.autoReconcileForRecords(saved);
-
-        return saved.size();
+        //
+        //        List<TransactionRecord> allRecords = transactionRepo.findByUploadId(uploadId);
+        //        if (allRecords.isEmpty()) {
+        //            throw new RuntimeException("上传记录为空或已删除");
+        //        }
+        //
+        //        // 过滤用户确认的记录
+        //        List<TransactionRecord> toImport = new ArrayList<>();
+        //        if (request.getConfirmedTempIds() != null && !request.getConfirmedTempIds().isEmpty()) {
+        //            for (String tempIdStr : request.getConfirmedTempIds()) {
+        //                try {
+        //                    Long recordId = Long.parseLong(tempIdStr);
+        //                    allRecords.stream()
+        //                            .filter(r -> r.getId().equals(recordId))
+        //                            .findFirst()
+        //                            .ifPresent(toImport::add);
+        //                } catch (NumberFormatException e) {
+        //                    // ignore invalid ID
+        //                }
+        //            }
+        //        } else {
+        //            toImport.addAll(allRecords); // 兼容旧逻辑
+        //        }
+        //
+        //        // 应用用户修改
+        //        if (request.getModifications() != null && !request.getModifications().isEmpty()) {
+        //            Map<String, ImportRequest.ModifiedRecord> mods = request.getModifications().stream()
+        //                    .collect(Collectors.toMap(ImportRequest.ModifiedRecord::getTempId, m -> m));
+        //            for (TransactionRecord record : toImport) {
+        //                ImportRequest.ModifiedRecord mod = mods.get(String.valueOf(record.getId()));
+        //                if (mod != null) {
+        //                    if (mod.getType() != null) {
+        //                        record.setTrasactionType(TrasactionType.valueOf(mod.getType().toUpperCase()));
+        //                    }
+        //                    record.setMerchant(mod.getMerchant());
+        //                    record.setTargetAccountId(mod.getTargetAccountId());
+        //                    if (mod.getTargetAccountId() != null) {
+        //                        record.setTrasactionType(TrasactionType.TRANSFER); // 强制为转账
+        //                    }
+        //                    record.setMatchStatus(MatchStatusEnum.MANUAL_EDITED);
+        //                    record.setIsModified(true);
+        //                }
+        //            }
+        //        }
+        //
+        //        // 标记为已正式导入并统计规则正确率
+        //        Map<String, TransactionMatcher> matchersMap = matcherRepository.findAll().stream()
+        //                .collect(Collectors.toMap(TransactionMatcher::getName, m -> m));
+        //
+        //        Map<Long, Account> accountsToUpdate = new HashMap<>();
+        //
+        //        for (TransactionRecord record : toImport) {
+        //            record.setIsImported(true);
+        //
+        //            // 统计正确率
+        //            if (record.getMatchRuleName() != null && !record.getMatchRuleName().isEmpty()) {
+        //                TransactionMatcher matcher = matchersMap.get(record.getMatchRuleName());
+        //                if (matcher != null) {
+        //                    matcher.setMatchCount(matcher.getMatchCount() == null ? 1 : matcher.getMatchCount() + 1);
+        //                    if (record.getIsModified() == null || !record.getIsModified()) {
+        //                        matcher.setSuccessCount(matcher.getSuccessCount() == null ? 1 : matcher.getSuccessCount() + 1);
+        //                    }
+        //                }
+        //            }
+        //
+        //            // 账户余额联动
+        //            Account srcAccount = record.getAccount();
+        //            if (srcAccount != null && record.getAmount() != null) {
+        //                if (!accountsToUpdate.containsKey(srcAccount.getId())) {
+        //                    accountsToUpdate.put(srcAccount.getId(), srcAccount);
+        //                }
+        //                Account acc = accountsToUpdate.get(srcAccount.getId());
+        //                BigDecimal current = acc.getCurrentBalance() != null ? acc.getCurrentBalance() : BigDecimal.ZERO;
+        //
+        //                if (TrasactionType.INCOME == record.getTrasactionType()) {
+        //                    acc.setCurrentBalance(current.add(record.getAmount()));
+        //                } else if (TrasactionType.EXPENSE == record.getTrasactionType()) {
+        //                    acc.setCurrentBalance(current.subtract(record.getAmount()));
+        //                } else if (TrasactionType.TRANSFER == record.getTrasactionType()) {
+        //                    acc.setCurrentBalance(current.subtract(record.getAmount())); // 源账户减去金额
+        //                }
+        //
+        //                // 处理转账的目标账户增加金额
+        //                if (Objects.equals(TrasactionType.TRANSFER, record.getTrasactionType()) && record.getTargetAccountId() != null) {
+        //                    Account targetAcc = accountsToUpdate.get(record.getTargetAccountId());
+        //                    if (targetAcc == null) {
+        //                        targetAcc = accountRepository.findById(record.getTargetAccountId()).orElse(null);
+        //                        if (targetAcc != null) {
+        //                            accountsToUpdate.put(targetAcc.getId(), targetAcc);
+        //                        }
+        //                    }
+        //                    if (targetAcc != null) {
+        //                        BigDecimal targetCurrent = targetAcc.getCurrentBalance() != null ? targetAcc.getCurrentBalance() : BigDecimal.ZERO;
+        //                        targetAcc.setCurrentBalance(targetCurrent.add(record.getAmount()));
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        matcherRepository.saveAll(matchersMap.values());
+        //        if (!accountsToUpdate.isEmpty()) {
+        //            accountRepository.saveAll(accountsToUpdate.values());
+        //        }
+        //
+        //        // 批量保存
+        //        List<TransactionRecord> saved = transactionRepo.saveAll(toImport);
+        //
+        //        // 删除未确认（被舍弃）的记录
+        //        List<TransactionRecord> toDelete = new ArrayList<>(allRecords);
+        //        toDelete.removeAll(toImport);
+        //        if (!toDelete.isEmpty()) {
+        //            transactionRepo.deleteAll(toDelete);
+        //        }
+        //
+        //        // 更新上传批次记录状态
+        //        UploadFileRecord fileRecord = uploadFileRepo.findById(Long.parseLong(uploadId)).orElse(null);
+        //        if (fileRecord != null) {
+        //            fileRecord.setStatus(FileUploadStatusEnum.IMPORTED);
+        //            fileRecord.setImportedCount(saved.size());
+        //            fileRecord.setImportedAt(LocalDateTime.now());
+        //            uploadFileRepo.save(fileRecord);
+        //        }
+        return commit.importedCount();
     }
 }

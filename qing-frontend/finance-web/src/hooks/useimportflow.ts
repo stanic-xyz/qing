@@ -134,7 +134,7 @@ export function useImportFlow() {
   const toggleSelectAll = useCallback((select: boolean) => {
     setState(s => ({
       ...s,
-      selectedTempIds: select ? new Set(s.previewRecords.map(r => r.tempId)) : new Set(),
+      selectedTempIds: select ? new Set(s.previewRecords.map(r => r.id)) : new Set(),
     }));
   }, [state.previewRecords]);
 

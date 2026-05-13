@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class ImportRequest {
-    private String uploadId;
+    private Long uploadId;
     private Long accountId; // 新增：选择关联的账户ID
     private List<String> confirmedTempIds;
     private List<ModifiedRecord> modifications; // 用户修改过的记录

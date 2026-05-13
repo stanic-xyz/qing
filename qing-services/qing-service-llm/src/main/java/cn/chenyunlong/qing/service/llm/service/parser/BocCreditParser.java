@@ -109,7 +109,7 @@ public class BocCreditParser extends BaseFileParser {
                         if (pendingDesc.length() > 0) {
                             String fullDesc = pendingDesc.toString().trim();
                             if (!fullDesc.isEmpty()) {
-                                records.get(records.size() - 1).setRemark(fullDesc);
+                                records.get(records.size() - 1).setDetail(fullDesc);
                             }
                         }
                         pendingDesc.setLength(0);
@@ -142,7 +142,7 @@ public class BocCreditParser extends BaseFileParser {
                             TransactionRecord record = new TransactionRecord();
                             record.setTransactionTime(LocalDateTime.parse(txTimeStr, BOC_DATE_FORMAT));
                             record.setAmount(amount.abs());
-                            record.setType(txType);
+                            record.setTrasactionType(txType);
                             record.setStatus(TransactionStatusEnum.SUCCESS);
                             record.setAccountName("中国银行信用卡(" + cardNum + ")");
                             record.setAccountType(AccountType.CREDIT);
@@ -184,7 +184,7 @@ public class BocCreditParser extends BaseFileParser {
                 if (pendingDesc.length() > 0 && !records.isEmpty()) {
                     String finalDesc = pendingDesc.toString().trim();
                     if (!finalDesc.isEmpty()) {
-                        records.get(records.size() - 1).setRemark(finalDesc);
+                        records.get(records.size() - 1).setDetail(finalDesc);
                     }
                 }
             }

@@ -129,11 +129,11 @@ public class WechatParser extends BaseFileParser {
                     // 收/支
                     String direction = getCellValueAsString(row.getCell(colMap[4])).trim();
                     if ("支出".equals(direction)) {
-                        record.setType(TrasactionType.EXPENSE);
+                        record.setTrasactionType(TrasactionType.EXPENSE);
                     } else if ("收入".equals(direction)) {
-                        record.setType(TrasactionType.INCOME);
+                        record.setTrasactionType(TrasactionType.INCOME);
                     } else {
-                        record.setType(TrasactionType.OTHER);
+                        record.setTrasactionType(TrasactionType.OTHER);
                     }
 
                     // 支付方式/资金来源
@@ -156,7 +156,7 @@ public class WechatParser extends BaseFileParser {
 
                     // 备注
                     String remark = getCellValueAsString(row.getCell(colMap[10])).trim();
-                    record.setRemark(remark);
+                    record.setDetail(remark);
 
                     // 原始ID
                     String orderId = getCellValueAsString(row.getCell(colMap[8])).trim();

@@ -3,8 +3,10 @@ package cn.chenyunlong.qing.service.llm.controler;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.entity.TransactionMatcher;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
 import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
+import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftRecordRepository;
 import cn.chenyunlong.qing.service.llm.service.MatcherService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class MatcherController {
 
     private final TransactionMatcherRepository matcherRepository;
     private final TransactionRecordRepository transactionRecordRepository;
+    private final UnifiedDraftRecordRepository unifiedDraftRecordRepository;
     private final MatcherService matcherService;
 
     @GetMapping
@@ -53,29 +56,28 @@ public class MatcherController {
     public Result<TestResult> testMatcher(@RequestBody TestRequest req) {
         TransactionRecord record = transactionRecordRepository.findById(req.getTransactionId()).orElse(null);
         if (record == null) {
-            return Result.error(404, "未找到指定的交易流水");
+            UnifiedDraftRecord unifiedDraftRecord = unifiedDraftRecordRepository.findById(req.getTransactionId()).orElse(null);
+            if (unifiedDraftRecord == null) {
+                return Result.error(404, "未找到指定的交易流水");
+            }
+            return executeTest(req, unifiedDraftRecord, null);
         }
+        return executeTest(req, toUnifiedDraftRecord(record), record);
+    }
 
-        // 为了不影响数据库，可以克隆一个对象或者在一个事务中回滚。这里使用克隆或直接返回被修改的对象但不save
-        // JPA实体如果是被Hibernate管理的，直接修改可能会触发Dirty Checking导致自动保存。
-        // 所以我们最好不要将该实体保留在Session中，可以通过手动创建一个新的对象进行测试。
-        TransactionRecord testRecord = cloneRecord(record);
-
+    /**
+     * 执行规则测试并返回测试结果。
+     */
+    private Result<TestResult> executeTest(TestRequest req, UnifiedDraftRecord testRecord, TransactionRecord originalRecord) {
         TestResult result = new TestResult();
-
-        // 初始状态
-        result.setOriginalRecord(cloneRecord(testRecord));
+        result.setOriginalRecord(originalRecord == null ? null : cloneRecord(originalRecord));
 
         // 应用规则
         try {
             matcherService.applyMatchers(testRecord, Collections.singletonList(req.getMatcher()));
 
-            // 检查是否命中
-            if (testRecord.getMatchRuleName() != null && testRecord.getMatchRuleName().equals(req.getMatcher().getName())) {
-                result.setMatched(true);
-            } else {
-                result.setMatched(false);
-            }
+            // 草稿模型不记录 matchRuleName，以状态判断是否命中。
+            result.setMatched(testRecord.getMatchStatus() != null && testRecord.getMatchStatus().name().contains("MATCH"));
 
             result.setModifiedRecord(testRecord);
             return Result.success(result);
@@ -92,7 +94,7 @@ public class MatcherController {
         clone.setAccount(r.getAccount());
         clone.setAccountName(r.getAccountName());
         clone.setAccountType(r.getAccountType());
-        clone.setType(r.getType());
+        clone.setTrasactionType(r.getTrasactionType());
         clone.setAmount(r.getAmount());
         clone.setBalance(r.getBalance());
         clone.setCounterparty(r.getCounterparty());
@@ -103,13 +105,28 @@ public class MatcherController {
         clone.setFee(r.getFee());
         clone.setOriginalId(r.getOriginalId());
         clone.setSourceFile(r.getSourceFile());
-        clone.setRemark(r.getRemark());
+        clone.setDetail(r.getDetail());
         clone.setTags(r.getTags());
         clone.setFundType(r.getFundType());
         clone.setFundSource(r.getFundSource());
         clone.setFundSourceAccountId(r.getFundSourceAccountId());
         clone.setMatchStatus(cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum.ORIGINAL);
         return clone;
+    }
+
+    /**
+     * 将历史交易记录映射为可测试的统一草稿记录。
+     */
+    private UnifiedDraftRecord toUnifiedDraftRecord(TransactionRecord r) {
+        UnifiedDraftRecord draft = new UnifiedDraftRecord();
+        draft.setId(r.getId());
+        draft.setTransactionTime(r.getTransactionTime());
+        draft.setAmount(r.getAmount());
+        draft.setMerchant(r.getMerchant());
+        draft.setCategory(r.getCategory());
+        draft.setCounterparty(r.getCounterparty());
+        draft.setTrasactionType(r.getTrasactionType());
+        return draft;
     }
 
     @Data
@@ -122,6 +139,6 @@ public class MatcherController {
     public static class TestResult {
         private boolean matched;
         private TransactionRecord originalRecord;
-        private TransactionRecord modifiedRecord;
+        private UnifiedDraftRecord modifiedRecord;
     }
 }

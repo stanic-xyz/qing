@@ -1,12 +1,14 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
+import cn.chenyunlong.qing.service.llm.enums.FileUploadStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "upload_file_record")
+@Table(name = "finance_upload_file_record")
 @Data
 public class UploadFileRecord {
     @Id
@@ -16,8 +18,14 @@ public class UploadFileRecord {
     private String fileName;
     private String fileHash;
     private String channel;
-    
-    private String status; // UPLOADED, IMPORTED, FAILED
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Account account;
+
+    @Enumerated(EnumType.STRING)
+    private FileUploadStatusEnum status; // UPLOADED, IMPORTED, FAILED
+
     private Integer parsedCount;
     private Integer importedCount;
 
@@ -25,7 +33,7 @@ public class UploadFileRecord {
     private LocalDateTime endTime;
     private Long fileSize;
     private String templateVersion;
-    
+
     private LocalDateTime importedAt;
 
     private LocalDateTime createdAt;

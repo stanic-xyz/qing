@@ -68,11 +68,11 @@ public class JingdongParser extends BaseFileParser {
                     // 收/支
                     String typeStr = line.length > 6 ? line[6].trim() : "";
                     if ("支出".equals(typeStr)) {
-                        record.setType(TrasactionType.EXPENSE);
+                        record.setTrasactionType(TrasactionType.EXPENSE);
                     } else if ("收入".equals(typeStr)) {
-                        record.setType(TrasactionType.INCOME);
+                        record.setTrasactionType(TrasactionType.INCOME);
                     } else {
-                        record.setType(TrasactionType.OTHER);
+                        record.setTrasactionType(TrasactionType.OTHER);
                     }
 
                     // 金额（列3）
@@ -98,7 +98,7 @@ public class JingdongParser extends BaseFileParser {
 
                     // 备注（列10）
                     String remark = line.length > 10 ? line[10].trim() : "";
-                    record.setRemark(remark);
+                    record.setDetail(remark);
 
                     // 原始ID（订单号，列8）
                     if (line.length > 8 && !line[8].trim().isEmpty()) {

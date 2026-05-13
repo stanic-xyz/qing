@@ -19,7 +19,6 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
@@ -124,7 +123,7 @@ public class CiticCreditParser extends BaseFileParser {
                     TransactionRecord record = new TransactionRecord();
                     record.setTransactionTime(txTime);
                     record.setAmount(absAmount);
-                    record.setType(txType);
+                    record.setTrasactionType(txType);
 
                     // 构建对手方（从描述中提取）
                     String cpName = extractCounterparty(desc);

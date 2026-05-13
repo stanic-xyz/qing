@@ -62,10 +62,10 @@ public class QianjiParser extends BaseFileParser {
                     // 类型：支出/收入/转账
                     String typeStr = line[4].trim();
                     switch (typeStr) {
-                        case "支出" -> record.setType(TrasactionType.EXPENSE);
-                        case "收入" -> record.setType(TrasactionType.INCOME);
-                        case "转账" -> record.setType(TrasactionType.TRANSFER);
-                        default -> record.setType(TrasactionType.OTHER);
+                        case "支出" -> record.setTrasactionType(TrasactionType.EXPENSE);
+                        case "收入" -> record.setTrasactionType(TrasactionType.INCOME);
+                        case "转账" -> record.setTrasactionType(TrasactionType.TRANSFER);
+                        default -> record.setTrasactionType(TrasactionType.OTHER);
                     }
 
                     // 金额
@@ -85,7 +85,7 @@ public class QianjiParser extends BaseFileParser {
 
                     // 备注
                     String remark = line.length > 9 ? line[9].trim() : "";
-                    record.setRemark(remark);
+                    record.setDetail(remark);
 
                     // 原始ID
                     if (line.length > 0 && !line[0].trim().isEmpty()) {

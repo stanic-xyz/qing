@@ -23,7 +23,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
@@ -80,11 +79,11 @@ public class AlipayParser extends BaseFileParser {
                     // 收/支
                     String incomeExpense = line.length > 5 ? line[5].trim() : "";
                     if ("收入".equals(incomeExpense)) {
-                        record.setType(TrasactionType.INCOME);
+                        record.setTrasactionType(TrasactionType.INCOME);
                     } else if ("支出".equals(incomeExpense)) {
-                        record.setType(TrasactionType.EXPENSE);
+                        record.setTrasactionType(TrasactionType.EXPENSE);
                     } else {
-                        record.setType(TrasactionType.OTHER);
+                        record.setTrasactionType(TrasactionType.OTHER);
                     }
 
                     // 金额
@@ -130,7 +129,7 @@ public class AlipayParser extends BaseFileParser {
                     if (finalRemark.endsWith(";")) {
                         finalRemark = finalRemark.substring(0, finalRemark.length() - 1);
                     }
-                    record.setRemark(finalRemark);
+                    record.setDetail(finalRemark);
 
                     // 原始数据 JSON
                     java.util.Map<String, String> rawMap = new java.util.HashMap<>();

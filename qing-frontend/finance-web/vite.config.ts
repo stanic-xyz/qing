@@ -16,6 +16,7 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    allowedHosts: ['.monkeycode-ai.online'],
     proxy: {
       '/api': {
         target: 'http://localhost:8087',
@@ -24,4 +25,3 @@ export default defineConfig({
     }
   }
 })
-

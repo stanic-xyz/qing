@@ -274,8 +274,7 @@ public class DynamicFileParser extends BaseFileParser {
         Map<String, Object> context = new HashMap<>(rowContext);
         context.put("value", value);
         context.put("targetField", rule.getTargetField());
-        Object result = scriptExecutorFactory.execute(language, rule.getScriptRule(), context);
-        return result;
+        return scriptExecutorFactory.execute(language, rule.getScriptRule(), context);
     }
 
     private void applyPostScriptIfEnabled(TransactionRecord record, Map<String, Object> rowContext, Map<String, Object> extData) {
@@ -581,18 +580,18 @@ public class DynamicFileParser extends BaseFileParser {
                     }
 
                     // 特殊处理收支类型映射（与CSV逻辑一致）
-                    if (record.getType() != null) {
-                        String t = record.getType().name();
+                    if (record.getTrasactionType() != null) {
+                        String t = record.getTrasactionType().name();
                         String upper = t.trim().toUpperCase();
                         if ("INCOME".equals(upper) || "EXPENSE".equals(upper) || "OTHER".equals(upper)) {
-                            record.setType(TrasactionType.valueOf(upper));
+                            record.setTrasactionType(TrasactionType.valueOf(upper));
                         } else {
                             if (t.contains("收") && !t.contains("支")) {
-                                record.setType(TrasactionType.INCOME);
+                                record.setTrasactionType(TrasactionType.INCOME);
                             } else if (t.contains("支") || t.contains("付") || t.contains("买")) {
-                                record.setType(TrasactionType.EXPENSE);
+                                record.setTrasactionType(TrasactionType.EXPENSE);
                             } else {
-                                record.setType(TrasactionType.OTHER);
+                                record.setTrasactionType(TrasactionType.OTHER);
                             }
                         }
                     }

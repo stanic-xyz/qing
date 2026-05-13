@@ -33,7 +33,7 @@ export default function ProcessTable({
     const current = previewMap[uploadId];
     if (!current) return;
     const newRecords = current.previewRecords.map(r =>
-      r.tempId === tempId ? { ...r, ...updated } : r
+      r.id === tempId ? { ...r, ...updated } : r
     );
     setPreview(uploadId, { ...current, previewRecords: newRecords });
   }, [uploadId, previewMap, setPreview]);

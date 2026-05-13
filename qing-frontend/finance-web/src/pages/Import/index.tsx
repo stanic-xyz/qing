@@ -2,15 +2,20 @@
 // 简化后：组件只负责 UI，数据通过 props 传入，状态通过 Zustand 管理
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { UploadCloud, FileText, Settings } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { UploadCloud, FileText, Settings, Info } from 'lucide-react';
 
 import UploadView from './components/UploadView';
 import ImportRecordList from './components/ImportRecordList';
 import RulesPanel from './components/RulesPanel';
 import ParserConfigDrawer from './components/ParserConfigDrawer';
+import NewDraftFlowCard from './components/NewDraftFlowCard';
 import type { Account, ActiveRule } from './types';
 
 export default function ImportPage() {
+  const [searchParams] = useSearchParams();
+  const highlightBatchNo = searchParams.get('highlightBatchNo');
+
   // ===== 基础数据 =====
   const [records, setRecords] = useState<any[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -47,6 +52,19 @@ export default function ImportPage() {
   }, []);
 
   useEffect(() => { fetchAll(); }, [fetchAll]);
+
+  // ===== 处理新流程桥接参数 =====
+  useEffect(() => {
+    if (highlightBatchNo && records.length > 0) {
+      const related = records.find(r =>
+        r.fileName?.includes(highlightBatchNo.replace('udb-', '').slice(0, 10)) ||
+        highlightBatchNo.includes(r.uploadId || '')
+      );
+      if (related) {
+        setExpandedUploadId(String(related.id));
+      }
+    }
+  }, [highlightBatchNo, records]);
 
   // ===== 展开 =====
   const handleToggleExpand = useCallback((uploadId: string) => {
@@ -127,6 +145,20 @@ export default function ImportPage() {
       </div>
 
       {/* 主内容 */}
+      {highlightBatchNo && (
+        <div className="flex items-center gap-2 px-4 py-2 bg-indigo-50 border border-indigo-200 rounded-lg text-sm text-indigo-700">
+          <Info size={16} />
+          <span>新流程批次 <span className="font-mono font-medium">{decodeURIComponent(highlightBatchNo)}</span> 已导入完成，上方为新流程记录。</span>
+          <button
+            onClick={() => { window.history.replaceState({}, '', '/import'); setExpandedUploadId(null); }}
+            className="ml-auto px-2 py-0.5 text-xs bg-indigo-100 hover:bg-indigo-200 rounded"
+          >
+            关闭提示
+          </button>
+        </div>
+      )}
+      <NewDraftFlowCard />
+
       <div className="flex gap-6 items-start">
         <div className={`flex-1 transition-all ${showRulesPanel ? 'w-2/3' : 'w-full'}`}>
           {isUploadView ? (

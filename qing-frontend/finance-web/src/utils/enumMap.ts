@@ -14,9 +14,8 @@ export const EnumMap = {
         DELETED: '已删除'
     },
     type: {
-        INCOME: '收入',
-        EXPENSE: '支出',
-        OTHER: '其他'
+        IN: '收入',
+        OUT: '支出'
     },
     channel: {
         ALIPAY: '支付宝',
@@ -52,7 +51,7 @@ export const EnumMap = {
 
 // Dynamic enum cache loaded from backend
 // Structure: { matchStatus: { ORIGINAL: "原始数据", ... }, ... }
-let dynamicEnumMap: Record<string, Record<string, string>> = {};
+const dynamicEnumMap: Record<string, Record<string, string>> = {};
 let enumCacheInitialized = false;
 
 export const initializeEnumCache = async () => {

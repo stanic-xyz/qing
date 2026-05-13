@@ -2,11 +2,16 @@ package cn.chenyunlong.qing.service.llm.controler;
 
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
+import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
 import cn.chenyunlong.qing.service.llm.entity.UploadFileRecord;
+import cn.chenyunlong.qing.service.llm.enums.FileUploadStatusEnum;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
+import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftBatchRepository;
+import cn.chenyunlong.qing.service.llm.repository.UnifiedDraftRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.UploadFileRecordRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,13 +22,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/finance/uploads")
 @Slf4j
+@RequiredArgsConstructor
 public class UploadRecordController {
 
-    @Autowired
-    private UploadFileRecordRepository uploadFileRepo;
-
-    @Autowired
-    private TransactionRecordRepository transactionRepo;
+    private final UploadFileRecordRepository uploadFileRepo;
+    private final TransactionRecordRepository transactionRepo;
+    private final UnifiedDraftRecordRepository unifiedDraftRecordRepository;
+    private final UnifiedDraftBatchRepository unifiedDraftBatchRepository;
 
     @GetMapping
     public Result<Page<UploadFileRecord>> getUploadRecords(
@@ -59,18 +64,24 @@ public class UploadRecordController {
         }
 
         List<TransactionRecord> transactions = transactionRepo.findByUploadId(String.valueOf(record.getId()));
+        List<UnifiedDraftRecord> draftRecordList = unifiedDraftRecordRepository.findAllByFileRecord(record);
+        List<UnifiedDraftBatch> unifiedDraftBatchList = unifiedDraftBatchRepository.findAllByUploadFile(record);
 
         if (softDelete) {
             transactions.forEach(t -> t.setIsDeleted(true));
-            transactionRepo.saveAll(transactions);
-            record.setStatus("DELETED");
-        } else {
-            transactionRepo.deleteAll(transactions);
-            uploadFileRepo.delete(record);
-            return Result.success(null);
-        }
+            draftRecordList.forEach(t -> t.setIsDeleted(true));
 
-        uploadFileRepo.save(record);
+            unifiedDraftRecordRepository.saveAll(draftRecordList);
+            transactionRepo.saveAll(transactions);
+
+            record.setStatus(FileUploadStatusEnum.DELETED);
+            uploadFileRepo.save(record);
+        } else {
+            unifiedDraftRecordRepository.deleteAll(draftRecordList);
+            transactionRepo.deleteAll(transactions);
+            unifiedDraftBatchRepository.deleteAll(unifiedDraftBatchList);
+            uploadFileRepo.delete(record);
+        }
         return Result.success(null);
     }
 }

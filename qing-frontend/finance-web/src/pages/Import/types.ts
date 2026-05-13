@@ -17,8 +17,9 @@ export interface Account {
 }
 
 export interface PreviewRecord {
-    tempId: string;
+    id: string;
     transactionTime: string;
+    directionType: 'IN' | 'OUT';
     channel: string;
     type: string;
     account: Account;
@@ -108,4 +109,20 @@ export interface ParserConfig extends ParserItem {
     postScriptLanguage?: string;
     postScriptEnabled?: boolean;
     status?: string;
+}
+
+export type AdapterType = 'PARSER' | 'SCRIPT' | 'LLM';
+export type DraftBatchStatus = 'DRAFTED' | 'MATCHING' | 'MATCHED' | 'CONFIRMING' | 'IMPORTED' | 'FAILED';
+
+export interface DraftBatch {
+    id: number;
+    batchNo: string;
+    adapterType: AdapterType;
+    status: DraftBatchStatus;
+    progress: number;
+    totalRecords: number;
+    errorMessage?: string;
+    allowedActions: string[];
+    createdAt: string;
+    updatedAt: string;
 }
