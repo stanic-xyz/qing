@@ -1,0 +1,41 @@
+server:
+  port: 8089
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: qing-service-workflow
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: qing-leave-flowable
+    password: 123456
+    url: jdbc:postgresql://192.168.3.112:5432/qing-leave-flowable
+  rabbitmq:
+    host: 192.168.3.112
+    username: rabbitmq
+    password: 123456
+  data:
+    redis:
+      host: 192.168.3.112
+      database: 0
+      password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+        jdbc:
+          batch_size: 50
+
+flowable:
+  database-schema-update: true
+  async-executor-activate: true
+  check-process-definitions: false
+logging:
+  level:
+    root: info

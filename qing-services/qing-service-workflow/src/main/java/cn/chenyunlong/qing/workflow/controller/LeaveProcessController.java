@@ -1,10 +1,10 @@
-package cn.chenyunlong.qing.leave.controller;
+package cn.chenyunlong.qing.workflow.controller;
 
-import cn.chenyunlong.qing.leave.model.StartLeaveRequest;
-import cn.chenyunlong.qing.leave.model.TaskApproveRequest;
-import cn.chenyunlong.qing.leave.service.LeaveProcessService;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.task.Task;
+import cn.chenyunlong.qing.workflow.model.StartLeaveRequest;
+import cn.chenyunlong.qing.workflow.model.TaskApproveRequest;
+import cn.chenyunlong.qing.workflow.service.LeaveProcessService;
+import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.task.api.Task;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.Scanner;
 
 @RestController
-@RequestMapping("/api/leave")
+@RequestMapping("leave")
 public class LeaveProcessController {
 
     private final LeaveProcessService leaveProcessService;
@@ -26,14 +25,8 @@ public class LeaveProcessController {
 
     @PostMapping("/start")
     public Map<String, String> start(@RequestBody StartLeaveRequest request) {
-        ProcessInstance processInstance = leaveProcessService.startLeaveProcess(request.applicant(), request.leaveDays(), request.reason());
-        Task submitTask = leaveProcessService.querySingleTask(processInstance.getProcessInstanceId());
-        return Map.of("processInstanceId", processInstance.getProcessInstanceId(), "currentTaskId", submitTask.getId());
-    }
-
-    @PostMapping("/{taskId}/submit")
-    public void submit(@PathVariable String taskId) {
-        leaveProcessService.completeSubmitTask(taskId);
+        ProcessInstance processInstance = leaveProcessService.startLeaveProcess(request.applicant(), request.leaveDays(), request.reason(), request.directSupervisor());
+        return Map.of("processInstanceId", processInstance.getProcessInstanceId());
     }
 
     @PostMapping("/{taskId}/supervisor")
