@@ -4,7 +4,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -78,7 +78,7 @@ public class BankParser extends BaseFileParser {
                 record.setAmount(BigDecimal.valueOf(val));
             }
             // 支出/收入判断（可能通过正负号或另一列）
-            record.setTrasactionType(TrasactionType.EXPENSE); // 默认支出
+            record.setTransactionType(TransactionType.EXPENSE); // 默认支出
             record.setAccountName("银行账户"); // 需要从文件名或内容提取
             record.setAccountType(AccountType.DEBIT);
             record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);

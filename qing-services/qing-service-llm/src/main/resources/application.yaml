@@ -33,3 +33,9 @@ langchain4j:
       model-name: gpt-4o
       log-requests: true
       log-responses: true
+
+qianji:
+  file:
+    storage-path: /data/qianji-files
+    max-size: 20971520
+    allowed-types: csv,xlsx,xls

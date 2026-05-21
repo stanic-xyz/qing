@@ -40,6 +40,13 @@ public class ChannelController {
         return Result.success(null);
     }
 
+    @PutMapping("/{id}")
+    public Result<Void> updateChannel(@PathVariable("id") Long id, @RequestBody Channel channel) {
+        channel.setId(id);
+        channelService.createOrUpdateChannel(channel);
+        return Result.success(null);
+    }
+
     @PostMapping("/{id}/submit")
     public Result<Void> submitApproval(@PathVariable("id") Long id) {
         channelService.submitApproval(id);

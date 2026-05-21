@@ -5,7 +5,6 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.repository.ReconciliationRecordRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -46,9 +45,7 @@ public class ReconciliationService {
                 TransactionRecord b = records.get(j);
                 if (isMatching(record, b)) {
                     // 标记匹配
-                    record.setLinkedId(b.getId()); // 或双向关联
                     record.setReconciliationStatus(ReconciliationStatusEnum.MATCHED);
-                    b.setLinkedId(record.getId());
                     b.setReconciliationStatus(ReconciliationStatusEnum.MATCHED);
                     transactionRepo.saveAll(Arrays.asList(record, b));
 
@@ -73,31 +70,5 @@ public class ReconciliationService {
             }
         }
         return false;
-    }
-
-    public void autoReconcileForRecords(List<TransactionRecord> records) {
-        // Simple mock implementation for demo
-        matchWithinDay(records);
-    }
-
-    // 手动匹配
-    @Transactional
-    public void manualMatch(List<Long> transactionIds, Long masterId, String notes) {
-        List<TransactionRecord> records = transactionRepo.findAllById(transactionIds);
-        for (TransactionRecord r : records) {
-            if (!r.getId().equals(masterId)) {
-                r.setLinkedId(masterId);
-                r.setReconciliationStatus(ReconciliationStatusEnum.MANUAL);
-            }
-        }
-        transactionRepo.saveAll(records);
-
-        ReconciliationRecord rec = new ReconciliationRecord();
-        rec.setTransactionIds(transactionIds.stream().map(String::valueOf).collect(Collectors.joining(",")));
-        rec.setReconciliationType("DUPLICATE");
-        rec.setStatus("RESOLVED");
-        rec.setResolvedBy("MANUAL");
-        rec.setNotes(notes);
-        reconciliationRepo.save(rec);
     }
 }

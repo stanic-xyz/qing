@@ -34,16 +34,15 @@ public class ChannelService {
     public Channel createOrUpdateChannel(Channel channel) {
         if (channel.getId() == null) {
             channel.setStatus(ApprovalState.EFFECTIVE.name()); // 直接生效
-        } else {
-            // 更新时保留原来的状态和其他不变字段
-            Channel existing = channelRepository.findById(channel.getId()).orElseThrow();
-            existing.setCode(channel.getCode());
-            existing.setName(channel.getName());
-            existing.setIcon(channel.getIcon());
-            existing.setIsEnabled(channel.getIsEnabled());
-            return channelRepository.save(existing);
+            return channelRepository.save(channel);
         }
-        return channelRepository.save(channel);
+        // 更新时保留原来的状态和其他不变字段
+        Channel existing = channelRepository.findById(channel.getId()).orElseThrow();
+        existing.setCode(channel.getCode());
+        existing.setName(channel.getName());
+        existing.setIcon(channel.getIcon());
+        existing.setIsEnabled(channel.getIsEnabled());
+        return channelRepository.save(existing);
     }
 
     @Transactional

@@ -7,7 +7,7 @@ import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.service.script.ScriptExecutorFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -165,7 +165,7 @@ public class DynamicFileParser extends BaseFileParser {
                     applyPostScriptIfEnabled(record, rowContext, extData);
 
                     if (!extData.isEmpty()) {
-                        record.setOriginalData(objectMapper.writeValueAsString(extData));
+                        // record.setOriginalData(objectMapper.writeValueAsString(extData));
                     }
 
                     // 如果没有解析出时间，或者核心字段缺失，则跳过
@@ -448,12 +448,11 @@ public class DynamicFileParser extends BaseFileParser {
             }
             if (enumType.getSimpleName().equals("TrasactionType")) {
                 if (name.contains("\u6536\u5165") || name.contains("\u9000\u6b3e") || name.contains("\u8f6c\u5165") || name.contains("\u6c47\u5165") || name.contains("\u6536\u6b3e"))
-                    return cn.chenyunlong.qing.service.llm.enums.TrasactionType.INCOME;
+                    return TransactionType.INCOME;
                 if (name.contains("\u652f\u51fa") || name.contains("\u6d88\u8d39") || name.contains("\u8f6c\u51fa") || name.contains("\u6c47\u51fa") || name.contains("\u4ed8\u6b3e") || name.contains("\u4ee3\u6536"))
-                    return cn.chenyunlong.qing.service.llm.enums.TrasactionType.EXPENSE;
+                    return TransactionType.EXPENSE;
                 if (name.contains("\u8f6c\u8d26") || name.contains("\u63d0\u73b0") || name.contains("\u5145\u503c"))
-                    return cn.chenyunlong.qing.service.llm.enums.TrasactionType.TRANSFER;
-                return cn.chenyunlong.qing.service.llm.enums.TrasactionType.OTHER;
+                    return TransactionType.TRANSFER;
             }
             System.out.println("Failed to match TrasactionType for name: " + name + ", length=" + name.length());
             for (char c : name.toCharArray()) {
@@ -576,22 +575,20 @@ public class DynamicFileParser extends BaseFileParser {
                     applyPostScriptIfEnabled(record, rowContext, extData);
 
                     if (!extData.isEmpty()) {
-                        record.setOriginalData(objectMapper.writeValueAsString(extData));
+                        // record.setOriginalData(objectMapper.writeValueAsString(extData));
                     }
 
                     // 特殊处理收支类型映射（与CSV逻辑一致）
-                    if (record.getTrasactionType() != null) {
-                        String t = record.getTrasactionType().name();
+                    if (record.getTransactionType() != null) {
+                        String t = record.getTransactionType().name();
                         String upper = t.trim().toUpperCase();
                         if ("INCOME".equals(upper) || "EXPENSE".equals(upper) || "OTHER".equals(upper)) {
-                            record.setTrasactionType(TrasactionType.valueOf(upper));
+                            record.setTransactionType(TransactionType.valueOf(upper));
                         } else {
                             if (t.contains("收") && !t.contains("支")) {
-                                record.setTrasactionType(TrasactionType.INCOME);
+                                record.setTransactionType(TransactionType.INCOME);
                             } else if (t.contains("支") || t.contains("付") || t.contains("买")) {
-                                record.setTrasactionType(TrasactionType.EXPENSE);
-                            } else {
-                                record.setTrasactionType(TrasactionType.OTHER);
+                                record.setTransactionType(TransactionType.EXPENSE);
                             }
                         }
                     }

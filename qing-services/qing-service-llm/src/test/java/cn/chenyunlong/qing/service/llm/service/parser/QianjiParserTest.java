@@ -3,6 +3,7 @@ package cn.chenyunlong.qing.service.llm.service.parser;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
 
+import cn.chenyunlong.qing.service.llm.service.imports.qianji.QianjiParser;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

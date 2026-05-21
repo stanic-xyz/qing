@@ -225,7 +225,6 @@ public class DraftCommitService {
 
         TransactionRecord tr = new TransactionRecord();
         tr.setAccount(account);
-        tr.setChannel(account != null ? account.getChannel() : null);
         tr.setAccountName(account != null ? account.getAccountName() : null);
         tr.setAccountType(account != null ? account.getAccountType() : null);
         tr.setTransactionTime(dr.getTransactionTime());
@@ -251,7 +250,6 @@ public class DraftCommitService {
             case null, default -> tr.setMatchStatus(MatchStatusEnum.ORIGINAL);
         }
         tr.setIsImported(true);
-        tr.setOriginalData(dr.getRawPayload());
         return tr;
     }
 }

@@ -5,7 +5,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -68,11 +68,9 @@ public class JingdongParser extends BaseFileParser {
                     // 收/支
                     String typeStr = line.length > 6 ? line[6].trim() : "";
                     if ("支出".equals(typeStr)) {
-                        record.setTrasactionType(TrasactionType.EXPENSE);
+                        record.setTransactionType(TransactionType.EXPENSE);
                     } else if ("收入".equals(typeStr)) {
-                        record.setTrasactionType(TrasactionType.INCOME);
-                    } else {
-                        record.setTrasactionType(TrasactionType.OTHER);
+                        record.setTransactionType(TransactionType.INCOME);
                     }
 
                     // 金额（列3）
@@ -102,7 +100,7 @@ public class JingdongParser extends BaseFileParser {
 
                     // 原始ID（订单号，列8）
                     if (line.length > 8 && !line[8].trim().isEmpty()) {
-                        record.setOriginalId(line[8].trim().replace("\t", ""));
+                        // record.setOriginalId(line[8].trim().replace("\t", ""));
                     }
 
                     record.setAccountName("京东");

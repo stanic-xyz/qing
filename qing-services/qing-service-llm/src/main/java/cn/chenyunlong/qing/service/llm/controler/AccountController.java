@@ -4,13 +4,14 @@ import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.dto.AccountImportDTO;
 import cn.chenyunlong.qing.service.llm.dto.AccountPreviewResult;
 import cn.chenyunlong.qing.service.llm.dto.account.AccountDTO;
+import cn.chenyunlong.qing.service.llm.dto.account.AccountStatisticsDTO;
 import cn.chenyunlong.qing.service.llm.dto.account.AccountUpdateDTO;
 import cn.chenyunlong.qing.service.llm.entity.Channel;
 import cn.chenyunlong.qing.service.llm.enums.AccountStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.ImportModeEnum;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.event.AccountChangeEvent;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
+import cn.chenyunlong.qing.service.llm.enums.TransactionDirectionTypeEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -117,13 +119,13 @@ public class AccountController {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    @PutMapping("/{id}")
-    public Result<AccountDTO> updateAccount(@PathVariable("id") Long id, @RequestBody AccountUpdateDTO account) {
+    @PutMapping("/{accountId}")
+    public Result<AccountDTO> updateAccount(@PathVariable("accountId") Long id, @RequestBody AccountUpdateDTO account) {
         Account existing = accountRepo.findById(id).orElse(null);
         if (existing == null) return Result.error(404, "Account not found");
 
         if (account.getChannel() != null) {
-            Channel channel = channelRepository.findByIdAndIsDeletedFalse(account.getChannel()).orElseThrow(()-> new IllegalArgumentException("Channel not found"));
+            Channel channel = channelRepository.findByIdAndIsDeletedFalse(account.getChannel()).orElseThrow(() -> new IllegalArgumentException("Channel not found"));
             existing.setChannel(channel);
         } else {
             existing.setChannel(null);
@@ -150,6 +152,50 @@ public class AccountController {
         }
         long count = transactionRepo.countByAccount(account);
         return Result.success(count);
+    }
+
+    @GetMapping("/{id}/statistics")
+    public Result<AccountStatisticsDTO> getAccountStatistics(@PathVariable("id") Long id) {
+        Account account = accountRepo.findById(id).orElse(null);
+        if (account == null) {
+            return Result.error(404, "账户不存在");
+        }
+
+        List<TransactionRecord> transactions = transactionRepo.findAllByAccount(account);
+
+        long incomeCount = 0;
+        long expenseCount = 0;
+        BigDecimal totalIncome = BigDecimal.ZERO;
+        BigDecimal totalExpense = BigDecimal.ZERO;
+
+        for (TransactionRecord record : transactions) {
+            if (Boolean.TRUE.equals(record.getIsDeleted())) {
+                continue;
+            }
+            if (record.getDirectionType() == TransactionDirectionTypeEnum.INCOME ||
+                    (record.getTransactionType() == TransactionType.INCOME)) {
+                incomeCount++;
+                if (record.getAmount() != null) {
+                    totalIncome = totalIncome.add(record.getAmount());
+                }
+            } else {
+                expenseCount++;
+                if (record.getAmount() != null) {
+                    totalExpense = totalExpense.add(record.getAmount());
+                }
+            }
+        }
+
+        AccountStatisticsDTO stats = new AccountStatisticsDTO();
+        stats.setAccountId(account.getId());
+        stats.setAccountName(account.getAccountName());
+        stats.setTransactionCount((long) transactions.size());
+        stats.setIncomeCount(incomeCount);
+        stats.setExpenseCount(expenseCount);
+        stats.setTotalIncome(totalIncome);
+        stats.setTotalExpense(totalExpense);
+        stats.setNetAmount(totalIncome.subtract(totalExpense));
+        return Result.success(stats);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -195,9 +241,8 @@ public class AccountController {
             record.setAccount(account);
             record.setAccountName(account.getAccountName());
             record.setAccountType(account.getAccountType());
-            record.setChannel(account.getChannel());
             record.setTransactionTime(LocalDateTime.now());
-            record.setTrasactionType(diff.compareTo(BigDecimal.ZERO) > 0 ? TrasactionType.INCOME : TrasactionType.EXPENSE);
+            record.setTransactionType(diff.compareTo(BigDecimal.ZERO) > 0 ? TransactionType.INCOME : TransactionType.EXPENSE);
             record.setAmount(diff.abs());
             record.setSubCategory("余额平账");
             record.setDetail("手动余额校准");

@@ -196,7 +196,7 @@ public class MatcherService {
                 case "SET_TYPE":
                     if (valueNode != null) {
                         try {
-                            record.setTrasactionType(TrasactionType.valueOf(valueNode.asText().toUpperCase()));
+                            record.setTrasactionType(TransactionType.valueOf(valueNode.asText().toUpperCase()));
                             modified.set(true);
                         } catch (IllegalArgumentException ex) {
                             log.warn("无效的交易类型: {}", valueNode.asText());
@@ -230,7 +230,7 @@ public class MatcherService {
                     if (valueNode != null && valueNode.isNumber()) {
                         accountRepository.findById(valueNode.asLong()).ifPresent(account -> {
                             record.setTargetAccount(account);
-                            record.setTrasactionType(TrasactionType.TRANSFER);
+                            record.setTrasactionType(TransactionType.TRANSFER);
                             record.setMatchStatus(DraftMatchStatusEnum.INTERNAL_TRANSFER);
                             modified.set(true);
                         });

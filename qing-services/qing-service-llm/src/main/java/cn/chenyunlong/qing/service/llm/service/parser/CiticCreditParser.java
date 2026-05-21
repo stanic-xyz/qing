@@ -5,7 +5,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -111,19 +111,19 @@ public class CiticCreditParser extends BaseFileParser {
                     BigDecimal absAmount = amount.abs();
 
                     // 判断收支类型
-                    TrasactionType txType;
+                    TransactionType txType;
                     if (isRefund) {
-                        txType = TrasactionType.INCOME; // 退款/还款
+                        txType = TransactionType.INCOME; // 退款/还款
                     } else if (desc.contains("还款") || desc.contains("存入") || desc.contains("代付")) {
-                        txType = TrasactionType.INCOME;
+                        txType = TransactionType.INCOME;
                     } else {
-                        txType = TrasactionType.EXPENSE;
+                        txType = TransactionType.EXPENSE;
                     }
 
                     TransactionRecord record = new TransactionRecord();
                     record.setTransactionTime(txTime);
                     record.setAmount(absAmount);
-                    record.setTrasactionType(txType);
+                    record.setTransactionType(txType);
 
                     // 构建对手方（从描述中提取）
                     String cpName = extractCounterparty(desc);
@@ -148,8 +148,8 @@ public class CiticCreditParser extends BaseFileParser {
                     record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                     record.setConfirmed(false);
 
-                    // 原始ID
-                    record.setOriginalId("citic_" + timeStr.replace("-", "") + "_" + cardLast4);
+                    // todo 原始ID
+                    // record.setOriginalId("citic_" + timeStr.replace("-", "") + "_" + cardLast4);
 
                     records.add(record);
                 } catch (Exception e) {

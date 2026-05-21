@@ -48,7 +48,7 @@ public class DataMigrationRunner implements ApplicationRunner {
         // 2. Get all unique channels from TransactionRecords
         List<TransactionRecord> allRecords = transactionRecordRepository.findAll();
         Set<Channel> recordChannels = allRecords.stream()
-                .map(TransactionRecord::getChannel)
+                .map(transactionRecord -> transactionRecord.getAccount().getChannel())
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 

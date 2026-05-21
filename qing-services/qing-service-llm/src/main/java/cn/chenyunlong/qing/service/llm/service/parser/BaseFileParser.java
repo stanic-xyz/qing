@@ -57,9 +57,6 @@ public abstract class BaseFileParser implements FileParser {
         LocalDateTime maxTime = null;
         for (TransactionRecord record : records) {
             // 自动推算资金类型 (fundType)
-            if (record.getFundType() == null && record.getFundSource() != null) {
-                record.setFundType(deduceFundType(record.getFundSource()));
-            }
 
             // 添加流水记录类型
             MetaData metaData = getMetaData();

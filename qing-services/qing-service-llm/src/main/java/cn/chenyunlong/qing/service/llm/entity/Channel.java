@@ -1,7 +1,9 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,9 +14,11 @@ public class Channel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(unique = true, nullable = false)
     private String code; // 渠道编码 (如 ALIPAY, WECHAT)
 
+    @NotBlank
     private String name; // 渠道名称
     private String icon; // 渠道图标
 

@@ -5,7 +5,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -136,9 +136,9 @@ public class PingAnParser extends BaseFileParser {
                     record.setAmount(absAmount);
 
                     if (isExpense) {
-                        record.setTrasactionType(TrasactionType.EXPENSE);
+                        record.setTransactionType(TransactionType.EXPENSE);
                     } else {
-                        record.setTrasactionType(TrasactionType.INCOME);
+                        record.setTransactionType(TransactionType.INCOME);
                     }
 
                     // 构建对手方

@@ -6,7 +6,7 @@ import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.FundTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -79,11 +79,9 @@ public class AlipayParser extends BaseFileParser {
                     // 收/支
                     String incomeExpense = line.length > 5 ? line[5].trim() : "";
                     if ("收入".equals(incomeExpense)) {
-                        record.setTrasactionType(TrasactionType.INCOME);
+                        record.setTransactionType(TransactionType.INCOME);
                     } else if ("支出".equals(incomeExpense)) {
-                        record.setTrasactionType(TrasactionType.EXPENSE);
-                    } else {
-                        record.setTrasactionType(TrasactionType.OTHER);
+                        record.setTransactionType(TransactionType.EXPENSE);
                     }
 
                     // 金额
@@ -100,7 +98,7 @@ public class AlipayParser extends BaseFileParser {
 
                     // 交易订单号
                     if (line.length > 9 && !line[9].trim().isEmpty() && !"/".equals(line[9].trim())) {
-                        record.setOriginalId(line[9].trim());
+                        // record.setOriginalId(line[9].trim());
                     }
 
                     // 资金来源/支付方式
@@ -109,7 +107,6 @@ public class AlipayParser extends BaseFileParser {
                         paymentMethod = line[7].trim();
                         record.setFundSource(paymentMethod);
                         record.setRecordRole(deduceRecordRole(paymentMethod));
-                        record.setFundType(deduceFundType(paymentMethod));
                     } else {
                         record.setRecordRole(RecordRoleEnum.PRIMARY);
                     }
@@ -139,7 +136,6 @@ public class AlipayParser extends BaseFileParser {
                     rawMap.put("counterpartyAccount", counterpartyAccount);
                     rawMap.put("counterpartyName", counterpartyStr);
                     rawMap.put("goodsDescription", merchant);
-                    record.setOriginalData(new ObjectMapper().writeValueAsString(rawMap));
 
                     record.setAccountName("支付宝");
                     record.setAccountType(AccountType.WALLET);

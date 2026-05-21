@@ -5,7 +5,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.Loader;
@@ -134,15 +134,15 @@ public class BocCreditParser extends BaseFileParser {
                             String txTimeStr = String.format("%04d-%02d-%02d 00:00:00", txYear, month, day);
 
                             // 判断收支：代付/存入/退款 = 收入，其他 = 支出
-                            TrasactionType txType = TrasactionType.EXPENSE;
+                            TransactionType txType = TransactionType.EXPENSE;
                             if (descAmount.contains("代付") || descAmount.contains("存入") || descAmount.contains("还款") || descAmount.contains("退款")) {
-                                txType = TrasactionType.INCOME;
+                                txType = TransactionType.INCOME;
                             }
 
                             TransactionRecord record = new TransactionRecord();
                             record.setTransactionTime(LocalDateTime.parse(txTimeStr, BOC_DATE_FORMAT));
                             record.setAmount(amount.abs());
-                            record.setTrasactionType(txType);
+                            record.setTransactionType(txType);
                             record.setStatus(TransactionStatusEnum.SUCCESS);
                             record.setAccountName("中国银行信用卡(" + cardNum + ")");
                             record.setAccountType(AccountType.CREDIT);
@@ -150,7 +150,7 @@ public class BocCreditParser extends BaseFileParser {
                             record.setFundSource("中国银行信用卡(" + cardNum + ")");
                             record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                             record.setConfirmed(false);
-                            record.setOriginalId("boc_" + year + txDateStr.replace("/", "") + "_" + cardNum);
+                            // record.setOriginalId("boc_" + year + txDateStr.replace("/", "") + "_" + cardNum);
 
                             // 清理商户描述: 移除 CHN 币种标注
                             String merchant = descAmount.replace("CHN", "").replace("USD", "").trim();

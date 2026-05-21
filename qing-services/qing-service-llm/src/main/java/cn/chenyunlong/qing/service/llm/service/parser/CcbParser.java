@@ -5,7 +5,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -119,8 +119,8 @@ public class CcbParser extends BaseFileParser {
                     TransactionRecord record = new TransactionRecord();
                     record.setTransactionTime(txTime);
                     record.setAmount(absAmount);
-                    record.setTrasactionType(isInternal ? TrasactionType.TRANSFER
-                            : (isExpense ? TrasactionType.EXPENSE : TrasactionType.INCOME));
+                    record.setTransactionType(isInternal ? TransactionType.TRANSFER
+                            : (isExpense ? TransactionType.EXPENSE : TransactionType.INCOME));
                     record.setSubCategory(classifySummary(summary));
                     if (!cpName.isEmpty()) {
                         Counterparty cp = new Counterparty();
@@ -132,7 +132,6 @@ public class CcbParser extends BaseFileParser {
                     if (description.length() > 255) description = description.substring(0, 255);
                     record.setMerchant(description.trim());
                     if (balance != null) record.setBalance(balance.abs());
-                    record.setOriginalId("ccb_" + ACCOUNT_NAME + "_" + seq);
                     record.setAccountName(ACCOUNT_NAME);
                     record.setAccountType(AccountType.DEBIT);
                     record.setRecordRole(RecordRoleEnum.PRIMARY);

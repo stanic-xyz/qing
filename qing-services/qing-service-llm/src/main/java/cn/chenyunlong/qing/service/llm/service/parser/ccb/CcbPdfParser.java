@@ -5,7 +5,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.service.parser.BaseFileParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.Loader;
@@ -153,10 +153,10 @@ public class CcbPdfParser extends BaseFileParser {
         String amountStr = group3.replace(",", "");
         BigDecimal amount = new BigDecimal(amountStr);
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            record.setTrasactionType(TrasactionType.EXPENSE);
+            record.setTransactionType(TransactionType.EXPENSE);
             record.setAmount(amount.abs());
         } else {
-            record.setTrasactionType(TrasactionType.INCOME);
+            record.setTransactionType(TransactionType.INCOME);
             record.setAmount(amount);
         }
 

@@ -6,7 +6,7 @@ import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.FundTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -129,11 +129,9 @@ public class WechatParser extends BaseFileParser {
                     // 收/支
                     String direction = getCellValueAsString(row.getCell(colMap[4])).trim();
                     if ("支出".equals(direction)) {
-                        record.setTrasactionType(TrasactionType.EXPENSE);
+                        record.setTransactionType(TransactionType.EXPENSE);
                     } else if ("收入".equals(direction)) {
-                        record.setTrasactionType(TrasactionType.INCOME);
-                    } else {
-                        record.setTrasactionType(TrasactionType.OTHER);
+                        record.setTransactionType(TransactionType.INCOME);
                     }
 
                     // 支付方式/资金来源
@@ -141,7 +139,6 @@ public class WechatParser extends BaseFileParser {
                     if (!paymentMethod.isEmpty() && !"/".equals(paymentMethod)) {
                         record.setFundSource(paymentMethod);
                         record.setRecordRole(deduceRecordRole(paymentMethod));
-                        record.setFundType(deduceFundType(paymentMethod));
                     } else {
                         record.setRecordRole(RecordRoleEnum.PRIMARY);
                     }
@@ -161,7 +158,8 @@ public class WechatParser extends BaseFileParser {
                     // 原始ID
                     String orderId = getCellValueAsString(row.getCell(colMap[8])).trim();
                     if (!orderId.isEmpty()) {
-                        record.setOriginalId(orderId);
+                        // todo 原始标识
+                        // record.setOriginalId(orderId);
                     }
 
                     record.setAccountName("微信");

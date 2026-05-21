@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
+import cn.chenyunlong.qing.service.llm.enums.FileParseStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.FileTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.FileUploadStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -24,7 +26,17 @@ public class UploadFileRecord {
     private Account account;
 
     @Enumerated(EnumType.STRING)
-    private FileUploadStatusEnum status; // UPLOADED, IMPORTED, FAILED
+    private FileUploadStatusEnum status;
+
+    @Enumerated(EnumType.STRING)
+    private FileTypeEnum fileType;
+
+    @Enumerated(EnumType.STRING)
+    private FileParseStatusEnum parseStatus;
+
+    private String filePath;
+    private String parseError;
+    private String originalData;
 
     private Integer parsedCount;
     private Integer importedCount;
@@ -43,6 +55,9 @@ public class UploadFileRecord {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        if (parseStatus == null) {
+            parseStatus = FileParseStatusEnum.PENDING;
+        }
     }
 
     @PreUpdate

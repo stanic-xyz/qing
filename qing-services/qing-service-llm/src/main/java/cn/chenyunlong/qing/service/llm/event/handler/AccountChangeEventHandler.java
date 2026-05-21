@@ -25,7 +25,7 @@ public class AccountChangeEventHandler {
         Optional<Account> accountOptional = accountRepository.findById(event.getAccountId());
         accountOptional.ifPresent(account -> {
             List<TransactionRecord> allByAccount = transactionRecordRepository.findAllByAccount(account);
-            allByAccount.forEach(t -> t.setChannel(account.getChannel()));
+            allByAccount.forEach(t -> t.setAccount(account));
             transactionRecordRepository.saveAll(allByAccount);
         });
     }

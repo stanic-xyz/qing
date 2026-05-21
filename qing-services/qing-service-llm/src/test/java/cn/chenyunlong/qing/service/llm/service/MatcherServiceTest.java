@@ -6,7 +6,7 @@ import cn.chenyunlong.qing.service.llm.entity.Counterparty;
 import cn.chenyunlong.qing.service.llm.entity.TransactionMatcher;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftRecord;
 import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository;
@@ -75,7 +75,7 @@ class MatcherServiceTest {
 
         matcherService.applyMatchers(record, List.of(rule));
 
-        assertEquals(TrasactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
         assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
     }
 
@@ -124,7 +124,7 @@ class MatcherServiceTest {
 
         matcherService.applyMatchers(record, List.of(rule1, rule2));
 
-        assertEquals(TrasactionType.INCOME, record.getTrasactionType());
+        assertEquals(TransactionType.INCOME, record.getTrasactionType());
     }
 
     @Test
@@ -149,7 +149,7 @@ class MatcherServiceTest {
 
         matcherService.applyMatchers(record, List.of(rule1, rule2));
 
-        assertEquals(TrasactionType.INCOME, record.getTrasactionType());
+        assertEquals(TransactionType.INCOME, record.getTrasactionType());
         assertEquals("测试分类", record.getCategory().getName());
         assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
     }
@@ -202,7 +202,7 @@ class MatcherServiceTest {
         matcherService.applyMatchers(record, List.of(rule));
 
         assertEquals(1L, record.getTargetAccount().getId());
-        assertEquals(TrasactionType.TRANSFER, record.getTrasactionType());
+        assertEquals(TransactionType.TRANSFER, record.getTrasactionType());
         assertEquals(DraftMatchStatusEnum.INTERNAL_TRANSFER, record.getMatchStatus());
     }
 

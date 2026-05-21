@@ -1,16 +1,18 @@
-package cn.chenyunlong.qing.service.llm.service.parser;
+package cn.chenyunlong.qing.service.llm.service.imports.qianji;
 
 import cn.chenyunlong.qing.service.llm.entity.Counterparty;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
+import cn.chenyunlong.qing.service.llm.service.parser.BaseFileParser;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,14 +20,11 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
 
 @Slf4j
-@Component("QIANJI")
 public class QianjiParser extends BaseFileParser {
 
     private static final DateTimeFormatter QIANJI_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -37,6 +36,10 @@ public class QianjiParser extends BaseFileParser {
 
     @Override
     public ParseResult parse(InputStream inputStream, String originalFilename) throws Exception {
+
+        Map<String, List<String>> categories = new HashMap<>();
+        List<String> accountList = new ArrayList<>();
+
         List<TransactionRecord> records = new ArrayList<>();
         try (CSVReader reader = new CSVReaderBuilder(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).build()) {
             String[] line;
@@ -51,32 +54,52 @@ public class QianjiParser extends BaseFileParser {
                     TransactionRecord record = new TransactionRecord();
                     record.setTransactionTime(LocalDateTime.parse(timeStr, QIANJI_FORMAT));
 
+                    List<String> subCategoriesList = new ArrayList<>();
+
                     // 一级分类（对应 subCategory）
                     String category = line[2].trim();
-                    record.setSubCategory(category);
+                    if (StrUtil.isNotBlank(category)) {
+                        subCategoriesList = categories.getOrDefault(category, new ArrayList<>());
+                    }
 
                     // 二级分类（对应 category）
                     String subCategory = line[3].trim();
-                    //record.setCategory(subCategory);
+
+                    if (StrUtil.isNotBlank(subCategory)) {
+                        record.setSubCategory(category);
+
+                        if (!CollUtil.contains(subCategoriesList, subCategory)) {
+                            subCategoriesList.add(subCategory);
+                        }
+                    }
+
+                    categories.put(category, subCategoriesList);
 
                     // 类型：支出/收入/转账
                     String typeStr = line[4].trim();
                     switch (typeStr) {
-                        case "支出" -> record.setTrasactionType(TrasactionType.EXPENSE);
-                        case "收入" -> record.setTrasactionType(TrasactionType.INCOME);
-                        case "转账" -> record.setTrasactionType(TrasactionType.TRANSFER);
-                        default -> record.setTrasactionType(TrasactionType.OTHER);
+                        case "支出" -> record.setTransactionType(TransactionType.EXPENSE);
+                        case "收入" -> record.setTransactionType(TransactionType.INCOME);
+                        case "转账" -> record.setTransactionType(TransactionType.TRANSFER);
                     }
 
                     // 金额
                     record.setAmount(new BigDecimal(line[5].trim()));
 
                     // 账户1（主要账户）
-                    String account1 = line.length > 7 ? line[7].trim() : "";
+                    String account1 = line[7].trim();
                     record.setAccountName(account1);
+
+                    if (StrUtil.isNotBlank(account1) && !CollUtil.contains(accountList, account1)) {
+                        accountList.add(account1);
+                    }
 
                     // 账户2（对手账户）
                     String account2 = line.length > 8 ? line[8].trim() : "";
+                    if (StrUtil.isNotBlank(account2) && !CollUtil.contains(accountList, account1)) {
+                        accountList.add(account2);
+                    }
+
                     if (!account2.isEmpty() && !"/".equals(account2)) {
                         Counterparty cp = new Counterparty();
                         cp.setName(account2);
@@ -88,8 +111,9 @@ public class QianjiParser extends BaseFileParser {
                     record.setDetail(remark);
 
                     // 原始ID
-                    if (line.length > 0 && !line[0].trim().isEmpty()) {
-                        record.setOriginalId(line[0].trim());
+                    if (!line[0].trim().isEmpty()) {
+                        // todo 原始id需要保留
+                        // record.setOriginalId(line[0].trim());
                     }
 
                     record.setAccountType(mapAccountType(account1));
@@ -104,7 +128,12 @@ public class QianjiParser extends BaseFileParser {
                 }
             }
         }
-        return wrapResult(records);
+        ParseResult parseResult = wrapResult(records);
+
+        parseResult.setCategories(categories);
+        parseResult.setAccountList(accountList);
+
+        return parseResult;
     }
 
     private AccountType mapAccountType(String accountName) {

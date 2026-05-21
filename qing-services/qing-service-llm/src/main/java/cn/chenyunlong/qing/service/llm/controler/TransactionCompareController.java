@@ -77,7 +77,7 @@ public class TransactionCompareController {
         Map<String, List<TransactionRecord>> grouped = new HashMap<>();
         for (TransactionRecord r : allRecords) {
             if (r.getTransactionTime() == null || r.getAmount() == null) continue;
-            String key = r.getAmount().toPlainString() + "_" + r.getTrasactionType() + "_" + r.getTransactionTime().toLocalDate().toString();
+            String key = r.getAmount().toPlainString() + "_" + r.getTransactionType() + "_" + r.getTransactionTime().toLocalDate().toString();
             grouped.computeIfAbsent(key, k -> new ArrayList<>()).add(r);
         }
 
@@ -102,7 +102,7 @@ public class TransactionCompareController {
 
             // 过滤规则：channel (如果提供了 channel，组内必须包含该渠道的记录)
             if (channel != null && !channel.isEmpty()) {
-                boolean hasChannel = groupRecords.stream().anyMatch(r -> channel.equals(r.getChannel()));
+                boolean hasChannel = groupRecords.stream().anyMatch(r -> channel.equals(r.getAccount().getChannel()));
                 if (!hasChannel) continue;
             }
 
@@ -114,9 +114,10 @@ public class TransactionCompareController {
 
             CompareGroupDTO dto = new CompareGroupDTO();
             dto.setGroupId(entry.getKey());
-            dto.setMainAmount(groupRecords.get(0).getAmount());
-            dto.setMainType(groupRecords.get(0).getTrasactionType().name());
-            dto.setMainDate(groupRecords.get(0).getTransactionTime().toLocalDate().toString());
+            TransactionRecord record = groupRecords.getFirst();
+            dto.setMainAmount(record.getAmount());
+            dto.setMainType(record.getTransactionType().name());
+            dto.setMainDate(record.getTransactionTime().toLocalDate().toString());
 
             // 将不同渠道的数据放进去
             Map<String, TransactionRecord> channelData = new HashMap<>();

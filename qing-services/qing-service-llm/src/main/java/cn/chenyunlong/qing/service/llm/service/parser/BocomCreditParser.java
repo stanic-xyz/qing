@@ -4,7 +4,7 @@ import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.AccountType;
 import cn.chenyunlong.qing.service.llm.enums.ReconciliationStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionStatusEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.Loader;
@@ -119,10 +119,10 @@ public class BocomCreditParser extends BaseFileParser {
 
                         // 交通银行：正数=支出（消费），负数=收入（还款/退款）
                         if (amount.compareTo(BigDecimal.ZERO) < 0) {
-                            record.setTrasactionType(TrasactionType.INCOME);
+                            record.setTransactionType(TransactionType.INCOME);
                             record.setAmount(amount.abs());
                         } else {
-                            record.setTrasactionType(TrasactionType.EXPENSE);
+                            record.setTransactionType(TransactionType.EXPENSE);
                             record.setAmount(amount);
                         }
 
@@ -135,7 +135,9 @@ public class BocomCreditParser extends BaseFileParser {
                         record.setFundSource("交通银行信用卡(" + cardLast4 + ")");
                         record.setReconciliationStatus(ReconciliationStatusEnum.PENDING);
                         record.setConfirmed(false);
-                        record.setOriginalId("bocom_" + dateStr.replace("-", "") + "_" + cardLast4);
+
+                        // todo 原始标识需要保留,但是需要根据导入渠道来表示
+                        //record.setOriginalId("bocom_" + dateStr.replace("-", "") + "_" + cardLast4);
 
                         records.add(record);
                     } catch (Exception e) {

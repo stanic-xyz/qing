@@ -1,11 +1,13 @@
 package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.qing.service.llm.entity.Account;
+import cn.chenyunlong.qing.service.llm.entity.Channel;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.dto.DashboardStatsDto;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +23,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class DashboardService {
 
-    @Autowired
-    private TransactionRecordRepository transactionRecordRepository;
-
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+    private final TransactionRecordRepository transactionRecordRepository;
 
     /**
      * 月度收支汇总 (按月统计收入/支出/笔数)
@@ -38,7 +38,9 @@ public class DashboardService {
         LocalDateTime start = ym.atDay(1).atStartOfDay();
         LocalDateTime end = ym.atEndOfMonth().atTime(23, 59, 59);
 
-        List<TransactionRecord> records = transactionRecordRepository.findAll().stream()
+        List<TransactionRecord> recordList = transactionRecordRepository.findAll();
+        List<TransactionRecord> records = recordList
+                .stream()
                 .filter(r -> r.getIsImported() != null && r.getIsImported())
                 .filter(r -> r.getIsDeleted() == null || !r.getIsDeleted())
                 .filter(r -> r.getTransactionTime() != null)
@@ -46,7 +48,7 @@ public class DashboardService {
                     String ts = r.getTransactionTime().format(DateTimeFormatter.ofPattern("yyyy-MM"));
                     return ts.equals(prefix);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         BigDecimal income = BigDecimal.ZERO;
         BigDecimal expense = BigDecimal.ZERO;
@@ -55,10 +57,10 @@ public class DashboardService {
 
         for (TransactionRecord r : records) {
             if (r.getAmount() == null) continue;
-            if (r.getTrasactionType() != null && "INCOME".equals(r.getTrasactionType().name())) {
+            if (r.getTransactionType() != null && "INCOME".equals(r.getTransactionType().name())) {
                 income = income.add(r.getAmount());
                 incomeCount++;
-            } else if (r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name())) {
+            } else if (r.getTransactionType() != null && "EXPENSE".equals(r.getTransactionType().name())) {
                 expense = expense.add(r.getAmount());
                 expenseCount++;
             }
@@ -94,16 +96,16 @@ public class DashboardService {
                         String ts = r.getTransactionTime().format(DateTimeFormatter.ofPattern("yyyy-MM"));
                         return ts.equals(prefix);
                     })
-                    .collect(Collectors.toList());
+                    .toList();
 
             BigDecimal income = BigDecimal.ZERO;
             BigDecimal expense = BigDecimal.ZERO;
 
             for (TransactionRecord r : records) {
                 if (r.getAmount() == null) continue;
-                if (r.getTrasactionType() != null && "INCOME".equals(r.getTrasactionType().name())) {
+                if (r.getTransactionType() != null && "INCOME".equals(r.getTransactionType().name())) {
                     income = income.add(r.getAmount());
-                } else if (r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name())) {
+                } else if (r.getTransactionType() != null && "EXPENSE".equals(r.getTransactionType().name())) {
                     expense = expense.add(r.getAmount());
                 }
             }
@@ -131,12 +133,12 @@ public class DashboardService {
                 .filter(r -> r.getIsImported() != null && r.getIsImported())
                 .filter(r -> r.getIsDeleted() == null || !r.getIsDeleted())
                 .filter(r -> r.getTransactionTime() != null)
-                .filter(r -> "EXPENSE".equals(r.getTrasactionType() != null ? r.getTrasactionType().name() : null))
+                .filter(r -> "EXPENSE".equals(r.getTransactionType() != null ? r.getTransactionType().name() : null))
                 .filter(r -> {
                     String ts = r.getTransactionTime().format(DateTimeFormatter.ofPattern("yyyy-MM"));
                     return ts.equals(prefix);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         Map<String, BigDecimal> categoryMap = new LinkedHashMap<>();
         for (TransactionRecord r : records) {
@@ -172,7 +174,7 @@ public class DashboardService {
                     String ts = r.getTransactionTime().format(DateTimeFormatter.ofPattern("yyyy-MM"));
                     return ts.equals(prefix);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         BigDecimal total = records.stream()
                 .filter(r -> r.getAmount() != null)
@@ -183,10 +185,12 @@ public class DashboardService {
         for (TransactionRecord r : records) {
             if (r.getAmount() == null) continue;
             String method;
-            if (r.getChannel() != null && r.getChannel().getName() != null) {
-                method = r.getChannel().getName();
-            } else if (r.getAccount() != null && r.getAccount().getAccountName() != null) {
-                method = r.getAccount().getAccountName();
+            Account account = r.getAccount();
+            Channel accountChannel = account.getChannel();
+            if (accountChannel != null && accountChannel.getName() != null) {
+                method = accountChannel.getName();
+            } else if (account.getAccountName() != null) {
+                method = account.getAccountName();
             } else {
                 method = "其他";
             }
@@ -227,16 +231,16 @@ public class DashboardService {
                         String ts = r.getTransactionTime().format(DateTimeFormatter.ofPattern("yyyy-MM"));
                         return ts.equals(prefix);
                     })
-                    .collect(Collectors.toList());
+                    .toList();
 
             BigDecimal income = BigDecimal.ZERO;
             BigDecimal expense = BigDecimal.ZERO;
 
             for (TransactionRecord r : records) {
                 if (r.getAmount() == null) continue;
-                if (r.getTrasactionType() != null && "INCOME".equals(r.getTrasactionType().name())) {
+                if (r.getTransactionType() != null && "INCOME".equals(r.getTransactionType().name())) {
                     income = income.add(r.getAmount());
-                } else if (r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name())) {
+                } else if (r.getTransactionType() != null && "EXPENSE".equals(r.getTransactionType().name())) {
                     expense = expense.add(r.getAmount());
                 }
             }
@@ -259,7 +263,7 @@ public class DashboardService {
     public List<AccountBalance> getAccountBalances() {
         List<Account> accounts = accountRepository.findAll().stream()
                 .filter(a -> a.getStatus() != null && "ACTIVE".equals(a.getStatus().name()))
-                .collect(Collectors.toList());
+                .toList();
 
         return accounts.stream().map(a -> {
             AccountBalance ab = new AccountBalance();
@@ -292,7 +296,7 @@ public class DashboardService {
                     String ts = r.getTransactionTime().format(DateTimeFormatter.ofPattern("yyyy-MM"));
                     return ts.equals(prefix);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         // 大额: 单笔超过 5000
         Set<Long> largeAmountIds = records.stream()
@@ -320,7 +324,7 @@ public class DashboardService {
         // 可疑: amount > 0 但 type=EXPENSE
         Set<Long> suspiciousIds = records.stream()
                 .filter(r -> r.getAmount() != null && r.getAmount().compareTo(BigDecimal.ZERO) > 0)
-                .filter(r -> r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name()))
+                .filter(r -> r.getTransactionType() != null && "EXPENSE".equals(r.getTransactionType().name()))
                 .map(TransactionRecord::getId)
                 .collect(Collectors.toSet());
 
@@ -386,8 +390,8 @@ public class DashboardService {
      */
     public BigDecimal getTotalAssets() {
         return accountRepository.findAll().stream()
-                .filter(a -> a.getCurrentBalance() != null)
                 .map(Account::getCurrentBalance)
+                .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -411,15 +415,15 @@ public class DashboardService {
                         LocalDateTime t = r.getTransactionTime();
                         return !t.isBefore(start) && t.isBefore(end);
                     })
-                    .collect(Collectors.toList());
+                    .toList();
 
             BigDecimal income = BigDecimal.ZERO;
             BigDecimal expense = BigDecimal.ZERO;
             for (TransactionRecord r : dayRecords) {
                 if (r.getAmount() == null) continue;
-                if (r.getTrasactionType() != null && "INCOME".equals(r.getTrasactionType().name())) {
+                if (r.getTransactionType() != null && "INCOME".equals(r.getTransactionType().name())) {
                     income = income.add(r.getAmount());
-                } else if (r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name())) {
+                } else if (r.getTransactionType() != null && "EXPENSE".equals(r.getTransactionType().name())) {
                     expense = expense.add(r.getAmount());
                 }
             }
@@ -446,12 +450,12 @@ public class DashboardService {
                 .filter(r -> r.getIsImported() != null && r.getIsImported())
                 .filter(r -> r.getIsDeleted() == null || !r.getIsDeleted())
                 .filter(r -> r.getTransactionTime() != null)
-                .filter(r -> r.getTrasactionType() != null && "EXPENSE".equals(r.getTrasactionType().name()))
+                .filter(r -> r.getTransactionType() != null && "EXPENSE".equals(r.getTransactionType().name()))
                 .filter(r -> {
                     LocalDateTime t = r.getTransactionTime();
                     return !t.isBefore(start) && t.isBefore(end);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         Map<String, BigDecimal> categoryMap = new LinkedHashMap<>();
         for (TransactionRecord r : records) {

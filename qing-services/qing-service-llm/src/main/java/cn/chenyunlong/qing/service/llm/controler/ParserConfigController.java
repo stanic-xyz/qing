@@ -46,8 +46,20 @@ public class ParserConfigController {
 
     @PutMapping("/configs/{id}")
     public Result<ParserConfig> updateConfig(@PathVariable Long id, @RequestBody ParserConfig config) {
-        config.setId(id);
-        return Result.success(parserConfigService.saveConfig(config));
+        parserConfigService.updateConfig(id, config);
+        return Result.success();
+    }
+
+    @PostMapping("/configs/{id}/unpublish")
+    public Result<Void> unpublish(@PathVariable Long id) {
+        parserConfigService.unpublish(id);
+        return Result.success();
+    }
+
+    @PostMapping("/configs/{id}/publish")
+    public Result<Void> publish(@PathVariable Long id) {
+        parserConfigService.publish(id);
+        return Result.success();
     }
 
     @DeleteMapping("/configs/{id}")

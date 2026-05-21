@@ -143,53 +143,115 @@ public class UploadService {
 
         ParserConfig parserConfig = parserConfigRepository.findById(parserId).orElseThrow(() -> new RuntimeException("指定的解析器不存在"));
 
-
         for (MultipartFile file : files) {
-            String originalFilename = file.getOriginalFilename();
+            UploadBatchPreviewResponse previewResponse = parseFile(parserId, file, parserConfig, targetAccount);
+            responses.add(previewResponse);
+        }
+        return responses;
+    }
 
-            // 新的内置解析器：通过数据库ID查找
-            // 根据渠道代码和文件类型找到对应的Bean
-            FileParser parser;
-            if (parserConfig.getIsBuiltIn()) {
-                parser = getBuiltinParser(parserConfig, FileUtil.getSuffix(originalFilename));
-            } else {
-                parser = new DynamicFileParser(parserConfig, scriptExecutorFactory);
+    @Transactional(rollbackFor = Exception.class)
+    public List<UploadBatchPreviewResponse> parseAndPreview(MultipartFile file, Long parserId, Long accountId) throws Exception {
+        Account targetAccount = accountRepository.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("指定的账户不存在"));
+
+        List<UploadBatchPreviewResponse> responses = new ArrayList<>();
+
+        // 解析 parserId: "builtin:123" 或 "custom:456" 或 "ALIPAY" (兼容旧的)
+
+        ParserConfig parserConfig = parserConfigRepository.findById(parserId).orElseThrow(() -> new RuntimeException("指定的解析器不存在"));
+        UploadBatchPreviewResponse previewResponse = parseFile(parserId, file, parserConfig, targetAccount);
+        responses.add(previewResponse);
+        return responses;
+    }
+
+    private UploadBatchPreviewResponse parseFile(Long parserId, MultipartFile file, ParserConfig parserConfig, Account targetAccount) throws Exception {
+        String originalFilename = file.getOriginalFilename();
+
+        // 新的内置解析器：通过数据库ID查找
+        // 根据渠道代码和文件类型找到对应的Bean
+        FileParser parser;
+        if (parserConfig.getIsBuiltIn()) {
+            parser = getBuiltinParser(parserConfig, FileUtil.getSuffix(originalFilename));
+        } else {
+            parser = new DynamicFileParser(parserConfig, scriptExecutorFactory);
+        }
+        if (parser == null) {
+            throw new RuntimeException("找不到有效的解析器: " + parserId);
+        }
+
+        String fileHash = FileHashUtil.calcMD5(file.getInputStream());
+        long fileSize = file.getSize();
+
+        ParseResult parseResult = parser.parse(file.getInputStream(), originalFilename);
+        List<UnifiedDraftRecord> records = parseResult.getRecords();
+
+        UploadFileRecord fileRecord = new UploadFileRecord();
+        fileRecord.setAccount(targetAccount);
+        fileRecord.setFileName(originalFilename);
+        fileRecord.setFileHash(fileHash);
+        fileRecord.setFileSize(fileSize);
+        fileRecord.setStatus(FileUploadStatusEnum.UPLOADED);
+        fileRecord.setParsedCount(records.size());
+        FileMetadata metadata = parseResult.getMetadata();
+        fileRecord.setStartTime(metadata.getStartTime());
+        fileRecord.setEndTime(metadata.getEndTime());
+        fileRecord.setTemplateVersion("v1");
+        fileRecord.setChannel(targetAccount.getChannel() != null ? targetAccount.getChannel().getCode() : null);
+        UploadFileRecord savedFileRecord = uploadFileRepo.save(fileRecord);
+
+        String finalUploadId = String.valueOf(savedFileRecord.getId());
+
+        // 统计收入/支出/转账数量
+        int incomeCount = 0;
+        int expenseCount = 0;
+        BigDecimal totalIncome = BigDecimal.ZERO;
+        BigDecimal totalExpense = BigDecimal.ZERO;
+
+        for (UnifiedDraftRecord record : records) {
+            // 金额不可能为空
+            assert record.getAmount() != null;
+            switch (record.getDirection()) {
+                case INCOME -> {
+                    incomeCount++;
+                    totalIncome = totalIncome.add(record.getAmount());
+                }
+                case EXPENSE -> {
+                    expenseCount++;
+                    totalExpense = totalExpense.add(record.getAmount());
+                }
             }
-            if (parser == null) {
-                throw new RuntimeException("找不到有效的解析器: " + parserId);
-            }
+        }
 
-            String fileHash = FileHashUtil.calcMD5(file.getInputStream());
-            long fileSize = file.getSize();
+        // 按批次大小分组创建批次（默认200条一批）
+        int BATCH_SIZE = 200;
+        int batchIndex = 0;
 
-            ParseResult parseResult = parser.parse(file.getInputStream(), originalFilename);
-            List<UnifiedDraftRecord> records = parseResult.getRecords();
+        // 按交易时间从远到近排序
+        records.sort(Comparator.comparing(UnifiedDraftRecord::getTransactionTime));
 
-            UploadFileRecord fileRecord = new UploadFileRecord();
-            fileRecord.setAccount(targetAccount);
-            fileRecord.setFileName(originalFilename);
-            fileRecord.setFileHash(fileHash);
-            fileRecord.setFileSize(fileSize);
-            fileRecord.setStatus(FileUploadStatusEnum.UPLOADED);
-            fileRecord.setParsedCount(records.size());
-            FileMetadata metadata = parseResult.getMetadata();
-            fileRecord.setStartTime(metadata.getStartTime());
-            fileRecord.setEndTime(metadata.getEndTime());
-            fileRecord.setTemplateVersion("v1");
-            fileRecord.setChannel(targetAccount.getChannel() != null ? targetAccount.getChannel().getCode() : null);
-            UploadFileRecord savedFileRecord = uploadFileRepo.save(fileRecord);
+        for (int i = 0; i < records.size(); i += BATCH_SIZE) {
+            int end = Math.min(i + BATCH_SIZE, records.size());
+            List<UnifiedDraftRecord> batchRecords = records.subList(i, end);
 
-            String finalUploadId = String.valueOf(savedFileRecord.getId());
+            // 创建批次记录
+            UnifiedDraftBatch batch = new UnifiedDraftBatch();
+            batch.setAccount(targetAccount);
+            batch.setAdapterType(AdapterTypeEnum.PARSER);
+            batch.setBatchNo(String.format("%s_batch_%d", finalUploadId, batchIndex));
+            batch.setUploadFile(fileRecord);
+            batch.setStatus(DraftBatchStatusEnum.DRAFTED);
+            batch.setTotalRecords(batchRecords.size());
+            batch.setMatchedRecords(0);
+            batch.setUnmatchedRecords(batchRecords.size());
+            batch.setSuspiciousRecords(0);
 
-            // 统计收入/支出/转账数量
-            int incomeCount = 0;
-            int expenseCount = 0;
-            BigDecimal totalIncome = BigDecimal.ZERO;
-            BigDecimal totalExpense = BigDecimal.ZERO;
+            LocalDateTime minTime = null;
+            LocalDateTime maxTime = null;
 
-            for (UnifiedDraftRecord record : records) {
+            // 获取当前批次的总金额和开始结束时间
+            for (UnifiedDraftRecord record : batchRecords) {
                 // 金额不可能为空
-                assert record.getAmount() != null;
                 switch (record.getDirection()) {
                     case INCOME -> {
                         incomeCount++;
@@ -200,98 +262,55 @@ public class UploadService {
                         totalExpense = totalExpense.add(record.getAmount());
                     }
                 }
-            }
 
-            // 按批次大小分组创建批次（默认200条一批）
-            int BATCH_SIZE = 200;
-            int batchIndex = 0;
-
-            // 按交易时间从远到近排序
-            records.sort(Comparator.comparing(UnifiedDraftRecord::getTransactionTime));
-
-            for (int i = 0; i < records.size(); i += BATCH_SIZE) {
-                int end = Math.min(i + BATCH_SIZE, records.size());
-                List<UnifiedDraftRecord> batchRecords = records.subList(i, end);
-
-                // 创建批次记录
-                UnifiedDraftBatch batch = new UnifiedDraftBatch();
-                batch.setAccount(targetAccount);
-                batch.setAdapterType(AdapterTypeEnum.PARSER);
-                batch.setBatchNo(String.format("%s_batch_%d", finalUploadId, batchIndex));
-                batch.setUploadFile(fileRecord);
-                batch.setStatus(DraftBatchStatusEnum.DRAFTED);
-                batch.setTotalRecords(batchRecords.size());
-                batch.setMatchedRecords(0);
-                batch.setUnmatchedRecords(batchRecords.size());
-                batch.setSuspiciousRecords(0);
-
-                LocalDateTime minTime = null;
-                LocalDateTime maxTime = null;
-
-                // 获取当前批次的总金额和开始结束时间
-                for (UnifiedDraftRecord record : batchRecords) {
-                    // 金额不可能为空
-                    switch (record.getDirection()) {
-                        case INCOME -> {
-                            incomeCount++;
-                            totalIncome = totalIncome.add(record.getAmount());
-                        }
-                        case EXPENSE -> {
-                            expenseCount++;
-                            totalExpense = totalExpense.add(record.getAmount());
-                        }
+                if (record.getTransactionTime() != null) {
+                    if (minTime == null || record.getTransactionTime().isBefore(minTime)) {
+                        minTime = record.getTransactionTime();
                     }
-
-                    if (record.getTransactionTime() != null) {
-                        if (minTime == null || record.getTransactionTime().isBefore(minTime)) {
-                            minTime = record.getTransactionTime();
-                        }
-                        if (maxTime == null || record.getTransactionTime().isAfter(maxTime)) {
-                            maxTime = record.getTransactionTime();
-                        }
+                    if (maxTime == null || record.getTransactionTime().isAfter(maxTime)) {
+                        maxTime = record.getTransactionTime();
                     }
                 }
-                batch.setTransactionStartTime(minTime);
-                batch.setTransactionEndTime(maxTime);
-
-                UnifiedDraftBatch savedBatch = draftBatchRepository.save(batch);
-
-                // 立即刷新到数据库，确保ID生成并可用于后续关联
-                log.info("Created batch: uploadId={}, batchNo={}, totalRecords={}", finalUploadId, savedBatch.getBatchNo(), savedBatch.getTotalRecords());
-
-                // 设置每条记录的批次号
-                for (UnifiedDraftRecord record : batchRecords) {
-                    record.setMatchStatus(DraftMatchStatusEnum.UNMATCHED);
-                    record.setBatch(savedBatch);
-                    record.setFileRecord(savedFileRecord);
-                }
-                batchIndex++;
             }
+            batch.setTransactionStartTime(minTime);
+            batch.setTransactionEndTime(maxTime);
 
-            // 并行写入统一草稿模型（新链路）
-            UnifiedDraftBatch draftBatch = new UnifiedDraftBatch();
-            draftBatch.setAccount(targetAccount);
-            draftBatch.setBatchNo("parser-" + finalUploadId + "-" + System.currentTimeMillis());
-            draftBatch.setAdapterType(AdapterTypeEnum.PARSER);
-            draftBatch.setStatus(DraftBatchStatusEnum.DRAFTED);
-            draftBatch.setProgress(60);
-            draftBatch.setTotalRecords(records.size());
-            draftBatch = unifiedDraftBatchRepository.save(draftBatch);
-            unifiedDraftBatchRepository.flush();
+            UnifiedDraftBatch savedBatch = draftBatchRepository.save(batch);
 
+            // 立即刷新到数据库，确保ID生成并可用于后续关联
+            log.info("Created batch: uploadId={}, batchNo={}, totalRecords={}", finalUploadId, savedBatch.getBatchNo(), savedBatch.getTotalRecords());
 
-            log.info("同步写入统一草稿批次 draftBatchId={}, records={}", draftBatch.getId(), records.size());
-            int batchCount = (records.size() + BATCH_SIZE - 1) / BATCH_SIZE;
-            unifiedDraftRecordRepository.saveAll(records);
-
-            responses.add(UploadBatchPreviewResponse.builder()
-                    .uploadId(fileRecord.getId())
-                    .fileName(originalFilename)
-                    .parsedCount(records.size())
-                    .previewRecords(null)  // 不再返回明细，前端显示概览
-                    .build());
+            // 设置每条记录的批次号
+            for (UnifiedDraftRecord record : batchRecords) {
+                record.setMatchStatus(DraftMatchStatusEnum.UNMATCHED);
+                record.setBatch(savedBatch);
+                record.setFileRecord(savedFileRecord);
+            }
+            batchIndex++;
         }
-        return responses;
+
+        // 并行写入统一草稿模型（新链路）
+        UnifiedDraftBatch draftBatch = new UnifiedDraftBatch();
+        draftBatch.setAccount(targetAccount);
+        draftBatch.setBatchNo("parser-" + finalUploadId + "-" + System.currentTimeMillis());
+        draftBatch.setAdapterType(AdapterTypeEnum.PARSER);
+        draftBatch.setStatus(DraftBatchStatusEnum.DRAFTED);
+        draftBatch.setProgress(60);
+        draftBatch.setTotalRecords(records.size());
+        draftBatch = unifiedDraftBatchRepository.save(draftBatch);
+        unifiedDraftBatchRepository.flush();
+
+
+        log.info("同步写入统一草稿批次 draftBatchId={}, records={}", draftBatch.getId(), records.size());
+        int batchCount = (records.size() + BATCH_SIZE - 1) / BATCH_SIZE;
+        unifiedDraftRecordRepository.saveAll(records);
+
+        return UploadBatchPreviewResponse.builder()
+                .uploadId(fileRecord.getId())
+                .fileName(originalFilename)
+                .parsedCount(records.size())
+                .previewRecords(null)  // 不再返回明细，前端显示概览
+                .build();
     }
 
     public UploadPreview getPreviewData(Long uploadId, int page, int size) {

@@ -2,7 +2,7 @@ package cn.chenyunlong.qing.service.llm.entity;
 
 import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionDirectionTypeEnum;
-import cn.chenyunlong.qing.service.llm.enums.TrasactionType;
+import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -39,7 +39,7 @@ public class UnifiedDraftRecord {
     private String summary;
 
     @Enumerated(EnumType.STRING)
-    private TrasactionType trasactionType;
+    private TransactionType trasactionType;
 
     // 交易金额
     @Column(precision = 19, scale = 2)

@@ -16,47 +16,45 @@ public class TransactionRecord {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
-
+    // 所属账户
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
 
-    // 交易时间
+    // *交易时间
     private LocalDateTime transactionTime;
 
-    // 账单顺序
+    // *账单顺序
     private Integer orderNo;
 
-    // 交易金额,带正负
+    // *交易金额,带正负
     @Column(precision = 19, scale = 2, nullable = false)
     private BigDecimal amount;
 
-    // 出入账类型
+    // *出入账类型
     @Enumerated(EnumType.STRING)
     private TransactionDirectionTypeEnum directionType;
 
-    // 交易余额
+    // *交易余额
     @Column(precision = 19, scale = 2)
     private BigDecimal balance;
 
+    // *概要信息
     private String summary;
 
-    // 交易备注
+    // *详情,格式：交易类型-->账户(6217003810043300020/陈先生)
     private String detail;
 
-    // 账户信息冗余
+    // *账户信息冗余
     private String accountName; // 冗余
 
-    // 账户类型冗余
+    // *账户类型冗余
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
     // 交易类型冗余
     @Enumerated(EnumType.STRING)
-    private TrasactionType trasactionType; // INCOME/EXPENSE/TRANSFER
+    private TransactionType transactionType; // INCOME/EXPENSE/TRANSFER
 
     // 内部转账时，目标账户的ID
     private Long targetAccountId;
@@ -87,8 +85,6 @@ public class TransactionRecord {
 
     // 原始交易ID
     private String originalId;
-    // 原始文件名
-    private String sourceFile;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "original_detail_id")
@@ -96,11 +92,6 @@ public class TransactionRecord {
 
     // 交易标签
     private String tags; // JSON
-
-    // 关联的交易ID
-    private Long linkedId;
-    // 用于比对的关联ID
-    private String linkedGroupId; // 用于比对的关联ID
 
     // 关联的导入批次ID
     private String uploadId; // 关联的导入批次ID
@@ -115,10 +106,6 @@ public class TransactionRecord {
     // 是否已正式导入（用于支持分步导入）
     private Boolean isImported = true; // 是否已正式导入（用于支持分步导入）
 
-    // 存储 JSON 格式的原始解析数据
-    @Column(columnDefinition = "TEXT")
-    private String originalData; // 存储 JSON 格式的原始解析数据
-
     // 对账状态
     @Enumerated(EnumType.STRING)
     private ReconciliationStatusEnum reconciliationStatus; // PENDING/MATCHED/MANUAL
@@ -132,10 +119,6 @@ public class TransactionRecord {
 
     private String matchRuleName; // 触发此状态的规则名称
 
-    // 资金类型：INTERNAL(内部如余额宝), EXTERNAL(外部如银行卡), SPLIT(混合支付)
-    @Enumerated(EnumType.STRING)
-    private FundTypeEnum fundType;
-
     // 资金来源描述：如 "招商银行储蓄卡(1234)"
     private String fundSource;
 
@@ -144,6 +127,9 @@ public class TransactionRecord {
 
     @Enumerated(EnumType.STRING)
     private RecordRoleEnum recordRole = RecordRoleEnum.PRIMARY;
+
+    // 主流水标识
+    private Long targetPrimaryRecordId;
 
     @Enumerated(EnumType.STRING)
     private TransactionRecordTypeEnum transactionRecordType;

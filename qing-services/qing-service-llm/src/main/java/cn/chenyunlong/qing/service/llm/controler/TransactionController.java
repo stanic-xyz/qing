@@ -1,12 +1,16 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
 import cn.chenyunlong.qing.service.llm.dto.Result;
+import cn.chenyunlong.qing.service.llm.dto.transactions.CreateTransactionRecordDto;
 import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.service.ReconciliationService;
+import cn.chenyunlong.qing.service.llm.service.TransactionService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -37,6 +41,7 @@ public class TransactionController {
     private final ChannelRepository channelRepo;
     private final AccountRepository accountRepository;
     private final ReconciliationService reconciliationService;
+    private final TransactionService transactionService;
 
     @GetMapping
     public Result<Page<TransactionRecord>> getTransactions(
@@ -116,11 +121,38 @@ public class TransactionController {
         return Result.success(result);
     }
 
+    /**
+     * 新增单条流水
+     */
+    @PostMapping
+    public Result<TransactionRecord> createTransaction(@RequestBody @Valid CreateTransactionRecordDto dto) {
+        TransactionRecord record = transactionService.create(dto);
+        return Result.success(record);
+    }
+
+    /**
+     * 批量新增流水（支持同时创建多条）
+     */
+    @PostMapping("/batch")
+    public Result<List<TransactionRecord>> createTransaction(@RequestBody @NotEmpty(message = "批量列表不能为空") List<@Valid CreateTransactionRecordDto> dtos) {
+        List<TransactionRecord> transactionRecordList = transactionService.batchCreate(dtos);
+        Result<List<TransactionRecord>> result = Result.success();
+        result.setData(transactionRecordList);
+        return result;
+    }
+
     @GetMapping("/{id}/trace")
-    public Result<List<TransactionRecord>> getTraceRecords(@PathVariable Long id) {
+    public Result<List<TransactionRecord>> getTraceRecords(
+            @PathVariable Long id,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "100") int size) {
         TransactionRecord record = transactionRepo.findById(id).orElse(null);
         if (record == null) {
             return Result.error(404, "记录不存在");
+        }
+
+        if (size > 500) {
+            size = 500;
         }
 
         LocalDateTime start = record.getTransactionTime().minusDays(1).with(java.time.LocalTime.MIN);
@@ -129,7 +161,7 @@ public class TransactionController {
         Specification<TransactionRecord> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("amount"), record.getAmount()));
-            predicates.add(cb.equal(root.get("trasactionType"), record.getTrasactionType()));
+            predicates.add(cb.equal(root.get("trasactionType"), record.getTransactionType()));
             predicates.add(cb.between(root.get("transactionTime"), start, end));
             predicates.add(cb.equal(root.get("isDeleted"), false));
             predicates.add(cb.or(
@@ -139,8 +171,9 @@ public class TransactionController {
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
-        List<TransactionRecord> related = transactionRepo.findAll(spec, Sort.by(Sort.Direction.ASC, "transactionTime"));
-        return Result.success(related);
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "transactionTime"));
+        Page<TransactionRecord> related = transactionRepo.findAll(spec, pageRequest);
+        return Result.success(related.getContent());
     }
 
     @PutMapping("/{id}")
@@ -155,7 +188,7 @@ public class TransactionController {
         if (updateData.getAmount() != null) record.setAmount(updateData.getAmount());
         if (updateData.getCounterparty() != null) record.setCounterparty(updateData.getCounterparty());
         if (updateData.getMerchant() != null) record.setMerchant(updateData.getMerchant());
-        if (updateData.getTrasactionType() != null) record.setTrasactionType(updateData.getTrasactionType());
+        if (updateData.getTransactionType() != null) record.setTransactionType(updateData.getTransactionType());
 
         record.setIsModified(true);
         transactionRepo.save(record);

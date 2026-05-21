@@ -34,9 +34,23 @@ public class BillController {
         }
     }
 
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Result<List<UploadBatchPreviewResponse>>> uploadBill(@RequestParam("file") MultipartFile file,
+                                                                               @RequestParam(value = "parserId") Long parserId,
+                                                                               @RequestParam("accountId") Long accountId) {
+        try {
+            // 兼容旧逻辑
+            List<UploadBatchPreviewResponse> previews = uploadService.parseAndPreview(file, parserId, accountId);
+            return ResponseEntity.ok(Result.success(previews));
+        } catch (Exception e) {
+            log.error("批量上传解析失败", e);
+            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
+        }
+    }
+
     @GetMapping("/preview/{uploadId}")
     public ResponseEntity<Result<UploadPreview>> getPreview(
-            @PathVariable("uploadId") Long uploadId,
+            @PathVariable Long uploadId,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "100") int size) {
         try {

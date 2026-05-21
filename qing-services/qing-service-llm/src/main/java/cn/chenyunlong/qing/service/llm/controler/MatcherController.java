@@ -90,11 +90,10 @@ public class MatcherController {
         TransactionRecord clone = new TransactionRecord();
         clone.setId(r.getId());
         clone.setTransactionTime(r.getTransactionTime());
-        clone.setChannel(r.getChannel());
         clone.setAccount(r.getAccount());
         clone.setAccountName(r.getAccountName());
         clone.setAccountType(r.getAccountType());
-        clone.setTrasactionType(r.getTrasactionType());
+        clone.setTransactionType(r.getTransactionType());
         clone.setAmount(r.getAmount());
         clone.setBalance(r.getBalance());
         clone.setCounterparty(r.getCounterparty());
@@ -103,11 +102,8 @@ public class MatcherController {
         clone.setSubCategory(r.getSubCategory());
         clone.setStatus(r.getStatus());
         clone.setFee(r.getFee());
-        clone.setOriginalId(r.getOriginalId());
-        clone.setSourceFile(r.getSourceFile());
         clone.setDetail(r.getDetail());
         clone.setTags(r.getTags());
-        clone.setFundType(r.getFundType());
         clone.setFundSource(r.getFundSource());
         clone.setFundSourceAccountId(r.getFundSourceAccountId());
         clone.setMatchStatus(cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum.ORIGINAL);
@@ -125,7 +121,7 @@ public class MatcherController {
         draft.setMerchant(r.getMerchant());
         draft.setCategory(r.getCategory());
         draft.setCounterparty(r.getCounterparty());
-        draft.setTrasactionType(r.getTrasactionType());
+        draft.setTrasactionType(r.getTransactionType());
         return draft;
     }
 
