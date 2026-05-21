@@ -1,0 +1,72 @@
+/* 全局样式重置（教学点：清除默认样式） */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 页面整体样式 */
+body {
+    font-family: "Microsoft YaHei", sans-serif; /* 字体设置 */
+    background: linear-gradient(120deg, #5f85ff, #48e08f); ; /* 页面蓝白渐变背景：从浅蓝到纯白 */
+    min-height: 100vh; /* 页面高度占满视口 */
+    display: flex; /* Flex布局：让内容垂直+水平居中 */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px; /* 元素之间的间距 */
+    /* 渐变背景防重复 */
+    background-repeat: no-repeat;
+}
+
+/* Logo容器样式 */
+.logo-container {
+    width: 120px; /* 容器宽度 */
+    height: 120px; /* 容器高度 */
+    border-radius: 50%; /* 圆形容器 */
+    overflow: hidden; /* 裁剪超出容器的图片 */
+    border: 3px solid #2563eb; /* 边框样式 */
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); /* 阴影效果 */
+}
+
+/* Logo图片样式 */
+.logo {
+    width: 100%; /* 图片宽度占满容器 */
+    height: 100%; /* 图片高度占满容器 */
+    object-fit: cover; /* 图片等比缩放，填充容器 */
+    cursor: pointer; /* 鼠标悬浮显示手型 */
+    transition: transform 0.3s ease; /* 过渡动画（教学点：CSS动画） */
+}
+
+/* Logo悬浮效果 */
+.logo:hover {
+    transform: scale(1.2); /* 鼠标悬浮放大1.05倍 */
+}
+
+/* HelloWorld文本容器 */
+.hello-container {
+    text-align: center; /* 文本居中 */
+}
+
+/* HelloWorld标题样式 */
+#helloText {
+    font-size: 48px; /* 字体大小 */
+    color: #303133; /* 字体颜色 */
+    transition: all 0.3s ease; /* 过渡动画 */
+    cursor: pointer;
+}
+
+/* 标题悬浮效果 */
+#helloText:hover {
+    color: #2563eb; /* 悬浮变色 */
+    transform: translateY(-5px); /* 悬浮上移5px */
+    /* 新增文字阴影，增强视觉层次 */
+    text-shadow: 0 2px 8px rgba(37, 99, 235, 0.3)
+}
+
+/* 提示文本样式 */
+.tips {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #64748b;
+}

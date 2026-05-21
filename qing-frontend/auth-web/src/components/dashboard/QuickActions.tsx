@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, Button} from '../ui';
 
-interface QuickAction {
+export interface QuickAction {
     id: string;
     label: string;
     icon: React.ReactNode;
@@ -18,20 +18,13 @@ interface QuickActionsProps {
 
 const QuickActions: React.FC<QuickActionsProps> = ({
                                                        actions,
-                                                       title = 'Quick Actions',
-                                                       columns = 2,
+                                                       title = '快捷操作',
                                                    }) => {
-    const gridCols = {
-        1: 'grid-cols-1',
-        2: 'grid-cols-2',
-        3: 'grid-cols-3',
-        4: 'grid-cols-4',
-    };
-    console.info(columns);
+    const gridCols = 'grid-cols-2';
 
     return (
         <Card title={title}>
-            <div className={`grid ${gridCols[2]} gap-3`}>
+            <div className={`grid ${gridCols} gap-3`}>
                 {actions.map((action) => (
                     <Button
                         key={action.id}

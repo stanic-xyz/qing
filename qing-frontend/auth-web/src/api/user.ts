@@ -1,15 +1,19 @@
 import request from './request';
 import type {PageResult, User} from "./types.ts";
+import {getCurrentUser as getUser} from "./auth.ts";
 
 export const getUserInfo = (id: string) => {
     return request.get<User>(`/users/${id}`);
+};
+
+export const getCurrentUser = () => {
+    return getUser();
 };
 
 export const updateUser = (id: string, data: any) => {
     return request.put<void>(`/users/${id}`, data);
 };
 
-// Admin
 export const getUsers = (params: any) => {
     return request.get<PageResult<User>>('/users', {params});
 };

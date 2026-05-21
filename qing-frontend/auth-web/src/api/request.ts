@@ -1,4 +1,4 @@
-import axios, {type AxiosResponse} from 'axios';
+import axios, {type AxiosResponse, type AxiosError} from 'axios';
 import {message} from 'antd';
 import type {ApiResponse} from "./types.ts";
 
@@ -6,6 +6,14 @@ const request = axios.create({
     baseURL: '/api/v1',
     timeout: 10000,
 });
+
+let isRefreshing = false;
+let requestQueue: Array<(token: string) => void> = [];
+
+const processQueue = (token: string | null) => {
+    requestQueue.forEach((cb) => cb(token as string));
+    requestQueue = [];
+};
 
 request.interceptors.request.use(
     (config) => {
@@ -22,30 +30,65 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
     (response: AxiosResponse<ApiResponse<any>>) => {
-        console.info("请求结束：",response);
-        const res = response.data;
-        if (!res.success) {
-            message.error(res.message || 'Error');
-            return Promise.reject(new Error(res.message || 'Error'));
-        }
-        return res as any; // We cast to any here to satisfy axios types but the caller will specify T
+        return response.data as any;
     },
-    (error) => {
-        if (error.response) {
-            if (error.response.status === 401) {
-                localStorage.removeItem('token');
-                window.location.href = '/login';
-            } else {
-                message.error(error.response.data?.message || 'Request Failed');
+    async (error: AxiosError<ApiResponse<any>>) => {
+        const originalRequest = error.config;
+
+        if (error.response?.status === 401 && originalRequest && !originalRequest.headers['X-Retry']) {
+            if (isRefreshing) {
+                return new Promise((resolve) => {
+                    requestQueue.push((token: string) => {
+                        originalRequest.headers['Authorization'] = `Bearer ${token}`;
+                        resolve(request(originalRequest));
+                    });
+                });
             }
+
+            isRefreshing = true;
+
+            try {
+                const refreshToken = localStorage.getItem('refreshToken');
+                if (refreshToken) {
+                    const res = await axios.post('/api/v1/auth/refresh', {refreshToken});
+                    if (res.data.success) {
+                        const newToken = res.data.result;
+                        localStorage.setItem('token', newToken);
+                        processQueue(newToken);
+                        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+                        originalRequest.headers['X-Retry'] = 'true';
+                        return request(originalRequest);
+                    }
+                }
+
+                localStorage.removeItem('token');
+                localStorage.removeItem('userInfo');
+                localStorage.removeItem('userId');
+                localStorage.removeItem('refreshToken');
+                window.location.href = '/login';
+                message.error('登录已过期，请重新登录');
+            } catch (refreshError) {
+                processQueue(null);
+                localStorage.removeItem('token');
+                localStorage.removeItem('userInfo');
+                localStorage.removeItem('userId');
+                localStorage.removeItem('refreshToken');
+                window.location.href = '/login';
+                message.error('登录已过期，请重新登录');
+            } finally {
+                isRefreshing = false;
+            }
+        } else if (error.response) {
+            const errorMsg = error.response.data?.message || '请求失败';
+            message.error(errorMsg);
         } else {
-            message.error('Network Error');
+            message.error('网络错误');
         }
+
         return Promise.reject(error);
     }
 );
 
-// Wrapper methods to type the response
 export const get = <T>(url: string, config?: any): Promise<ApiResponse<T>> => {
     return request.get(url, config);
 };

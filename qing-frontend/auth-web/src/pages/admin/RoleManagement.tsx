@@ -6,7 +6,7 @@ import type {Role} from "../../api/types.ts";
 
 const RoleManagement: React.FC = () => {
 
-    let rolesState: Role[] = [];
+    const rolesState: Role[] = [];
     const [roles, setRoles] = useState(rolesState);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);

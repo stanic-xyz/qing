@@ -1,0 +1,28 @@
+{
+    "data-share":
+    {
+        "shares":
+        [
+            {
+                "name": "App.Native.HelloFnosAppCenter",
+                "permission":
+                {
+                    "rw":
+                    [
+                        "App.Native.HelloFnosAppCenter"
+                    ]
+                }
+            },
+            {
+                "name": "App.Native.HelloFnosAppCenter/data",
+                "permission":
+                {
+                    "rw":
+                    [
+                        "App.Native.HelloFnosAppCenter"
+                    ]
+                }
+            }
+        ]
+    }
+}

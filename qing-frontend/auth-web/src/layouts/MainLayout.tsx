@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Layout, Menu, Avatar, Dropdown, message, Breadcrumb, theme, type MenuProps} from 'antd';
+import {Layout, Menu, Avatar, Dropdown, message, Breadcrumb, theme, type MenuProps, Modal} from 'antd';
 import {
     UserOutlined,
     TeamOutlined,
@@ -10,6 +10,7 @@ import {
     MenuFoldOutlined,
 } from '@ant-design/icons';
 import {useNavigate, useLocation, Outlet, Link} from 'react-router-dom';
+import {logout as logoutApi} from '../api/auth';
 
 const {Header, Sider, Content, Footer} = Layout;
 
@@ -21,51 +22,65 @@ const MainLayout: React.FC = () => {
         token: {colorBgContainer, borderRadiusLG},
     } = theme.useToken();
 
-    // Mock user info from localStorage or Context
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userInfo');
-        localStorage.removeItem('userId');
-        navigate('/login');
-        message.success('Logged out successfully');
+    const handleLogout = async () => {
+        Modal.confirm({
+            title: '确认登出',
+            content: '确定要退出登录吗？',
+            okText: '确认',
+            cancelText: '取消',
+            async onOk() {
+                try {
+                    await logoutApi();
+                    message.success('登出成功');
+                } catch (error) {
+                    console.error('登出失败:', error);
+                } finally {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('userInfo');
+                    localStorage.removeItem('userId');
+                    localStorage.removeItem('refreshToken');
+                    navigate('/login');
+                }
+            },
+        });
     };
 
-    const menuItems = [
+    const menuItems: MenuProps['items'] = [
         {
             key: '/profile',
             icon: <UserOutlined/>,
-            label: 'Personal Center',
+            label: '个人中心',
         },
         {
             key: 'admin',
             icon: <SafetyCertificateOutlined/>,
-            label: 'System Management',
+            label: '系统管理',
             children: [
                 {
                     key: '/admin/users',
                     icon: <TeamOutlined/>,
-                    label: 'User Management',
+                    label: '用户管理',
                 },
                 {
                     key: '/admin/roles',
                     icon: <SafetyCertificateOutlined/>,
-                    label: 'Role Management',
+                    label: '角色管理',
                 },
                 {
                     key: '/admin/permissions',
                     icon: <LockOutlined/>,
-                    label: 'Permission Management',
+                    label: '权限管理',
                 },
             ],
         },
     ];
 
-    const items: MenuProps['items'] = [
+    const userMenuItems: MenuProps['items'] = [
         {
             key: 'profile',
-            label: 'Profile',
+            label: '个人信息',
             icon: <UserOutlined/>,
             onClick: () => navigate('/profile'),
         },
@@ -74,16 +89,23 @@ const MainLayout: React.FC = () => {
         },
         {
             key: 'logout',
-            label: 'Logout',
+            label: '退出登录',
             icon: <LogoutOutlined/>,
             onClick: handleLogout,
+            danger: true,
         },
     ];
 
-    // Generate breadcrumb items based on location
     const breadcrumbItems = location.pathname.split('/').filter(i => i).map((path, index, arr) => {
         const url = `/${arr.slice(0, index + 1).join('/')}`;
-        return {title: <Link to={url}>{path.charAt(0).toUpperCase() + path.slice(1)}</Link>};
+        const labelMap: Record<string, string> = {
+            profile: '个人中心',
+            admin: '系统管理',
+            users: '用户管理',
+            roles: '角色管理',
+            permissions: '权限管理',
+        };
+        return {title: <Link to={url}>{labelMap[path] || path}</Link>};
     });
 
     return (
@@ -143,14 +165,14 @@ const MainLayout: React.FC = () => {
                             onClick: () => setCollapsed(!collapsed),
                             style: {padding: '0 24px', fontSize: '18px', cursor: 'pointer'}
                         })}
-                        <Breadcrumb items={[{title: <Link to="/">Home</Link>}, ...breadcrumbItems]}/>
+                        <Breadcrumb items={[{title: <Link to="/">首页</Link>}, ...breadcrumbItems]}/>
                     </div>
 
-                    <Dropdown menu={{items}} placement="bottomRight" arrow>
-            <span style={{cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8}}>
-              <Avatar src={userInfo.avatar} style={{backgroundColor: '#1890ff'}} icon={<UserOutlined/>}/>
-              <span style={{fontWeight: 500}}>{userInfo.nickname || userInfo.username || 'User'}</span>
-            </span>
+                    <Dropdown menu={{items: userMenuItems}} placement="bottomRight" arrow>
+                        <span style={{cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8}}>
+                            <Avatar src={userInfo.avatar} style={{backgroundColor: '#1890ff'}} icon={<UserOutlined/>}/>
+                            <span style={{fontWeight: 500}}>{userInfo.nickname || userInfo.username || '用户'}</span>
+                        </span>
                     </Dropdown>
                 </Header>
                 <Content

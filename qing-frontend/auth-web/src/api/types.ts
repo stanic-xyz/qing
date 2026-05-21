@@ -7,13 +7,18 @@ export interface ApiResponse<T> {
 }
 
 export interface LoginResult {
-  scope: string;
-  accessToken: string;
-  idToken: string;
-  refreshToken: string;
-  tokenType: string;
-  expireIn: string;
-  code: string;
+  token: string;
+  userId: number;
+  username: string;
+  avatar: string;
+}
+
+export interface RegisterRequest {
+  username: string;
+  password: string;
+  nickname?: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface User {
@@ -24,7 +29,7 @@ export interface User {
   phone: { value: string };
   avatar: string;
   description: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'LOCKED'; // Assuming status values
+  status: 'ACTIVE' | 'INACTIVE' | 'LOCKED';
   roles: Role[];
   createdAt: string;
   updatedAt: string;

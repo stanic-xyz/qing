@@ -1,0 +1,12 @@
+{
+    ".url": {
+        "App.Native.HelloFnosAppCenter.Application": {
+            "title": "应用中心案例",
+            "icon": "images/icon_{0}.png",
+            "type": "iframe",
+            "protocol": "http",
+            "url": "/cgi/ThirdParty/App.Native.HelloFnosAppCenter/index.cgi/",
+            "allUsers": true
+        }
+    }
+}

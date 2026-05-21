@@ -5,7 +5,7 @@ import type {Permission} from "../../api/types.ts";
 
 const PermissionManagement: React.FC = () => {
 
-    let permissionList: Permission[] = [];
+    const permissionList: Permission[] = [];
 
     const [permissions, setPermissions] = useState(permissionList);
     const [loading, setLoading] = useState(false);
