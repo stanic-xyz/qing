@@ -3,28 +3,28 @@ import axios from 'axios';
 import {Banknote, UploadCloud, Scale, Link} from 'lucide-react';
 import AccountImportModal from '../components/AccountImportModal';
 import RuleSelector from '../components/RuleSelector';
-import type {ChannelItem, ChannelItemModal} from "./Import/types.ts";
+import type {ChannelItem, ChannelItemModal, Account} from "./Import/types.ts";
 import {channelApi} from "@/api/channels.ts";
 
 export default function Channels() {
-    const [accounts, setAccounts] = useState([]);
+    const [accounts, setAccounts] = useState<Account[]>([]);
     const [channels, setChannels] = useState<ChannelItem[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [showImportModal, setShowImportModal] = useState(false);
     const [showCalibrateModal, setShowCalibrateModal] = useState(false);
     const [editingChannel, setEditingChannel] = useState<ChannelItemModal | null>(null);
-    const [calibratingAccount, setCalibratingAccount] = useState<any>(null);
+    const [calibratingAccount, setCalibratingAccount] = useState<Account | null>(null);
     const [calibrateAmount, setCalibrateAmount] = useState<string>('');
 
     // 删除账户相关状态
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [deletingAccount, setDeletingAccount] = useState<any>(null);
+    const [deletingAccount, setDeletingAccount] = useState<Account | null>(null);
     const [transactionCount, setTransactionCount] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
 
     // 规则绑定相关状态
     const [showRuleSelector, setShowRuleSelector] = useState(false);
-    const [bindingItem, setBindingItem] = useState<any>(null);
+    const [bindingItem, setBindingItem] = useState<Account | null>(null);
     const [boundRuleIds, setBoundRuleIds] = useState<number[]>([]);
 
 
@@ -73,16 +73,19 @@ export default function Channels() {
             return;
         }
         try {
-            const res =  await channelApi.countTransactions(deletingAccount.id);
-            // 先查询关联流水数量
-            const count = res.data.data || 0;
-            setTransactionCount(count);
-            const account = accounts.find((a: any) => a.id === id);
-            setDeletingAccount(account);
+            const accountToDelete = deletingAccount;
+            if (accountToDelete) {
+                const res = await channelApi.countTransactions(accountToDelete.id);
+                // 先查询关联流水数量
+                const count = res.data?.count || 0;
+                setTransactionCount(count);
+            }
+            const account = accounts.find((a) => a.id === id);
+            setDeletingAccount(account || null);
             setShowDeleteModal(true);
-        } catch (e: any) {
+        } catch (error) {
             // 如果查询失败（比如账户不存在），直接提示
-            if (e.response?.status === 404) {
+            if ((error as any).response?.status === 404) {
                 alert('账户不存在');
             } else {
                 alert('删除失败');
@@ -111,13 +114,16 @@ export default function Channels() {
             return;
         }
         try {
-            await axios.post(`/api/finance/accounts/${calibratingAccount.id}/calibrate`, {
-                newBalance: Number(calibrateAmount)
-            });
-            setShowCalibrateModal(false);
-            setCalibrateAmount('');
-            setCalibratingAccount(null);
-            await fetchAccounts();
+            const account = calibratingAccount;
+            if (account) {
+                await axios.post(`/api/finance/accounts/${account.id}/calibrate`, {
+                    newBalance: Number(calibrateAmount)
+                });
+                setShowCalibrateModal(false);
+                setCalibrateAmount('');
+                setCalibratingAccount(null);
+                await fetchAccounts();
+            }
         } catch (e: any) {
             alert('平账失败: ' + (e.response?.data?.message || e.message));
         }
