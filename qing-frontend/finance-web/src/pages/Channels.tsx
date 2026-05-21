@@ -1,17 +1,18 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import {Banknote, UploadCloud, Scale, Link, BarChart3} from 'lucide-react';
+import {Banknote, UploadCloud, Scale, Link} from 'lucide-react';
 import AccountImportModal from '../components/AccountImportModal';
 import RuleSelector from '../components/RuleSelector';
-import type {Account, ChannelItem} from "./Import/types.ts";
+import type {ChannelItem, ChannelItemModal} from "./Import/types.ts";
+import {channelApi} from "@/api/channels.ts";
 
-export default function Accounts() {
+export default function Channels() {
     const [accounts, setAccounts] = useState([]);
     const [channels, setChannels] = useState<ChannelItem[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [showImportModal, setShowImportModal] = useState(false);
     const [showCalibrateModal, setShowCalibrateModal] = useState(false);
-    const [editingAccount, setEditingAccount] = useState<Account | null>(null);
+    const [editingChannel, setEditingChannel] = useState<ChannelItemModal | null>(null);
     const [calibratingAccount, setCalibratingAccount] = useState<any>(null);
     const [calibrateAmount, setCalibrateAmount] = useState<string>('');
 
@@ -25,11 +26,6 @@ export default function Accounts() {
     const [showRuleSelector, setShowRuleSelector] = useState(false);
     const [bindingItem, setBindingItem] = useState<any>(null);
     const [boundRuleIds, setBoundRuleIds] = useState<number[]>([]);
-
-    // 账户统计相关状态
-    const [showStatsModal, setShowStatsModal] = useState(false);
-    const [statsAccount, setStatsAccount] = useState<any>(null);
-    const [accountStats, setAccountStats] = useState<any>(null);
 
 
     const fetchAccounts = async () => {
@@ -51,20 +47,6 @@ export default function Accounts() {
         }
     };
 
-    const fetchAccountStatistics = async (accountId: number, accountName: string) => {
-        setStatsAccount({ id: accountId, accountName });
-        try {
-            const res = await axios.get(`/api/finance/accounts/${accountId}/statistics`);
-            if (res.data.code === 200) {
-                setAccountStats(res.data.data);
-            }
-        } catch (e) {
-            console.error('获取账户统计失败', e);
-            setAccountStats(null);
-        }
-        setShowStatsModal(true);
-    };
-
     useEffect(() => {
         fetchAccounts();
         fetchChannels();
@@ -72,11 +54,11 @@ export default function Accounts() {
 
     const handleSave = async () => {
         try {
-            if (!editingAccount) return;
-            if (editingAccount.id) {
-                await axios.put(`/api/finance/accounts/${editingAccount.id}`, editingAccount);
+            if (!editingChannel) return;
+            if (editingChannel.id) {
+                await axios.put(`/api/finance/channels/${editingChannel.id}`, editingChannel);
             } else {
-                await axios.post('/api/finance/accounts', editingAccount);
+                await axios.post('/api/finance/channels', editingChannel);
             }
             setShowModal(false);
             fetchAccounts();
@@ -91,8 +73,8 @@ export default function Accounts() {
             return;
         }
         try {
+            const res =  await channelApi.countTransactions(deletingAccount.id);
             // 先查询关联流水数量
-            const res = await axios.get(`/api/finance/accounts/${id}/transaction-count`);
             const count = res.data.data || 0;
             setTransactionCount(count);
             const account = accounts.find((a: any) => a.id === id);
@@ -112,7 +94,7 @@ export default function Accounts() {
         if (!deletingAccount) return;
         setIsDeleting(true);
         try {
-            await axios.delete(`/api/finance/accounts/${deletingAccount.id}?cascade=${cascade}`);
+            await channelApi.delete(deletingAccount.id, cascade);
             setShowDeleteModal(false);
             setDeletingAccount(null);
             await fetchAccounts();
@@ -141,45 +123,16 @@ export default function Accounts() {
         }
     };
 
-    const openCalibrateModal = (account: any) => {
-        setCalibratingAccount(account);
-        setCalibrateAmount(account.currentBalance != null ? String(account.currentBalance) : '0');
-        setShowCalibrateModal(true);
-    };
-
-    const openModal = (account: Account = {
-        id: 0,
-        accountName: '',
-        accountType: 'DEBIT',
-        bankName: '',
-        channel: '',
-        remark: '',
-        cardNumber: '',
-        initialBalance: 0,
-        status: 'ACTIVE'
+    const openModal = (channelItem: ChannelItemModal = {
+        id: undefined,
+        name: '',
+        code: '',
+        type: ''
     }) => {
-        setEditingAccount({
-            ...account,
-            channel: account.channelDto?.id?.toString(),
+        setEditingChannel({
+            ...channelItem,
         });
         setShowModal(true);
-    };
-
-    const handleChannelChange = (_channelCode: string) => {
-        console.log('选择结果', _channelCode);
-        if (!editingAccount) return;
-        if (_channelCode) {
-            console.log('选择结果有值');
-            setEditingAccount({
-                ...editingAccount,
-                channel: _channelCode
-            });
-        } else {
-            setEditingAccount({
-                ...editingAccount,
-                channel: _channelCode
-            });
-        }
     };
 
     const handleBindRules = async (item: any) => {
@@ -252,44 +205,33 @@ export default function Accounts() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {accounts.map((account: any) => (
-                    <div key={account.id}
+                {channels.map((channel: ChannelItem) => (
+                    <div key={channel.id}
                          className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 relative group flex flex-col">
                         <div className="absolute top-4 right-4 hidden group-hover:flex space-x-2">
-                            <button onClick={() => fetchAccountStatistics(account.id, account.accountName)}
-                                    className="text-green-500 hover:text-green-700 text-sm flex items-center"
-                                    title="账户统计"><BarChart3 className="w-3 h-3 mr-1"/>统计
-                            </button>
-                            <button onClick={() => handleBindRules(account)}
+                            <button onClick={() => handleBindRules(channel)}
                                     className="text-purple-500 hover:text-purple-700 text-sm flex items-center"
-                                    title="绑定规则"><Link className="w-3 h-3 mr-1"/>规则
+                                    title="绑定规则"><Link className="w-3 h-3 mr-1"/>绑定规则
                             </button>
-                            <button onClick={() => openCalibrateModal(account)}
-                                    className="text-orange-500 hover:text-orange-700 text-sm flex items-center"><Scale
-                                className="w-3 h-3 mr-1"/>平账
-                            </button>
-                            <button onClick={() => openModal(account)}
+                            <button onClick={() => openModal(channel)}
                                     className="text-blue-500 hover:text-blue-700 text-sm">编辑
                             </button>
-                            <button onClick={() => handleDelete(account.id)}
+                            <button onClick={() => handleDelete(channel.id)}
                                     className="text-red-500 hover:text-red-700 text-sm">删除
                             </button>
                         </div>
                         <div className="flex items-start justify-between">
                             <div>
-                                {renderIcon(account.channel?.icon)}
-                                <h3 className="text-lg font-bold text-gray-800">{account.accountName} <span
-                                    className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">{account.accountType}</span>
+                                {renderIcon(channel.icon as string)}
+                                <h3 className="text-lg font-bold text-gray-800">{channel.name} <span
+                                    className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded ml-2">{channel.name}</span>
                                 </h3>
                             </div>
                         </div>
-                        <p className="text-gray-500 text-sm mt-1">{account.bankName || '无机构'} {account.cardNumber ? `- ${account.cardNumber}` : ''}</p>
-                        {account.remark && <p className="text-gray-400 text-xs mt-1">备注: {account.remark}</p>}
+                        <p className="text-gray-500 text-sm mt-1">{channel.name || '无机构'} {channel.name ? `- ${channel.name}` : ''}</p>
+                        {channel.name && <p className="text-gray-400 text-xs mt-1">备注: {channel.name}</p>}
                         <div className="mt-auto pt-4 border-t border-gray-100">
                             <p className="text-sm text-gray-500">当前可用余额</p>
-                            <p className="text-2xl font-bold text-gray-900 mt-1">¥ {account.currentBalance != null ? Number(account.currentBalance).toFixed(2) : '0.00'}</p>
-                            <p className="text-xs text-gray-400 mt-1">期初余额:
-                                ¥ {account.initialBalance != null ? Number(account.initialBalance).toFixed(2) : '0.00'}</p>
                         </div>
                     </div>
                 ))}
@@ -301,74 +243,40 @@ export default function Accounts() {
                 )}
             </div>
 
-            {showModal && editingAccount && (
+            {showModal && editingChannel && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
                     <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                        <h3 className="text-lg font-medium mb-4">{editingAccount.id ? '编辑账户' : '添加账户'}</h3>
+                        <h3 className="text-lg font-medium mb-4">{editingChannel.id ? '编辑账户' : '添加账户'}</h3>
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">账户名称</label>
-                                <input type="text" value={editingAccount.accountName} onChange={e => setEditingAccount({
-                                    ...editingAccount,
-                                    accountName: e.target.value
+                                <label className="block text-sm font-medium text-gray-700 mb-1">渠道类型</label>
+                                <input type="text" value={editingChannel.name} onChange={e => setEditingChannel({
+                                    ...editingChannel,
+                                    name: e.target.value
                                 })} className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
                                        placeholder="如：日常支付宝"/>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">账户类型</label>
-                                <select value={editingAccount.accountType} onChange={e => setEditingAccount({
-                                    ...editingAccount,
-                                    accountType: e.target.value
+                                <label className="block text-sm font-medium text-gray-700 mb-1">渠道类型</label>
+                                <select value={editingChannel.type} onChange={e => setEditingChannel({
+                                    ...editingChannel,
+                                    type: e.target.value
                                 })} className="w-full border-gray-300 rounded-md shadow-sm p-2 border">
                                     <option value="DEBIT">借记卡/储蓄卡</option>
                                     <option value="CREDIT">信用卡</option>
                                     <option value="WALLET">数字钱包(支付宝/微信)</option>
                                     <option value="CASH">现金</option>
                                     <option value="DEBT">债务(亲友)</option>
+                                    <option value="BILL">记账</option>
                                 </select>
                             </div>
+
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">所属渠道/平台</label>
-                                <select value={editingAccount.channel || ''}
-                                        onChange={e => handleChannelChange(e.target.value)}
-                                        className="w-full border-gray-300 rounded-md shadow-sm p-2 border">
-                                    <option value="">未指定 / 手动输入</option>
-                                    {channels.map(c => (
-                                        <option key={c.id} value={c.id}>{c.name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">发卡机构名称</label>
-                                <input type="text" value={editingAccount.bankName || ''}
-                                       onChange={e => setEditingAccount({...editingAccount, bankName: e.target.value})}
+                                <label className="block text-sm font-medium text-gray-700 mb-1">机构名称</label>
+                                <input type="text" value={editingChannel.name || ''}
+                                       onChange={e => setEditingChannel({...editingChannel, name: e.target.value})}
                                        className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
                                        placeholder="如：建设银行"/>
-                            </div>
-                            <div>
-                                <label
-                                    className="block text-sm font-medium text-gray-700 mb-1">卡号/账号(后四位)</label>
-                                <input type="text" value={editingAccount.cardNumber || ''}
-                                       onChange={e => setEditingAccount({
-                                           ...editingAccount,
-                                           cardNumber: e.target.value
-                                       })} className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
-                                       placeholder="如：8888"/>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">备注名</label>
-                                <input type="text" value={editingAccount.remark || ''}
-                                       onChange={e => setEditingAccount({...editingAccount, remark: e.target.value})}
-                                       className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
-                                       placeholder="如：用于还房贷"/>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">期初余额</label>
-                                <input type="number" value={editingAccount.initialBalance}
-                                       onChange={e => setEditingAccount({
-                                           ...editingAccount,
-                                           initialBalance: Number(e.target.value)
-                                       })} className="w-full border-gray-300 rounded-md shadow-sm p-2 border"/>
                             </div>
                         </div>
                         <div className="mt-6 flex justify-end space-x-3">
@@ -444,7 +352,8 @@ export default function Accounts() {
                     <div className="bg-white rounded-lg p-6 w-full max-w-lg">
                         {/* 警告标题 */}
                         <div className="flex items-center mb-4">
-                            <div className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mr-4">
+                            <div
+                                className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mr-4">
                                 <span className="text-3xl">⚠️</span>
                             </div>
                             <div>
@@ -520,65 +429,6 @@ export default function Accounts() {
                                 className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
                             >
                                 取消
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {showStatsModal && statsAccount && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                        <h3 className="text-lg font-medium mb-4 flex items-center">
-                            <BarChart3 className="w-5 h-5 mr-2 text-green-600"/>
-                            账户统计 - {statsAccount.accountName}
-                        </h3>
-                        {accountStats ? (
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="bg-gray-50 rounded-lg p-4">
-                                        <p className="text-sm text-gray-500">交易总数</p>
-                                        <p className="text-2xl font-bold text-gray-900">{accountStats.transactionCount || 0}</p>
-                                    </div>
-                                    <div className="bg-green-50 rounded-lg p-4">
-                                        <p className="text-sm text-gray-500">收入笔数</p>
-                                        <p className="text-2xl font-bold text-green-600">{accountStats.incomeCount || 0}</p>
-                                    </div>
-                                    <div className="bg-red-50 rounded-lg p-4">
-                                        <p className="text-sm text-gray-500">支出笔数</p>
-                                        <p className="text-2xl font-bold text-red-600">{accountStats.expenseCount || 0}</p>
-                                    </div>
-                                    <div className="bg-blue-50 rounded-lg p-4">
-                                        <p className="text-sm text-gray-500">净收支</p>
-                                        <p className={`text-2xl font-bold ${(accountStats.netAmount || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                            {accountStats.netAmount >= 0 ? '+' : ''}{accountStats.netAmount?.toFixed(2) || '0.00'}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="border-t pt-4 space-y-2">
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-500">收入总额</span>
-                                        <span className="text-green-600 font-medium">+¥{accountStats.totalIncome?.toFixed(2) || '0.00'}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-gray-500">支出总额</span>
-                                        <span className="text-red-600 font-medium">-¥{accountStats.totalExpense?.toFixed(2) || '0.00'}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="text-center py-8 text-gray-500">加载统计中...</div>
-                        )}
-                        <div className="mt-6 flex justify-end">
-                            <button
-                                onClick={() => {
-                                    setShowStatsModal(false);
-                                    setStatsAccount(null);
-                                    setAccountStats(null);
-                                }}
-                                className="px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50"
-                            >
-                                关闭
                             </button>
                         </div>
                     </div>

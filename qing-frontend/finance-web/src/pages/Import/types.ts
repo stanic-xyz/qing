@@ -86,7 +86,7 @@ export interface ActiveRule {
 }
 
 export interface ParserItem {
-    id: string;
+    id: number;
     name: string;
     channel?: ChannelItem;
     fileType: string;
@@ -94,9 +94,19 @@ export interface ParserItem {
 }
 
 export interface ChannelItem {
-    id: string;
+    id: number;
     name: string;
     code: string;
+    icon?: string;
+    type: string;
+}
+
+export interface ChannelItemModal {
+    id?: number;
+    name: string;
+    code: string;
+    icon?: string;
+    type: string;
 }
 
 export interface ParserConfig extends ParserItem {
@@ -108,7 +118,8 @@ export interface ParserConfig extends ParserItem {
     postScript?: string;
     postScriptLanguage?: string;
     postScriptEnabled?: boolean;
-    status?: string;
+    status?: 'PUBLISHED' | 'DRAFT';
+    sourceType?: string;
 }
 
 export type AdapterType = 'PARSER' | 'SCRIPT' | 'LLM';

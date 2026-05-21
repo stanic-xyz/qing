@@ -1,10 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
+import {Plus} from 'lucide-react';
 import {getEnumText} from '../utils/enumMap';
 import ChannelAccountCascader from '../components/ChannelAccountCascader';
+import TransactionFormModal from '../components/TransactionFormModal';
 
 export default function Transactions() {
     const [transactions, setTransactions] = useState([]);
+
+    // 新增交易弹窗状态
+    const [showAddModal, setShowAddModal] = useState(false);
 
     // 分页与排序状态
     const [page, setPage] = useState(0);
@@ -158,7 +163,16 @@ export default function Transactions() {
 
     return (
         <div className="flex flex-col h-full relative">
-            <h1 className="text-2xl font-bold mb-6">交易流水</h1>
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold">交易流水</h1>
+                <button
+                    onClick={() => setShowAddModal(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                    <Plus size={18} />
+                    新增交易
+                </button>
+            </div>
 
             {/* 搜索面板 - 卡片包裹 */}
             <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 mb-6">
@@ -574,6 +588,17 @@ export default function Transactions() {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {showAddModal && (
+                <TransactionFormModal
+                    isOpen={showAddModal}
+                    onClose={() => setShowAddModal(false)}
+                    onSuccess={() => {
+                        setShowAddModal(false);
+                        fetchTransactions();
+                    }}
+                />
             )}
         </div>
     );

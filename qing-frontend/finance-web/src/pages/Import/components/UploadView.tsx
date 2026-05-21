@@ -74,12 +74,12 @@ export default function UploadView({accounts, onClose}: UploadViewProps) {
             setParserId('');
             return;
         }
-        if (!next.find(p => p.id === parserId)) {
-            setParserId(next[0].id);
+        if (!next.find(p => p.id.toString() === parserId)) {
+            setParserId(next[0].id.toString());
         }
     }, [parsers, accountId, selectedFileTypes, accounts]);
 
-    const currentParser = useMemo(() => filteredParsers.find(p => p.id === parserId), [filteredParsers, parserId]);
+    const currentParser = useMemo(() => filteredParsers.find(p => p.id.toString() === parserId), [filteredParsers, parserId]);
 
     const fileAccept = useMemo(() => {
         const t = (currentParser?.fileType || '').toUpperCase();

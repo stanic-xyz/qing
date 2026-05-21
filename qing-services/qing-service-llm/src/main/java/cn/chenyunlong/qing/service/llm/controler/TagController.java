@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/tags")
+@RequestMapping("/api/finance/tags")
 @Slf4j
 @RequiredArgsConstructor
 public class TagController {

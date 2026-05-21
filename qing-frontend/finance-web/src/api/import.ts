@@ -34,4 +34,41 @@ export const importApi = {
   // 删除上传
   deleteUpload: (id: number, softDelete?: boolean) =>
     api.delete(`/uploads/${id}`, { params: { softDelete } }),
+
+  // ===== 钱迹导入新流程 =====
+  // 上传文件
+  qianjiUpload: (file: File, accountId: number) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('accountId', String(accountId));
+    return api.post('/import/qianji/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+  },
+
+  // 文件预览
+  qianjiPreview: (fileId: number) =>
+    api.get(`/import/qianji/preview?fileId=${fileId}`),
+
+  // 解析预览
+  qianjiPreviewAndParse: (fileId: number) =>
+    api.post(`/import/qianji/previewAndParse?fileId=${fileId}`),
+
+  // 执行导入
+  qianjiExecute: (fileId: number, request: any) =>
+    api.post(`/import/qianji/execute?fileId=${fileId}`, request),
+
+  // 执行导入（records 模式）
+  qianjiExecuteRecords: (records: any[]) =>
+    api.post('/import/qianji/executeRecords', records),
+
+  // 文件列表
+  qianjiListFiles: (accountId: number, page = 0, size = 20) =>
+    api.get(`/import/qianji/files?accountId=${accountId}&page=${page}&size=${size}`),
+
+  // 删除文件
+  qianjiDeleteFile: (fileId: number) =>
+    api.delete(`/import/qianji/files/${fileId}`),
+
+  // 文件去重检测
+  qianjiCheckDuplicate: (fileHash: string, accountId: number) =>
+    api.post('/import/qianji/checkDuplicate', null, { params: { fileHash, accountId } }),
 };

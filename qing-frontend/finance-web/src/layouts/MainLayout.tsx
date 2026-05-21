@@ -24,6 +24,11 @@ export default function MainLayout() {
                         <Wallet size={20}/>
                         账户管理
                     </Link>
+                    <Link to="/channels"
+                          className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
+                        <Wallet size={20}/>
+                        渠道管理
+                    </Link>
                     <Link to="/channel-accounts"
                           className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
                         <ArrowRightLeft size={20}/>
@@ -33,6 +38,11 @@ export default function MainLayout() {
                           className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
                         <Tags size={20}/>
                         分类管理
+                    </Link>
+                    <Link to="/tags"
+                          className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
+                        <Tags size={20}/>
+                        标签管理
                     </Link>
                     <Link to="/counterparties"
                           className="flex items-center gap-3 px-3 py-2 text-gray-700 rounded-md hover:bg-gray-100">
