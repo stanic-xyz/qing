@@ -3,6 +3,7 @@ import axios from 'axios';
 import {X, Plus, Trash2, Save, Trash} from 'lucide-react';
 import type {ParserConfig} from '../types';
 import {configApi} from "@/api/configs.ts";
+import type {ParserConfigResponse} from "@/api/configs.ts";
 
 interface ParserConfigDrawerProps {
     isOpen: boolean;
@@ -166,8 +167,21 @@ export default function ParserConfigDrawer({isOpen, onClose}: ParserConfigDrawer
     const fetchConfigs = async () => {
         try {
             const res = await configApi.list();
-            console.log(res);
-            setConfigs(res.data);
+            // 将 API 响应转换为 ParserConfig 类型
+            const configsData = (res.data || []).map((item: ParserConfigResponse) => ({
+                id: item.id,
+                name: item.name,
+                channelId: item.channelId,
+                encoding: item.encoding,
+                skipRows: item.skipRows,
+                fieldMappingRules: item.fieldMappingRules,
+                metadataRules: item.metadataRules,
+                script: item.script,
+                status: item.status,
+                fileType: 'CSV', // 默认值
+                isBuiltIn: false // 默认值
+            })) as ParserConfig[];
+            setConfigs(configsData);
         } catch (e) {
             console.error('获取配置失败', e);
         }
