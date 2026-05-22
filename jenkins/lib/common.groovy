@@ -5,15 +5,15 @@
  * 通过 evaluate(readTrusted()) 方式加载，无需 Jenkins 配置
  */
 
-def getMavenOpts() {
+static def getMavenOpts() {
     return "--no-transfer-progress --batch-mode --errors --fail-at-end --show-version"
 }
 
-def getServiceName(String moduleName) {
+static def getServiceName(String moduleName) {
     return moduleName.replace('qing-service-', '')
 }
 
-def getModulePath(String moduleName) {
+static def getModulePath(String moduleName) {
     return "qing-services/${moduleName}"
 }
 
