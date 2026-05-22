@@ -1,15 +1,6 @@
 pipeline {
     agent {
-        docker {
-            image 'maven:3.9.12-eclipse-temurin-21'
-            args '''
-                -v /root/.m2/repository:/root/.m2/repository
-                -u root:root
-                -v /var/run/docker.sock:/var/run/docker.sock
-            '''
-            reuseNode true
-            alwaysPull false
-        }
+        label 'local'
     }
 
     options {
@@ -31,7 +22,7 @@ pipeline {
     environment {
         // 定义 Maven 本地仓库路径
         MAVEN_LOCAL_REPO = "${JENKINS_HOME}/.m2/repository"
-        MAVEN_CLI_OPTS = "--no-transfer-progress --batch-mode --errors --fail-at-end --show-version -Dmaven.repo.local=${MAVEN_LOCAL_REPO}"
+        MAVEN_CLI_OPTS = "--no-transfer-progress --batch-mode --errors --fail-at-end --show-version"
         // 可选：设置阿里云镜像加速
         MAVEN_MIRROR_URL = "https://maven.aliyun.com/repository/public"
     }
