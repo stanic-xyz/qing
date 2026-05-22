@@ -14,7 +14,7 @@ static def getServiceName(String moduleName) {
 }
 
 static def getModulePath(String moduleName) {
-    return "qing-services/${moduleName}"
+    return moduleName
 }
 
 def printBuildInfo(Map config) {
@@ -32,13 +32,6 @@ def printBuildInfo(Map config) {
 
 def archiveJar(String modulePath) {
     archiveArtifacts artifacts: "${modulePath}/target/*.jar", fingerprint: true
-    script {
-        def jarFile = findFiles(glob: "${modulePath}/target/*.jar")[0]
-        if (jarFile != null) {
-            echo "生成的 JAR 文件: ${jarFile.name}"
-            echo "文件大小: ${jarFile.length()} bytes"
-        }
-    }
 }
 
 return this
