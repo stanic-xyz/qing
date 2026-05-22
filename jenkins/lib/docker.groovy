@@ -3,6 +3,8 @@
 /**
  * Docker 构建通用函数
  * 通过 evaluate(readTrusted()) 方式加载，无需 Jenkins 配置
+ *
+ * 注意：moduleName 应该是完整的模块路径，如 "qing-service-auth"
  */
 
 def build(String serviceName, String moduleName, String registryUrl, String buildNumber) {
@@ -11,8 +13,8 @@ def build(String serviceName, String moduleName, String registryUrl, String buil
         docker build \
         -t ${registryUrl}/${serviceName}:${buildNumber} \
         -t ${registryUrl}/${serviceName}:latest \
-        -f qing-services/${moduleName}/Dockerfile \
-        qing-services/${moduleName}/
+        -f ${moduleName}/Dockerfile \
+        ${moduleName}/
     """
 }
 

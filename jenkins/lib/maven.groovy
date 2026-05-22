@@ -3,12 +3,14 @@
 /**
  * Maven 构建通用函数
  * 通过 evaluate(readTrusted()) 方式加载，无需 Jenkins 配置
+ *
+ * 注意：moduleName 应该是完整的模块路径，如 "qing-service-auth"
  */
 
 def validate(String moduleName, String mavenOpts) {
     sh """
         mvn ${mavenOpts} validate \
-        -pl qing-services/${moduleName} \
+        -pl ${moduleName} \
         -am \
         -f pom.xml
     """
@@ -18,7 +20,7 @@ def install(String moduleName, String mavenOpts, boolean skipTests = true) {
     def testSkip = skipTests ? "-DskipTests=true -Dmaven.test.skip=true" : ""
     sh """
         mvn ${mavenOpts} clean install \
-        -pl qing-services/${moduleName} \
+        -pl ${moduleName} \
         -am \
         ${testSkip} \
         -f pom.xml
@@ -28,7 +30,7 @@ def install(String moduleName, String mavenOpts, boolean skipTests = true) {
 def compile(String moduleName, String mavenOpts) {
     sh """
         mvn ${mavenOpts} compile \
-        -pl qing-services/${moduleName} \
+        -pl ${moduleName} \
         -am \
         -f pom.xml
     """
@@ -37,7 +39,7 @@ def compile(String moduleName, String mavenOpts) {
 def test(String moduleName, String mavenOpts) {
     sh """
         mvn ${mavenOpts} test \
-        -pl qing-services/${moduleName} \
+        -pl ${moduleName} \
         -am \
         -f pom.xml
     """
@@ -46,7 +48,7 @@ def test(String moduleName, String mavenOpts) {
 def checkstyle(String moduleName, String mavenOpts) {
     sh """
         mvn ${mavenOpts} checkstyle:check \
-        -pl qing-services/${moduleName} \
+        -pl ${moduleName} \
         -am \
         -f pom.xml || true
     """
@@ -56,7 +58,7 @@ def mavenPackage(String moduleName, String mavenOpts, String buildType) {
     def command = buildType == 'release' ? 'clean package' : 'package'
     sh """
         mvn ${mavenOpts} ${command} \
-        -pl qing-services/${moduleName} \
+        -pl ${moduleName} \
         -am \
         -DskipTests=true \
         -f pom.xml
