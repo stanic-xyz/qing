@@ -17,6 +17,18 @@ pipeline {
                 choices: ['debug', 'release'],
                 description: '选择构建类型'
         )
+        choice(
+                name: 'SERVICE_MODULE',
+                choices: [
+                    'qing-services/qing-service-auth',
+                    'qing-services/qing-service-llm',
+                    'qing-services/qing-service-anime',
+                    'qing-services/qing-service-leave',
+                    'qing-services/qing-service-minimall',
+                    'qing-services/qing-service-workflow'
+                ],
+                description: '选择要构建的服务模块'
+        )
     }
 
     environment {
@@ -37,36 +49,41 @@ pipeline {
         stage('验证依赖完整性') {
             steps {
                 script {
-                    echo "验证项目依赖..."
-                    sh """
-                        mvn ${env.MAVEN_CLI_OPTS} validate \
-                        -f pom.xml
-                    """
+                    echo "验证项目依赖: ${params.SERVICE_MODULE}"
+                   sh """
+                       mvn ${env.MAVEN_CLI_OPTS} validate \
+                       -pl ${params.SERVICE_MODULE} \
+                       -am \
+                       -f pom.xml
+                   """
                 }
             }
         }
 
         stage('安装基础依赖包') {
             steps {
-                echo "安装基础依赖包 Security Starter"
-                sh """
-                    mvn ${env.MAVEN_CLI_OPTS} clean install \
-                    -pl qing-support \
-                    -DskipTests=true \
-                    -Dmaven.test.skip=true \
-                    -f pom.xml
-                """
+                script {
+                    echo "安装基础依赖包: ${params.SERVICE_MODULE}"
+                    sh """
+                        mvn ${env.MAVEN_CLI_OPTS} clean install \
+                        -pl ${params.SERVICE_MODULE} \
+                        -am \
+                        -DskipTests=true \
+                        -Dmaven.test.skip=true \
+                        -f pom.xml
+                    """
+                }
             }
         }
 
         stage('编译核心模块') {
             steps {
                 script {
-                    echo "开始编译核心模块..."
-                    // 先编译公共模块
+                    echo "开始编译核心模块: ${params.SERVICE_MODULE}"
                     sh """
                         mvn ${env.MAVEN_CLI_OPTS} compile \
-                        -pl qing-common \
+                        -pl ${params.SERVICE_MODULE} \
+                        -am \
                         -f pom.xml
                     """
                 }
@@ -76,10 +93,11 @@ pipeline {
         stage('单元测试') {
             steps {
                 script {
-                    echo "开始执行单元测试..."
+                    echo "开始执行单元测试: ${params.SERVICE_MODULE}"
                     sh """
                         mvn ${env.MAVEN_CLI_OPTS} test \
-                        -pl qing-services/qing-service-auth \
+                        -pl ${params.SERVICE_MODULE} \
+                        -am \
                         -f pom.xml
                     """
                 }
@@ -87,7 +105,7 @@ pipeline {
             post {
                 always {
                     // 收集测试报告
-                    junit 'qing-services/qing-service-auth/target/surefire-reports/*.xml'
+                    junit "${params.SERVICE_MODULE}/target/surefire-reports/*.xml"
 
                     // 可选：生成测试覆盖率报告
                     // jacoco(
@@ -99,7 +117,7 @@ pipeline {
                 failure {
                     echo "单元测试失败，请检查测试用例"
                     // 保存测试日志
-                    archiveArtifacts artifacts: 'qing-services/qing-service-auth/target/surefire-reports/*.txt, qing-services/qing-service-auth/target/surefire-reports/*.xml'
+                    archiveArtifacts artifacts: "${params.SERVICE_MODULE}/target/surefire-reports/*.txt, ${params.SERVICE_MODULE}/target/surefire-reports/*.xml"
                 }
             }
         }
@@ -107,13 +125,14 @@ pipeline {
         stage('代码质量检查') {
             steps {
                 script {
-                    echo "进行代码质量检查..."
+                    echo "进行代码质量检查: ${params.SERVICE_MODULE}"
                     // 可选：运行静态代码分析
-                    // sh """
-                    //     mvn ${env.MAVEN_CLI_OPTS} checkstyle:check \
-                    //     -pl qing-services/qing-service-auth \
-                    //     -f pom.xml
-                    // """
+                    sh """
+                        mvn ${env.MAVEN_CLI_OPTS} checkstyle:check \
+                        -pl ${params.SERVICE_MODULE} \
+                        -am \
+                        -f pom.xml
+                    """
                 }
             }
         }
@@ -121,7 +140,7 @@ pipeline {
         stage('编译打包') {
             steps {
                 script {
-                    echo "开始编译打包..."
+                    echo "开始编译打包: ${params.SERVICE_MODULE}"
 
                     // 根据构建类型选择不同的命令
                     def mavenCommand = 'package'
@@ -134,7 +153,8 @@ pipeline {
 
                     sh """
                         mvn ${env.MAVEN_CLI_OPTS} ${mavenCommand} \
-                        -pl qing-services/qing-service-auth \
+                        -pl ${params.SERVICE_MODULE} \
+                        -am \
                         -DskipTests=true \
                         -f pom.xml
                     """
@@ -144,13 +164,15 @@ pipeline {
                 success {
                     echo "编译打包成功"
                     // 归档生成的工件
-                    archiveArtifacts artifacts: 'qing-services/qing-service-auth/target/*.jar', fingerprint: true
+                    archiveArtifacts artifacts: "${params.SERVICE_MODULE}/target/*.jar", fingerprint: true
 
                     // 可选：记录构建信息
                     script {
-                        def jarFile = findFiles(glob: 'qing-services/qing-service-auth/target/*.jar')[0]
-                        echo "生成的JAR文件: ${jarFile.name}"
-                        echo "文件大小: ${jarFile.length()} bytes"
+                        def jarFile = findFiles(glob: "${params.SERVICE_MODULE}/target/*.jar")[0]
+                        if (jarFile != null) {
+                            echo "生成的JAR文件: ${jarFile.name}"
+                            echo "文件大小: ${jarFile.length()} bytes"
+                        }
                     }
                 }
                 failure {
@@ -165,15 +187,20 @@ pipeline {
             }
             steps {
                 script {
-                    echo "开始构建Docker镜像..."
+                    def serviceName = params.SERVICE_MODULE.split('/')[-1]
+                    echo "开始构建Docker镜像: ${serviceName}"
+
+                    // 动态获取Dockerfile路径
+                    def dockerfilePath = "${params.SERVICE_MODULE}/Dockerfile"
+                    def modulePath = params.SERVICE_MODULE
 
                     // 假设你的项目中有Dockerfile
                     sh """
                         docker build \
-                        -t your-registry/qing-service-auth:${BUILD_NUMBER} \
-                        -t your-registry/qing-service-auth:latest \
-                        -f qing-services/qing-service-auth/Dockerfile \
-                        qing-services/qing-service-auth/
+                        -t your-registry/${serviceName}:${BUILD_NUMBER} \
+                        -t your-registry/${serviceName}:latest \
+                        -f ${dockerfilePath} \
+                        ${modulePath}/
                     """
                 }
             }
@@ -185,22 +212,24 @@ pipeline {
             }
             steps {
                 script {
-                    echo "开始部署到生产环境"
+                    def serviceName = params.SERVICE_MODULE.split('/')[-1]
+                    echo "开始部署到生产环境: ${serviceName}"
 
                     // 1. 推送到镜像仓库
                     sh """
-                        docker push your-registry/qing-service-auth:${BUILD_NUMBER}
-                        docker push your-registry/qing-service-auth:latest
+                        docker push your-registry/${serviceName}:${BUILD_NUMBER}
+                        docker push your-registry/${serviceName}:latest
                     """
 
                     // 2. 更新Kubernetes部署
                     sh """
                         # 使用envsubst替换部署文件中的变量
                         export IMAGE_TAG=${BUILD_NUMBER}
+                        export SERVICE_NAME=${serviceName}
                         envsubst < deployment.yaml | kubectl apply -f -
 
                         # 可选：等待部署完成
-                        kubectl rollout status deployment/qing-service-auth --timeout=300s
+                        kubectl rollout status deployment/${serviceName} --timeout=300s
                     """
                 }
             }
@@ -208,19 +237,23 @@ pipeline {
                 success {
                     echo "部署成功"
                     script {
+                        def serviceName = params.SERVICE_MODULE.split('/')[-1]
                         // 获取服务访问信息
                         sh """
-                            kubectl get svc qing-service-auth
-                            kubectl get pods -l app=qing-service-auth
+                            kubectl get svc ${serviceName}
+                            kubectl get pods -l app=${serviceName}
                         """
                     }
                 }
                 failure {
                     echo "部署失败，将尝试回滚"
-                    // 自动回滚到上一个版本
-                    sh """
-                        kubectl rollout undo deployment/qing-service-auth
-                    """
+                    script {
+                        def serviceName = params.SERVICE_MODULE.split('/')[-1]
+                        // 自动回滚到上一个版本
+                        sh """
+                            kubectl rollout undo deployment/${serviceName}
+                        """
+                    }
                 }
             }
         }
@@ -232,7 +265,8 @@ pipeline {
             // 清理不需要的文件
             // 生成构建报告
             script {
-                currentBuild.description = "构建类型: ${params.BUILD_TYPE}, 状态: ${currentBuild.result}"
+                def serviceName = params.SERVICE_MODULE.split('/')[-1]
+                currentBuild.description = "模块: ${serviceName}, 构建类型: ${params.BUILD_TYPE}, 状态: ${currentBuild.result}"
             }
         }
         success {
