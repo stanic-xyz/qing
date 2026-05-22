@@ -27,6 +27,26 @@ pipeline {
         retry(0)
     }
 
+    triggers {
+        pollSCM('H/5 * * * *')
+        GenericTrigger(
+            genericVariables: [
+                [key: 'ref', value: '$.ref'],
+                [key: 'module', value: '$.module', defaultValue: 'qing-service-llm'],
+                [key: 'buildType', value: '$.buildType', defaultValue: 'debug']
+            ],
+            causeString: 'Triggered by webhook on $ref',
+            token: 'qing-trigger',
+            tokenCredentialId: '',
+            printContributedVariables: true,
+            printPostContent: true,
+            silentResponse: false,
+            shouldNotFlatten: true,
+            regexpFilterText: '$ref',
+            regexpFilterExpression: 'refs/heads/.*'
+        )
+    }
+
     parameters {
         choice(
             name: 'BUILD_TYPE',
@@ -139,7 +159,7 @@ pipeline {
                 success {
                     script {
                         echo "编译打包成功"
-                        common.archiveJar("qing-services/${params.SERVICE_MODULE}")
+                        common.archiveJar(params.SERVICE_MODULE)
                     }
                 }
                 failure {
