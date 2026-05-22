@@ -46,30 +46,15 @@ pipeline {
             }
         }
 
-        stage('验证依赖完整性') {
+        stage('代码质量检查') {
             steps {
                 script {
-                    echo "验证项目依赖: ${params.SERVICE_MODULE}"
-                   sh """
-                       mvn ${env.MAVEN_CLI_OPTS} validate \
-                       -pl ${params.SERVICE_MODULE} \
-                       -am \
-                       -f pom.xml
-                   """
-                }
-            }
-        }
-
-        stage('安装基础依赖包') {
-            steps {
-                script {
-                    echo "安装基础依赖包: ${params.SERVICE_MODULE}"
+                    echo "进行代码质量检查: ${params.SERVICE_MODULE}"
+                    // 可选：运行静态代码分析
                     sh """
-                        mvn ${env.MAVEN_CLI_OPTS} clean install \
+                        mvn ${env.MAVEN_CLI_OPTS} checkstyle:check \
                         -pl ${params.SERVICE_MODULE} \
                         -am \
-                        -DskipTests=true \
-                        -Dmaven.test.skip=true \
                         -f pom.xml
                     """
                 }
@@ -118,21 +103,6 @@ pipeline {
                     echo "单元测试失败，请检查测试用例"
                     // 保存测试日志
                     archiveArtifacts artifacts: "${params.SERVICE_MODULE}/target/surefire-reports/*.txt, ${params.SERVICE_MODULE}/target/surefire-reports/*.xml"
-                }
-            }
-        }
-
-        stage('代码质量检查') {
-            steps {
-                script {
-                    echo "进行代码质量检查: ${params.SERVICE_MODULE}"
-                    // 可选：运行静态代码分析
-                    sh """
-                        mvn ${env.MAVEN_CLI_OPTS} checkstyle:check \
-                        -pl ${params.SERVICE_MODULE} \
-                        -am \
-                        -f pom.xml
-                    """
                 }
             }
         }
