@@ -1,0 +1,44 @@
+#!/usr/bin/env groovy
+
+/**
+ * 通用工具函数
+ * 通过 evaluate(readTrusted()) 方式加载，无需 Jenkins 配置
+ */
+
+def getMavenOpts() {
+    return "--no-transfer-progress --batch-mode --errors --fail-at-end --show-version"
+}
+
+def getServiceName(String moduleName) {
+    return moduleName.replace('qing-service-', '')
+}
+
+def getModulePath(String moduleName) {
+    return "qing-services/${moduleName}"
+}
+
+def printBuildInfo(Map config) {
+    echo """
+    ==========================================
+      Qing 项目 CI/CD 流水线
+    ==========================================
+      服务: ${config.serviceName}
+      模块: ${config.moduleName}
+      类型: ${config.buildType}
+      编号: ${config.buildNumber}
+    ==========================================
+    """
+}
+
+def archiveJar(String modulePath) {
+    archiveArtifacts artifacts: "${modulePath}/target/*.jar", fingerprint: true
+    script {
+        def jarFile = findFiles(glob: "${modulePath}/target/*.jar")[0]
+        if (jarFile != null) {
+            echo "生成的 JAR 文件: ${jarFile.name}"
+            echo "文件大小: ${jarFile.length()} bytes"
+        }
+    }
+}
+
+return this

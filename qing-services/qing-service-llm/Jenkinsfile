@@ -1,20 +1,8 @@
 /**
- * Qing 项目 CI/CD 流水线入口
+ * qing-service-llm 独立 CI/CD 流水线
  *
  * 完全代码化：无需在 Jenkins 中配置任何共享库
  * 共享库通过 evaluate(readTrusted()) 从代码库加载
- *
- * 共享库结构:
- * - jenkins/lib/common.groovy    - 通用函数
- * - jenkins/lib/maven.groovy     - Maven 构建函数
- * - jenkins/lib/docker.groovy    - Docker 构建函数
- * - jenkins/lib/kubernetes.groovy - K8s 部署函数
- *
- * 使用方式：
- * 1. 在 Jenkins 中创建 Pipeline Job
- * 2. 选择 "Pipeline script from SCM"
- * 3. 配置 Script Path 为: Jenkinsfile
- * 4. 选择对应的服务模块进行构建
  */
 
 // ==================== 加载共享库 ====================
@@ -23,6 +11,11 @@ def common = evaluate(readTrusted('jenkins/lib/common.groovy'))
 def maven = evaluate(readTrusted('jenkins/lib/maven.groovy'))
 def docker = evaluate(readTrusted('jenkins/lib/docker.groovy'))
 def k8s = evaluate(readTrusted('jenkins/lib/kubernetes.groovy'))
+
+// ==================== 服务配置 ====================
+
+def SERVICE_NAME = 'llm'
+def MODULE_NAME = 'qing-service-llm'
 
 // ==================== 主流水线 ====================
 
@@ -45,18 +38,6 @@ pipeline {
             choices: ['debug', 'release'],
             description: '选择构建类型'
         )
-        choice(
-            name: 'SERVICE_MODULE',
-            choices: [
-                'qing-service-auth',
-                'qing-service-llm',
-                'qing-service-anime',
-                'qing-service-leave',
-                'qing-service-minimall',
-                'qing-service-workflow'
-            ],
-            description: '选择要构建的服务模块'
-        )
     }
 
     environment {
@@ -73,10 +54,9 @@ pipeline {
         stage('显示构建信息') {
             steps {
                 script {
-                    def serviceName = common.getServiceName(params.SERVICE_MODULE)
                     common.printBuildInfo([
-                        serviceName: serviceName,
-                        moduleName: params.SERVICE_MODULE,
+                        serviceName: SERVICE_NAME,
+                        moduleName: MODULE_NAME,
                         buildType: params.BUILD_TYPE,
                         buildNumber: env.BUILD_NUMBER
                     ])
@@ -87,8 +67,8 @@ pipeline {
         stage('验证依赖完整性') {
             steps {
                 script {
-                    echo "验证项目依赖: ${params.SERVICE_MODULE}..."
-                    maven.validate(params.SERVICE_MODULE, common.getMavenOpts())
+                    echo "验证项目依赖..."
+                    maven.validate(MODULE_NAME, common.getMavenOpts())
                 }
             }
         }
@@ -96,8 +76,8 @@ pipeline {
         stage('安装基础依赖包') {
             steps {
                 script {
-                    echo "安装基础依赖: ${params.SERVICE_MODULE}..."
-                    maven.install(params.SERVICE_MODULE, common.getMavenOpts())
+                    echo "安装基础依赖..."
+                    maven.install(MODULE_NAME, common.getMavenOpts())
                 }
             }
         }
@@ -105,8 +85,8 @@ pipeline {
         stage('编译核心模块') {
             steps {
                 script {
-                    echo "编译核心模块: ${params.SERVICE_MODULE}..."
-                    maven.compile(params.SERVICE_MODULE, common.getMavenOpts())
+                    echo "编译核心模块..."
+                    maven.compile(MODULE_NAME, common.getMavenOpts())
                 }
             }
         }
@@ -114,17 +94,17 @@ pipeline {
         stage('单元测试') {
             steps {
                 script {
-                    echo "执行单元测试: ${params.SERVICE_MODULE}..."
-                    maven.test(params.SERVICE_MODULE, common.getMavenOpts())
+                    echo "执行单元测试..."
+                    maven.test(MODULE_NAME, common.getMavenOpts())
                 }
             }
             post {
                 always {
-                    junit "qing-services/${params.SERVICE_MODULE}/target/surefire-reports/*.xml"
+                    junit "${MODULE_NAME}/target/surefire-reports/*.xml"
                 }
                 failure {
                     echo "单元测试失败"
-                    archiveArtifacts artifacts: "qing-services/${params.SERVICE_MODULE}/target/surefire-reports/*.txt, qing-services/${params.SERVICE_MODULE}/target/surefire-reports/*.xml"
+                    archiveArtifacts artifacts: "${MODULE_NAME}/target/surefire-reports/*.txt, ${MODULE_NAME}/target/surefire-reports/*.xml"
                 }
             }
         }
@@ -132,8 +112,8 @@ pipeline {
         stage('代码质量检查') {
             steps {
                 script {
-                    echo "代码质量检查: ${params.SERVICE_MODULE}..."
-                    maven.checkstyle(params.SERVICE_MODULE, common.getMavenOpts())
+                    echo "代码质量检查..."
+                    maven.checkstyle(MODULE_NAME, common.getMavenOpts())
                 }
             }
         }
@@ -141,21 +121,18 @@ pipeline {
         stage('编译打包') {
             steps {
                 script {
-                    echo "编译打包: ${params.SERVICE_MODULE}..."
-
                     if (params.BUILD_TYPE == 'release') {
                         echo "执行 Release 模式构建"
                     } else {
                         echo "执行 Debug 模式构建"
                     }
-
-                    maven.package(params.SERVICE_MODULE, common.getMavenOpts(), params.BUILD_TYPE)
+                    maven.package(MODULE_NAME, common.getMavenOpts(), params.BUILD_TYPE)
                 }
             }
             post {
                 success {
                     echo "编译打包成功"
-                    common.archiveJar("qing-services/${params.SERVICE_MODULE}")
+                    common.archiveJar(MODULE_NAME)
                 }
                 failure {
                     echo "编译打包失败"
@@ -169,8 +146,7 @@ pipeline {
             }
             steps {
                 script {
-                    def serviceName = common.getServiceName(params.SERVICE_MODULE)
-                    docker.build(serviceName, params.SERVICE_MODULE, env.REGISTRY_URL, env.BUILD_NUMBER)
+                    docker.build(SERVICE_NAME, MODULE_NAME, env.REGISTRY_URL, env.BUILD_NUMBER)
                 }
             }
         }
@@ -181,9 +157,8 @@ pipeline {
             }
             steps {
                 script {
-                    def serviceName = common.getServiceName(params.SERVICE_MODULE)
-                    docker.push(serviceName, env.REGISTRY_URL, env.BUILD_NUMBER)
-                    k8s.deploy(serviceName, env.REGISTRY_URL, env.BUILD_NUMBER)
+                    docker.push(SERVICE_NAME, env.REGISTRY_URL, env.BUILD_NUMBER)
+                    k8s.deploy(SERVICE_NAME, env.REGISTRY_URL, env.BUILD_NUMBER)
                 }
             }
             post {
@@ -193,8 +168,7 @@ pipeline {
                 failure {
                     echo "部署失败，尝试回滚"
                     script {
-                        def serviceName = common.getServiceName(params.SERVICE_MODULE)
-                        k8s.rollback(serviceName)
+                        k8s.rollback(SERVICE_NAME)
                     }
                 }
             }
@@ -204,8 +178,7 @@ pipeline {
     post {
         always {
             script {
-                def serviceName = common.getServiceName(params.SERVICE_MODULE)
-                currentBuild.description = "服务: ${serviceName}, 类型: ${params.BUILD_TYPE}, 状态: ${currentBuild.result}"
+                currentBuild.description = "服务: ${SERVICE_NAME}, 类型: ${params.BUILD_TYPE}, 状态: ${currentBuild.result}"
             }
         }
         success {
