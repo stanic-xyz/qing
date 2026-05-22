@@ -100,11 +100,15 @@ pipeline {
             }
             post {
                 always {
-                    junit "${MODULE_NAME}/target/surefire-reports/*.xml"
+                    script {
+                        junit "${MODULE_NAME}/target/surefire-reports/*.xml"
+                    }
                 }
                 failure {
-                    echo "单元测试失败"
-                    archiveArtifacts artifacts: "${MODULE_NAME}/target/surefire-reports/*.txt, ${MODULE_NAME}/target/surefire-reports/*.xml"
+                    script {
+                        echo "单元测试失败"
+                        archiveArtifacts artifacts: "${MODULE_NAME}/target/surefire-reports/*.txt, ${MODULE_NAME}/target/surefire-reports/*.xml"
+                    }
                 }
             }
         }
@@ -131,11 +135,15 @@ pipeline {
             }
             post {
                 success {
-                    echo "编译打包成功"
-                    common.archiveJar(MODULE_NAME)
+                    script {
+                        echo "编译打包成功"
+                        common.archiveJar(MODULE_NAME)
+                    }
                 }
                 failure {
-                    echo "编译打包失败"
+                    script {
+                        echo "编译打包失败"
+                    }
                 }
             }
         }
@@ -163,11 +171,13 @@ pipeline {
             }
             post {
                 success {
-                    echo "部署成功"
+                    script {
+                        echo "部署成功"
+                    }
                 }
                 failure {
-                    echo "部署失败，尝试回滚"
                     script {
+                        echo "部署失败，尝试回滚"
                         k8s.rollback(SERVICE_NAME)
                     }
                 }
@@ -182,14 +192,18 @@ pipeline {
             }
         }
         success {
-            echo "=========================================="
-            echo "  构建成功！"
-            echo "=========================================="
+            script {
+                echo "=========================================="
+                echo "  构建成功！"
+                echo "=========================================="
+            }
         }
         failure {
-            echo "=========================================="
-            echo "  构建失败！"
-            echo "=========================================="
+            script {
+                echo "=========================================="
+                echo "  构建失败！"
+                echo "=========================================="
+            }
         }
     }
 }
