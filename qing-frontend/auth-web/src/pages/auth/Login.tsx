@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Form, Input, Button, Card, message} from 'antd';
 import {UserOutlined, LockOutlined} from '@ant-design/icons';
 import {useNavigate, Link} from 'react-router-dom';
-import {login} from '../../api/auth';
+import {getCurrentUser, login} from '../../api/auth';
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
@@ -11,27 +11,83 @@ const Login: React.FC = () => {
     const onFinish = async (values: { username: string; password: string }) => {
         setLoading(true);
         try {
+            console.log('开始登录...', values);
             const response = await login(values);
-            if (response.success && response.result) {
-                const {token, userId, username, avatar} = response.result;
+            console.log('登录响应:', response);
+
+            let result = response;
+            if (response.data) {
+                result = response.data;
+            }
+
+            console.log('处理后的响应:', result);
+
+            if (result.success || result.code === 200) {
+                const data = result.result || result;
+                console.log('登录数据:', data);
+
+                const token = data.token || data.accessToken;
+
+                if (!token) {
+                    console.error('未找到 token:', data);
+                    message.error('登录失败：未收到认证令牌');
+                    return;
+                }
 
                 localStorage.setItem('token', token);
-                localStorage.setItem('userId', String(userId));
 
-                const userInfo = {
-                    id: userId,
-                    username: username,
-                    nickname: username,
-                    avatar: avatar || '',
-                };
-                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                try {
+                    const userRes = await getCurrentUser();
+                    console.log('获取当前用户信息:', userRes);
 
+                    if (userRes?.success && userRes.result) {
+                        const userData = userRes.result;
+                        const userId = userData.id || userData.userId;
+
+                        localStorage.setItem('userId', String(userId));
+                        localStorage.setItem('userInfo', JSON.stringify(userData));
+
+                        console.log('用户信息已存储:', userId);
+                    } else {
+                        console.warn('获取用户信息失败，使用默认信息');
+                        const userId = data.userId || data.id;
+                        const username = data.username || data.userName;
+                        const userInfo = {
+                            id: userId,
+                            username: username,
+                            nickname: username,
+                            avatar: data.avatar || '',
+                        };
+                        localStorage.setItem('userId', String(userId || ''));
+                        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                    }
+                } catch (userError) {
+                    console.error('获取用户信息失败:', userError);
+                    const userId = data.userId || data.id;
+                    const username = data.username || data.userName;
+                    const userInfo = {
+                        id: userId,
+                        username: username,
+                        nickname: username,
+                        avatar: data.avatar || '',
+                    };
+                    localStorage.setItem('userId', String(userId || ''));
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                }
+
+                console.log('登录成功，准备跳转...');
                 message.success('登录成功');
                 navigate('/profile');
+            } else {
+                console.error('登录失败:', result.message);
+                message.error(result.message || '登录失败，请检查用户名和密码');
             }
         } catch (error: any) {
-            console.error('登录失败:', error);
-            const errorMsg = error?.response?.data?.message || error?.message || '登录失败，请检查用户名和密码';
+            console.error('登录异常:', error);
+            const errorMsg = error?.response?.data?.message ||
+                           error?.message ||
+                           error?.data?.message ||
+                           '登录失败，请检查用户名和密码';
             message.error(errorMsg);
         } finally {
             setLoading(false);

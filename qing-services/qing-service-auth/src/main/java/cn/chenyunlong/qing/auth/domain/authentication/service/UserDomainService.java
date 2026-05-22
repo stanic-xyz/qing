@@ -101,7 +101,7 @@ public class UserDomainService {
     }
 
     public void activeFromAdmin(AdminActiveUserCommand command) {
-        User user = userRepository.findUserByUserId(command.getUid()).orElseThrow();
+        User user = userRepository.findUserByUserId(command.getUserId()).orElseThrow();
 
         authenticationSpecification.checkActiveConditionForAdminActivation(user, command.getAdminUsername());
         user.activateByAdmin();
@@ -109,7 +109,7 @@ public class UserDomainService {
     }
 
     public void deActiveFromAdmin(AdminDeActiveUserCommand command) {
-        User user = userRepository.findUserByUserId(command.getUid()).orElseThrow();
+        User user = userRepository.findUserByUserId(command.getUserId()).orElseThrow();
 
         authenticationSpecification.checkDeActiveConditionForAdminActivation(user, command.getAdminUsername());
         user.deactivateByAdmin();

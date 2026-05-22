@@ -26,6 +26,9 @@ import static java.util.stream.Collectors.toList;
 @Builder
 public class UserDTO {
 
+    @FieldDesc(name = "用户ID")
+    private Long id;
+
     @FieldDesc(name = "用户唯一ID")
     private Long uid;
 
@@ -61,17 +64,17 @@ public class UserDTO {
         List<String> permissionCodes = userRoleList.stream().flatMap(userRole -> userRole.getPermissions().stream()).map(Permission::getCode).toList();
 
         return UserDTO.builder()
+                .id(user.getId().id())
+                .uid(user.getUid())
                 .phone(user.getPhone().normalized())
                 .username(user.getUsername().value())
                 .nickname(user.getNickname())
                 .active(user.isActive())
                 .locked(user.isLocked())
                 .expireTime(user.getExpireTime())
-                .uid(user.getUid()).username(user.getUsername().value())
                 .avatar(user.getAvatar())
                 .email(user.getEmail().value())
                 .description(user.getDescription())
-                .expireTime(user.getExpireTime())
                 .roles(userRoleList.stream().map(UserRole::getRole).map(Role::getCode).collect(toList()))
                 .permissions(permissionCodes)
                 .build();

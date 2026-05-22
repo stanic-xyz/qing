@@ -264,6 +264,7 @@ public class User extends BaseSimpleBusinessEntity<UserId> {
                                    Email email,
                                    PhoneNumber phone,
                                    String nickname,
+                                   String description,
                                    boolean active,
                                    boolean locked,
                                    Instant registeredAt,
@@ -282,6 +283,7 @@ public class User extends BaseSimpleBusinessEntity<UserId> {
                 .email(email)
                 .phone(phone)
                 .nickname(nickname)
+                .description(description)
                 .active(active)
                 .locked(locked)
                 .registeredAt(registeredAt)

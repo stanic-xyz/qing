@@ -1,31 +1,48 @@
 import React, {useEffect, useState} from 'react';
-import {Table, Button, Space, Modal, Form, Input, message, Tag, Popconfirm, Card} from 'antd';
-import {getUsers, createUser, deleteUser, activateUser, deactivateUser} from '../../api/user';
+import {Table, Button, Space, Modal, Form, Input, message, Tag, Popconfirm, Card, Select} from 'antd';
+import {getUsers, createUser, deleteUser, activateUser, deactivateUser, assignRolesToUser} from '../../api/user';
+import {getRoles} from '../../api/role';
 import type {User} from "../../api/types.ts";
 
 const UserManagement: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isAssignRoleModalVisible, setIsAssignRoleModalVisible] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<any>(null);
+    const [allRoles, setAllRoles] = useState<Role[]>([]);
+    const [selectedRoleIds, setSelectedRoleIds] = useState<string[]>([]);
     const [form] = Form.useForm();
-    const [pagination, setPagination] = useState({current: 1, pageSize: 10, total: 0});
+    const [pagination, setPagination] = useState({current: 0, pageSize: 10, total: 0});
 
-    const fetchUsers = async (page = 1, size = 10) => {
+    const fetchUsers = async (page = 0, size = 10) => {
+        console.log('=== fetchUsers called ===');
+        console.log('Page:', page, 'Size:', size);
         setLoading(true);
         try {
             const res = await getUsers({page, size});
-            if (res.success) {
-                setUsers(res.result.items || []);
-                setPagination({...pagination, current: page, total: res.result.total});
+            console.log('Response received:', res);
+            console.log('res.success:', res?.success);
+            if (res?.success) {
+                const data = res.result?.content || res.result?.items || [];
+                const total = res.result?.page?.totalElements || res.result?.total || 0;
+                console.log('Setting users:', data);
+                console.log('Users count:', data.length);
+                setUsers(data);
+                setPagination(prev => ({...prev, current: page, total: total}));
+                console.log('Users state updated');
+            } else {
+                console.error('API failed:', res);
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching users:', error);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
+        console.log('=== UserManagement mounted ===');
         fetchUsers();
     }, []);
 
@@ -53,7 +70,7 @@ const UserManagement: React.FC = () => {
 
     const handleStatusChange = async (record: any) => {
         try {
-            if (record.status === 'ACTIVE') { // Assuming status field
+            if (record.active) {
                 await deactivateUser(record.id);
             } else {
                 await activateUser(record.id);
@@ -65,18 +82,51 @@ const UserManagement: React.FC = () => {
         }
     };
 
+    const openAssignRoleModal = async (record: any) => {
+        setSelectedUser(record);
+        try {
+            const res = await getRoles({page: 0, size: 100});
+            if (res?.success) {
+                setAllRoles(res.result?.content || []);
+            }
+        } catch (error) {
+            console.error('Failed to fetch roles:', error);
+            message.error('Failed to fetch roles');
+        }
+        setIsAssignRoleModalVisible(true);
+    };
+
+    const handleAssignRoles = async () => {
+        if (!selectedUser || selectedRoleIds.length === 0) {
+            message.error('Please select at least one role');
+            return;
+        }
+
+        try {
+            await assignRolesToUser(String(selectedUser.id), selectedRoleIds);
+            message.success('Roles assigned successfully');
+            setIsAssignRoleModalVisible(false);
+            setSelectedRoleIds([]);
+        } catch (error) {
+            console.error('Failed to assign roles:', error);
+            message.error('Failed to assign roles');
+        }
+    };
+
     const columns = [
         {title: 'ID', dataIndex: 'id', key: 'id'},
-        {title: 'Username', dataIndex: 'username', key: 'username', render: (u: any) => u?.value || u},
+        {title: 'Username', dataIndex: 'username', key: 'username'},
         {title: 'Nickname', dataIndex: 'nickname', key: 'nickname'},
-        {title: 'Email', dataIndex: 'email', key: 'email', render: (e: any) => e?.value || e},
-        {title: 'Phone', dataIndex: 'phone', key: 'phone', render: (p: any) => p?.value || p},
+        {title: 'Email', dataIndex: 'email', key: 'email'},
+        {title: 'Phone', dataIndex: 'phone', key: 'phone'},
         {
             title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (status: string) => (
-                <Tag color={status === 'ACTIVE' ? 'green' : 'red'}>{status}</Tag>
+            dataIndex: 'active',
+            key: 'active',
+            render: (active: boolean) => (
+                <Tag color={active ? 'green' : 'red'}>
+                    {active ? 'ACTIVE' : 'INACTIVE'}
+                </Tag>
             )
         },
         {
@@ -85,9 +135,9 @@ const UserManagement: React.FC = () => {
             render: (_: any, record: any) => (
                 <Space size="middle">
                     <Button type="link" onClick={() => handleStatusChange(record)}>
-                        {record.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
+                        {record.active ? 'Deactivate' : 'Activate'}
                     </Button>
-                    <Button type="link">Assign Role</Button>
+                    <Button type="link" onClick={() => openAssignRoleModal(record)}>Assign Role</Button>
                     <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
                         <Button type="link" danger>Delete</Button>
                     </Popconfirm>
@@ -108,7 +158,7 @@ const UserManagement: React.FC = () => {
                     </Form.Item>
                     <Form.Item>
                         <Space>
-                            <Button type="primary" onClick={() => fetchUsers(1)}>Search</Button>
+                            <Button type="primary" onClick={() => fetchUsers(0)}>Search</Button>
                             <Button onClick={() => form.resetFields()}>Reset</Button>
                         </Space>
                     </Form.Item>
@@ -125,18 +175,13 @@ const UserManagement: React.FC = () => {
                         <Button>Import</Button>
                     </Space>
                 </div>
+
                 <Table
-                    columns={columns}
                     dataSource={users}
-                    rowKey="id"
+                    columns={columns}
+                    rowKey={(record) => String(record.id)}
                     loading={loading}
-                    pagination={{
-                        ...pagination,
-                        showSizeChanger: true,
-                        showQuickJumper: true,
-                        showTotal: (total) => `Total ${total} items`,
-                        onChange: (page, pageSize) => fetchUsers(page, pageSize)
-                    }}
+                    pagination={false}
                 />
             </Card>
 
@@ -153,6 +198,28 @@ const UserManagement: React.FC = () => {
                         <Input/>
                     </Form.Item>
                     {/* Add other fields */}
+                </Form>
+            </Modal>
+
+            <Modal
+                title={`Assign Role to ${selectedUser?.username || ''}`}
+                open={isAssignRoleModalVisible}
+                onOk={handleAssignRoles}
+                onCancel={() => setIsAssignRoleModalVisible(false)}
+            >
+                <Form layout="vertical">
+                    <Form.Item label="Select Roles">
+                        <Select
+                            mode="multiple"
+                            placeholder="Select roles"
+                            value={selectedRoleIds}
+                            onChange={(values) => setSelectedRoleIds(values)}
+                            options={allRoles.map(r => ({
+                                label: r.name,
+                                value: String(r.id)
+                            }))}
+                        />
+                    </Form.Item>
                 </Form>
             </Modal>
         </div>

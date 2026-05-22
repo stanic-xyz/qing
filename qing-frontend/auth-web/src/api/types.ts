@@ -22,24 +22,31 @@ export interface RegisterRequest {
 }
 
 export interface User {
-  id: string;
-  username: { value: string };
-  nickname: string;
-  email: { value: string };
-  phone: { value: string };
-  avatar: string;
-  description: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'LOCKED';
-  roles: Role[];
-  createdAt: string;
-  updatedAt: string;
+  id?: string | number;
+  uid?: string | number;
+  username: string;
+  nickname?: string;
+  email?: string;
+  phone?: string;
+  avatar?: string;
+  description?: string;
+  status?: 'ACTIVE' | 'INACTIVE' | 'LOCKED' | string;
+  active?: boolean;
+  locked?: boolean;
+  roles?: Role[];
+  createdAt?: string;
+  updatedAt?: string;
+  registeredAt?: string;
+  lastLoginAt?: string;
 }
 
 export interface Role {
   id: string;
   code: string;
   name: string;
-  description: string;
+  description?: string;
+  type?: string;
+  status?: string;
   permissions?: Permission[];
 }
 
@@ -47,12 +54,12 @@ export interface Permission {
   id: string;
   code: string;
   name: string;
-  type: 'MENU' | 'BUTTON' | 'API';
-  resource: string;
-  action: string;
-  parentId: string | null;
-  sortOrder: number;
-  description: string;
+  type?: 'MENU' | 'BUTTON' | 'API' | string;
+  resource?: string;
+  action?: string;
+  parentId?: string | null;
+  sortOrder?: number;
+  description?: string;
   children?: Permission[];
 }
 

@@ -7,11 +7,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class AdminDeActiveUserCommand {
 
-    private Long uid;
+    private Long userId;
 
     private String adminUsername;
 
-    public static AdminDeActiveUserCommand create(Long uid, String adminUsername) {
-        return new AdminDeActiveUserCommand(uid, adminUsername);
+    public static AdminDeActiveUserCommand create(Long userId, String adminUsername) {
+        return new AdminDeActiveUserCommand(userId, adminUsername);
     }
 }
