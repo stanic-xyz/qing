@@ -3,24 +3,12 @@
  *
  * 完全代码化：无需在 Jenkins 中配置任何共享库
  * 共享库通过 evaluate(readTrusted()) 从代码库加载
- *
- * 共享库结构:
- * - jenkins/lib/common.groovy    - 通用函数
- * - jenkins/lib/maven.groovy     - Maven 构建函数
- * - jenkins/lib/docker.groovy    - Docker 构建函数
- * - jenkins/lib/kubernetes.groovy - K8s 部署函数
- *
- * 使用方式：
- * 1. 在 Jenkins 中创建 Pipeline Job
- * 2. 选择 "Pipeline script from SCM"
- * 3. 配置 Script Path 为: Jenkinsfile
- * 4. 选择对应的服务模块进行构建
  */
 
 // ==================== 加载共享库 ====================
 
 def common = evaluate(readTrusted('jenkins/lib/common.groovy'))
-def maven = evauate(readTrusted('jenkins/lib/maven.groovy'))
+def maven = evaluate(readTrusted('jenkins/lib/maven.groovy'))
 def docker = evaluate(readTrusted('jenkins/lib/docker.groovy'))
 def k8s = evaluate(readTrusted('jenkins/lib/kubernetes.groovy'))
 
@@ -41,21 +29,21 @@ pipeline {
 
     parameters {
         choice(
-                name: 'BUILD_TYPE',
-                choices: ['debug', 'release'],
-                description: '选择构建类型'
+            name: 'BUILD_TYPE',
+            choices: ['debug', 'release'],
+            description: '选择构建类型'
         )
         choice(
-                name: 'SERVICE_MODULE',
-                choices: [
-                        'qing-service-auth',
-                        'qing-service-llm',
-                        'qing-service-anime',
-                        'qing-service-leave',
-                        'qing-service-minimall',
-                        'qing-service-workflow'
-                ],
-                description: '选择要构建的服务模块'
+            name: 'SERVICE_MODULE',
+            choices: [
+                'qing-service-auth',
+                'qing-service-llm',
+                'qing-service-anime',
+                'qing-service-leave',
+                'qing-service-minimall',
+                'qing-service-workflow'
+            ],
+            description: '选择要构建的服务模块'
         )
     }
 
@@ -75,10 +63,10 @@ pipeline {
                 script {
                     def serviceName = common.getServiceName(params.SERVICE_MODULE)
                     common.printBuildInfo([
-                            serviceName: serviceName,
-                            moduleName : params.SERVICE_MODULE,
-                            buildType  : params.BUILD_TYPE,
-                            buildNumber: env.BUILD_NUMBER
+                        serviceName: serviceName,
+                        moduleName: params.SERVICE_MODULE,
+                        buildType: params.BUILD_TYPE,
+                        buildNumber: env.BUILD_NUMBER
                     ])
                 }
             }
@@ -155,82 +143,81 @@ pipeline {
 
                     maven.package(params.SERVICE_MODULE, common.getMavenOpts(), params.BUILD_TYPE)
                 }
-
-                post {
-                    success {
-                        script {
-                            echo "编译打包成功"
-                            common.archiveJar("qing-services/${params.SERVICE_MODULE}")
-                        }
-                    }
-                    failure {
-                        script {
-                            echo "编译打包失败"
-                        }
-                    }
-                }
             }
-
-            stage('构建 Docker 镜像') {
-                when {
-                    expression { params.BUILD_TYPE == 'release' }
-                }
-                steps {
+            post {
+                success {
                     script {
-                        def serviceName = common.getServiceName(params.SERVICE_MODULE)
-                        docker.build(serviceName, params.SERVICE_MODULE, env.REGISTRY_URL, env.BUILD_NUMBER)
+                        echo "编译打包成功"
+                        common.archiveJar("qing-services/${params.SERVICE_MODULE}")
                     }
                 }
+                failure {
+                    script {
+                        echo "编译打包失败"
+                    }
+     }
             }
+        }
 
-            stage('部署到生产环境') {
-                when {
-                    expression { params.BUILD_TYPE == 'release' }
-                }
-                steps {
-                    script {
-                        def serviceName = common.getServiceName(params.SERVICE_MODULE)
-                        docker.push(serviceName, env.REGISTRY_URL, env.BUILD_NUMBER)
-                        k8s.deploy(serviceName, env.REGISTRY_URL, env.BUILD_NUMBER)
-                    }
-                }
-                post {
-                    success {
-                        script {
-                            echo "部署成功"
-                        }
-                    }
-                    failure {
-                        script {
-                            echo "部署失败，尝试回滚"
-                            def serviceName = common.getServiceName(params.SERVICE_MODULE)
-                            k8s.rollback(serviceName)
-                        }
-                    }
+        stage('构建 Docker 镜像') {
+            when {
+                expression { params.BUILD_TYPE == 'release' }
+            }
+            steps {
+                script {
+                    def serviceName = common.getServiceName(params.SERVICE_MODULE)
+                    docker.build(serviceName, params.SERVICE_MODULE, env.REGISTRY_URL, env.BUILD_NUMBER)
                 }
             }
         }
 
-        post {
-            always {
+        stage('部署到生产环境') {
+            when {
+                expression { params.BUILD_TYPE == 'release' }
+            }
+            steps {
                 script {
                     def serviceName = common.getServiceName(params.SERVICE_MODULE)
-                    currentBuild.description = "服务: ${serviceName}, 类型: ${params.BUILD_TYPE}, 状态: ${currentBuild.result}"
+                    docker.push(serviceName, env.REGISTRY_URL, env.BUILD_NUMBER)
+                    k8s.deploy(serviceName, env.REGISTRY_URL, env.BUILD_NUMBER)
                 }
             }
-            success {
-                script {
-                    echo "=========================================="
-                    echo "  构建成功！"
-                    echo "=========================================="
+            post {
+                success {
+                    script {
+                        echo "部署成功"
+                    }
+                }
+                failure {
+                    script {
+                        echo "部署失败，尝试回滚"
+                        def serviceName = common.getServiceName(params.SERVICE_MODULE)
+                        k8s.rollback(serviceName)
+                    }
                 }
             }
-            failure {
-                script {
-                    echo "=========================================="
-                    echo "  构建失败！"
-                    echo "=========================================="
-                }
+        }
+    }
+
+    post {
+        always {
+            script {
+                def serviceName = common.getServiceName(params.SERVICE_MODULE)
+                currentBuild.description = "服务: ${serviceName}, 类型: ${params.BUILD_TYPE}, 状态: ${currentBuild.result}"
+            }
+        }
+        success {
+            script {
+                echo "=========================================="
+                echo "  构建成功！"
+                echo "=========================================="
+            }
+        }
+        failure {
+            script {
+                echo "=========================================="
+                echo "  构建失败！"
+                echo "=========================================="
             }
         }
     }
