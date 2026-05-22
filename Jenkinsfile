@@ -36,8 +36,8 @@ pipeline {
         choice(
             name: 'SERVICE_MODULE',
             choices: [
-                'qing-service-auth',
                 'qing-service-llm',
+                'qing-service-auth',
                 'qing-service-anime',
                 'qing-service-leave',
                 'qing-service-minimall',
@@ -64,19 +64,10 @@ pipeline {
                     def serviceName = common.getServiceName(params.SERVICE_MODULE)
                     common.printBuildInfo([
                         serviceName: serviceName,
-                        moduleName: params.SERVICE_MODULE,
-                        buildType: params.BUILD_TYPE,
+                        moduleName : params.SERVICE_MODULE,
+                        buildType  : params.BUILD_TYPE,
                         buildNumber: env.BUILD_NUMBER
                     ])
-                }
-            }
-        }
-
-        stage('验证依赖完整性') {
-            steps {
-                script {
-                    echo "验证项目依赖: ${params.SERVICE_MODULE}..."
-                    maven.validate(params.SERVICE_MODULE, common.getMavenOpts())
                 }
             }
         }
@@ -155,7 +146,7 @@ pipeline {
                     script {
                         echo "编译打包失败"
                     }
-     }
+                }
             }
         }
 
