@@ -31,7 +31,8 @@ def printBuildInfo(Map config) {
 }
 
 def archiveJar(String modulePath) {
-    archiveArtifacts artifacts: "${modulePath}/target/*.jar", fingerprint: true
+    echo "Archiving jar filepath... ${modulePath}"
+    archiveArtifacts artifacts: "qing-services/${modulePath}/target/*.jar", fingerprint: true
 }
 
 return this
