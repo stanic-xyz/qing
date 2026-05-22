@@ -28,7 +28,6 @@ pipeline {
     }
 
     triggers {
-        pollSCM('H/5 * * * *')
         GenericTrigger(
             genericVariables: [
                 [key: 'ref', value: '$.ref'],
