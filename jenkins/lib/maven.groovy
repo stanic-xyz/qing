@@ -52,7 +52,7 @@ def checkstyle(String moduleName, String mavenOpts) {
     """
 }
 
-def package(String moduleName, String mavenOpts, String buildType) {
+def mavenPackage(String moduleName, String mavenOpts, String buildType) {
     def command = buildType == 'release' ? 'clean package' : 'package'
     sh """
         mvn ${mavenOpts} ${command} \

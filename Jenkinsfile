@@ -141,7 +141,7 @@ pipeline {
                         echo "执行 Debug 模式构建"
                     }
 
-                    maven.package(params.SERVICE_MODULE, common.getMavenOpts(), params.BUILD_TYPE)
+                    maven.mavenPackage(params.SERVICE_MODULE, common.getMavenOpts(), params.BUILD_TYPE)
                 }
             }
             post {
