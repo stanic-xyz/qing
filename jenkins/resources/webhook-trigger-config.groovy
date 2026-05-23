@@ -21,7 +21,7 @@ def call(Map config = [:]) {
     def buildType = config.buildType ?: 'debug'
     def branch = config.branch ?: 'main'
 
-    echo "Webhook 触发构建:"
+    echo "Webhook 触发构建"
     echo "  模块: ${module}"
     echo "  类型: ${buildType}"
     echo "  分支: ${branch}"
