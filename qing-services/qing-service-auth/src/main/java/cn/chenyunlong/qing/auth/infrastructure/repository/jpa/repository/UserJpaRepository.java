@@ -15,7 +15,7 @@ public interface UserJpaRepository extends BaseJpaQueryRepository<QingUserEntity
     @Query("select u from QingUserEntity u where u.username = ?1")
     QingUserEntity findByUsername(String username);
 
-    @Query("select u from QingUserEntity u where u.uid = ?1")
+    @Query("select u from QingUserEntity u where u.id = ?1")
     QingUserEntity findUserByUserId(Long userId);
 
     @Query("select u from QingUserEntity u where u.nickname in ?1")

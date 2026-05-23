@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- 声明文档类型为HTML5 -->
+<html lang="zh-CN">
+<head>
+    <!-- 字符编码：确保中文/特殊字符正常显示 -->
+    <meta charset="UTF-8">
+    <!-- 视口设置：适配移动端（教学可选讲） -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 页面标题：浏览器标签显示 -->
+    <title>应用中心教学演示</title>
+    
+    <!-- 引入外部CSS样式文件（核心知识点：外部样式引入） -->
+    <!-- 路径说明：./ 表示当前目录，css/style.css 是样式文件的相对路径 -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <!-- 1. Logo展示区（核心知识点：图片引入） -->
+    <div class="logo-container">
+        <!-- src：图片路径；alt：图片加载失败时的替代文本（无障碍/SEO） -->
+        <img src="./images/logo.png" alt="教学演示Logo" class="logo">
+    </div>
+
+    <!-- 2. HelloWorld核心文本 -->
+    <div class="hello-container">
+        <h1 id="helloText">Welcome to the fnOS AppCenter</h1>
+        <p class="tips">点击上方文字体验JS交互</p>
+    </div>
+
+    <!-- 3. 引入外部JS文件（核心知识点：JS文件引入） -->
+    <!-- 建议放在body底部：确保DOM加载完成后再执行JS，避免获取不到元素 -->
+    <!-- 路径说明：./js/main.js 是JS文件的相对路径 -->
+    <script src="./js/main.js"></script>
+</body>
+</html>

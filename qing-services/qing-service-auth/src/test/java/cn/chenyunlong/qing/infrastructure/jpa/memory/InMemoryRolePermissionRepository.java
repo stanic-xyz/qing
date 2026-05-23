@@ -5,7 +5,6 @@ import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
 import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.RolePermission;
 import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.RolePermissionId;
 import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.permission.RolePermissionRepository;
-
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

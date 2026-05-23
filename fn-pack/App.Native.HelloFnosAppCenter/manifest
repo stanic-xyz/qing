@@ -1,0 +1,10 @@
+appname               = App.Native.HelloFnosAppCenter
+version               = 1.0.0
+display_name          = 教学案例
+desc                  = 方便开发者快速了解应用开发及应用封包流程所制作的教学案例
+arch                  = x86_64
+source                = thirdparty
+maintainer            = fnOS
+distributor           = MR_XIAOBO
+desktop_uidir         = ui
+desktop_applaunchname = App.Native.HelloFnosAppCenter.Application

@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2023  YunLong Chen
  * Project Qing is licensed under Mulan PSL v2.
  * You can use this software according to the terms and conditions username the Mulan PSL v2.
- * You may obtain a copy username Mulan PSL v2 at:
+ * You may obtain a copy of Mulan PSL v2 at:
  *          http://license.coscl.org.cn/MulanPSL2
  * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
@@ -25,6 +25,7 @@ import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenId;
 import cn.chenyunlong.qing.auth.domain.authentication.valueObject.TokenType;
 import cn.chenyunlong.qing.auth.domain.rbac.PermissionId;
 import cn.chenyunlong.qing.auth.domain.rbac.Role;
+import cn.chenyunlong.qing.auth.domain.rbac.RoleId;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.Permission;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.CreatePermissionCommand;
 import cn.chenyunlong.qing.auth.domain.rbac.permission.command.DeletePermissionCommand;
@@ -36,10 +37,13 @@ import cn.chenyunlong.qing.auth.domain.rbac.permission.repository.PermissionRepo
 import cn.chenyunlong.qing.auth.domain.rbac.rolepermission.command.RemovePermissionFromRoleCommand;
 import cn.chenyunlong.qing.auth.domain.role.command.CreateRoleCommand;
 import cn.chenyunlong.qing.auth.domain.role.command.RoleAssignPermissionsCommand;
+import cn.chenyunlong.qing.auth.domain.role.command.UpdateRoleCommand;
+import cn.chenyunlong.qing.auth.domain.role.command.DeleteRoleCommand;
 import cn.chenyunlong.qing.auth.domain.role.repository.RoleRepository;
 import cn.chenyunlong.qing.auth.domain.user.User;
 import cn.chenyunlong.qing.auth.domain.user.command.AuthenticationByUsernamePasswordCommand;
 import cn.chenyunlong.qing.auth.domain.user.command.UserActiveCommand;
+import cn.chenyunlong.qing.auth.domain.user.command.UserRegistrationCommand;
 import cn.chenyunlong.qing.auth.domain.user.repository.UserRepository;
 import cn.chenyunlong.qing.auth.domain.user.specification.UserAuthenticationSpecification;
 import cn.chenyunlong.qing.auth.domain.user.valueObject.UserRolePermissionInfo;
@@ -122,6 +126,23 @@ public class AuthApplicationService {
     }
 
     /**
+     * 用户注册
+     *
+     * @param command 注册命令
+     * @return 注册的用户
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public User register(UserRegistrationCommand command) {
+        log.info("开始注册用户: username={}", command.username());
+
+        // 使用领域服务注册用户
+        User user = userDomainService.register(command);
+
+        log.info("用户注册成功: userId={}", user.getId());
+        return user;
+    }
+
+    /**
      * 激活用户
      */
     @Transactional
@@ -193,6 +214,9 @@ public class AuthApplicationService {
         return accessToken;
     }
 
+    /**
+     * 创建角色
+     */
     public Role createRole(CreateRoleCommand command) {
 
         if (roleRepository.existsByCode(command.getCode())) {
@@ -206,6 +230,49 @@ public class AuthApplicationService {
         Role role = Role.create(command.getName(), command.getCode(), command.getDescription(), "system");
         roleRepository.save(role);
         return role;
+    }
+
+    /**
+     * 更新角色
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateRole(UpdateRoleCommand command) {
+        Role role = roleRepository.findById(command.getId())
+                .orElseThrow(() -> new AuthenticationException("角色不存在"));
+
+        role.updateInfo(command.getName(), command.getDescription(), "system");
+        roleRepository.save(role);
+        log.info("角色更新成功: roleId={}", command.getId().id());
+    }
+
+    /**
+     * 删除角色
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteRole(DeleteRoleCommand command) {
+        Role role = roleRepository.findById(command.getId())
+                .orElseThrow(() -> new AuthenticationException("角色不存在"));
+
+        if (!role.canDelete()) {
+            throw new AuthenticationException("当前角色无法删除");
+        }
+
+        // 使用标记删除
+        roleRepository.save(role);
+        log.info("角色删除成功: roleId={}", command.getId().id());
+    }
+
+    /**
+     * 获取角色的权限列表
+     */
+    public List<Permission> getPermissionsByRoleId(RoleId roleId) {
+        return roleRepository.findById(roleId)
+                .map(role -> role.getPermissionIds().stream()
+                        .map(permissionId -> permissionRepository.findById(permissionId)
+                                .orElse(null))
+                .filter(permission -> permission != null)
+                .collect(Collectors.toList()))
+                .orElse(List.of());
     }
 
     /**
@@ -295,7 +362,7 @@ public class AuthApplicationService {
             // 验证所有权限都存在
             if (permissions.size() != CollUtil.size(command.getPermissionIds())) {
                 Set<PermissionId> foundIds = permissions.stream()
-                        .map(Permission::getId)
+                        .map(BaseSimpleBusinessEntity::getId)
                         .collect(Collectors.toSet());
                 List<PermissionId> missingIds = foundIds.stream()
                         .filter(id -> !foundIds.contains(id))

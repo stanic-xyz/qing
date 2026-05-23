@@ -18,10 +18,22 @@ spring:
     host: 192.168.3.112
     username: rabbitmq
     password: 123456
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    generator:
+      write-numbers-as-strings: true
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: 1576302867@qq.com
+    password: 123456
+    ssl:
+      enabled: true
 qing:
   api:
     description: QING-AUTH-SERVICE

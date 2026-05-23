@@ -1,47 +1,55 @@
 import React, {useEffect, useState} from 'react';
-import {Table, Button, Space, Modal, Form, Input, message, Popconfirm, Drawer, Tree, Card, type TreeDataNode} from 'antd';
+import {
+    Table,
+    Button,
+    Space,
+    Modal,
+    Form,
+    Input,
+    message,
+    Popconfirm,
+    Drawer,
+    Tree,
+    Card,
+    type TreeDataNode
+} from 'antd';
 import {getRoles, createRole, updateRole, deleteRole, getRolePermissions, assignPermissions} from '../../api/role';
-import {getPermissions} from '../../api/permission';
+import {getUsers} from '../../api/user';
 import type {Role} from "../../api/types.ts";
 
 const RoleManagement: React.FC = () => {
-
-    let rolesState: Role[] = [];
-    const [roles, setRoles] = useState(rolesState);
+    const [roles, setRoles] = useState<Role[]>([]);
+    const [users, setUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isPermDrawerVisible, setIsPermDrawerVisible] = useState(false);
-    const [currentRole, setCurrentRole] = useState<any>(null);
-    const [permissions, setPermissions] = useState<TreeDataNode[]>([]);
+    const [, setIsAssignRoleDrawerVisible] = useState(false);
+    const [currentRole, setCurrentRole] = useState<Role | null>(null);
+    const [permissions] = useState<TreeDataNode[]>([]);
     const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
     const [form] = Form.useForm();
+    const [pagination, setPagination] = useState({current: 0, pageSize: 20, total: 0});
 
-    const fetchRoles = async () => {
+    const fetchRoles = async (page = 0, size = 20) => {
         setLoading(true);
         try {
-            const res = await getRoles({});
-            if (res.success) {
-                setRoles(res.result.items || []);
+            const res = await getRoles({page, size});
+            if (res?.success) {
+                const data = res.result?.content || res.result?.items || [];
+                const total = res.result?.page?.totalElements || res.result?.total || 0;
+                setRoles(data);
+                setPagination({current: page, pageSize: size, total: total});
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching roles:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    const fetchPermissions = async () => {
-        const res = await getPermissions();
-        if (res.success) {
-            // Transform flat list to tree if needed, or if backend returns tree
-            // Assuming backend returns tree or list that Tree component can handle
-            setPermissions([]);
-        }
-    }
-
     useEffect(() => {
+        console.debug(users, pagination);
         fetchRoles();
-        fetchPermissions();
     }, []);
 
     const handleCreateOrUpdate = async (values: any) => {
@@ -77,27 +85,36 @@ const RoleManagement: React.FC = () => {
         setIsPermDrawerVisible(true);
         const res = await getRolePermissions(record.id);
         if (res.success) {
-            // Assuming res.result is list of permission IDs
-            // Or if it returns objects, map to IDs.
-            // Adjust based on actual API response for role permissions
-            const perms = res.result || [];
-            // If perms are objects
-            setCheckedKeys(perms.map((p: any) => p.id || p));
+            setCheckedKeys(res.result || []);
         }
     };
 
     const handleAssignPermissions = async () => {
         try {
-            await assignPermissions(currentRole.id, checkedKeys as string[]);
-            message.success('Permissions assigned');
-            setIsPermDrawerVisible(false);
+            if (currentRole) {
+                await assignPermissions(currentRole.id, checkedKeys as string[]);
+                message.success('Permissions assigned');
+                setIsPermDrawerVisible(false);
+            }
         } catch (error) {
             console.error(error);
         }
     };
 
+    const openAssignRoleDrawer = async (record: any) => {
+        setCurrentRole(record);
+        setIsAssignRoleDrawerVisible(true);
+        try {
+            const res = await getUsers({page: 0, size: 100});
+            if (res?.success) {
+                setUsers(res.result?.content || res.result?.items || []);
+            }
+        } catch (error) {
+            console.error('Failed to fetch users:', error);
+            message.error('Failed to fetch users');
+        }
+    };
     const columns = [
-        {title: 'ID', dataIndex: 'id', key: 'id'},
         {title: 'Code', dataIndex: 'code', key: 'code'},
         {title: 'Name', dataIndex: 'name', key: 'name'},
         {title: 'Description', dataIndex: 'description', key: 'description'},
@@ -112,6 +129,7 @@ const RoleManagement: React.FC = () => {
                         setIsModalVisible(true);
                     }}>Edit</Button>
                     <Button type="link" onClick={() => openPermissionDrawer(record)}>Permissions</Button>
+                    <Button type="link" onClick={() => openAssignRoleDrawer(record)}>Assign Role</Button>
                     <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)}>
                         <Button type="link" danger>Delete</Button>
                     </Popconfirm>
@@ -122,35 +140,42 @@ const RoleManagement: React.FC = () => {
 
     return (
         <div>
-            <Card variant={"borderless"} style={{marginBottom: 24}}>
+            <Card variant="borderless" style={{marginBottom: 24}}>
                 <Form layout="inline">
                     <Form.Item name="name" label="Role Name">
                         <Input placeholder="Search role name"/>
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" onClick={fetchRoles}>Search</Button>
+                        <Button type="primary" onClick={() => fetchRoles()}>Search</Button>
                     </Form.Item>
                 </Form>
             </Card>
 
             <Card variant="borderless">
-                <div style={{marginBottom: 16}}>
-                    <Button type="primary" onClick={() => {
-                        setCurrentRole(null);
-                        form.resetFields();
-                        setIsModalVisible(true);
-                    }}>
-                        Create Role
-                    </Button>
-                </div>
-                <Table columns={columns} dataSource={roles} rowKey="id" loading={loading}/>
+                <Button type="primary" onClick={() => {
+                    setCurrentRole(null);
+                    form.resetFields();
+                    setIsModalVisible(true);
+                }} style={{marginBottom: 16}}>
+                    Create Role
+                </Button>
+
+                <Table
+                    dataSource={roles}
+                    columns={columns}
+                    rowKey={(record) => String(record.id)}
+                    loading={loading}
+                    pagination={false}
+                />
             </Card>
 
-            <Modal title={currentRole ? "Edit Role" : "Create Role"} open={isModalVisible} onOk={() => form.submit()}
+            <Modal title={currentRole ? "Edit Role" : "Create Role"}
+                   open={isModalVisible}
+                   onOk={() => form.submit()}
                    onCancel={() => setIsModalVisible(false)}>
                 <Form form={form} onFinish={handleCreateOrUpdate} layout="vertical">
                     <Form.Item name="code" label="Code" rules={[{required: true}]}>
-                        <Input/>
+                        <Input disabled={!!currentRole}/>
                     </Form.Item>
                     <Form.Item name="name" label="Name" rules={[{required: true}]}>
                         <Input/>

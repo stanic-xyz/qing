@@ -5,7 +5,7 @@ import type {Permission} from "../../api/types.ts";
 
 const PermissionManagement: React.FC = () => {
 
-    let permissionList: Permission[] = [];
+    const permissionList: Permission[] = [];
 
     const [permissions, setPermissions] = useState(permissionList);
     const [loading, setLoading] = useState(false);
@@ -18,7 +18,9 @@ const PermissionManagement: React.FC = () => {
         try {
             const res = await getPermissions();
             if (res.success) {
-                setPermissions(res.result || []);
+                // 后端返回的分页数据格式：{ content: [...], page: {...} }
+                const data = res.result?.content || res.result || [];
+                setPermissions(data);
             }
         } catch (error) {
             console.error(error);
@@ -60,8 +62,8 @@ const PermissionManagement: React.FC = () => {
     };
 
     const columns = [
-        {title: 'Name', dataIndex: 'name', key: 'name'},
         {title: 'Code', dataIndex: 'code', key: 'code'},
+        {title: 'Name', dataIndex: 'name', key: 'name'},
         {title: 'Type', dataIndex: 'type', key: 'type'},
         {title: 'Resource', dataIndex: 'resource', key: 'resource'},
         {title: 'Action', dataIndex: 'action', key: 'action'},

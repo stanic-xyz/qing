@@ -23,5 +23,5 @@ public class RoleEntity extends BaseJpaEntity {
     private String name;
 
     @FieldDesc(name = "备注")
-    private String remark;
+    private String description;
 }

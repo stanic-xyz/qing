@@ -10,19 +10,18 @@ import RoleManagement from './pages/admin/RoleManagement';
 import PermissionManagement from './pages/admin/PermissionManagement';
 import './App.css';
 
-const App: React.FC = () => {
-    // Simple auth guard
+const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({children}) => {
     const isAuthenticated = () => {
         return !!localStorage.getItem('token');
     };
 
-    const ProtectedRoute = ({children}: { children: JSX.Element }) => {
-        if (!isAuthenticated()) {
-            return <Navigate to="/login" replace/>;
-        }
-        return children;
-    };
+    if (!isAuthenticated()) {
+        return <Navigate to="/login" replace/>;
+    }
+    return children;
+};
 
+const App: React.FC = () => {
     return (
         <Router>
             <Routes>

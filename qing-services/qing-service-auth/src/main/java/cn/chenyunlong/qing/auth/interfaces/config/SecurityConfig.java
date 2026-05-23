@@ -53,11 +53,15 @@ public class SecurityConfig {
             )
             // 请求授权配置
             .authorizeHttpRequests(auth -> auth
+                // 允许所有 OPTIONS 预检请求
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // 公共接口
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/login", "/api/v1/auth/register").permitAll()
                 .requestMatchers("/api/v1/auth/active", "/api/v1/auth/action", "/api/v1/auth/resetActiveCode", "/api/v1/auth/refresh").permitAll()
                 // Swagger API文档
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                // 静态资源
+                .requestMatchers("/error", "/favicon.ico").permitAll()
                 // 其他所有请求都需要认证
                 .anyRequest().authenticated()
             )
@@ -84,10 +88,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // 允许所有来源，生产环境建议指定具体域名
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedOriginPatterns(List.of("*")); // 允许所有来源，使用模式匹配
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setExposedHeaders(List.of("Authorization"));
+        configuration.setExposedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
+        configuration.setAllowCredentials(true); // 允许凭证
+        configuration.setMaxAge(3600L); // 预检请求缓存时间
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

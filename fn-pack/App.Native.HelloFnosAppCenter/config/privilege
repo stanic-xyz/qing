@@ -1,0 +1,7 @@
+{
+    "defaults": {
+        "run-as": "package"
+    },
+    "username": "hello_fnos_appcenter",
+    "groupname": "hello_fnos_appcenter"
+}

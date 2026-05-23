@@ -1,26 +1,25 @@
 import request from './request';
-import type {PageResult, Role} from "./types.ts";
 
 export const getRoles = (params: any) => {
-  return request.get<PageResult<Role>>('/roles', { params });
+    return request.get('/roles', {params});
 };
 
 export const createRole = (data: any) => {
-  return request.post<void>('/roles', data);
+    return request.post('/roles', data);
 };
 
 export const updateRole = (id: string, data: any) => {
-  return request.put<void>(`/roles/${id}`, data);
+    return request.put(`/roles/${id}`, data);
 };
 
 export const deleteRole = (id: string) => {
-  return request.delete<void>(`/roles/${id}`);
+    return request.delete(`/roles/${id}`);
 };
 
 export const getRolePermissions = (id: string) => {
-  return request.get<any[]>(`/roles/${id}/permissions`); // TODO: Define Permission type strictly if needed
+    return request.get(`/roles/${id}/permissions`);
 };
 
 export const assignPermissions = (roleId: string, permissionIds: string[]) => {
-  return request.post<void>(`/roles/${roleId}/permissions`, { permissionIds });
+    return request.post(`/roles/${roleId}/permissions`, {permissionIds});
 };

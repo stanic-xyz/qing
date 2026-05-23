@@ -80,6 +80,7 @@ public interface UserMapper {
                 Email.of(entity.getEmail()),
                 PhoneNumber.fromE164(entity.getPhone()),
                 entity.getNickname(),
+                entity.getDescription(),
                 entity.isActive(),
                 entity.isLocked(),
                 entity.getRegisteredAt(),

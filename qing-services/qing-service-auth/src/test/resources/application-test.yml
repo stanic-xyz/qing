@@ -5,10 +5,8 @@ spring:
     exclude:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
       - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
-      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
-      - org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration
-      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
-      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisHealthContributorAutoConfiguration
+      - org.springframework.boot.autoconfigure.mail.MailHealthContributorAutoConfiguration
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;MODE=MySQL
@@ -22,6 +20,9 @@ spring:
         show_sql: true
         format_sql: false
         dialect: org.hibernate.dialect.H2Dialect
+  mail:
+    host: localhost
+    port: 25
 
 # JWT配置
 jwt:
@@ -45,7 +46,6 @@ qing:
       enabled: true
       loginLimit: 1
       registerLimit: 1
-      windowSeconds: 60
     global:
       enabled: false
 logging:

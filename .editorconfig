@@ -17,7 +17,6 @@ indent_style = space
 indent_size = 4
 tab_width = 4
 max_line_length = 180
-continuation_indent_size = 8
 
 # XML文件配置（包括pom.xml, checkstyle.xml等）
 [*.xml]
@@ -31,6 +30,12 @@ max_line_length = 180
 indent_style = space
 indent_size = 4
 tab_width = 4
+
+[Jenkinsfile]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
 
 # YAML文件配置
 [{*.yaml,*.yml}]

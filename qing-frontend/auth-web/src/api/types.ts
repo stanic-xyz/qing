@@ -7,34 +7,46 @@ export interface ApiResponse<T> {
 }
 
 export interface LoginResult {
-  scope: string;
-  accessToken: string;
-  idToken: string;
-  refreshToken: string;
-  tokenType: string;
-  expireIn: string;
-  code: string;
+  token: string;
+  userId: number;
+  username: string;
+  avatar: string;
+}
+
+export interface RegisterRequest {
+  username: string;
+  password: string;
+  nickname?: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface User {
-  id: string;
-  username: { value: string };
-  nickname: string;
-  email: { value: string };
-  phone: { value: string };
-  avatar: string;
-  description: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'LOCKED'; // Assuming status values
-  roles: Role[];
-  createdAt: string;
-  updatedAt: string;
+  id?: string | number;
+  uid?: string | number;
+  username: string;
+  nickname?: string;
+  email?: string;
+  phone?: string;
+  avatar?: string;
+  description?: string;
+  status?: 'ACTIVE' | 'INACTIVE' | 'LOCKED' | string;
+  active?: boolean;
+  locked?: boolean;
+  roles?: Role[];
+  createdAt?: string;
+  updatedAt?: string;
+  registeredAt?: string;
+  lastLoginAt?: string;
 }
 
 export interface Role {
   id: string;
   code: string;
   name: string;
-  description: string;
+  description?: string;
+  type?: string;
+  status?: string;
   permissions?: Permission[];
 }
 
@@ -42,12 +54,12 @@ export interface Permission {
   id: string;
   code: string;
   name: string;
-  type: 'MENU' | 'BUTTON' | 'API';
-  resource: string;
-  action: string;
-  parentId: string | null;
-  sortOrder: number;
-  description: string;
+  type?: 'MENU' | 'BUTTON' | 'API' | string;
+  resource?: string;
+  action?: string;
+  parentId?: string | null;
+  sortOrder?: number;
+  description?: string;
   children?: Permission[];
 }
 
