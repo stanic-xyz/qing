@@ -5,13 +5,16 @@ import cn.chenyunlong.qing.auth.BaseJpaIntegrationTest;
 import cn.chenyunlong.qing.auth.domain.menu.dto.command.CreateSysMenuCommand;
 import cn.chenyunlong.qing.auth.domain.menu.dto.command.UpdateSysMenuCommand;
 import cn.chenyunlong.qing.auth.domain.menu.dto.enums.MenuType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * SysMenu 服务测试
+ */
 class SysMenuServiceTest extends BaseJpaIntegrationTest {
-
 
     @Autowired
     private SysMenuService sysMenuService;

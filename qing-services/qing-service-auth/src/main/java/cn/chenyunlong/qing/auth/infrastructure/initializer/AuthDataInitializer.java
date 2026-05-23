@@ -55,7 +55,7 @@ public class AuthDataInitializer implements CommandLineRunner {
     /**
      * 超级管理员密码（生产环境应使用更复杂的密码）
      */
-    private static final String SUPER_ADMIN_PASSWORD = "admin123";
+    private static final String SUPER_ADMIN_PASSWORD = "Admin123";
 
     /**
      * 超级管理员昵称

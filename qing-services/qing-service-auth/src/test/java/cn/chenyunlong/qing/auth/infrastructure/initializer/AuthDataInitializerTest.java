@@ -98,13 +98,12 @@ class AuthDataInitializerTest {
     @Test
     @DisplayName("测试权限不存在时创建")
     void testCreatePermissionWhenNotExists() {
-        // Given: user:create权限不存在
+        // Given: user:create权限不存在，其他权限存在
         when(roleRepository.existsByCode("SUPER_ADMIN")).thenReturn(true);
         when(roleRepository.existsByCode("USER")).thenReturn(true);
-        when(permissionRepository.existsByCode("user:create")).thenReturn(false);
         when(permissionRepository.existsByCode(anyString())).thenAnswer(invocation -> {
             String code = invocation.getArgument(0);
-            return !code.equals("user:create");
+            return !code.equals("user:create");  // 只有 user:create 返回 false
         });
         when(roleJpaRepository.findAll()).thenReturn(java.util.Collections.emptyList());
 
@@ -144,7 +143,6 @@ class AuthDataInitializerTest {
         when(roleRepository.existsByCode("USER")).thenReturn(true);
         when(permissionRepository.existsByCode(anyString())).thenReturn(true);
         when(userRepository.existsByUsername(any())).thenReturn(false);
-        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
         when(roleJpaRepository.findAll()).thenReturn(java.util.Arrays.asList(roleEntity));
 
         // When: 执行初始化
@@ -234,11 +232,9 @@ class AuthDataInitializerTest {
         when(roleRepository.existsByCode("USER")).thenReturn(true);
         when(permissionRepository.existsByCode(anyString())).thenReturn(true);
         when(userRepository.existsByUsername(any())).thenReturn(true);
-        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
         when(roleJpaRepository.findAll()).thenReturn(java.util.Arrays.asList(roleEntity));
         when(permissionJpaRepository.findAll()).thenReturn(java.util.Arrays.asList(permEntity));
         when(rolePermissionRepository.existsByRoleIdAndPermissionId(any(), any())).thenReturn(true);
-        when(rolePermissionRepository.findPermissionIdsByRoleId(any())).thenReturn(new HashSet<>());
 
         // When: 执行初始化
         authDataInitializer.run();
