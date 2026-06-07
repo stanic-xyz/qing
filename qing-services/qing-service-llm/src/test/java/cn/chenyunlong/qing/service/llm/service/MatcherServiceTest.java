@@ -12,6 +12,7 @@ import cn.chenyunlong.qing.service.llm.repository.CategoryRepository;
 import cn.chenyunlong.qing.service.llm.repository.CounterpartyRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionMatcherRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -800,6 +801,153 @@ class MatcherServiceTest {
         assertEquals(1L, record.getTargetAccount().getId());
         assertEquals(TransactionType.TRANSFER, record.getTrasactionType());
         assertEquals(DraftMatchStatusEnum.INTERNAL_TRANSFER, record.getMatchStatus());
+    }
+
+    // ==================== AND/OR Operator Tests ====================
+
+    @Test
+    @DisplayName("AND operator - all children true")
+    void testAndOperator_AllTrue() throws Exception {
+        UnifiedDraftRecord record = new UnifiedDraftRecord();
+        record.setDetail("test");
+        record.setAmount(new BigDecimal("50.00"));
+        record.setMerchant("测试商户");
+
+        String conditionJson = """
+            {"operator":"AND","children":[
+                {"field":"detail","operator":"EQ","value":"test"},
+                {"field":"amount","operator":"LT","value":100.00}
+            ]}
+            """;
+        TransactionMatcher rule = buildRule(
+                "AND全匹配",
+                conditionJson,
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    @DisplayName("AND operator - one child false")
+    void testAndOperator_OneFalse() throws Exception {
+        UnifiedDraftRecord record = new UnifiedDraftRecord();
+        record.setDetail("test");
+        record.setAmount(new BigDecimal("150.00"));
+        record.setMerchant("测试商户");
+
+        String conditionJson = """
+            {"operator":"AND","children":[
+                {"field":"detail","operator":"EQ","value":"test"},
+                {"field":"amount","operator":"LT","value":100.00}
+            ]}
+            """;
+        TransactionMatcher rule = buildRule(
+                "AND一个假",
+                conditionJson,
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    @DisplayName("OR operator - one child true")
+    void testOrOperator_OneTrue() throws Exception {
+        UnifiedDraftRecord record = new UnifiedDraftRecord();
+        record.setDetail("test");
+        record.setAmount(new BigDecimal("150.00"));
+        record.setMerchant("测试商户");
+
+        String conditionJson = """
+            {"operator":"OR","children":[
+                {"field":"detail","operator":"EQ","value":"test"},
+                {"field":"amount","operator":"LT","value":100.00}
+            ]}
+            """;
+        TransactionMatcher rule = buildRule(
+                "OR一个真",
+                conditionJson,
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    @DisplayName("OR operator - all children false")
+    void testOrOperator_AllFalse() throws Exception {
+        UnifiedDraftRecord record = new UnifiedDraftRecord();
+        record.setDetail("other");
+        record.setAmount(new BigDecimal("150.00"));
+        record.setMerchant("测试商户");
+
+        String conditionJson = """
+            {"operator":"OR","children":[
+                {"field":"detail","operator":"EQ","value":"test"},
+                {"field":"amount","operator":"LT","value":100.00}
+            ]}
+            """;
+        TransactionMatcher rule = buildRule(
+                "OR全假",
+                conditionJson,
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    @DisplayName("Nested AND/OR - complex AST with depth 3")
+    void testNestedAndOrCondition_Depth3() throws Exception {
+        UnifiedDraftRecord record = new UnifiedDraftRecord();
+        record.setDetail("online-payment");
+        record.setAmount(new BigDecimal("200.00"));
+        record.setMerchant("测试商户");
+
+        // OR(
+        //   AND(CONTAINS(detail, "online"), GT(amount, 100)),
+        //   AND(CONTAINS(detail, "payment"), GTE(amount, 50))
+        // )
+        String conditionJson = """
+            {"operator":"OR","children":[
+                {"operator":"AND","children":[
+                    {"field":"detail","operator":"CONTAINS","value":"online"},
+                    {"field":"amount","operator":"GT","value":100.00}
+                ]},
+                {"operator":"AND","children":[
+                    {"field":"detail","operator":"CONTAINS","value":"payment"},
+                    {"field":"amount","operator":"GTE","value":50.00}
+                ]}
+            ]}
+            """;
+        TransactionMatcher rule = buildRule(
+                "嵌套AND/OR深度3",
+                conditionJson,
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
     }
 
     /**
