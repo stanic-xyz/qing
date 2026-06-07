@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,6 +43,356 @@ class MatcherServiceTest {
     private MatcherService matcherService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    // ==================== EQ Operator Tests ====================
+
+    @Test
+    void testEqStringMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("支付宝", "100.00");
+        TransactionMatcher rule = buildRule(
+                "EQ字符串匹配",
+                "{\"field\":\"merchant\", \"operator\":\"EQ\", \"value\":\"支付宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testEqStringNoMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("微信支付", "100.00");
+        TransactionMatcher rule = buildRule(
+                "EQ字符串不匹配",
+                "{\"field\":\"merchant\", \"operator\":\"EQ\", \"value\":\"支付宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testEqBigDecimalMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("商户", "99.50");
+        TransactionMatcher rule = buildRule(
+                "EQ金额匹配",
+                "{\"field\":\"amount\", \"operator\":\"EQ\", \"value\":99.50}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testEqBigDecimalNoMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("商户", "100.00");
+        TransactionMatcher rule = buildRule(
+                "EQ金额不匹配",
+                "{\"field\":\"amount\", \"operator\":\"EQ\", \"value\":99.50}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testEqBigDecimalIntegerMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("商户", "100");
+        TransactionMatcher rule = buildRule(
+                "EQ金额整数匹配",
+                "{\"field\":\"amount\", \"operator\":\"EQ\", \"value\":100}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    // ==================== NEQ Operator Tests ====================
+
+    @Test
+    void testNeqStringMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("微信支付", "100.00");
+        TransactionMatcher rule = buildRule(
+                "NEQ字符串匹配",
+                "{\"field\":\"merchant\", \"operator\":\"NEQ\", \"value\":\"支付宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testNeqStringNoMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("支付宝", "100.00");
+        TransactionMatcher rule = buildRule(
+                "NEQ字符串不匹配",
+                "{\"field\":\"merchant\", \"operator\":\"NEQ\", \"value\":\"支付宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testNeqBigDecimalMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("商户", "100.00");
+        TransactionMatcher rule = buildRule(
+                "NEQ金额匹配",
+                "{\"field\":\"amount\", \"operator\":\"NEQ\", \"value\":99.50}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testNeqBigDecimalNoMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("商户", "100.00");
+        TransactionMatcher rule = buildRule(
+                "NEQ金额不匹配",
+                "{\"field\":\"amount\", \"operator\":\"NEQ\", \"value\":100}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    // ==================== CONTAINS Operator Tests ====================
+
+    @Test
+    void testContainsStringMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("淘宝购物", "100.00");
+        TransactionMatcher rule = buildRule(
+                "CONTAINS字符串匹配",
+                "{\"field\":\"merchant\", \"operator\":\"CONTAINS\", \"value\":\"淘宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testContainsStringNoMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("京东商城", "100.00");
+        TransactionMatcher rule = buildRule(
+                "CONTAINS字符串不匹配",
+                "{\"field\":\"merchant\", \"operator\":\"CONTAINS\", \"value\":\"淘宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testContainsAtEnd() throws Exception {
+        UnifiedDraftRecord record = baseRecord("中国移动", "50.00");
+        TransactionMatcher rule = buildRule(
+                "CONTAINS结尾匹配",
+                "{\"field\":\"merchant\", \"operator\":\"CONTAINS\", \"value\":\"移动\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testContainsInMiddle() throws Exception {
+        UnifiedDraftRecord record = baseRecord("星巴克咖啡店", "35.00");
+        TransactionMatcher rule = buildRule(
+                "CONTAINS中间匹配",
+                "{\"field\":\"merchant\", \"operator\":\"CONTAINS\", \"value\":\"咖啡\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    // ==================== NOT_CONTAINS Operator Tests ====================
+
+    @Test
+    void testNotContainsStringMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("京东商城", "100.00");
+        TransactionMatcher rule = buildRule(
+                "NOT_CONTAINS字符串匹配",
+                "{\"field\":\"merchant\", \"operator\":\"NOT_CONTAINS\", \"value\":\"淘宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testNotContainsStringNoMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("淘宝店铺", "100.00");
+        TransactionMatcher rule = buildRule(
+                "NOT_CONTAINS字符串不匹配",
+                "{\"field\":\"merchant\", \"operator\":\"NOT_CONTAINS\", \"value\":\"淘宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testNotContainsWholeFieldMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("淘宝", "100.00");
+        TransactionMatcher rule = buildRule(
+                "NOT_CONTAINS字段完全相等不匹配",
+                "{\"field\":\"merchant\", \"operator\":\"NOT_CONTAINS\", \"value\":\"淘宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    // ==================== Edge Cases ====================
+
+    @Test
+    void testEqCaseSensitive() throws Exception {
+        UnifiedDraftRecord record = baseRecord("ALIPAY", "100.00");
+        TransactionMatcher rule = buildRule(
+                "EQ大小写敏感",
+                "{\"field\":\"merchant\", \"operator\":\"EQ\", \"value\":\"alipay\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testContainsCaseSensitive() throws Exception {
+        UnifiedDraftRecord record = baseRecord("MyAlipay", "100.00");
+        TransactionMatcher rule = buildRule(
+                "CONTAINS大小写敏感",
+                "{\"field\":\"merchant\", \"operator\":\"CONTAINS\", \"value\":\"alipay\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testEqWithNullFieldValue() throws Exception {
+        UnifiedDraftRecord record = baseRecord("支付宝", "100.00");
+        TransactionMatcher rule = buildRule(
+                "EQ匹配null字段",
+                "{\"field\":\"remark\", \"operator\":\"EQ\", \"value\":\"测试\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testContainsWithNullFieldValue() throws Exception {
+        UnifiedDraftRecord record = baseRecord("支付宝", "100.00");
+        TransactionMatcher rule = buildRule(
+                "CONTAINS匹配null字段",
+                "{\"field\":\"remark\", \"operator\":\"CONTAINS\", \"value\":\"测试\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testNotContainsWithNullFieldValue() throws Exception {
+        UnifiedDraftRecord record = baseRecord("支付宝", "100.00");
+        TransactionMatcher rule = buildRule(
+                "NOT_CONTAINS匹配null字段",
+                "{\"field\":\"remark\", \"operator\":\"NOT_CONTAINS\", \"value\":\"测试\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        // When actual is null, evaluateLeafCondition returns false for NOT_CONTAINS
+        // because it returns early for null values (only IS_NULL returns true for null actual)
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    // ==================== Existing Tests Preserved ====================
 
     @Test
     void testSetCategoryByEqRule() throws Exception {
