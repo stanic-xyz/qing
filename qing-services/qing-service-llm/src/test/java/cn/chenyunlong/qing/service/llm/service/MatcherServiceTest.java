@@ -805,6 +805,143 @@ class MatcherServiceTest {
 
     // ==================== AND/OR Operator Tests ====================
 
+    // ==================== Action Tests ====================
+
+    @Test
+    @DisplayName("SET_CATEGORY action - should set category on record")
+    void testSetCategoryAction() throws Exception {
+        UnifiedDraftRecord record = baseRecord("鲜农果蔬", "100.50");
+        TransactionMatcher rule = buildRule(
+                "SET_CATEGORY规则",
+                "{\"field\":\"merchant\", \"operator\":\"EQ\", \"value\":\"鲜农果蔬\"}",
+                "[{\"actionType\":\"SET_CATEGORY\", \"value\":1}]",
+                false
+        );
+
+        Category category = new Category();
+        category.setName("餐饮美食");
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals("餐饮美食", record.getCategory().getName());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    @DisplayName("SET_COUNTERPARTY action - should set counterparty")
+    void testSetCounterpartyAction() throws Exception {
+        UnifiedDraftRecord record = baseRecord("未知商户", "88.00");
+        TransactionMatcher rule = buildRule(
+                "SET_COUNTERPARTY规则",
+                "{\"field\":\"merchant\", \"operator\":\"CONTAINS\", \"value\":\"未知\"}",
+                "[{\"actionType\":\"SET_COUNTERPARTY\", \"value\":10}]",
+                false
+        );
+
+        Counterparty counterparty = new Counterparty();
+        counterparty.setId(10L);
+        counterparty.setName("已知大商户");
+        when(counterpartyRepository.findById(10L)).thenReturn(Optional.of(counterparty));
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals("已知大商户", record.getCounterparty().getName());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    @DisplayName("SET_TARGET_ACCOUNT action - marks as internal transfer")
+    void testSetTargetAccountAction() throws Exception {
+        UnifiedDraftRecord record = baseRecord("转账", "500.00");
+        TransactionMatcher rule = buildRule(
+                "SET_TARGET_ACCOUNT规则",
+                "{\"field\":\"merchant\", \"operator\":\"CONTAINS\", \"value\":\"转账\"}",
+                "[{\"actionType\":\"SET_TARGET_ACCOUNT\", \"value\":1}]",
+                false
+        );
+
+        Account account = new Account();
+        account.setId(1L);
+        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(1L, record.getTargetAccount().getId());
+        assertEquals(TransactionType.TRANSFER, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.INTERNAL_TRANSFER, record.getMatchStatus());
+    }
+
+    @Test
+    @DisplayName("SET_TYPE action - sets transaction type")
+    void testSetTypeAction() throws Exception {
+        UnifiedDraftRecord record = baseRecord("支付宝", "100.00");
+        TransactionMatcher rule = buildRule(
+                "SET_TYPE规则",
+                "{\"field\":\"merchant\", \"operator\":\"EQ\", \"value\":\"支付宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    @DisplayName("No rules match - record unchanged")
+    void testNoRuleMatches() throws Exception {
+        UnifiedDraftRecord record = baseRecord("无匹配商户", "100.00");
+        TransactionMatcher rule = buildRule(
+                "不匹配规则",
+                "{\"field\":\"merchant\", \"operator\":\"EQ\", \"value\":\"支付宝\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+        assertNull(record.getCategory());
+    }
+
+    @Test
+    @DisplayName("Null condition node - should match all (no filter)")
+    void testNullConditionNode() throws Exception {
+        UnifiedDraftRecord record = baseRecord("任意商户", "100.00");
+        TransactionMatcher rule = new TransactionMatcher();
+        rule.setName("空条件规则");
+        rule.setConditionNode(null);
+        rule.setActionNode(objectMapper.readTree("[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]"));
+        rule.setStopOnMatch(false);
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    @DisplayName("Invalid field name - should not match")
+    void testFieldNotReadable() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        TransactionMatcher rule = buildRule(
+                "无效字段规则",
+                "{\"field\":\"nonExistentField\", \"operator\":\"EQ\", \"value\":\"test\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    // ==================== AND/OR Operator Tests ====================
+
     @Test
     @DisplayName("AND operator - all children true")
     void testAndOperator_AllTrue() throws Exception {
