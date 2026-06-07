@@ -75,9 +75,12 @@ public class BatchMatchService {
                     record.setIsModified(false);
 
                     // 传入历史记录快照，避免重复查询数据库,假设已经匹配完成了
-                    // matcherService.applyMatchers(record, immutableRules);
+                    matcherService.applyMatchers(record, immutableRules);
 
-                    record.setMatchStatus(DraftMatchStatusEnum.MATCHED);
+                    // Set appropriate status based on matching result
+                    if (record.getMatchStatus() == null || record.getMatchStatus() == DraftMatchStatusEnum.ORIGINAL) {
+                        record.setMatchStatus(DraftMatchStatusEnum.UNMATCHED);
+                    }
                 }
 
                 draftRecordRepository.saveAll(draftRecords);  // 更新匹配状态
