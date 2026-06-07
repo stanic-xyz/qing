@@ -308,6 +308,251 @@ class MatcherServiceTest {
         assertNull(record.getMatchStatus());
     }
 
+    // ==================== REGEX Operator Tests ====================
+
+    @Test
+    void testRegexOperator_Match() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        record.setDetail("order-2024-001");
+        TransactionMatcher rule = buildRule(
+                "REGEX匹配",
+                "{\"field\":\"detail\", \"operator\":\"REGEX\", \"value\":\"order-\\\\d{4}-\\\\d{3}\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testRegexOperator_NoMatch() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        record.setDetail("invalid-order");
+        TransactionMatcher rule = buildRule(
+                "REGEX不匹配",
+                "{\"field\":\"detail\", \"operator\":\"REGEX\", \"value\":\"order-\\\\d{4}-\\\\d{3}\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    @Test
+    void testRegexOperator_InvalidPattern() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        record.setDetail("test");
+        TransactionMatcher rule = buildRule(
+                "REGEX非法正则",
+                "{\"field\":\"detail\", \"operator\":\"REGEX\", \"value\":\"[invalid\"}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    // ==================== GT Operator Tests ====================
+
+    @Test
+    void testGtOperator() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "150.00");
+        TransactionMatcher rule = buildRule(
+                "GT大于",
+                "{\"field\":\"amount\", \"operator\":\"GT\", \"value\":100.00}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testGtOperator_EqualFails() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        TransactionMatcher rule = buildRule(
+                "GT等于不匹配",
+                "{\"field\":\"amount\", \"operator\":\"GT\", \"value\":100.00}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    // ==================== LT Operator Tests ====================
+
+    @Test
+    void testLtOperator() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "50.00");
+        TransactionMatcher rule = buildRule(
+                "LT小于",
+                "{\"field\":\"amount\", \"operator\":\"LT\", \"value\":100.00}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    // ==================== GTE Operator Tests ====================
+
+    @Test
+    void testGteOperator() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        TransactionMatcher rule = buildRule(
+                "GTE大于等于",
+                "{\"field\":\"amount\", \"operator\":\"GTE\", \"value\":100.00}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testGteOperator_GreaterThanSucceeds() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "150.00");
+        TransactionMatcher rule = buildRule(
+                "GTE大于也匹配",
+                "{\"field\":\"amount\", \"operator\":\"GTE\", \"value\":100.00}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    // ==================== LTE Operator Tests ====================
+
+    @Test
+    void testLteOperator() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        TransactionMatcher rule = buildRule(
+                "LTE小于等于",
+                "{\"field\":\"amount\", \"operator\":\"LTE\", \"value\":100.00}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testLteOperator_LessThanSucceeds() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "50.00");
+        TransactionMatcher rule = buildRule(
+                "LTE小于也匹配",
+                "{\"field\":\"amount\", \"operator\":\"LTE\", \"value\":100.00}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    // ==================== IS_NULL Operator Tests ====================
+
+    @Test
+    void testIsNullOperator() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        record.setDetail(null);
+        TransactionMatcher rule = buildRule(
+                "IS_NULL匹配",
+                "{\"field\":\"detail\", \"operator\":\"IS_NULL\", \"value\":null}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testIsNullOperator_NotNullFails() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        record.setDetail("有值");
+        TransactionMatcher rule = buildRule(
+                "IS_NULL非空不匹配",
+                "{\"field\":\"detail\", \"operator\":\"IS_NULL\", \"value\":null}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
+    // ==================== IS_NOT_NULL Operator Tests ====================
+
+    @Test
+    void testIsNotNullOperator() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        record.setDetail("has value");
+        TransactionMatcher rule = buildRule(
+                "IS_NOT_NULL匹配",
+                "{\"field\":\"detail\", \"operator\":\"IS_NOT_NULL\", \"value\":null}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertEquals(TransactionType.EXPENSE, record.getTrasactionType());
+        assertEquals(DraftMatchStatusEnum.MATCHED, record.getMatchStatus());
+    }
+
+    @Test
+    void testIsNotNullOperator_NullFails() throws Exception {
+        UnifiedDraftRecord record = baseRecord("测试商户", "100.00");
+        record.setDetail(null);
+        TransactionMatcher rule = buildRule(
+                "IS_NOT_NULL空不匹配",
+                "{\"field\":\"detail\", \"operator\":\"IS_NOT_NULL\", \"value\":null}",
+                "[{\"actionType\":\"SET_TYPE\", \"value\":\"EXPENSE\"}]",
+                false
+        );
+
+        matcherService.applyMatchers(record, List.of(rule));
+
+        assertNull(record.getTrasactionType());
+        assertNull(record.getMatchStatus());
+    }
+
     // ==================== Edge Cases ====================
 
     @Test
