@@ -1,4 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import MainLayout from './layouts/MainLayout';
 import Dashboard from './pages/Dashboard';
 import Import from './pages/Import';
@@ -30,6 +31,7 @@ function App() {
                     <Route path="tags" element={<Tags/>}/>
                 </Route>
             </Routes>
+            <SpeedInsights />
         </BrowserRouter>
     );
 }
