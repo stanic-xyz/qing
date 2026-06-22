@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.service.imports.qianji;
 
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.imports.FileDuplicateCheckResult;
 import cn.chenyunlong.qing.service.llm.dto.imports.UploadFileResponse;
 import cn.chenyunlong.qing.service.llm.entity.Account;
@@ -74,7 +75,7 @@ public class QianjiFileService {
         }
 
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("账户不存在: " + accountId));
+                .orElseThrow(() -> new NotFoundException("账户不存在: " + accountId));
 
         FileTypeEnum fileType = determineFileType(file.getOriginalFilename());
 
@@ -121,7 +122,7 @@ public class QianjiFileService {
 
     public UploadFileRecord getFileInfo(Long fileId) {
         return uploadFileRecordRepository.findById(fileId)
-                .orElseThrow(() -> new IllegalArgumentException("文件不存在: " + fileId));
+                .orElseThrow(() -> new NotFoundException("文件不存在: " + fileId));
     }
 
     public InputStream getFileInputStream(Long fileId) {

@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.dto.counterparty.CounterpartyResponseDto;
 import cn.chenyunlong.qing.service.llm.dto.counterpayty.CounterpartyCreateDto;
@@ -21,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/finance/counterparties")
@@ -110,20 +110,19 @@ public class CounterpartyController {
 
     @PutMapping("/{id}")
     public Result<Counterparty> update(@PathVariable Long id, @RequestBody CounterpartyUpdateDto counterparty) {
-        Optional<Counterparty> counterpartyOptional = counterpartyRepository.findById(id);
+        Counterparty existing = counterpartyRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("交易对手不存在"));
         final Long defaultCategoryId = counterparty.getDefaultCategoryId();
         final Category category = defaultCategoryId != null
                 ? categoryRepository.findById(defaultCategoryId).orElse(null)
                 : null;
 
-        return counterpartyOptional.map(existing -> {
-            existing.setName(counterparty.getName());
-            existing.setType(counterparty.getType());
-            existing.setDefaultCategory(category);
-            existing.setRemark(counterparty.getRemark());
-            existing.setIsActive(counterparty.getIsActive());
-            return Result.success(counterpartyRepository.save(existing));
-        }).orElse(Result.error(404, "交易对手不存在"));
+        existing.setName(counterparty.getName());
+        existing.setType(counterparty.getType());
+        existing.setDefaultCategory(category);
+        existing.setRemark(counterparty.getRemark());
+        existing.setIsActive(counterparty.getIsActive());
+        return Result.success(counterpartyRepository.save(existing));
     }
 
     @DeleteMapping("/{id}")

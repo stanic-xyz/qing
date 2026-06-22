@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.entity.TransactionMatcher;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
@@ -58,7 +59,7 @@ public class MatcherController {
         if (record == null) {
             UnifiedDraftRecord unifiedDraftRecord = unifiedDraftRecordRepository.findById(req.getTransactionId()).orElse(null);
             if (unifiedDraftRecord == null) {
-                return Result.error(404, "未找到指定的交易流水");
+                throw new NotFoundException("未找到指定的交易流水");
             }
             return executeTest(req, unifiedDraftRecord, null);
         }
@@ -73,17 +74,13 @@ public class MatcherController {
         result.setOriginalRecord(originalRecord == null ? null : cloneRecord(originalRecord));
 
         // 应用规则
-        try {
-            matcherService.applyMatchers(testRecord, Collections.singletonList(req.getMatcher()));
+        matcherService.applyMatchers(testRecord, Collections.singletonList(req.getMatcher()));
 
-            // 草稿模型不记录 matchRuleName，以状态判断是否命中。
-            result.setMatched(testRecord.getMatchStatus() != null && testRecord.getMatchStatus().name().contains("MATCH"));
+        // 草稿模型不记录 matchRuleName，以状态判断是否命中。
+        result.setMatched(testRecord.getMatchStatus() != null && testRecord.getMatchStatus().name().contains("MATCH"));
 
-            result.setModifiedRecord(testRecord);
-            return Result.success(result);
-        } catch (Exception e) {
-            return Result.error(500, "测试失败: " + e.getMessage());
-        }
+        result.setModifiedRecord(testRecord);
+        return Result.success(result);
     }
 
     private TransactionRecord cloneRecord(TransactionRecord r) {

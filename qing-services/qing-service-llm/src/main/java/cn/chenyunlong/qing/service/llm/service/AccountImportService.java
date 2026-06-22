@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.service;
 
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.AccountImportDTO;
 import cn.chenyunlong.qing.service.llm.dto.AccountPreviewResult;
 import cn.chenyunlong.qing.service.llm.dto.account.AccountDTO;
@@ -184,7 +185,8 @@ public class AccountImportService {
 
             Account account;
             if (ProcessStatusEnum.DUPLICATE_OVERWRITE.equals(dto.getProcessStatus()) && dto.getExistingAccountId() != null) {
-                account = accountRepository.findById(dto.getExistingAccountId()).orElse(new Account());
+                account = accountRepository.findById(dto.getExistingAccountId())
+                        .orElseThrow(() -> new NotFoundException("待覆盖账户不存在: " + dto.getExistingAccountId()));
             } else {
                 account = new Account();
             }

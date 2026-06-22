@@ -23,7 +23,6 @@ spring:
         format_sql: false
         jdbc:
           batch_size: 50
-
 baseEnum:
   basePackage: cn.chenyunlong.qing.service.llm.enums
 langchain4j:
@@ -34,8 +33,19 @@ langchain4j:
       log-requests: true
       log-responses: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    prometheus:
+      access: read_only
 qianji:
   file:
     storage-path: /data/qianji-files
     max-size: 20971520
     allowed-types: csv,xlsx,xls
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%mdc{trace_id:-},%mdc{span_id:-}]'

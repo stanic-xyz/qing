@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.AccountPreviewResult;
 import cn.chenyunlong.qing.service.llm.dto.CategoryTreeDTO;
 import cn.chenyunlong.qing.service.llm.dto.Result;
@@ -11,7 +12,6 @@ import cn.chenyunlong.qing.service.llm.enums.ImportModeEnum;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -41,10 +40,7 @@ public class CategoryController {
         Category category = categories.stream()
                 .filter(c -> c.getId().equals(id))
                 .findFirst()
-                .orElse(null);
-        if (category == null) {
-            return Result.error(404, "分类不存在");
-        }
+                .orElseThrow(() -> new NotFoundException("分类不存在"));
 
         long transactionCount = transactionRecordRepository.countByCategory(category);
 
@@ -72,14 +68,16 @@ public class CategoryController {
         return ResponseEntity.ok(Result.success(categoryService.updateCategory(id, category)));
     }
 
+    /**
+     * 删除指定分类，已知业务异常和未知异常均交由统一异常体系处理。
+     *
+     * @param id 分类 ID
+     * @return 删除结果
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Result> deleteCategory(@PathVariable("id") Long id) {
-        try {
-            categoryService.deleteCategory(id);
-            return ResponseEntity.ok(Result.success(null));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        categoryService.deleteCategory(id);
+        return ResponseEntity.ok(Result.success(null));
     }
 
     @PostMapping("import")
@@ -88,42 +86,29 @@ public class CategoryController {
     }
 
     @GetMapping("import/template")
-    public ResponseEntity<byte[]> downloadTemplate() {
-        try {
-            byte[] data = categoryService.downloadTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentDispositionFormData("attachment", "category_import_template.xlsx");
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(data);
-        } catch (Exception e) {
-            log.error("Failed to generate template", e);
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<byte[]> downloadTemplate() throws Exception {
+        byte[] data = categoryService.downloadTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "category_import_template.xlsx");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(data);
     }
 
     @PostMapping("/import/preview")
     public Result<CategoryPreviewResult> previewImport(
             @RequestParam("file") MultipartFile file,
-            @RequestParam(value = "mode", defaultValue = "SKIP") ImportModeEnum mode) {
-        try {
-            CategoryPreviewResult result = categoryService.previewImport(file, mode);
-            return Result.success(result);
-        } catch (Exception e) {
-            return Result.error(500, "预览失败：" + e.getMessage());
-        }
+            @RequestParam(value = "mode", defaultValue = "SKIP") ImportModeEnum mode) throws Exception {
+        CategoryPreviewResult result = categoryService.previewImport(file, mode);
+        return Result.success(result);
     }
 
     @PostMapping("/import/execute")
     public Result<Integer> executeImport(
             @RequestBody List<AccountImportDTO> items,
             @RequestParam(value = "mode", defaultValue = "SKIP") ImportModeEnum mode) {
-        try {
-            int count = categoryService.executeImport(items, mode);
-            return Result.success(count);
-        } catch (Exception e) {
-            return Result.error(500, "导入失败：" + e.getMessage());
-        }
+        int count = categoryService.executeImport(items, mode);
+        return Result.success(count);
     }
 }

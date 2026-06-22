@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
+import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.dto.parser.*;
 import cn.chenyunlong.qing.service.llm.entity.LlmParseRecord;
@@ -32,19 +33,10 @@ public class LlmParserController {
     public ResponseEntity<Result<LlmParseResponse>> preview(
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "strategy", defaultValue = "BY_CONSUMPTION_TYPE") String strategy) {
-        try {
-            CategoryStrategy categoryStrategy = CategoryStrategy.fromCode(strategy);
-            LlmParseResponse response = parserFacade.parse(file, categoryStrategy);
-
-            if (response.isSuccess()) {
-                return ResponseEntity.ok(Result.success(response));
-            } else {
-                return ResponseEntity.badRequest().body(Result.error(400, response.getErrorMessage()));
-            }
-        } catch (Exception e) {
-            log.error("Preview parse failed", e);
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        CategoryStrategy categoryStrategy = CategoryStrategy.fromCode(strategy);
+        LlmParseResponse response = parserFacade.parse(file, categoryStrategy);
+        validatePreviewResponse(response);
+        return ResponseEntity.ok(Result.success(response));
     }
 
     /**
@@ -54,16 +46,11 @@ public class LlmParserController {
     public ResponseEntity<Result<TaskStatusResponse>> parseAsync(
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "strategy", defaultValue = "BY_CONSUMPTION_TYPE") String strategy) {
-        try {
-            CategoryStrategy categoryStrategy = CategoryStrategy.fromCode(strategy);
-            String taskId = parserFacade.parseAsync(file, categoryStrategy);
+        CategoryStrategy categoryStrategy = CategoryStrategy.fromCode(strategy);
+        String taskId = parserFacade.parseAsync(file, categoryStrategy);
 
-            TaskStatusResponse statusResponse = TaskStatusResponse.pending(taskId);
-            return ResponseEntity.accepted().body(Result.success(statusResponse));
-        } catch (Exception e) {
-            log.error("Async parse request failed", e);
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        TaskStatusResponse statusResponse = TaskStatusResponse.pending(taskId);
+        return ResponseEntity.accepted().body(Result.success(statusResponse));
     }
 
     /**
@@ -110,12 +97,7 @@ public class LlmParserController {
     @GetMapping("/record/{recordId}")
     public ResponseEntity<Result<LlmParseRecord>> getParseRecord(@PathVariable Long recordId) {
         Optional<LlmParseRecord> recordOpt = parserFacade.getParseRecord(recordId);
-
-        if (recordOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(Result.success(recordOpt.get()));
+        return recordOpt.map(llmParseRecord -> ResponseEntity.ok(Result.success(llmParseRecord))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -125,5 +107,21 @@ public class LlmParserController {
     public ResponseEntity<Result<String>> cancelTask(@PathVariable String taskId) {
         parserFacade.getTaskStatus(taskId); // 确保任务存在
         return ResponseEntity.ok(Result.success("任务已取消"));
+    }
+
+    /**
+     * 校验同步预览结果，失败时交由统一异常处理器输出标准错误结构。
+     *
+     * @param response 解析响应
+     */
+    private void validatePreviewResponse(LlmParseResponse response) {
+        if (response != null && response.isSuccess()) {
+            return;
+        }
+        String message = response != null ? response.getErrorMessage() : null;
+        if (message == null || message.isBlank()) {
+            message = "LLM 账单预览解析失败";
+        }
+        throw new BusinessException(message);
     }
 }

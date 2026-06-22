@@ -23,29 +23,19 @@ public class BillController {
     @PostMapping(value = "/upload-batch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Result<List<UploadBatchPreviewResponse>>> uploadBillBatch(@RequestParam("files") List<MultipartFile> files,
                                                                                     @RequestParam(value = "parserId") Long parserId,
-                                                                                    @RequestParam("accountId") Long accountId) {
-        try {
-            // 兼容旧逻辑
-            List<UploadBatchPreviewResponse> previews = uploadService.parseAndPreviewBatch(files, parserId, accountId);
-            return ResponseEntity.ok(Result.success(previews));
-        } catch (Exception e) {
-            log.error("批量上传解析失败", e);
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+                                                                                    @RequestParam("accountId") Long accountId) throws Exception {
+        // 兼容旧逻辑
+        List<UploadBatchPreviewResponse> previews = uploadService.parseAndPreviewBatch(files, parserId, accountId);
+        return ResponseEntity.ok(Result.success(previews));
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Result<List<UploadBatchPreviewResponse>>> uploadBill(@RequestParam("file") MultipartFile file,
                                                                                @RequestParam(value = "parserId") Long parserId,
-                                                                               @RequestParam("accountId") Long accountId) {
-        try {
-            // 兼容旧逻辑
-            List<UploadBatchPreviewResponse> previews = uploadService.parseAndPreview(file, parserId, accountId);
-            return ResponseEntity.ok(Result.success(previews));
-        } catch (Exception e) {
-            log.error("批量上传解析失败", e);
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+                                                                               @RequestParam("accountId") Long accountId) throws Exception {
+        // 兼容旧逻辑
+        List<UploadBatchPreviewResponse> previews = uploadService.parseAndPreview(file, parserId, accountId);
+        return ResponseEntity.ok(Result.success(previews));
     }
 
     @GetMapping("/preview/{uploadId}")
@@ -53,12 +43,8 @@ public class BillController {
             @PathVariable Long uploadId,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "100") int size) {
-        try {
-            UploadPreview previewData = uploadService.getPreviewData(uploadId, page, size);
-            return ResponseEntity.ok(Result.success(previewData));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        UploadPreview previewData = uploadService.getPreviewData(uploadId, page, size);
+        return ResponseEntity.ok(Result.success(previewData));
     }
 
     @PostMapping("/import")
@@ -69,43 +55,25 @@ public class BillController {
 
     @PostMapping("/match/{uploadId}")
     public ResponseEntity<Result<Void>> startMatching(@PathVariable("uploadId") Long uploadId, @RequestBody(required = false) List<Long> lockedTempIds) {
-        try {
-            uploadService.startMatchingAsync(uploadId, lockedTempIds);
-            return ResponseEntity.ok(Result.success(null));
-        } catch (Exception e) {
-            log.error("启动匹配失败", e);
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        uploadService.startMatchingAsync(uploadId, lockedTempIds);
+        return ResponseEntity.ok(Result.success(null));
     }
 
     @PostMapping("/match-single/{recordId}")
     public ResponseEntity<Result<PreviewRecordDTO>> matchSingleRecord(@PathVariable("recordId") String recordId, @RequestBody(required = false) List<Long> ruleIds) {
-        try {
-            PreviewRecordDTO recordDTO = uploadService.matchSingleRecord(recordId, ruleIds);
-            return ResponseEntity.ok(Result.success(recordDTO));
-        } catch (Exception e) {
-            log.error("单条匹配失败", e);
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        PreviewRecordDTO recordDTO = uploadService.matchSingleRecord(recordId, ruleIds);
+        return ResponseEntity.ok(Result.success(recordDTO));
     }
 
     @GetMapping("/match/status/{uploadId}")
     public ResponseEntity<Result<MatchStatusResponse>> getMatchStatus(@PathVariable("uploadId") Long uploadId) {
-        try {
-            MatchStatusResponse matchStatus = uploadService.getMatchStatus(uploadId);
-            return ResponseEntity.ok(Result.success(matchStatus));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        MatchStatusResponse matchStatus = uploadService.getMatchStatus(uploadId);
+        return ResponseEntity.ok(Result.success(matchStatus));
     }
 
     @GetMapping("/batch/overview/{uploadId}")
     public ResponseEntity<Result<UploadBatchOverviewResponse>> getBatchOverview(@PathVariable("uploadId") Long uploadId) {
-        try {
-            UploadBatchOverviewResponse batchOverview = uploadService.getBatchOverview(uploadId);
-            return ResponseEntity.ok(Result.success(batchOverview));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        UploadBatchOverviewResponse batchOverview = uploadService.getBatchOverview(uploadId);
+        return ResponseEntity.ok(Result.success(batchOverview));
     }
 }

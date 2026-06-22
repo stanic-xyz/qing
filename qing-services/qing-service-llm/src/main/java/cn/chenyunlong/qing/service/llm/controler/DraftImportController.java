@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/import/draft")
@@ -53,36 +52,20 @@ public class DraftImportController {
 
     @PostMapping("/batches/{id}/commit")
     public ResponseEntity<Result<DraftCommitService.CommitResult>> commitBatch(@PathVariable Long id) {
-        try {
-            DraftCommitService.CommitResult result = draftCommitService.commit(id);
-            return ResponseEntity.ok(Result.success(result));
-        } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body(Result.error(404, e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Result.error(500, e.getMessage()));
-        }
+        DraftCommitService.CommitResult result = draftCommitService.commit(id);
+        return ResponseEntity.ok(Result.success(result));
     }
 
     @PostMapping("/records/{id}/lock")
     public ResponseEntity<Result<UnifiedDraftRecord>> lockRecordFields(@PathVariable Long id,
                                                                       @RequestBody List<String> fields) {
-        try {
-            UnifiedDraftRecord record = draftRecordService.lockFields(id, fields);
-            return ResponseEntity.ok(Result.success(record));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        UnifiedDraftRecord record = draftRecordService.lockFields(id, fields);
+        return ResponseEntity.ok(Result.success(record));
     }
 
     @PostMapping("/records/{id}/unlock")
     public ResponseEntity<Result<UnifiedDraftRecord>> unlockRecordFields(@PathVariable Long id) {
-        try {
-            UnifiedDraftRecord record = draftRecordService.unlockFields(id);
-            return ResponseEntity.ok(Result.success(record));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Result.error(400, e.getMessage()));
-        }
+        UnifiedDraftRecord record = draftRecordService.unlockFields(id);
+        return ResponseEntity.ok(Result.success(record));
     }
 }

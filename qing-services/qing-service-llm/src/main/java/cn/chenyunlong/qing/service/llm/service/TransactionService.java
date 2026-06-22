@@ -1,41 +1,46 @@
 package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.transactions.CreateTransactionRecordDto;
+import cn.chenyunlong.qing.service.llm.dto.transactions.UpdateTransactionRecordDto;
 import cn.chenyunlong.qing.service.llm.entity.*;
+import cn.chenyunlong.qing.service.llm.event.TransactionChangeEvent;
 import cn.chenyunlong.qing.service.llm.enums.*;
 import cn.chenyunlong.qing.service.llm.repository.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
 
     private final TransactionRecordRepository transactionRepo;
-    private final ChannelRepository channelRepo;
     private final AccountRepository accountRepository;
     private final CategoryRepository categoryRepository;
     private final CounterpartyRepository counterpartyRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 创建单条流水
      */
     @Transactional(rollbackFor = Exception.class)
     public TransactionRecord create(@Valid CreateTransactionRecordDto dto) {
-        return doCreate(dto, null);
+        TransactionRecord record = doCreate(dto, null);
+        publishTransactionChange(record, TransactionChangeEvent.Action.CREATED);
+        return record;
     }
 
     /**
@@ -58,9 +63,34 @@ public class TransactionService {
             if (!StringUtils.hasText(dto.getBatchNo()) && effectiveBatchNo != null) {
                 dto.setBatchNo(effectiveBatchNo);
             }
-            records.add(doCreate(dto, effectiveBatchNo));
+            TransactionRecord record = doCreate(dto, effectiveBatchNo);
+            publishTransactionChange(record, TransactionChangeEvent.Action.CREATED);
+            records.add(record);
         }
         return records;
+    }
+
+    /**
+     * 按更新 DTO 的字段显式性执行部分更新。
+     *
+     * @param id  交易记录 ID
+     * @param dto 更新 DTO
+     * @return 更新后的交易记录
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public TransactionRecord update(Long id, @Valid UpdateTransactionRecordDto dto) {
+        TransactionRecord record = getTransactionOrThrow(id);
+
+        applyCategoryUpdate(record, dto);
+        applyAmountUpdate(record, dto);
+        applyCounterpartyUpdate(record, dto);
+        applyMerchantUpdate(record, dto);
+        applyTransactionTypeUpdate(record, dto);
+
+        record.setIsModified(true);
+        TransactionRecord saved = transactionRepo.save(record);
+        publishTransactionChange(saved, TransactionChangeEvent.Action.UPDATED);
+        return saved;
     }
 
     /**
@@ -72,10 +102,16 @@ public class TransactionService {
     private TransactionRecord doCreate(CreateTransactionRecordDto dto, String forcedBatchNo) {
 
         // 1. 基础关联实体校验与加载
-        Account account = accountRepository.findById(dto.getAccountId())
-                .orElseThrow(() -> new BusinessException("账户不存在，accountId=" + dto.getAccountId()));
-        Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new BusinessException("交易类别不存在，categoryId=" + dto.getCategoryId()));
+        Long accountId = dto.getAccountId();
+        Account account = null;
+        if (accountId != null) {
+            account = getAccountOrThrow(accountId);
+        }
+        Long categoryId = dto.getCategoryId();
+        Category category = null;
+        if (categoryId != null) {
+            category = getCategoryOrThrow(categoryId);
+        }
 
         // 2. 业务逻辑校验
         validateTransactionBusinessRules(dto, account);
@@ -117,8 +153,7 @@ public class TransactionService {
 
         // 对手方处理：优先使用ID加载，否则使用文本
         if (dto.getCounterpartyId() != null) {
-            Counterparty cp = counterpartyRepository.findById(dto.getCounterpartyId())
-                    .orElseThrow(() -> new BusinessException("对手方不存在，counterpartyId=" + dto.getCounterpartyId()));
+            Counterparty cp = getCounterpartyOrThrow(dto.getCounterpartyId());
             record.setCounterparty(cp);
             record.setCounterpartyStr(cp.getName());
         } else if (StringUtils.hasText(dto.getCounterpartyStr())) {
@@ -144,14 +179,91 @@ public class TransactionService {
             record.setBatchNo(generateBatchNo());
         }
 
-        RecordRoleEnum recordRole = record.getRecordRole();
-
         // 保存
         return transactionRepo.save(record);
     }
 
     // ========== 校验辅助方法 ==========
 
+    /**
+     * 应用分类更新语义。
+     * 未传保持不变，显式传 null 时清空分类。
+     */
+    private void applyCategoryUpdate(TransactionRecord record, UpdateTransactionRecordDto dto) {
+        if (!dto.isCategoryIdSpecified()) {
+            return;
+        }
+        if (dto.getCategoryId() == null) {
+            record.setCategory(null);
+            return;
+        }
+        Category category = getCategoryOrThrow(dto.getCategoryId());
+        record.setCategory(category);
+    }
+
+    /**
+     * 应用金额更新语义。
+     * 金额字段允许缺省，但显式传入时不能为空，并同步刷新方向字段。
+     */
+    private void applyAmountUpdate(TransactionRecord record, UpdateTransactionRecordDto dto) {
+        if (!dto.isAmountSpecified()) {
+            return;
+        }
+        if (dto.getAmount() == null) {
+            throw new BusinessException("交易金额不能为空");
+        }
+        record.setAmount(dto.getAmount());
+        record.setDirectionType(inferTransactionDirection(dto.getAmount()));
+    }
+
+    /**
+     * 应用对手方更新语义。
+     * 支持保持不变、按 ID 关联、按文本覆盖和显式清空。
+     */
+    private void applyCounterpartyUpdate(TransactionRecord record, UpdateTransactionRecordDto dto) {
+        if (!dto.isCounterpartyIdSpecified() && !dto.isCounterpartyStrSpecified()) {
+            return;
+        }
+        if (dto.isCounterpartyIdSpecified() && dto.getCounterpartyId() != null) {
+            Counterparty counterparty = getCounterpartyOrThrow(dto.getCounterpartyId());
+            record.setCounterparty(counterparty);
+            record.setCounterpartyStr(counterparty.getName());
+            return;
+        }
+        if (dto.isCounterpartyStrSpecified()) {
+            record.setCounterparty(null);
+            record.setCounterpartyStr(normalizeNullableText(dto.getCounterpartyStr()));
+            return;
+        }
+        record.setCounterparty(null);
+        record.setCounterpartyStr(null);
+    }
+
+    /**
+     * 应用商户更新语义。
+     * 未传保持原值，显式传 null 或空白时清空。
+     */
+    private void applyMerchantUpdate(TransactionRecord record, UpdateTransactionRecordDto dto) {
+        if (!dto.isMerchantSpecified()) {
+            return;
+        }
+        record.setMerchant(normalizeNullableText(dto.getMerchant()));
+    }
+
+    /**
+     * 应用业务交易类型更新语义。
+     * 未传保持不变，显式传 null 时清空。
+     */
+    private void applyTransactionTypeUpdate(TransactionRecord record, UpdateTransactionRecordDto dto) {
+        if (!dto.isTransactionTypeSpecified()) {
+            return;
+        }
+        record.setTransactionType(dto.getTransactionType());
+    }
+
+    /**
+     * 校验新增交易的核心业务规则。
+     */
     private void validateTransactionBusinessRules(CreateTransactionRecordDto dto, Account account) {
         // 金额与出入账方向一致性校验
         TransactionType transactionType = dto.getTransactionType();
@@ -184,10 +296,57 @@ public class TransactionService {
         // ...
     }
 
+    /**
+     * 按 ID 加载交易记录，不存在时抛出资源不存在异常。
+     *
+     * @param transactionId 交易记录 ID
+     * @return 交易记录实体
+     */
+    private TransactionRecord getTransactionOrThrow(Long transactionId) {
+        return transactionRepo.findById(transactionId)
+                .orElseThrow(() -> new NotFoundException("记录不存在，id=" + transactionId));
+    }
+
+    /**
+     * 按 ID 加载账户，不存在时抛出资源不存在异常。
+     *
+     * @param accountId 账户 ID
+     * @return 账户实体
+     */
+    private Account getAccountOrThrow(Long accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new NotFoundException("账户不存在，accountId=" + accountId));
+    }
+
+    /**
+     * 按 ID 加载交易分类，不存在时抛出资源不存在异常。
+     *
+     * @param categoryId 分类 ID
+     * @return 分类实体
+     */
+    private Category getCategoryOrThrow(Long categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NotFoundException("交易类别不存在，categoryId=" + categoryId));
+    }
+
+    /**
+     * 按 ID 加载对手方，不存在时抛出资源不存在异常。
+     *
+     * @param counterpartyId 对手方 ID
+     * @return 对手方实体
+     */
+    private Counterparty getCounterpartyOrThrow(Long counterpartyId) {
+        return counterpartyRepository.findById(counterpartyId)
+                .orElseThrow(() -> new NotFoundException("对手方不存在，counterpartyId=" + counterpartyId));
+    }
+
     private String generateBatchNo() {
         return "BATCH_" + UUID.randomUUID().toString().toUpperCase().replace("-", "").substring(0, 16);
     }
 
+    /**
+     * 根据金额正负推导交易方向。
+     */
     public TransactionDirectionTypeEnum inferTransactionDirection(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             return TransactionDirectionTypeEnum.EXPENSE;
@@ -201,5 +360,19 @@ public class TransactionService {
     private String generateCommonBatchNo(List<CreateTransactionRecordDto> recordDtoList) {
         boolean allMissingBatchNo = recordDtoList.stream().noneMatch(dto -> StringUtils.hasText(dto.getBatchNo()));
         return allMissingBatchNo ? generateBatchNo() : null;
+    }
+
+    /**
+     * 归一化可空文本字段，空白字符串按清空处理。
+     */
+    private String normalizeNullableText(String value) {
+        return StringUtils.hasText(value) ? value.trim() : null;
+    }
+
+    /**
+     * 发布交易写操作变更事件。
+     */
+    private void publishTransactionChange(TransactionRecord record, TransactionChangeEvent.Action action) {
+        eventPublisher.publishEvent(new TransactionChangeEvent(record, record.getId(), action));
     }
 }

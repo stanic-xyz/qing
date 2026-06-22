@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
@@ -41,10 +42,7 @@ public class UploadRecordController {
 
     @GetMapping("/{id}/transactions")
     public Result<List<TransactionRecord>> getTransactionsByUploadId(@PathVariable("id") Long id) {
-        UploadFileRecord record = uploadFileRepo.findById(id).orElse(null);
-        if (record == null) {
-            return Result.error(404, "导入记录不存在");
-        }
+        UploadFileRecord record = getUploadRecordOrThrow(id);
 
         List<TransactionRecord> transactions = transactionRepo.findByUploadId(String.valueOf(record.getId()));
 
@@ -58,10 +56,7 @@ public class UploadRecordController {
 
     @DeleteMapping("/{id}")
     public Result<Void> deleteUploadRecord(@PathVariable Long id, @RequestParam(defaultValue = "true") boolean softDelete) {
-        UploadFileRecord record = uploadFileRepo.findById(id).orElse(null);
-        if (record == null) {
-            return Result.error(404, "导入记录不存在");
-        }
+        UploadFileRecord record = getUploadRecordOrThrow(id);
 
         List<TransactionRecord> transactions = transactionRepo.findByUploadId(String.valueOf(record.getId()));
         List<UnifiedDraftRecord> draftRecordList = unifiedDraftRecordRepository.findAllByFileRecord(record);
@@ -83,5 +78,16 @@ public class UploadRecordController {
             uploadFileRepo.delete(record);
         }
         return Result.success(null);
+    }
+
+    /**
+     * 按上传记录 ID 加载导入记录，不存在时抛出资源不存在异常。
+     *
+     * @param uploadId 上传记录 ID
+     * @return 导入记录实体
+     */
+    private UploadFileRecord getUploadRecordOrThrow(Long uploadId) {
+        return uploadFileRepo.findById(uploadId)
+                .orElseThrow(() -> new NotFoundException("导入记录不存在"));
     }
 }

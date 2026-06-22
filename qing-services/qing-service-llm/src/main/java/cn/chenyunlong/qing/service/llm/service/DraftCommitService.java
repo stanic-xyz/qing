@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.service;
 
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.entity.*;
 import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
@@ -17,7 +18,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,7 +44,7 @@ public class DraftCommitService {
     public CommitResult commit(Long uploadId) {
 
         UploadFileRecord uploadFileRecord = uploadFileRecordRepository.findById(uploadId)
-                .orElseThrow(() -> new NoSuchElementException("上传文件记录不存在: " + uploadId));
+                .orElseThrow(() -> new NotFoundException("上传文件记录不存在: " + uploadId));
 
         if (uploadFileRecord.getStatus() != FileUploadStatusEnum.MATCHED) {
             throw new IllegalStateException("该批次未匹配完毕，无法提交！");
@@ -101,7 +101,7 @@ public class DraftCommitService {
     public CommitResult commitBatch(Long batchId) {
         // 1. 查询批次（悲观锁防止并发）
         UnifiedDraftBatch batch = batchRepository.findByIdWithLock(batchId)
-                .orElseThrow(() -> new NoSuchElementException("草稿批次不存在: " + batchId));
+                .orElseThrow(() -> new NotFoundException("草稿批次不存在: " + batchId));
 
         // 2. 状态校验
         if (batch.getStatus() == DraftBatchStatusEnum.IMPORTED) {
@@ -117,7 +117,7 @@ public class DraftCommitService {
             throw new IllegalStateException("批次未关联账户");
         }
         Account lockedAccount = accountRepository.findByIdWithLock(account.getId())
-                .orElseThrow(() -> new NoSuchElementException("账户不存在: " + account.getId()));
+                .orElseThrow(() -> new NotFoundException("账户不存在: " + account.getId()));
 
         // 4. 获取该批次下的所有草稿记录
         List<UnifiedDraftRecord> draftRecords = recordRepository.findAllByBatch(batch);

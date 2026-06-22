@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service;
 
+import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.CategoryTreeDTO;
 import cn.chenyunlong.qing.service.llm.dto.category.AccountImportDTO;
 import cn.chenyunlong.qing.service.llm.dto.category.CategoryPreviewResult;
@@ -83,7 +85,7 @@ public class CategoryService {
     public Category createCategory(Category category) {
         if (category.getParentId() != null) {
             Category parent = categoryRepository.findById(category.getParentId())
-                    .orElseThrow(() -> new RuntimeException("父分类不存在"));
+                    .orElseThrow(() -> new NotFoundException("父分类不存在"));
             category.setLevel(parent.getLevel() + 1);
             category.setType(parent.getType());
         } else {
@@ -94,26 +96,31 @@ public class CategoryService {
 
     public Category updateCategory(Long id, Category updateInfo) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("分类不存在"));
+                .orElseThrow(() -> new NotFoundException("分类不存在"));
         category.setName(updateInfo.getName());
         category.setIcon(updateInfo.getIcon());
 
         return categoryRepository.save(category);
     }
 
+    /**
+     * 删除分类，并将可预期的删除限制统一转换为业务异常。
+     *
+     * @param id 分类 ID
+     */
     @Transactional
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("分类不存在"));
+                .orElseThrow(() -> new NotFoundException("分类不存在"));
 
         // 1. 检查是否有子分类
         if (categoryRepository.existsByParentIdAndIsDeletedFalse(id)) {
-            throw new RuntimeException("无法删除：该分类下存在子分类，请先删除子分类");
+            throw new BusinessException("无法删除：该分类下存在子分类，请先删除子分类");
         }
 
         // 2. 检查是否有流水关联 (简单通过名称匹配)
         if (transactionRecordRepository.existsByCategory(category)) {
-            throw new RuntimeException("无法删除：已有流水记录使用了该分类，请先解绑");
+            throw new BusinessException("无法删除：已有流水记录使用了该分类，请先解绑");
         }
 
         category.setIsDeleted(true);

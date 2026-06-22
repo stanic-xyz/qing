@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.ParserItemDTO;
 import cn.chenyunlong.qing.service.llm.dto.channel.ChannelDto;
 import cn.chenyunlong.qing.service.llm.entity.ParserConfig;
@@ -8,7 +9,6 @@ import cn.chenyunlong.qing.service.llm.enums.ConfigStatusEnum;
 import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import cn.chenyunlong.qing.service.llm.repository.ParserConfigRepository;
 import cn.chenyunlong.qing.service.llm.service.parser.FileParser;
-import cn.hutool.core.lang.Assert;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,8 +54,14 @@ public class ParserConfigService {
         return repository.findAll();
     }
 
+    /**
+     * 按 ID 获取解析器配置，不存在时抛出资源不存在异常。
+     *
+     * @param id 配置 ID
+     * @return 解析器配置
+     */
     public ParserConfig getConfig(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("配置不存在"));
+        return getConfigOrThrow(id);
     }
 
     public ParserConfig saveConfig(ParserConfig config) {
@@ -66,7 +72,7 @@ public class ParserConfigService {
     }
 
     public void deleteConfig(Long id) {
-        repository.deleteById(id);
+        repository.delete(getConfigOrThrow(id));
     }
 
 
@@ -78,9 +84,7 @@ public class ParserConfigService {
      * @throws BusinessException 内置或已发布状态下不允许编辑
      */
     public void updateConfig(Long id, ParserConfig config) {
-        // 1. 获取现有配置
-        ParserConfig existing = repository.findById(id)
-                .orElseThrow(() -> new BusinessException("解析器配置不存在"));
+        ParserConfig existing = getConfigOrThrow(id);
 
         // 2. 内置校验
         if (Boolean.TRUE.equals(existing.getIsBuiltIn())) {
@@ -135,8 +139,7 @@ public class ParserConfigService {
      */
     @Transactional
     public void unpublish(Long id) {
-        ParserConfig config = repository.findById(id)
-                .orElseThrow(() -> new BusinessException("解析器配置不存在"));
+        ParserConfig config = getConfigOrThrow(id);
         if (Boolean.TRUE.equals(config.getIsBuiltIn())) {
             throw new BusinessException("内置解析器不允许取消发布");
         }
@@ -152,12 +155,22 @@ public class ParserConfigService {
      */
     @Transactional
     public void publish(Long id) {
-        ParserConfig config = repository.findById(id)
-                .orElseThrow(() -> new BusinessException("解析器配置不存在"));
+        ParserConfig config = getConfigOrThrow(id);
         if (config.getStatus() != ConfigStatusEnum.DRAFT) {
             throw new BusinessException("只有草稿状态的解析器才能发布");
         }
         config.setStatus(ConfigStatusEnum.PUBLISHED);
         repository.save(config);
+    }
+
+    /**
+     * 按 ID 加载解析器配置，不存在时抛出资源不存在异常。
+     *
+     * @param id 配置 ID
+     * @return 解析器配置
+     */
+    private ParserConfig getConfigOrThrow(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("解析器配置不存在，id=" + id));
     }
 }

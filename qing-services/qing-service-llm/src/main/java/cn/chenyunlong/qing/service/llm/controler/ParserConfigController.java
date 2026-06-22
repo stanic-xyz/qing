@@ -70,41 +70,50 @@ public class ParserConfigController {
 
     @PostMapping("/script/test")
     public Result<Object> testScript(@RequestBody ScriptTestRequest request) {
-        try {
-            if (request == null || request.getScript() == null || request.getScript().trim().isEmpty()) {
-                return Result.error(400, "脚本不能为空");
-            }
-            String language = request.getLanguage() == null ? "groovy" : request.getLanguage();
-            Object result = scriptExecutorFactory.execute(language, request.getScript(), request.getContext());
-
-            boolean allowMap = Boolean.TRUE.equals(request.getAllowMap());
-            if (!allowMap && result instanceof java.util.Map<?, ?>) {
-                return Result.error(400, "字段映射脚本不支持返回 Map，请改用后置脚本处理");
-            }
-
-            boolean expectNumber = request.getExpectNumber() == null || request.getExpectNumber();
-            if (expectNumber && result != null && !(result instanceof Number)) {
-                return Result.error(400, "脚本返回值必须为数值类型(Number)，实际为: " + result.getClass().getSimpleName());
-            }
-
-            return Result.success(result);
-        } catch (Exception e) {
-            return Result.error(500, "脚本执行失败: " + e.getMessage());
-        }
+        validateScriptRequest(request);
+        String language = request.getLanguage() == null ? "groovy" : request.getLanguage();
+        Object result = scriptExecutorFactory.execute(language, request.getScript(), request.getContext());
+        validateScriptResult(request, result);
+        return Result.success(result);
     }
 
     @PostMapping("/test")
     public Result<ParseResult> testParser(
             @RequestParam("file") org.springframework.web.multipart.MultipartFile file,
-            @RequestParam("config") String configJson) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ParserConfig config = mapper.readValue(configJson, ParserConfig.class);
-            DynamicFileParser parser = new DynamicFileParser(config, scriptExecutorFactory, true);
-            ParseResult result = parser.parse(file.getInputStream(), file.getOriginalFilename());
-            return Result.success(result);
-        } catch (Exception e) {
-            return Result.error(500, "测试解析失败: " + e.getMessage());
+            @RequestParam("config") String configJson) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        ParserConfig config = mapper.readValue(configJson, ParserConfig.class);
+        DynamicFileParser parser = new DynamicFileParser(config, scriptExecutorFactory, true);
+        ParseResult result = parser.parse(file.getInputStream(), file.getOriginalFilename());
+        return Result.success(result);
+    }
+
+    /**
+     * 校验脚本测试请求，参数不合法时直接抛出异常交给全局处理器。
+     *
+     * @param request 脚本测试请求
+     */
+    private void validateScriptRequest(ScriptTestRequest request) {
+        if (request == null || request.getScript() == null || request.getScript().trim().isEmpty()) {
+            throw new IllegalArgumentException("脚本不能为空");
+        }
+    }
+
+    /**
+     * 校验脚本执行结果是否满足接口约束。
+     *
+     * @param request 脚本测试请求
+     * @param result 脚本执行结果
+     */
+    private void validateScriptResult(ScriptTestRequest request, Object result) {
+        boolean allowMap = Boolean.TRUE.equals(request.getAllowMap());
+        if (!allowMap && result instanceof java.util.Map<?, ?>) {
+            throw new IllegalArgumentException("字段映射脚本不支持返回 Map，请改用后置脚本处理");
+        }
+
+        boolean expectNumber = request.getExpectNumber() == null || request.getExpectNumber();
+        if (expectNumber && result != null && !(result instanceof Number)) {
+            throw new IllegalArgumentException("脚本返回值必须为数值类型(Number)，实际为: " + result.getClass().getSimpleName());
         }
     }
 }

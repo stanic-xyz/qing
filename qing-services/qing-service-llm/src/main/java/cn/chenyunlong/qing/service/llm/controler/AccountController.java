@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
+import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.dto.AccountImportDTO;
 import cn.chenyunlong.qing.service.llm.dto.AccountPreviewResult;
@@ -18,7 +20,6 @@ import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import cn.chenyunlong.qing.service.llm.service.AccountImportService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -38,7 +39,6 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/finance/accounts")
-@Slf4j
 @RequiredArgsConstructor
 public class AccountController {
 
@@ -49,46 +49,29 @@ public class AccountController {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @GetMapping("/import/template")
-    public ResponseEntity<byte[]> downloadTemplate() {
-        try {
-            byte[] data = accountImportService.downloadTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentDispositionFormData("attachment", "account_import_template.xlsx");
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(data);
-        } catch (Exception e) {
-            log.error("Failed to generate template", e);
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<byte[]> downloadTemplate() throws Exception {
+        byte[] data = accountImportService.downloadTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "account_import_template.xlsx");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(data);
     }
 
     @PostMapping("/import/preview")
     public Result<AccountPreviewResult> previewImport(
             @RequestParam("file") MultipartFile file,
-            @RequestParam(value = "mode", defaultValue = "SKIP") ImportModeEnum mode) {
-        try {
-            return Result.success(accountImportService.preview(file, mode));
-        } catch (IllegalArgumentException e) {
-            return Result.error(400, e.getMessage());
-        } catch (Exception e) {
-            log.error("Failed to preview import", e);
-            return Result.error(500, "文件解析失败: " + e.getMessage());
-        }
+            @RequestParam(value = "mode", defaultValue = "SKIP") ImportModeEnum mode) throws Exception {
+        return Result.success(accountImportService.preview(file, mode));
     }
 
     @PostMapping("/import/execute")
     public Result<Integer> executeImport(
             @RequestBody List<AccountImportDTO> items,
             @RequestParam(value = "mode", defaultValue = "SKIP") ImportModeEnum mode) {
-        try {
-            int processed = accountImportService.executeImport(items, mode);
-            return Result.success(processed);
-        } catch (Exception e) {
-            log.error("Failed to execute import", e);
-            return Result.error(500, "导入失败: " + e.getMessage());
-        }
+        int processed = accountImportService.executeImport(items, mode);
+        return Result.success(processed);
     }
 
     @GetMapping
@@ -121,11 +104,10 @@ public class AccountController {
     @Transactional(rollbackFor = Exception.class)
     @PutMapping("/{accountId}")
     public Result<AccountDTO> updateAccount(@PathVariable("accountId") Long id, @RequestBody AccountUpdateDTO account) {
-        Account existing = accountRepo.findById(id).orElse(null);
-        if (existing == null) return Result.error(404, "Account not found");
+        Account existing = getAccountOrThrow(id, "Account not found");
 
         if (account.getChannel() != null) {
-            Channel channel = channelRepository.findByIdAndIsDeletedFalse(account.getChannel()).orElseThrow(() -> new IllegalArgumentException("Channel not found"));
+            Channel channel = getChannelOrThrow(account.getChannel(), "Channel not found");
             existing.setChannel(channel);
         } else {
             existing.setChannel(null);
@@ -146,20 +128,14 @@ public class AccountController {
 
     @GetMapping("/{id}/transaction-count")
     public Result<Long> getTransactionCount(@PathVariable("id") Long id) {
-        Account account = accountRepo.findById(id).orElse(null);
-        if (account == null) {
-            return Result.error(404, "账户不存在");
-        }
+        Account account = getAccountOrThrow(id, "账户不存在");
         long count = transactionRepo.countByAccount(account);
         return Result.success(count);
     }
 
     @GetMapping("/{id}/statistics")
     public Result<AccountStatisticsDTO> getAccountStatistics(@PathVariable("id") Long id) {
-        Account account = accountRepo.findById(id).orElse(null);
-        if (account == null) {
-            return Result.error(404, "账户不存在");
-        }
+        Account account = getAccountOrThrow(id, "账户不存在");
 
         List<TransactionRecord> transactions = transactionRepo.findAllByAccount(account);
 
@@ -203,14 +179,11 @@ public class AccountController {
     public Result<Void> deleteAccount(
             @PathVariable("id") Long id,
             @RequestParam(value = "cascade", defaultValue = "false") boolean cascade) {
-        Account account = accountRepo.findById(id).orElse(null);
-        if (account == null) {
-            return Result.error(404, "账户不存在");
-        }
+        Account account = getAccountOrThrow(id, "账户不存在");
 
         long transactionCount = transactionRepo.countByAccount(account);
         if (transactionCount > 0 && !cascade) {
-            return Result.error(400, String.format("该账户下有 %d 条关联流水，如需删除请同时删除关联流水", transactionCount));
+            throw new BusinessException(String.format("该账户下有 %d 条关联流水，如需删除请同时删除关联流水", transactionCount));
         }
 
         if (cascade && transactionCount > 0) {
@@ -225,13 +198,10 @@ public class AccountController {
     public Result<AccountDTO> calibrateBalance(@PathVariable("id") Long id, @RequestBody java.util.Map<String, BigDecimal> payload) {
         BigDecimal newBalance = payload.get("newBalance");
         if (newBalance == null) {
-            return Result.error(400, "newBalance is required");
+            throw new BusinessException("newBalance is required");
         }
 
-        Account account = accountRepo.findById(id).orElse(null);
-        if (account == null) {
-            return Result.error(404, "Account not found");
-        }
+        Account account = getAccountOrThrow(id, "Account not found");
 
         BigDecimal currentBalance = account.getCurrentBalance() != null ? account.getCurrentBalance() : BigDecimal.ZERO;
         BigDecimal diff = newBalance.subtract(currentBalance);
@@ -259,5 +229,29 @@ public class AccountController {
         }
 
         return Result.success(AccountDTO.of(account));
+    }
+
+    /**
+     * 按账户 ID 加载账户，不存在时抛出资源不存在异常。
+     *
+     * @param accountId 账户 ID
+     * @param message 异常提示
+     * @return 账户实体
+     */
+    private Account getAccountOrThrow(Long accountId, String message) {
+        return accountRepo.findById(accountId)
+                .orElseThrow(() -> new NotFoundException(message));
+    }
+
+    /**
+     * 按渠道 ID 加载渠道，不存在时抛出资源不存在异常。
+     *
+     * @param channelId 渠道 ID
+     * @param message 异常提示
+     * @return 渠道实体
+     */
+    private Channel getChannelOrThrow(Long channelId, String message) {
+        return channelRepository.findByIdAndIsDeletedFalse(channelId)
+                .orElseThrow(() -> new NotFoundException(message));
     }
 }

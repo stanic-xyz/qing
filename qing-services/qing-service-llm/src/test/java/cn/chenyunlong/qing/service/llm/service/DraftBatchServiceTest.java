@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service;
 
+import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.draft.CreateDraftBatchRequest;
 import cn.chenyunlong.qing.service.llm.dto.draft.DraftBatchResponse;
 import cn.chenyunlong.qing.service.llm.entity.UnifiedDraftBatch;
@@ -81,12 +83,31 @@ class DraftBatchServiceTest {
     void changeStatus_shouldRejectIllegalTransition() {
         when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
 
-        IllegalStateException ex = assertThrows(
-                IllegalStateException.class,
+        BusinessException ex = assertThrows(
+                BusinessException.class,
                 () -> draftBatchService.changeStatus(1L, DraftBatchStatusEnum.IMPORTED)
         );
 
         assertTrue(ex.getMessage().contains("invalid status transition"));
+    }
+
+    @Test
+    void get_shouldThrowNotFoundWhenBatchMissing() {
+        when(batchRepository.findById(99L)).thenReturn(Optional.empty());
+
+        NotFoundException ex = assertThrows(NotFoundException.class, () -> draftBatchService.get(99L));
+
+        assertTrue(ex.getMessage().contains("草稿批次不存在"));
+    }
+
+    @Test
+    void changeStatus_shouldThrowIllegalArgumentExceptionWhenTargetStatusMissing() {
+        when(batchRepository.findById(1L)).thenReturn(Optional.of(batch));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> draftBatchService.changeStatus(1L, null));
+
+        assertTrue(ex.getMessage().contains("targetStatus"));
     }
 
     @Test

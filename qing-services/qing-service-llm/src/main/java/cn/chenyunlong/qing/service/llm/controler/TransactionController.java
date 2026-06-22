@@ -1,7 +1,9 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.dto.transactions.CreateTransactionRecordDto;
+import cn.chenyunlong.qing.service.llm.dto.transactions.UpdateTransactionRecordDto;
 import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
 import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
@@ -146,10 +148,7 @@ public class TransactionController {
             @PathVariable Long id,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "100") int size) {
-        TransactionRecord record = transactionRepo.findById(id).orElse(null);
-        if (record == null) {
-            return Result.error(404, "记录不存在");
-        }
+        TransactionRecord record = getTransactionOrThrow(id);
 
         if (size > 500) {
             size = 500;
@@ -161,7 +160,7 @@ public class TransactionController {
         Specification<TransactionRecord> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("amount"), record.getAmount()));
-            predicates.add(cb.equal(root.get("trasactionType"), record.getTransactionType()));
+            predicates.add(cb.equal(root.get("transactionType"), record.getTransactionType()));
             predicates.add(cb.between(root.get("transactionTime"), start, end));
             predicates.add(cb.equal(root.get("isDeleted"), false));
             predicates.add(cb.or(
@@ -177,22 +176,9 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public Result<TransactionRecord> updateTransaction(@PathVariable Long id, @RequestBody TransactionRecord updateData) {
-        TransactionRecord record = transactionRepo.findById(id).orElse(null);
-        if (record == null) {
-            return Result.error(404, "记录不存在");
-        }
-
-        // 允许修改某些字段
-        if (updateData.getCategory() != null) record.setCategory(updateData.getCategory());
-        if (updateData.getAmount() != null) record.setAmount(updateData.getAmount());
-        if (updateData.getCounterparty() != null) record.setCounterparty(updateData.getCounterparty());
-        if (updateData.getMerchant() != null) record.setMerchant(updateData.getMerchant());
-        if (updateData.getTransactionType() != null) record.setTransactionType(updateData.getTransactionType());
-
-        record.setIsModified(true);
-        transactionRepo.save(record);
-
+    public Result<TransactionRecord> updateTransaction(@PathVariable Long id,
+                                                       @RequestBody @Valid UpdateTransactionRecordDto updateData) {
+        TransactionRecord record = transactionService.update(id, updateData);
         return Result.success(record);
     }
 
@@ -211,5 +197,16 @@ public class TransactionController {
         LocalDateTime now = LocalDateTime.now();
         reconciliationService.autoReconcile(now.minusYears(10), now.plusYears(10));
         return Result.success();
+    }
+
+    /**
+     * 按流水 ID 加载流水，不存在时抛出资源不存在异常。
+     *
+     * @param transactionId 流水 ID
+     * @return 流水实体
+     */
+    private TransactionRecord getTransactionOrThrow(Long transactionId) {
+        return transactionRepo.findById(transactionId)
+                .orElseThrow(() -> new NotFoundException("记录不存在"));
     }
 }

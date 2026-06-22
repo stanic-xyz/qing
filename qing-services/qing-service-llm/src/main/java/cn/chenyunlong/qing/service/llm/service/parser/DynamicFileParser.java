@@ -1,5 +1,4 @@
 package cn.chenyunlong.qing.service.llm.service.parser;
-
 import cn.chenyunlong.qing.service.llm.dto.parser.FieldMappingRule;
 import cn.chenyunlong.qing.service.llm.dto.parser.FileMetadata;
 import cn.chenyunlong.qing.service.llm.dto.parser.MetadataRule;
@@ -268,7 +267,7 @@ public class DynamicFileParser extends BaseFileParser {
 
         String language = normalizeScriptLanguage(rule.getScriptLanguage());
         if (!scriptExecutorFactory.isSupported(language)) {
-            throw new IllegalArgumentException("Unsupported script language: " + language);
+            throw new IllegalArgumentException("不支持的脚本语言: " + language);
         }
 
         Map<String, Object> context = new HashMap<>(rowContext);
@@ -293,7 +292,7 @@ public class DynamicFileParser extends BaseFileParser {
 
         String language = normalizeScriptLanguage(config.getPostScriptLanguage());
         if (!scriptExecutorFactory.isSupported(language)) {
-            throw new IllegalArgumentException("Unsupported script language: " + language);
+            throw new IllegalArgumentException("不支持的脚本语言: " + language);
         }
 
         Map<String, Object> context = new HashMap<>(rowContext);

@@ -3,92 +3,185 @@ package cn.chenyunlong.qing.service.llm.dto.transactions;
 import cn.chenyunlong.qing.service.llm.enums.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-// ==================== DTO ====================
-import org.springframework.format.annotation.DateTimeFormat;
-
+/**
+ * 手工新增交易的公开输入模型。
+ */
 @Data
 public class CreateTransactionRecordDto {
 
-    @NotNull(message = "渠道ID不能为空")
-    private Long channelId;
-
+    /**
+     * 交易所属账户 ID。
+     * 必填，服务端会根据该字段加载账户并补齐账户冗余信息。
+     */
     @NotNull(message = "账户ID不能为空")
     private Long accountId;
 
+    /**
+     * 交易发生时间。
+     * 必填，且不能晚于当前时间。
+     */
     @NotNull(message = "交易时间不能为空")
     @PastOrPresent(message = "交易时间不能晚于当前时间")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime transactionTime;
 
-    @NotNull(message = "账单顺序不能为空")
+    /**
+     * 账单内排序序号。
+     * 可选，主要用于保留人工录入或外部来源中的顺序信息。
+     */
     @Min(value = 1, message = "账单顺序最小为1")
     private Integer orderNo;
 
+    /**
+     * 交易金额。
+     * 必填，金额正负仍参与服务端方向推导。
+     */
     @NotNull(message = "交易金额不能为空")
     @DecimalMin(value = "-999999999999.99", message = "金额超出范围")
     @DecimalMax(value = "999999999999.99", message = "金额超出范围")
     private BigDecimal amount;
 
-    private BigDecimal balance;  // 交易余额，可为空
+    /**
+     * 交易后余额。
+     * 可选，未传时不补默认值。
+     */
+    private BigDecimal balance;
 
+    /**
+     * 交易摘要。
+     * 可选，适合存放简短的场景描述。
+     */
     private String summary;
 
+    /**
+     * 交易详情。
+     * 可选，适合存放原始备注或更长的描述信息。
+     */
     private String detail;
 
-    // 内部转账目标账户ID（当directionType=TRANSFER时建议提供）
+    /**
+     * 内部转账目标账户 ID。
+     * 仅在 `transactionType=TRANSFER` 时允许传入，其他类型传入会被拒绝。
+     */
     private Long targetAccountId;
 
-    // 对手方ID（与counterpartyStr二选一）
+    /**
+     * 对手方 ID。
+     * 可选，与 `counterpartyStr` 二选一，优先使用 ID 关联实体。
+     */
     private Long counterpartyId;
 
-    // 对手方文本（当没有对手方ID时使用）
+    /**
+     * 对手方名称文本。
+     * 可选，当没有对手方实体时使用。
+     */
     private String counterpartyStr;
 
-    @NotBlank(message = "商家信息不能为空")
+    /**
+     * 商户名称。
+     * 可选，手工录入时允许留空。
+     */
     private String merchant;
 
-    @NotNull(message = "交易类别ID不能为空")
+    /**
+     * 分类 ID。
+     * 可选，未传时交易可先不分类。
+     */
     private Long categoryId;
 
-    private String subCategory;  // 子类别冗余，若为空则从Category获取
+    /**
+     * 子分类名称。
+     * 可选，通常作为冗余展示字段保留。
+     */
+    private String subCategory;
 
-    private TransactionStatusEnum status;  // 默认创建时设为COMPLETED
+    /**
+     * 交易状态。
+     * 可选，未传时服务端默认写入 `SUCCESS`。
+     */
+    private TransactionStatusEnum status;
 
-    private BigDecimal fee;  // 交易费用
+    /**
+     * 交易手续费。
+     * 可选，若传入则必须为非负数。
+     */
+    private BigDecimal fee;
 
-    private String originalId;   // 原始交易ID
-    private String sourceFile;   // 原始文件名
+    /**
+     * 标签列表。
+     * 可选，服务端会按当前实现拼接后落库。
+     */
+    private List<String> tags;
 
-    private List<String> tags;         // JSON格式标签
+    /**
+     * 导入任务 ID。
+     * 可选，用于将手工新增记录关联到外部导入上下文。
+     */
+    private String uploadId;
 
-    private Long linkedId;       // 关联交易ID
-    private String linkedGroupId; // 关联组ID
+    /**
+     * 批次号。
+     * 可选，未传时由服务端自动生成。
+     */
+    private String batchNo;
 
-    private String uploadId;     // 导入批次ID
-    private String batchNo;      // 批次号，为空时系统自动生成
+    /**
+     * 对账状态。
+     * 可选，未传时服务端默认写入 `PENDING`。
+     */
+    private ReconciliationStatusEnum reconciliationStatus;
 
-    private String originalData; // 原始解析数据JSON
+    /**
+     * 是否已确认。
+     * 可选，未传时服务端默认写入 `false`。
+     */
+    private Boolean confirmed;
 
-    private ReconciliationStatusEnum reconciliationStatus; // 对账状态，默认PENDING
-    private Boolean confirmed;    // 是否已确认，默认false
+    /**
+     * 匹配状态。
+     * 可选，未传时服务端默认写入 `ORIGINAL`。
+     */
+    private MatchStatusEnum matchStatus;
 
-    private MatchStatusEnum matchStatus;     // 匹配状态，默认ORIGINAL
-    private String matchRuleName;            // 匹配规则名称
+    /**
+     * 匹配规则名称。
+     * 可选，仅在上层已有匹配结果时传入。
+     */
+    private String matchRuleName;
 
-    private FundTypeEnum fundType;           // 资金类型
-    private String fundSource;               // 资金来源描述
-    private Long fundSourceAccountId;        // 关联资金源账户ID
+    /**
+     * 资金来源描述。
+     * 可选，通常用于记录跨账户或跨渠道来源信息。
+     */
+    private String fundSource;
 
-    private RecordRoleEnum recordRole;       // 记录角色，默认PRIMARY
+    /**
+     * 资金来源账户 ID。
+     * 可选，用于关联已识别的来源账户。
+     */
+    private Long fundSourceAccountId;
 
-    // 业务交易类型（收入/支出/转账）冗余，若为空则根据directionType自动推导
+    /**
+     * 记录角色。
+     * 可选，未传时服务端默认写入 `PRIMARY`。
+     */
+    private RecordRoleEnum recordRole;
+
+    /**
+     * 业务交易类型。
+     * 可选，未传时保留为空，由现有推导链路决定后续使用方式。
+     */
     private TransactionType transactionType;
 
-    // 细分记录类型（如消费、提现等），可为空
+    /**
+     * 细分交易记录类型。
+     * 可选，用于补充更细粒度的业务语义。
+     */
     private TransactionRecordTypeEnum transactionRecordType;
 }

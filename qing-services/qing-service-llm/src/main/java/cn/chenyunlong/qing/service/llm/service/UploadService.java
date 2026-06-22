@@ -1,5 +1,7 @@
 package cn.chenyunlong.qing.service.llm.service;
 
+import cn.chenyunlong.common.exception.BusinessException;
+import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.*;
 import cn.chenyunlong.qing.service.llm.dto.parser.FileMetadata;
 import cn.chenyunlong.qing.service.llm.dto.parser.ParseResult;
@@ -94,7 +96,7 @@ public class UploadService {
         Long configId = config.getId();
 
         if (StrUtil.isBlank(ext)) {
-            throw new RuntimeException("文件后缀不能为空");
+            throw new IllegalArgumentException("文件后缀不能为空");
         }
 
         ext = ext.toUpperCase();
@@ -126,22 +128,37 @@ public class UploadService {
             return parser;
         }
 
-        throw new RuntimeException(String.format(
+        throw new NotFoundException(String.format(
                 "找不到匹配的内置解析器: channel=%s, fileType=%s",
                 channelCode, ext
         ));
     }
 
+    /**
+     * 根据解析器配置解析并校验当前文件可用的解析器实例。
+     */
+    private FileParser resolveParser(Long parserId, MultipartFile file, ParserConfig parserConfig) {
+        String originalFilename = file.getOriginalFilename();
+        FileParser parser = parserConfig.getIsBuiltIn()
+                ? getBuiltinParser(parserConfig, FileUtil.getSuffix(originalFilename))
+                : new DynamicFileParser(parserConfig, scriptExecutorFactory);
+        if (parser == null) {
+            throw new NotFoundException("找不到有效的解析器: " + parserId);
+        }
+        return parser;
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public List<UploadBatchPreviewResponse> parseAndPreviewBatch(List<MultipartFile> files, Long parserId, Long accountId) throws Exception {
         Account targetAccount = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("指定的账户不存在"));
+                .orElseThrow(() -> new NotFoundException("指定的账户不存在"));
 
         List<UploadBatchPreviewResponse> responses = new ArrayList<>();
 
         // 解析 parserId: "builtin:123" 或 "custom:456" 或 "ALIPAY" (兼容旧的)
 
-        ParserConfig parserConfig = parserConfigRepository.findById(parserId).orElseThrow(() -> new RuntimeException("指定的解析器不存在"));
+        ParserConfig parserConfig = parserConfigRepository.findById(parserId)
+                .orElseThrow(() -> new NotFoundException("指定的解析器不存在"));
 
         for (MultipartFile file : files) {
             UploadBatchPreviewResponse previewResponse = parseFile(parserId, file, parserConfig, targetAccount);
@@ -153,13 +170,14 @@ public class UploadService {
     @Transactional(rollbackFor = Exception.class)
     public List<UploadBatchPreviewResponse> parseAndPreview(MultipartFile file, Long parserId, Long accountId) throws Exception {
         Account targetAccount = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("指定的账户不存在"));
+                .orElseThrow(() -> new NotFoundException("指定的账户不存在"));
 
         List<UploadBatchPreviewResponse> responses = new ArrayList<>();
 
         // 解析 parserId: "builtin:123" 或 "custom:456" 或 "ALIPAY" (兼容旧的)
 
-        ParserConfig parserConfig = parserConfigRepository.findById(parserId).orElseThrow(() -> new RuntimeException("指定的解析器不存在"));
+        ParserConfig parserConfig = parserConfigRepository.findById(parserId)
+                .orElseThrow(() -> new NotFoundException("指定的解析器不存在"));
         UploadBatchPreviewResponse previewResponse = parseFile(parserId, file, parserConfig, targetAccount);
         responses.add(previewResponse);
         return responses;
@@ -170,15 +188,7 @@ public class UploadService {
 
         // 新的内置解析器：通过数据库ID查找
         // 根据渠道代码和文件类型找到对应的Bean
-        FileParser parser;
-        if (parserConfig.getIsBuiltIn()) {
-            parser = getBuiltinParser(parserConfig, FileUtil.getSuffix(originalFilename));
-        } else {
-            parser = new DynamicFileParser(parserConfig, scriptExecutorFactory);
-        }
-        if (parser == null) {
-            throw new RuntimeException("找不到有效的解析器: " + parserId);
-        }
+        FileParser parser = resolveParser(parserId, file, parserConfig);
 
         String fileHash = FileHashUtil.calcMD5(file.getInputStream());
         long fileSize = file.getSize();
@@ -316,7 +326,8 @@ public class UploadService {
     public UploadPreview getPreviewData(Long uploadId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "transactionTime"));
 
-        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId).orElseThrow(() -> new RuntimeException("上传记录不存在"));
+        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId)
+                .orElseThrow(() -> new NotFoundException("上传记录不存在"));
 
         List<UnifiedDraftRecord> draftRecordList = draftRecordRepository.findAllByFileRecord(fileRecord);
 
@@ -340,7 +351,8 @@ public class UploadService {
 
     public UploadBatchOverviewResponse getBatchOverview(Long uploadId) {
 
-        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId).orElseThrow(() -> new RuntimeException("上传记录不存在"));
+        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId)
+                .orElseThrow(() -> new NotFoundException("上传记录不存在"));
 
         Account account = fileRecord.getAccount();
         assert account != null;
@@ -401,9 +413,10 @@ public class UploadService {
     public void startMatchingAsync(Long uploadId, List<Long> lockedTempIds) {
 
         // 1. 基础校验
-        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId).orElseThrow(() -> new RuntimeException("上传记录不存在"));
+        UploadFileRecord fileRecord = uploadFileRepo.findById(uploadId)
+                .orElseThrow(() -> new NotFoundException("上传记录不存在"));
         if (fileRecord.getStatus() != FileUploadStatusEnum.UPLOADED) {
-            throw new RuntimeException("状态错误，当前状态不可匹配: " + fileRecord.getStatus());
+            throw new BusinessException("状态错误，当前状态不可匹配: " + fileRecord.getStatus());
         }
 
         // 更新整体状态为匹配中
@@ -507,14 +520,14 @@ public class UploadService {
     public MatchStatusResponse getMatchStatus(Long uploadId) {
         MatchStatusResponse status = matchStatusMap.get(uploadId);
         if (status == null) {
-            throw new RuntimeException("任务不存在或已过期");
+            throw new NotFoundException("任务不存在或已过期");
         }
         return status;
     }
 
     public PreviewRecordDTO matchSingleRecord(String recordId, List<Long> ruleIds) {
         UnifiedDraftRecord record = draftRecordRepository.findById(Long.parseLong(recordId))
-                .orElseThrow(() -> new RuntimeException("未找到该记录"));
+                .orElseThrow(() -> new NotFoundException("未找到该记录"));
 
         // 重置为初始状态（如果是重新匹配）
         record.setMatchStatus(DraftMatchStatusEnum.UNMATCHED);

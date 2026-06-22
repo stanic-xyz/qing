@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  jaeger:
+    image: jaegertracing/jaeger:2.19.0
+    container_name: jaeger
+    ports:
+      - "16686:16686"   # Jaeger UI
+      - "4318:4318"     # OTLP gRPC 接收端口
+      - "4317:4317"     # OTLP http 接收端口
+      - "5778:5778"     # OTLP 配置接收端口
+      - "9441:9441"     # OTLP Zipkin 接收端口
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
+  backend-service:
+    build: .
+    container_name: llm-service
+    ports:
+      - "8088:8087"          # 不暴露到宿主机也可
+    environment:
+      - OTEL_SERVICE_NAME=qing-service-llm
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4318   # 改为 4318
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf        # 明确 HTTP 协议
+      - OTEL_TRACES_SAMPLER=always_on
+    depends_on:
+      - jaeger

@@ -1,5 +1,4 @@
 package cn.chenyunlong.qing.service.llm.service.script;
-
 import jakarta.annotation.PreDestroy;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +40,7 @@ public class ScriptExecutorFactory {
         }
         ScriptExecutor executor = executors.get(language.toLowerCase());
         if (executor == null) {
-            throw new IllegalArgumentException("Unsupported script language: " + language);
+            throw new IllegalArgumentException("不支持的脚本语言: " + language);
         }
         return executor;
     }
