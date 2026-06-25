@@ -26,7 +26,9 @@ class TransactionWriteDtoTest {
         assertTrue(fields.contains("accountId"));
         assertTrue(fields.contains("transactionTime"));
         assertTrue(fields.contains("amount"));
+        assertTrue(fields.contains("directionType"));
         assertTrue(fields.contains("categoryId"));
+        assertTrue(fields.contains("categoryName"));
         assertTrue(fields.contains("merchant"));
         assertTrue(fields.contains("counterpartyId"));
         assertTrue(fields.contains("counterpartyStr"));
@@ -46,12 +48,17 @@ class TransactionWriteDtoTest {
         UpdateTransactionRecordDto missingFieldDto =
                 objectMapper.readValue("{}", UpdateTransactionRecordDto.class);
         UpdateTransactionRecordDto explicitNullDto =
-                objectMapper.readValue("{\"merchant\":null,\"categoryId\":null}", UpdateTransactionRecordDto.class);
+                objectMapper.readValue("{\"merchant\":null,\"categoryId\":null,\"categoryName\":null,\"directionType\":null}",
+                        UpdateTransactionRecordDto.class);
 
         assertFalse(missingFieldDto.isMerchantSpecified());
         assertFalse(missingFieldDto.isCategoryIdSpecified());
+        assertFalse(missingFieldDto.isCategoryNameSpecified());
+        assertFalse(missingFieldDto.isDirectionTypeSpecified());
 
         assertTrue(explicitNullDto.isMerchantSpecified());
         assertTrue(explicitNullDto.isCategoryIdSpecified());
+        assertTrue(explicitNullDto.isCategoryNameSpecified());
+        assertTrue(explicitNullDto.isDirectionTypeSpecified());
     }
 }

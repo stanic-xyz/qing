@@ -1,5 +1,6 @@
 package cn.chenyunlong.qing.service.llm.dto.transactions;
 
+import cn.chenyunlong.qing.service.llm.enums.TransactionDirectionTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.DecimalMax;
@@ -20,8 +21,14 @@ public class UpdateTransactionRecordDto {
     private Long categoryId;
 
     /**
+     * 分类名称。
+     * 可选，未传保持原值；显式传空白或 `null` 表示清空分类。
+     */
+    private String categoryName;
+
+    /**
      * 交易金额。
-     * 可选，未传保持原值；传入时必须通过金额校验。
+     * 可选，未传保持原值；传入时允许正数或负数，实际符号由服务层与 `directionType` 联合校验。
      */
     @DecimalMin(value = "-999999999999.99", message = "金额超出范围")
     @DecimalMax(value = "999999999999.99", message = "金额超出范围")
@@ -48,11 +55,21 @@ public class UpdateTransactionRecordDto {
     /**
      * 业务交易类型。
      * 可选，未传保持原值；显式传 `null` 表示清空。
+     * 当前手工交易接口只保留收入/支出语义，显式传入 `TRANSFER` 会被服务层拒绝。
      */
     private TransactionType transactionType;
 
+    /**
+     * 当前记录对所属账户的收支方向。
+     * 可选，未传保持原值；显式传值时必须与金额符号、分类方向约束保持一致。
+     */
+    private TransactionDirectionTypeEnum directionType;
+
     @JsonIgnore
     private boolean categoryIdSpecified;
+
+    @JsonIgnore
+    private boolean categoryNameSpecified;
 
     @JsonIgnore
     private boolean amountSpecified;
@@ -69,6 +86,9 @@ public class UpdateTransactionRecordDto {
     @JsonIgnore
     private boolean transactionTypeSpecified;
 
+    @JsonIgnore
+    private boolean directionTypeSpecified;
+
     public Long getCategoryId() {
         return categoryId;
     }
@@ -76,6 +96,15 @@ public class UpdateTransactionRecordDto {
     public void setCategoryId(Long categoryId) {
         this.categoryIdSpecified = true;
         this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryNameSpecified = true;
+        this.categoryName = categoryName;
     }
 
     public BigDecimal getAmount() {
@@ -123,12 +152,29 @@ public class UpdateTransactionRecordDto {
         this.transactionType = transactionType;
     }
 
+    public TransactionDirectionTypeEnum getDirectionType() {
+        return directionType;
+    }
+
+    public void setDirectionType(TransactionDirectionTypeEnum directionType) {
+        this.directionTypeSpecified = true;
+        this.directionType = directionType;
+    }
+
     /**
      * 返回分类字段是否在请求体中显式出现。
      */
     @JsonIgnore
     public boolean isCategoryIdSpecified() {
         return categoryIdSpecified;
+    }
+
+    /**
+     * 返回分类名称字段是否在请求体中显式出现。
+     */
+    @JsonIgnore
+    public boolean isCategoryNameSpecified() {
+        return categoryNameSpecified;
     }
 
     /**
@@ -169,5 +215,13 @@ public class UpdateTransactionRecordDto {
     @JsonIgnore
     public boolean isTransactionTypeSpecified() {
         return transactionTypeSpecified;
+    }
+
+    /**
+     * 返回收支方向字段是否在请求体中显式出现。
+     */
+    @JsonIgnore
+    public boolean isDirectionTypeSpecified() {
+        return directionTypeSpecified;
     }
 }

@@ -86,6 +86,8 @@ public class TransactionService {
         applyCounterpartyUpdate(record, dto);
         applyMerchantUpdate(record, dto);
         applyTransactionTypeUpdate(record, dto);
+        applyDirectionTypeUpdate(record, dto);
+        validateManualWriteContract(record);
 
         record.setIsModified(true);
         TransactionRecord saved = transactionRepo.save(record);
@@ -100,23 +102,18 @@ public class TransactionService {
      * @param forcedBatchNo 强制使用的批次号（批量调用时统一传入，单个调用时传null）
      */
     private TransactionRecord doCreate(CreateTransactionRecordDto dto, String forcedBatchNo) {
+        validateManualCreateTransferBoundary(dto);
 
         // 1. 基础关联实体校验与加载
         Long accountId = dto.getAccountId();
+        if (accountId == null) {
+            throw new BusinessException("账户ID不能为空");
+        }
         Account account = null;
-        if (accountId != null) {
-            account = getAccountOrThrow(accountId);
-        }
-        Long categoryId = dto.getCategoryId();
-        Category category = null;
-        if (categoryId != null) {
-            category = getCategoryOrThrow(categoryId);
-        }
+        account = getAccountOrThrow(accountId);
+        Category category = resolveCategory(dto.getCategoryId(), dto.getCategoryName());
 
-        // 2. 业务逻辑校验
-        validateTransactionBusinessRules(dto, account);
-
-        // 3. 构建实体
+        // 2. 构建实体
         TransactionRecord record = new TransactionRecord();
         // 基础字段
         record.setAccount(account);
@@ -138,18 +135,9 @@ public class TransactionService {
         // 冗余字段填充（从关联实体获取或自动推断）
         record.setAccountName(account.getAccountName());
         record.setAccountType(account.getAccountType());
-        // transactionType 处理：优先使用DTO传入，否则根据出入账类型推断
         record.setTransactionType(dto.getTransactionType());
-        // subCategory 冗余：优先使用DTO传入，否则尝试从Category获取（假设Category有subCategoryName字段）
-        // transactionRecordType 可选
         record.setTransactionRecordType(dto.getTransactionRecordType());
-        TransactionDirectionTypeEnum directionType = inferTransactionDirection(dto.getAmount());
-        record.setDirectionType(directionType);
-
-        // 目标账户处理
-        if (dto.getTargetAccountId() != null) {
-            record.setTargetAccountId(dto.getTargetAccountId());
-        }
+        record.setDirectionType(dto.getDirectionType());
 
         // 对手方处理：优先使用ID加载，否则使用文本
         if (dto.getCounterpartyId() != null) {
@@ -179,6 +167,9 @@ public class TransactionService {
             record.setBatchNo(generateBatchNo());
         }
 
+        // 3. 在持久化前统一校验方向、金额与分类契约
+        validateManualWriteContract(record);
+
         // 保存
         return transactionRepo.save(record);
     }
@@ -190,14 +181,10 @@ public class TransactionService {
      * 未传保持不变，显式传 null 时清空分类。
      */
     private void applyCategoryUpdate(TransactionRecord record, UpdateTransactionRecordDto dto) {
-        if (!dto.isCategoryIdSpecified()) {
+        if (!dto.isCategoryIdSpecified() && !dto.isCategoryNameSpecified()) {
             return;
         }
-        if (dto.getCategoryId() == null) {
-            record.setCategory(null);
-            return;
-        }
-        Category category = getCategoryOrThrow(dto.getCategoryId());
+        Category category = resolveCategory(dto.getCategoryId(), dto.getCategoryName());
         record.setCategory(category);
     }
 
@@ -213,7 +200,6 @@ public class TransactionService {
             throw new BusinessException("交易金额不能为空");
         }
         record.setAmount(dto.getAmount());
-        record.setDirectionType(inferTransactionDirection(dto.getAmount()));
     }
 
     /**
@@ -258,42 +244,107 @@ public class TransactionService {
         if (!dto.isTransactionTypeSpecified()) {
             return;
         }
+        if (dto.getTransactionType() == TransactionType.TRANSFER) {
+            throw unsupportedManualTransferException();
+        }
         record.setTransactionType(dto.getTransactionType());
     }
 
     /**
-     * 校验新增交易的核心业务规则。
+     * 应用收支方向更新语义。
+     * 未传保持不变，显式传 null 时拒绝清空。
      */
-    private void validateTransactionBusinessRules(CreateTransactionRecordDto dto, Account account) {
-        // 金额与出入账方向一致性校验
-        TransactionType transactionType = dto.getTransactionType();
-        // 转账类型特殊校验
-        if (transactionType == TransactionType.TRANSFER) {
-            if (dto.getTargetAccountId() == null) {
-                throw new BusinessException("转账类型必须指定目标账户ID(targetAccountId)");
-            }
-            if (dto.getTargetAccountId().equals(account.getId())) {
-                throw new BusinessException("转账目标账户不能是源账户本身");
-            }
-            // 可选：检查目标账户是否存在，这里为了性能只做非空校验，实际可加载校验
-        } else {
-            if (dto.getTargetAccountId() != null) {
-                throw new BusinessException("非转账类型不应提供目标账户ID");
-            }
+    private void applyDirectionTypeUpdate(TransactionRecord record, UpdateTransactionRecordDto dto) {
+        if (!dto.isDirectionTypeSpecified()) {
+            return;
         }
+        if (dto.getDirectionType() == null) {
+            throw new BusinessException("directionType不能为空");
+        }
+        record.setDirectionType(dto.getDirectionType());
+    }
 
-        // 余额校验：如果提供了交易后余额，不能为负数
-        if (dto.getBalance() != null && dto.getBalance().compareTo(BigDecimal.ZERO) < 0) {
+    /**
+     * 统一校验手工交易写接口的金额、方向与分类契约。
+     */
+    private void validateManualWriteContract(TransactionRecord record) {
+        if (record.getAmount() == null) {
+            throw new BusinessException("交易金额不能为空");
+        }
+        if (record.getDirectionType() == null) {
+            throw new BusinessException("directionType不能为空");
+        }
+        validateAmountDirectionConsistency(record.getAmount(), record.getDirectionType());
+        validateBalanceAndFee(record);
+        validateCategoryContract(record);
+    }
+
+    /**
+     * 校验手工新增接口不再承载转账语义。
+     */
+    private void validateManualCreateTransferBoundary(CreateTransactionRecordDto dto) {
+        if (dto.getTransactionType() == TransactionType.TRANSFER || dto.getTargetAccountId() != null) {
+            throw unsupportedManualTransferException();
+        }
+    }
+
+    /**
+     * 校验余额与费用字段的非负约束。
+     */
+    private void validateBalanceAndFee(TransactionRecord record) {
+        if (record.getBalance() != null && record.getBalance().compareTo(BigDecimal.ZERO) < 0) {
             throw new BusinessException("交易余额不能为负数");
         }
-
-        // 费用校验：费用不能为负数
-        if (dto.getFee() != null && dto.getFee().compareTo(BigDecimal.ZERO) < 0) {
+        if (record.getFee() != null && record.getFee().compareTo(BigDecimal.ZERO) < 0) {
             throw new BusinessException("交易费用不能为负数");
         }
+    }
 
-        // 账户类型与转账合理性（示例：支付宝账户不能转给信用卡等，可根据需要扩展）
-        // ...
+    /**
+     * 校验金额符号与显式方向是否一致。
+     * 0 金额沿用历史兼容行为，不额外阻断。
+     */
+    private void validateAmountDirectionConsistency(BigDecimal amount,
+                                                    TransactionDirectionTypeEnum directionType) {
+        if (amount == null || directionType == null) {
+            return;
+        }
+        int amountSign = amount.compareTo(BigDecimal.ZERO);
+        if (amountSign == 0) {
+            return;
+        }
+        if (directionType == TransactionDirectionTypeEnum.INCOME && amountSign < 0) {
+            throw new BusinessException("amount与directionType不匹配，收入使用正金额，支出使用负金额");
+        }
+        if (directionType == TransactionDirectionTypeEnum.EXPENSE && amountSign > 0) {
+            throw new BusinessException("amount与directionType不匹配，收入使用正金额，支出使用负金额");
+        }
+    }
+
+    /**
+     * 校验分类类型与当前交易方向的兼容性。
+     */
+    private void validateCategoryContract(TransactionRecord record) {
+        Category category = record.getCategory();
+        if (category == null || !StringUtils.hasText(category.getType())) {
+            return;
+        }
+        String categoryType = category.getType().trim().toUpperCase();
+        switch (categoryType) {
+            case "INCOME" -> {
+                if (record.getDirectionType() != TransactionDirectionTypeEnum.INCOME) {
+                    throw new BusinessException("分类方向与交易方向不匹配，分类[" + category.getName() + "]要求收入方向");
+                }
+            }
+            case "EXPENSE" -> {
+                if (record.getDirectionType() != TransactionDirectionTypeEnum.EXPENSE) {
+                    throw new BusinessException("分类方向与交易方向不匹配，分类[" + category.getName() + "]要求支出方向");
+                }
+            }
+            default -> {
+                // 历史脏数据或未规范分类类型时不额外阻断现有流程。
+            }
+        }
     }
 
     /**
@@ -345,16 +396,6 @@ public class TransactionService {
     }
 
     /**
-     * 根据金额正负推导交易方向。
-     */
-    public TransactionDirectionTypeEnum inferTransactionDirection(BigDecimal amount) {
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            return TransactionDirectionTypeEnum.EXPENSE;
-        }
-        return TransactionDirectionTypeEnum.INCOME;
-    }
-
-    /**
      * 为批量创建生成统一的批次号（仅当列表中的所有DTO都没有指定batchNo时）
      */
     private String generateCommonBatchNo(List<CreateTransactionRecordDto> recordDtoList) {
@@ -367,6 +408,43 @@ public class TransactionService {
      */
     private String normalizeNullableText(String value) {
         return StringUtils.hasText(value) ? value.trim() : null;
+    }
+
+    /**
+     * 生成当前手工交易接口不支持转账语义时的统一异常。
+     */
+    private BusinessException unsupportedManualTransferException() {
+        return new BusinessException("当前手工交易接口不支持TRANSFER语义，请使用独立转账接口");
+    }
+
+    /**
+     * 按分类 ID 或分类名称解析分类实体。
+     * 同时传入两者时要求名称与 ID 指向的分类一致；两者都为空时返回 null。
+     */
+    private Category resolveCategory(Long categoryId, String categoryName) {
+        String normalizedCategoryName = normalizeNullableText(categoryName);
+        if (categoryId == null && normalizedCategoryName == null) {
+            return null;
+        }
+        if (categoryId != null) {
+            Category category = getCategoryOrThrow(categoryId);
+            if (normalizedCategoryName != null && !normalizedCategoryName.equals(category.getName())) {
+                throw new BusinessException("categoryId与categoryName不匹配");
+            }
+            return category;
+        }
+        return getCategoryByNameOrThrow(normalizedCategoryName);
+    }
+
+    /**
+     * 按分类名称加载分类，不存在时抛出资源不存在异常。
+     */
+    private Category getCategoryByNameOrThrow(String categoryName) {
+        Category category = categoryRepository.findByNameAndIsDeletedFalse(categoryName);
+        if (category == null) {
+            throw new NotFoundException("交易类别不存在，categoryName=" + categoryName);
+        }
+        return category;
     }
 
     /**

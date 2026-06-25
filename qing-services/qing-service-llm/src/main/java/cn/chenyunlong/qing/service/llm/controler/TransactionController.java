@@ -124,7 +124,8 @@ public class TransactionController {
     }
 
     /**
-     * 新增单条流水
+     * 新增单条流水。
+     * 请求体需显式传入 `directionType`，且金额符号必须与方向保持一致。
      */
     @PostMapping
     public Result<TransactionRecord> createTransaction(@RequestBody @Valid CreateTransactionRecordDto dto) {
@@ -175,6 +176,10 @@ public class TransactionController {
         return Result.success(related.getContent());
     }
 
+    /**
+     * 按显式字段更新单条流水。
+     * `directionType` 未传保持原值，显式传值时按统一金额符号与方向契约校验。
+     */
     @PutMapping("/{id}")
     public Result<TransactionRecord> updateTransaction(@PathVariable Long id,
                                                        @RequestBody @Valid UpdateTransactionRecordDto updateData) {

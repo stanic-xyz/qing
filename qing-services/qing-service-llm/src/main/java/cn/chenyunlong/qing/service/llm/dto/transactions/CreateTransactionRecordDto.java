@@ -39,8 +39,15 @@ public class CreateTransactionRecordDto {
     private Integer orderNo;
 
     /**
+     * 当前记录对所属账户的收支方向。
+     * 必填，仅允许表达收入或支出，不再通过金额正负隐式推导。
+     */
+    @NotNull(message = "directionType不能为空")
+    private TransactionDirectionTypeEnum directionType;
+
+    /**
      * 交易金额。
-     * 必填，金额正负仍参与服务端方向推导。
+     * 必填，允许正数或负数，且金额符号必须与 `directionType` 保持一致。
      */
     @NotNull(message = "交易金额不能为空")
     @DecimalMin(value = "-999999999999.99", message = "金额超出范围")
@@ -67,7 +74,7 @@ public class CreateTransactionRecordDto {
 
     /**
      * 内部转账目标账户 ID。
-     * 仅在 `transactionType=TRANSFER` 时允许传入，其他类型传入会被拒绝。
+     * 当前手工交易接口暂不承载转账语义，传入时会被服务层拒绝并引导改用独立转账接口。
      */
     private Long targetAccountId;
 
@@ -94,6 +101,12 @@ public class CreateTransactionRecordDto {
      * 可选，未传时交易可先不分类。
      */
     private Long categoryId;
+
+    /**
+     * 分类名称。
+     * 可选，当未传 `categoryId` 时可通过名称解析分类；若两者同时传入则必须指向同一分类。
+     */
+    private String categoryName;
 
     /**
      * 子分类名称。
@@ -175,7 +188,7 @@ public class CreateTransactionRecordDto {
 
     /**
      * 业务交易类型。
-     * 可选，未传时保留为空，由现有推导链路决定后续使用方式。
+     * 可选，当前手工交易接口仅面向单笔收入/支出记录；`TRANSFER` 语义由后续独立接口承载。
      */
     private TransactionType transactionType;
 

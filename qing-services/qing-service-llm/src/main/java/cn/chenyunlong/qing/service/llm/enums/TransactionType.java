@@ -7,7 +7,7 @@ public enum TransactionType implements CommonEnum {
     // 收入
     INCOME(1, "收入", TransactionDirectionTypeEnum.INCOME),
     // 支出
-    EXPENSE(2, "支出", TransactionDirectionTypeEnum.INCOME),
+    EXPENSE(2, "支出", TransactionDirectionTypeEnum.EXPENSE),
     // 转账
     TRANSFER(3, "转账", TransactionDirectionTypeEnum.INCOME, TransactionDirectionTypeEnum.EXPENSE),
     ;

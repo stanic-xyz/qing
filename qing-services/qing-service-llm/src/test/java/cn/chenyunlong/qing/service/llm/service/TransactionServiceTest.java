@@ -77,16 +77,30 @@ class TransactionServiceTest {
         dto.setCategoryId(20L);
 
         Account account = mockExistingAccount();
-        Category category = new Category();
-        category.setId(20L);
-        category.setName("餐饮");
-        when(categoryRepository.findById(20L)).thenReturn(Optional.of(category));
+        Category category = mockCategory(20L, "工资", "INCOME");
 
         TransactionRecord record = transactionService.create(dto);
 
         assertSame(account, record.getAccount());
         assertSame(category, record.getCategory());
         assertEquals("主账户", record.getAccountName());
+    }
+
+    /**
+     * 验证创建时仅传分类名称也能解析并写入分类关联。
+     */
+    @Test
+    @DisplayName("创建时传入categoryName应正确关联分类实体")
+    void createShouldSaveCategoryWhenCategoryNameProvided() {
+        CreateTransactionRecordDto dto = baseDto();
+        dto.setCategoryName("工资");
+
+        mockExistingAccount();
+        Category category = mockCategory(20L, "工资", "INCOME");
+
+        TransactionRecord record = transactionService.create(dto);
+
+        assertSame(category, record.getCategory());
     }
 
     @Test
@@ -182,50 +196,48 @@ class TransactionServiceTest {
     }
 
     /**
-     * 验证转账交易缺少目标账户时会被拒绝。
+     * 验证手工新增接口显式传入转账类型时会被拒绝。
      */
     @Test
-    @DisplayName("创建转账交易缺少目标账户时应抛出业务异常")
-    void createShouldThrowWhenTransferTargetAccountMissing() {
+    @DisplayName("创建时显式传入TRANSFER类型应抛出业务异常")
+    void createShouldThrowWhenTransferTransactionTypeProvided() {
         CreateTransactionRecordDto dto = baseDto();
         dto.setTransactionType(TransactionType.TRANSFER);
-        mockExistingAccount();
 
         BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.create(dto));
 
-        assertTrue(exception.getMessage().contains("目标账户ID"));
+        assertTrue(exception.getMessage().contains("不支持TRANSFER语义"));
     }
 
     /**
-     * 验证转账交易的目标账户不能与源账户相同。
+     * 验证手工新增接口显式传入目标账户时会被拒绝。
      */
     @Test
-    @DisplayName("创建转账交易且目标账户等于源账户时应抛出业务异常")
-    void createShouldThrowWhenTransferTargetAccountMatchesSourceAccount() {
+    @DisplayName("创建时显式传入目标账户ID应抛出业务异常")
+    void createShouldThrowWhenTargetAccountProvided() {
         CreateTransactionRecordDto dto = baseDto();
-        dto.setTransactionType(TransactionType.TRANSFER);
-        dto.setTargetAccountId(10L);
-        mockExistingAccount();
-
-        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.create(dto));
-
-        assertTrue(exception.getMessage().contains("不能是源账户本身"));
-    }
-
-    /**
-     * 验证非转账交易不允许携带目标账户。
-     */
-    @Test
-    @DisplayName("创建非转账交易但传入目标账户时应抛出业务异常")
-    void createShouldThrowWhenNonTransferTransactionProvidesTargetAccount() {
-        CreateTransactionRecordDto dto = baseDto();
-        dto.setTransactionType(TransactionType.EXPENSE);
         dto.setTargetAccountId(20L);
-        mockExistingAccount();
 
         BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.create(dto));
 
-        assertTrue(exception.getMessage().contains("非转账类型不应提供目标账户ID"));
+        assertTrue(exception.getMessage().contains("不支持TRANSFER语义"));
+    }
+
+    /**
+     * 验证手工新增接口不会再用目标账户参与旧转账语义。
+     */
+    @Test
+    @DisplayName("创建时同时传入非TRANSFER类型和目标账户ID仍应抛出统一业务异常")
+    void createShouldThrowUnifiedExceptionWhenTargetAccountProvidedWithNonTransferType() {
+        CreateTransactionRecordDto dto = baseDto();
+        dto.setAmount(new BigDecimal("-20.22"));
+        dto.setTransactionType(TransactionType.EXPENSE);
+        dto.setDirectionType(TransactionDirectionTypeEnum.EXPENSE);
+        dto.setTargetAccountId(20L);
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.create(dto));
+
+        assertTrue(exception.getMessage().contains("不支持TRANSFER语义"));
     }
 
     /**
@@ -259,19 +271,54 @@ class TransactionServiceTest {
     }
 
     /**
-     * 验证零金额仍可创建，并按当前规则推导为支出方向。
+     * 验证负金额支出在符号与方向一致时可以成功保存。
      */
     @Test
-    @DisplayName("创建时金额为零应成功并推导为支出方向")
-    void createShouldInferExpenseDirectionWhenAmountIsZero() {
+    @DisplayName("创建时负金额支出且符号匹配应保存成功")
+    void createShouldPersistExpenseDirectionWhenAmountIsNegative() {
         CreateTransactionRecordDto dto = baseDto();
-        dto.setAmount(BigDecimal.ZERO);
+        dto.setAmount(new BigDecimal("-20.22"));
+        dto.setTransactionType(TransactionType.EXPENSE);
+        dto.setDirectionType(TransactionDirectionTypeEnum.EXPENSE);
         mockExistingAccount();
 
         TransactionRecord record = transactionService.create(dto);
 
-        assertEquals(BigDecimal.ZERO, record.getAmount());
+        assertEquals(new BigDecimal("-20.22"), record.getAmount());
         assertEquals(TransactionDirectionTypeEnum.EXPENSE, record.getDirectionType());
+        assertEquals(TransactionType.EXPENSE, record.getTransactionType());
+    }
+
+    /**
+     * 验证创建时金额符号与方向不一致会被服务层显式拒绝。
+     */
+    @Test
+    @DisplayName("创建时金额符号与directionType不匹配应抛出业务异常")
+    void createShouldThrowWhenAmountSignDoesNotMatchDirectionType() {
+        CreateTransactionRecordDto dto = baseDto();
+        dto.setAmount(new BigDecimal("-20.22"));
+        mockExistingAccount();
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.create(dto));
+
+        assertTrue(exception.getMessage().contains("amount与directionType不匹配"));
+    }
+
+    /**
+     * 验证创建时不再使用 transactionType 参与方向合法性校验。
+     */
+    @Test
+    @DisplayName("创建时transactionType与directionType不匹配但金额符号正确应保存成功")
+    void createShouldIgnoreTransactionTypeDirectionMismatchWhenAmountSignMatches() {
+        CreateTransactionRecordDto dto = baseDto();
+        dto.setTransactionType(TransactionType.EXPENSE);
+        mockExistingAccount();
+
+        TransactionRecord record = transactionService.create(dto);
+
+        assertEquals(TransactionType.EXPENSE, record.getTransactionType());
+        assertEquals(TransactionDirectionTypeEnum.INCOME, record.getDirectionType());
+        assertEquals(new BigDecimal("88.80"), record.getAmount());
     }
 
     @Test
@@ -285,6 +332,38 @@ class TransactionServiceTest {
         NotFoundException exception = assertThrows(NotFoundException.class, () -> transactionService.create(dto));
 
         assertTrue(exception.getMessage().contains("交易类别不存在"));
+    }
+
+    /**
+     * 验证创建时分类方向不匹配会被拒绝。
+     */
+    @Test
+    @DisplayName("创建时分类方向与交易方向不匹配应抛出业务异常")
+    void createShouldThrowWhenCategoryDirectionDoesNotMatch() {
+        CreateTransactionRecordDto dto = baseDto();
+        dto.setCategoryId(30L);
+        mockExistingAccount();
+        mockCategory(30L, "餐饮", "EXPENSE");
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.create(dto));
+
+        assertTrue(exception.getMessage().contains("分类方向与交易方向不匹配"));
+    }
+
+    /**
+     * 验证创建时按分类名称解析后也会执行方向兼容校验。
+     */
+    @Test
+    @DisplayName("创建时按categoryName命中的分类方向不匹配应抛出业务异常")
+    void createShouldThrowWhenCategoryNameDirectionDoesNotMatch() {
+        CreateTransactionRecordDto dto = baseDto();
+        dto.setCategoryName("餐饮");
+        mockExistingAccount();
+        mockCategory(30L, "餐饮", "EXPENSE");
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.create(dto));
+
+        assertTrue(exception.getMessage().contains("分类方向与交易方向不匹配"));
     }
 
     @Test
@@ -310,7 +389,8 @@ class TransactionServiceTest {
         TransactionRecord record = existingRecord();
         Category category = new Category();
         category.setId(30L);
-        category.setName("餐饮");
+        category.setName("工资");
+        category.setType("INCOME");
         record.setCategory(category);
         when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
 
@@ -348,6 +428,24 @@ class TransactionServiceTest {
 
         assertNull(updated.getCategory());
         assertTrue(updated.getIsModified());
+    }
+
+    /**
+     * 验证更新时仅传分类名称也能解析并写入分类关联。
+     */
+    @Test
+    @DisplayName("更新时传入categoryName应正确关联分类实体")
+    void updateShouldSaveCategoryWhenCategoryNameProvided() {
+        TransactionRecord record = existingRecord();
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
+        Category category = mockCategory(30L, "工资", "INCOME");
+
+        UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
+        dto.setCategoryName("工资");
+
+        TransactionRecord updated = transactionService.update(1L, dto);
+
+        assertSame(category, updated.getCategory());
     }
 
     @Test
@@ -412,6 +510,23 @@ class TransactionServiceTest {
     }
 
     /**
+     * 验证更新时显式切换为转账类型会被拒绝。
+     */
+    @Test
+    @DisplayName("更新时显式传入TRANSFER类型应抛出业务异常")
+    void updateShouldThrowWhenTransactionTypeExplicitlySetToTransfer() {
+        TransactionRecord record = existingRecord();
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
+
+        UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
+        dto.setTransactionType(TransactionType.TRANSFER);
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.update(1L, dto));
+
+        assertTrue(exception.getMessage().contains("不支持TRANSFER语义"));
+    }
+
+    /**
      * 验证更新时显式传空金额会触发业务异常。
      */
     @Test
@@ -426,6 +541,40 @@ class TransactionServiceTest {
         BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.update(1L, dto));
 
         assertTrue(exception.getMessage().contains("交易金额不能为空"));
+    }
+
+    /**
+     * 验证更新时显式传空方向会触发业务异常。
+     */
+    @Test
+    @DisplayName("更新时显式传空directionType应抛出业务异常")
+    void updateShouldThrowWhenDirectionTypeExplicitlyNull() {
+        TransactionRecord record = existingRecord();
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
+
+        UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
+        dto.setDirectionType(null);
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.update(1L, dto));
+
+        assertTrue(exception.getMessage().contains("directionType不能为空"));
+    }
+
+    /**
+     * 验证更新时金额符号与最终方向不一致会被服务层显式拒绝。
+     */
+    @Test
+    @DisplayName("更新时金额符号与directionType不匹配应抛出业务异常")
+    void updateShouldThrowWhenAmountSignDoesNotMatchDirectionType() {
+        TransactionRecord record = existingRecord();
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
+
+        UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
+        dto.setAmount(new BigDecimal("-18.80"));
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.update(1L, dto));
+
+        assertTrue(exception.getMessage().contains("amount与directionType不匹配"));
     }
 
     /**
@@ -455,6 +604,44 @@ class TransactionServiceTest {
     }
 
     @Test
+    @DisplayName("更新时只改金额应保持原方向不变")
+    void updateShouldKeepDirectionWhenOnlyAmountChanges() {
+        TransactionRecord record = existingRecord();
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
+
+        UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
+        dto.setAmount(new BigDecimal("18.80"));
+
+        TransactionRecord updated = transactionService.update(1L, dto);
+
+        assertEquals(new BigDecimal("18.80"), updated.getAmount());
+        assertEquals(TransactionDirectionTypeEnum.INCOME, updated.getDirectionType());
+    }
+
+    /**
+     * 验证更新时不再使用 transactionType 参与方向合法性校验。
+     */
+    @Test
+    @DisplayName("更新时transactionType与directionType不匹配但金额符号正确应保存成功")
+    void updateShouldIgnoreTransactionTypeDirectionMismatchWhenAmountSignMatches() {
+        TransactionRecord record = existingRecord();
+        record.setTransactionType(TransactionType.INCOME);
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
+
+        UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
+        dto.setTransactionType(TransactionType.EXPENSE);
+
+        TransactionRecord updated = transactionService.update(1L, dto);
+
+        assertEquals(TransactionType.EXPENSE, updated.getTransactionType());
+        assertEquals(TransactionDirectionTypeEnum.INCOME, updated.getDirectionType());
+        assertEquals(new BigDecimal("66.00"), updated.getAmount());
+    }
+
+    /**
+     * 验证更新时可显式同步调整业务类型与收支方向。
+     */
+    @Test
     @DisplayName("更新成功后应发布更新事件并按显式字段更新语义保存")
     void updateShouldPublishChangeEventAfterUpdate() {
         TransactionRecord record = existingRecord();
@@ -463,19 +650,79 @@ class TransactionServiceTest {
 
         UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
         dto.setAmount(new BigDecimal("-18.80"));
-        dto.setTransactionType(null);
+        dto.setTransactionType(TransactionType.EXPENSE);
+        dto.setDirectionType(TransactionDirectionTypeEnum.EXPENSE);
 
         TransactionRecord updated = transactionService.update(1L, dto);
 
         assertEquals(new BigDecimal("-18.80"), updated.getAmount());
         assertEquals(TransactionDirectionTypeEnum.EXPENSE, updated.getDirectionType());
-        assertNull(updated.getTransactionType());
+        assertEquals(TransactionType.EXPENSE, updated.getTransactionType());
         assertTrue(updated.getIsModified());
 
         ArgumentCaptor<TransactionChangeEvent> captor = ArgumentCaptor.forClass(TransactionChangeEvent.class);
         verify(eventPublisher).publishEvent(captor.capture());
         assertEquals(1L, captor.getValue().getTransactionId());
         assertEquals(TransactionChangeEvent.Action.UPDATED, captor.getValue().getAction());
+    }
+
+    /**
+     * 验证更新时切换到匹配方向的分类会成功。
+     */
+    @Test
+    @DisplayName("更新时同时调整方向与分类且二者匹配应成功")
+    void updateShouldAllowCategorySwitchWhenDirectionMatches() {
+        TransactionRecord record = existingRecord();
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
+        Category category = mockCategory(40L, "餐饮", "EXPENSE");
+
+        UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
+        dto.setAmount(new BigDecimal("-66.00"));
+        dto.setDirectionType(TransactionDirectionTypeEnum.EXPENSE);
+        dto.setTransactionType(TransactionType.EXPENSE);
+        dto.setCategoryId(40L);
+
+        TransactionRecord updated = transactionService.update(1L, dto);
+
+        assertSame(category, updated.getCategory());
+        assertEquals(TransactionDirectionTypeEnum.EXPENSE, updated.getDirectionType());
+        assertEquals(TransactionType.EXPENSE, updated.getTransactionType());
+    }
+
+    /**
+     * 验证更新时分类方向与最终交易方向不匹配会被拒绝。
+     */
+    @Test
+    @DisplayName("更新时分类方向与交易方向不匹配应抛出业务异常")
+    void updateShouldThrowWhenCategoryDirectionDoesNotMatch() {
+        TransactionRecord record = existingRecord();
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
+        mockCategory(41L, "餐饮", "EXPENSE");
+
+        UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
+        dto.setCategoryId(41L);
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.update(1L, dto));
+
+        assertTrue(exception.getMessage().contains("分类方向与交易方向不匹配"));
+    }
+
+    /**
+     * 验证更新时按分类名称解析后也会执行方向兼容校验。
+     */
+    @Test
+    @DisplayName("更新时按categoryName命中的分类方向不匹配应抛出业务异常")
+    void updateShouldThrowWhenCategoryNameDirectionDoesNotMatch() {
+        TransactionRecord record = existingRecord();
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(record));
+        mockCategory(41L, "餐饮", "EXPENSE");
+
+        UpdateTransactionRecordDto dto = new UpdateTransactionRecordDto();
+        dto.setCategoryName("餐饮");
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.update(1L, dto));
+
+        assertTrue(exception.getMessage().contains("分类方向与交易方向不匹配"));
     }
 
     /**
@@ -486,6 +733,7 @@ class TransactionServiceTest {
         dto.setAccountId(10L);
         dto.setTransactionTime(LocalDateTime.now().minusHours(1));
         dto.setAmount(new BigDecimal("88.80"));
+        dto.setDirectionType(TransactionDirectionTypeEnum.INCOME);
         return dto;
     }
 
@@ -524,5 +772,18 @@ class TransactionServiceTest {
         counterparty.setName(name);
         when(counterpartyRepository.findById(id)).thenReturn(Optional.of(counterparty));
         return counterparty;
+    }
+
+    /**
+     * 模拟已存在的分类实体，便于覆盖方向兼容性校验场景。
+     */
+    private Category mockCategory(Long id, String name, String type) {
+        Category category = new Category();
+        category.setId(id);
+        category.setName(name);
+        category.setType(type);
+        lenient().when(categoryRepository.findById(id)).thenReturn(Optional.of(category));
+        lenient().when(categoryRepository.findByNameAndIsDeletedFalse(name)).thenReturn(category);
+        return category;
     }
 }

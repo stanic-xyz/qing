@@ -23,6 +23,8 @@ spring:
         format_sql: false
         jdbc:
           batch_size: 50
+  main:
+    lazy-initialization: true
 baseEnum:
   basePackage: cn.chenyunlong.qing.service.llm.enums
 langchain4j:
@@ -49,3 +51,8 @@ qianji:
 logging:
   pattern:
     level: '%5p [${spring.application.name:},%mdc{trace_id:-},%mdc{span_id:-}]'
+  logback:
+    rollingpolicy:
+      max-file-size: 50MB
+      max-history: 30
+      total-size-cap: 1GB

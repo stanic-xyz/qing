@@ -4,6 +4,7 @@ import {Plus} from 'lucide-react';
 import {getEnumText} from '../utils/enumMap';
 import ChannelAccountCascader from '../components/ChannelAccountCascader';
 import TransactionFormModal from '../components/TransactionFormModal';
+import type { TransactionFormRecord } from '../components/transactionFormUtils';
 
 export default function Transactions() {
     const [transactions, setTransactions] = useState([]);
@@ -38,7 +39,7 @@ export default function Transactions() {
     const [loadingTrace, setLoadingTrace] = useState(false);
 
     // 编辑弹窗状态
-    const [editingRecord, setEditingRecord] = useState<any>(null);
+    const [editingRecord, setEditingRecord] = useState<TransactionFormRecord | null>(null);
 
     // 表格容器 ref，用于分页后滚动到表格顶部
     const tableRef = useRef<HTMLDivElement>(null);
@@ -88,19 +89,25 @@ export default function Transactions() {
         }
     };
 
-    const handleEditSave = async () => {
-        if (!editingRecord) return;
-        try {
-            await axios.put(`/api/finance/transactions/${editingRecord.id}`, editingRecord);
-            setEditingRecord(null);
-            fetchTransactions();
-        } catch (e) {
-            alert('保存失败');
-        }
-    };
-
     const handleSearch = () => {
         setPage(0);
+        fetchTransactions();
+    };
+
+    /**
+     * 统一关闭新增/编辑交易弹窗。
+     */
+    const handleCloseFormModal = () => {
+        setShowAddModal(false);
+        setEditingRecord(null);
+    };
+
+    /**
+     * 统一处理新增/编辑成功后的刷新逻辑。
+     */
+    const handleFormSuccess = () => {
+        setShowAddModal(false);
+        setEditingRecord(null);
         fetchTransactions();
     };
 
@@ -517,87 +524,12 @@ export default function Transactions() {
                 </div>
             </div>
 
-            {/* 编辑弹窗 */}
-            {editingRecord && (
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                        <h3 className="text-lg font-medium mb-4">编辑交易记录</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">金额</label>
-                                <input
-                                    type="number"
-                                    value={editingRecord.amount}
-                                    onChange={(e) => setEditingRecord({...editingRecord, amount: e.target.value})}
-                                    className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">收支类型</label>
-                                <select
-                                    value={editingRecord.type}
-                                    onChange={(e) => setEditingRecord({...editingRecord, type: e.target.value})}
-                                    className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
-                                >
-                                    <option value="INCOME">收入</option>
-                                    <option value="EXPENSE">支出</option>
-                                    <option value="OTHER">其他</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">对方</label>
-                                <input
-                                    type="text"
-                                    value={editingRecord.counterparty?.name || ''}
-                                    onChange={(e) => setEditingRecord({...editingRecord, counterparty: e.target.value})}
-                                    className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">商品/说明</label>
-                                <input
-                                    type="text"
-                                    value={editingRecord.merchant || ''}
-                                    onChange={(e) => setEditingRecord({...editingRecord, merchant: e.target.value})}
-                                    className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">备注</label>
-                                <input
-                                    type="text"
-                                    value={editingRecord.remark || ''}
-                                    onChange={(e) => setEditingRecord({...editingRecord, remark: e.target.value})}
-                                    className="w-full border-gray-300 rounded-md shadow-sm p-2 border"
-                                />
-                            </div>
-                        </div>
-                        <div className="mt-6 flex justify-end space-x-3">
-                            <button
-                                onClick={() => setEditingRecord(null)}
-                                className="px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50"
-                            >
-                                取消
-                            </button>
-                            <button
-                                onClick={handleEditSave}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
-                            >
-                                保存
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {showAddModal && (
+            {(showAddModal || editingRecord) && (
                 <TransactionFormModal
-                    isOpen={showAddModal}
-                    onClose={() => setShowAddModal(false)}
-                    onSuccess={() => {
-                        setShowAddModal(false);
-                        fetchTransactions();
-                    }}
+                    isOpen={showAddModal || !!editingRecord}
+                    onClose={handleCloseFormModal}
+                    onSuccess={handleFormSuccess}
+                    initialData={editingRecord ?? undefined}
                 />
             )}
         </div>
