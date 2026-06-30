@@ -16,8 +16,6 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String accountId; // 账户唯一ID
-
     private String accountName; // 账户名称
 
     @Enumerated(EnumType.STRING)

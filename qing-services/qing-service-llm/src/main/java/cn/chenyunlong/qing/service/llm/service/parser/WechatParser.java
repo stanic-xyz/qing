@@ -147,10 +147,6 @@ public class WechatParser extends BaseFileParser {
                     String status = getCellValueAsString(row.getCell(colMap[7])).trim();
                     record.setStatus(mapStatus(status));
 
-                    // 分类
-                    String category = mapCategory(counterparty, merchant, direction);
-                    record.setSubCategory(category);
-
                     // 备注
                     String remark = getCellValueAsString(row.getCell(colMap[10])).trim();
                     record.setDetail(remark);

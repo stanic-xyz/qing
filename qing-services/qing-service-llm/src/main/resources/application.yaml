@@ -25,6 +25,9 @@ spring:
           batch_size: 50
   main:
     lazy-initialization: true
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
 baseEnum:
   basePackage: cn.chenyunlong.qing.service.llm.enums
 langchain4j:

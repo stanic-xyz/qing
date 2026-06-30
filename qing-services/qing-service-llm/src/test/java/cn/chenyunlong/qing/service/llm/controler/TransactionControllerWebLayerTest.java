@@ -1,10 +1,9 @@
 package cn.chenyunlong.qing.service.llm.controler;
 
 import cn.chenyunlong.common.exception.BusinessException;
-import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
-import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.service.ReconciliationService;
+import cn.chenyunlong.qing.service.llm.service.TransactionQueryService;
 import cn.chenyunlong.qing.service.llm.service.TransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,17 +43,15 @@ class TransactionControllerWebLayerTest {
     @BeforeEach
     void setUp() {
         transactionRecordRepository = mock(TransactionRecordRepository.class);
-        ChannelRepository channelRepository = mock(ChannelRepository.class);
-        AccountRepository accountRepository = mock(AccountRepository.class);
         ReconciliationService reconciliationService = mock(ReconciliationService.class);
+        TransactionQueryService transactionQueryService = mock(TransactionQueryService.class);
         transactionService = mock(TransactionService.class);
 
         TransactionController controller = new TransactionController(
                 transactionRecordRepository,
-                channelRepository,
-                accountRepository,
                 reconciliationService,
-                transactionService
+                transactionService,
+                transactionQueryService
         );
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller)

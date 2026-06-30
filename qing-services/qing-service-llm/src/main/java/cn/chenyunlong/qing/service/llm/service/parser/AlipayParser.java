@@ -112,8 +112,6 @@ public class AlipayParser extends BaseFileParser {
                     }
 
                     // 分类（基于支付方式和商户）
-                    record.setSubCategory(mapCategory(merchant, counterpartyStr, paymentMethod, incomeExpense));
-
                     // 构建备注
                     StringBuilder remarkBuilder = new StringBuilder();
                     if (line.length > 10 && !line[10].trim().isEmpty() && !"/".equals(line[10].trim())) {

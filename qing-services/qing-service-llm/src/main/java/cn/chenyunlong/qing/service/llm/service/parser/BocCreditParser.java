@@ -162,8 +162,6 @@ public class BocCreditParser extends BaseFileParser {
                                 record.setCounterparty(cp);
                             }
                             record.setMerchant(merchant);
-                            record.setSubCategory(mapCategory(merchant));
-
                             records.add(record);
                         } catch (Exception e) {
                             log.warn("解析中国银行交易行失败: {}, 错误: {}", trimmed, e.getMessage());

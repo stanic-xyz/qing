@@ -19,6 +19,7 @@ import cn.chenyunlong.qing.service.llm.event.AccountChangeEvent;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import cn.chenyunlong.qing.service.llm.service.AccountImportService;
+import cn.chenyunlong.qing.service.llm.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +37,7 @@ import cn.chenyunlong.qing.service.llm.enums.TransactionDirectionTypeEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/finance/accounts")
@@ -47,6 +49,7 @@ public class AccountController {
     private final AccountImportService accountImportService;
     private final ChannelRepository channelRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final TransactionService transactionService;
 
     @GetMapping("/import/template")
     public ResponseEntity<byte[]> downloadTemplate() throws Exception {
@@ -80,6 +83,11 @@ public class AccountController {
                 .map(AccountDTO::of)
                 .toList();
         return Result.success(accountDTOs);
+    }
+
+    @GetMapping("{id}")
+    public Result<AccountDTO> getAccountById(@PathVariable Long id) {
+        return accountRepo.findById(id).map(AccountDTO::of).map(Result::success).orElseThrow();
     }
 
     @PostMapping
@@ -194,6 +202,14 @@ public class AccountController {
         return Result.success(null);
     }
 
+    @PostMapping("/{id}/calculate")
+    public Result<Void> calculateBalance(@PathVariable("id") Long id) {
+
+        // 计算余额 ，找到当前账号下面的所有记录，然后从历史的交易记录里面计算出当前账户的余额
+
+        return Result.success();
+    }
+
     @PostMapping("/{id}/calibrate")
     public Result<AccountDTO> calibrateBalance(@PathVariable("id") Long id, @RequestBody java.util.Map<String, BigDecimal> payload) {
         BigDecimal newBalance = payload.get("newBalance");
@@ -214,7 +230,6 @@ public class AccountController {
             record.setTransactionTime(LocalDateTime.now());
             record.setTransactionType(diff.compareTo(BigDecimal.ZERO) > 0 ? TransactionType.INCOME : TransactionType.EXPENSE);
             record.setAmount(diff.abs());
-            record.setSubCategory("余额平账");
             record.setDetail("手动余额校准");
             record.setStatus(TransactionStatusEnum.SUCCESS);
             record.setConfirmed(true);

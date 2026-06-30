@@ -109,8 +109,7 @@ public class TransactionService {
         if (accountId == null) {
             throw new BusinessException("账户ID不能为空");
         }
-        Account account = null;
-        account = getAccountOrThrow(accountId);
+        Account account = getAccountOrThrow(accountId);
         Category category = resolveCategory(dto.getCategoryId(), dto.getCategoryName());
 
         // 2. 构建实体

@@ -127,7 +127,6 @@ public class BocomCreditParser extends BaseFileParser {
                         }
 
                         record.setMerchant(description);
-                        record.setSubCategory(mapCategory(description));
                         record.setStatus(TransactionStatusEnum.SUCCESS);
                         record.setAccountName("交通银行信用卡(" + cardLast4 + ")");
                         record.setAccountType(AccountType.CREDIT);

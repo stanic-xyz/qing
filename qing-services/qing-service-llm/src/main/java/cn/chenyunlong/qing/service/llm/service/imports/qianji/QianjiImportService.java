@@ -630,7 +630,6 @@ public class QianjiImportService {
         record.setAccountType(fromAccount.getAccountType());
 
         record.setCategory(category);
-        record.setSubCategory(StrUtil.isNotBlank(raw.category2()) ? raw.category2() : null);
 
         String merchant = raw.remark();
         if (StrUtil.isBlank(merchant)) {

@@ -62,17 +62,6 @@ public class QianjiParser extends BaseFileParser {
                         subCategoriesList = categories.getOrDefault(category, new ArrayList<>());
                     }
 
-                    // 二级分类（对应 category）
-                    String subCategory = line[3].trim();
-
-                    if (StrUtil.isNotBlank(subCategory)) {
-                        record.setSubCategory(category);
-
-                        if (!CollUtil.contains(subCategoriesList, subCategory)) {
-                            subCategoriesList.add(subCategory);
-                        }
-                    }
-
                     categories.put(category, subCategoriesList);
 
                     // 类型：支出/收入/转账

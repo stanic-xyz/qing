@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class AccountDTO {
 
     private Long id;
-    private String accountId;
     private String accountName;     // 必填
     private AccountType accountType;     // 必填 DEBIT/CREDIT/WALLET
     private String bankName;
@@ -37,7 +36,6 @@ public class AccountDTO {
         if (account == null) return null;
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setId(account.getId());
-        accountDTO.setAccountId(account.getAccountId());
         accountDTO.setAccountName(account.getAccountName());
         accountDTO.setAccountType(account.getAccountType());
         accountDTO.setBankName(account.getBankName());

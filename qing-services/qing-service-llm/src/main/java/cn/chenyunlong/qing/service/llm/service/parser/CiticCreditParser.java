@@ -138,8 +138,6 @@ public class CiticCreditParser extends BaseFileParser {
                     record.setMerchant(merchant);
 
                     // 分类
-                    record.setSubCategory(mapCategory(desc));
-
                     record.setStatus(TransactionStatusEnum.SUCCESS);
                     record.setAccountName("中信银行信用卡(" + cardLast4 + ")");
                     record.setAccountType(AccountType.CREDIT);

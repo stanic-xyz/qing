@@ -121,7 +121,6 @@ public class CcbParser extends BaseFileParser {
                     record.setAmount(absAmount);
                     record.setTransactionType(isInternal ? TransactionType.TRANSFER
                             : (isExpense ? TransactionType.EXPENSE : TransactionType.INCOME));
-                    record.setSubCategory(classifySummary(summary));
                     if (!cpName.isEmpty()) {
                         Counterparty cp = new Counterparty();
                         cp.setName(cpName);

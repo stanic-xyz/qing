@@ -3,35 +3,22 @@ package cn.chenyunlong.qing.service.llm.controler;
 import cn.chenyunlong.common.exception.NotFoundException;
 import cn.chenyunlong.qing.service.llm.dto.Result;
 import cn.chenyunlong.qing.service.llm.dto.transactions.CreateTransactionRecordDto;
+import cn.chenyunlong.qing.service.llm.dto.transactions.TransactionQueryDTO;
 import cn.chenyunlong.qing.service.llm.dto.transactions.UpdateTransactionRecordDto;
-import cn.chenyunlong.qing.service.llm.entity.Account;
 import cn.chenyunlong.qing.service.llm.entity.TransactionRecord;
-import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
-import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.service.ReconciliationService;
+import cn.chenyunlong.qing.service.llm.service.TransactionQueryService;
 import cn.chenyunlong.qing.service.llm.service.TransactionService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.persistence.criteria.Predicate;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-
-import cn.chenyunlong.qing.service.llm.entity.Channel;
-import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 
 @RestController
 @RequestMapping("/api/finance/transactions")
@@ -40,86 +27,13 @@ import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 public class TransactionController {
 
     private final TransactionRecordRepository transactionRepo;
-    private final ChannelRepository channelRepo;
-    private final AccountRepository accountRepository;
     private final ReconciliationService reconciliationService;
     private final TransactionService transactionService;
+    private final TransactionQueryService transactionQueryService;
 
     @GetMapping
-    public Result<Page<TransactionRecord>> getTransactions(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "20") int size,
-            @RequestParam(value = "channelIds", required = false) List<Long> channelIds,
-            @RequestParam(value = "accountIds", required = false) List<Long> accountIds,
-            @RequestParam(value = "type", required = false) String type,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "startDate", required = false) String startDate,
-            @RequestParam(value = "endDate", required = false) String endDate,
-            @RequestParam(value = "matchStatus", required = false) MatchStatusEnum matchStatus,
-            @RequestParam(value = "recordRole", defaultValue = "PRIMARY") cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum recordRole,
-            @RequestParam(value = "sortField", defaultValue = "transactionTime") String sortField,
-            @RequestParam(value = "sortDirection", defaultValue = "DESC") String sortDirection) {
-
-        Sort.Direction direction = "ASC".equalsIgnoreCase(sortDirection) ? Sort.Direction.ASC : Sort.Direction.DESC;
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, sortField));
-
-        Specification<TransactionRecord> spec = (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (channelIds != null && !channelIds.isEmpty()) {
-                List<Channel> channels = channelRepo.findAllById(channelIds);
-                if (!channels.isEmpty()) {
-                    predicates.add(root.get("channel").in(channels));
-                } else {
-                    predicates.add(cb.disjunction()); // Return empty if no codes match
-                }
-            }
-            if (CollectionUtils.isNotEmpty(accountIds)) {
-                List<Account> accounts = accountRepository.findAllById(accountIds);
-                if (!accounts.isEmpty()) {
-                    predicates.add(root.get("account").in(accounts));
-                }
-            }
-            if (type != null && !type.isEmpty()) {
-                predicates.add(cb.equal(root.get("type"), type));
-            }
-            if (matchStatus != null) {
-                predicates.add(cb.equal(root.get("matchStatus"), matchStatus));
-            }
-            if (keyword != null && !keyword.trim().isEmpty()) {
-                String likePattern = "%" + keyword.trim() + "%";
-                predicates.add(
-                        cb.or(
-                                cb.like(root.get("merchant"), likePattern),
-                                cb.like(root.get("remark"), likePattern)
-                        ));
-            }
-            if (startDate != null && !startDate.isEmpty()) {
-                LocalDateTime start = LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE).atStartOfDay();
-                predicates.add(cb.greaterThanOrEqualTo(root.get("transactionTime"), start));
-            }
-            if (endDate != null && !endDate.isEmpty()) {
-                LocalDateTime end = LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE).atTime(23, 59, 59);
-                predicates.add(cb.lessThanOrEqualTo(root.get("transactionTime"), end));
-            }
-
-            if (recordRole != null) {
-                predicates.add(cb.equal(root.get("recordRole"), recordRole));
-            }
-
-            // 默认不查询已软删除的数据
-            predicates.add(cb.equal(root.get("isDeleted"), false));
-
-            // 彻底隔离未导入的数据 (兼容历史数据 isImported is null)
-            predicates.add(cb.or(
-                    cb.equal(root.get("isImported"), true),
-                    cb.isNull(root.get("isImported"))
-            ));
-
-            return cb.and(predicates.toArray(new Predicate[0]));
-        };
-
-        Page<TransactionRecord> result = transactionRepo.findAll(spec, pageRequest);
+    public Result<Page<TransactionRecord>> getTransactions(@ModelAttribute TransactionQueryDTO queryDTO) {
+        Page<TransactionRecord> result = transactionQueryService.pageQuery(queryDTO);
         return Result.success(result);
     }
 
@@ -150,29 +64,7 @@ public class TransactionController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "100") int size) {
         TransactionRecord record = getTransactionOrThrow(id);
-
-        if (size > 500) {
-            size = 500;
-        }
-
-        LocalDateTime start = record.getTransactionTime().minusDays(1).with(java.time.LocalTime.MIN);
-        LocalDateTime end = record.getTransactionTime().plusDays(1).with(java.time.LocalTime.MAX);
-
-        Specification<TransactionRecord> spec = (root, query, cb) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            predicates.add(cb.equal(root.get("amount"), record.getAmount()));
-            predicates.add(cb.equal(root.get("transactionType"), record.getTransactionType()));
-            predicates.add(cb.between(root.get("transactionTime"), start, end));
-            predicates.add(cb.equal(root.get("isDeleted"), false));
-            predicates.add(cb.or(
-                    cb.equal(root.get("isImported"), true),
-                    cb.isNull(root.get("isImported"))
-            ));
-            return cb.and(predicates.toArray(new Predicate[0]));
-        };
-
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "transactionTime"));
-        Page<TransactionRecord> related = transactionRepo.findAll(spec, pageRequest);
+        Page<TransactionRecord> related = transactionQueryService.findTraceRecords(record, page, size);
         return Result.success(related.getContent());
     }
 
@@ -184,6 +76,12 @@ public class TransactionController {
     public Result<TransactionRecord> updateTransaction(@PathVariable Long id,
                                                        @RequestBody @Valid UpdateTransactionRecordDto updateData) {
         TransactionRecord record = transactionService.update(id, updateData);
+        return Result.success(record);
+    }
+
+    @GetMapping("/{id}")
+    public Result<TransactionRecord> getTransaction(@PathVariable Long id) {
+        TransactionRecord record = transactionRepo.getReferenceById(id);
         return Result.success(record);
     }
 

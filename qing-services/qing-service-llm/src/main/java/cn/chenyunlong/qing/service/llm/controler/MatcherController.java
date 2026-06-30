@@ -96,7 +96,6 @@ public class MatcherController {
         clone.setCounterparty(r.getCounterparty());
         clone.setMerchant(r.getMerchant());
         clone.setCategory(r.getCategory());
-        clone.setSubCategory(r.getSubCategory());
         clone.setStatus(r.getStatus());
         clone.setFee(r.getFee());
         clone.setDetail(r.getDetail());

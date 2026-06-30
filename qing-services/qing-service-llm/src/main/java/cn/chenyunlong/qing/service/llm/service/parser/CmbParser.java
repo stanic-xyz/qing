@@ -194,8 +194,6 @@ public class CmbParser extends BaseFileParser {
         }
 
         // 设置摘要类型作为分类
-        record.setSubCategory(summaryType);
-
         // 设置对手方
         if (!counterpartyName.isEmpty()) {
             Counterparty cp = new Counterparty();
