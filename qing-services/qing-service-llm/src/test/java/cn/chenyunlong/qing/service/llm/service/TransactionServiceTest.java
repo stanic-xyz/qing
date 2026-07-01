@@ -42,7 +42,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -58,6 +60,8 @@ class TransactionServiceTest {
     private CategoryRepository categoryRepository;
     @Mock
     private CounterpartyRepository counterpartyRepository;
+    @Mock
+    private DedupService dedupService;
     @Mock
     private ApplicationEventPublisher eventPublisher;
 
@@ -79,7 +83,7 @@ class TransactionServiceTest {
         Account account = mockExistingAccount();
         Category category = mockCategory(20L, "工资", "INCOME");
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertSame(account, record.getAccount());
         assertSame(category, record.getCategory());
@@ -98,7 +102,7 @@ class TransactionServiceTest {
         mockExistingAccount();
         Category category = mockCategory(20L, "工资", "INCOME");
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertSame(category, record.getCategory());
     }
@@ -109,7 +113,7 @@ class TransactionServiceTest {
         CreateTransactionRecordDto dto = baseDto();
         mockExistingAccount();
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertEquals(new BigDecimal("88.80"), record.getAmount());
         assertEquals(10L, record.getAccount().getId());
@@ -127,7 +131,7 @@ class TransactionServiceTest {
         CreateTransactionRecordDto dto = baseDto();
         mockExistingAccount();
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertNull(record.getCategory());
         verifyNoInteractions(categoryRepository);
@@ -140,7 +144,7 @@ class TransactionServiceTest {
         dto.setMerchant(null);
         mockExistingAccount();
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertNull(record.getMerchant());
         assertEquals(new BigDecimal("88.80"), record.getAmount());
@@ -154,7 +158,7 @@ class TransactionServiceTest {
         dto.setCounterpartyStr(null);
         mockExistingAccount();
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertNull(record.getCounterparty());
         assertNull(record.getCounterpartyStr());
@@ -173,7 +177,7 @@ class TransactionServiceTest {
         mockExistingAccount();
         Counterparty counterparty = mockExistingCounterparty(88L, "测试对手方");
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertSame(counterparty, record.getCounterparty());
         assertEquals("测试对手方", record.getCounterpartyStr());
@@ -282,7 +286,7 @@ class TransactionServiceTest {
         dto.setDirectionType(TransactionDirectionTypeEnum.EXPENSE);
         mockExistingAccount();
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertEquals(new BigDecimal("-20.22"), record.getAmount());
         assertEquals(TransactionDirectionTypeEnum.EXPENSE, record.getDirectionType());
@@ -314,7 +318,7 @@ class TransactionServiceTest {
         dto.setTransactionType(TransactionType.EXPENSE);
         mockExistingAccount();
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertEquals(TransactionType.EXPENSE, record.getTransactionType());
         assertEquals(TransactionDirectionTypeEnum.INCOME, record.getDirectionType());
@@ -372,7 +376,7 @@ class TransactionServiceTest {
         CreateTransactionRecordDto dto = baseDto();
         mockExistingAccount();
 
-        TransactionRecord record = transactionService.create(dto);
+        TransactionRecord record = transactionService.create(dto).getRecord();
 
         assertEquals(TransactionStatusEnum.SUCCESS, record.getStatus());
         assertEquals(ReconciliationStatusEnum.PENDING, record.getReconciliationStatus());
@@ -723,6 +727,51 @@ class TransactionServiceTest {
         BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.update(1L, dto));
 
         assertTrue(exception.getMessage().contains("分类方向与交易方向不匹配"));
+    }
+
+    // ======== 去重检查 ========
+
+    @Test
+    @DisplayName("创建时检测到重复且未确认时应抛出业务异常")
+    void createShouldThrowWhenDuplicateFoundAndNotConfirmed() {
+        CreateTransactionRecordDto dto = baseDto();
+        dto.setConfirmed(null);
+        Account account = mockExistingAccount();
+
+        TransactionRecord existing = new TransactionRecord();
+        existing.setId(99L);
+        when(dedupService.findDuplicate(eq(account), any(), any())).thenReturn(existing);
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> transactionService.create(dto));
+        assertTrue(exception.getMessage().contains("与记录 #99 匹配"));
+    }
+
+    @Test
+    @DisplayName("创建时检测到重复但已确认时应创建并返回冲突提示")
+    void createShouldReturnConflictWhenConfirmed() {
+        CreateTransactionRecordDto dto = baseDto();
+        dto.setConfirmed(true);
+        Account account = mockExistingAccount();
+        TransactionRecord existing = new TransactionRecord();
+        existing.setId(99L);
+        when(dedupService.findDuplicate(eq(account), any(), any())).thenReturn(existing);
+
+        TransactionService.CreateResult result = transactionService.create(dto);
+        assertNotNull(result.getRecord());
+        assertTrue(result.hasConflict());
+        assertTrue(result.getConflictMessage().contains("99"));
+    }
+
+    @Test
+    @DisplayName("创建时无重复应正常创建")
+    void createShouldSucceedWhenNoDuplicate() {
+        CreateTransactionRecordDto dto = baseDto();
+        dto.setConfirmed(null);
+        mockExistingAccount();
+        // dedupService.findDuplicate 默认返回 null
+
+        TransactionRecord record = transactionService.create(dto).getRecord();
+        assertNotNull(record);
     }
 
     /**

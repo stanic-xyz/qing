@@ -6,6 +6,7 @@ import cn.chenyunlong.qing.service.llm.enums.DraftBatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.FileUploadStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.MatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import cn.chenyunlong.qing.service.llm.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -250,6 +251,10 @@ public class DraftCommitService {
             case null, default -> tr.setMatchStatus(MatchStatusEnum.ORIGINAL);
         }
         tr.setIsImported(true);
+        tr.setRecordRole(dr.getRecordRole() != null ? dr.getRecordRole() : RecordRoleEnum.PRIMARY);
+        tr.setFundSource(dr.getFundSource());
+        tr.setFundSourceAccountId(dr.getFundSourceAccountId());
+        tr.setTargetPrimaryRecordId(dr.getTargetPrimaryRecordId());
         return tr;
     }
 }

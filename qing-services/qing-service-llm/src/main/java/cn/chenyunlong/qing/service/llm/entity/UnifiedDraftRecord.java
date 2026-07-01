@@ -1,6 +1,7 @@
 package cn.chenyunlong.qing.service.llm.entity;
 
 import cn.chenyunlong.qing.service.llm.enums.DraftMatchStatusEnum;
+import cn.chenyunlong.qing.service.llm.enums.RecordRoleEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionDirectionTypeEnum;
 import cn.chenyunlong.qing.service.llm.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -92,6 +93,17 @@ public class UnifiedDraftRecord {
 
     // 软删除标记
     private Boolean isDeleted = false;
+
+    // ======== 来源与角色信息（由解析器设置，提交时传透到 TransactionRecord） ========
+
+    @Enumerated(EnumType.STRING)
+    private RecordRoleEnum recordRole;
+
+    private String fundSource;
+
+    private Long fundSourceAccountId;
+
+    private Long targetPrimaryRecordId;
 
     @PrePersist
     protected void onCreate() {

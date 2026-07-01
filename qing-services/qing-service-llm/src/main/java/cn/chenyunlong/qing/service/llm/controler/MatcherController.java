@@ -42,14 +42,14 @@ public class MatcherController {
     }
 
     @PutMapping("/{id}")
-    public Result<TransactionMatcher> update(@PathVariable("id") Long id, @RequestBody TransactionMatcher matcher) {
-        matcher.setId(id);
+    public Result<TransactionMatcher> update(@PathVariable("id") Long matcherId, @RequestBody TransactionMatcher matcher) {
+        matcher.setId(matcherId);
         return Result.success(matcherRepository.save(matcher));
     }
 
     @DeleteMapping("/{id}")
-    public Result<Void> delete(@PathVariable("id") Long id) {
-        matcherRepository.deleteById(id);
+    public Result<Void> delete(@PathVariable("id") Long matcherId) {
+        matcherRepository.deleteById(matcherId);
         return Result.success(null);
     }
 

@@ -8,6 +8,11 @@ import cn.chenyunlong.qing.service.llm.dto.AccountPreviewResult;
 import cn.chenyunlong.qing.service.llm.dto.account.AccountDTO;
 import cn.chenyunlong.qing.service.llm.dto.account.AccountStatisticsDTO;
 import cn.chenyunlong.qing.service.llm.dto.account.AccountUpdateDTO;
+import cn.chenyunlong.qing.service.llm.dto.dedup.CleanupRequest;
+import cn.chenyunlong.qing.service.llm.dto.dedup.DedupConfig;
+import cn.chenyunlong.qing.service.llm.dto.dedup.DedupReport;
+import cn.chenyunlong.qing.service.llm.dto.link.LinkConfig;
+import cn.chenyunlong.qing.service.llm.dto.link.LinkReport;
 import cn.chenyunlong.qing.service.llm.entity.Channel;
 import cn.chenyunlong.qing.service.llm.enums.AccountStatusEnum;
 import cn.chenyunlong.qing.service.llm.enums.ImportModeEnum;
@@ -19,6 +24,9 @@ import cn.chenyunlong.qing.service.llm.event.AccountChangeEvent;
 import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import cn.chenyunlong.qing.service.llm.service.AccountImportService;
+import cn.chenyunlong.qing.service.llm.service.AccountService;
+import cn.chenyunlong.qing.service.llm.service.DedupService;
+import cn.chenyunlong.qing.service.llm.service.LinkingService;
 import cn.chenyunlong.qing.service.llm.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -47,6 +55,9 @@ public class AccountController {
     private final AccountRepository accountRepo;
     private final TransactionRecordRepository transactionRepo;
     private final AccountImportService accountImportService;
+    private final AccountService accountService;
+    private final DedupService dedupService;
+    private final LinkingService linkingService;
     private final ChannelRepository channelRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final TransactionService transactionService;
@@ -203,11 +214,53 @@ public class AccountController {
     }
 
     @PostMapping("/{id}/calculate")
-    public Result<Void> calculateBalance(@PathVariable("id") Long id) {
+    public Result<AccountDTO> calculateBalance(@PathVariable("id") Long id) {
+        AccountDTO dto = accountService.calculateBalance(id);
+        return Result.success(dto);
+    }
 
-        // 计算余额 ，找到当前账号下面的所有记录，然后从历史的交易记录里面计算出当前账户的余额
+    @PostMapping("/{id}/reconciliation")
+    public Result<AccountDTO> checkBalance(@PathVariable("id") Long accountId) {
+        // 对账功能
+        AccountDTO dto = accountService.reconciliation(accountId);
+        return Result.success(dto);
+    }
 
-        return Result.success();
+    @PostMapping("/{id}/deduplicate")
+    public Result<DedupReport> deduplicate(
+            @PathVariable("id") Long accountId,
+            @RequestBody(required = false) DedupConfig config) {
+        if (config == null) {
+            config = new DedupConfig();
+        }
+        DedupReport report = dedupService.deduplicate(accountId, config);
+        return Result.success(report);
+    }
+
+    @PostMapping("/{id}/cleanup")
+    public Result<?> cleanup(
+            @PathVariable("id") Long accountId,
+            @RequestBody CleanupRequest request) {
+        if (request == null) {
+            request = new CleanupRequest();
+        }
+        if (request.isPreview() || request.getDuplicateRecordIds() == null || request.getDuplicateRecordIds().isEmpty()) {
+            DedupReport report = dedupService.previewCleanup(accountId, request);
+            return Result.success(report);
+        }
+        int deleted = dedupService.executeCleanup(accountId, request);
+        return Result.success(deleted);
+    }
+
+    @PostMapping("/{id}/link")
+    public Result<LinkReport> link(
+            @PathVariable("id") Long accountId,
+            @RequestBody(required = false) LinkConfig config) {
+        if (config == null) {
+            config = new LinkConfig();
+        }
+        LinkReport report = linkingService.link(accountId, config);
+        return Result.success(report);
     }
 
     @PostMapping("/{id}/calibrate")

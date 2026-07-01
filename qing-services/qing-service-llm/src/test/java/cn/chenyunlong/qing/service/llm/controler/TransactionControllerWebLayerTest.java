@@ -137,7 +137,7 @@ class TransactionControllerWebLayerTest {
     @Test
     void shouldAllowNegativeAmountWhenCreateTransactionDirectionMatches() throws Exception {
         when(transactionService.create(org.mockito.ArgumentMatchers.any()))
-                .thenReturn(new cn.chenyunlong.qing.service.llm.entity.TransactionRecord());
+                .thenReturn(new TransactionService.CreateResult(new cn.chenyunlong.qing.service.llm.entity.TransactionRecord(), null));
 
         mockMvc.perform(post("/api/finance/transactions")
                         .contentType(MediaType.APPLICATION_JSON)

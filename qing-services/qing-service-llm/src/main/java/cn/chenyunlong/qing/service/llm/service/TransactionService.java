@@ -2,6 +2,7 @@ package cn.chenyunlong.qing.service.llm.service;
 
 import cn.chenyunlong.common.exception.BusinessException;
 import cn.chenyunlong.common.exception.NotFoundException;
+import cn.chenyunlong.qing.service.llm.dto.dedup.DedupConfig;
 import cn.chenyunlong.qing.service.llm.dto.transactions.CreateTransactionRecordDto;
 import cn.chenyunlong.qing.service.llm.dto.transactions.UpdateTransactionRecordDto;
 import cn.chenyunlong.qing.service.llm.entity.*;
@@ -10,7 +11,10 @@ import cn.chenyunlong.qing.service.llm.enums.*;
 import cn.chenyunlong.qing.service.llm.repository.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TransactionService {
 
@@ -31,16 +36,19 @@ public class TransactionService {
     private final AccountRepository accountRepository;
     private final CategoryRepository categoryRepository;
     private final CounterpartyRepository counterpartyRepository;
+    private final DedupService dedupService;
     private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 创建单条流水
+     *
+     * @return 创建结果，包含记录和可选的冲突提示
      */
     @Transactional(rollbackFor = Exception.class)
-    public TransactionRecord create(@Valid CreateTransactionRecordDto dto) {
-        TransactionRecord record = doCreate(dto, null);
-        publishTransactionChange(record, TransactionChangeEvent.Action.CREATED);
-        return record;
+    public CreateResult create(@Valid CreateTransactionRecordDto dto) {
+        CreateResult result = doCreate(dto, null);
+        publishTransactionChange(result.getRecord(), TransactionChangeEvent.Action.CREATED);
+        return result;
     }
 
     /**
@@ -63,9 +71,9 @@ public class TransactionService {
             if (!StringUtils.hasText(dto.getBatchNo()) && effectiveBatchNo != null) {
                 dto.setBatchNo(effectiveBatchNo);
             }
-            TransactionRecord record = doCreate(dto, effectiveBatchNo);
-            publishTransactionChange(record, TransactionChangeEvent.Action.CREATED);
-            records.add(record);
+            CreateResult result = doCreate(dto, effectiveBatchNo);
+            publishTransactionChange(result.getRecord(), TransactionChangeEvent.Action.CREATED);
+            records.add(result.getRecord());
         }
         return records;
     }
@@ -101,7 +109,7 @@ public class TransactionService {
      * @param dto           流水DTO
      * @param forcedBatchNo 强制使用的批次号（批量调用时统一传入，单个调用时传null）
      */
-    private TransactionRecord doCreate(CreateTransactionRecordDto dto, String forcedBatchNo) {
+    private CreateResult doCreate(CreateTransactionRecordDto dto, String forcedBatchNo) {
         validateManualCreateTransferBoundary(dto);
 
         // 1. 基础关联实体校验与加载
@@ -166,11 +174,43 @@ public class TransactionService {
             record.setBatchNo(generateBatchNo());
         }
 
-        // 3. 在持久化前统一校验方向、金额与分类契约
+        // 3. 去重检查（仅 PRIMARY 记录）
+        String conflictMessage = null;
+        RecordRoleEnum role = dto.getRecordRole() != null ? dto.getRecordRole() : RecordRoleEnum.PRIMARY;
+        if (role == RecordRoleEnum.PRIMARY) {
+            DedupConfig dedupConfig = new DedupConfig();
+            TransactionRecord duplicate = dedupService.findDuplicate(account, record, dedupConfig);
+            if (duplicate != null) {
+                if (Boolean.TRUE.equals(dto.getConfirmed())) {
+                    log.warn("已确认的流水与记录 #{} 存在冲突：金额/时间/商户 匹配", duplicate.getId());
+                    conflictMessage = String.format("与记录 #%d 存在冲突", duplicate.getId());
+                } else {
+                    throw new BusinessException(
+                        String.format("检测到重复的流水：金额/时间/商户 与记录 #%d 匹配，如需确认请设置 confirmed=true", duplicate.getId()));
+                }
+            }
+        }
+
+        // 4. 在持久化前统一校验方向、金额与分类契约
         validateManualWriteContract(record);
 
-        // 保存
-        return transactionRepo.save(record);
+        // 5. 保存
+        TransactionRecord saved = transactionRepo.save(record);
+        return new CreateResult(saved, conflictMessage);
+    }
+
+    /**
+     * 单条创建结果，包含创建的记录和可选的冲突提示。
+     */
+    @Data
+    @AllArgsConstructor
+    public static class CreateResult {
+        private TransactionRecord record;
+        private String conflictMessage;
+
+        public boolean hasConflict() {
+            return conflictMessage != null;
+        }
     }
 
     // ========== 校验辅助方法 ==========

@@ -5,6 +5,10 @@ import cn.chenyunlong.qing.service.llm.repository.AccountRepository;
 import cn.chenyunlong.qing.service.llm.repository.ChannelRepository;
 import cn.chenyunlong.qing.service.llm.repository.TransactionRecordRepository;
 import cn.chenyunlong.qing.service.llm.service.AccountImportService;
+import cn.chenyunlong.qing.service.llm.service.AccountService;
+import cn.chenyunlong.qing.service.llm.service.DedupService;
+import cn.chenyunlong.qing.service.llm.service.LinkingService;
+import cn.chenyunlong.qing.service.llm.service.TransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationEventPublisher;
@@ -43,15 +47,23 @@ class AccountControllerWebLayerTest {
         accountRepository = mock(AccountRepository.class);
         transactionRecordRepository = mock(TransactionRecordRepository.class);
         AccountImportService accountImportService = mock(AccountImportService.class);
+        AccountService accountService = mock(AccountService.class);
+        DedupService dedupService = mock(DedupService.class);
+        LinkingService linkingService = mock(LinkingService.class);
         ChannelRepository channelRepository = mock(ChannelRepository.class);
         ApplicationEventPublisher applicationEventPublisher = mock(ApplicationEventPublisher.class);
+        TransactionService transactionService = mock(TransactionService.class);
 
         AccountController controller = new AccountController(
                 accountRepository,
                 transactionRecordRepository,
                 accountImportService,
+                accountService,
+                dedupService,
+                linkingService,
                 channelRepository,
-                applicationEventPublisher
+                applicationEventPublisher,
+                transactionService
         );
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller)

@@ -91,7 +91,7 @@ public class JingdongParser extends BaseFileParser {
                     String category = "";
                     if (line.length > 7) {
                         category = line[7].trim();
-                        record.setSubCategory(category);
+                        //                        record.setSubCategory(category);
                     }
 
                     // 备注（列10）

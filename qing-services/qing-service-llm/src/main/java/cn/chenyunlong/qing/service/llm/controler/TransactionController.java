@@ -43,8 +43,11 @@ public class TransactionController {
      */
     @PostMapping
     public Result<TransactionRecord> createTransaction(@RequestBody @Valid CreateTransactionRecordDto dto) {
-        TransactionRecord record = transactionService.create(dto);
-        return Result.success(record);
+        TransactionService.CreateResult result = transactionService.create(dto);
+        if (result.hasConflict()) {
+            return new Result<>(200, "创建成功，" + result.getConflictMessage(), result.getRecord());
+        }
+        return Result.success(result.getRecord());
     }
 
     /**
@@ -90,6 +93,16 @@ public class TransactionController {
         TransactionRecord record = transactionRepo.findById(id).orElse(null);
         if (record != null) {
             record.setIsDeleted(true);
+            transactionRepo.save(record);
+        }
+        return Result.success(null);
+    }
+
+    @PostMapping("/{id}/unmark-duplicate")
+    public Result<Void> unmarkDuplicate(@PathVariable Long id) {
+        TransactionRecord record = transactionRepo.findById(id).orElse(null);
+        if (record != null) {
+            record.setDuplicateOf(null);
             transactionRepo.save(record);
         }
         return Result.success(null);

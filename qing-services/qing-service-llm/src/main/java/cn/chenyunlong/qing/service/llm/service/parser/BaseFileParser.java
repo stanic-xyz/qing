@@ -116,6 +116,10 @@ public abstract class BaseFileParser implements FileParser {
         dr.setCounterpartyStr(record.getCounterpartyStr());
         dr.setOrderNo(record.getOrderNo());
         dr.setDetail(record.getDetail());
+        dr.setRecordRole(record.getRecordRole());
+        dr.setFundSource(record.getFundSource());
+        dr.setFundSourceAccountId(record.getFundSourceAccountId());
+        dr.setTargetPrimaryRecordId(record.getTargetPrimaryRecordId());
         return dr;
     }
 }

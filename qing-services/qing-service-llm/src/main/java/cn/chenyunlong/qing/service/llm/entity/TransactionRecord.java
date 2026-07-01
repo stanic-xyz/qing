@@ -73,9 +73,6 @@ public class TransactionRecord {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // 交易子类别,冗余字段
-    private String subCategory;
-
     // 交易状态
     @Enumerated(EnumType.STRING)
     private TransactionStatusEnum status;
@@ -130,6 +127,13 @@ public class TransactionRecord {
 
     // 主流水标识
     private Long targetPrimaryRecordId;
+
+    // ======== 去重标记 ========
+    /**
+     * 若该记录被判定为重复，指向被保留的那条流水 ID；
+     * 保留的记录该字段为 null。
+     */
+    private Long duplicateOf;
 
     @Enumerated(EnumType.STRING)
     private TransactionRecordTypeEnum transactionRecordType;
